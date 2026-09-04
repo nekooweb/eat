@@ -12,27 +12,36 @@
 - `ziko`: active configuration and data will be implemented first.
 - `neko`: visible in the UI but its area/data configuration is `TBD` for now.
 
+## Area privacy / abstraction
+- For `ziko`, the public UI exposes exactly two area choices: `地区1️⃣` and `地区2️⃣`.
+- The UI must NOT reveal what real-world locations those labels represent.
+- The mapping from `地区1️⃣` / `地区2️⃣` to restaurant records and their actual locations is maintained only in the repository data/configuration layer.
+- Restaurant collection can therefore be updated later by editing the local data without changing or explaining the public area labels.
+- `neko` remains `TBD` and receives no real area configuration yet.
+
 ## UI flow
 1. User selector at the top with the two names: `ziko` and `neko`.
 2. Area selector.
-   - Only `ziko` receives real area options in the first implementation.
-   - `neko` area selection remains clearly marked `TBD` / unavailable until later requirements are supplied.
+   - `ziko`: `地区1️⃣` / `地区2️⃣` only.
+   - `neko`: `TBD` / unavailable until later requirements are supplied.
 3. Food-category rejection filters using checkboxes or equivalent multi-select controls.
 4. Expected-budget filter using preset controls aligned conceptually with Google Maps price levels.
 5. One primary button to generate a proposal.
 6. After clicking, filter the local restaurant/food repository by all active conditions and then choose one eligible entry with uniform random selection.
 7. Result view shows at minimum:
    - restaurant / food-place name;
-   - a small embedded Google Maps-style map preview directly inside the result area;
-   - a marker or equivalent visual indication of the restaurant's approximate/exact stored location;
-   - a direct link/button opening the restaurant in Google Maps, where ratings, reviews, opening information, and Google-provided price information can be inspected.
+   - a small Google Maps display embedded directly inside the page showing the selected restaurant's location;
+   - a location marker / Google Maps place presentation as supported by the selected embed method;
+   - a direct interaction/link from the map/result to open that place in Google Maps for full details, ratings, reviews, directions, opening information, and price information.
 
-## Map requirement
+## Google Maps requirement
 - A URL-only result is not sufficient.
-- The page itself must contain a compact map preview after a restaurant is selected.
-- The preview should be lightweight and suitable for both mobile and desktop.
-- Restaurant records should therefore retain location information suitable for map display (prefer coordinates and/or a stable Google Maps place/query identifier).
-- The implementation should avoid a backend. If the chosen Google map embed approach requires an API key or billing, that tradeoff must be evaluated before development rather than silently introducing it.
+- The result itself must embed Google Maps as a compact map view.
+- The purpose of the embedded map is simple: show where the selected restaurant is and provide a natural path to open the same place in Google Maps.
+- Do not build a custom map UI or a separate mapping system when Google Maps embedding can provide the required presentation.
+- The map should be responsive and appropriately sized for mobile and desktop.
+- Restaurant records should retain the information required to identify the intended Google Maps place, preferably stable place/query information plus address and/or coordinates.
+- No backend is required for this behavior.
 
 ## Food-category taxonomy
 - Rejection categories should be based primarily on the genre structure used by 食べログ 百名店 rather than an arbitrary custom taxonomy.
@@ -57,7 +66,8 @@
 - Each entry should support at least:
   - name;
   - user scope (`ziko`, later `neko`, or shared if needed);
-  - area;
+  - anonymous public area key (`地区1️⃣` or `地区2️⃣` for ziko);
+  - actual location/address/map metadata stored only as implementation data and not used to explain the meaning of the public area label;
   - 食べログ-derived cuisine/category tags;
   - Google-style price level;
   - Google Maps query / place identifier when available;
@@ -70,7 +80,7 @@
 - Static HTML + CSS + vanilla JavaScript.
 - Use a lightweight responsive baseline/template; Pico CSS remains a candidate, preferably vendored locally rather than loaded from a CDN.
 - Keep dependencies minimal and avoid a build step unless later requirements make one necessary.
-- Google Maps direct links remain useful as the detailed destination page, but they are supplementary to the required embedded map preview.
+- Google Maps embedded display is part of the result UI; the Google Maps detailed place page is the destination for deeper place information.
 
 ## Visual direction
 - Bright, playful, rounded, cute visual language inspired by the energetic yellow/white feeling associated with Usagi from Chiikawa, without copying official character artwork.
@@ -79,7 +89,7 @@
 - Single-screen/short-scroll utility feel is preferred over a content-heavy website.
 
 ## Confirmed-but-not-yet-specified
-- `ziko` area list: to be supplied later.
+- The real-world mapping/data contents behind `ziko`'s `地区1️⃣` and `地区2️⃣`: to be populated/modified through the local restaurant dataset, not publicly described in the UI.
 - `neko` area/data configuration: `TBD`.
 - Exact grouping level of the 食べログ 百名店 taxonomy for the rejection UI: to be decided later.
 - Whether `ziko` and `neko` eventually receive separate defaults/history/preferences: to be decided later.
