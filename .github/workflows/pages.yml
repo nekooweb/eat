@@ -30,6 +30,11 @@ jobs:
       - name: Static and repository checks
         run: |
           node --check app.js
+          python3 -m py_compile \
+            scripts/verify_google_places.py \
+            scripts/discover_google_area1.py \
+            scripts/migrate_google_inventory.py \
+            scripts/build_area1_osm.py
           test -s data/production_area1.js
           node scripts/audit_repository.mjs
       - name: Coverage report
