@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       limit:
-        description: 'Maximum candidates to process; 0 = all'
+        description: 'Maximum candidates to process; 0 = all, -1 = half'
         required: true
         default: '100'
       enrich:
@@ -12,6 +12,9 @@ on:
         required: true
         type: boolean
         default: true
+  push:
+    paths:
+      - '.github/run-half-google'
 
 permissions:
   contents: write
@@ -32,8 +35,8 @@ jobs:
       - name: Verify candidates
         env:
           GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAP_API }}
-          GOOGLE_VERIFY_LIMIT: ${{ inputs.limit }}
-          GOOGLE_VERIFY_ENRICH: ${{ inputs.enrich && '1' || '0' }}
+          GOOGLE_VERIFY_LIMIT: ${{ github.event_name == 'push' && '-1' || inputs.limit }}
+          GOOGLE_VERIFY_ENRICH: ${{ github.event_name == 'push' && '1' || (inputs.enrich && '1' || '0') }}
         run: python scripts/verify_google_places.py
       - name: Commit verification cache and overlay
         run: |
