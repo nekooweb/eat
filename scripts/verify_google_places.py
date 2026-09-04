@@ -28,16 +28,14 @@ def load_cache():
 def post_json(url,body,mask):
     req=urllib.request.Request(url,data=json.dumps(body).encode(),headers={
         'Content-Type':'application/json','X-Goog-Api-Key':API_KEY,
-        'X-Goog-FieldMask':mask,'User-Agent':'nekooweb-eat-google-verifier/2.0'})
+        'X-Goog-FieldMask':mask,'User-Agent':'nekooweb-eat-google-verifier/2.1'})
     with urllib.request.urlopen(req,timeout=30) as r:return json.loads(r.read().decode())
 
 def get_json(url,mask):
-    req=urllib.request.Request(url,headers={'X-Goog-Api-Key':API_KEY,'X-Goog-FieldMask':mask,'User-Agent':'nekooweb-eat-google-verifier/2.0'})
+    req=urllib.request.Request(url,headers={'X-Goog-Api-Key':API_KEY,'X-Goog-FieldMask':mask,'User-Agent':'nekooweb-eat-google-verifier/2.1'})
     with urllib.request.urlopen(req,timeout=30) as r:return json.loads(r.read().decode())
 
 def search_id(r):
-    # Phase 1: intentionally minimal field mask. The query already contains restaurant name + address
-    # and is tightly biased around the candidate coordinate. We request one candidate only.
     query=' '.join(x for x in [r.get('name'),r.get('address'),'Tokyo Japan'] if x)
     body={'textQuery':query,'maxResultCount':1,'locationBias':{'circle':{'center':{'latitude':r['lat'],'longitude':r['lng']},'radius':200.0}}}
     data=post_json('https://places.googleapis.com/v1/places:searchText',body,'places.id')
@@ -45,8 +43,7 @@ def search_id(r):
     return p[0].get('id') if p else None
 
 def enrich(place_id,r):
-    if not ENRICH:
-        return {'name':r['name'],'status':'verified','googlePlaceId':place_id}
+    if not ENRICH:return {'name':r['name'],'status':'verified','googlePlaceId':place_id}
     p=get_json('https://places.googleapis.com/v1/places/'+place_id,
         'id,displayName,formattedAddress,location,businessStatus,googleMapsUri,primaryType')
     if p.get('businessStatus')=='CLOSED_PERMANENTLY':
@@ -58,27 +55,40 @@ def enrich(place_id,r):
         'lat':loc.get('latitude',r.get('lat')),'lng':loc.get('longitude',r.get('lng')),
         'googleBusinessStatus':p.get('businessStatus'),'googlePrimaryType':p.get('primaryType')}
 
+def http_error_detail(e):
+    try:
+        raw=e.read().decode('utf-8','replace')[:1200]
+        obj=json.loads(raw)
+        return (obj.get('error') or {}).get('message') or raw
+    except Exception:
+        return str(e)
+
 def main():
     if not API_KEY: raise SystemExit('GOOGLE_MAPS_API_KEY is required')
-    rows=load_candidates();cache=load_cache();results=[];new_calls=0
+    rows=load_candidates();cache=load_cache();new_calls=0
     if BATCH_LIMIT>0: rows=rows[:BATCH_LIMIT]
     for i,r in enumerate(rows,1):
         key=r['id']
-        if key in cache:
-            results.append(cache[key]);continue
+        old=cache.get(key)
+        # Keep successful terminal results, but retry pending/error records.
+        if old and old.get('status') in {'verified','rejected'}:
+            continue
         try:
             pid=search_id(r);new_calls+=1
             if not pid:res={'name':r['name'],'status':'rejected','reason':'no_google_place'}
             else:res=enrich(pid,r);new_calls+=1 if ENRICH else 0
         except urllib.error.HTTPError as e:
-            res={'name':r['name'],'status':'pending','reason':f'http_{e.code}'}
+            detail=http_error_detail(e)
+            res={'name':r['name'],'status':'pending','reason':f'http_{e.code}','errorDetail':detail}
+            print(f'HTTP {e.code} for {r["name"]}: {detail}')
             if e.code in (429,500,502,503):time.sleep(2)
-        except Exception as e:res={'name':r['name'],'status':'pending','reason':type(e).__name__}
-        cache[key]=res;results.append(res)
+        except Exception as e:
+            res={'name':r['name'],'status':'pending','reason':type(e).__name__,'errorDetail':str(e)}
+            print(f'ERROR for {r["name"]}: {type(e).__name__}: {e}')
+        cache[key]=res
         if i%20==0:
             CACHE.write_text(json.dumps(cache,ensure_ascii=False,separators=(',',':')),encoding='utf-8');time.sleep(.15)
     CACHE.write_text(json.dumps(cache,ensure_ascii=False,separators=(',',':')),encoding='utf-8')
-    # Include every cached result so repeated runs are incremental and never pay twice for completed records.
     all_results=list(cache.values())
     payload=json.dumps(all_results,ensure_ascii=False,separators=(',',':'))
     OUT.write_text("(()=>{const rows="+payload+";const norm=s=>(s||'').replace(/[\\s　・’'\"\\-—_]+/g,'').toLowerCase();const m=new Map(rows.map(x=>[norm(x.name),x]));window.RESTAURANTS.forEach(r=>{const x=m.get(norm(r.name));if(!x)return;r.googleStatus=x.status;if(x.address)r.address=x.address;if(x.googlePlaceId)r.googlePlaceId=x.googlePlaceId;if(x.googleMapsUrl)r.googleMapsUrl=x.googleMapsUrl;if(Number.isFinite(x.lat))r.lat=x.lat;if(Number.isFinite(x.lng))r.lng=x.lng;if(x.reason)r.googleRejectReason=x.reason});window.GOOGLE_BATCH_STATS={verified:rows.filter(x=>x.status==='verified').length,rejected:rows.filter(x=>x.status==='rejected').length,pending:rows.filter(x=>x.status==='pending').length};})();\n",encoding='utf-8')
