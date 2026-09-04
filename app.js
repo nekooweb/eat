@@ -9,7 +9,6 @@
   let budget = 'all';
   let distanceLimit = MAX_DISTANCE;
   const rejected = new Set();
-  const filterEnabled = { food: true, budget: true, distance: true };
 
   const validPrice = (price) => Array.isArray(price)
     && price.length >= 2
@@ -84,8 +83,6 @@
     const groups = [...byCuisine.entries()];
     const selected = [];
 
-    // Maximize cuisine diversity first, then fill any remaining slots. Distinct
-    // cuisines are a preference, not a condition that can make generation fail.
     while (selected.length < 3 && groups.length) {
       const index = weightedGroupIndex(groups);
       const [, restaurants] = groups.splice(index, 1)[0];
@@ -119,16 +116,15 @@
     if (lunch && dinner && lunch !== dinner) return `午 ${lunch} · 晚 ${dinner}`;
     if (lunch) return `午 ${lunch}`;
     if (dinner) return `晚 ${dinner}`;
-    return '预算未知';
+    return null;
   }
 
   function priceMatches(price, min, max = Infinity) {
-    if (!validPrice(price)) return false;
-    return price[0] <= max && price[1] >= min;
+    return validPrice(price) && price[0] <= max && price[1] >= min;
   }
 
   function budgetOK(restaurant) {
-    if (!filterEnabled.budget || budget === 'all') return true;
+    if (budget === 'all') return true;
     const prices = [restaurant.lunch, restaurant.dinner];
     if (budget === 'under1000') return prices.some((price) => validPrice(price) && price[1] <= 999);
     if (budget === '1000') return prices.some((price) => priceMatches(price, 1000, 1999));
@@ -144,11 +140,11 @@
       : `约${Math.round(distance / 10) * 10}m`;
   }
 
-  function holidayText(restaurant) {
+  function scheduleText(restaurant) {
     if (restaurant.closedDays?.length) return `定休：${restaurant.closedDays.join('、')}`;
     if (restaurant.openingHoursRaw) return restaurant.openingHoursRaw;
     if (restaurant.closedNote) return restaurant.closedNote;
-    return '营业时间未知，请出发前确认';
+    return null;
   }
 
   function mapsUrl(restaurant) {
@@ -159,19 +155,18 @@
     return `https://www.google.com/maps/search/?api=1&query=${query}&query_place_id=${placeId}&utm_source=eat&utm_campaign=place_details_search`;
   }
 
-  function badgeHtml(restaurant) {
-    const badges = ['<span class="pill verified">身份已核验</span>'];
-    if (restaurant.hyakumeiten) {
-      const award = [restaurant.hyakumeitenYear, restaurant.hyakumeitenCategory]
-        .filter(Boolean)
-        .join(' · ');
-      badges.push(`<span class="pill hyakumeiten">百名店${award ? ` ${escapeHtml(award)}` : ''}</span>`);
-    }
-    return badges.join('');
+  function awardBadge(restaurant) {
+    if (!restaurant.hyakumeiten) return '';
+    const award = [restaurant.hyakumeitenYear, restaurant.hyakumeitenCategory]
+      .filter(Boolean)
+      .join(' · ');
+    return `<span class="pill hyakumeiten">百名店${award ? ` ${escapeHtml(award)}` : ''}</span>`;
   }
 
   function renderCard(restaurant, index) {
     const dishes = (restaurant.dishes || []).slice(0, 2).map(escapeHtml).join(' · ');
+    const price = budgetText(restaurant);
+    const schedule = scheduleText(restaurant);
     return `<article class="card result-card">
       <div class="card-main">
         <div class="result-heading">
@@ -179,13 +174,13 @@
           <h2>${escapeHtml(restaurant.name)}</h2>
         </div>
         <div class="meta">
-          ${badgeHtml(restaurant)}
+          ${awardBadge(restaurant)}
           <span class="pill">${escapeHtml(restaurant.cuisine)}</span>
           <span class="pill">${escapeHtml(distanceText(restaurant))}</span>
         </div>
-        <p class="budget"><b>预算：</b>${escapeHtml(budgetText(restaurant))}</p>
+        ${price ? `<p class="budget"><b>预算：</b>${escapeHtml(price)}</p>` : ''}
         ${dishes ? `<p class="dish"><b>可以吃：</b>${dishes}</p>` : ''}
-        <p class="hours"><b>营业：</b>${escapeHtml(holidayText(restaurant))}</p>
+        ${schedule ? `<p class="hours"><b>营业：</b>${escapeHtml(schedule)}</p>` : ''}
         <a class="maps-link primary-link" href="${escapeHtml(mapsUrl(restaurant))}" target="_blank" rel="noopener">在 Google Maps 查看 ↗</a>
       </div>
     </article>`;
@@ -194,8 +189,8 @@
   function eligible(restaurant) {
     if (!restaurant.googlePlaceId || restaurant.googleStatus !== 'verified') return false;
     if (!Number.isFinite(restaurant.distanceMeters) || restaurant.distanceMeters > MAX_DISTANCE) return false;
-    if (filterEnabled.distance && restaurant.distanceMeters > distanceLimit) return false;
-    if (filterEnabled.food && rejected.has(restaurant.cuisine)) return false;
+    if (restaurant.distanceMeters > distanceLimit) return false;
+    if (rejected.has(restaurant.cuisine)) return false;
     return budgetOK(restaurant);
   }
 
@@ -213,6 +208,15 @@
       else rejected.add(cuisine);
       button.classList.toggle('active', rejected.has(cuisine));
     });
+  }
+
+  function configureBudgetFilter() {
+    const known = production.filter((restaurant) =>
+      validPrice(restaurant.lunch) || validPrice(restaurant.dinner));
+    if (known.length >= 3) return;
+    const module = $('[data-filter-module="budget"]');
+    if (module) module.hidden = true;
+    budget = 'all';
   }
 
   function renderStats() {
@@ -233,24 +237,13 @@
   function generate() {
     const pool = production.filter(eligible);
     if (pool.length < 3) {
-      showMessage(`当前条件下只有 ${pool.length} 家可选；请放宽预算、距离或菜系排除条件。`);
+      showMessage(`当前条件下只有 ${pool.length} 家可选；请放宽筛选条件。`);
       return;
     }
 
     const result = pickThree(pool);
     $('#results').innerHTML = `<div class="result-summary">从 ${pool.length} 家符合条件的店里随机选出 3 家；优先避免重复菜系。</div>${result.map(renderCard).join('')}`;
   }
-
-  $$('[data-filter-toggle]').forEach((button) => {
-    button.onclick = () => {
-      const key = button.dataset.filterToggle;
-      filterEnabled[key] = !filterEnabled[key];
-      button.classList.toggle('active', filterEnabled[key]);
-      button.setAttribute('aria-pressed', String(filterEnabled[key]));
-      button.textContent = filterEnabled[key] ? '启用' : '关闭';
-      button.closest('.filter-module').classList.toggle('filter-off', !filterEnabled[key]);
-    };
-  });
 
   $$('[data-budget]').forEach((button) => {
     button.onclick = () => {
@@ -274,5 +267,6 @@
     showMessage('生产数据构建异常：可推荐餐厅不足 3 家。');
   }
   renderCuisineFilters();
+  configureBudgetFilter();
   renderStats();
 })();
