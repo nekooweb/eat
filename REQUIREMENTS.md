@@ -4,26 +4,30 @@
 - Single-page static web app hosted at `https://nekooweb.github.io/eat/`.
 - No backend. All behavior and data are maintained directly in repository code/data files.
 - Fast loading and usable on both mobile and desktop.
-- Initial users: `ziko` and `neko`.
+- Public top-level profiles are `TOKYO` and `SHIZUOKA`.
+- Personal names must not appear in repository files, code, data, documentation, comments, or public UI.
 - Development should remain intentionally simple: no backend service, no database, and no unnecessary framework/build layer.
 
-## User states
-- Top-level user selector contains `ziko` and `neko`.
-- `ziko`: active configuration and data will be implemented first.
-- `neko`: visible in the UI but its area/data configuration is `TBD` for now.
+## Profile states
+- Top-level selector contains `TOKYO` and `SHIZUOKA`.
+- `TOKYO`: active configuration and data will be implemented first.
+- `SHIZUOKA`: visible in the UI but its area/data configuration is `TBD` for now.
 
 ## Area privacy / abstraction
-- For `ziko`, the public UI exposes exactly two area choices: `地区1️⃣` and `地区2️⃣`.
+- For `TOKYO`, the public UI exposes exactly two area choices: `地区1️⃣` and `地区2️⃣`.
 - The UI must NOT reveal what real-world locations those labels represent.
-- The mapping from `地区1️⃣` / `地区2️⃣` to restaurant records and their actual locations is maintained only in the repository data/configuration layer.
-- Restaurant collection can therefore be updated later by editing the local data without changing or explaining the public area labels.
-- `neko` remains `TBD` and receives no real area configuration yet.
+- Internal collection anchors:
+  - `地区1️⃣`: restaurants collected around Tokyo Jimbocho Station (神保町駅).
+  - `地区2️⃣`: restaurants collected around Itabashihoncho Station (板橋本町駅).
+- These real-world anchors are implementation/data-maintenance information only and must not be exposed as the meaning of the labels in the public UI.
+- Restaurant collection can be updated later by editing the local data without changing or explaining the public area labels.
+- `SHIZUOKA` remains `TBD` and receives no real area configuration yet.
 
 ## UI flow
-1. User selector at the top with the two names: `ziko` and `neko`.
+1. Profile selector at the top: `TOKYO` / `SHIZUOKA`.
 2. Area selector.
-   - `ziko`: `地区1️⃣` / `地区2️⃣` only.
-   - `neko`: `TBD` / unavailable until later requirements are supplied.
+   - `TOKYO`: `地区1️⃣` / `地区2️⃣` only.
+   - `SHIZUOKA`: `TBD` / unavailable until later requirements are supplied.
 3. Food-category rejection filters using checkboxes or equivalent multi-select controls.
 4. Expected-budget filter using preset controls aligned conceptually with Google Maps price levels.
 5. One primary button to generate a proposal.
@@ -51,23 +55,17 @@
 
 ## Budget taxonomy
 - Budget presets should follow the conceptual Google Maps / Google Places price-level system rather than arbitrary yen ranges.
-- Google Places defines price levels as:
-  - `INEXPENSIVE`
-  - `MODERATE`
-  - `EXPENSIVE`
-  - `VERY_EXPENSIVE`
-  - (`FREE` exists in the API model but is not relevant to normal restaurant selection.)
-- Legacy Google Places documentation represents the same concept on a 0–4 scale where 1 = inexpensive, 2 = moderate, 3 = expensive, 4 = very expensive; Google notes that the exact monetary meaning varies by region.
-- Therefore, the first implementation should preserve these relative price-level semantics rather than hard-code an unsupported universal yen conversion.
-- If we later want user-facing yen examples for Japan, those should be treated as UI guidance/local calibration rather than claimed as Google's fixed official yen thresholds.
+- Google Places defines price levels as `INEXPENSIVE`, `MODERATE`, `EXPENSIVE`, and `VERY_EXPENSIVE` (`FREE` is irrelevant to normal restaurant selection).
+- Preserve these relative price-level semantics rather than claiming a universal fixed yen conversion.
+- If user-facing yen examples are added for Japan, treat them as UI guidance/local calibration rather than Google's fixed official thresholds.
 
 ## Data model
 - Food repository is stored locally in static JS/JSON data.
 - Each entry should support at least:
   - name;
-  - user scope (`ziko`, later `neko`, or shared if needed);
-  - anonymous public area key (`地区1️⃣` or `地区2️⃣` for ziko);
-  - actual location/address/map metadata stored only as implementation data and not used to explain the meaning of the public area label;
+  - profile scope (`TOKYO`, later `SHIZUOKA`, or shared if needed);
+  - anonymous public area key (`地区1️⃣` or `地区2️⃣` for TOKYO);
+  - actual location/address/map metadata used for restaurant collection and map rendering;
   - 食べログ-derived cuisine/category tags;
   - Google-style price level;
   - Google Maps query / place identifier when available;
@@ -89,7 +87,6 @@
 - Single-screen/short-scroll utility feel is preferred over a content-heavy website.
 
 ## Confirmed-but-not-yet-specified
-- The real-world mapping/data contents behind `ziko`'s `地区1️⃣` and `地区2️⃣`: to be populated/modified through the local restaurant dataset, not publicly described in the UI.
-- `neko` area/data configuration: `TBD`.
+- `SHIZUOKA` area/data configuration: `TBD`.
 - Exact grouping level of the 食べログ 百名店 taxonomy for the rejection UI: to be decided later.
-- Whether `ziko` and `neko` eventually receive separate defaults/history/preferences: to be decided later.
+- Whether profiles eventually receive separate defaults/history/preferences: to be decided later.
