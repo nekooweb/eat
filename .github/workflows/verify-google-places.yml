@@ -29,6 +29,8 @@ jobs:
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -45,4 +47,6 @@ jobs:
           git add data/google_places_cache.json data/google_entities.generated.js
           git diff --cached --quiet && exit 0
           git commit -m "Update Google Places verification data"
-          git push
+          git fetch origin main
+          git rebase origin/main
+          git push origin HEAD:main
