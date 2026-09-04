@@ -1,1 +1,440 @@
-(()=>{const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];let profile='TOKYO',area='地区1️⃣';const rejected=new Set();let budget='all',distanceLimit=1200,overviewMap=null;const filterEnabled={food:true,budget:true,distance:true};const AREA1_MAX_DISTANCE=1200;const raw=window.RESTAURANTS||[];const norm=s=>(s||'').replace(/[\s　・’'"\-—_()（）・]+/g,'').toLowerCase();const uniq=a=>[...new Set(a.filter(Boolean))];const validPrice=p=>Array.isArray(p)&&p.length>=2&&Number.isFinite(p[0])&&Number.isFinite(p[1]);function haversine(a,b,c,d){const r=6371000,p1=a*Math.PI/180,p2=c*Math.PI/180,dp=(c-a)*Math.PI/180,dl=(d-b)*Math.PI/180,x=Math.sin(dp/2)**2+Math.cos(p1)*Math.cos(p2)*Math.sin(dl/2)**2;return r*2*Math.atan2(Math.sqrt(x),Math.sqrt(1-x))}function googleCuisine(r){const m={japanese_curry_restaurant:'咖喱',ramen_restaurant:'拉面',udon_restaurant:'乌冬',soba_restaurant:'荞麦面',japanese_restaurant:'日式',chinese_restaurant:'中华',korean_restaurant:'韩国菜',thai_restaurant:'泰国菜',indian_restaurant:'印度菜',italian_restaurant:'意大利菜',french_restaurant:'法餐',pizza_restaurant:'披萨',hamburger_restaurant:'汉堡',seafood_restaurant:'海鲜',sushi_restaurant:'寿司',steak_house:'牛排',barbecue_restaurant:'烧烤',yakitori_restaurant:'烧鸟',tonkatsu_restaurant:'炸猪排',cafe:'咖啡',coffee_shop:'咖啡',bakery:'面包・烘焙',dessert_shop:'甜品',ice_cream_shop:'甜品',confectionery:'甜品',meal_takeaway:'快餐'};return m[r.googlePrimaryType]||(r.cuisine&&r.cuisine!=='餐厅'?r.cuisine:'餐厅')}function compatible(g,r){if(g.googlePlaceId&&r.googlePlaceId&&g.googlePlaceId===r.googlePlaceId)return true;if(norm(g.name)!==norm(r.name))return false;if([g.lat,g.lng,r.lat,r.lng].every(Number.isFinite))return haversine(g.lat,g.lng,r.lat,r.lng)<=250;return true}function buildProduction(){const legacy=raw.filter(r=>r.source!=='Google Places'),byPid=new Map(),byName=new Map();legacy.forEach(r=>{if(r.googlePlaceId){if(!byPid.has(r.googlePlaceId))byPid.set(r.googlePlaceId,[]);byPid.get(r.googlePlaceId).push(r)}const n=norm(r.name);if(n){if(!byName.has(n))byName.set(n,[]);byName.get(n).push(r)}});return raw.filter(r=>r.source==='Google Places'&&r.googleStatus==='verified').map(g=>{const matches=uniq([...(byPid.get(g.googlePlaceId)||[]),...(byName.get(norm(g.name))||[])]).filter(r=>compatible(g,r));const specific=matches.map(r=>r.cuisine).find(c=>c&&c!=='餐厅');const cuisine=specific||googleCuisine(g);const tags=uniq([cuisine,...matches.flatMap(r=>r.tags||[])]).filter(t=>t!=='餐厅'||cuisine==='餐厅');const lunch=matches.map(r=>r.lunch).find(validPrice)||null,dinner=matches.map(r=>r.dinner).find(validPrice)||null;const dishes=uniq(matches.flatMap(r=>r.dishes||[])).slice(0,4);const openingHoursRaw=matches.map(r=>r.openingHoursRaw).find(Boolean)||null;const closedDays=matches.map(r=>r.closedDays).find(x=>Array.isArray(x)&&x.length)||[];const closedNote=matches.map(r=>r.closedNote).find(Boolean)||null;const hyakumeiten=!!g.hyakumeiten||matches.some(r=>r.hyakumeiten);const award=matches.find(r=>r.hyakumeiten)||g;const exact=Number.isFinite(g.distanceMeters)?g.distanceMeters:g.distance;return{...g,cuisine,tags,distance:Math.round(exact),distanceMeters:exact,lunch,dinner,dishes,openingHoursRaw,closedDays,closedNote,hyakumeiten,hyakumeitenYear:g.hyakumeitenYear||award.hyakumeitenYear,hyakumeitenCategory:g.hyakumeitenCategory||award.hyakumeitenCategory,randomWeight:hyakumeiten?2.2:1,enrichmentMatches:matches.length}}).filter(r=>r.profile==='TOKYO'&&r.area==='地区1️⃣'&&Number.isFinite(r.distanceMeters)&&r.distanceMeters<=AREA1_MAX_DISTANCE)}const production=buildProduction();const cuisineLabels=[...new Set(production.map(r=>r.cuisine).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'zh-CN'));function rand01(){const a=new Uint32Array(1);crypto.getRandomValues(a);return a[0]/0x100000000}function weightedPick(arr){let total=arr.reduce((s,r)=>s+(r.randomWeight||1),0),x=rand01()*total;for(const r of arr){x-=r.randomWeight||1;if(x<0)return r}return arr[arr.length-1]}function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(rand01()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}function currentPrice(r){const h=new Date().getHours();return h<16?(r.lunch||r.dinner):(r.dinner||r.lunch)}function priceText(p){if(!p)return'预算待补充';if(p[0]===0)return`¥${p[1].toLocaleString()}以下`;return`¥${p[0].toLocaleString()}–${p[1].toLocaleString()}`}function distanceText(r){const d=Number.isFinite(r.distanceMeters)?r.distanceMeters:r.distance;return d>=1000?`约${(d/1000).toFixed(1)}km`:`约${Math.round(d/10)*10}m`}function budgetOK(r){if(!filterEnabled.budget||budget==='all')return true;const p=currentPrice(r);if(!p)return false;const hi=p[1];if(budget==='under1000')return hi<=999;if(budget==='1000')return p[0]<=1999&&hi>=1000;if(budget==='2000')return p[0]<=3999&&hi>=2000;if(budget==='4000')return hi>=4000;return true}function holidayText(r){if(r.closedDays?.length)return`定休：${r.closedDays.join('、')}`;if(r.openingHoursRaw)return r.openingHoursRaw;if(r.closedNote)return r.closedNote;return'营业时间/定休日待补充，请以 Google Maps 为准'}function infoStatus(r){return`${currentPrice(r)?'预算已补充':'预算待补充'} · ${r.dishes?.length?'代表菜已补充':'代表菜待补充'} · ${(r.closedDays?.length||r.openingHoursRaw||r.closedNote)?'营业资料已补充':'营业资料待补充'}`}function googleQuery(r){return[r.name,r.address].filter(Boolean).join(', ')}function mapUrl(r){const q=encodeURIComponent(googleQuery(r)||r.name);if(r.googlePlaceId)return`https://www.google.com/maps/search/?api=1&query=${q}&query_place_id=${encodeURIComponent(r.googlePlaceId)}`;if(r.googleMapsUrl)return r.googleMapsUrl;return`https://www.google.com/maps/search/?api=1&query=${q}`}function embedUrl(r){const q=r.googlePlaceId?`place_id:${r.googlePlaceId}`:googleQuery(r);return'https://www.google.com/maps?q='+encodeURIComponent(q)+'&output=embed'}function badge(r){const a=r.hyakumeiten?`<span class="pill hyakumeiten">百名店 ${r.hyakumeitenYear||''}${r.hyakumeitenCategory?' · '+r.hyakumeitenCategory:''}</span>`:'';const s=r.googleBusinessStatus==='CLOSED_TEMPORARILY'?'<span class="pill status-warn">Google 显示暂时歇业</span>':'';return`<span class="pill verified">Google已核验</span>${a}${s}`}function renderCuisine(){const box=$('#rejects');box.innerHTML=cuisineLabels.map(x=>`<button type="button" class="chip" data-tag="${x}">${x}</button>`).join('');box.addEventListener('click',e=>{const b=e.target.closest('[data-tag]');if(!b)return;const t=b.dataset.tag;rejected.has(t)?rejected.delete(t):rejected.add(t);b.classList.toggle('active',rejected.has(t))})}function renderCard(r){return`<article class="card"><div class="card-main"><button class="restaurant-title" data-expand="${r.id}">${r.name} <span>⌄</span></button><div class="meta">${badge(r)}<span class="pill">${r.cuisine}</span><span class="pill">${distanceText(r)}</span><span class="pill price">${priceText(currentPrice(r))}</span></div><p class="dish"><b>推荐：</b>${(r.dishes||[]).join(' · ')||'代表菜待补充'}</p><p class="hours"><b>营业/定休：</b>${holidayText(r)}</p><p class="source-line">商户身份来自 Google Places · ${infoStatus(r)}</p></div><div class="map-wrap" id="map-${r.id}" data-src="${embedUrl(r)}"><div class="map-actions"><a class="maps-link" href="${mapUrl(r)}" target="_blank" rel="noopener">在 Google Maps 打开 ↗</a></div></div></article>`}function renderCompare(rs){const row=(l,f)=>`<div class="compare-label">${l}</div>${rs.map(r=>`<div class="compare-cell">${f(r)}</div>`).join('')}`;return`<section class="compare"><h2>三家横向对比</h2><div class="compare-scroll"><div class="compare-grid"><div></div>${rs.map(r=>`<div class="compare-head">${r.name}</div>`).join('')}${row('百名店',r=>r.hyakumeiten?`✓ ${r.hyakumeitenYear||''} ${r.hyakumeitenCategory||''}`:'—')}${row('菜系',r=>r.cuisine)}${row('距离',distanceText)}${row('预算',r=>priceText(currentPrice(r)))}${row('推荐',r=>(r.dishes||[]).slice(0,2).join('<br>')||'待补充')}${row('营业',holidayText)}${row('资料',infoStatus)}</div></div></section>`}function renderOverviewMap(rs){return`<section class="overview-map"><div class="overview-head"><h2>三家位置总览</h2><p>商户身份/坐标来自 Google Places；地图底图使用 OpenStreetMap。</p></div><div id="overview-map-canvas"></div><div class="overview-legend">${rs.map((r,i)=>`<a href="${mapUrl(r)}" target="_blank" rel="noopener"><b>${i+1}</b> ${r.name} · ${distanceText(r)}</a>`).join('')}</div></section>`}function initOverviewMap(rs){const el=$('#overview-map-canvas');if(!el||!window.L)return;const located=rs.filter(r=>Number.isFinite(r.lat)&&Number.isFinite(r.lng));if(overviewMap)overviewMap.remove();overviewMap=L.map(el,{scrollWheelZoom:false});L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap contributors'}).addTo(overviewMap);const bounds=[];located.forEach((r,i)=>{L.marker([r.lat,r.lng]).addTo(overviewMap).bindPopup(`<b>${i+1}. ${r.name}</b><br>${r.cuisine}<br><a href="${mapUrl(r)}" target="_blank">Google Maps</a>`);bounds.push([r.lat,r.lng])});bounds.length>1?overviewMap.fitBounds(bounds,{padding:[40,40],maxZoom:16}):overviewMap.setView(bounds[0]||[35.6959,139.7576],bounds.length?16:14);setTimeout(()=>overviewMap.invalidateSize(),80)}function eligibleBase(r){if(!(r.profile===profile&&r.area===area))return false;if(!Number.isFinite(r.distanceMeters)||r.distanceMeters>AREA1_MAX_DISTANCE)return false;if(filterEnabled.distance&&r.distanceMeters>distanceLimit)return false;if(filterEnabled.food&&(rejected.has(r.cuisine)||(r.tags||[]).some(t=>rejected.has(t))))return false;return budgetOK(r)}function renderStats(){const total=production.length,budgetKnown=production.filter(r=>validPrice(r.lunch)||validPrice(r.dinner)).length,dishKnown=production.filter(r=>r.dishes?.length).length,hoursKnown=production.filter(r=>r.closedDays?.length||r.openingHoursRaw||r.closedNote).length,cuisineKnown=production.filter(r=>r.cuisine&&r.cuisine!=='餐厅').length,h=production.filter(r=>r.hyakumeiten).length;$('#stats').innerHTML=`Google主库 <b>${total.toLocaleString()}</b> 家 · 菜系已分类 <b>${cuisineKnown.toLocaleString()}</b> · 预算已补充 <b>${budgetKnown.toLocaleString()}</b> · 代表菜 <b>${dishKnown.toLocaleString()}</b> · 营业资料 <b>${hoursKnown.toLocaleString()}</b> · 百名店 <b>${h.toLocaleString()}</b>`}function generate(){if(profile!=='TOKYO')return showMessage('SHIZUOKA 目前还是 TBD。');if(area!=='地区1️⃣')return showMessage('地区2️⃣ 的 Google 主库尚未建立。');let pool=production.filter(eligibleBase);const groups=new Map();pool.forEach(r=>{if(!groups.has(r.cuisine))groups.set(r.cuisine,[]);groups.get(r.cuisine).push(r)});let cuisines=[...groups];if(cuisines.length<3)return showMessage(`当前条件下只有 ${cuisines.length} 种可选菜系；可以关闭部分筛选后再试。`);const result=[];for(let k=0;k<3;k++){const weights=cuisines.map(([,rs])=>rs.reduce((s,r)=>s+(r.randomWeight||1),0));let x=rand01()*weights.reduce((a,b)=>a+b,0),idx=0;for(;idx<weights.length-1;idx++){x-=weights[idx];if(x<0)break}const[,rs]=cuisines.splice(idx,1)[0];result.push(weightedPick(rs))}shuffle(result);$('#results').innerHTML=renderOverviewMap(result)+result.map(renderCard).join('')+renderCompare(result);initOverviewMap(result)}function showMessage(t){if(overviewMap){overviewMap.remove();overviewMap=null}$('#results').innerHTML=`<div class="panel empty">${t}</div>`}document.addEventListener('click',e=>{const b=e.target.closest('[data-expand]');if(!b)return;const w=$('#map-'+b.dataset.expand),opening=!w.classList.contains('open');$$('.map-wrap.open').forEach(x=>x.classList.remove('open'));if(opening){w.classList.add('open');if(!w.querySelector('iframe')){const f=document.createElement('iframe');f.loading='lazy';f.src=w.dataset.src;f.title='Google Maps';w.prepend(f)}}});$$('[data-filter-toggle]').forEach(b=>b.onclick=()=>{const k=b.dataset.filterToggle;filterEnabled[k]=!filterEnabled[k];b.classList.toggle('active',filterEnabled[k]);b.textContent=filterEnabled[k]?'启用':'关闭';b.closest('.filter-module').classList.toggle('filter-off',!filterEnabled[k])});$$('[data-profile]').forEach(b=>b.onclick=()=>{$$('[data-profile]').forEach(x=>x.classList.remove('active'));b.classList.add('active');profile=b.dataset.profile});$$('[data-area]').forEach(b=>b.onclick=()=>{$$('[data-area]').forEach(x=>x.classList.remove('active'));b.classList.add('active');area=b.dataset.area});$$('[data-budget]').forEach(b=>b.onclick=()=>{$$('[data-budget]').forEach(x=>x.classList.remove('active'));b.classList.add('active');budget=b.dataset.budget});$$('[data-distance]').forEach(b=>b.onclick=()=>{$$('[data-distance]').forEach(x=>x.classList.remove('active'));b.classList.add('active');distanceLimit=Number(b.dataset.distance)});$('#generate').onclick=generate;renderCuisine();renderStats()})();
+(() => {
+  const $ = (selector) => document.querySelector(selector);
+  const $$ = (selector) => [...document.querySelectorAll(selector)];
+
+  const AREA1_MAX_DISTANCE = 1200;
+  const raw = window.RESTAURANTS || [];
+
+  let profile = 'TOKYO';
+  let area = '地区1️⃣';
+  let budget = 'all';
+  let distanceLimit = AREA1_MAX_DISTANCE;
+  const rejected = new Set();
+  const filterEnabled = { food: true, budget: true, distance: true };
+
+  const norm = (value) => (value || '')
+    .replace(/[\s　・’'"\-—_()（）]+/g, '')
+    .toLowerCase();
+
+  const uniq = (values) => [...new Set(values.filter(Boolean))];
+  const validPrice = (price) => Array.isArray(price)
+    && price.length >= 2
+    && Number.isFinite(price[0])
+    && Number.isFinite(price[1]);
+
+  const escapeHtml = (value) => String(value ?? '')
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
+
+  function haversine(lat1, lng1, lat2, lng2) {
+    const earthRadius = 6371000;
+    const p1 = lat1 * Math.PI / 180;
+    const p2 = lat2 * Math.PI / 180;
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLng = (lng2 - lng1) * Math.PI / 180;
+    const x = Math.sin(dLat / 2) ** 2
+      + Math.cos(p1) * Math.cos(p2) * Math.sin(dLng / 2) ** 2;
+    return earthRadius * 2 * Math.atan2(Math.sqrt(x), Math.sqrt(1 - x));
+  }
+
+  function googleCuisine(restaurant) {
+    const cuisineByType = {
+      japanese_curry_restaurant: '咖喱',
+      ramen_restaurant: '拉面',
+      udon_restaurant: '乌冬',
+      soba_restaurant: '荞麦面',
+      japanese_restaurant: '日式',
+      chinese_restaurant: '中华',
+      korean_restaurant: '韩国菜',
+      thai_restaurant: '泰国菜',
+      indian_restaurant: '印度菜',
+      italian_restaurant: '意大利菜',
+      french_restaurant: '法餐',
+      pizza_restaurant: '披萨',
+      hamburger_restaurant: '汉堡',
+      seafood_restaurant: '海鲜',
+      sushi_restaurant: '寿司',
+      steak_house: '牛排',
+      barbecue_restaurant: '烧烤',
+      yakitori_restaurant: '烧鸟',
+      tonkatsu_restaurant: '炸猪排',
+      cafe: '咖啡',
+      coffee_shop: '咖啡',
+      bakery: '面包・烘焙',
+      dessert_shop: '甜品',
+      ice_cream_shop: '甜品',
+      confectionery: '甜品',
+      meal_takeaway: '快餐'
+    };
+
+    return cuisineByType[restaurant.googlePrimaryType]
+      || (restaurant.cuisine && restaurant.cuisine !== '餐厅' ? restaurant.cuisine : '餐厅');
+  }
+
+  function compatible(googleRestaurant, legacyRestaurant) {
+    if (googleRestaurant.googlePlaceId
+      && legacyRestaurant.googlePlaceId
+      && googleRestaurant.googlePlaceId === legacyRestaurant.googlePlaceId) return true;
+
+    if (norm(googleRestaurant.name) !== norm(legacyRestaurant.name)) return false;
+
+    const coordinates = [
+      googleRestaurant.lat,
+      googleRestaurant.lng,
+      legacyRestaurant.lat,
+      legacyRestaurant.lng
+    ];
+    if (coordinates.every(Number.isFinite)) {
+      return haversine(
+        googleRestaurant.lat,
+        googleRestaurant.lng,
+        legacyRestaurant.lat,
+        legacyRestaurant.lng
+      ) <= 250;
+    }
+    return true;
+  }
+
+  // Temporary migration layer. This is intentionally isolated so it can be moved
+  // into the build pipeline without touching filtering or rendering logic.
+  function buildProductionDataset() {
+    const legacy = raw.filter((restaurant) => restaurant.source !== 'Google Places');
+    const byPlaceId = new Map();
+    const byName = new Map();
+
+    legacy.forEach((restaurant) => {
+      if (restaurant.googlePlaceId) {
+        if (!byPlaceId.has(restaurant.googlePlaceId)) byPlaceId.set(restaurant.googlePlaceId, []);
+        byPlaceId.get(restaurant.googlePlaceId).push(restaurant);
+      }
+      const normalizedName = norm(restaurant.name);
+      if (normalizedName) {
+        if (!byName.has(normalizedName)) byName.set(normalizedName, []);
+        byName.get(normalizedName).push(restaurant);
+      }
+    });
+
+    return raw
+      .filter((restaurant) => restaurant.source === 'Google Places' && restaurant.googleStatus === 'verified')
+      .map((googleRestaurant) => {
+        const matches = uniq([
+          ...(byPlaceId.get(googleRestaurant.googlePlaceId) || []),
+          ...(byName.get(norm(googleRestaurant.name)) || [])
+        ]).filter((legacyRestaurant) => compatible(googleRestaurant, legacyRestaurant));
+
+        const specificCuisine = matches
+          .map((restaurant) => restaurant.cuisine)
+          .find((cuisine) => cuisine && cuisine !== '餐厅');
+        const cuisine = specificCuisine || googleCuisine(googleRestaurant);
+        const tags = uniq([cuisine, ...matches.flatMap((restaurant) => restaurant.tags || [])])
+          .filter((tag) => tag !== '餐厅' || cuisine === '餐厅');
+        const lunch = matches.map((restaurant) => restaurant.lunch).find(validPrice) || null;
+        const dinner = matches.map((restaurant) => restaurant.dinner).find(validPrice) || null;
+        const dishes = uniq(matches.flatMap((restaurant) => restaurant.dishes || [])).slice(0, 4);
+        const openingHoursRaw = matches.map((restaurant) => restaurant.openingHoursRaw).find(Boolean) || null;
+        const closedDays = matches
+          .map((restaurant) => restaurant.closedDays)
+          .find((days) => Array.isArray(days) && days.length) || [];
+        const closedNote = matches.map((restaurant) => restaurant.closedNote).find(Boolean) || null;
+        const hyakumeiten = Boolean(googleRestaurant.hyakumeiten)
+          || matches.some((restaurant) => restaurant.hyakumeiten);
+        const award = matches.find((restaurant) => restaurant.hyakumeiten) || googleRestaurant;
+        const distanceMeters = Number.isFinite(googleRestaurant.distanceMeters)
+          ? googleRestaurant.distanceMeters
+          : googleRestaurant.distance;
+
+        return {
+          ...googleRestaurant,
+          cuisine,
+          tags,
+          distance: Math.round(distanceMeters),
+          distanceMeters,
+          lunch,
+          dinner,
+          dishes,
+          openingHoursRaw,
+          closedDays,
+          closedNote,
+          hyakumeiten,
+          hyakumeitenYear: googleRestaurant.hyakumeitenYear || award.hyakumeitenYear,
+          hyakumeitenCategory: googleRestaurant.hyakumeitenCategory || award.hyakumeitenCategory,
+          randomWeight: hyakumeiten ? 2.2 : 1
+        };
+      })
+      .filter((restaurant) => restaurant.profile === 'TOKYO'
+        && restaurant.area === '地区1️⃣'
+        && Number.isFinite(restaurant.distanceMeters)
+        && restaurant.distanceMeters <= AREA1_MAX_DISTANCE);
+  }
+
+  const production = window.PRODUCTION_RESTAURANTS || buildProductionDataset();
+  const cuisineLabels = [...new Set(production.map((restaurant) => restaurant.cuisine).filter(Boolean))]
+    .sort((a, b) => a.localeCompare(b, 'zh-CN'));
+
+  function rand01() {
+    const bytes = new Uint32Array(1);
+    crypto.getRandomValues(bytes);
+    return bytes[0] / 0x100000000;
+  }
+
+  function weightedPick(items) {
+    if (!items.length) return null;
+    let remaining = rand01() * items.reduce((sum, item) => sum + (item.randomWeight || 1), 0);
+    for (const item of items) {
+      remaining -= item.randomWeight || 1;
+      if (remaining < 0) return item;
+    }
+    return items[items.length - 1];
+  }
+
+  function weightedIndex(groups) {
+    const weights = groups.map(([, restaurants]) => restaurants
+      .reduce((sum, restaurant) => sum + (restaurant.randomWeight || 1), 0));
+    let remaining = rand01() * weights.reduce((sum, weight) => sum + weight, 0);
+    for (let index = 0; index < weights.length; index += 1) {
+      remaining -= weights[index];
+      if (remaining < 0) return index;
+    }
+    return weights.length - 1;
+  }
+
+  function shuffle(items) {
+    const output = [...items];
+    for (let i = output.length - 1; i > 0; i -= 1) {
+      const j = Math.floor(rand01() * (i + 1));
+      [output[i], output[j]] = [output[j], output[i]];
+    }
+    return output;
+  }
+
+  function pickThree(pool) {
+    if (pool.length < 3) return [];
+
+    const groups = new Map();
+    pool.forEach((restaurant) => {
+      const key = restaurant.cuisine || '餐厅';
+      if (!groups.has(key)) groups.set(key, []);
+      groups.get(key).push(restaurant);
+    });
+
+    const availableGroups = [...groups.entries()];
+    const selected = [];
+
+    // Prefer distinct cuisines, but never block a valid three-store result merely
+    // because fewer than three cuisine families remain after filtering.
+    while (selected.length < 3 && availableGroups.length) {
+      const index = weightedIndex(availableGroups);
+      const [, restaurants] = availableGroups.splice(index, 1)[0];
+      const picked = weightedPick(restaurants);
+      if (picked) selected.push(picked);
+    }
+
+    if (selected.length < 3) {
+      const selectedIds = new Set(selected.map((restaurant) => restaurant.id));
+      const remaining = pool.filter((restaurant) => !selectedIds.has(restaurant.id));
+      while (selected.length < 3 && remaining.length) {
+        const picked = weightedPick(remaining);
+        if (!picked) break;
+        selected.push(picked);
+        remaining.splice(remaining.indexOf(picked), 1);
+      }
+    }
+
+    return shuffle(selected);
+  }
+
+  function currentPrice(restaurant) {
+    const hour = new Date().getHours();
+    return hour < 16
+      ? (restaurant.lunch || restaurant.dinner)
+      : (restaurant.dinner || restaurant.lunch);
+  }
+
+  function priceText(price) {
+    if (!price) return '预算未知';
+    if (price[0] === 0) return `¥${price[1].toLocaleString()}以下`;
+    return `¥${price[0].toLocaleString()}–${price[1].toLocaleString()}`;
+  }
+
+  function distanceText(restaurant) {
+    const distance = Number.isFinite(restaurant.distanceMeters)
+      ? restaurant.distanceMeters
+      : restaurant.distance;
+    return distance >= 1000
+      ? `约${(distance / 1000).toFixed(1)}km`
+      : `约${Math.round(distance / 10) * 10}m`;
+  }
+
+  function budgetOK(restaurant) {
+    if (!filterEnabled.budget || budget === 'all') return true;
+    const price = currentPrice(restaurant);
+    if (!price) return false;
+    const [low, high] = price;
+    if (budget === 'under1000') return high <= 999;
+    if (budget === '1000') return low <= 1999 && high >= 1000;
+    if (budget === '2000') return low <= 3999 && high >= 2000;
+    if (budget === '4000') return high >= 4000;
+    return true;
+  }
+
+  function holidayText(restaurant) {
+    if (restaurant.closedDays?.length) return `定休：${restaurant.closedDays.join('、')}`;
+    if (restaurant.openingHoursRaw) return restaurant.openingHoursRaw;
+    if (restaurant.closedNote) return restaurant.closedNote;
+    return '营业时间未知，请出发前确认';
+  }
+
+  function mapsUrl(restaurant) {
+    const query = encodeURIComponent([restaurant.name, restaurant.address].filter(Boolean).join(', ') || restaurant.name);
+    if (restaurant.googlePlaceId) {
+      return `https://www.google.com/maps/search/?api=1&query=${query}&query_place_id=${encodeURIComponent(restaurant.googlePlaceId)}`;
+    }
+    if (restaurant.googleMapsUrl) return restaurant.googleMapsUrl;
+    return `https://www.google.com/maps/search/?api=1&query=${query}`;
+  }
+
+  function badgeHtml(restaurant) {
+    const badges = ['<span class="pill verified">已核验</span>'];
+    if (restaurant.hyakumeiten) {
+      const award = [restaurant.hyakumeitenYear, restaurant.hyakumeitenCategory]
+        .filter(Boolean)
+        .join(' · ');
+      badges.push(`<span class="pill hyakumeiten">百名店${award ? ` ${escapeHtml(award)}` : ''}</span>`);
+    }
+    if (restaurant.googleBusinessStatus === 'CLOSED_TEMPORARILY') {
+      badges.push('<span class="pill status-warn">暂时歇业</span>');
+    }
+    return badges.join('');
+  }
+
+  function renderCuisineFilters() {
+    const box = $('#rejects');
+    box.innerHTML = cuisineLabels
+      .map((label) => `<button type="button" class="chip" data-tag="${escapeHtml(label)}">${escapeHtml(label)}</button>`)
+      .join('');
+
+    box.addEventListener('click', (event) => {
+      const button = event.target.closest('[data-tag]');
+      if (!button) return;
+      const tag = button.dataset.tag;
+      if (rejected.has(tag)) rejected.delete(tag);
+      else rejected.add(tag);
+      button.classList.toggle('active', rejected.has(tag));
+    });
+  }
+
+  function renderCard(restaurant, index) {
+    const dishes = (restaurant.dishes || []).slice(0, 2).map(escapeHtml).join(' · ');
+    return `<article class="card result-card">
+      <div class="card-main">
+        <div class="result-heading">
+          <span class="result-number">${index + 1}</span>
+          <h2>${escapeHtml(restaurant.name)}</h2>
+        </div>
+        <div class="meta">
+          ${badgeHtml(restaurant)}
+          <span class="pill">${escapeHtml(restaurant.cuisine)}</span>
+          <span class="pill">${escapeHtml(distanceText(restaurant))}</span>
+          <span class="pill price">${escapeHtml(priceText(currentPrice(restaurant)))}</span>
+        </div>
+        ${dishes ? `<p class="dish"><b>可以吃：</b>${dishes}</p>` : ''}
+        <p class="hours"><b>营业：</b>${escapeHtml(holidayText(restaurant))}</p>
+        <a class="maps-link primary-link" href="${escapeHtml(mapsUrl(restaurant))}" target="_blank" rel="noopener">在 Google Maps 查看 ↗</a>
+      </div>
+    </article>`;
+  }
+
+  function eligible(restaurant) {
+    if (restaurant.profile !== profile || restaurant.area !== area) return false;
+    if (!Number.isFinite(restaurant.distanceMeters) || restaurant.distanceMeters > AREA1_MAX_DISTANCE) return false;
+    if (filterEnabled.distance && restaurant.distanceMeters > distanceLimit) return false;
+    if (filterEnabled.food
+      && (rejected.has(restaurant.cuisine)
+        || (restaurant.tags || []).some((tag) => rejected.has(tag)))) return false;
+    return budgetOK(restaurant);
+  }
+
+  function renderStats() {
+    const total = production.length;
+    const budgetKnown = production.filter((restaurant) => validPrice(restaurant.lunch) || validPrice(restaurant.dinner)).length;
+    const cuisineKnown = production.filter((restaurant) => restaurant.cuisine && restaurant.cuisine !== '餐厅').length;
+    const awards = production.filter((restaurant) => restaurant.hyakumeiten).length;
+    $('#stats').innerHTML = `可推荐 <b>${total.toLocaleString()}</b> 家 · 菜系 <b>${cuisineKnown.toLocaleString()}</b> · 有预算 <b>${budgetKnown.toLocaleString()}</b> · 百名店 <b>${awards.toLocaleString()}</b>`;
+  }
+
+  function showMessage(message) {
+    $('#results').innerHTML = `<div class="panel empty">${escapeHtml(message)}</div>`;
+  }
+
+  function generate() {
+    if (profile !== 'TOKYO') {
+      showMessage('SHIZUOKA 目前还是 TBD。');
+      return;
+    }
+    if (area !== '地区1️⃣') {
+      showMessage('地区2️⃣ 的生产数据尚未建立。');
+      return;
+    }
+
+    const pool = production.filter(eligible);
+    if (pool.length < 3) {
+      showMessage(`当前条件下只有 ${pool.length} 家可选；请放宽预算、距离或菜系排除条件。`);
+      return;
+    }
+
+    const result = pickThree(pool);
+    $('#results').innerHTML = `<div class="result-summary">从 ${pool.length} 家符合条件的店里随机选出 3 家；优先避免重复菜系。</div>${result
+      .map(renderCard)
+      .join('')}`;
+  }
+
+  $$('[data-filter-toggle]').forEach((button) => {
+    button.onclick = () => {
+      const key = button.dataset.filterToggle;
+      filterEnabled[key] = !filterEnabled[key];
+      button.classList.toggle('active', filterEnabled[key]);
+      button.setAttribute('aria-pressed', String(filterEnabled[key]));
+      button.textContent = filterEnabled[key] ? '启用' : '关闭';
+      button.closest('.filter-module').classList.toggle('filter-off', !filterEnabled[key]);
+    };
+  });
+
+  $$('[data-profile]').forEach((button) => {
+    button.onclick = () => {
+      $$('[data-profile]').forEach((item) => item.classList.remove('active'));
+      button.classList.add('active');
+      profile = button.dataset.profile;
+    };
+  });
+
+  $$('[data-area]').forEach((button) => {
+    button.onclick = () => {
+      $$('[data-area]').forEach((item) => item.classList.remove('active'));
+      button.classList.add('active');
+      area = button.dataset.area;
+    };
+  });
+
+  $$('[data-budget]').forEach((button) => {
+    button.onclick = () => {
+      $$('[data-budget]').forEach((item) => item.classList.remove('active'));
+      button.classList.add('active');
+      budget = button.dataset.budget;
+    };
+  });
+
+  $$('[data-distance]').forEach((button) => {
+    button.onclick = () => {
+      $$('[data-distance]').forEach((item) => item.classList.remove('active'));
+      button.classList.add('active');
+      distanceLimit = Number(button.dataset.distance);
+    };
+  });
+
+  $('#generate').onclick = generate;
+  renderCuisineFilters();
+  renderStats();
+})();
