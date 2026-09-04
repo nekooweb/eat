@@ -19,17 +19,20 @@
 
 ## Current database priority
 - Current priority is 地区1️⃣ only.
-- Aim for exhaustive practical coverage of publicly discoverable food businesses within 1.2 km using multiple sources.
+- Aim for exhaustive practical coverage of publicly discoverable food businesses within 1.2 km.
 - Never claim literal 100% real-world completeness without evidence.
-- Google Maps business identity is the production acceptance standard.
-- A Tabelog or OSM record alone is only a candidate until Google Maps matching is verified.
-- If a Tabelog candidate has no reliable Google Maps business entity, it may be ignored/rejected.
+- **Google Maps / Google Places is the authoritative production business universe and identity source.**
+- Google-first discovery should create the primary Area1 merchant set directly from Google Places, deduplicated by Place ID.
+- Tabelog and OSM are secondary discovery/enrichment/audit sources and must not veto a valid Google business merely because their name, address or coordinates differ.
+- A Tabelog-only or OSM-only record must not enter the production pool until a corresponding Google business identity is found.
+- A valid Google business may remain production-eligible even when no Tabelog/OSM match exists; missing enrichment stays unknown.
 - Missing information must remain null/unknown; do not fabricate budget, dishes, opening hours or holidays.
 
 ## Sources and roles
-- Google Maps / Places API (New): production identity, Place ID, official Google business name, formatted address, coordinates, business status, Google Maps URI, Google place type.
-- Tabelog: discovery, 百名店 metadata, cuisine taxonomy, lunch/dinner budget, regular holidays/opening hours, representative dishes and additional manual enrichment.
-- OpenStreetMap: broad geospatial candidate discovery and public opening-hours/base POI metadata.
+- **Google Maps / Places API (New): authoritative production identity and primary discovery source.** Use Place ID, Google business name, formatted address, coordinates, business status, Google Maps URI and place types.
+- **Tabelog: enrichment and secondary coverage audit.** Use for 百名店 metadata, cuisine taxonomy, lunch/dinner budget, regular holidays/opening hours and representative dishes when reliably matched to a Google entity.
+- **OpenStreetMap: secondary geospatial discovery/audit and auxiliary metadata.** It is not a production identity authority.
+- Official restaurant/public pages may support manual enrichment/corrections but do not replace Google identity.
 
 ## Production data model
 Keep only fields useful to product behavior, matching, provenance or future enrichment.
@@ -53,13 +56,12 @@ Recommendation data:
 - `closedDays`
 - `holidayNote` when needed
 
-Google verification:
+Google identity:
 - `googlePlaceId`
 - `googleMapsUrl`
-- `googleStatus`: `pending | verified | rejected`
-- `googleBusinessStatus` when available
+- `googleStatus`
+- `googleBusinessStatus`
 - `googlePrimaryType`
-- QC fields such as `googleQcVersion`, `nameScore`, `matchDistanceMeters`, `googleDistanceMeters` may be retained in generated/cache data.
 
 Award and weighting:
 - `hyakumeiten`
@@ -67,24 +69,47 @@ Award and weighting:
 - `hyakumeitenCategory`
 - `randomWeight`
 
-Provenance:
+Provenance/enrichment:
 - `source`
 - `sourceId`
+- source-specific references only when they support audit/enrichment.
 
 Do not keep unrelated metadata merely because a source provides it.
 
-## Google verification QC
-A candidate may enter the production random pool only after Google verification.
+## Google-first production admission QC
+A Google-discovered business may enter the production merchant set when:
+1. A Google Place ID exists.
+2. Google provides usable coordinates.
+3. Google coordinates are within the strict 1.2 km Area1 boundary.
+4. Google business status is not permanently closed.
+5. Google place type indicates a relevant food/restaurant/cafe/bakery/dessert/takeaway business.
+6. Duplicate Place IDs are collapsed to one canonical entity.
 
-Current QC checks include:
-1. Google Place ID can be resolved.
-2. Google business is not permanently closed.
-3. Google coordinates remain within the absolute 1.2 km area boundary.
-4. Google coordinates are geographically close to the original candidate coordinates.
-5. Candidate name and Google business name pass a normalized similarity check.
-6. Google place type is food/restaurant/cafe/bakery-related.
+For **Google-native discovery**, Tabelog/OSM name similarity or source-coordinate agreement is not a production rejection criterion.
 
-Failed candidates become `rejected`; temporary/API errors remain `pending`.
+## External-source matching QC
+Tabelog/OSM/manual records are matched *onto* an existing Google entity for enrichment/audit.
+
+Preferred evidence order:
+1. exact known Google Place ID
+2. branch-aware address + name + nearby coordinates
+3. strong normalized name + compatible address/coordinates
+
+If external-source matching is ambiguous:
+- leave the Google record unenriched or mark the external match pending/manual-review;
+- do **not** reject/remove the valid Google production entity.
+
+If a Tabelog/OSM candidate has no Google entity:
+- it remains source-only/audit data;
+- it must not enter the production recommendation pool.
+
+## Legacy candidate verifier
+`scripts/verify_google_places.py` remains useful for:
+- auditing historical OSM candidates
+- finding Google Place IDs for source-only records
+- migration diagnostics
+
+Its source-name/source-coordinate mismatch results must not be interpreted as proof that the corresponding Google business does not exist. The Google-first discovery dataset is authoritative for production coverage.
 
 ## Filters
 Three optional filter modules:
@@ -113,7 +138,7 @@ The database boundary remains 1.2km even when the distance filter is disabled.
 
 ## 百名店
 - Store explicit award status, award year and award category when verified.
-- Match award metadata to the correct business entity, not only a loose name match when ambiguity exists.
+- Match award metadata to the correct Google business/branch identity, not merely a loose name match when ambiguity exists.
 - 百名店 weighting and UI display are separate from the underlying award metadata.
 
 ## Result layout
@@ -138,7 +163,9 @@ The overview map uses coordinates to show the relative positions of all three re
 - Unknown dishes remain incomplete rather than invented.
 
 ## Database statistics
-The page should expose useful database progress statistics at the bottom, including verified/rejected/pending counts and 百名店 coverage as appropriate.
+The page should expose useful database progress statistics at the bottom, including Google production entity count and metadata completeness/百名店 coverage as appropriate.
+
+Legacy OSM verification `verified/rejected/pending` counts may be shown only as audit/maintenance statistics; they must not be confused with Google-first production coverage.
 
 ## Future interaction history
 Future version should record recommendation interactions locally with:
@@ -152,6 +179,8 @@ Do not use invasive browser fingerprinting.
 - Runtime: static HTML + CSS + vanilla JavaScript.
 - Map UI: Leaflet for three-store overview; Google Maps links/business entities for restaurant navigation.
 - Data/build: Python maintenance scripts + GitHub Actions generate static JS/cache files.
+- Google-first discovery script: `scripts/discover_google_area1.py`.
+- Google-first workflow: `.github/workflows/discover-google-area1.yml`.
 - API keys must live in GitHub Actions Secrets and never in repository files.
 
 ## Still TBD
