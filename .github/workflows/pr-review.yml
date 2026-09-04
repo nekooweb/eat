@@ -1,0 +1,25 @@
+name: PR Review
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PR merge commit
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Build and audit when canonical builder is present
+        run: |
+          node --check app.js
+          if [ -f scripts/build_production_dataset.mjs ]; then
+            node scripts/build_production_dataset.mjs
+            node scripts/audit_repository.mjs
+          fi
