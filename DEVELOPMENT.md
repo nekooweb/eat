@@ -55,7 +55,7 @@ Distance pools:
 - <=800 m: 262;
 - <=1,200 m: 262.
 
-The verified half-pool is currently concentrated in the nearer part of the OSM candidate ordering, so the 800-1,200 m outer ring remains a measured coverage gap rather than a hidden assumption.
+The verified half-pool is currently concentrated in the nearer part of the OSM candidate ordering, so the 800-1,200 m outer ring remains a measured coverage gap rather than a hidden assumption. This describes the already-completed run; future `half` mode has now been changed to distance-balanced systematic sampling.
 
 ### Verification rejection reasons
 
@@ -144,7 +144,10 @@ Budget metadata currently exists for only 2 production entities, so the runtime 
 - current food-related place type check;
 - strong name evidence for wider matches;
 - <=45 m transliteration-tolerant path for Japanese vs English/romanized display names;
-- persistent cache limited to source ID/status/Place ID/reason/QC version.
+- persistent cache limited to source ID/status/Place ID/reason/QC version;
+- future `GOOGLE_VERIFY_LIMIT=-1` half mode sorts by distance and takes alternating rows, producing a deterministic ~50% sample distributed across the full Area1 radius instead of the nearest half.
+
+Changing the half-sampling logic does not itself trigger another Google verification run.
 
 Do not weaken these rules merely to increase production count.
 
@@ -190,7 +193,7 @@ Reports:
 
 ### Workflows
 - `pr-review.yml`: read-only PR build/audit, no deployment/API secret;
-- `pages.yml`: canonical build -> syntax/audit -> coverage report -> minimal `_site` -> Pages deployment;
+- `pages.yml`: canonical build -> JavaScript/Python syntax checks -> repository audit -> coverage report -> minimal `_site` -> Pages deployment;
 - `verify-google-places.yml`: staged source -> Google Place ID verification;
 - `discover-google-area1.yml`: Place-ID-only Google coverage discovery;
 - `migrate-google-storage.yml`: one-time legacy full Places -> Place-ID-only migration;
@@ -229,15 +232,15 @@ Do not fabricate missing values.
 
 ## Next priority 2 — outer-ring coverage
 
-The current half-pool verification produced 262 canonical entities, all within <=800 m because the source candidate ordering prioritized nearer rows.
+The current half-pool verification produced 262 canonical entities, all within <=800 m because the source candidate ordering prioritized nearer rows at the time that run was executed.
 
 If broader 1.2 km practical coverage is needed later:
-- verify a deliberately distance-balanced sample of the remaining candidates, or
-- process the remaining half as a separate coverage task.
+- run the now distance-balanced `half` mode as an intentional new coverage task, which will reuse existing QC v4 results and only call Google for selected unresolved rows; or
+- process the remaining candidate pool as a separate coverage task.
 
 Do not rerun the 1,613-ID Google discovery merely for this purpose; the inventory already exists.
 
-Future half-sampling logic should avoid assuming input order is geographically representative.
+The verifier no longer assumes input order is geographically representative when `GOOGLE_VERIFY_LIMIT=-1` is used.
 
 ## Later product scope
 
