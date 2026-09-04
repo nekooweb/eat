@@ -7,12 +7,8 @@ on:
         description: 'Maximum candidates to process; 0 = all, -1 = half'
         required: true
         default: '100'
-      enrich:
-        description: 'Fetch address/status/Maps URI after Place ID match'
-        required: true
-        type: boolean
-        default: true
   push:
+    branches: ["main"]
     paths:
       - '.github/run-half-google'
 
@@ -34,19 +30,18 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Verify candidates
+      - name: Verify source candidates against Google Places
         env:
           GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAP_API }}
           GOOGLE_VERIFY_LIMIT: ${{ github.event_name == 'push' && '-1' || inputs.limit }}
-          GOOGLE_VERIFY_ENRICH: ${{ github.event_name == 'push' && '1' || (inputs.enrich && '1' || '0') }}
         run: python scripts/verify_google_places.py
-      - name: Commit verification cache and overlay
+      - name: Commit identity-only verification state
         run: |
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
           git add data/google_places_cache.json data/google_entities.generated.js
           git diff --cached --quiet && exit 0
-          git commit -m "Update Google Places verification data"
+          git commit -m "Update Google Place ID verification"
           git fetch origin main
           git rebase origin/main
           git push origin HEAD:main
