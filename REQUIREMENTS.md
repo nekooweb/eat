@@ -20,135 +20,136 @@
   - `地区1️⃣`: restaurants collected around Tokyo Jimbocho Station (神保町駅).
   - `地区2️⃣`: restaurants collected around Itabashihoncho Station (板橋本町駅).
 - These real-world anchors are implementation/data-maintenance information only and must not be exposed as the meaning of the labels in the public UI.
-- Restaurant collection can therefore be updated later by editing the local data without changing or explaining the public area labels.
 - `SHIZUOKA` remains `TBD` and receives no real area configuration yet.
 
 ## Restaurant collection logic
 - Restaurant candidates are collected and cross-checked using both 食べログ (Tabelog) and Google Maps.
-- Data collection is performed offline / during repository maintenance and written into the static local restaurant dataset; the public page does not query Tabelog or Google Places dynamically for restaurant discovery.
-- Tabelog is used primarily for cuisine/genre classification, menu/recommended-dish context, and restaurant discovery.
-- Google Maps is used primarily for place identity, map location, rough price level, opening-hours reference, route/distance context, and direct place-page access.
-- Each restaurant record should note enough source metadata to be manually reviewed or refreshed later.
-- The dataset should be periodically maintainable entirely by editing repository data.
+- Data collection is performed during repository maintenance and written into the static local restaurant dataset; the public page does not dynamically discover restaurants.
+- Tabelog is used primarily for cuisine/genre classification, menu/recommended-dish context, concrete lunch/dinner budget ranges, regular business hours, and restaurant discovery.
+- Google Maps is used primarily for business identity, map location, coordinates, current-place cross-checking, route context, and direct place-page access.
+- Each production record should be manually reconcilable against both sources and retain maintenance/reference metadata.
 
 ## Opening / closed-day logic
 - Each restaurant record must store regular opening information and known closed-day / holiday rules when available.
-- The webpage must read the visitor's current local date/time in the browser.
-- Before recommendation, restaurants that are clearly closed according to the locally stored schedule for the current day/time must be excluded.
-- Known regular closing days must be shown in restaurant results.
-- If a restaurant has uncertain, irregular, temporary, or frequently changing business hours, the dataset should be able to mark this uncertainty and the UI should avoid claiming live certainty.
-- Static schedule filtering is intended to avoid obvious bad recommendations; Google Maps remains the destination for the user to confirm current-day exceptional closures or temporary changes.
+- The webpage reads the visitor's current local date/time in the browser.
+- Before recommendation, restaurants that are clearly closed according to the locally stored schedule for the current day/time are excluded.
+- Known regular closing days are shown in restaurant results.
+- Uncertain/irregular/temporary business hours must be represented as uncertainty rather than falsely presented as live truth.
+- Google Maps remains the destination for confirming exceptional closures or same-day changes.
 
 ## UI flow
-1. Profile selector at the top: `TOKYO` / `SHIZUOKA`.
-2. Area selector.
-   - `TOKYO`: `地区1️⃣` / `地区2️⃣` only.
-   - `SHIZUOKA`: `TBD` / unavailable until later requirements are supplied.
-3. Food-category rejection filters using checkboxes or equivalent multi-select controls.
-4. Expected-budget filter using preset controls aligned conceptually with Google Maps price levels.
+1. Profile selector: `TOKYO` / `SHIZUOKA`.
+2. Area selector: TOKYO has `地区1️⃣` / `地区2️⃣`; SHIZUOKA remains `TBD`.
+3. Food-category rejection filters.
+4. Expected-budget filter using concrete yen ranges.
 5. One primary button to generate proposals.
-6. After clicking:
-   - apply profile, area, rejection-category, budget, and current-time/opening filters;
-   - build the eligible restaurant pool;
-   - randomly generate exactly 3 restaurant proposals when possible;
-   - the 3 selected restaurants must belong to 3 different cuisine systems / primary cuisine categories;
-   - do not return multiple restaurants from the same primary cuisine family in one generation.
-7. Initial result list for each restaurant shows key summary information only.
-8. Clicking/tapping a restaurant name or its expand control reveals the small embedded Google Maps view for that restaurant.
+6. After clicking, apply all filters first, then randomly generate exactly 3 distinct restaurants from 3 distinct primary cuisine families when possible.
+7. Initial cards remain compact.
+8. Clicking/tapping a restaurant name or expand control reveals its embedded Google Maps view.
 
-## Recommendation randomization
-- Random choice is performed only after all filters are applied.
-- Eligible restaurants should remain equal-probability within the applicable cuisine-selection logic unless a later requirement explicitly adds weighting.
-- Each generation should aim for 3 distinct primary cuisines and 3 distinct restaurants.
-- If fewer than 3 distinct eligible cuisine categories remain after filtering, the UI should clearly state that there are not enough distinct cuisine options rather than silently duplicating the same cuisine family.
+## Strict randomness requirement
+- Recommendation must be actual browser-side random sampling from the eligible static dataset, not generated/reordered according to restaurant descriptions, ratings, source order, editorial preference, or model-like content logic.
+- All filtering is completed BEFORE randomness begins.
+- Required sampling sequence:
+  1. filter profile;
+  2. filter area;
+  3. remove rejected categories;
+  4. filter requested concrete yen budget;
+  5. remove clearly closed restaurants according to stored schedule/current browser time;
+  6. group the remaining restaurants by `primary_cuisine`;
+  7. uniformly sample 3 cuisine groups without replacement;
+  8. uniformly sample one restaurant from each selected cuisine group without replacement;
+  9. randomly shuffle the final 3 result cards.
+- Use browser cryptographic randomness (`crypto.getRandomValues`) for sampling rather than content order or deterministic ranking.
+- No rating, popularity, review count, distance, price, alphabetical order, insertion order, source order, or hand-authored priority may influence probability unless the user explicitly requests weighting in the future.
+- Repeated button presses are independent random events. A previously shown restaurant may legitimately appear again; do not secretly down-weight recent results.
+- If fewer than 3 distinct eligible cuisine families remain, state that there are insufficient distinct cuisine options rather than duplicating a cuisine family.
 
 ## Distance logic
-- Each restaurant should have a rough distance bucket relative to the anchor station of its anonymous area.
-- Distance does not need to be exact turn-by-turn walking distance; a reasonable approximate distance is sufficient.
-- Preferred public display uses rounded buckets such as approximately `100 m`, `200 m`, `300 m`, `400 m`, etc.
-- `地区1️⃣` distance is calculated/estimated relative to 神保町駅 internally.
-- `地区2️⃣` distance is calculated/estimated relative to 板橋本町駅 internally.
-- The public UI shows only the approximate distance, not the hidden station-to-area mapping explanation.
+- Each restaurant stores a rough distance bucket relative to the area's anchor station.
+- Approximation is sufficient; display rounded values such as `约100m`, `约200m`, `约300m`, `约400m`.
+- `地区1️⃣` is estimated relative to 神保町駅 internally.
+- `地区2️⃣` is estimated relative to 板橋本町駅 internally.
+- Public UI never explains the hidden station/area mapping.
 
 ## Google Maps requirement
 - A URL-only result is not sufficient.
-- The initial 3-result list should remain compact; the embedded map is shown only after the user clicks/taps a restaurant entry.
-- The expanded result must embed Google Maps as a compact map view showing the selected restaurant's location.
-- The embedded map should provide a natural path to open the same place in Google Maps.
-- Google Maps is the detailed destination for ratings, reviews, route planning, live/exceptional opening information, and Google-provided price information.
-- Do not build a custom mapping system when Google Maps embedding can provide the required presentation.
-- The map should be responsive and appropriately sized for mobile and desktop.
+- Initial results do not load all maps; the map is shown only after a restaurant is clicked/tapped.
+- Expanded results display a compact Google Maps view of the selected restaurant and provide direct access to the same business in Google Maps.
+- Production data should retain restaurant name, address, latitude, longitude, Google Maps query, Maps URL, and Google Place ID when obtainable.
+- Prefer Place ID for exact business linking when available, with name/address as fallback identity fields.
+- Google Maps URLs are used for cross-platform deep links.
+- If the official Google Maps Embed API is selected for the embedded place view, its required API key/cloud configuration must be handled explicitly; do not hide that requirement.
 
 ## Food-category taxonomy
-- Rejection categories should be based primarily on the genre structure used by 食べログ 百名店 rather than an arbitrary custom taxonomy.
-- Current 百名店 examples include categories such as: ラーメン, 焼肉, 焼き鳥, 鳥料理, とんかつ, ハンバーガー, 中国料理, カレー, アジア・エスニック, 食堂, スペイン料理, パン, 喫茶店, アイス・ジェラート, うなぎ, 居酒屋, お好み焼き, ステーキ・鉄板焼き, そば, カフェ, 洋食, フレンチ, イタリアン, ピザ, 日本料理, 天ぷら, 寿司, すき焼き・しゃぶしゃぶ, 餃子, スイーツ, etc.
-- The final UI does not necessarily need every 百名店 category individually; adjacent categories may later be grouped for usability, but the source taxonomy should remain traceable to 食べログ.
-- Each restaurant requires one primary cuisine family for the 3-distinct-cuisine recommendation rule, with optional secondary tags for search/filtering.
-- Rejection logic is exclusion-based: checked categories are removed from the eligible pool.
+- Rejection categories are based primarily on 食べログ 百名店 genre structure.
+- Examples include ラーメン, 焼肉, 焼き鳥, 鳥料理, とんかつ, ハンバーガー, 中国料理, カレー, アジア・エスニック, 食堂, スペイン料理, パン, 喫茶店, アイス・ジェラート, うなぎ, 居酒屋, お好み焼き, ステーキ・鉄板焼き, そば, カフェ, 洋食, フレンチ, イタリアン, ピザ, 日本料理, 天ぷら, 寿司, すき焼き・しゃぶしゃぶ, 餃子, スイーツ, etc.
+- Adjacent categories may later be grouped for mobile usability while remaining traceable to source taxonomy.
+- Each restaurant has one primary cuisine family for the 3-distinct-cuisine rule and optional secondary tags.
 
-## Budget taxonomy
-- Budget presets should follow the conceptual Google Maps / Google Places price-level system rather than arbitrary yen ranges.
-- Google Places defines price levels as `INEXPENSIVE`, `MODERATE`, `EXPENSIVE`, and `VERY_EXPENSIVE` (`FREE` is irrelevant to normal restaurant selection).
-- Preserve these relative price-level semantics rather than claiming a universal fixed yen conversion.
-- If user-facing yen examples are added for Japan, treat them as UI guidance/local calibration rather than Google's fixed official thresholds.
+## Budget taxonomy and display
+- Result cards must NOT use abstract labels such as `💰💰 中等` as the primary budget presentation.
+- Store and display concrete yen ranges, e.g. `¥1,000–1,999`, `¥2,000–2,999`, `¥6,000–7,999`.
+- Keep lunch and dinner budget ranges separately whenever the source distinguishes them.
+- When possible, choose the displayed budget range based on current time/service period.
+- Budget filters should map to stored concrete yen ranges.
+- Google price-level metadata may be retained as supplemental data but is not a substitute for the visible yen range.
 
 ## Recommended dishes
-- Each restaurant record should include 1-2 representative / recommended dishes when sufficient information is available from Tabelog, Google Maps, official restaurant information, or consistent menu references.
-- Recommended dishes are static editorial metadata maintained in the repository, not dynamically scraped at page load.
-- The UI should show 1-2 concise recommended dishes with each restaurant result.
+- Each restaurant record includes 1-2 representative/recommended dishes when sufficiently supported by Tabelog, Google Maps, official restaurant information, or consistent menu references.
+- Recommended dishes are static curated metadata, not dynamically scraped on page load.
 
 ## Display language
-- Restaurant names should remain in their original Japanese form.
-- Other key UI/result information should be presented in Chinese for clarity, including cuisine type, approximate distance, budget level, recommended dishes, regular closed day, and status notes.
-- Japanese dish names may be retained where useful, with a short Chinese translation/explanation next to them.
-- Do not unnecessarily translate brand/proper restaurant names into Chinese.
+- Restaurant names remain in original Japanese.
+- Other key information is presented in Chinese: cuisine type, approximate distance, yen budget, recommended dishes, regular closed day, and status notes.
+- Japanese dish names may be retained with concise Chinese translations/explanations.
 
 ## Result card minimum content
-Each generated restaurant summary should display:
 - Japanese restaurant name;
-- primary cuisine category in Chinese;
-- approximate distance from the selected area's anchor station (`约100m`, `约200m`, etc.);
-- Google-style budget/price level in an understandable Chinese presentation;
+- primary cuisine in Chinese;
+- approximate distance (`约100m`, etc.);
+- concrete yen budget range;
 - 1-2 recommended dishes;
-- regular closed-day / opening-status note based on stored schedule;
-- an expand/click interaction that reveals the embedded Google Maps view;
-- a direct Google Maps access path for full details.
+- regular closed-day/opening-status note;
+- click/expand interaction revealing Google Maps;
+- direct Google Maps access.
 
 ## Data model
-- Food repository is stored locally in static JS/JSON data.
-- Each entry should support at least:
-  - restaurant name (Japanese/original form);
-  - profile scope (`TOKYO`, later `SHIZUOKA`, or shared if needed);
-  - anonymous public area key (`地区1️⃣` or `地区2️⃣` for TOKYO);
-  - actual location/address/map metadata used internally for restaurant collection and map rendering;
-  - primary cuisine family;
-  - secondary Tabelog-derived cuisine/category tags;
-  - Google-style price level;
-  - approximate distance bucket from the relevant anchor station;
-  - recommended dishes (1-2 where available);
-  - regular opening hours;
-  - regular closed days / known holiday rules;
-  - schedule uncertainty/status note when needed;
-  - Google Maps query / place identifier when available;
-  - address;
-  - latitude and longitude when available;
-  - source/reference notes for Tabelog and Google Maps maintenance.
+Each static restaurant record should support at least:
+- `name_ja`;
+- profile scope;
+- anonymous area key;
+- primary cuisine family;
+- secondary cuisine tags;
+- lunch budget min/max or source range;
+- dinner budget min/max or source range;
+- approximate distance bucket;
+- recommended dishes;
+- weekly opening hours;
+- regular closed days / holiday rules;
+- schedule uncertainty/status flag;
+- address;
+- latitude / longitude;
+- Google Maps query;
+- Google Maps URL;
+- Google Place ID when available;
+- Tabelog/source reference notes and last verification date.
 
 ## Technical direction
 - Static HTML + CSS + vanilla JavaScript.
-- Use a lightweight responsive baseline/template; Pico CSS remains a candidate, preferably vendored locally rather than loaded from a CDN.
-- Keep dependencies minimal and avoid a build step unless later requirements make one necessary.
-- Browser-side current date/time is used for static opening-hours filtering.
-- Google Maps embedded display is loaded only on restaurant expansion if practical, to preserve fast initial page load.
+- Lightweight responsive baseline/template; Pico CSS remains a candidate and should preferably be vendored locally.
+- No unnecessary build step.
+- Browser current date/time drives static schedule filtering.
+- Google Maps is loaded on expansion when practical to preserve initial load performance.
 
 ## Visual direction
 - Bright, playful, rounded, cute visual language inspired by the energetic yellow/white feeling associated with Usagi from Chiikawa, without copying official character artwork.
-- Primary palette direction: warm yellow + white, with dark text and small accent colors.
-- Large touch targets, rounded cards/buttons, clear spacing, minimal page chrome.
-- Single-screen/short-scroll utility feel is preferred over a content-heavy website.
+- Warm yellow + white, dark text, small accent colors, large touch targets, rounded cards/buttons, and minimal chrome.
+
+## Research notes
+- Initial restaurant/source investigation is tracked separately in `DATA_RESEARCH.md` before records are promoted into the production restaurant dataset.
 
 ## Confirmed-but-not-yet-specified
 - `SHIZUOKA` area/data configuration: `TBD`.
-- Exact grouping level of the 食べログ 百名店 taxonomy for the rejection UI: to be decided later.
-- Exact restaurant inclusion radius / maximum practical distance from each TOKYO anchor station: to be decided during data collection.
-- Whether profiles eventually receive separate defaults/history/preferences: to be decided later.
+- Exact grouping level of the 食べログ 百名店 taxonomy for rejection UI.
+- Exact maximum restaurant collection distance from each TOKYO anchor station.
