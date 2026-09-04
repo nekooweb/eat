@@ -67,7 +67,7 @@ Useful persistent fields:
 - `randomWeight`;
 - compact provenance (`sources`) when useful for audit.
 
-Missing budget, dish, holiday or opening-hour data must remain unknown. Do not infer or fabricate it.
+Missing budget, dish, holiday or opening-hour data must remain unknown. Do not infer or fabricate it. Missing optional metadata should normally be omitted from a result card rather than displayed as repeated `unknown` placeholders.
 
 ## 5. Source roles
 
@@ -123,12 +123,15 @@ Raw source files, verification caches and maintenance overlays are not public ru
 
 ## 7. Filters
 
-Three optional modules:
+Current optional constraints:
 - `今天不想吃什么`;
 - `大概预算`;
 - `期望距离`.
 
-Each filter can be independently disabled. A disabled filter contributes no condition.
+Do not add a second enable/disable state on top of these controls. Their neutral selections already represent no extra restriction:
+- no cuisine selected = no cuisine exclusion;
+- budget `不限` = no budget restriction;
+- distance `1.2km` = no restriction beyond the absolute Area1 boundary.
 
 ### Food exclusion
 The UI lists canonical primary cuisine labels. Selecting one excludes restaurants with that primary cuisine.
@@ -136,7 +139,7 @@ The UI lists canonical primary cuisine labels. Selecting one excludes restaurant
 Do not exclude a restaurant merely because a broad secondary tag overlaps a rejected cuisine; the interaction should remain understandable.
 
 ### Budget
-Choices:
+Choices, when enough persistent budget metadata exists to make the module useful:
 - unrestricted;
 - <= ¥999;
 - ¥1,000-1,999;
@@ -145,7 +148,9 @@ Choices:
 
 Lunch and dinner are distinct source fields. Do not silently select one based on the visitor's current clock time.
 
-For a budget-specific filter, a restaurant passes when at least one known lunch/dinner price interval matches the selected band. Restaurants with no known price fail a budget-specific filter but remain eligible when budget is unrestricted/disabled.
+For a budget-specific filter, a restaurant passes when at least one known lunch/dinner price interval matches the selected band. Restaurants with no known price fail a budget-specific filter but remain eligible when budget is unrestricted.
+
+If fewer than three production entities have any known lunch/dinner budget, hide the budget module rather than expose a control that cannot produce a valid three-choice result.
 
 ### Distance
 Choices:
@@ -154,7 +159,7 @@ Choices:
 - 800 m;
 - 1.2 km.
 
-Disabling the distance preference never disables the absolute 1.2 km production boundary.
+The 1.2 km option is both the neutral distance choice and the absolute production boundary.
 
 ## 8. Recommendation logic
 
@@ -177,11 +182,13 @@ The result layer should stay intentionally small:
 - restaurant name;
 - cuisine;
 - distance;
-- known lunch/dinner budget;
-- optional representative dishes;
-- known opening/holiday note;
+- known lunch/dinner budget when available;
+- optional representative dishes when available;
+- known opening/holiday note when available;
 - 百名店 badge when verified;
 - direct Google Maps link using the Place ID.
+
+Do not show a generic `identity verified` badge on every card. Verification is an admission rule, not useful differentiating result content.
 
 Do not duplicate the same result information into an overview map, per-store embedded map and comparison table unless a future user need clearly justifies that complexity.
 
