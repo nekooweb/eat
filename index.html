@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#ffd93d">
   <title>Eat — 今天吃什么？</title>
   <meta name="description" content="在附近餐厅里随机给出三个不同方向，减少选择困难。">
-  <link rel="stylesheet" href="./styles.css?v=20260905-review2">
+  <link rel="stylesheet" href="./styles.css?v=20260905-review3">
 </head>
 <body>
   <main class="shell">
@@ -24,44 +24,29 @@
     </section>
 
     <section class="panel filter-module" data-filter-module="food">
-      <div class="filter-head">
-        <h2>今天不想吃什么？</h2>
-        <button class="filter-toggle active" data-filter-toggle="food" aria-pressed="true">启用</button>
-      </div>
-      <div class="filter-body">
-        <div class="chips" id="rejects"></div>
-        <p class="note">点选要排除的菜系。</p>
-      </div>
+      <h2>今天不想吃什么？</h2>
+      <div class="chips" id="rejects"></div>
+      <p class="note">点选要排除的菜系。</p>
     </section>
 
     <section class="panel filter-module" data-filter-module="budget">
-      <div class="filter-head">
-        <h2>大概预算</h2>
-        <button class="filter-toggle active" data-filter-toggle="budget" aria-pressed="true">启用</button>
-      </div>
-      <div class="filter-body">
-        <div class="chips">
-          <button class="chip active" data-budget="all">不限</button>
-          <button class="chip" data-budget="under1000">¥999以下</button>
-          <button class="chip" data-budget="1000">¥1,000–1,999</button>
-          <button class="chip" data-budget="2000">¥2,000–3,999</button>
-          <button class="chip" data-budget="4000">¥4,000以上</button>
-        </div>
+      <h2>大概预算</h2>
+      <div class="chips">
+        <button class="chip active" data-budget="all">不限</button>
+        <button class="chip" data-budget="under1000">¥999以下</button>
+        <button class="chip" data-budget="1000">¥1,000–1,999</button>
+        <button class="chip" data-budget="2000">¥2,000–3,999</button>
+        <button class="chip" data-budget="4000">¥4,000以上</button>
       </div>
     </section>
 
     <section class="panel filter-module" data-filter-module="distance">
-      <div class="filter-head">
-        <h2>期望距离</h2>
-        <button class="filter-toggle active" data-filter-toggle="distance" aria-pressed="true">启用</button>
-      </div>
-      <div class="filter-body">
-        <div class="chips">
-          <button class="chip" data-distance="300">300m内</button>
-          <button class="chip" data-distance="500">500m内</button>
-          <button class="chip" data-distance="800">800m内</button>
-          <button class="chip active" data-distance="1200">1.2km内</button>
-        </div>
+      <h2>期望距离</h2>
+      <div class="chips">
+        <button class="chip" data-distance="300">300m内</button>
+        <button class="chip" data-distance="500">500m内</button>
+        <button class="chip" data-distance="800">800m内</button>
+        <button class="chip active" data-distance="1200">1.2km内</button>
       </div>
     </section>
 
@@ -77,13 +62,13 @@
     </section>
 
     <footer class="footer">
-      <p>当前仅开放 TOKYO · 地区1️⃣。生产推荐边界固定为内部基准点直线距离 1.2 km；缺失预算或营业资料不会被推测补齐。</p>
+      <p>当前仅开放 TOKYO · 地区1️⃣。生产推荐边界固定为内部基准点直线距离 1.2 km；缺失资料不会被推测补齐。</p>
       <p>部分基础地点信息 © OpenStreetMap contributors（ODbL）。</p>
       <p><span class="google-attribution" translate="no">Google Maps</span> · <a href="./privacy.html">隐私说明</a> · <a href="./terms.html">使用条款</a></p>
     </footer>
   </main>
 
-  <script src="./data/production_area1.js?v=20260905-review2"></script>
-  <script src="./app.js?v=20260905-review2"></script>
+  <script src="./data/production_area1.js?v=20260905-review3"></script>
+  <script src="./app.js?v=20260905-review3"></script>
 </body>
 </html>
