@@ -1,0 +1,31 @@
+name: Refresh Area 1 Restaurant Data
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+    paths:
+      - "scripts/build_area1_osm.py"
+      - ".github/workflows/refresh-area1.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Generate 3 km Area 1 food POI dataset
+        run: python3 scripts/build_area1_osm.py
+      - name: Commit generated static dataset
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/area1_osm.js
+          if git diff --cached --quiet; then
+            echo "No data changes"
+            exit 0
+          fi
+          git commit -m "Refresh Area 1 static restaurant dataset"
+          git push
