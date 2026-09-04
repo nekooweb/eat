@@ -1,191 +1,223 @@
 # Eat Page Requirements
 
-## Product scope
-- Single-page static web app hosted on GitHub Pages.
-- No runtime backend and no server-side database.
-- Fast loading on mobile and desktop.
-- Public profiles: `TOKYO` / `SHIZUOKA`.
-- Personal names must never appear in repository code, data, docs, comments or UI.
-- Visual direction: warm yellow/white, rounded, playful, energetic; inspired by a light Usagi-like feeling without copying official artwork.
+## 1. Product goal
 
-## Areas
-- TOKYO public areas: `地区1️⃣` / `地区2️⃣` only.
-- Internal anchors must not be exposed in public UI:
-  - 地区1️⃣ = 神保町駅.
-  - 地区2️⃣ = 板橋本町駅.
-- 地区1️⃣ production boundary is a strict straight-line radius of 1.2 km from its internal anchor.
-- Records outside 1.2 km must never participate in 地区1️⃣ recommendations.
-- SHIZUOKA remains TBD.
+Eat is a small static decision tool: apply a few optional constraints and receive three nearby restaurant candidates without turning the page into a ranking/review product.
 
-## Current database priority
-- Current priority is 地区1️⃣ only.
-- Aim for exhaustive practical coverage of publicly discoverable food businesses within 1.2 km.
-- Never claim literal 100% real-world completeness without evidence.
-- **Google Maps / Google Places is the authoritative production business universe and identity source.**
-- Google-first discovery should create the primary Area1 merchant set directly from Google Places, deduplicated by Place ID.
-- Tabelog and OSM are secondary discovery/enrichment/audit sources and must not veto a valid Google business merely because their name, address or coordinates differ.
-- A Tabelog-only or OSM-only record must not enter the production pool until a corresponding Google business identity is found.
-- A valid Google business may remain production-eligible even when no Tabelog/OSM match exists; missing enrichment stays unknown.
-- Missing information must remain null/unknown; do not fabricate budget, dishes, opening hours or holidays.
+The product should optimize for:
+- low decision cost;
+- understandable filtering;
+- trustworthy business identity;
+- simple mobile-first presentation;
+- maintainable static data rather than browser-side data engineering.
 
-## Sources and roles
-- **Google Maps / Places API (New): authoritative production identity and primary discovery source.** Use Place ID, Google business name, formatted address, coordinates, business status, Google Maps URI and place types.
-- **Tabelog: enrichment and secondary coverage audit.** Use for 百名店 metadata, cuisine taxonomy, lunch/dinner budget, regular holidays/opening hours and representative dishes when reliably matched to a Google entity.
-- **OpenStreetMap: secondary geospatial discovery/audit and auxiliary metadata.** It is not a production identity authority.
-- Official restaurant/public pages may support manual enrichment/corrections but do not replace Google identity.
+It is **not** intended to reproduce Google Maps, Tabelog, or a restaurant search portal.
 
-## Production data model
-Keep only fields useful to product behavior, matching, provenance or future enrichment.
+## 2. Current implemented scope
 
-Core identity and scope:
-- `id`
-- `profile`
-- `area`
-- `name`
-- `cuisine`
-- `tags`
-- `address`
-- `lat`, `lng`
-- `distanceMeters` and/or display `distance`
+Current public scope is only:
+- profile: `TOKYO`;
+- area: `地区1️⃣`;
+- production boundary: strict straight-line distance <= 1,200 m from the private Area1 anchor.
 
-Recommendation data:
-- `lunch`
-- `dinner`
-- `dishes`
-- `openingHoursRaw`
-- `closedDays`
-- `holidayNote` when needed
+The internal anchor must not be displayed in the public UI.
 
-Google identity:
-- `googlePlaceId`
-- `googleMapsUrl`
-- `googleStatus`
-- `googleBusinessStatus`
-- `googlePrimaryType`
+Future scopes remain planned but are not selectable until their production dataset exists:
+- `TOKYO / 地区2️⃣`;
+- `SHIZUOKA`.
 
-Award and weighting:
-- `hyakumeiten`
-- `hyakumeitenYear`
-- `hyakumeitenCategory`
-- `randomWeight`
+Do not expose a control that only leads to a "TBD" error.
 
-Provenance/enrichment:
-- `source`
-- `sourceId`
-- source-specific references only when they support audit/enrichment.
+## 3. Production identity rule
 
-Do not keep unrelated metadata merely because a source provides it.
+A production restaurant must have a verified Google Place ID.
 
-## Google-first production admission QC
-A Google-discovered business may enter the production merchant set when:
-1. A Google Place ID exists.
-2. Google provides usable coordinates.
-3. Google coordinates are within the strict 1.2 km Area1 boundary.
-4. Google business status is not permanently closed.
-5. Google place type indicates a relevant food/restaurant/cafe/bakery/dessert/takeaway business.
-6. Duplicate Place IDs are collapsed to one canonical entity.
+Google Places is used as the **business identity gate**, not as the permanent application database.
 
-For **Google-native discovery**, Tabelog/OSM name similarity or source-coordinate agreement is not a production rejection criterion.
+A row is production-eligible only when:
+1. a Google Place ID has been found;
+2. the verification result is `verified`;
+3. transient Google QC confirms a usable food-related place;
+4. transient Google coordinates confirm it is inside the Area1 boundary;
+5. the place is not permanently closed;
+6. the Place ID is unique in the final production dataset.
 
-## External-source matching QC
-Tabelog/OSM/manual records are matched *onto* an existing Google entity for enrichment/audit.
+Google Place IDs may be persisted as identity keys. Other Google Places response fields used for QC should not become long-lived repository data unless a specific current Google Maps Platform policy permits that storage.
 
-Preferred evidence order:
-1. exact known Google Place ID
-2. branch-aware address + name + nearby coordinates
-3. strong normalized name + compatible address/coordinates
+## 4. Long-lived restaurant metadata
 
-If external-source matching is ambiguous:
-- leave the Google record unenriched or mark the external match pending/manual-review;
-- do **not** reject/remove the valid Google production entity.
+Display/recommendation metadata should come from independently maintainable sources such as:
+- OpenStreetMap for basic POI/coordinates and coverage audit;
+- curated/manual records;
+- Tabelog or official restaurant pages for factual enrichment where a reliable identity match exists.
 
-If a Tabelog/OSM candidate has no Google entity:
-- it remains source-only/audit data;
-- it must not enter the production recommendation pool.
+Useful persistent fields:
+- `id`;
+- `profile`, `area`;
+- `name`;
+- `cuisine`, `tags`;
+- `address`;
+- `lat`, `lng`;
+- `distanceMeters`;
+- `lunch`, `dinner`;
+- `dishes`;
+- `openingHoursRaw`, `closedDays`, `closedNote`;
+- `googlePlaceId`, `googleStatus`;
+- `hyakumeiten`, `hyakumeitenYear`, `hyakumeitenCategory`;
+- `randomWeight`;
+- compact provenance (`sources`) when useful for audit.
 
-## Legacy candidate verifier
-`scripts/verify_google_places.py` remains useful for:
-- auditing historical OSM candidates
-- finding Google Place IDs for source-only records
-- migration diagnostics
+Missing budget, dish, holiday or opening-hour data must remain unknown. Do not infer or fabricate it.
 
-Its source-name/source-coordinate mismatch results must not be interpreted as proof that the corresponding Google business does not exist. The Google-first discovery dataset is authoritative for production coverage.
+## 5. Source roles
 
-## Filters
-Three optional filter modules:
-- `今天不想吃什么`
-- `大概预算`
-- `期望距离`
+### Google Places
+- authoritative identity/QC gate;
+- Area1 coverage audit through Place IDs;
+- Place ID is the durable cross-reference;
+- Google names, formatted addresses, coordinates, status and types may be used transiently during verification/discovery.
 
-Each module has an independent enable/disable switch. Disabled modules contribute no filtering condition.
+### OpenStreetMap
+- independent POI discovery and coordinates;
+- source of display metadata where available;
+- coverage comparison against Google identity inventory;
+- does not by itself admit a restaurant into production.
 
-Distance choices currently include:
-- 300m
-- 500m
-- 800m
-- 1.2km
+### Tabelog / official restaurant information / curated records
+- cuisine refinement;
+- lunch/dinner budget;
+- representative dishes;
+- opening/regular holiday information;
+- 百名店 metadata when verified for the correct branch.
 
-The database boundary remains 1.2km even when the distance filter is disabled.
+External-source data must be attached to a Google identity conservatively. Ambiguous matches stay unresolved rather than being forced.
 
-## Recommendation logic
-- Generate 3 restaurants when possible.
-- Prefer 3 distinct primary cuisine families.
-- Browser-side random selection uses Web Crypto randomness rather than deterministic/static ordering.
-- 百名店 restaurants receive higher sampling weight than ordinary restaurants.
-- Current configured weight: 百名店 `2.2`, ordinary restaurant `1.0`.
-- Weighting occurs inside random selection; 百名店 are not forcibly inserted.
-- No rating/review-count popularity ranking unless explicitly requested later.
+## 6. Canonical build model
 
-## 百名店
-- Store explicit award status, award year and award category when verified.
-- Match award metadata to the correct Google business/branch identity, not merely a loose name match when ambiguity exists.
-- 百名店 weighting and UI display are separate from the underlying award metadata.
+The browser must not merge raw source datasets.
 
-## Result layout
-Current intended result order after generation:
-1. Three-store overview map.
-2. Individual restaurant cards/names.
-3. Three-store horizontal comparison.
+Maintenance/build flow:
 
-Individual restaurant names can expand a Google Maps preview and provide direct Google Maps access.
-The overview map uses coordinates to show the relative positions of all three restaurants.
+```text
+independent source data
+       +
+Google Place ID verification
+       +
+award/manual enrichment
+       |
+       v
+build_production_dataset.mjs
+       |
+       v
+production_area1.js
+       |
+       v
+browser filtering + random selection + rendering
+```
 
-## Holiday/opening data
-- Collect publicly available regular opening-hours and holiday/closed-day information.
-- Preserve raw source-backed schedule expressions where available.
-- Do not infer a closed day merely because data is missing.
-- Final recommendation-time closure/exclusion logic is intentionally TBD and will be supplied later.
+The public page should load only:
+- the canonical production dataset;
+- `app.js`.
 
-## Budget and dishes
-- Store concrete yen ranges with lunch/dinner separated when available.
-- Unknown budget remains unknown.
-- Store 1-2 source-supported representative dishes when available.
-- Unknown dishes remain incomplete rather than invented.
+Raw source files, verification caches and maintenance overlays are not public runtime dependencies.
 
-## Database statistics
-The page should expose useful database progress statistics at the bottom, including Google production entity count and metadata completeness/百名店 coverage as appropriate.
+## 7. Filters
 
-Legacy OSM verification `verified/rejected/pending` counts may be shown only as audit/maintenance statistics; they must not be confused with Google-first production coverage.
+Three optional modules:
+- `今天不想吃什么`;
+- `大概预算`;
+- `期望距离`.
 
-## Future interaction history
-Future version should record recommendation interactions locally with:
-- browser/system timestamp
-- persistent locally generated installation/device identifier
+Each filter can be independently disabled. A disabled filter contributes no condition.
 
-Exact persistence, reset and privacy semantics remain TBD.
-Do not use invasive browser fingerprinting.
+### Food exclusion
+The UI lists canonical primary cuisine labels. Selecting one excludes restaurants with that primary cuisine.
 
-## Technical direction
-- Runtime: static HTML + CSS + vanilla JavaScript.
-- Map UI: Leaflet for three-store overview; Google Maps links/business entities for restaurant navigation.
-- Data/build: Python maintenance scripts + GitHub Actions generate static JS/cache files.
-- Google-first discovery script: `scripts/discover_google_area1.py`.
-- Google-first workflow: `.github/workflows/discover-google-area1.yml`.
-- API keys must live in GitHub Actions Secrets and never in repository files.
+Do not exclude a restaurant merely because a broad secondary tag overlaps a rejected cuisine; the interaction should remain understandable.
 
-## Still TBD
-- SHIZUOKA data.
-- Final food-category grouping.
-- Final holiday/open/closed decision logic.
-- Interaction-history/device-ID behavior.
-- Final result-card visual/layout changes to be specified later.
+### Budget
+Choices:
+- unrestricted;
+- <= ¥999;
+- ¥1,000-1,999;
+- ¥2,000-3,999;
+- >= ¥4,000.
+
+Lunch and dinner are distinct source fields. Do not silently select one based on the visitor's current clock time.
+
+For a budget-specific filter, a restaurant passes when at least one known lunch/dinner price interval matches the selected band. Restaurants with no known price fail a budget-specific filter but remain eligible when budget is unrestricted/disabled.
+
+### Distance
+Choices:
+- 300 m;
+- 500 m;
+- 800 m;
+- 1.2 km.
+
+Disabling the distance preference never disables the absolute 1.2 km production boundary.
+
+## 8. Recommendation logic
+
+Hard behavior:
+- if fewer than three restaurants satisfy the active filters, explain that the filters should be relaxed;
+- if at least three restaurants satisfy the filters, return exactly three distinct Google Place IDs.
+
+Preference behavior:
+- maximize cuisine diversity among the three choices;
+- do **not** fail generation merely because fewer than three cuisine families remain;
+- use Web Crypto randomness;
+- 百名店 may receive higher sampling weight (`2.2`) than ordinary restaurants (`1.0`);
+- weighting is probabilistic and does not guarantee a 百名店 result;
+- do not introduce rating/review-count popularity ranking unless explicitly requested later.
+
+## 9. Results
+
+The result layer should stay intentionally small:
+- three restaurant cards;
+- restaurant name;
+- cuisine;
+- distance;
+- known lunch/dinner budget;
+- optional representative dishes;
+- known opening/holiday note;
+- 百名店 badge when verified;
+- direct Google Maps link using the Place ID.
+
+Do not duplicate the same result information into an overview map, per-store embedded map and comparison table unless a future user need clearly justifies that complexity.
+
+If Google Places content is displayed, follow current Google Maps Platform attribution/display rules. The current product does not render Places content over a non-Google map.
+
+## 10. Database statistics
+
+Expose a compact progress summary, currently including:
+- production entity count;
+- cuisine completeness;
+- budget completeness;
+- 百名店 count.
+
+Maintenance audits should additionally check:
+- unique Place IDs;
+- no production distance >1,200 m;
+- verification status;
+- source coverage/match rates;
+- metadata completeness.
+
+## 11. Security / cost / policy requirements
+
+- API keys live only in GitHub Actions Secrets.
+- Never expose the Places API key in browser JavaScript.
+- Keep Google field masks narrow.
+- Avoid unnecessary repeat discovery/verification runs.
+- Persist Google Place IDs rather than full Places responses for durable identity.
+- Public Pages artifacts contain only deployable site assets, not the maintenance repository.
+- Keep visible Google/OSM attribution and public privacy/terms pages as required by the services in use.
+
+## 12. Still TBD
+
+Not blockers for the current Area1 release:
+- TOKYO 地区2️⃣ production data;
+- SHIZUOKA production data;
+- final open-now/holiday exclusion logic;
+- local recommendation history/device identifier behavior;
+- deeper cuisine-family taxonomy if primary labels become too fragmented;
+- optional richer result UI only if it solves a demonstrated user need.
