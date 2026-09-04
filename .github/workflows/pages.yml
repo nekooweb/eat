@@ -32,6 +32,8 @@ jobs:
           node --check app.js
           test -s data/production_area1.js
           node scripts/audit_repository.mjs
+      - name: Coverage report
+        run: node scripts/coverage_report.mjs
       - name: Assemble public site
         run: |
           mkdir -p _site/data
