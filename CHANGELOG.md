@@ -7,7 +7,7 @@ This file records product/architecture decisions and meaningful implementation m
 ### Project architecture
 - Confirmed the project as a standalone static GitHub Pages application under `nekooweb/eat`.
 - Runtime architecture remains HTML/CSS/vanilla JavaScript with no application backend.
-- Maintenance/build-time Python scripts and GitHub Actions are allowed to collect/verify data and commit static outputs.
+- Maintenance/build-time Python scripts and GitHub Actions act as the data-maintenance layer and may collect/verify data and commit static outputs.
 - Google API credentials are stored only in GitHub Actions Secrets.
 
 ### Public profiles and privacy
@@ -36,6 +36,7 @@ This file records product/architecture decisions and meaningful implementation m
 - Uses browser cryptographic randomness.
 - 百名店 weighting set to 2.2 vs ordinary 1.0.
 - No rating/review-count popularity weighting.
+- Opening/holiday information does not yet exclude restaurants; final closure logic remains intentionally pending.
 
 ### Maps
 - Overview map uses Leaflet/OpenStreetMap for the three selected coordinates.
@@ -82,13 +83,15 @@ Added strict production QC:
 ### Batch verification
 - Added `limit=-1` mode to verify half of the current candidate pool.
 - Added a one-time GitHub push trigger for the half-pool verification run.
-- Half-pool QC v2 run initiated; results should be reviewed before completing the remaining pool.
+- Half-pool QC v2 run initiated; results must be reviewed before completing the remaining pool.
 
-### Documentation
-- Updated `REQUIREMENTS.md` to reflect current Google-authoritative, compact-data architecture.
-- Added `ARCHITECTURE.md`.
-- Added `DEVELOPMENT.md`.
-- Added this `CHANGELOG.md`.
+### Developer documentation consolidation
+- Updated `REQUIREMENTS.md` so current Google-authoritative rules, compact schema, filters, recommendation behavior and pending requirements are explicit.
+- Expanded `README.md` into the repository/developer entry point with frontend, data, script and workflow responsibilities.
+- `ARCHITECTURE.md` documents runtime frontend, maintenance/data architecture, overlay order, recommendation flow, security and architectural debt.
+- `DEVELOPMENT.md` records phased development from verification through canonical dataset, Google-first coverage, metadata enrichment and Area1 v1 acceptance criteria.
+- Added `DATA_PIPELINE.md` with source roles, candidate -> Google verification -> QC -> canonical production lifecycle, cache behavior and coverage audit strategy.
+- `DATA_RESEARCH.md` is explicitly treated as historical/manual research rather than authoritative product behavior when older notes conflict with `REQUIREMENTS.md`.
 
 ## Earlier implementation milestones
 
