@@ -47,17 +47,18 @@ Owns page structure and asset loading order:
 - result container
 - database statistics/footer
 - Leaflet dependency
-- static restaurant datasets and overlays
+- static restaurant datasets and enrichment overlays
 
 Data scripts must load before `app.js`.
 
-The current legacy load chain contains several historical datasets/overlays. The target load chain is:
-1. canonical Google-first Area1 production dataset
-2. Tabelog/百名店 enrichment layer if still separated
-3. manual curated corrections last
-4. `app.js`
+Current load chain:
+1. historical/manual restaurant sources used only as enrichment candidates
+2. `data/area1_google.js` as the Google-first production universe
+3. 百名店 and generated Google metadata overlays
+4. manual curated corrections last
+5. `app.js`
 
-Manual corrections must override generated data deliberately and should identify the same Google Place ID whenever possible.
+Manual corrections must override generated values deliberately and should identify the same Google Place ID whenever possible.
 
 ### `styles.css`
 Owns responsive visual presentation:
@@ -65,7 +66,9 @@ Owns responsive visual presentation:
 - rounded cards/chips/buttons
 - mobile/desktop layout
 - filter enabled/disabled states
+- Google-verified / 百名店 / warning badges
 - result/map/comparison presentation
+- explicit missing-metadata states
 - unified Japanese/Chinese-capable system font stack
 
 No functional filtering/business rules should be implemented in CSS.
@@ -78,16 +81,19 @@ Owns browser behavior:
 - budget selection
 - distance preference
 - absolute Area1 1.2km safety boundary
-- production eligibility
+- Google-first production-pool construction
+- safe enrichment merging from historical/manual data
 - cuisine grouping
 - weighted cryptographic random selection
 - 3-distinct-cuisine selection when possible
 - result rendering
 - overview Leaflet map
 - individual Google Maps URL/embed generation
-- database statistics
+- production database metadata-completeness statistics
 
-Production eligibility must be based on the canonical Google-first production dataset. A valid Google-native entity does not need an OSM/Tabelog match to remain eligible.
+Production eligibility is based only on records whose source is `Google Places`, whose status is verified, and whose Google-native location is within the 1.2km Area1 boundary.
+
+Legacy/manual/OSM records may contribute metadata only when they match a Google production entity by Place ID or compatible normalized name/location. They cannot independently enter the recommendation pool.
 
 ## 3. Data layer
 
@@ -112,7 +118,16 @@ A production Google entity must satisfy:
 Tabelog/OSM/manual records are enrichment/audit records.
 They may contain better cuisine, price, dish, award or schedule information, but they do not define whether a Google business exists.
 
+Current frontend enrichment fields:
+- refined cuisine/tags
+- lunch/dinner budget
+- representative dishes
+- opening hours / closed-day notes
+- 百名店 year/category
+
 If external matching is ambiguous, leave enrichment unresolved. Do not remove the Google entity.
+
+Missing metadata is rendered explicitly as pending rather than fabricated.
 
 ## 4. Data acquisition / maintenance scripts
 
@@ -131,7 +146,13 @@ Current outputs:
 - `data/area1_google_places.json` — audit/raw generated Google-first dataset
 - `data/area1_google.js` — browser-ready Google-first records
 
-Because Nearby Search can truncate dense local results, the script splits the search spatially and by food-related type. The coverage strategy should be audited and improved if cells/types hit result caps.
+First full run result:
+- 37 spatial grid points
+- 740 Nearby Search API calls
+- 0 API errors
+- 1,613 unique Google-verified Area1 food-related entities after Place ID deduplication and strict radius filtering
+
+Because Nearby Search can truncate dense local results, the script splits the search spatially and by food-related type. The coverage strategy should still be audited for result-cap risk.
 
 ### `.github/workflows/discover-google-area1.yml`
 Runs Google-first discovery with GitHub Secret `GOOGLE_MAP_API`, commits generated outputs and rebases before push so concurrent documentation/code commits do not cause non-fast-forward failures.
@@ -200,17 +221,20 @@ Leaflet + OpenStreetMap tiles are used for the 3-result overview because this is
 ### Restaurant navigation
 Google Maps is authoritative for the business entity.
 Preferred direct link:
-1. Place-ID-based business URL/query
+1. Place-ID-based business query
 2. exact Google Maps URI returned by Places API
 3. name + address fallback
+
+The frontend now prefers Place ID first.
 
 Coordinate-only Google Maps searches must not be used as proof of business identity.
 
 ## 8. Random recommendation algorithm
 
-High-level target flow:
+High-level current flow:
 ```text
 Google-first production entities
+ -> enrich from compatible legacy/manual records
  -> profile/area
  -> absolute area boundary safety check
  -> optional food exclusion
@@ -235,19 +259,32 @@ No previous-history or popularity bias is currently allowed.
 Opening-hours data is descriptive only at this stage.
 Do not exclude a restaurant because it appears closed until the final schedule/holiday decision rules are supplied.
 
-## 10. Deployment
+If Google marks a business `CLOSED_TEMPORARILY`, the current UI surfaces a warning badge but does not yet auto-exclude it.
+
+## 10. Database statistics
+
+The public stats block now reports production-centric metrics rather than legacy source-verification state:
+- total Google production entities
+- cuisine-classified count
+- budget-enriched count
+- representative-dish enriched count
+- opening/holiday enriched count
+- 百名店 count
+
+Legacy OSM `verified/rejected/pending` counts are intentionally no longer shown as production-database quality metrics.
+
+## 11. Deployment
 
 GitHub Pages deploys the repository as a static site.
 Maintenance Actions may update generated data and push commits to `main`, which then triggers a Pages deployment.
 
-## 11. Known architectural debt
+## 12. Known architectural debt
 
-1. Frontend still loads legacy candidate/overlay files instead of a single Google-first canonical production dataset.
-2. `data/area1_google.js` is newly generated but not yet the sole production input.
-3. Google Nearby Search coverage needs cap/coverage auditing in this dense area.
-4. Tabelog enrichment matching is not yet Place-ID-centric for all records.
-5. 百名店 matching still contains historical name-based logic and must migrate to business identity.
-6. Legacy OSM verification statuses can be confused with production coverage and should be separated in UI/statistics.
-7. Area2 and SHIZUOKA are not implemented.
-8. Final opening/holiday exclusion logic is pending.
-9. Local recommendation history/device ID is pending.
+1. Enrichment is currently merged in-browser rather than being precompiled into one canonical `area1_verified.js` file.
+2. Google Nearby Search coverage still needs result-cap/type-distribution auditing.
+3. Tabelog enrichment matching is not yet Place-ID-centric for all historical records.
+4. 百名店 matching still contains historical name-based logic and must migrate to Place ID where available.
+5. Legacy datasets are still shipped to the browser as enrichment sources, increasing payload size.
+6. Area2 and SHIZUOKA are not implemented.
+7. Final opening/holiday exclusion logic is pending.
+8. Local recommendation history/device ID is pending.
