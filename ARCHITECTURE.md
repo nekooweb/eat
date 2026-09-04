@@ -2,289 +2,258 @@
 
 ## 1. Architecture summary
 
-Eat is intentionally a static application. There is no runtime application server and no runtime database.
+Eat remains intentionally static: no runtime application server, no runtime database, and no browser-side Places API key.
 
 ```text
-Google Places API (New)
-    │
-    ├─ discover_google_area1.py
-    │      ↓
-    │  Google-first Area1 merchant universe
-    │  (Place ID canonical key)
-    │
-    ├───────────────┐
-    │               │
-    v               v
-Tabelog/manual    OpenStreetMap
-(enrichment)      (secondary audit/enrichment)
-    │               │
-    └──────┬────────┘
-           v
-   match onto Google entity
-           │
-           v
- canonical production dataset
-           │
-           v
-GitHub Pages: index.html + styles.css + app.js + static data/*.js
-           │
-           v
-Browser filters -> production pool -> weighted crypto random -> 3 results
+OpenStreetMap / curated / Tabelog metadata
+                 |
+                 +------------------+
+                                    |
+Google Places verification --------+
+(Place ID + transient QC only)      |
+                                    v
+                       canonical build step
+                  build_production_dataset.mjs
+                                    |
+                                    v
+                       production_area1.js
+                                    |
+                                    v
+                         GitHub Pages artifact
+                          (site assets only)
+                                    |
+                                    v
+                    filter -> weighted random -> 3 cards
 ```
 
-Google is the production business authority. Tabelog and OSM are no longer allowed to veto a valid Google business merely because their source name/address/coordinates differ.
-
-The only API-dependent work happens during maintenance/build workflows. Normal page visitors do not call Google Places API and never receive the API key.
+The central design distinction is:
+- Google Places answers **which real business identity this source record corresponds to**;
+- independent/curated sources provide long-lived display and recommendation metadata;
+- the browser consumes one precompiled production dataset and performs no source matching.
 
 ## 2. Runtime frontend
 
 ### `index.html`
-Owns page structure and asset loading order:
-- profile selector (`TOKYO`, `SHIZUOKA`)
-- anonymous area selector
-- three independently toggleable filter modules
-- generate button
-- result container
-- database statistics/footer
-- Leaflet dependency
-- static restaurant datasets and enrichment overlays
+Current public page contains:
+- a read-only current scope (`TOKYO / 地区1️⃣ / 1.2 km`);
+- three optional filters;
+- one generate action;
+- one result container;
+- compact database statistics;
+- service attribution and privacy/terms links.
 
-Data scripts must load before `app.js`.
+It loads exactly two JavaScript assets:
+1. `data/production_area1.js`;
+2. `app.js`.
 
-Current load chain:
-1. historical/manual restaurant sources used only as enrichment candidates
-2. `data/area1_google.js` as the Google-first production universe
-3. 百名店 and generated Google metadata overlays
-4. manual curated corrections last
-5. `app.js`
-
-Manual corrections must override generated values deliberately and should identify the same Google Place ID whenever possible.
-
-### `styles.css`
-Owns responsive visual presentation:
-- yellow/white visual system
-- rounded cards/chips/buttons
-- mobile/desktop layout
-- filter enabled/disabled states
-- Google-verified / 百名店 / warning badges
-- result/map/comparison presentation
-- explicit missing-metadata states
-- unified Japanese/Chinese-capable system font stack
-
-No functional filtering/business rules should be implemented in CSS.
+Future profiles/areas are not shown as interactive controls until data exists.
 
 ### `app.js`
-Owns browser behavior:
-- selected profile and area
-- filter enable/disable state
-- food exclusions
-- budget selection
-- distance preference
-- absolute Area1 1.2km safety boundary
-- Google-first production-pool construction
-- safe enrichment merging from historical/manual data
-- cuisine grouping
-- weighted cryptographic random selection
-- 3-distinct-cuisine selection when possible
-- result rendering
-- overview Leaflet map
-- individual Google Maps URL/embed generation
-- production database metadata-completeness statistics
+Browser responsibilities are deliberately limited to:
+- filter state;
+- absolute 1.2 km safety check;
+- weighted Web Crypto random selection;
+- cuisine-diversity preference;
+- rendering three result cards;
+- direct Place-ID-based Google Maps links;
+- compact production statistics.
 
-Production eligibility is based only on records whose source is `Google Places`, whose status is verified, and whose Google-native location is within the 1.2km Area1 boundary.
+The browser does **not**:
+- read raw OSM/Tabelog/Google maintenance datasets;
+- match businesses by name/address;
+- merge enrichment sources;
+- render a Leaflet/OSM map for Google Places content;
+- embed one map per restaurant;
+- build a duplicate comparison table.
 
-Legacy/manual/OSM records may contribute metadata only when they match a Google production entity by Place ID or compatible normalized name/location. They cannot independently enter the recommendation pool.
+### `styles.css`
+CSS owns presentation only: mobile-first yellow/white visual system, filter controls, cards, badges, statistics, and legal pages.
 
-## 3. Data layer
+## 3. Canonical production build
 
-### Canonical production identity
-Preferred key order:
-1. Google Place ID — canonical production identity
-2. internal stable record ID derived from Place ID if needed
-3. external source IDs as enrichment references only
+### `scripts/build_production_dataset.mjs`
+This is the data boundary between maintenance and runtime.
 
-Normalized names are not production identity keys.
+Inputs currently include:
+- curated historical restaurant data;
+- bulk/more Area1 enrichment data;
+- `area1_osm.js`;
+- manual Google identity hints;
+- generated Google verification overlay;
+- 百名店 metadata.
 
-### Google-first production entity
-A production Google entity must satisfy:
-- valid Place ID
-- usable Google coordinates
-- strict Area1 distance <=1200m
-- not permanently closed
-- food-related Google place type
-- no duplicate Place ID
+Build rules:
+1. only `TOKYO / 地区1️⃣` is considered;
+2. a production identity requires `googleStatus === 'verified'` and a Google Place ID;
+3. rows sharing a Place ID collapse to one canonical entity;
+4. an external row without a Place ID may enrich an entity only when its normalized name resolves to exactly one verified identity;
+5. independently sourced coordinates/distance are preferred for durable geospatial metadata;
+6. every production distance must be <=1,200 m;
+7. missing budget/dishes/opening data stays missing;
+8. duplicate Place IDs fail the build.
 
-### External-source records
-Tabelog/OSM/manual records are enrichment/audit records.
-They may contain better cuisine, price, dish, award or schedule information, but they do not define whether a Google business exists.
+Output:
+- `data/production_area1.js` generated at build/deploy time.
 
-Current frontend enrichment fields:
-- refined cuisine/tags
-- lunch/dinner budget
-- representative dishes
-- opening hours / closed-day notes
-- 百名店 year/category
+The generated file is the only restaurant dataset published to the browser.
 
-If external matching is ambiguous, leave enrichment unresolved. Do not remove the Google entity.
-
-Missing metadata is rendered explicitly as pending rather than fabricated.
-
-## 4. Data acquisition / maintenance scripts
-
-### `scripts/discover_google_area1.py`
-Primary production discovery script.
-
-Purpose:
-- query Google Places Nearby Search (New) across Area1 using overlapping spatial cells and multiple food-related types
-- gather Google-native businesses directly
-- deduplicate by Place ID
-- reject permanent closures
-- enforce exact straight-line <=1200m from Area1 anchor
-- emit Google-first static data
-
-Current outputs:
-- `data/area1_google_places.json` — audit/raw generated Google-first dataset
-- `data/area1_google.js` — browser-ready Google-first records
-
-First full run result:
-- 37 spatial grid points
-- 740 Nearby Search API calls
-- 0 API errors
-- 1,613 unique Google-verified Area1 food-related entities after Place ID deduplication and strict radius filtering
-
-Because Nearby Search can truncate dense local results, the script splits the search spatially and by food-related type. The coverage strategy should still be audited for result-cap risk.
-
-### `.github/workflows/discover-google-area1.yml`
-Runs Google-first discovery with GitHub Secret `GOOGLE_MAP_API`, commits generated outputs and rebases before push so concurrent documentation/code commits do not cause non-fast-forward failures.
-
-### `scripts/build_area1_osm.py`
-Secondary source discovery/audit script.
-
-Purpose:
-- collect OSM food-business candidates
-- enforce <=1200m source collection radius
-- provide auxiliary candidate/location metadata
-
-OSM output must not be treated as the canonical production merchant universe.
+## 4. Google identity and verification
 
 ### `scripts/verify_google_places.py`
-Legacy/source-matching verifier.
+Maps independent source candidates to Google Place IDs.
 
-Purpose now:
-- map historical OSM/source candidates to Google Place IDs
-- diagnose source-only records
-- support enrichment matching and migration
-- preserve audit history
-
-Its source-name/source-coordinate QC must not be interpreted as permission to delete/reject a Google-native production entity.
-
-### Google verification cache
-`data/google_places_cache.json` remains useful for legacy/source-to-Google matching and avoiding repeated API calls. It is not the canonical Google-first production dataset.
-
-## 5. Google API security
-
-GitHub Actions secret:
-- repository secret name: `GOOGLE_MAP_API`
-- workflows expose it to Python only as `GOOGLE_MAPS_API_KEY`
-
-Rules:
-- never commit the key
-- never expose it in client-side JS
-- never paste the key into docs/logs
-- restrict the key to required Google Maps Platform APIs where practical
-
-## 6. Tabelog enrichment
-
-Tabelog is used after Google identity exists.
-
-Target enrichment fields:
-- cuisine/category refinement
-- lunch budget
-- dinner budget
-- representative dishes
-- opening hours
-- regular closed days
-- 百名店 status/year/category
-
-Matching priority:
-1. exact mapped Google Place ID
-2. branch-aware name + address + nearby coordinates
-3. strong name/address compatibility
-
-Ambiguous matches stay unresolved rather than changing/removing the Google record.
-
-## 7. Maps
-
-### Overview map
-Leaflet + OpenStreetMap tiles are used for the 3-result overview because this is lightweight and requires no client-side Google key.
-
-### Restaurant navigation
-Google Maps is authoritative for the business entity.
-Preferred direct link:
-1. Place-ID-based business query
-2. exact Google Maps URI returned by Places API
-3. name + address fallback
-
-The frontend now prefers Place ID first.
-
-Coordinate-only Google Maps searches must not be used as proof of business identity.
-
-## 8. Random recommendation algorithm
-
-High-level current flow:
+Workflow:
 ```text
-Google-first production entities
- -> enrich from compatible legacy/manual records
- -> profile/area
- -> absolute area boundary safety check
- -> optional food exclusion
- -> optional budget filter
- -> optional preferred-distance filter
- -> group by primary cuisine
- -> weighted random cuisine/restaurant selection
- -> enforce different cuisine families when possible
- -> shuffle final 3
+source candidate
+ -> Text Search (Place ID only)
+ -> transient Place Details QC
+ -> source-ID keyed verification result
+ -> persist only status + Place ID + compact reason/version
 ```
 
-Randomness uses browser crypto rather than `Math.random()` for selection.
+Transient QC checks:
+- permanently closed;
+- Google location inside Area1;
+- source/Google geographic compatibility;
+- current food-related Google type;
+- name compatibility for non-close matches.
 
-Current weights:
-- ordinary = 1.0
-- verified 百名店 = 2.2
+Japanese/English transliteration is handled conservatively: a very close geographic hit from name-based Text Search may pass despite low literal string similarity; wider matches require stronger name evidence.
 
-No previous-history or popularity bias is currently allowed.
+Generated overlay matching is by exact source ID rather than normalized name, avoiding same-name chain/branch collisions.
 
-## 9. Opening/holiday behavior
+### Persistent Google state
+Durable repository state is limited to fields needed for identity/audit, principally:
+- source ID;
+- verification status;
+- Google Place ID;
+- compact reject/pending reason;
+- QC version.
 
-Opening-hours data is descriptive only at this stage.
-Do not exclude a restaurant because it appears closed until the final schedule/holiday decision rules are supplied.
+Google display names, formatted addresses, coordinates, Maps URIs and place types used for verification are transient and are not written into the long-lived verification cache.
 
-If Google marks a business `CLOSED_TEMPORARILY`, the current UI surfaces a warning badge but does not yet auto-exclude it.
+## 5. Google coverage discovery
 
-## 10. Database statistics
+### `scripts/discover_google_area1.py`
+Purpose: coverage audit of food-related Google business identities inside Area1.
 
-The public stats block now reports production-centric metrics rather than legacy source-verification state:
-- total Google production entities
-- cuisine-classified count
-- budget-enriched count
-- representative-dish enriched count
-- opening/holiday enriched count
-- 百名店 count
+The script:
+- queries overlapping nearby-search cells;
+- splits dense queries by current food-related place types to reduce the 20-result truncation risk;
+- uses coordinates/business status only transiently to enforce the 1.2 km boundary and remove permanent closures;
+- persists only the deduplicated Google Place ID inventory.
 
-Legacy OSM `verified/rejected/pending` counts are intentionally no longer shown as production-database quality metrics.
+Output:
+- `data/area1_google_ids.json`.
 
-## 11. Deployment
+This inventory measures Google-side identity coverage. A Place ID in the inventory is not automatically browser-ready until independent long-lived metadata is attached to it.
 
-GitHub Pages deploys the repository as a static site.
-Maintenance Actions may update generated data and push commits to `main`, which then triggers a Pages deployment.
+### Legacy full Places cache migration
+`scripts/migrate_google_inventory.py` extracts Place IDs from the historical full Google discovery dataset without making API calls.
 
-## 12. Known architectural debt
+`.github/workflows/migrate-google-storage.yml` then removes the legacy full Places JSON/JS after the ID inventory has been preserved.
 
-1. Enrichment is currently merged in-browser rather than being precompiled into one canonical `area1_verified.js` file.
-2. Google Nearby Search coverage still needs result-cap/type-distribution auditing.
-3. Tabelog enrichment matching is not yet Place-ID-centric for all historical records.
-4. 百名店 matching still contains historical name-based logic and must migrate to Place ID where available.
-5. Legacy datasets are still shipped to the browser as enrichment sources, increasing payload size.
-6. Area2 and SHIZUOKA are not implemented.
-7. Final opening/holiday exclusion logic is pending.
-8. Local recommendation history/device ID is pending.
+## 6. Independent data sources
+
+### OpenStreetMap
+`scripts/build_area1_osm.py` collects independent food POI candidates and durable geospatial metadata inside the Area1 radius.
+
+OSM candidates do not enter production until Google identity verification succeeds.
+
+### Tabelog / official / curated enrichment
+Useful for factual enrichment such as:
+- cuisine taxonomy;
+- lunch/dinner price bands;
+- representative dishes;
+- opening hours / regular holidays;
+- 百名店 metadata.
+
+Identity matching should prefer Place ID and branch-aware evidence. Ambiguous enrichment remains unresolved.
+
+## 7. Recommendation algorithm
+
+```text
+canonical production rows
+ -> absolute <=1.2 km check
+ -> optional cuisine exclusion
+ -> optional budget filter
+ -> optional preferred distance
+ -> group by primary cuisine
+ -> weighted random picks across distinct cuisine groups
+ -> if fewer than 3 cuisine groups remain, fill remaining slots from other eligible rows
+ -> shuffle -> 3 cards
+```
+
+Hard rule: if at least three distinct production entities satisfy filters, return three.
+
+Cuisine diversity is a preference, not a failure condition.
+
+Weights:
+- ordinary: `1.0`;
+- verified 百名店: `2.2`.
+
+No rating/review popularity ranking is used.
+
+## 8. Budget behavior
+
+Lunch and dinner remain separate fields.
+
+The browser no longer chooses a budget field based on local clock time. A budget-specific filter passes when at least one known lunch/dinner interval overlaps the selected band. The card displays available lunch/dinner bands explicitly.
+
+## 9. Result presentation
+
+Current result UI is intentionally one layer:
+- three cards;
+- primary facts needed to decide;
+- direct Google Maps link with `query_place_id`.
+
+Removed as redundant for the current use case:
+- Leaflet overview map;
+- per-restaurant embedded maps;
+- horizontal three-store comparison table.
+
+## 10. Deployment and validation
+
+### `.github/workflows/pages.yml`
+Deployment flow:
+1. checkout;
+2. build canonical dataset;
+3. syntax check + repository audit;
+4. assemble `_site` containing only deployable assets;
+5. deploy `_site` to Pages.
+
+Raw maintenance files, scripts and verification caches are not copied into the public artifact.
+
+### `scripts/audit_repository.mjs`
+Blocking checks include:
+- canonical production pool >=3;
+- unique Google Place IDs;
+- all production rows verified;
+- all distances within 1.2 km;
+- no Google Places response fields such as Maps URI/display name/business status/type in the canonical production records;
+- public `index.html` does not load Leaflet, legacy Google payloads or maintenance overlays;
+- public page loads only production data + `app.js`.
+
+### `.github/workflows/pr-review.yml`
+Read-only PR validation workflow. It does not deploy and does not receive the Google API secret.
+
+## 11. Security and policy boundaries
+
+- `GOOGLE_MAP_API` stays in GitHub Actions Secrets.
+- Browser JavaScript never receives the Places API key.
+- Google field masks are kept narrow.
+- Place ID is the durable Google identity key.
+- Google Places response content used for QC is transient unless current platform terms explicitly permit storage.
+- The public UI includes Google Maps attribution and uses direct Google Maps navigation links.
+- OSM-derived public metadata retains OpenStreetMap attribution.
+
+## 12. Remaining work
+
+Non-blocking architecture/product work:
+1. expand Google verification coverage for the Area1 independent-source pool;
+2. enrich budget/dishes/opening information for verified entities;
+3. improve Place-ID-centric Tabelog/award matching;
+4. audit Google coverage inventory vs verified independent-source coverage;
+5. implement Area2/SHIZUOKA only when their data is ready;
+6. design opening/holiday exclusion rules before enabling them;
+7. add local interaction history only after persistence/privacy semantics are defined.
