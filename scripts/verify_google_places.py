@@ -238,6 +238,19 @@ def write_outputs(cache):
     OUT.write_text(script, encoding='utf-8')
 
 
+def select_half_balanced(rows):
+    def distance_key(row):
+        distance = row.get('distanceMeters')
+        if not isinstance(distance, (int, float)) or not math.isfinite(distance):
+            distance = math.inf
+        return (distance, row.get('id', ''))
+
+    # OSM output is usually distance-ordered. Taking rows[:half] therefore
+    # over-samples the center. Sorting explicitly and taking alternating rows
+    # keeps a deterministic ~50% sample distributed across the full radius.
+    return sorted(rows, key=distance_key)[::2]
+
+
 def main():
     if not API_KEY:
         raise SystemExit('GOOGLE_MAPS_API_KEY is required')
@@ -246,8 +259,11 @@ def main():
     cache = load_cache()
 
     if BATCH_LIMIT == -1:
-        rows = all_rows[:max(1, (len(all_rows) + 1) // 2)]
-        print(f'half_mode total_candidates={len(all_rows)} selected={len(rows)}')
+        rows = select_half_balanced(all_rows)
+        print(
+            f'half_mode=distance_balanced total_candidates={len(all_rows)} '
+            f'selected={len(rows)}'
+        )
     elif BATCH_LIMIT > 0:
         rows = all_rows[:BATCH_LIMIT]
     else:
