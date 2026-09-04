@@ -14,7 +14,7 @@ Build a reliable `地区1️⃣` recommendation database inside the strict 1.2km
 8. Every widening/narrowing of geographic scope must be explicit.
 9. External-source-only records are audit leads, not automatic production recommendations.
 
-## Phase A — Google-first Area1 discovery [in progress]
+## Phase A — Google-first Area1 discovery [completed]
 
 Implemented:
 - `scripts/discover_google_area1.py`
@@ -26,38 +26,43 @@ Implemented:
 - permanent closure exclusion
 - Google-native static outputs
 
-In progress:
-- run full Area1 Google discovery
-- record unique Place ID count
+First full discovery result:
+- 37 spatial grid points
+- 740 Google Nearby Search API calls
+- 0 API errors
+- 1,613 unique Google-verified Area1 food-related entities
+
+Remaining audit work:
 - inspect type distribution
 - inspect whether search cells/types hit practical result caps
 - check Google-only entities missing from OSM/Tabelog
 
-## Phase B — Canonical production dataset normalization
+## Phase B — Canonical production dataset normalization [frontend migration completed]
 
-Required:
-- promote Google-first data to the canonical Area1 production dataset
-- one production record per Google Place ID
-- use Google canonical name/address/coordinates/business status/type
-- calculate exact Area1 distance from Google coordinates
-- remove duplicate Place IDs
-- separate production dataset from legacy source-candidate audit data
-- ensure manual corrections override generated values only when tied to the same Google identity
+Completed:
+- Google-first `data/area1_google.js` is now loaded by the webpage
+- one production identity per Google Place ID from the generated discovery output
+- Google canonical name/address/coordinates/status/type remain authoritative
+- strict <=1200m production safety check remains in the browser
+- legacy/manual/OSM records no longer independently enter the recommendation pool
+- compatible historical/manual records may only enrich Google entities
+- manual correction layer loads last
 
-Target output:
-- `data/area1_verified.js` or equivalent canonical production file
+Current implementation note:
+- enrichment is still merged in-browser rather than precompiled into a single canonical `data/area1_verified.js`
 
-Do not delete legacy files until parity/coverage is checked.
+Next normalization target:
+- precompile enrichment into one canonical static production file to reduce client payload and simplify runtime logic
 
-## Phase C — Tabelog / 百名店 enrichment
+## Phase C — Tabelog / 百名店 enrichment [in progress]
 
-For each Google production entity, match Tabelog where possible and enrich:
+Current frontend can consume enrichment for:
 - cuisine/category refinement
 - lunch budget
 - dinner budget
-- 1–2 representative dishes
+- representative dishes
 - opening hours
-- regular closed days
+- regular closed days / closure notes
 - 百名店 year/category
 
 Matching priority:
@@ -66,6 +71,8 @@ Matching priority:
 3. strong normalized name + compatible location/address
 
 Ambiguous Tabelog matches remain unresolved. They must not remove the Google production entity.
+
+Missing fields are shown explicitly as `待补充` rather than fabricated.
 
 ## Phase D — OSM/legacy candidate audit
 
@@ -80,45 +87,58 @@ Tasks:
 
 The previous half-pool run produced a large rejection count because source-name/source-coordinate matching was too strict for production identity. That result is now audit data, not the production database definition.
 
-## Phase E — Coverage and metadata quality
+## Phase E — Coverage and metadata quality [partially surfaced in UI]
 
-Planned metrics:
+Public stats now report:
 - total Google production entities
-- unique Place IDs
+- cuisine-classified count
+- budget-enriched count
+- representative-dish enriched count
+- opening/holiday enriched count
+- 百名店 count
+
+Still planned:
 - Google-only count
 - Google + Tabelog match count/rate
 - Google + OSM match count/rate
-- cuisine completeness
-- lunch/dinner budget completeness
-- opening-hours completeness
-- closed-day completeness
-- representative-dish completeness
-- 百名店 count/coverage
 - duplicate Place IDs
 - outside-boundary production records (must be zero)
+- detailed type distribution
+- result-cap coverage audit
 
 Operational completion means audited Google-first cross-source coverage, not a claim of universal real-world completeness.
 
-## Phase F — Frontend migration
+## Phase F — Frontend migration [completed for production eligibility]
 
-Required after canonical dataset is ready:
-- load Google-first canonical production dataset as the main Area1 source
-- remove dependence on historical candidate overlays for eligibility
-- keep absolute 1200m frontend safety check
-- keep filters independent
-- preserve 3-distinct-cuisine behavior when possible
-- preserve browser cryptographic randomness
-- preserve 百名店 weight 2.2 vs ordinary 1.0
-- prefer Place ID/exact Google Maps URI for navigation
-- update database statistics to show Google production count + metadata completeness, not legacy candidate rejection counts
+Completed:
+- Google-first Area1 dataset is the sole source of production eligibility
+- historical candidate overlays are no longer admission gates
+- absolute 1200m frontend safety check retained
+- filters remain independent
+- 3-distinct-cuisine behavior preserved when possible
+- browser cryptographic randomness preserved
+- 百名店 weight 2.2 vs ordinary 1.0 preserved
+- Place ID is preferred for Google Maps navigation
+- database statistics now show production count + metadata completeness instead of legacy rejection counts
+- missing metadata renders clearly
 
-## Phase G — UI/data quality
+Remaining optimization:
+- remove unnecessary legacy payload from browser after enrichment is precompiled
+
+## Phase G — UI/data quality [in progress]
+
+Completed:
+- Google-verified badge
+- temporary-closure warning badge
+- explicit metadata completeness line per restaurant
+- cleaner source/metadata state wording
+- comparison table includes metadata status
 
 Planned:
-- improve card/comparison layout after product feedback
-- ensure every production entity can render on overview map
-- ensure incomplete metadata displays cleanly without fabricated values
-- audit cuisine taxonomy for useful random diversity
+- improve cuisine taxonomy beyond generic `餐厅`
+- audit whether some Google food-adjacent types should be excluded from random meal recommendations
+- ensure every production entity renders correctly on overview map
+- further improve card/comparison layout after product feedback
 
 ## Phase H — User-specified future logic
 
@@ -136,7 +156,7 @@ Reuse the same Google discovery -> canonical dataset -> Tabelog/OSM enrichment p
 ## Routine maintenance workflow
 
 ### Google discovery
-1. Run Google-first discovery.
+1. Run Google-first discovery deliberately, not continuously.
 2. Check unique Place ID count and API errors.
 3. Check strict <=1200m boundary.
 4. Audit type distribution/result-cap risk.
@@ -161,22 +181,23 @@ Reuse the same Google discovery -> canonical dataset -> Tabelog/OSM enrichment p
 - production dataset is Google-first
 - no Area1 production result exceeds 1.2km
 - no duplicate Place IDs
-- Google links resolve to business entities rather than bare coordinates
+- Google links resolve by Place ID when available
 - three-result cuisine diversity works when sufficient categories exist
 - filter toggles bypass their corresponding conditions
+- missing metadata is explicit, not fabricated
 - no personal names appear in public repository content
 
 ## Cost control
 Google Places calls are maintenance-time only. Discovery runs should be deliberate rather than frequent. Keep field masks compact, avoid redundant repeat runs, and store generated outputs for audit/comparison.
 
 ## Definition of done for Area1 v1
-- Google-first canonical dataset exists
+- Google-first canonical dataset exists and is used by the frontend
 - practical Google/Tabelog/OSM coverage audit completed
 - strict <=1.2km boundary validated from Google canonical coordinates
-- production frontend uses Google-first canonical records
 - no known duplicate Place IDs
 - cuisine coverage sufficient for 3-way recommendations
 - budget metadata reasonably populated without fabrication
 - 百名店 identity/weighting audited against Google entities
 - database statistics reflect production coverage and metadata quality
+- legacy enrichment payload precompiled or otherwise minimized
 - documentation and changelog reflect final state
