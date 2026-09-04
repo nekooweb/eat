@@ -69,7 +69,7 @@ const report = {
   verificationQcVersions: qcVersions,
   rejectionReasons,
   productionEntities: production.length,
-  productionInGoogleInventory,
+  productionInGoogleInventory: productionInInventory,
   productionInventoryCoveragePct: inventoryIds.size
     ? Number((100 * productionInInventory / inventoryIds.size).toFixed(1))
     : null,
