@@ -18,19 +18,21 @@ BATCH_LIMIT = int(os.environ.get('GOOGLE_VERIFY_LIMIT', '0') or 0)
 CENTER = (35.6959, 139.7576)
 MAX_CENTER_DISTANCE = 1200
 MAX_MATCH_DISTANCE = 300
-QC_VERSION = 3
+CLOSE_MATCH_DISTANCE = 45
+QC_VERSION = 4
 
 ALLOWED_TYPES = {
     'restaurant', 'cafe', 'coffee_shop', 'bakery', 'meal_takeaway',
     'meal_delivery', 'fast_food_restaurant', 'food_court', 'bar', 'pub',
-    'dessert_shop', 'ice_cream_shop', 'ramen_restaurant',
-    'japanese_restaurant', 'chinese_restaurant', 'korean_restaurant',
+    'dessert_shop', 'ice_cream_shop', 'confectionery', 'tea_house',
+    'ramen_restaurant', 'noodle_shop', 'japanese_restaurant',
+    'japanese_curry_restaurant', 'japanese_izakaya_restaurant',
+    'tonkatsu_restaurant', 'yakitori_restaurant', 'yakiniku_restaurant',
+    'chinese_restaurant', 'chinese_noodle_restaurant', 'korean_restaurant',
     'thai_restaurant', 'indian_restaurant', 'italian_restaurant',
     'french_restaurant', 'pizza_restaurant', 'hamburger_restaurant',
     'seafood_restaurant', 'sushi_restaurant', 'steak_house',
-    'barbecue_restaurant', 'japanese_curry_restaurant',
-    'udon_restaurant', 'soba_restaurant', 'yakitori_restaurant',
-    'tonkatsu_restaurant', 'confectionery'
+    'barbecue_restaurant'
 }
 
 
@@ -54,9 +56,9 @@ def load_cache():
     except (json.JSONDecodeError, OSError):
         return {}
 
-    # Old cache versions stored Google names, addresses, coordinates and Maps URLs.
-    # Strip those fields on read; persistent verification state is intentionally
-    # limited to our source-candidate ID, status and the cacheable Google Place ID.
+    # Older cache versions contained Google names, addresses, coordinates and
+    # Maps URLs. Persistent verification state is intentionally limited to the
+    # external source ID, verification status and cacheable Google Place ID.
     clean = {}
     for source_id, value in raw.items():
         if not isinstance(value, dict):
@@ -68,7 +70,7 @@ def load_cache():
             'reason': value.get('reason'),
             'qcVersion': value.get('qcVersion')
         }
-        clean[source_id] = {k: v for k, v in entry.items() if v is not None}
+        clean[source_id] = {key: val for key, val in entry.items() if val is not None}
     return clean
 
 
@@ -80,7 +82,7 @@ def post_json(url, body, mask):
             'Content-Type': 'application/json',
             'X-Goog-Api-Key': API_KEY,
             'X-Goog-FieldMask': mask,
-            'User-Agent': 'nekooweb-eat-google-verifier/4.0'
+            'User-Agent': 'nekooweb-eat-google-verifier/4.1'
         }
     )
     with urllib.request.urlopen(request, timeout=30) as response:
@@ -93,7 +95,7 @@ def get_json(url, mask):
         headers={
             'X-Goog-Api-Key': API_KEY,
             'X-Goog-FieldMask': mask,
-            'User-Agent': 'nekooweb-eat-google-verifier/4.0'
+            'User-Agent': 'nekooweb-eat-google-verifier/4.1'
         }
     )
     with urllib.request.urlopen(request, timeout=30) as response:
@@ -164,8 +166,8 @@ def result(source_id, status, place_id=None, reason=None):
 
 
 def verify_place(place_id, row):
-    # Google fields below are used transiently for QC and are deliberately not
-    # written into the repository cache or generated browser data.
+    # These Google fields are used transiently for QC and are deliberately not
+    # written into the repository cache or generated browser dataset.
     place = get_json(
         'https://places.googleapis.com/v1/places/' + place_id,
         'id,displayName,location,businessStatus,primaryType,types'
@@ -188,14 +190,20 @@ def verify_place(place_id, row):
     if match_distance > MAX_MATCH_DISTANCE:
         return result(row['id'], 'rejected', place_id, 'location_mismatch')
 
-    google_name = (place.get('displayName') or {}).get('text', '')
-    if name_score(row.get('name'), google_name) < 0.45:
-        return result(row['id'], 'rejected', place_id, 'name_mismatch')
-
     primary_type = place.get('primaryType')
     types = set(place.get('types') or [])
     if primary_type not in ALLOWED_TYPES and not (types & ALLOWED_TYPES):
         return result(row['id'], 'rejected', place_id, 'non_food_google_type')
+
+    google_name = (place.get('displayName') or {}).get('text', '')
+    similarity = name_score(row.get('name'), google_name)
+    # Google may return a romanized/English display name for a Japanese source
+    # name. A very close geospatial hit found by a name-based Text Search is
+    # therefore accepted even when literal string similarity is low. For looser
+    # 45-300m matches, require strong name evidence to avoid same-building/nearby
+    # restaurant collisions.
+    if similarity < 0.45 and match_distance > CLOSE_MATCH_DISTANCE:
+        return result(row['id'], 'rejected', place_id, 'name_mismatch')
 
     return result(row['id'], 'verified', place_id)
 
@@ -265,12 +273,22 @@ def main():
                 new_calls += 1
         except urllib.error.HTTPError as error:
             detail = http_error_detail(error)
-            verification = result(source_id, 'pending', old.get('googlePlaceId') if old else None, f'http_{error.code}')
+            verification = result(
+                source_id,
+                'pending',
+                old.get('googlePlaceId') if old else None,
+                f'http_{error.code}'
+            )
             print(f'HTTP {error.code} for {row["name"]}: {detail}')
             if error.code in (429, 500, 502, 503):
                 time.sleep(2)
         except Exception as error:
-            verification = result(source_id, 'pending', old.get('googlePlaceId') if old else None, type(error).__name__)
+            verification = result(
+                source_id,
+                'pending',
+                old.get('googlePlaceId') if old else None,
+                type(error).__name__
+            )
             print(f'ERROR for {row["name"]}: {type(error).__name__}: {error}')
 
         cache[source_id] = verification
