@@ -27,10 +27,11 @@ jobs:
           node-version: '22'
       - name: Build canonical production dataset
         run: node scripts/build_production_dataset.mjs
-      - name: Static checks
+      - name: Static and repository checks
         run: |
           node --check app.js
           test -s data/production_area1.js
+          node scripts/audit_repository.mjs
       - name: Assemble public site
         run: |
           mkdir -p _site/data
