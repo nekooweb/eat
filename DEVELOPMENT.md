@@ -1,87 +1,58 @@
 # Eat Development Plan
 
 ## Current milestone
-Build a reliable `地区1️⃣` recommendation database inside the strict 1.2km boundary, with Google Maps business verification as the production gate and Tabelog/OSM used for discovery and enrichment.
+Build a reliable `地区1️⃣` recommendation database inside the strict 1.2km boundary with **Google Places as the production merchant universe**, then enrich those Google entities with Tabelog/OSM/manual data.
 
 ## Development principles
-1. Correct identity before high record count.
-2. Keep runtime static and fast.
-3. Never put private API credentials in frontend code.
-4. Do not fabricate restaurant metadata.
-5. Preserve anonymous public area labels.
-6. Treat candidate discovery and production eligibility separately.
-7. Every widening/narrowing of geographic scope must be explicit.
-8. A data-source record is not automatically a restaurant recommendation.
+1. Google Place ID is the canonical production business key.
+2. Google-native discovery comes before external-source enrichment.
+3. Tabelog/OSM cannot veto a valid Google business merely because names/coordinates differ.
+4. Keep runtime static and fast.
+5. Never put private API credentials in frontend code.
+6. Do not fabricate restaurant metadata.
+7. Preserve anonymous public area labels.
+8. Every widening/narrowing of geographic scope must be explicit.
+9. External-source-only records are audit leads, not automatic production recommendations.
 
-## Phase A — Area1 verification foundation [in progress]
+## Phase A — Google-first Area1 discovery [in progress]
 
-Completed / implemented:
-- static responsive single-page UI
-- TOKYO / SHIZUOKA profile shell
-- Area1 / Area2 anonymous labels
-- Area1 1.2km hard boundary
-- three independently switchable filters
-- concrete budget ranges
-- distance preferences
-- 3-result random recommendation
-- distinct cuisine preference
-- 百名店 metadata/2.2 weighting foundation
-- Leaflet overview map
-- Google Maps individual links/embeds
-- OSM candidate builder
-- Google Places API workflow
-- GitHub Secret integration
-- Google Place ID/details cache
-- strict Google verification QC v2
-- generated Google overlay loaded by frontend
+Implemented:
+- `scripts/discover_google_area1.py`
+- `.github/workflows/discover-google-area1.yml`
+- overlapping spatial-cell Nearby Search strategy
+- multiple food-related Google place types
+- Place ID deduplication
+- strict <=1200m boundary filtering
+- permanent closure exclusion
+- Google-native static outputs
 
 In progress:
-- verify approximately half of current Area1 OSM pool under QC v2
-- inspect rejection reasons for false positives/false negatives
-- complete remaining candidate verification after QC review
+- run full Area1 Google discovery
+- record unique Place ID count
+- inspect type distribution
+- inspect whether search cells/types hit practical result caps
+- check Google-only entities missing from OSM/Tabelog
 
-## Phase B — Production dataset normalization
+## Phase B — Canonical production dataset normalization
 
 Required:
-- create a single canonical verified Area1 dataset
-- deduplicate by Google Place ID first
-- migrate legacy name-only overlays to ID-based matching
-- remove rejected/pending entities from production dataset while preserving audit/cache state
-- merge official Google coordinates into production records
-- calculate exact Area1 distance from canonical coordinates
-- retain compact useful fields only
+- promote Google-first data to the canonical Area1 production dataset
+- one production record per Google Place ID
+- use Google canonical name/address/coordinates/business status/type
+- calculate exact Area1 distance from Google coordinates
+- remove duplicate Place IDs
+- separate production dataset from legacy source-candidate audit data
+- ensure manual corrections override generated values only when tied to the same Google identity
 
 Target output:
-- `data/area1_verified.js` or equivalent canonical file
+- `data/area1_verified.js` or equivalent canonical production file
 
-Do not delete legacy files until output parity has been checked.
+Do not delete legacy files until parity/coverage is checked.
 
-## Phase C — Coverage expansion
+## Phase C — Tabelog / 百名店 enrichment
 
-Problem:
-The current verifier starts from OSM candidates. Restaurants present on Google Maps but absent from OSM can therefore be missed.
-
-Plan:
-- add Google Places Nearby Search discovery for food-related types inside Area1
-- deduplicate Google discovery by Place ID
-- enforce exact haversine <=1200m
-- union Google-discovered entities with OSM/Tabelog candidate sets
-- audit source-only records
-
-Coverage categories:
-- Google + OSM
-- Google + Tabelog
-- Google only
-- OSM candidate rejected/not found on Google
-- Tabelog candidate rejected/not found on Google
-
-Operational completion means audited Google-verified cross-source coverage, not a claim of universal real-world completeness.
-
-## Phase D — Metadata enrichment
-
-For each verified entity, enrich where supported:
-- primary cuisine
-- secondary tags
+For each Google production entity, match Tabelog where possible and enrich:
+- cuisine/category refinement
 - lunch budget
 - dinner budget
 - 1–2 representative dishes
@@ -89,28 +60,67 @@ For each verified entity, enrich where supported:
 - regular closed days
 - 百名店 year/category
 
-Priority:
-1. identity/address/coordinates
-2. cuisine
-3. budget
-4. 百名店
-5. opening/closed days
-6. representative dishes
+Matching priority:
+1. exact known Google Place ID mapping
+2. branch-aware name + address + nearby coordinates
+3. strong normalized name + compatible location/address
 
-Unknown values remain null/empty.
+Ambiguous Tabelog matches remain unresolved. They must not remove the Google production entity.
 
-## Phase E — UI/data quality
+## Phase D — OSM/legacy candidate audit
+
+Use OSM and the legacy verifier to answer coverage questions, not to define the main business universe.
+
+Tasks:
+- compare Google production entities vs OSM candidates
+- identify Google-only entities
+- identify OSM-only candidates with no Google match
+- preserve source-to-Google diagnostics
+- stop presenting legacy `verified/rejected/pending` as production database status
+
+The previous half-pool run produced a large rejection count because source-name/source-coordinate matching was too strict for production identity. That result is now audit data, not the production database definition.
+
+## Phase E — Coverage and metadata quality
+
+Planned metrics:
+- total Google production entities
+- unique Place IDs
+- Google-only count
+- Google + Tabelog match count/rate
+- Google + OSM match count/rate
+- cuisine completeness
+- lunch/dinner budget completeness
+- opening-hours completeness
+- closed-day completeness
+- representative-dish completeness
+- 百名店 count/coverage
+- duplicate Place IDs
+- outside-boundary production records (must be zero)
+
+Operational completion means audited Google-first cross-source coverage, not a claim of universal real-world completeness.
+
+## Phase F — Frontend migration
+
+Required after canonical dataset is ready:
+- load Google-first canonical production dataset as the main Area1 source
+- remove dependence on historical candidate overlays for eligibility
+- keep absolute 1200m frontend safety check
+- keep filters independent
+- preserve 3-distinct-cuisine behavior when possible
+- preserve browser cryptographic randomness
+- preserve 百名店 weight 2.2 vs ordinary 1.0
+- prefer Place ID/exact Google Maps URI for navigation
+- update database statistics to show Google production count + metadata completeness, not legacy candidate rejection counts
+
+## Phase G — UI/data quality
 
 Planned:
-- database coverage dashboard/statistics
-- clear verified-data count
-- 百名店 count
-- metadata completeness metrics
 - improve card/comparison layout after product feedback
-- ensure every recommended record can appear on overview map
-- branch-safe Google Maps navigation
+- ensure every production entity can render on overview map
+- ensure incomplete metadata displays cleanly without fabricated values
+- audit cuisine taxonomy for useful random diversity
 
-## Phase F — User-specified future logic
+## Phase H — User-specified future logic
 
 Do not implement until requirements are supplied:
 - holiday/open-now exclusion logic
@@ -120,49 +130,53 @@ Do not implement until requirements are supplied:
 - whether history changes future random probability
 
 ## Area2 / SHIZUOKA
-Area2 and SHIZUOKA are intentionally secondary until Area1 data/verification architecture is stable.
-Reuse the same candidate -> Google verification -> canonical dataset pipeline rather than creating a second ad-hoc implementation.
+Area2 and SHIZUOKA remain secondary until Area1 Google-first architecture is stable.
+Reuse the same Google discovery -> canonical dataset -> Tabelog/OSM enrichment pipeline.
 
 ## Routine maintenance workflow
 
-### Candidate refresh
-1. Run/update candidate collection.
-2. Confirm radius and anonymous area mapping.
-3. Review candidate count.
+### Google discovery
+1. Run Google-first discovery.
+2. Check unique Place ID count and API errors.
+3. Check strict <=1200m boundary.
+4. Audit type distribution/result-cap risk.
+5. Commit generated data.
 
-### Google verification
-1. Use a small batch after code/QC changes.
-2. Review rejection reasons.
-3. Run half/all only after QC looks sane.
-4. Commit cache + generated overlay.
-5. Check Pages deployment.
+### Tabelog enrichment
+1. Start only from Google production entities.
+2. Match branch identity carefully.
+3. Record source-backed values only.
+4. Leave ambiguous values unresolved.
+5. Update 百名店 metadata only after identity is clear.
 
-### Enrichment
-1. Work only from verified entities.
-2. Record source-backed values.
-3. Update 百名店 identity carefully.
-4. Never infer unknown values.
+### OSM/source audit
+1. Compare source candidates against Google production entities.
+2. Use source-only records as coverage leads.
+3. Do not auto-promote external-only records.
+4. Do not reject Google-native entities due to source mismatch.
 
 ### Release check
 - page loads on mobile and desktop
 - no API key in page source/repository
-- production pool is verified-only
-- no Area1 result exceeds 1.2km
-- Google links point to business entities rather than bare coordinates
+- production dataset is Google-first
+- no Area1 production result exceeds 1.2km
+- no duplicate Place IDs
+- Google links resolve to business entities rather than bare coordinates
 - three-result cuisine diversity works when sufficient categories exist
-- filter toggles actually bypass their corresponding conditions
+- filter toggles bypass their corresponding conditions
 - no personal names appear in public repository content
 
 ## Cost control
-Google Places calls are maintenance-time only. Use cache reuse and staged verification. Prefer ID-only search before detail enrichment. Do not repeatedly re-query already terminal results unless QC version/data identity changed.
+Google Places calls are maintenance-time only. Discovery runs should be deliberate rather than frequent. Keep field masks compact, avoid redundant repeat runs, and store generated outputs for audit/comparison.
 
 ## Definition of done for Area1 v1
-- canonical Google-verified dataset exists
-- practical Google/OSM/Tabelog coverage audit completed
-- strict <=1.2km boundary validated from canonical coordinates
-- production frontend uses only verified records
+- Google-first canonical dataset exists
+- practical Google/Tabelog/OSM coverage audit completed
+- strict <=1.2km boundary validated from Google canonical coordinates
+- production frontend uses Google-first canonical records
 - no known duplicate Place IDs
 - cuisine coverage sufficient for 3-way recommendations
 - budget metadata reasonably populated without fabrication
-- 百名店 identity/weighting audited
+- 百名店 identity/weighting audited against Google entities
+- database statistics reflect production coverage and metadata quality
 - documentation and changelog reflect final state
