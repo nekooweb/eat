@@ -17,13 +17,18 @@ const app = read('app.js');
 const productionSource = read('data/production_area1.js');
 
 if (/leaflet/i.test(index)) fail('Leaflet is still referenced by the public page');
+if (/<iframe\b/i.test(index + app)) fail('embedded result maps reappeared');
 if (/area1_google(?:_places)?\.(?:js|json)/i.test(index)) fail('legacy Google discovery payload is public');
 if (/google_entities(?:\.generated)?\.js/i.test(index)) fail('maintenance overlays are public runtime dependencies');
 if (!/data\/production_area1\.js/.test(index)) fail('canonical production dataset is not loaded');
 if ((index.match(/<script\b/gi) || []).length !== 2) fail('public page should load exactly production data + app.js');
+if (/data-filter-toggle|filterEnabled/.test(index + app)) fail('redundant filter enable/disable state reappeared');
+if (/身份已核验/.test(app)) fail('generic verification badge should not appear on every result');
 if (/overview-map|renderCompare|embedUrl|googleBusinessStatus|googlePrimaryType/.test(app)) {
   fail('removed map/comparison/Google-content runtime logic is still present');
 }
+if (!/translate="no">Google Maps</.test(index)) fail('Google Maps text attribution is missing');
+if (!/OpenStreetMap contributors/.test(index)) fail('OpenStreetMap attribution is missing');
 
 const sandbox = { window: {} };
 vm.createContext(sandbox);
