@@ -2,110 +2,84 @@
 
 ## Scope
 - Single-page static web app hosted at `https://nekooweb.github.io/eat/`.
-- No backend. All behavior and data are maintained directly in repository code/data files.
-- Fast loading and usable on both mobile and desktop.
-- Public top-level profiles are `TOKYO` and `SHIZUOKA`.
-- Personal names must not appear in repository files, code, data, documentation, comments, or public UI.
+- No backend. Runtime behavior/data are static repository assets.
+- Fast loading and usable on mobile and desktop.
+- Public profiles: `TOKYO` / `SHIZUOKA`.
+- Personal names must never appear in repository code, data, docs, comments or UI.
 
 ## Profile and area
-- Top-level selector: `TOKYO` / `SHIZUOKA`.
 - TOKYO public areas: `地区1️⃣` / `地区2️⃣` only.
-- Internal anchors: 地区1️⃣ = 神保町駅; 地区2️⃣ = 板橋本町駅. Never explain this mapping in public UI.
-- SHIZUOKA remains `TBD`.
+- Internal anchors: 地区1️⃣ = 神保町駅; 地区2️⃣ = 板橋本町駅. Never expose this mapping in public UI.
+- 地区1️⃣ production candidate boundary is a strict straight-line radius of 1.2 km from its internal anchor.
+- Records beyond 1.2 km must not participate in 地区1️⃣ recommendations.
+- SHIZUOKA remains TBD.
+
+## Database completeness target
+- Current priority is 地区1️⃣ only.
+- Aim for exhaustive practical coverage of publicly discoverable food businesses inside the 1.2 km boundary using multiple public sources; never claim literal 100% real-world completeness without evidence.
+- Merge and deduplicate source records by business identity, normalized name, address and coordinates.
+- Preserve source identifiers and provenance instead of inventing missing information.
+- Maintain data maturity/quality metadata so incomplete records can be enriched systematically.
+- Prefer a missing/null value over fabricated budget, dish, holiday or opening information.
 
 ## Restaurant data collection
-- Cross-check restaurants using both 食べログ (Tabelog) and Google Maps during repository maintenance.
-- Tabelog: cuisine taxonomy, discovery, concrete lunch/dinner budget, menu/recommended dishes, regular hours.
-- Google Maps: business identity, map/location cross-check, coordinates, current-place context and direct Maps access.
-- Production records remain static and manually refreshable; no backend discovery/scraping at page load.
+- Cross-check using Tabelog and Google Maps during repository maintenance, with OpenStreetMap as an additional public geospatial/base-metadata source.
+- Tabelog: discovery, 百名店 taxonomy/awards, cuisine, lunch/dinner budget, menu/recommended dishes, regular hours/holidays.
+- Google Maps: business identity, address/location cross-check, coordinates, Maps access and current-place context.
+- OpenStreetMap: base POI coverage, coordinates and available public tags such as opening hours, phone, website, brand, operator, takeaway/delivery/accessibility metadata.
+- Production data remains static; no restaurant discovery at page load.
 
-## Opening-hours logic
-- Store weekly opening hours, regular closed days and uncertainty/temporary-closure notes.
-- Read current browser local date/time.
-- Exclude restaurants clearly closed according to stored schedule at generation time.
-- Never claim that static data guarantees live opening status; Google Maps/store notices remain the final confirmation source.
+## Data fields
+A restaurant record should support where publicly available: stable id, Japanese name, alternative/English name, profile, anonymous area, primary cuisine, raw cuisine/source taxonomy, secondary tags, lunch/dinner budget, exact straight-line distance, display distance, 1-2 supported representative dishes, raw public opening-hours expression, regular closed days, holiday/uncertainty note, phone, website, brand/operator, takeaway/delivery, accessibility, smoking/payment metadata, full address/postcode, latitude/longitude, Google Maps query/URL/Place ID, source/source ID/source URL, verification/source date, data maturity and data-quality score.
 
-## Recommendation flow
-1. Select TOKYO/SHIZUOKA.
-2. Select anonymous area.
-3. Select food categories to reject.
-4. Select concrete yen budget range.
-5. Generate proposals.
-6. Apply ALL filters before random sampling.
-7. Generate 3 distinct restaurants from 3 distinct primary cuisine families when possible.
-8. Clicking a restaurant name expands its Google Maps preview.
+## Holiday/opening data
+- Collect and preserve publicly available opening-hours and regular-holiday information now.
+- Do not invent a holiday from absence of opening data.
+- The final recommendation-time closure/exclusion logic is intentionally TBD and will be supplied later by the user.
+- Until that logic is finalized, the database should retain raw/source-backed schedule information without making unsupported live-status claims.
 
-## Strict randomness
-- Actual browser-side random sampling only; recommendation content must not be model/ranking driven.
-- Sequence: profile filter → area filter → rejected-category filter → budget filter → current-time/opening filter → group by primary cuisine → uniformly sample 3 cuisine groups without replacement → uniformly sample one restaurant per group → shuffle final cards.
-- Use `crypto.getRandomValues` with unbiased bounded sampling.
-- Ratings, popularity, review count, distance, price, alphabetic order, insertion/source order and editorial preference MUST NOT influence probability.
-- Repeated clicks are independent; no hidden anti-repeat weighting.
-- If fewer than 3 eligible cuisine families remain, explain that instead of duplicating a cuisine.
+## Filters
+- Three optional filter modules: `今天不想吃什么`, `大概预算`, `期望距离`.
+- Each module has an independent enable/disable switch.
+- A disabled module contributes no filtering condition.
+- Distance choices currently include 300m / 500m / 800m / 1.2km; the database boundary remains 1.2km regardless of the filter switch.
 
-## Distance
-- Store rough distance buckets relative to each hidden station anchor.
-- Display approximately `约100m`, `约200m`, `约300m`, `约400m`, etc.
+## Recommendation
+- Generate 3 distinct restaurants from 3 distinct primary cuisine families when possible.
+- Use browser-side cryptographic randomness.
+- 百名店 restaurants have a higher configured random weight than ordinary restaurants (currently 2.2 vs 1.0), while cuisine diversity remains enforced.
+- No ratings/review-count popularity ranking unless explicitly requested later.
 
-## Google Maps
-- URL-only is insufficient.
-- Keep initial result cards compact; load/show the small map only when a restaurant is clicked.
-- Expanded card shows a Google Maps location view and a direct Google Maps link.
-- Store name, address, coordinates, query, Maps URL and Place ID when available.
-- Prefer Place ID for exact business identity when obtainable; keep name/address fallback.
+## 百名店
+- Store explicit 百名店 boolean, award year and award category when verified.
+- Match award metadata to a business identity, not merely a loose name match when ambiguity exists.
+- Display/weight behavior can evolve separately from the underlying award metadata.
 
-## Food taxonomy
-- Base rejection taxonomy primarily on 食べログ 百名店 genres.
-- Each restaurant has one primary cuisine family plus optional secondary tags.
-- Adjacent categories may later be grouped for mobile usability.
+## Google Maps and overview map
+- Individual restaurant expansion provides Google Maps location preview/direct access.
+- Three-result overview uses coordinates and displays the three selected locations together.
+- Store exact coordinates and Place ID when obtainable.
 
-## Budget
-- Never use abstract `💰💰 中等` as the primary display.
-- Display concrete ranges such as `¥1,000–1,999`, `¥2,000–2,999`, `¥6,000–7,999`.
-- Keep lunch/dinner ranges separately where available and show the contextually relevant range.
-- Budget filters operate on stored yen ranges.
+## Budget and dishes
+- Store concrete yen ranges, lunch/dinner separately where available.
+- Never replace unknown budget with an invented range.
+- Store 1-2 source-supported representative dishes when available; unknown dishes remain explicitly incomplete.
 
-## Recommended dishes and language
-- Store 1-2 supported representative dishes per restaurant.
-- Restaurant names remain Japanese.
-- Other key information is Chinese: cuisine, distance, price, recommended dishes, regular closure and status notes.
-- Japanese dish names may be retained alongside concise Chinese translation.
-
-## Result card minimum
-- Japanese restaurant name;
-- primary cuisine in Chinese;
-- approximate distance;
-- concrete yen range;
-- 1-2 recommended dishes;
-- closed-day/opening-status note;
-- expandable Google Maps preview;
-- direct Google Maps access.
-
-## Data model
-Each restaurant should eventually support: `name_ja`, profile, anonymous area, primary cuisine, secondary tags, lunch/dinner budget, distance bucket, recommended dishes, weekly hours, regular closures, uncertainty flag, address, latitude/longitude, Google Maps query/URL/Place ID, source notes and last verification date.
-
-## Future interaction-history requirement (record now, design later)
-- A future version must record recommendation/button interactions locally using the user's device/browser context.
-- Each recorded interaction should include the user's system/browser timestamp at the moment of the click/generation.
-- The future design also needs a persistent per-device identifier so records from the same device can be associated across visits.
-- Exact device-ID generation, persistence, privacy behavior, reset behavior and how history affects the product are intentionally NOT specified yet.
-- Do not implement invasive browser fingerprinting implicitly. The device identifier mechanism must be explicitly designed/approved later; a locally generated random installation/device ID stored in browser storage is a likely low-complexity option.
-- This future history requirement must not silently alter the strict random recommendation probability unless a later requirement explicitly says history should affect sampling.
+## Interaction history (future)
+- Future version should record recommendation interactions locally with browser/system timestamp and a persistent locally generated installation/device identifier.
+- Exact persistence/privacy/reset semantics remain TBD.
+- Do not use invasive fingerprinting.
 
 ## Technical direction
-- Static HTML + CSS + vanilla JavaScript; minimal dependencies and no unnecessary build step.
-- Browser local time drives static schedule filtering.
-- Lazy-load map embeds on expansion when practical.
+- Static HTML/CSS/vanilla JS at runtime.
+- Maintenance/build scripts and GitHub Actions may generate static data files.
+- Keep source provenance and quality metrics in generated records.
 
 ## Visual direction
-- Bright, playful, rounded, cute yellow/white visual language inspired by the energetic feeling associated with Usagi from Chiikawa, without copying official character artwork.
-- Warm yellow + white, dark text, small accents, large touch targets, rounded cards/buttons, minimal chrome.
-
-## Research
-- `DATA_RESEARCH.md` tracks source investigation before records are promoted into production data.
+- Warm yellow/white, rounded and playful; Usagi-like energetic feeling without copying official character artwork.
 
 ## Still TBD
 - SHIZUOKA data.
-- Exact food-category grouping.
-- Maximum collection distance.
-- Exact interaction-history/device-ID design.
+- Final food-category grouping.
+- Final holiday/open/closed decision logic.
+- Interaction-history/device-ID behavior.
