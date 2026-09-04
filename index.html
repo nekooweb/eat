@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Eat</title>
+  <meta name="description" content="Simple food decision page for ziko and neko.">
+  <style>
+    body{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;max-width:720px;margin:0 auto;padding:48px 20px;line-height:1.6}main{display:grid;gap:16px}.users{display:flex;gap:12px;flex-wrap:wrap}.user{padding:12px 18px;border:1px solid #ccc;border-radius:12px;background:#fff;cursor:pointer}
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Eat</h1>
+    <p>选择用户：</p>
+    <div class="users">
+      <button class="user" data-user="ziko">ziko</button>
+      <button class="user" data-user="neko">neko</button>
+    </div>
+    <p id="status">GitHub Pages is ready.</p>
+  </main>
+  <script>
+    document.querySelectorAll('.user').forEach(btn=>btn.addEventListener('click',()=>{
+      localStorage.setItem('eat-user',btn.dataset.user);
+      document.getElementById('status').textContent='Current user: '+btn.dataset.user;
+    }));
+  </script>
+</body>
+</html>
