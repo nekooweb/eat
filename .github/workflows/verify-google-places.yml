@@ -1,0 +1,45 @@
+name: Verify Google Places
+
+on:
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: 'Maximum candidates to process; 0 = all'
+        required: true
+        default: '100'
+      enrich:
+        description: 'Fetch address/status/Maps URI after Place ID match'
+        required: true
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+
+concurrency:
+  group: verify-google-places
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify candidates
+        env:
+          GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
+          GOOGLE_VERIFY_LIMIT: ${{ inputs.limit }}
+          GOOGLE_VERIFY_ENRICH: ${{ inputs.enrich && '1' || '0' }}
+        run: python scripts/verify_google_places.py
+      - name: Commit verification cache and overlay
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add data/google_places_cache.json data/google_entities.generated.js
+          git diff --cached --quiet && exit 0
+          git commit -m "Update Google Places verification data"
+          git push
