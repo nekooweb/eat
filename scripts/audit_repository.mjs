@@ -23,9 +23,15 @@ const productionSource = read('data/production_area1.js');
 
 if (!/leaflet@1\.9\.4/i.test(index)) fail('Leaflet 1.9.4 is not loaded by the public page');
 if (!/overview-map/.test(app)) fail('three-result overview map is missing');
-if (!/store-map-/.test(app)) fail('per-store result maps are missing');
+if (!/store-map-/.test(app)) fail('Leaflet per-store fallback is missing');
+if (!/google-store-map/.test(app)) fail('Google per-store embed rendering is missing');
+if (!/www\.google\.com\/maps\/embed\/v1\/place/.test(app)) fail('Google Maps Embed place endpoint is missing');
+if (!/google-maps-embed-key/.test(index)) fail('Google Maps Embed key placeholder is missing');
+if (/<iframe\b/i.test(index)) fail('static iframe markup should not be present in index.html');
+if (/<iframe\b/i.test(app) && !/referrerpolicy="no-referrer-when-downgrade"/.test(app)) {
+  fail('Google Maps iframe must carry the required referrer policy');
+}
 if (!/renderComparison/.test(app)) fail('three-store comparison table is missing');
-if (/<iframe\b/i.test(index + app)) fail('iframe map implementation should not be used');
 if (/area1_google(?:_places)?\.(?:js|json)/i.test(index)) fail('legacy Google discovery payload is public');
 if (/google_entities(?:\.generated)?\.js/i.test(index)) fail('maintenance overlays are public runtime dependencies');
 if (!/data\/production_area1\.js/.test(index)) fail('canonical production dataset is not loaded');
@@ -54,8 +60,6 @@ const forbiddenGoogleFields = [
   'googleTypes'
 ];
 
-// Load every enrichment shard into one maintenance sandbox so duplicate source
-// identities cannot hide simply by living in different files.
 const enrichmentSandbox = { window: { RESTAURANTS: [] } };
 vm.createContext(enrichmentSandbox);
 for (const filename of enrichmentFiles) {
@@ -144,6 +148,6 @@ if (!process.exitCode) {
     enrichmentShards: enrichmentFiles.length,
     enrichmentRecords: enrichmentRows.length,
     awards: stats.awards,
-    resultViews: ['overview-map', 'store-maps', 'comparison-table']
+    resultViews: ['overview-map', 'google-store-maps-with-leaflet-fallback', 'comparison-table']
   }));
 }
