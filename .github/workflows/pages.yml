@@ -42,6 +42,7 @@ jobs:
             test -s data/production_area1.js
             node scripts/audit_repository.mjs
             node scripts/audit_source_bindings.mjs
+            node scripts/audit_normalized_fields.mjs
           } 2>&1 | tee _audit/static_checks.log
       - name: Coverage report
         run: |
