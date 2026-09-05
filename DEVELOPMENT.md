@@ -4,299 +4,192 @@ Updated: 2026-09-05
 
 ## Current milestone
 
-`TOKYO / 地区1️⃣` has moved from partial geographic coverage to an **exact identity inventory + staged full-information completion** phase.
+`TOKYO / 地区1️⃣` is now in the **exact identity inventory + full-information reconciliation** phase.
 
-Current verified state:
+The important distinction is:
 
-- exact in-scope operational food-business identities within 1,200 m: **2,804**;
+- **identity-count completeness is solved**: 2,804 / 2,804 in-scope food-business Place IDs inside the strict 1.2 km circle;
+- **full-information completeness is not solved yet**: independent source identity and durable branch fields still have to be reconciled.
+
+Latest audited state:
+
+- exact in-scope operational food-business identities: **2,804**;
 - exact Place-ID inventory: **2,804 / 2,804**;
-- OSM source candidates processed by Google QC-v4: **990 / 990**;
-- OSM verification result: 526 verified / 464 rejected / 0 pending;
-- canonical production entities: **517** unique Place IDs;
-- production entities represented in the exact inventory: 515;
-- current usable Tabelog/official bindings: **245**;
-- explicit terminal source resolutions: **34**;
-- current production identities with a source outcome: **279 / 517**;
-- unresolved production source queue: **238**;
-- exact-inventory identities without a verified independent-source identity: **2,291**.
-
-The old 269-production / 1,613-discovery-ID baseline is superseded by this document, `AREA1_COMPLETENESS.md` and `AREA1_COMPLETION_LOG.md`.
+- OSM independent-source candidates: **1,273**;
+- Google QC-v4: **658 verified / 615 rejected / 0 pending**;
+- unique verified Google IDs in the QC cache: 647;
+- exact-inventory IDs with verified independent-source coverage: **643**;
+- exact-inventory IDs still without verified independent-source identity: **2,161**;
+- canonical production entities: **648** unique Place IDs;
+- usable Tabelog/official bindings: **275**;
+- explicit source resolutions: **34**;
+- source outcomes accounted for: **309 / 648**;
+- unresolved live-production source queue: **339**.
 
 ## Product/runtime contract
 
-Required behavior remains:
-
 - static GitHub Pages site;
-- strict Area1 production boundary <=1,200 m;
+- strict production boundary <=1,200 m;
 - Google Place ID required for production identity;
-- Google Places response fields used only transiently for identity/QC/discovery;
-- persistent restaurant facts built from independent sources;
+- Google Places data used transiently for identity/QC/discovery rather than as the durable restaurant database;
+- persistent facts come from OSM, Tabelog, official pages and reviewed curated sources;
 - one deploy-time canonical dataset;
 - browser-side filtering/random selection only;
-- Leaflet/OpenStreetMap three-store overview map;
-- one Leaflet map per result card;
-- three-store comparison table;
-- direct Place-ID Google Maps navigation link;
-- no browser-side source matching;
-- no runtime database/backend;
-- maintenance data/scripts excluded from the public Pages payload.
+- Leaflet/OpenStreetMap overview, per-store maps and comparison table;
+- no browser-side source matching or runtime backend.
 
-## Data architecture
+## Exact Area1 inventory
 
-### 1. Exact Google identity universe
+`data/area1_google_ids.json` is authoritative for the exact Google food-business identity universe:
 
-`data/area1_google_ids.json` is now the authoritative Area1 identity inventory.
+- radius: 1,200 m;
+- count: 2,804;
+- method: `places_aggregate_geodesic_partition_boundary_qc_v3`;
+- complete / coverage verified / independent count verified.
 
-Current inventory properties:
+`scripts/discover_google_area1.py` uses an exact Aggregate count, recursively split geodesic sectors and a 5 m boundary-recovery guard band. It refuses to mark the inventory complete unless the final unique Place-ID count equals the independent exact-circle count.
 
-- `radiusMeters: 1200`;
-- `count: 2804`;
-- `complete: true`;
-- `coverageVerified: true`;
-- `independentCountVerified: true`;
-- method: `places_aggregate_geodesic_partition_boundary_qc_v3`.
+Successful exact run `33953718846`:
 
-`scripts/discover_google_area1.py` now:
+- exact count 2,804;
+- inner sector union 2,801;
+- boundary candidates 34;
+- recovered inside strict circle 3;
+- final 2,804.
 
-1. obtains an independent `INSIGHT_COUNT` for the exact circle;
-2. enumerates Place IDs through recursively split Places Aggregate sectors;
-3. uses geodesic destination calculations for the circle boundary;
-4. counts each sector before requesting Place IDs, avoiding the >100-place enumeration failure;
-5. uses a 5 m guard band only for boundary recovery;
-6. fetches transient location/status only for guard-band-only candidates;
-7. persists only IDs and audit metadata;
-8. refuses completion unless the final unique ID count equals the independent circle count.
+## Independent-source coverage correction
 
-The successful exact run used 238 Aggregate requests plus 34 transient boundary Details checks. The 1,200 m sector union produced 2,801 IDs, 34 guard-band candidates were examined, 3 were recovered inside the strict circle, and the final inventory matched the independent count at 2,804.
+The previous OSM query omitted several food/business types that were present in the exact Google scope. Commit `732dcf1ce7c0b80128d577cfa3a3e43b1ece826a` added OSM bar/pub/biergarten/ice-cream coverage.
 
-`scripts/audit_area1_identity_coverage.mjs` now requires all of the following before `exactCoverageReady` can pass:
+Result:
 
-- `complete === true`;
-- `coverageVerified === true`;
-- `independentCountVerified === true`;
-- declared integer count;
-- unique Place-ID count equals declared count.
+- candidates 990 -> **1,273** (+283);
+- verified source rows 526 -> **658**;
+- production 517 -> **648** (+131).
 
-### 2. Independent-source candidate verification
+Current expanded-pool rejection reasons:
 
-`scripts/verify_google_places.py` QC-v4 remains the source-to-Google identity gate.
+- outside 1.2 km: 371;
+- location mismatch: 97;
+- closed permanently: 79;
+- name mismatch: 44;
+- non-food Google type: 18;
+- no Google place: 6.
 
-Persistent Google-derived state remains compact:
+Do not weaken these gates merely to increase production count.
 
-- source ID;
-- verified/rejected/pending state;
-- Google Place ID where applicable;
-- compact rejection reason/QC version.
+## Canonical identity rule
 
-Transient Google fields are used for:
+The type expansion exposed a serious merge risk: a historical rich metadata row could rename a newly verified independent OSM identity when both were associated with the same Place ID.
 
-- name matching;
-- business status;
-- food-related type check;
-- source/Google coordinate comparison;
-- strict Area1 boundary check.
+Commit `697e85581317216f014d2f7ae1b5dd641663ee4e` fixes the canonical name/address priority:
 
-All 990 OSM candidates have now been processed. Current rejection reasons:
+1. exact Place-ID enrichment explicitly claiming `name`;
+2. otherwise exact verified OSM identity name;
+3. historical rich rows may contribute only fields that are safely mergeable and must not rename the identity by detail-score priority.
 
-- `outside_1_2km`: 258;
-- `location_mismatch`: 80;
-- `closed_permanently`: 67;
-- `name_mismatch`: 40;
-- `non_food_google_type`: 14;
-- `no_google_place`: 5.
+Geospatial production identity remains anchored to independent OSM coordinates/distance. Pages run `33954834163` passed after this correction.
 
-Do not weaken QC thresholds merely to increase production count.
+## Current canonical production
 
-### 3. Canonical production
+Latest Batch 4 build (`33954926963`):
 
-`scripts/build_production_dataset.mjs`:
-
-- admits verified identities only;
-- collapses to one entity per Google Place ID;
-- uses independent/curated/Tabelog/official metadata conservatively;
-- blocks production rows outside 1,200 m;
-- preserves missing optional fields as missing;
-- writes `data/production_area1.js` for deployment.
-
-Current canonical production: **517 entities / 517 unique Place IDs**.
+- production: **648**;
+- unique Place IDs: **648**;
+- production present in exact Google inventory: 645;
+- cuisine known/non-generic: **562**;
+- address known: **140**;
+- budget known: **126**;
+- schedule/holiday known: **239**;
+- representative dishes known: **31**;
+- source-backed: **275**;
+- 百名店: 22.
 
 Distance pools:
 
-- <=300 m: 116;
-- <=500 m: 192;
-- <=800 m: 295;
-- <=1,200 m: 517.
+- <=300 m: 137;
+- <=500 m: 220;
+- <=800 m: 359;
+- <=1,200 m: 648.
 
-The 800–1,200 m ring now contains **222** production entities; the earlier near-only coverage issue is no longer true.
+## Full-information batches completed
 
-### 4. Durable source/field enrichment
+During this completion pass:
 
-Google is not the permanent metadata database.
+- Batch 1: 8 safe bindings + 2 explicit conflicts;
+- Batch 2: 10 safe bindings;
+- Batch 3: 10 safe bindings;
+- Batch 4: 10 safe bindings.
 
-Long-lived branch facts should come from:
+Batch 4 (`fe128c9078a351010ea92f4a430324e0b6ad8b7f`) added:
 
-- OpenStreetMap;
-- Tabelog;
-- restaurant/organization official pages;
-- reviewed curated sources where explicitly allowed.
+- 馬さん餃子酒場 神保町店;
+- 神保町 加賀廣;
+- CRAFT BEER MARKET 神保町店;
+- 大金星 神保町店;
+- Bar Plat 本店;
+- Bar 37℃;
+- 鳥貴族 神保町店;
+- おかん;
+- 大衆酒場 けいちゃん 神保町店;
+- あつ盛.
 
-Target persistent fields:
-
-- exact branch/display name;
-- cuisine/category;
-- independent address;
-- independent coordinates/distance;
-- lunch budget;
-- dinner budget;
-- opening hours;
-- regular holidays/closure notes;
-- representative dishes;
-- Tabelog/official source binding;
-- Google Place ID identity/navigation;
-- source/QC outcome and review date;
-- 百名店 year/category where applicable.
-
-Each source reference must declare which fields it supports. Do not infer fields from cuisine stereotypes or nearby branches.
-
-## Current field/source completeness
-
-Latest passing canonical build after the first outer enrichment batch:
-
-| Metric | Current |
-| --- | ---: |
-| Production entities | 517 |
-| Cuisine known | 426 |
-| Budget known | 102 |
-| Schedule/holiday known | 206 |
-| Representative dishes known | 24 |
-| Display address known | 102 |
-| Usable Tabelog/official bindings | 245 |
-| 百名店 | 22 |
-
-Source-resolution state:
-
-- usable bindings: 245;
-- explicit terminal resolutions: 34;
-- source outcomes accounted for: 279;
-- unresolved production identities: **238**;
-- current source-resolution coverage: **54%**.
-
-The first outer batch resolved ten live-production source outcomes: eight exact branch-safe Tabelog/official bindings plus two explicit source/status conflicts. Field coverage increased without changing the production identity count. See `AREA1_COMPLETION_LOG.md` for the batch-level delta.
-
-The remaining 238 unresolved rows are mostly identities newly admitted by the completed OSM verification pass. They already have independent OSM identity/location and a verified Place ID, making them the highest-value next enrichment queue.
-
-## Exact inventory reconciliation
-
-The exact inventory audit currently reports:
-
-- exact inventory IDs: 2,804;
-- unique verified Google IDs in the source-verification cache: 516;
-- verified IDs covered by exact inventory: 513;
-- inventory IDs without verified independent-source identity: **2,291**;
-- rejected source-match IDs nevertheless present in exact inventory: 91;
-- verified source IDs outside exact inventory: 3.
-
-These numbers must not be interpreted as 2,291 immediately admissible missing restaurants. `inventoryPlaceIdsWithoutVerifiedIndependentSource` means that the Google identity exists in the exact food-business universe but a durable independent-source identity relationship has not yet been established.
+This moved source-backed production **265 -> 275** and unresolved live production **349 -> 339**.
 
 ## Ordered next work
 
-### Priority 1 — complete source outcomes for the remaining 238 production identities
+### Priority 1 — remaining 339 live production identities
 
-For every unresolved production Place ID:
+For each unresolved production Place ID:
 
-1. use existing OSM name/coordinates + verified Place ID as the branch anchor;
-2. locate the exact current Tabelog or official branch source;
-3. attach a usable source only when branch identity is supported;
-4. otherwise write an explicit terminal resolution rather than guessing;
-5. extract supported fields in the same review where possible;
-6. record review date and field-level provenance.
+1. use exact verified OSM identity/name/coordinates as the anchor;
+2. locate the exact Tabelog or official branch page;
+3. bind only when branch identity is supported;
+4. write an explicit terminal/ambiguous resolution when evidence conflicts;
+5. extract name/address/cuisine/budget/hours/closure/dishes only where the cited source supports the field.
 
-This queue should be completed before spending most effort on Google-only identities because these 238 already affect the live recommendation pool.
+Nearest current queue:
 
-### Priority 2 — complete missing fields for all production entities
+`やまじょう`, `レピック神保町`, `森のブッチャーズ`, `座楽`, `Beer Pub 8taps`, `餃子八`, followed by the remaining inner-to-outer production identities.
 
-Field priority:
+### Priority 2 — exact inventory reconciliation
+
+Current exact audit:
+
+- exact IDs: 2,804;
+- independently verified IDs inside exact inventory: 643;
+- remaining identity-reconciliation queue: **2,161**;
+- rejected source-match IDs present in exact inventory: 106;
+- verified source IDs outside exact inventory: 4.
+
+For Google-only IDs, fetch name/location/status transiently as a discovery aid, then establish an independent OSM/Tabelog/official identity before production admission. Do not build a long-lived Google Details database.
+
+### Priority 3 — field completion
+
+For all production rows, prioritize:
 
 1. address;
 2. cuisine normalization;
 3. opening hours / regular holidays;
-4. lunch and dinner budget;
+4. lunch/dinner budget;
 5. representative dishes;
 6. award metadata.
 
-Opening/holiday information remains descriptive until schedule semantics and coverage are strong enough for exclusion logic.
+Unknown stays unknown until a supporting source is found.
 
-### Priority 3 — reconcile the 2,291 Google-only exact-inventory identities
+## CI / validation
 
-Use a controlled discovery workflow:
+Every Pages build now runs:
 
-1. take an exact-inventory Place ID not represented by a verified independent source;
-2. fetch Google name/location/type/status only transiently as a discovery aid;
-3. locate an independent OSM/Tabelog/official identity;
-4. verify branch correspondence;
-5. add a durable independent candidate/binding and pass existing QC/canonical gates;
-6. otherwise record a reviewed reconciliation outcome.
-
-Do not persist a new long-lived Google-details database.
-
-### Priority 4 — exception reconciliation
-
-Separately inspect:
-
-- 91 exact-inventory Place IDs seen in rejected source matches;
-- 3 verified-source Place IDs outside the exact inventory;
-- 7 curated-overlap candidates still unresolved by their dedicated verifier;
-- existing `listing_hold`, `no_current_usable_source`, `ambiguous` and `source_not_found` rows when better evidence becomes available.
-
-Never solve these exceptions by weakening the strict 1,200 m or branch-identity rules.
-
-## Batch reporting requirements
-
-Every enrichment/reconciliation batch should record:
-
-- Place IDs/source rows processed;
-- source URLs and review dates;
-- usable binding vs terminal-resolution outcome;
-- fields populated;
-- reviewed-but-missing fields and reason;
-- production count before/after;
-- source-resolution coverage before/after;
-- exact-inventory reconciliation delta;
-- distance-pool changes;
-- audit/build/deploy result and relevant commit/run.
-
-## Validation / CI
-
-Current required checks include:
-
+- canonical production build;
 - JavaScript/Python syntax checks;
-- canonical build;
 - repository/runtime audit;
-- source-binding/resolution audit;
+- source-binding audit;
 - source queue report;
 - coverage report;
-- exact Area1 identity inventory audit on discovery;
-- minimal public-site assembly;
-- GitHub Pages deployment.
+- **exact Area1 identity coverage audit**;
+- public-site assembly and deployment.
 
-Latest validation evidence for this milestone:
+Latest Batch 4 build passed all build/source/exact-coverage gates. Exact-count drift can therefore no longer silently diverge from the deploy state.
 
-- full Google verification inventory commit: `8196b93767f6842352cd62cf7052875ccc0dedec`;
-- exact discovery logic: `01177fedfd9fd2b73e1b0dcfe3f19afd5a99085d`;
-- exact inventory commit: `81d874558e556a6942e81606a7855de455d8a7b4`;
-- strengthened exact completeness gate: `9ba11132310fe3adf40b205021ecff7adc6bd39b`;
-- exact discovery workflow: `33953718846` — success;
-- first outer enrichment: `723173603aa321a27b6f4a7fe3b9b66333c758a6`;
-- first outer conflict ledger: `0788170b9f84a13343e6cace9419bbc2df3b5d0e`;
-- first outer batch Pages build: `33954080504` — build/audits passed.
-
-See `AREA1_COMPLETENESS.md` for the audited identity-count details and `AREA1_COMPLETION_LOG.md` for batch progress. Historical architecture/source-resolution milestones remain in `CHANGELOG.md`.
-
-## Later work
-
-After Area1 full-information/reconciliation coverage is sufficiently complete:
-
-- opening/holiday-aware filtering after schedule semantics are validated;
-- local recommendation history after privacy/persistence rules are defined;
-- `TOKYO / 地区2️⃣`;
-- `SHIZUOKA`.
+See `AREA1_COMPLETENESS.md` for the authoritative numbers and `AREA1_COMPLETION_LOG.md` for batch history.
