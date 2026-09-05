@@ -21,7 +21,10 @@ const INPUTS = [
   // and therefore wins when both touch the same source record.
   'google_entities.js',
   'google_entities.generated.js',
-  'hyakumeiten.js'
+  'hyakumeiten.js',
+  // Place-ID keyed, field-level source-backed metadata. These rows are
+  // enrichment-only and may not admit a restaurant into production themselves.
+  'source_enrichment.js'
 ];
 
 const sandbox = {
@@ -53,16 +56,25 @@ const unique = (values) => [...new Set(values.filter(Boolean))];
 const areaRows = rows.filter((row) => row.profile === PROFILE && row.area === AREA);
 const verifiedRows = areaRows.filter((row) => row.googleStatus === 'verified' && row.googlePlaceId);
 
-// One Google Place ID is one production identity.
+// One verified Google Place ID is one production identity. Enrichment rows cannot
+// create a group; therefore Tabelog/official metadata can never bypass Google QC.
 const groupsByPlaceId = new Map();
 for (const row of verifiedRows) {
   if (!groupsByPlaceId.has(row.googlePlaceId)) groupsByPlaceId.set(row.googlePlaceId, []);
   groupsByPlaceId.get(row.googlePlaceId).push(row);
 }
 
-// Conservative enrichment bridge for historical records that do not yet carry a
-// Place ID themselves: attach them only when their normalized name resolves to
-// exactly one verified production identity in the area.
+// Attach exact Place-ID keyed enrichment only to an identity that already passed
+// Google QC. This is the preferred cross-source path.
+for (const row of areaRows) {
+  if (!row.googlePlaceId || row.googleStatus === 'verified') continue;
+  const group = groupsByPlaceId.get(row.googlePlaceId);
+  if (group) group.push(row);
+}
+
+// Conservative bridge for historical records that do not yet carry a Place ID:
+// attach only when their normalized name resolves to exactly one verified
+// production identity in Area1.
 const placeIdsByName = new Map();
 for (const row of verifiedRows) {
   const key = norm(row.name);
@@ -87,7 +99,10 @@ function sourceLabel(row) {
 
 function detailScore(row) {
   let score = 0;
-  if (sourceLabel(row) === 'curated') score += 4;
+  const label = sourceLabel(row);
+  if (label === 'official') score += 12;
+  if (label === 'Tabelog') score += 10;
+  if (label === 'curated') score += 4;
   if (row.cuisine && row.cuisine !== '餐厅') score += 2;
   if (isPrice(row.lunch) || isPrice(row.dinner)) score += 2;
   if (Array.isArray(row.dishes) && row.dishes.length) score += 2;
@@ -104,20 +119,31 @@ function canonicalize(placeId, sourceRows) {
   const sorted = [...sourceRows].sort((a, b) => detailScore(b) - detailScore(a));
   const base = sorted[0];
 
+  // Geospatial display data remains independent of Google Places. OSM is
+  // preferred even when richer Tabelog/official metadata is available.
   const geo = sourceRows.find((row) =>
     row.source === 'OpenStreetMap'
     && isFiniteNumber(row.lat)
     && isFiniteNumber(row.lng)
     && isFiniteNumber(row.distanceMeters)
   ) || sourceRows.find((row) =>
-    isFiniteNumber(row.lat)
+    !row.sourceOnly
+    && isFiniteNumber(row.lat)
     && isFiniteNumber(row.lng)
     && isFiniteNumber(row.distanceMeters)
   );
 
   const distanceMeters = geo?.distanceMeters
-    ?? firstBy(sourceRows, (row) => isFiniteNumber(row.distanceMeters), (row) => row.distanceMeters)
-    ?? firstBy(sourceRows, (row) => isFiniteNumber(row.distance), (row) => row.distance);
+    ?? firstBy(
+      sourceRows.filter((row) => !row.sourceOnly),
+      (row) => isFiniteNumber(row.distanceMeters),
+      (row) => row.distanceMeters
+    )
+    ?? firstBy(
+      sourceRows.filter((row) => !row.sourceOnly),
+      (row) => isFiniteNumber(row.distance),
+      (row) => row.distance
+    );
 
   if (!isFiniteNumber(distanceMeters) || distanceMeters > MAX_DISTANCE) return null;
 
@@ -137,7 +163,9 @@ function canonicalize(placeId, sourceRows) {
   ) || [];
   const closedNote = firstBy(sourceRows, (row) => Boolean(row.closedNote), (row) => row.closedNote);
 
-  const awardRow = sourceRows.find((row) => row.hyakumeiten);
+  const awardRow = [...sourceRows]
+    .sort((a, b) => detailScore(b) - detailScore(a))
+    .find((row) => row.hyakumeiten);
   const hyakumeiten = Boolean(awardRow);
 
   return {
@@ -190,6 +218,10 @@ const stats = {
   cuisineKnown: production.filter((row) => row.cuisine !== '餐厅').length,
   budgetKnown: production.filter((row) => isPrice(row.lunch) || isPrice(row.dinner)).length,
   dishesKnown: production.filter((row) => row.dishes.length).length,
+  scheduleKnown: production.filter((row) =>
+    row.openingHoursRaw || row.closedDays.length || row.closedNote).length,
+  sourceBacked: production.filter((row) =>
+    row.sources.some((source) => source === 'Tabelog' || source === 'official')).length,
   awards: production.filter((row) => row.hyakumeiten).length
 };
 
