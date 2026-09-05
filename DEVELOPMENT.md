@@ -14,13 +14,13 @@ Current verified state:
 - OSM verification result: 526 verified / 464 rejected / 0 pending;
 - canonical production entities: **517** unique Place IDs;
 - production entities represented in the exact inventory: 515;
-- current usable Tabelog/official bindings: 237;
-- explicit terminal source resolutions: 32;
-- current production identities with a source outcome: 269 / 517;
-- new unresolved production source queue: **248**;
+- current usable Tabelog/official bindings: **245**;
+- explicit terminal source resolutions: **34**;
+- current production identities with a source outcome: **279 / 517**;
+- unresolved production source queue: **238**;
 - exact-inventory identities without a verified independent-source identity: **2,291**.
 
-The old 269-production / 1,613-discovery-ID baseline is superseded by this document and `AREA1_COMPLETENESS.md`.
+The old 269-production / 1,613-discovery-ID baseline is superseded by this document, `AREA1_COMPLETENESS.md` and `AREA1_COMPLETION_LOG.md`.
 
 ## Product/runtime contract
 
@@ -160,28 +160,30 @@ Each source reference must declare which fields it supports. Do not infer fields
 
 ## Current field/source completeness
 
-Latest passing canonical build:
+Latest passing canonical build after the first outer enrichment batch:
 
 | Metric | Current |
 | --- | ---: |
 | Production entities | 517 |
-| Cuisine known | 425 |
-| Budget known | 95 |
-| Schedule/holiday known | 202 |
-| Representative dishes known | 20 |
-| Display address known | 95 |
-| Usable Tabelog/official bindings | 237 |
+| Cuisine known | 426 |
+| Budget known | 102 |
+| Schedule/holiday known | 206 |
+| Representative dishes known | 24 |
+| Display address known | 102 |
+| Usable Tabelog/official bindings | 245 |
 | 百名店 | 22 |
 
 Source-resolution state:
 
-- usable bindings: 237;
-- explicit terminal resolutions: 32;
-- source outcomes accounted for: 269;
-- unresolved production identities: **248**;
-- current source-resolution coverage: about 52%.
+- usable bindings: 245;
+- explicit terminal resolutions: 34;
+- source outcomes accounted for: 279;
+- unresolved production identities: **238**;
+- current source-resolution coverage: **54%**.
 
-The 248 unresolved rows are mostly identities newly admitted by the completed OSM verification pass. They already have independent OSM identity/location and a verified Place ID, making them the highest-value next enrichment queue.
+The first outer batch resolved ten live-production source outcomes: eight exact branch-safe Tabelog/official bindings plus two explicit source/status conflicts. Field coverage increased without changing the production identity count. See `AREA1_COMPLETION_LOG.md` for the batch-level delta.
+
+The remaining 238 unresolved rows are mostly identities newly admitted by the completed OSM verification pass. They already have independent OSM identity/location and a verified Place ID, making them the highest-value next enrichment queue.
 
 ## Exact inventory reconciliation
 
@@ -198,7 +200,7 @@ These numbers must not be interpreted as 2,291 immediately admissible missing re
 
 ## Ordered next work
 
-### Priority 1 — complete source outcomes for the 248 newly admitted production entities
+### Priority 1 — complete source outcomes for the remaining 238 production identities
 
 For every unresolved production Place ID:
 
@@ -209,7 +211,7 @@ For every unresolved production Place ID:
 5. extract supported fields in the same review where possible;
 6. record review date and field-level provenance.
 
-This queue should be completed before spending most effort on Google-only identities because these 248 already affect the live recommendation pool.
+This queue should be completed before spending most effort on Google-only identities because these 238 already affect the live recommendation pool.
 
 ### Priority 2 — complete missing fields for all production entities
 
@@ -284,9 +286,11 @@ Latest validation evidence for this milestone:
 - exact inventory commit: `81d874558e556a6942e81606a7855de455d8a7b4`;
 - strengthened exact completeness gate: `9ba11132310fe3adf40b205021ecff7adc6bd39b`;
 - exact discovery workflow: `33953718846` — success;
-- Pages build/deploy after exact inventory: `33953786379` — success.
+- first outer enrichment: `723173603aa321a27b6f4a7fe3b9b66333c758a6`;
+- first outer conflict ledger: `0788170b9f84a13343e6cace9419bbc2df3b5d0e`;
+- first outer batch Pages build: `33954080504` — build/audits passed.
 
-See `AREA1_COMPLETENESS.md` for the audited identity-count details. Historical architecture/source-resolution milestones remain in `CHANGELOG.md`.
+See `AREA1_COMPLETENESS.md` for the audited identity-count details and `AREA1_COMPLETION_LOG.md` for batch progress. Historical architecture/source-resolution milestones remain in `CHANGELOG.md`.
 
 ## Later work
 
