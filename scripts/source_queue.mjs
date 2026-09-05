@@ -25,10 +25,13 @@ for (const filename of enrichmentFiles) {
 const sourceRows = sourceSandbox.window.RESTAURANTS || [];
 const sourceIds = new Set(sourceRows.map((row) => row.googlePlaceId).filter(Boolean));
 
-const resolutionSandbox = { window: {} };
+const resolutionFiles = fs.readdirSync(DATA)
+  .filter((filename) => /^source_resolution(?:_[a-z0-9-]+)?\.js$/i.test(filename))
+  .sort();
+const resolutionSandbox = { window: { SOURCE_RESOLUTIONS: [] } };
 vm.createContext(resolutionSandbox);
-if (fs.existsSync(path.join(DATA, 'source_resolution.js'))) {
-  vm.runInContext(read('data/source_resolution.js'), resolutionSandbox, { filename: 'source_resolution.js' });
+for (const filename of resolutionFiles) {
+  vm.runInContext(read(`data/${filename}`), resolutionSandbox, { filename });
 }
 const resolutions = resolutionSandbox.window.SOURCE_RESOLUTIONS || [];
 const resolutionIds = new Set(resolutions.map((row) => row.googlePlaceId).filter(Boolean));
@@ -60,6 +63,7 @@ const report = {
     : null,
   explicitlyResolved,
   resolutionStatus: byResolutionStatus,
+  resolutionShards: resolutionFiles,
   sourceResolvedTotal: resolved,
   sourceResolutionCoveragePct: production.length
     ? Number((100 * resolved / production.length).toFixed(1))
