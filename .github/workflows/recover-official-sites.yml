@@ -1,0 +1,98 @@
+name: Recover failed official sites under cost cap
+
+on:
+  push:
+    branches: ["bulk-enrichment-under-2usd"]
+    paths:
+      - 'scripts/recover_failed_official_sites.mjs'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  recover:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: bulk-enrichment-under-2usd
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Build current canonical dataset
+        run: node scripts/build_production_dataset.mjs
+      - name: Download prior official discovery artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          rm -rf _seed
+          mkdir -p _seed _audit
+          gh run download 33974475744 --repo nekooweb/eat -n official-extraction-review -D _seed
+          test -s _seed/google_official_site_candidates.json
+      - name: Ensure reusable official index exists
+        run: |
+          if [ ! -s data/official_candidate_index.json ]; then
+            node scripts/promote_official_index.mjs _seed/google_official_site_candidates.json data/official_candidate_index.json
+          fi
+      - name: Recover failed official sites with hard Enterprise cap
+        env:
+          GOOGLE_MAP_API: ${{ secrets.GOOGLE_MAP_API }}
+          RECOVERY_GOOGLE_LIMIT: '100'
+          RECOVERY_CONCURRENCY: '5'
+          RECOVERY_TIMEOUT_MS: '15000'
+          RECOVERY_CHECKED_AT: '2026-09-06'
+        run: |
+          node scripts/recover_failed_official_sites.mjs \
+            _seed/google_official_site_candidates.json \
+            data/official_candidate_index.json \
+            | tee _audit/official-recovery-summary.json
+      - name: Re-extract fields from expanded independent official index
+        env:
+          OFFICIAL_INDEX_CONCURRENCY: '5'
+          OFFICIAL_INDEX_TIMEOUT_MS: '15000'
+          OFFICIAL_INDEX_MENU_LIMIT: '3'
+        run: |
+          node scripts/extract_official_index_fields.mjs \
+            data/official_candidate_index.json \
+            _audit/official_index_field_candidates.json \
+            | tee _audit/official-index-extraction-summary.json
+      - name: Rebuild conservative official enrichment
+        env:
+          AUTO_OFFICIAL_CHECKED_AT: '2026-09-06'
+        run: |
+          node scripts/build_auto_official_enrichment.mjs \
+            _audit/official_index_field_candidates.json \
+            data/source_enrichment_autoofficial.js \
+            | tee _audit/official-auto-enrichment-summary.json
+      - name: Rebuild and audit after recovery
+        run: |
+          node scripts/build_production_dataset.mjs | tee _audit/build-after-recovery.json
+          node scripts/audit_repository.mjs
+          node scripts/audit_source_bindings.mjs
+          node scripts/audit_normalized_fields.mjs
+          node scripts/coverage_report.mjs | tee _audit/coverage-after-recovery.json
+          node scripts/source_queue.mjs | tee _audit/source-queue-after-recovery.json
+      - name: Upload recovery audit
+        uses: actions/upload-artifact@v4
+        with:
+          name: official-recovery-audit
+          path: _audit
+          retention-days: 3
+      - name: Commit recovered independent official data
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/official_candidate_index.json data/source_enrichment_autoofficial.js
+          if git diff --cached --quiet; then
+            echo 'No recovered data changes.'
+          else
+            git commit -m 'Recover failed official site sources under cost cap'
+            if ! git push origin HEAD:bulk-enrichment-under-2usd; then
+              git pull --rebase origin bulk-enrichment-under-2usd
+              git push origin HEAD:bulk-enrichment-under-2usd
+            fi
+          fi
