@@ -25,8 +25,16 @@ for (const filename of enrichmentFiles) {
 const sourceRows = sourceSandbox.window.RESTAURANTS || [];
 const sourceIds = new Set(sourceRows.map((row) => row.googlePlaceId).filter(Boolean));
 
-const unmatched = production
-  .filter((row) => !sourceIds.has(row.googlePlaceId))
+const resolutionSandbox = { window: {} };
+vm.createContext(resolutionSandbox);
+if (fs.existsSync(path.join(DATA, 'source_resolution.js'))) {
+  vm.runInContext(read('data/source_resolution.js'), resolutionSandbox, { filename: 'source_resolution.js' });
+}
+const resolutions = resolutionSandbox.window.SOURCE_RESOLUTIONS || [];
+const resolutionIds = new Set(resolutions.map((row) => row.googlePlaceId).filter(Boolean));
+
+const unresolved = production
+  .filter((row) => !sourceIds.has(row.googlePlaceId) && !resolutionIds.has(row.googlePlaceId))
   .sort((a, b) => a.distanceMeters - b.distanceMeters || a.name.localeCompare(b.name, 'ja'))
   .map((row) => ({
     distanceMeters: row.distanceMeters,
@@ -36,14 +44,28 @@ const unmatched = production
     sources: row.sources
   }));
 
+const usable = production.filter((row) => sourceIds.has(row.googlePlaceId)).length;
+const explicitlyResolved = production.filter((row) => resolutionIds.has(row.googlePlaceId)).length;
+const resolved = usable + explicitlyResolved;
+const byResolutionStatus = resolutions.reduce((acc, row) => {
+  acc[row.status] = (acc[row.status] || 0) + 1;
+  return acc;
+}, {});
+
 const report = {
   productionEntities: production.length,
-  sourceIndexed: production.length - unmatched.length,
-  sourceCoveragePct: production.length
-    ? Number((100 * (production.length - unmatched.length) / production.length).toFixed(1))
+  usableSourceIndexed: usable,
+  usableSourceCoveragePct: production.length
+    ? Number((100 * usable / production.length).toFixed(1))
     : null,
-  unmatched: unmatched.length,
-  nextUnmatched: unmatched.slice(0, 60)
+  explicitlyResolved,
+  resolutionStatus: byResolutionStatus,
+  sourceResolvedTotal: resolved,
+  sourceResolutionCoveragePct: production.length
+    ? Number((100 * resolved / production.length).toFixed(1))
+    : null,
+  unresolved: unresolved.length,
+  nextUnresolved: unresolved.slice(0, 60)
 };
 
 console.log(JSON.stringify(report));
