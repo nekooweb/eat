@@ -1,0 +1,41 @@
+name: Verify Curated Google Identities
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+    paths:
+      - '.github/run-curated-google'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: verify-google-places
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify curated-overlap source candidates
+        env:
+          GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAP_API }}
+        run: python scripts/verify_curated_google.py
+      - name: Commit identity-only verification state
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add data/google_places_cache.json data/google_entities.generated.js
+          git diff --cached --quiet && exit 0
+          git commit -m "Verify curated restaurant identities"
+          git fetch origin main
+          git rebase origin/main
+          git push origin HEAD:main
