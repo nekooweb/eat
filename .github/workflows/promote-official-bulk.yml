@@ -5,10 +5,15 @@ on:
     branches:
       - accelerate-auto-enrichment
     paths:
+      - 'scripts/extract_official_index_fields.mjs'
       - 'scripts/build_auto_official_enrichment.mjs'
       - 'scripts/build_official_fast_review_queue.mjs'
       - '.github/workflows/promote-official-bulk.yml'
   workflow_dispatch:
+
+concurrency:
+  group: promote-official-${{ github.ref }}
+  cancel-in-progress: true
 
 permissions:
   contents: write
@@ -46,7 +51,7 @@ jobs:
           # Keep the previous auto-official shard in place. The incremental
           # builder preserves reviewed fields when a website temporarily fails.
           node scripts/build_production_dataset.mjs | tee /tmp/stable-official-baseline.json
-      - name: Fetch official and menu pages in parallel without Google API
+      - name: Fetch only incomplete official records with URL deduplication
         env:
           OFFICIAL_INDEX_CONCURRENCY: '8'
           OFFICIAL_INDEX_TIMEOUT_MS: '12000'
