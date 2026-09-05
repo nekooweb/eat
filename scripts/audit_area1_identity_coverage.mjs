@@ -41,6 +41,8 @@ const rejectedInventoryIds = [...rejectedIds].filter(id => inventoryIds.has(id))
 const report = {
   inventoryMethod: inventory.method || 'legacy/unknown',
   inventoryDeclaredComplete: inventory.complete === true,
+  inventoryCoverageVerified: inventory.coverageVerified === true,
+  inventoryIndependentCountVerified: inventory.independentCountVerified === true,
   inventoryDeclaredCount: inventory.count ?? null,
   inventoryUniquePlaceIds: inventoryIds.size,
   qcRows: qcRows.length,
@@ -52,6 +54,8 @@ const report = {
   verifiedPlaceIdsOutsideInventory: verifiedOutsideInventory.length,
   exactCoverageReady:
     inventory.complete === true &&
+    inventory.coverageVerified === true &&
+    inventory.independentCountVerified === true &&
     Number.isInteger(inventory.count) &&
     inventoryIds.size === inventory.count
 };
@@ -60,7 +64,7 @@ console.log(JSON.stringify(report, null, 2));
 
 if (!report.exactCoverageReady) {
   console.error(
-    'Area1 exact coverage gate is BLOCKED: inventory is not a completeness-audited exact Place-ID set.'
+    'Area1 exact coverage gate is BLOCKED: inventory lacks independently verified exact completeness.'
   );
   process.exitCode = 2;
 }
