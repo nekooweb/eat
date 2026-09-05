@@ -6,16 +6,20 @@ import { fileURLToPath } from 'node:url';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, '..');
+const DATA = path.join(ROOT, 'data');
 const read = (relativePath) => fs.readFileSync(path.join(ROOT, relativePath), 'utf8');
 const fail = (message) => {
   console.error(`AUDIT FAIL: ${message}`);
   process.exitCode = 1;
 };
 
+const enrichmentFiles = fs.readdirSync(DATA)
+  .filter((filename) => /^source_enrichment(?:_[a-z0-9-]+)?\.js$/i.test(filename))
+  .sort();
+
 const index = read('index.html');
 const app = read('app.js');
 const productionSource = read('data/production_area1.js');
-const enrichmentSource = read('data/source_enrichment.js');
 
 if (!/leaflet@1\.9\.4/i.test(index)) fail('Leaflet 1.9.4 is not loaded by the public page');
 if (!/overview-map/.test(app)) fail('three-result overview map is missing');
@@ -50,14 +54,20 @@ const forbiddenGoogleFields = [
   'googleTypes'
 ];
 
-// Source-backed enrichment must remain enrichment-only: a record may carry the
-// durable Place ID cross-reference, but it cannot declare itself Google-verified.
+// Load every enrichment shard into one maintenance sandbox so duplicate source
+// identities cannot hide simply by living in different files.
 const enrichmentSandbox = { window: { RESTAURANTS: [] } };
 vm.createContext(enrichmentSandbox);
-vm.runInContext(enrichmentSource, enrichmentSandbox, { filename: 'source_enrichment.js' });
+for (const filename of enrichmentFiles) {
+  vm.runInContext(read(`data/${filename}`), enrichmentSandbox, { filename });
+}
 const enrichmentRows = enrichmentSandbox.window.RESTAURANTS || [];
 const enrichmentKeys = new Set();
+const enrichmentIds = new Set();
 for (const row of enrichmentRows) {
+  if (!row.id) fail(`source enrichment lacks maintenance id: ${row.name || row.googlePlaceId}`);
+  if (enrichmentIds.has(row.id)) fail(`duplicate enrichment maintenance id: ${row.id}`);
+  enrichmentIds.add(row.id);
   if (!row.sourceOnly) fail(`source enrichment is not sourceOnly: ${row.id || row.name}`);
   if (!row.googlePlaceId) fail(`source enrichment lacks Place ID key: ${row.id || row.name}`);
   if (row.googleStatus === 'verified') fail(`source enrichment may not self-verify: ${row.id || row.name}`);
@@ -72,9 +82,15 @@ for (const row of enrichmentRows) {
     if (!ref.provider || !ref.url || !/^https:\/\//.test(ref.url)) {
       fail(`invalid source reference: ${row.id || row.name}`);
     }
+    if (!ref.checkedAt || !/^\d{4}-\d{2}-\d{2}$/.test(ref.checkedAt)) {
+      fail(`source reference lacks ISO check date: ${row.id || row.name}`);
+    }
     if (!Array.isArray(ref.fields) || !ref.fields.length) {
       fail(`source reference has no field provenance: ${row.id || row.name}`);
     }
+  }
+  if (row.suppressFields && !Array.isArray(row.suppressFields)) {
+    fail(`suppressFields must be an array: ${row.id || row.name}`);
   }
   for (const field of forbiddenGoogleFields) {
     if (Object.hasOwn(row, field)) fail(`persisted Google content field ${field} in enrichment: ${row.name}`);
@@ -102,13 +118,18 @@ for (const row of rows || []) {
   for (const field of forbiddenGoogleFields) {
     if (Object.hasOwn(row, field)) fail(`persisted Google content field ${field}: ${row.name}`);
   }
-  if (Object.hasOwn(row, 'sourceRefs') || Object.hasOwn(row, 'sourceOnly')) {
+  if (Object.hasOwn(row, 'sourceRefs') || Object.hasOwn(row, 'sourceOnly') || Object.hasOwn(row, 'suppressFields')) {
     fail(`maintenance provenance leaked into public canonical row: ${row.name}`);
   }
 }
 
-if (enrichmentRows.length && !(rows || []).some((row) => row.sources?.includes('Tabelog') || row.sources?.includes('official'))) {
+const sourceBackedRows = (rows || []).filter((row) =>
+  row.sources?.includes('Tabelog') || row.sources?.includes('official'));
+if (enrichmentRows.length && !sourceBackedRows.length) {
   fail('source enrichment exists but no source-backed row reaches canonical production');
+}
+if (stats?.sourceBacked !== sourceBackedRows.length) {
+  fail(`source-backed statistic mismatch: stats=${stats?.sourceBacked}, actual=${sourceBackedRows.length}`);
 }
 
 if (!process.exitCode) {
@@ -120,6 +141,7 @@ if (!process.exitCode) {
     budgetKnown: stats.budgetKnown,
     scheduleKnown: stats.scheduleKnown,
     sourceBacked: stats.sourceBacked,
+    enrichmentShards: enrichmentFiles.length,
     enrichmentRecords: enrichmentRows.length,
     awards: stats.awards,
     resultViews: ['overview-map', 'store-maps', 'comparison-table']
