@@ -1,0 +1,18 @@
+// Source index batch: reviewed production identities in the ~350-440 m ring.
+// This pass establishes the current production Place-ID -> source relationship.
+// Deeper budget/hours/dish enrichment is intentionally handled separately.
+
+window.RESTAURANTS.push(
+  {id:'src-index-matsuou',profile:'TOKYO',area:'地区1️⃣',name:'松翁',googlePlaceId:'ChIJFcNX9RaMGGAR2c6-_mg7ocY',source:'Tabelog',sourceOnly:true,sourceRefs:[{provider:'Tabelog',url:'https://tabelog.com/tokyo/A1310/A131003/13000604/',checkedAt:'2026-09-05',fields:['name']}]},
+  {id:'src-official-tatsumiya',profile:'TOKYO',area:'地区1️⃣',name:'辰巳家',googlePlaceId:'ChIJM0vzIRWMGGARqpo1bPU9a44',source:'official',sourceOnly:true,sourceRefs:[{provider:'official',url:'https://sushi-tatsumiya.com/',checkedAt:'2026-09-05',fields:['name']}]},
+  {id:'src-index-manraku-hanten',profile:'TOKYO',area:'地区1️⃣',name:'萬楽飯店',googlePlaceId:'ChIJHR3eZRyMGGARIuKl5cgd_vs',source:'Tabelog',sourceOnly:true,sourceRefs:[{provider:'Tabelog',url:'https://tabelog.com/tokyo/A1310/A131003/13139541/',checkedAt:'2026-09-05',fields:['name']}]},
+  {id:'src-index-yabusen',profile:'TOKYO',area:'地区1️⃣',name:'やぶ仙',googlePlaceId:'ChIJuc22ehCMGGARDINmzqC612w',source:'Tabelog',sourceOnly:true,sourceRefs:[{provider:'Tabelog',url:'https://tabelog.com/tokyo/A1310/A131003/13050299/',checkedAt:'2026-09-05',fields:['name']}]},
+  {id:'src-index-ramen-ao',profile:'TOKYO',area:'地区1️⃣',name:'ラーメン 青',googlePlaceId:'ChIJAfOIiRCMGGARtvo7D90K9Q8',source:'Tabelog',sourceOnly:true,sourceRefs:[{provider:'Tabelog',url:'https://tabelog.com/tokyo/A1310/A131003/13179856/',checkedAt:'2026-09-05',fields:['name']}]},
+  {id:'src-official-glitch-jimbocho',profile:'TOKYO',area:'地区1️⃣',name:'GLITCH COFFEE & ROASTERS',googlePlaceId:'ChIJDxYKIhCMGGARScnqzc-T-TU',source:'official',sourceOnly:true,sourceRefs:[{provider:'official',url:'https://www.glitchcoffee.live/',checkedAt:'2026-09-05',fields:['name']}]},
+  {id:'src-official-english-only-cafe',profile:'TOKYO',area:'地区1️⃣',name:'ENGLISH ONLY CAFE',googlePlaceId:'ChIJC4ofDxCMGGARWaogIKxHSCw',source:'official',sourceOnly:true,sourceRefs:[{provider:'official',url:'https://englishonlycafe.com/about/',checkedAt:'2026-09-05',fields:['name']}]},
+  {id:'src-official-ovgo-cookie-factory',profile:'TOKYO',area:'地区1️⃣',name:'ovgo Baker Cookie Factory Shop',googlePlaceId:'ChIJIQy99i2NGGAR4Udb7j8D-pg',source:'official',sourceOnly:true,sourceRefs:[{provider:'official',url:'https://ovgobaker.com/en/pages/location',checkedAt:'2026-09-05',fields:['name']}]},
+  {id:'src-index-sri-balaji',profile:'TOKYO',area:'地区1️⃣',name:'シリ バラジ',googlePlaceId:'ChIJe49KxxWMGGAR4qS4zBvOWr8',source:'Tabelog',sourceOnly:true,sourceRefs:[{provider:'Tabelog',url:'https://tabelog.com/tokyo/A1310/A131003/13185693/',checkedAt:'2026-09-05',fields:['name']}]},
+  {id:'src-index-ochanomizu-taishoken',profile:'TOKYO',area:'地区1️⃣',name:'お茶の水、大勝軒',googlePlaceId:'ChIJHdflUQCNGGAR1yV32-VceT0',source:'Tabelog',sourceOnly:true,sourceRefs:[{provider:'Tabelog',url:'https://tabelog.com/tokyo/A1310/A131002/13298962/',checkedAt:'2026-09-05',fields:['name']}]},
+  {id:'src-index-bondy-ogawamachi',profile:'TOKYO',area:'地区1️⃣',name:'欧風カレー ボンディ 神田小川町店',googlePlaceId:'ChIJb2VWEBCMGGARMK1-6y_JBjY',source:'Tabelog',sourceOnly:true,sourceRefs:[{provider:'Tabelog',url:'https://tabelog.com/tokyo/A1303/A130302/13038044/',checkedAt:'2026-09-05',fields:['name']}]},
+  {id:'src-index-kanda-nishikicho-sarashina',profile:'TOKYO',area:'地区1️⃣',name:'神田錦町 更科',googlePlaceId:'ChIJQ0pBHBCMGGARFmZBTA87HQA',source:'Tabelog',sourceOnly:true,sourceRefs:[{provider:'Tabelog',url:'https://tabelog.com/tokyo/A1310/A131002/13040724/',checkedAt:'2026-09-05',fields:['name']}]}
+);
