@@ -48,7 +48,7 @@ function sourceHosts(rows) {
 function gaps(row) {
   const missing = [];
   if (!Array.isArray(row.recommendedDishes) || !row.recommendedDishes.length) missing.push('recommendedDishes');
-  if (!row.hoursReference) missing.push('hoursReference');
+  if (!row.openingHours) missing.push('openingHours');
   if (!Array.isArray(row.lunch) && !Array.isArray(row.dinner)) missing.push('budget');
   if (!row.address) missing.push('address');
   if (!row.cuisine || row.cuisine === '餐厅') missing.push('cuisine');
