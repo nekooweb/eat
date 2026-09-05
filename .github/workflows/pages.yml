@@ -29,16 +29,20 @@ jobs:
         run: node scripts/build_production_dataset.mjs
       - name: Static and repository checks
         run: |
-          node --check app.js
-          python3 -m py_compile \
-            scripts/verify_google_places.py \
-            scripts/verify_curated_google.py \
-            scripts/discover_google_area1.py \
-            scripts/migrate_google_inventory.py \
-            scripts/build_area1_osm.py
-          test -s data/production_area1.js
-          node scripts/audit_repository.mjs
-          node scripts/audit_source_bindings.mjs
+          mkdir -p _audit
+          set -o pipefail
+          {
+            node --check app.js
+            python3 -m py_compile \
+              scripts/verify_google_places.py \
+              scripts/verify_curated_google.py \
+              scripts/discover_google_area1.py \
+              scripts/migrate_google_inventory.py \
+              scripts/build_area1_osm.py
+            test -s data/production_area1.js
+            node scripts/audit_repository.mjs
+            node scripts/audit_source_bindings.mjs
+          } 2>&1 | tee _audit/static_checks.log
       - name: Coverage report
         run: |
           mkdir -p _audit
@@ -46,10 +50,12 @@ jobs:
           node scripts/source_queue.mjs | tee _audit/source_queue.json
           node scripts/audit_area1_identity_coverage.mjs | tee _audit/area1_identity_coverage.json
       - name: Upload private data audit
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: eat-data-audit
           path: _audit
+          if-no-files-found: warn
           retention-days: 3
       - name: Assemble public site
         run: |
