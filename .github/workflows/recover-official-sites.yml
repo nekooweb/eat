@@ -5,6 +5,7 @@ on:
     branches: ["bulk-enrichment-under-2usd"]
     paths:
       - 'scripts/recover_failed_official_sites.mjs'
+      - '.github/workflows/recover-official-sites.yml'
   workflow_dispatch:
 
 permissions:
