@@ -5,7 +5,7 @@ on:
     branches:
       - accelerate-locator-templates
     paths:
-      - 'scripts/build_locator_template_enrichment.mjs'
+      - 'scripts/build_locator_template_fields.mjs'
       - '.github/workflows/promote-locator-templates.yml'
   workflow_dispatch:
 
@@ -41,7 +41,7 @@ jobs:
         run: |
           set -o pipefail
           mkdir -p _audit
-          node scripts/build_locator_template_enrichment.mjs \
+          node scripts/build_locator_template_fields.mjs \
             data/official_candidate_index.json \
             data/source_enrichment_zzlocatorauto.js \
             | tee _audit/locator-template-summary.json
