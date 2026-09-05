@@ -115,6 +115,23 @@ function firstBy(rowsToSearch, predicate, selector = (row) => row) {
   return hit ? selector(hit) : null;
 }
 
+function claimedFields(row) {
+  if (!row.sourceOnly || !Array.isArray(row.sourceRefs)) return new Set();
+  return new Set(row.sourceRefs.flatMap((ref) => ref.fields || []));
+}
+
+function bestClaimingRow(rowsToSearch, field) {
+  return [...rowsToSearch]
+    .filter((row) => claimedFields(row).has(field))
+    .sort((a, b) => detailScore(b) - detailScore(a))[0] || null;
+}
+
+function isSuppressed(rowsToSearch, field) {
+  return rowsToSearch.some((row) => row.sourceOnly
+    && Array.isArray(row.suppressFields)
+    && row.suppressFields.includes(field));
+}
+
 function canonicalize(placeId, sourceRows) {
   const sorted = [...sourceRows].sort((a, b) => detailScore(b) - detailScore(a));
   const base = sorted[0];
@@ -147,26 +164,63 @@ function canonicalize(placeId, sourceRows) {
 
   if (!isFiniteNumber(distanceMeters) || distanceMeters > MAX_DISTANCE) return null;
 
-  const cuisine = firstBy(
-    sourceRows,
-    (row) => row.cuisine && row.cuisine !== '餐厅',
-    (row) => row.cuisine
-  ) || base.cuisine || '餐厅';
+  const cuisineClaim = bestClaimingRow(sourceRows, 'cuisine');
+  const cuisine = cuisineClaim
+    ? (cuisineClaim.cuisine || '餐厅')
+    : firstBy(
+      sourceRows,
+      (row) => row.cuisine && row.cuisine !== '餐厅',
+      (row) => row.cuisine
+    ) || base.cuisine || '餐厅';
 
-  const lunch = firstBy(sourceRows, (row) => isPrice(row.lunch), (row) => row.lunch);
-  const dinner = firstBy(sourceRows, (row) => isPrice(row.dinner), (row) => row.dinner);
-  const openingHoursRaw = firstBy(sourceRows, (row) => Boolean(row.openingHoursRaw), (row) => row.openingHoursRaw);
-  const closedDays = firstBy(
-    sourceRows,
-    (row) => Array.isArray(row.closedDays) && row.closedDays.length,
-    (row) => row.closedDays
-  ) || [];
-  const closedNote = firstBy(sourceRows, (row) => Boolean(row.closedNote), (row) => row.closedNote);
+  const budgetClaim = bestClaimingRow(sourceRows, 'budget');
+  const budgetSuppressed = isSuppressed(sourceRows, 'budget');
+  const lunch = budgetSuppressed
+    ? null
+    : budgetClaim
+      ? (isPrice(budgetClaim.lunch) ? budgetClaim.lunch : null)
+      : firstBy(sourceRows, (row) => isPrice(row.lunch), (row) => row.lunch);
+  const dinner = budgetSuppressed
+    ? null
+    : budgetClaim
+      ? (isPrice(budgetClaim.dinner) ? budgetClaim.dinner : null)
+      : firstBy(sourceRows, (row) => isPrice(row.dinner), (row) => row.dinner);
 
-  const awardRow = [...sourceRows]
+  const dishesClaim = bestClaimingRow(sourceRows, 'dishes');
+  const dishes = isSuppressed(sourceRows, 'dishes')
+    ? []
+    : dishesClaim
+      ? unique(dishesClaim.dishes || []).slice(0, 4)
+      : unique(sourceRows.flatMap((row) => row.dishes || [])).slice(0, 4);
+
+  const hoursClaim = bestClaimingRow(sourceRows, 'hours');
+  const openingHoursRaw = isSuppressed(sourceRows, 'hours')
+    ? null
+    : hoursClaim
+      ? (hoursClaim.openingHoursRaw || null)
+      : firstBy(sourceRows, (row) => Boolean(row.openingHoursRaw), (row) => row.openingHoursRaw);
+
+  const closureClaim = bestClaimingRow(sourceRows, 'closure');
+  const closedDays = isSuppressed(sourceRows, 'closure')
+    ? []
+    : closureClaim
+      ? (Array.isArray(closureClaim.closedDays) ? closureClaim.closedDays : [])
+      : firstBy(
+        sourceRows,
+        (row) => Array.isArray(row.closedDays) && row.closedDays.length,
+        (row) => row.closedDays
+      ) || [];
+  const closedNote = isSuppressed(sourceRows, 'closure')
+    ? null
+    : closureClaim
+      ? (closureClaim.closedNote || null)
+      : firstBy(sourceRows, (row) => Boolean(row.closedNote), (row) => row.closedNote);
+
+  const awardClaim = bestClaimingRow(sourceRows, 'hyakumeiten');
+  const awardRow = awardClaim || [...sourceRows]
     .sort((a, b) => detailScore(b) - detailScore(a))
     .find((row) => row.hyakumeiten);
-  const hyakumeiten = Boolean(awardRow);
+  const hyakumeiten = awardClaim ? Boolean(awardClaim.hyakumeiten) : Boolean(awardRow);
 
   return {
     id: `g-${placeId}`,
@@ -181,15 +235,15 @@ function canonicalize(placeId, sourceRows) {
     distanceMeters: Math.round(distanceMeters),
     lunch: lunch || null,
     dinner: dinner || null,
-    dishes: unique(sourceRows.flatMap((row) => row.dishes || [])).slice(0, 4),
+    dishes,
     openingHoursRaw: openingHoursRaw || null,
     closedDays,
     closedNote: closedNote || null,
     googlePlaceId: placeId,
     googleStatus: 'verified',
     hyakumeiten,
-    hyakumeitenYear: awardRow?.hyakumeitenYear || null,
-    hyakumeitenCategory: awardRow?.hyakumeitenCategory || null,
+    hyakumeitenYear: hyakumeiten ? (awardRow?.hyakumeitenYear || null) : null,
+    hyakumeitenCategory: hyakumeiten ? (awardRow?.hyakumeitenCategory || null) : null,
     randomWeight: hyakumeiten ? 2.2 : 1,
     sources: unique(sourceRows.map(sourceLabel))
   };
