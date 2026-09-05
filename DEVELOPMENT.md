@@ -4,222 +4,323 @@ Updated: 2026-09-06
 
 ## Current milestone
 
-`TOKYO / 地区1️⃣` has moved from manual source-by-source completion into **bulk field acquisition and official-site reconciliation**.
+`TOKYO / 地区1️⃣` is now in **production-field completion before full identity-range expansion**.
 
-Identity discovery and the public product are already usable. The main bottleneck is now durable field coverage: branch-specific source URLs, Chinese recommendation labels, reference hours, budget, address and cuisine normalization.
+The browser product, Google Place-ID identity gate, source-binding system, hybrid maps, random-selection logic, media feedback layer and CI/audit pipeline are already operational. The current work is no longer basic feature construction; it is data completeness and data semantics.
 
-## Random-button voice and mascot feedback
+The approved order is:
 
-The random-result button has a deliberately isolated presentation layer. Restaurant selection remains owned by `app.js`; click feedback is implemented separately in `effects.js` and `effects.css` so media/animation changes cannot alter recommendation behavior.
+1. complete the most useful durable fields for the current 648 production restaurants;
+2. finish source outcomes for the remaining current-production identities;
+3. expand the same audited pipeline across the full 2,804-place Area1 identity inventory;
+4. only then enable opening-hours-based runtime filtering once schedule quality is sufficient.
 
-Public media assets are organized as:
+“Full range” means every identity in the 2,804-ID inventory is processed to an auditable outcome. It does **not** mean forcing all 2,804 Place IDs into public production without an independent maintainable source.
 
-- `voice/1.mp3`, `voice/1maybevaluable.mp3`, `voice/2.mp3`, `voice/2currency.mp3`, `voice/4maps.mp3` — current five-file random voice pool;
-- `image/YahaUsagi.webp`, `image/Momonga.webp`, `image/SweetBabyHachiware2.webp` — current three-character mascot pool.
+## Authoritative current baseline
 
-Runtime behavior:
-
-1. clicking `#generate` continues to execute the existing restaurant `generate()` handler;
-2. an additional `addEventListener` handler in `effects.js` selects one configured voice at random from the five-file pool;
-3. playback volume is fixed at **0.45**;
-4. playback is capped at **2,000 ms** after playback starts; shorter files end naturally;
-5. a repeated click stops and rewinds the previous voice before starting a new one, so voices never stack;
-6. playback failure is swallowed and must never block restaurant generation;
-7. one mascot is selected from the three configured WebP files;
-8. one placement is selected from **top-left, top-center, top-right, side-left or side-right**;
-9. the immediately previous mascot and immediately previous placement are excluded from the next selection, while voice selection itself remains ordinary random and may repeat;
-10. the selected mascot appears for about **1.9 s** and then hides;
-11. reduced-motion users receive the simplified fade animation from `effects.css`.
-
-Media release contract:
-
-- `.github/workflows/pages.yml` copies `voice/*.mp3` and `image/*.webp` into the Pages artifact, so new committed media files are published automatically;
-- the static browser still cannot enumerate repository directories at runtime, so selectable media must also be listed explicitly in the `voices` or `mascots` arrays in `effects.js`;
-- `scripts/audit_repository.mjs` scans the repository `voice/` and `image/` directories and fails CI if any MP3/WebP is present but missing from the runtime arrays;
-- the audit also locks the voice behavior to **45% volume** and **2,000 ms maximum playback**;
-- `index.html` uses a versioned `effects.js` URL so Pages clients do not retain stale click behavior after a release.
-
-This layer is intentionally non-essential: recommendation output must remain fully functional if audio playback is blocked, a media asset fails to load, or the mascot effect is unavailable.
-
-## Current production baseline
-
-Latest validated production baseline before this branch:
+Latest validated `main` state after opening-hours normalization and featured-dish expansion:
 
 - exact in-scope Google food-business identity inventory: **2,804 / 2,804**;
 - OSM independent-source candidates: **1,273**;
 - Google QC-v4 source rows: **658 verified / 615 rejected / 0 pending**;
-- canonical production entities: **648** unique Place IDs;
-- production IDs present in the exact Google inventory: **645**;
-- usable Tabelog/official source bindings: **356 / 648 = 54.9%**;
+- canonical production entities: **648** unique verified Place IDs;
+- production IDs present in exact Google inventory: **645**;
+- usable Tabelog/official source-backed production: **396 / 648 = 61.1%**;
 - explicit terminal source resolutions: **44**;
-- source outcomes accounted for: **400 / 648 = 61.7%**;
-- unresolved production source queue: **248**;
-- non-generic cuisine: **568 / 648**;
+- source outcomes accounted for: **440 / 648 = 67.9%**;
+- unresolved current-production source queue: **208**;
+- non-generic cuisine: **571 / 648**;
 - budget known: **192 / 648**;
-- address known: **207 / 648**;
-- reference hours/holiday information: **302 / 648**;
-- legacy representative-dish data: **72 / 648**;
+- address known: **261 / 648**;
+- filter-ready normalized opening hours: **273 / 648**;
+- strict reviewed recommendations: **27 / 648**;
+- structured public featured dishes: **84 / 648**;
+- legacy source-backed dish rows converted to reviewed Chinese featured dishes: **64 / 64**;
 - 百名店: **22**.
 
-The exact-inventory reconciliation queue remains large: **2,161** Google inventory Place IDs do not yet have a verified independent-source identity. That expansion work is separate from completing the 648 current production rows.
+Distance pools:
 
-## Normalized public fields
+- <=300 m: 137;
+- <=500 m: 220;
+- <=800 m: 359;
+- <=1,200 m: 648.
 
-Every canonical production row now exposes the same display contract:
+The exact-inventory expansion queue remains **2,161** Place IDs that do not yet have a verified independent-source identity suitable for canonical production.
 
-- `name`;
-- `cuisine`;
-- `address`;
-- `lat`, `lng`, `distanceMeters`;
-- `lunch`, `dinner`;
-- `recommendedDishes` — always an array, **0-2 Chinese names**;
-- `hoursReference` — always a string or `null`, descriptive only;
-- `googlePlaceId`;
-- award/weight fields and compact provider labels.
+## Canonical data contracts
 
-### Recommendation rule
+The canonical production file is generated by `scripts/build_production_dataset.mjs`. Browser code does not perform source matching.
 
-`recommendedDishes` is deliberately sparse. A dish is added only when a reviewed source explicitly identifies a concrete item as recommended, popular, signature, specialty, famous/名物, 看板, 自慢 or an equivalent clear claim.
+### Opening hours
 
-Generic menu items and historical `dishes` values are **not** automatically promoted to recommendations. If no reliable recommendation exists, the public field stays `[]`.
+Raw schedule prose belongs only to maintenance/source records. Canonical production uses a normalized field:
 
-The first reviewed explicit recommendation set contains **10 restaurants**. This replaces the earlier transitional behavior that translated generic representative dishes and incorrectly made 68 rows appear to have recommendations.
-
-### Hours rule
-
-`hoursReference` combines maintained opening-hours / regular-closure notes into one display field. It is a reference only and does not currently remove a restaurant from the random pool.
-
-## Result-map state
-
-The requested hybrid map design is implemented:
-
-- three-store overview: **Leaflet + OpenStreetMap**;
-- per-store result map: **Google Maps Embed `place` mode using the verified Place ID**;
-- direct Google Maps link remains available;
-- if no usable Embed key is injected, the per-store map automatically falls back to Leaflet.
-
-The Pages workflow now reuses the existing `GOOGLE_MAP_API` secret for the Embed key, per project decision. The built browser page therefore contains that key. API restrictions/quotas must account for both server-side Places maintenance calls and browser-side Maps Embed usage.
-
-## Bulk field-acquisition pipeline
-
-The old workflow was effectively:
-
-```text
-next restaurant
- -> manually search source
- -> manually copy fields
- -> repeat
+```js
+openingHours: {
+  timezone: 'Asia/Tokyo',
+  days: {
+    mon: [['11:30', '14:00'], ['17:00', '23:00']],
+    tue: [['11:30', '14:00'], ['17:00', '23:00']],
+    wed: []
+  }
+}
 ```
 
-The new workflow is:
+Semantics are fixed:
 
-```text
-canonical Place IDs
- -> existing official-source batch fetch
- -> transient Google websiteUri discovery for identities lacking an official source
- -> fetch the website itself
- -> structured HTML / JSON-LD / menu / recommendation signal extraction
- -> high-confidence official-site review queue
- -> reviewed source binding + fields
- -> canonical build + audits
+- missing day key = unknown for that day;
+- `[]` = explicitly closed on that day;
+- one or more `[open, close]` intervals = known opening periods;
+- missing `openingHours` = no reliable filter-ready weekly schedule is available;
+- `timezone` is `Asia/Tokyo`;
+- closing times may exceed 24:00 when the source uses after-midnight business notation.
+
+`hoursReference` is derived automatically from `openingHours` for Chinese display. It must never be copied from mixed raw prose.
+
+The normalizer intentionally rejects ambiguous schedules such as irregular closure, reservation-only prose, calendar/SNS-dependent schedules and day-less time ranges without evidence that safely determines weekly coverage.
+
+The previous descriptive schedule count was 304. After conservative normalization, **273** restaurants remain filter-ready; ambiguous records are omitted rather than guessed.
+
+### Featured dishes and strict recommendations
+
+Two concepts remain separate:
+
+- `recommendedDishes`: strict reviewed recommendation list. A dish enters only when the source explicitly indicates recommendation/popularity/signature/specialty/名物/看板/自慢 or equivalent evidence.
+- `featuredDishes`: broader structured representative/signature/recommended dishes for public display.
+
+`featuredDishes` supports:
+
+```js
+{
+  nameZh: '羊肉比尔亚尼',
+  nameJa: 'マトンビリヤニ',
+  kind: 'representative',
+  priceYen: 3000,
+  priceText: '¥3,000'
+}
 ```
 
-Google `websiteUri` is used only as a transient discovery input. The discovery output does not retain the Google-returned URI as a Places response field; the review artifact retains the final URL independently returned by the website fetch.
+`kind` is one of `recommended`, `signature`, or `representative`.
 
-### Existing official-source extraction test
+Current coverage:
 
-Run `33974331919` proved that one batch job can inspect the already-bound official pages rather than querying restaurants individually:
+- strict `recommendedDishes`: **27** restaurants;
+- public `featuredDishes`: **84** restaurants;
+- **57** source-backed representative-dish rows were added in the normalization pass;
+- every legacy dish row with maintained dish-source evidence is now converted to reviewed Chinese featured output: **64 / 64**.
 
-- official URLs targeted: **60**;
-- successfully fetched: **55** in the first run;
-- pages with JSON-LD/structured facts: **10**;
-- pages with recommendation/signature signals: **21**;
-- pages with price signals: **22**;
-- pages with menu links: **36**.
+Representative featured dishes must point to an already-maintained dish source for the same Place ID. Unsupported menu items are not invented and generic menu lists are not automatically labeled as recommendations.
 
-Remote websites are variable; a later run fetched fewer of the same 60 pages. Therefore fetch failure is treated as a retry/review condition, not as evidence that a restaurant or source is invalid.
+### Missing-field policy
 
-### Google-assisted official-site discovery test
+Missing optional facts are omitted or represented by the canonical null/empty contract. Do not fabricate values to improve coverage metrics.
 
-Run `33974475744` used the existing `GOOGLE_MAP_API` and scanned the **589 production identities without an existing official binding**:
+In particular:
 
-- Place Details requests successful: **589 / 589**;
-- website available: **445**;
-- website fetched successfully: **287**;
-- fetched page text matched the canonical restaurant name: **195**;
-- candidate non-platform/official hosts: **265**;
-- pages with structured facts: **121**;
-- pages with recommendation signals: **160**;
-- pages with price signals: **107**;
-- pages with menu links: **223**;
-- no website returned: **144**;
-- Google lookup errors: **0**;
-- website fetch failures/timeouts: **158**.
+- no reliable weekly schedule -> omit `openingHours`;
+- no explicit recommendation -> `recommendedDishes: []`;
+- no supported featured dish -> `featuredDishes: []`;
+- no source-backed price -> do not infer a budget or dish price;
+- ambiguous branch/source identity -> keep unresolved or terminally resolved rather than force-bind a convenient page.
 
-A stricter review filter requiring successful fetch + candidate official host + canonical-name match + HTTPS reduces this to **164 high-confidence official-site candidates**:
+## Immediate field-completion queue
 
-- structured facts: **72**;
-- recommendation signals: **97**;
-- price signals: **60**;
-- menu links: **134**.
+Among the **396 restaurants that already have a usable Tabelog/official source**, the next directly actionable gaps are:
 
-Those 164 are the first review queue. They are **candidates**, not auto-approved facts.
+- filter-ready `openingHours`: **161** missing;
+- `featuredDishes`: **314** missing;
+- budget: **204** missing;
+- address: **169** missing;
+- non-generic cuisine: **27** missing.
 
-## Maintenance workflows
+These source-backed gaps are processed before spending effort on broad identity expansion because they can improve the current 648-restaurant user experience with relatively low identity risk.
 
-### Pages
+Preferred acquisition order:
 
-`.github/workflows/pages.yml`:
+1. branch-specific official structured data / JSON-LD;
+2. official branch/store pages;
+3. official menu pages;
+4. already-reviewed independent sources;
+5. conservative manual review for conflicts or non-structured cases.
 
-1. builds the canonical dataset;
-2. runs repository/source/normalized-field audits;
-3. generates coverage and field-gap reports;
-4. assembles only public site assets, including all `voice/*.mp3` and `image/*.webp` media;
-5. injects the existing `GOOGLE_MAP_API` value into the Google Maps Embed placeholder for deployed Pages output;
-6. deploys main or emits a review artifact for PRs.
+Repeated hosts/chains should be processed by parser/template rather than one restaurant at a time.
 
-### Bulk source extraction
+## Bulk acquisition architecture
 
-`.github/workflows/extract-official-fields.yml` is an explicit `workflow_dispatch` maintenance job so a routine data commit does **not** automatically repeat hundreds of Places requests.
+The maintenance path is:
 
-It:
+```text
+verified production Place IDs
+        |
+        +--> maintained official/Tabelog source bindings
+        |
+        +--> independently fetched official candidate index
+        |
+        v
+host/template batch extraction
+        |
+        v
+normalized candidate facts
+        |
+        v
+identity/source confidence checks
+        |
+        v
+source_enrichment*.js / reviewed dish data
+        |
+        v
+build_production_dataset.mjs
+        |
+        v
+schema + source + repository audits
+        |
+        v
+production_area1.js
+```
 
-1. rebuilds canonical production;
-2. fetches all already-known official pages;
-3. transiently requests `websiteUri` for production identities without an official binding;
-4. fetches those websites;
-5. generates a high-confidence review queue;
-6. uploads short-lived review artifacts.
+Google Places is an identity/discovery aid, not the persistent restaurant metadata database. Place IDs may be retained as durable identifiers. Full Places display payloads must not be used as the long-lived canonical content store.
 
-The dispatch accepts `google_limit`; `0` means all currently eligible rows.
+Tabelog bulk fetching from GitHub-hosted runners currently receives HTTP 403 and must not use anti-bot bypass. Automated completion therefore prioritizes independently fetchable official sources; existing reviewed Tabelog facts remain valid maintained evidence.
+
+## Approved full-range expansion
+
+After the current 648-production field pass, expand across the **entire 2,804-ID Area1 identity inventory**.
+
+### Expansion unit
+
+Each inventory Place ID must end in one auditable state:
+
+1. **production-ready** — exact identity has an independent maintainable source and passes all admission rules;
+2. **needs-review** — candidate independent source exists but branch/identity evidence is insufficient;
+3. **no-independent-source-yet** — identity is known but no safe durable source is available;
+4. **terminal exclusion** — a documented reason prevents admission under current project rules.
+
+Do not silently skip inventory identities and do not promote a record merely to increase the production count.
+
+### Promotion requirements
+
+A full-inventory identity may enter canonical production only when:
+
+- Google Place ID is known and belongs to the strict Area1 inventory;
+- independent geospatial/source identity is established without persisting disallowed Google display content as the canonical database;
+- business/branch identity is sufficiently specific to avoid same-brand wrong-branch matches;
+- distance remains <=1,200 m;
+- source provenance is recorded;
+- canonical build and all audits pass.
+
+Field completeness is allowed to be partial at initial promotion, but unknown fields must remain unknown rather than guessed. After promotion, the same field-completion queue applies.
+
+### Full-range completion metric
+
+The expansion milestone is complete when:
+
+```text
+production-ready
++ needs-review / explicit unresolved outcome
++ no-independent-source-yet
++ terminal exclusion
+= 2,804 unique inventory Place IDs
+```
+
+The public production count may therefore remain below 2,804 while identity-range accounting reaches 100%.
+
+## Opening-hours runtime filter roadmap
+
+The new `openingHours` schema is specifically designed for later filtering, but runtime exclusion remains intentionally disabled for now.
+
+When enabled:
+
+- known-open records can be evaluated against `Asia/Tokyo` local time;
+- explicitly closed days can be excluded;
+- missing day/schedule data must remain **unknown**, not be treated as closed;
+- irregular/holiday exceptions require conservative handling;
+- UI should distinguish “confirmed open by weekly schedule” from “hours unknown”.
+
+Do not enable a hard “open now only” filter until normalized coverage and freshness are strong enough that missing data would not systematically shrink the recommendation pool.
+
+## Runtime/product contract
+
+The public site remains static GitHub Pages.
+
+Recommendation behavior:
+
+- strict Area1 distance <=1,200 m;
+- verified Google Place ID required for production identity;
+- cuisine exclusion, budget and distance filters;
+- exactly three distinct results whenever >=3 eligible restaurants exist;
+- cuisine diversity is preferred but not mandatory;
+- Web Crypto randomness;
+- 百名店 weight 2.2 vs ordinary 1.0;
+- no rating/review-count popularity ranking.
+
+Result views:
+
+1. three-store overview: Leaflet + OpenStreetMap;
+2. per-store Google Maps Embed `place` map using verified Place ID, with Leaflet fallback;
+3. restaurant cards;
+4. three-store comparison table;
+5. direct Google Maps link.
+
+The public card/comparison label is `特色菜`; strict recommendations remain available separately in the data model.
+
+## Random-button voice and mascot layer
+
+Restaurant selection stays owned by `app.js`; presentation feedback remains isolated in `effects.js` / `effects.css`.
+
+Current behavior:
+
+- five MP3 files in the random voice pool;
+- volume 0.45;
+- maximum playback 2,000 ms;
+- repeated click stops the previous voice before a new one starts;
+- three WebP mascot files;
+- randomized nearby placement without immediate mascot/position repetition;
+- mascot display about 1.9 s;
+- media failures never block restaurant generation;
+- CI audits committed MP3/WebP assets against runtime arrays.
+
+## Maintenance and CI rules
+
+Every field or expansion batch must:
+
+1. preserve exact Place-ID/source provenance;
+2. rebuild canonical production;
+3. run opening-hours parser tests;
+4. run repository audit;
+5. run source-binding audit;
+6. run normalized-field audit;
+7. update coverage/gap reports;
+8. record material progress in `DEVELOPMENT.md`, `DATA_ENRICHMENT_PROGRESS.md` and `CHANGELOG.md` when the baseline changes.
+
+Do not claim coverage from stale documentation; CI-generated/current canonical metrics are authoritative.
 
 ## Ordered next work
 
-### Priority 1 — promote the 164 high-confidence official candidates
+### Phase A — complete current production fields
 
-Process by host/template rather than restaurant distance. For each candidate:
+Continue bulk source-backed enrichment for the 396 already bound restaurants, prioritizing `openingHours` and `featuredDishes`, then budget/address/cuisine.
 
-1. confirm the fetched page represents the exact branch/business;
-2. bind the final website URL as an official source;
-3. import structured address/hours/cuisine only where directly supported;
-4. add 1-2 Chinese recommendation names only where the page explicitly recommends concrete dishes;
-5. leave unsupported fields empty;
-6. run canonical/source audits after each batch.
+### Phase B — close current-production source outcomes
 
-Chain/template groups should be handled together (for example Starbucks, Tully's, Doutor/C-United, Royal Host, Yoshinoya and other repeated hosts).
+Resolve the remaining **208** source-outcome identities conservatively. Use official sources first and retain explicit unresolved/terminal records when exact branch evidence is insufficient.
 
-### Priority 2 — recover the website-fetch failures
+### Phase C — expand to the complete 2,804-ID identity range
 
-The 158 fetch failures are not identity failures. Retry with host-specific handling where worthwhile, especially JavaScript-heavy or anti-bot sites. Do not mark them closed or source-not-found merely because the generic fetcher failed.
+Process the remaining **2,161** exact inventory identities through independent-source discovery, identity verification and explicit outcome accounting. Promote only records that satisfy the same production admission contract.
 
-### Priority 3 — rows with no official website
+### Phase D — field completion for newly promoted identities
 
-The 144 rows where Places returned no website continue through existing Tabelog/manual source research. They should not trigger repeated Google identity searches because their Place IDs are already known.
+Apply the same normalized hours, featured-dish, budget, address and cuisine pipeline to new production rows.
 
-### Priority 4 — remaining source outcomes and exact-inventory expansion
+### Phase E — opening-hours filtering
 
-Continue the **248** unresolved source outcomes for current production, then separately reconcile the **2,161** exact-inventory Place IDs without independent-source identity. Do not weaken the 1.2 km or identity QC gates to increase counts.
+Implement schedule-aware filtering only after coverage/freshness review. Unknown schedules must never be treated as closed by default.
 
-### Priority 5 — recommendation/runtime logic after data stabilization
+### Later scopes
 
-Do not add automatic open-now filtering yet. First improve `hoursReference` coverage and semantics. Recommendation weighting remains 百名店 2.2 vs ordinary 1.0; no ratings/review-count ranking is introduced.
+After Area1 range accounting and data quality stabilize:
+
+- TOKYO / 地区2️⃣;
+- SHIZUOKA;
+- optional local recommendation history after persistence/privacy semantics are defined.
