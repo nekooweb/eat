@@ -2,117 +2,192 @@
 
 Updated: 2026-09-05
 
-## Goal
+## Current result
 
-Build an auditable inventory of **all in-scope food businesses within the strict 1,200 m Area1 circle**, then reconcile every identity into the canonical production dataset with independent-source field enrichment.
+The Area1 identity-count phase is now **complete and independently audited** for the project's food-business scope.
 
-This document distinguishes three different numbers that must not be conflated:
+- strict radius: **1,200 m**
+- exact Google Places Aggregate count: **2,804** operational in-scope food businesses
+- enumerated unique Place IDs: **2,804 / 2,804**
+- inventory status: `complete:true`
+- coverage verification: `coverageVerified:true`
+- independent count verification: `independentCountVerified:true`
+- inventory method: `places_aggregate_geodesic_partition_boundary_qc_v3`
+- checked: 2026-09-05
 
-1. **Google coverage inventory** — Place IDs discovered for coverage/reconciliation.
-2. **Source candidates** — OSM / curated / reviewed independent-source records presented for identity verification.
-3. **Canonical production entities** — unique verified Place IDs admitted after QC and canonical merging.
+The persisted inventory is `data/area1_google_ids.json` at commit `81d874558e556a6942e81606a7855de455d8a7b4`.
 
-A large discovery list is not proof of complete geographic coverage.
+This count is the complete number for the repository's configured **food-business universe** (restaurant/cafe/bakery/bar/takeaway and related food-service types). It is not a count of every retail shop or every Google Maps POI category.
 
-## Baseline before this completeness pass
+## How the exact inventory was established
 
-From the 2026-09-05 reviewed baseline:
+The old 1,613-ID inventory was a Nearby Search union and was not treated as complete because of per-query result limits.
 
-- OSM source candidates: 990
-- Google QC-v4 terminal cache entries: 499
-- verified source candidates: 274
-- rejected source candidates: 225
-- OSM candidates with no Google verification-cache entry: 491
-- canonical production entities: 269
-- current canonical coverage stops at about 741 m despite a configured 1,200 m product boundary
-- legacy Google coverage inventory: 1,613 unique Place IDs
+The replacement workflow now:
 
-The 1,613-ID inventory came from a gridded Nearby Search discovery workflow. Nearby Search result limits mean that inventory is a lead set, not an exact all-business count.
+1. requests `INSIGHT_COUNT` for the exact 1,200 m circle;
+2. builds geodesic sector polygons rather than using a linear latitude/longitude approximation;
+3. requests a count before Place IDs for every sector;
+4. recursively splits sectors above the 100-place `INSIGHT_PLACES` limit;
+5. enumerates IDs only after a sector is small enough;
+6. uses a 1,205 m guard band only when the inscribed sector union differs from the exact circle count;
+7. requests transient Place Details location/status only for guard-band candidates;
+8. trims those candidates back to the strict 1,200 m circle;
+9. refuses completion unless the final unique ID count equals the independent exact Aggregate circle count.
 
-## Work started in this pass
+Successful run `33953718846` produced:
 
-### A. Full verification of the remaining OSM pool
+- exact circle count: 2,804;
+- geodesic 1,200 m sector union: 2,801 IDs;
+- 1,205 m guard-band union: 2,835 IDs;
+- guard-band-only candidates checked: 34;
+- candidates recovered inside the strict circle: 3;
+- final unique IDs: 2,804;
+- Aggregate requests: 238;
+- transient Place Details requests: 34.
 
-The verification workflow now supports an explicit `all` mode (`GOOGLE_VERIFY_LIMIT=0`) in addition to the historical half mode.
+The old inventory had 1,613 IDs. Relative to it, the exact inventory contains:
 
-A full-pool run was triggered on 2026-09-05 to process all 491 source candidates that had no Google QC-v4 cache entry at the baseline.
+- **1,215 newly discovered IDs**;
+- **24 old IDs no longer present** under the current exact operational/type/radius criteria.
 
-This task expands the independently sourced candidate pool. It is useful but **cannot by itself prove 1,200 m completeness**, because OSM completeness is not guaranteed.
+## Full OSM verification completed in the same expansion pass
 
-### B. Exact Google coverage count + enumerated Place-ID inventory
+All current OSM source candidates have now been processed through Google QC-v4:
 
-`scripts/discover_google_area1.py` was replaced with a completeness-audited Places Aggregate workflow:
+- OSM source candidates: 990;
+- verification cache entries: **990 / 990**;
+- verified source rows: 526;
+- rejected source rows: 464;
+- pending: 0.
 
-1. Request `INSIGHT_COUNT` for the exact 1,200 m Area1 circle and the project food-business type filter.
-2. Partition the area into angular sectors.
-3. Request `INSIGHT_COUNT + INSIGHT_PLACES` per sector.
-4. Recursively split any sector containing more than 100 matching places so every enumerated sector is within the Place-ID return limit.
-5. Extend sector polygons slightly beyond 1,200 m to avoid polygon-chord edge loss.
-6. Use transient Places Details `location` + `businessStatus` only to trim the sector union back to the exact 1,200 m operational circle.
-7. Persist only Place IDs and audit metadata.
-8. Refuse to write the inventory unless the final unique in-circle Place-ID count exactly equals the independent Aggregate circle count.
+Current rejection reasons:
 
-The output schema now includes `count`, `complete`, request counts, method and search types. A successful output with `complete: true` is the gate for claiming a Google-derived exact Area1 identity count.
+- `outside_1_2km`: 258;
+- `location_mismatch`: 80;
+- `closed_permanently`: 67;
+- `name_mismatch`: 40;
+- `non_food_google_type`: 14;
+- `no_google_place`: 5.
 
-## Current blocker: Places Aggregate API key authorization
+The full verification run expanded the canonical production dataset from the previous 269 entities to **517 unique production entities**.
 
-The first completeness run failed before any inventory write with:
+## Current production coverage after expansion
 
-- HTTP 403 `PERMISSION_DENIED`
-- reason: `API_KEY_SERVICE_BLOCKED`
-- service: `areainsights.googleapis.com`
-- method: `google.maps.areainsights.v1.AreaInsights.ComputeInsights`
+Latest passing Pages build/deploy after the full OSM verification and exact inventory:
 
-Therefore:
+- production entities: **517**;
+- unique production Place IDs: 517;
+- production entities represented in the exact Google inventory: 515;
+- cuisine known: 425;
+- budget known: 95;
+- schedule/holiday known: 202;
+- dishes known: 20;
+- display address known: 95;
+- current Tabelog/official-source-backed production: 237;
+- 百名店 rows: 22.
 
-- the legacy 1,613-ID inventory remains untouched;
-- no exact 1,200 m count is claimed yet;
-- the new algorithm has not falsely promoted an incomplete result.
+Distance pools are now:
 
-To unblock the exact count, enable **Places Aggregate API** for the Google Cloud project behind the repository secret `GOOGLE_MAP_API` and authorize that service in the key's API restrictions. Then rerun `Discover Google Area1`.
+- <=300 m: 116;
+- <=500 m: 192;
+- <=800 m: 295;
+- <=1,200 m: 517.
 
-## Completeness gate
+Therefore the previously empty 800–1,200 m ring now contains **222 production entities**.
 
-Area1 must not be labelled geographically complete until all of the following are true:
+## Identity reconciliation gap
 
-- `data/area1_google_ids.json` uses the completeness-audited Aggregate method;
-- `complete === true`;
-- enumerated unique in-circle Place IDs equal the exact Aggregate count;
-- every enumerated Place ID has a reconciliation state against production / independent-source research;
-- all newly admitted production identities pass the existing QC-v4 and <=1,200 m gates;
-- source-outcome and field-review accounting is recorded for newly admitted identities;
-- repository/runtime/source audits pass.
+The exact inventory and the production dataset answer different questions.
 
-## Full-information enrichment after identity completeness
+Exact inventory audit:
 
-Google Place Details remains transient QC input. Full persistent restaurant fields should continue to be sourced from OSM, Tabelog and restaurant-official pages under the existing repository policy.
+- exact Google inventory IDs: 2,804;
+- unique verified Google IDs represented by the current QC cache: 516;
+- verified IDs covered by the exact inventory: 513;
+- inventory IDs without a verified independent-source identity: **2,291**;
+- rejected source-match Place IDs that are nevertheless present in the exact inventory: 91;
+- verified source Place IDs outside the current exact inventory: 3.
 
-For every Place ID in the exact inventory, reconciliation should end in one explicit state:
+The `2,291` figure is the principal **identity-reconciliation queue**. It does not mean 2,291 confirmed missing production restaurants: some will correspond to duplicate/alternate source rows, records that require independent-source discovery, or identities that need further reconciliation before admission.
 
-- already canonical;
-- independent source found -> verify/admit/enrich;
-- duplicate/merged identity;
-- closed/non-food/outside after fresh QC;
-- independent source unresolved / research hold.
+## Full-information completion state
 
-Priority persistent fields remain:
+Source outcome accounting has not yet caught up with the production expansion.
 
-- display name / branch identity
-- cuisine/category
-- display address
-- lunch budget
-- dinner budget
-- opening hours / regular holiday
-- representative dishes
-- Tabelog and/or official source reference
-- Google Place ID for identity/navigation
-- current source/QC outcome and review date
+Current source queue:
 
-## Definition of “complete number”
+- production entities: 517;
+- usable Tabelog/official bindings: 237;
+- explicit terminal source resolutions: 32;
+- source outcomes already accounted for: 269;
+- newly unresolved production identities: **248**;
+- current source-resolution coverage: about 52%.
 
-The number shown as the complete 1.2 km food-business count must be the successful exact Aggregate `count`, not:
+The immediate full-information queue should therefore be processed in this order:
 
-- the current production count;
-- the number of OSM candidates;
-- the legacy 1,613-ID Nearby Search union;
-- a partially processed verification-cache count.
+1. **248 newly admitted OSM-backed production identities** — they already have independent name/location + verified Place ID, so Tabelog/official branch resolution and field extraction can proceed directly.
+2. **2,291 exact-inventory IDs without a verified independent-source identity** — use transient Google identity/location only as a discovery aid, then establish an independent durable source before admission.
+3. Reconcile the 91 exact-inventory IDs that appear in rejected source matches to distinguish a bad source-to-Google match from a genuinely unusable business identity.
+4. Review the small verified-outside-inventory exception set separately rather than weakening the strict 1,200 m gate.
+
+## Persistent full-information fields
+
+Google Places remains the identity/QC layer, not the durable application database. Persistent restaurant facts continue to come from OSM, Tabelog and restaurant/organization official sources.
+
+Target fields per branch:
+
+- exact display/branch name;
+- cuisine/category;
+- independent address;
+- independent coordinates/distance;
+- lunch budget;
+- dinner budget;
+- opening hours;
+- regular holidays/closure notes;
+- representative dishes;
+- Tabelog and/or official source reference;
+- Google Place ID for identity/navigation;
+- source/QC outcome and review date;
+- 百名店 metadata where applicable.
+
+Unknown fields stay unknown; values are not inferred from cuisine stereotypes or neighboring businesses.
+
+## Completeness definitions
+
+Two completion states must remain separate:
+
+### Identity-count complete
+
+**Achieved on 2026-09-05.**
+
+Requirements:
+
+- exact 1,200 m Aggregate count exists;
+- unique Place-ID inventory size equals that count;
+- `complete`, `coverageVerified` and `independentCountVerified` are all true;
+- the exact-coverage audit passes.
+
+Current result: **2,804 / 2,804**.
+
+### Full-information complete
+
+Not yet achieved.
+
+Requirements:
+
+- every exact-inventory identity has an explicit reconciliation outcome;
+- every admitted production entity has a usable source or documented terminal source resolution;
+- persistent target fields are reviewed with field-level provenance or an explicit reviewed-missing reason;
+- duplicate/closed/non-food/outside exceptions are recorded rather than silently dropped;
+- canonical/runtime/source audits pass.
+
+## Validation evidence
+
+- exact discovery workflow run: `33953718846` — success;
+- exact inventory commit: `81d874558e556a6942e81606a7855de455d8a7b4`;
+- strengthened independent-count gate: `9ba11132310fe3adf40b205021ecff7adc6bd39b`;
+- Pages build/deploy run after the exact inventory: `33953786379` — success;
+- canonical build: 517 entities / 517 unique Place IDs;
+- repository audit: pass;
+- source-binding audit: pass.
