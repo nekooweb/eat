@@ -8,7 +8,7 @@ const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, '..');
 const DATA = path.join(ROOT, 'data');
 const INPUT = process.argv[2] || path.join(ROOT, '_audit', 'official_index_field_candidates.json');
-const OUTPUT = process.argv[3] || path.join(DATA, 'source_enrichment_auto_official.js');
+const OUTPUT = process.argv[3] || path.join(DATA, 'source_enrichment_autoofficial.js');
 const CHECKED_AT = process.env.AUTO_OFFICIAL_CHECKED_AT || '2026-09-06';
 const FOOD_TYPES = new Set(['Restaurant','FoodEstablishment','CafeOrCoffeeShop','Bakery','BarOrPub','FastFoodRestaurant','Store','LocalBusiness']);
 
