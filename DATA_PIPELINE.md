@@ -8,7 +8,7 @@ The current rule is:
 
 > **A production entity needs a verified Google Place ID, while durable display/recommendation metadata is maintained independently of Google Places response content.**
 
-Google is the identity/QC gate. OSM, curated records, Tabelog and official sources provide independently maintainable metadata and coverage leads.
+Google is the identity/QC gate. OSM, Tabelog, official restaurant sources and legacy curated records provide independently maintainable metadata and coverage leads.
 
 ## 1. Source roles
 
@@ -18,81 +18,132 @@ Used for:
 - transient verification of location, business status and food-related type;
 - Google-side Area1 identity coverage discovery.
 
-Persistent Google-derived state should be restricted to what the current platform terms allow for durable storage, principally Place IDs for this project. Display name, formatted address, coordinates, Maps URI, status and type returned by Places are treated as transient QC data in the maintenance workflow.
+Persistent Google-derived state is restricted to the durable identity/QC state needed by this project. Display name, formatted address, coordinates, Maps URI, business status and type returned by Places remain transient maintenance inputs rather than the long-lived restaurant database.
 
 ### OpenStreetMap
-Independent Area1 POI source.
+Independent Area1 POI/geospatial source.
 
 Useful persistent fields:
 - source ID;
 - local name/category;
-- coordinates;
+- independent coordinates;
 - opening-hours tags where available;
 - independent coverage candidates.
 
 An OSM row does not become production-ready until it receives a verified Google Place ID.
 
-### Curated / official / Tabelog data
-Used as factual enrichment for an already identified business/branch:
+`build_area1_osm.py` intentionally keeps OSM rows whose names overlap legacy curated records and marks them `curatedOverlap:true`. Those rows are valuable identity bridges: after Google verification, historical metadata can attach to a verified Place ID rather than remain isolated by name.
+
+### Tabelog / official restaurant sources
+These are the preferred durable enrichment sources for an already identified business/branch.
+
+Authoritative maintenance file:
+- `data/source_enrichment.js`.
+
+Records are keyed by the verified Google Place ID cross-reference and must include field-level `sourceRefs` provenance.
+
+Typical factual fields:
 - cuisine refinement;
 - lunch/dinner budget;
 - representative dishes;
 - opening hours / regular holidays;
-- 百名店 status/year/category.
+- 百名店 status/year/category when the correct branch is confirmed.
 
-Ambiguous identity matches remain unresolved. Missing values are not fabricated.
+A source-enrichment row is always `sourceOnly:true`. It **cannot declare itself Google-verified and cannot create a production identity by itself**. It is attached only when that Place ID already exists in the verified Google identity groups.
+
+Current field preference for non-geospatial restaurant metadata:
+1. official restaurant source;
+2. Tabelog source-backed record;
+3. legacy curated record;
+4. generic OSM category metadata.
+
+Coordinates remain independent of Google Places and prefer OSM.
+
+### Legacy curated records
+Historical files such as `restaurants.js`, `area1_bulk.js` and `area1_more.js` remain useful bridge inputs. They are not the preferred destination for new factual enrichment.
+
+New researched Tabelog/official facts should go into `data/source_enrichment.js` with a Place ID and field-level source reference instead of being added as opaque name-only patches.
+
+Missing values are never fabricated.
 
 ## 2. Production lifecycle
 
 ```text
-OSM / curated / Tabelog / official source candidate
-                         |
-                         v
-                  Google identity match
-                         |
-             +-----------+-----------+
-             |                       |
-             v                       v
-        verified Place ID      unresolved/rejected
-             |                       |
-             v                       v
-      independent metadata       audit only
+OSM / legacy curated candidate
              |
              v
- build_production_dataset.mjs
+      Google identity QC
              |
-             v
-     canonical Place-ID entity
+       verified Place ID
              |
-             v
-     production_area1.js
-             |
-             v
-           browser
+      +------+--------------------+
+      |                           |
+      v                           v
+OSM/legacy metadata      Place-ID keyed source_enrichment.js
+      |                  (Tabelog / official / award facts)
+      +-------------+-------------+
+                    |
+                    v
+        build_production_dataset.mjs
+                    |
+                    v
+          canonical Place-ID entity
+                    |
+                    v
+            production_area1.js
+                    |
+                    v
+                  browser
 ```
 
-A separate Google Nearby Search coverage inventory is used to detect Google identities that are not yet represented by a verified independent-source entity.
+A separate Google Nearby Search coverage inventory detects Google identities that are not yet represented by a verified independent-source entity.
 
 ## 3. Source candidate discovery
 
 ### OpenStreetMap
-Script: `scripts/build_area1_osm.py`
+Script:
+- `scripts/build_area1_osm.py`.
 
 Output:
 - `data/area1_osm.js`.
 
-This currently provides the broad independent candidate pool for Area1 and enforces the source collection radius.
+This provides the broad independent candidate pool for Area1 and enforces the source collection radius.
 
-### Other enrichment sources
-Historical/curated Area1 files remain maintenance inputs. They are not loaded by the browser.
+Curated-name overlap is no longer excluded. It is explicitly retained and marked so those historical records can acquire verified identity links.
 
-They should gradually migrate toward Place-ID/branch-aware enrichment records rather than name-only patches.
+### Source-backed enrichment
+File:
+- `data/source_enrichment.js`.
+
+Each record should contain:
+- `profile`, `area`;
+- exact branch/store `name`;
+- verified-identity cross-reference `googlePlaceId`;
+- `sourceOnly:true`;
+- provider label (`Tabelog` or `official`);
+- only factual fields supported by the source;
+- one or more `sourceRefs` entries with provider, URL, check date and supported field names.
+
+Example provenance shape:
+
+```js
+sourceRefs: [{
+  provider: 'Tabelog',
+  url: 'https://tabelog.com/.../',
+  checkedAt: 'YYYY-MM-DD',
+  fields: ['cuisine', 'budget', 'hours']
+}]
+```
+
+Do not store copied review prose, ratings/review counts, or unsupported inferred values as production metadata.
 
 ## 4. Google source-to-identity verification
 
-Script: `scripts/verify_google_places.py`
+Primary script:
+- `scripts/verify_google_places.py`.
 
-Workflow: `.github/workflows/verify-google-places.yml`
+Primary workflow:
+- `.github/workflows/verify-google-places.yml`.
 
 For each selected independent source candidate:
 1. Text Search requests only the candidate Google Place ID.
@@ -105,6 +156,15 @@ For each selected independent source candidate:
 8. Persist only source ID, status, Place ID, compact reason and QC version.
 
 The verifier is keyed by source ID in the generated overlay. Normalized restaurant name is not the identity key.
+
+### Curated-overlap recovery
+Targeted script:
+- `scripts/verify_curated_google.py`.
+
+Workflow:
+- `.github/workflows/verify-curated-google.yml`.
+
+It selects only OSM rows marked `curatedOverlap:true`, reuses the normal QCv4 verifier and skips existing terminal QCv4 cache entries. This recovers useful historical metadata without re-running the unresolved half of the entire Area1 pool.
 
 ### Name/transliteration rule
 Google may return an English/romanized display name for a Japanese source name. Therefore:
@@ -135,9 +195,11 @@ A rejected source candidate means **that source match is not trustworthy**. It d
 
 ## 6. Google-side coverage discovery
 
-Script: `scripts/discover_google_area1.py`
+Script:
+- `scripts/discover_google_area1.py`.
 
-Workflow: `.github/workflows/discover-google-area1.yml`
+Workflow:
+- `.github/workflows/discover-google-area1.yml`.
 
 Purpose:
 - query overlapping Area1 cells;
@@ -159,25 +221,27 @@ Coverage comparison should answer:
 
 ## 7. Legacy Google discovery migration
 
-Historical files `data/area1_google_places.json` and `data/area1_google.js` stored more Google response content than the new architecture needs.
+Historical files `data/area1_google_places.json` and `data/area1_google.js` stored more Google response content than the current architecture needs.
 
 One-time migration:
 1. `scripts/migrate_google_inventory.py` extracts unique Place IDs from the existing historical dataset without any API call;
 2. `data/area1_google_ids.json` preserves the identity inventory;
 3. `.github/workflows/migrate-google-storage.yml` removes the old full Google JSON/JS from the current branch.
 
-The migration keeps previously paid-for discovery identity results while eliminating them from the active long-lived data model.
+The migration keeps previously obtained identity results while eliminating the old full response payloads from the active long-lived data model.
 
 ## 8. Canonical build
 
-Script: `scripts/build_production_dataset.mjs`
+Script:
+- `scripts/build_production_dataset.mjs`.
 
 Inputs:
-- independent/curated restaurant records;
+- legacy curated restaurant records;
 - OSM candidates;
 - manual Place-ID hints;
 - generated Google verification state;
-- 百名店 metadata.
+- historical 百名店 metadata;
+- `data/source_enrichment.js` field-level Tabelog/official enrichment.
 
 Admission rules:
 - `profile === TOKYO`;
@@ -190,9 +254,12 @@ Canonical identity:
 - one production row per unique Google Place ID.
 
 Enrichment:
-- same-Place-ID records merge directly;
+- verified identity groups are created first;
+- a `sourceOnly` Place-ID keyed record attaches only to an already verified identity;
 - a no-ID historical row may enrich only when its normalized name maps uniquely to one verified identity;
-- ambiguous name matches do not merge.
+- ambiguous name matches do not merge;
+- source-backed Tabelog/official facts outrank legacy curated/OSM metadata for non-geospatial fields;
+- OSM remains preferred for map coordinates/distance.
 
 Output:
 - `data/production_area1.js` generated during CI/deployment.
@@ -225,10 +292,12 @@ Award/weighting:
 - `hyakumeitenCategory`;
 - `randomWeight`.
 
-Audit provenance:
-- `sources`.
+Compact public provenance:
+- `sources` provider labels only.
 
-The canonical browser dataset intentionally excludes Places-response fields such as:
+Detailed `sourceRefs` remain a maintenance-layer field and are intentionally omitted from the public canonical dataset.
+
+The canonical browser dataset excludes Places-response fields such as:
 - `googleMapsUrl`;
 - `googleDisplayName`;
 - `googleBusinessStatus`;
@@ -243,7 +312,7 @@ Current sampling weights:
 - ordinary: `1.0`;
 - verified 百名店: `2.2`.
 
-Award matching should migrate toward Place-ID/branch-aware identity. Historical name matching is acceptable only when unambiguous.
+New/updated award facts should be branch-aware and preferably Place-ID keyed in `source_enrichment.js`. Historical name-matched `hyakumeiten.js` remains a compatibility input while migration continues.
 
 ## 11. Production and coverage audits
 
@@ -252,22 +321,27 @@ Blocking production checks:
 - one row per unique Place ID;
 - every production row `verified`;
 - every production distance <=1,200 m;
-- required identity/display fields present;
-- forbidden persistent Google Places response fields absent.
+- forbidden persistent Google Places response fields absent;
+- every source-backed enrichment row is `sourceOnly` and cannot self-verify;
+- every enrichment row has a Place ID and field-level source reference;
+- maintenance `sourceRefs` do not leak into public canonical data.
 
-Coverage/completeness metrics:
-- independent source candidate count;
-- verified source count;
+Coverage/completeness metrics now report:
+- independent OSM candidate count;
+- curated-overlap candidate count and verification state;
 - Google coverage-inventory Place ID count;
-- overlap between Google inventory and verified source entities;
-- cuisine completeness;
+- verification status/rejection reasons;
+- source-backed enrichment record/provider/field counts;
+- production records carrying Tabelog/official source labels;
+- cuisine and generic-`餐厅` counts;
+- address completeness;
 - lunch/dinner budget completeness;
 - representative-dish completeness;
 - opening/holiday completeness;
 - 百名店 count;
-- Tabelog/curated match rate.
+- distance pools.
 
-A small production pool is a **coverage problem**, even when all blocking integrity checks pass.
+A structurally valid production pool may still have incomplete metadata. Coverage and enrichment are measured separately from identity integrity.
 
 ## 12. Frontend behavior
 
@@ -279,7 +353,8 @@ At recommendation time it performs:
 - optional budget filter;
 - optional preferred-distance filter;
 - weighted random selection of three distinct Place IDs;
-- maximum feasible cuisine diversity.
+- maximum feasible cuisine diversity;
+- overview/per-store maps and three-store comparison from canonical data only.
 
 Opening/holiday information remains descriptive and is not yet an exclusion criterion.
 
@@ -288,8 +363,9 @@ Opening/holiday information remains descriptive and is not yet an exclusion crit
 - Never commit an API key.
 - Never put the Places key in browser JavaScript.
 - Keep Google field masks narrow.
-- Use staged/batched verification instead of unnecessary full reruns.
+- Use staged/targeted verification instead of unnecessary full reruns.
 - Reuse Place IDs and compact verification state to avoid repeat searches.
 - Do not fabricate missing source enrichment.
-- Public Pages deployment publishes only the assembled `_site` artifact.
+- New Tabelog/official enrichment must carry field-level provenance.
+- Public Pages deployment publishes only the assembled `_site` artifact, not source-enrichment maintenance files.
 - Maintain Google Maps and OpenStreetMap attribution appropriate to the content/services shown.
