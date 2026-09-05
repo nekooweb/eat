@@ -72,19 +72,21 @@ Current rejection reasons:
 
 The full verification run expanded the canonical production dataset from the previous 269 entities to **517 unique production entities**.
 
-## Current production coverage after expansion
+## Current production coverage after expansion and first enrichment batch
 
-Latest passing Pages build/deploy after the full OSM verification and exact inventory:
+Latest passing build/audit after the first outer source-enrichment batch:
 
 - production entities: **517**;
 - unique production Place IDs: 517;
 - production entities represented in the exact Google inventory: 515;
-- cuisine known: 425;
-- budget known: 95;
-- schedule/holiday known: 202;
-- dishes known: 20;
-- display address known: 95;
-- current Tabelog/official-source-backed production: 237;
+- cuisine known: **426**;
+- budget known: **102**;
+- schedule/holiday known: **206**;
+- dishes known: **24**;
+- display address known: **102**;
+- current Tabelog/official-source-backed production: **245**;
+  - Tabelog: 228;
+  - official: 17;
 - 百名店 rows: 22.
 
 Distance pools are now:
@@ -95,6 +97,8 @@ Distance pools are now:
 - <=1,200 m: 517.
 
 Therefore the previously empty 800–1,200 m ring now contains **222 production entities**.
+
+The first outer batch added eight safe branch-specific source bindings and recorded two status/branch conflicts explicitly instead of forcing unsafe matches. See `AREA1_COMPLETION_LOG.md` for the restaurant-level list and measured delta.
 
 ## Identity reconciliation gap
 
@@ -113,20 +117,20 @@ The `2,291` figure is the principal **identity-reconciliation queue**. It does n
 
 ## Full-information completion state
 
-Source outcome accounting has not yet caught up with the production expansion.
+Source outcome accounting is progressing but has not yet caught up with the production expansion.
 
-Current source queue:
+Current source queue after the first outer batch:
 
 - production entities: 517;
-- usable Tabelog/official bindings: 237;
-- explicit terminal source resolutions: 32;
-- source outcomes already accounted for: 269;
-- newly unresolved production identities: **248**;
-- current source-resolution coverage: about 52%.
+- usable Tabelog/official bindings: **245**;
+- explicit terminal source resolutions: **34**;
+- source outcomes already accounted for: **279**;
+- unresolved production identities: **238**;
+- current source-resolution coverage: **54%**.
 
 The immediate full-information queue should therefore be processed in this order:
 
-1. **248 newly admitted OSM-backed production identities** — they already have independent name/location + verified Place ID, so Tabelog/official branch resolution and field extraction can proceed directly.
+1. **238 unresolved OSM-backed production identities** — they already have independent name/location + verified Place ID, so Tabelog/official branch resolution and field extraction can proceed directly.
 2. **2,291 exact-inventory IDs without a verified independent-source identity** — use transient Google identity/location only as a discovery aid, then establish an independent durable source before admission.
 3. Reconcile the 91 exact-inventory IDs that appear in rejected source matches to distinguish a bad source-to-Google match from a genuinely unusable business identity.
 4. Review the small verified-outside-inventory exception set separately rather than weakening the strict 1,200 m gate.
@@ -187,7 +191,11 @@ Requirements:
 - exact discovery workflow run: `33953718846` — success;
 - exact inventory commit: `81d874558e556a6942e81606a7855de455d8a7b4`;
 - strengthened independent-count gate: `9ba11132310fe3adf40b205021ecff7adc6bd39b`;
-- Pages build/deploy run after the exact inventory: `33953786379` — success;
+- first outer source-enrichment commit: `723173603aa321a27b6f4a7fe3b9b66333c758a6`;
+- first outer source-conflict commit: `0788170b9f84a13343e6cace9419bbc2df3b5d0e`;
+- first outer batch Pages build: `33954080504` — build and audits passed;
 - canonical build: 517 entities / 517 unique Place IDs;
+- source-backed production: 245;
+- source outcomes accounted for: 279;
 - repository audit: pass;
 - source-binding audit: pass.
