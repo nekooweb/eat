@@ -14,19 +14,16 @@ API_KEY = os.environ.get('GOOGLE_MAPS_API_KEY')
 CENTER_LAT = 35.6959
 CENTER_LNG = 139.7576
 AREA_RADIUS_M = 1200
-SECTOR_RADIUS_M = AREA_RADIUS_M
+BOUNDARY_RECOVERY_RADIUS_M = 1205
+EARTH_RADIUS_M = 6371000
 INITIAL_SECTORS = 24
 MAX_PLACES_PER_INSIGHT = 100
 MAX_ARC_STEP_DEG = 0.25
-MAX_NEARBY_RESULTS = 20
-MAX_NEARBY_DEPTH = 12
-NEARBY_COVER_MARGIN = 1.01
+MAX_SPLIT_DEPTH = 12
 AGGREGATE_URL = 'https://areainsights.googleapis.com/v1:computeInsights'
-NEARBY_URL = 'https://places.googleapis.com/v1/places:searchNearby'
 
-# Project food-business universe. The general restaurant type intentionally
-# captures restaurant subtypes; the additional types cover food businesses
-# that are not necessarily categorized as restaurants.
+# Project food-business universe. General restaurant includes its subtypes;
+# explicit additional food-service types cover cafes, bakeries, bars, etc.
 SEARCH_TYPES = [
     'restaurant', 'cafe', 'coffee_shop', 'bakery', 'meal_takeaway',
     'meal_delivery', 'fast_food_restaurant', 'food_court', 'bar', 'pub',
@@ -43,7 +40,6 @@ SEARCH_TYPES = [
 
 
 def haversine(lat1, lng1, lat2, lng2):
-    radius = 6371000
     p1 = math.radians(lat1)
     p2 = math.radians(lat2)
     d_lat = math.radians(lat2 - lat1)
@@ -52,28 +48,32 @@ def haversine(lat1, lng1, lat2, lng2):
         math.sin(d_lat / 2) ** 2
         + math.cos(p1) * math.cos(p2) * math.sin(d_lng / 2) ** 2
     )
-    return radius * 2 * math.atan2(math.sqrt(value), math.sqrt(1 - value))
+    return EARTH_RADIUS_M * 2 * math.atan2(math.sqrt(value), math.sqrt(1 - value))
 
 
-def local_point(east_m, north_m):
-    lat = CENTER_LAT + north_m / 111320.0
-    lng = CENTER_LNG + east_m / (
-        111320.0 * math.cos(math.radians(CENTER_LAT))
+def destination_point(distance_m, math_angle_rad):
+    # math_angle_rad: 0=east, pi/2=north. Navigation bearing is 0=north,
+    # pi/2=east, hence the conversion below.
+    bearing = math.pi / 2 - math_angle_rad
+    angular_distance = distance_m / EARTH_RADIUS_M
+    lat1 = math.radians(CENTER_LAT)
+    lng1 = math.radians(CENTER_LNG)
+
+    lat2 = math.asin(
+        math.sin(lat1) * math.cos(angular_distance)
+        + math.cos(lat1) * math.sin(angular_distance) * math.cos(bearing)
     )
-    return {'latitude': lat, 'longitude': lng}
-
-
-def offset_point(distance_m, angle_rad):
-    return local_point(
-        distance_m * math.cos(angle_rad),
-        distance_m * math.sin(angle_rad)
+    lng2 = lng1 + math.atan2(
+        math.sin(bearing) * math.sin(angular_distance) * math.cos(lat1),
+        math.cos(angular_distance) - math.sin(lat1) * math.sin(lat2)
     )
+    return {'latitude': math.degrees(lat2), 'longitude': math.degrees(lng2)}
 
 
 def request_json(url, body=None, field_mask=None, retries=4):
     headers = {
         'X-Goog-Api-Key': API_KEY,
-        'User-Agent': 'nekooweb-eat-google-discovery/4.1'
+        'User-Agent': 'nekooweb-eat-google-discovery/5.0'
     }
     data = None
     if body is not None:
@@ -106,14 +106,10 @@ def request_json(url, body=None, field_mask=None, retries=4):
     raise last_error
 
 
-def type_filter():
-    return {'includedTypes': SEARCH_TYPES}
-
-
 def aggregate_filter(location_filter):
     return {
         'locationFilter': location_filter,
-        'typeFilter': type_filter(),
+        'typeFilter': {'includedTypes': SEARCH_TYPES},
         'operatingStatus': ['OPERATING_STATUS_OPERATIONAL']
     }
 
@@ -128,29 +124,28 @@ def circle_count():
             }
         })
     }
-    data = request_json(AGGREGATE_URL, body=body)
-    return int(data.get('count', 0))
+    return int(request_json(AGGREGATE_URL, body=body).get('count', 0))
 
 
-def sector_polygon(start_angle, end_angle):
+def sector_polygon(start_angle, end_angle, radius_m):
     span = end_angle - start_angle
     segments = max(2, math.ceil(math.degrees(span) / MAX_ARC_STEP_DEG))
     center = {'latitude': CENTER_LAT, 'longitude': CENTER_LNG}
     coordinates = [center]
     for index in range(segments + 1):
         angle = start_angle + span * index / segments
-        coordinates.append(offset_point(SECTOR_RADIUS_M, angle))
+        coordinates.append(destination_point(radius_m, angle))
     coordinates.append(center)
     return coordinates
 
 
-def sector_query(start_angle, end_angle, insights, retries=4):
+def sector_query(start_angle, end_angle, radius_m, insights, retries=4):
     body = {
         'insights': insights,
         'filter': aggregate_filter({
             'customArea': {
                 'polygon': {
-                    'coordinates': sector_polygon(start_angle, end_angle)
+                    'coordinates': sector_polygon(start_angle, end_angle, radius_m)
                 }
             }
         })
@@ -158,24 +153,23 @@ def sector_query(start_angle, end_angle, insights, retries=4):
     return request_json(AGGREGATE_URL, body=body, retries=retries)
 
 
-def collect_sector_ids(start_angle, end_angle, stats, depth=0):
-    # Count first. Asking INSIGHT_PLACES for a region above the 100-place cap
-    # returns RESOURCE_EXHAUSTED without place IDs, so subdivision must happen
-    # before the enumeration request.
-    count_data = sector_query(start_angle, end_angle, ['INSIGHT_COUNT'])
+def collect_sector_ids(start_angle, end_angle, radius_m, stats, depth=0):
+    # INSIGHT_PLACES refuses regions above 100 results, so always count first
+    # and recursively split dense sectors before requesting IDs.
+    count_data = sector_query(start_angle, end_angle, radius_m, ['INSIGHT_COUNT'])
     stats['aggregateRequests'] += 1
     count = int(count_data.get('count', 0))
 
     if count > MAX_PLACES_PER_INSIGHT:
-        if depth >= 12:
+        if depth >= MAX_SPLIT_DEPTH:
             raise RuntimeError(
                 f'Aggregate sector still has {count} places at depth {depth}'
             )
         stats['aggregateSplits'] += 1
         middle = (start_angle + end_angle) / 2
         return (
-            collect_sector_ids(start_angle, middle, stats, depth + 1)
-            | collect_sector_ids(middle, end_angle, stats, depth + 1)
+            collect_sector_ids(start_angle, middle, radius_m, stats, depth + 1)
+            | collect_sector_ids(middle, end_angle, radius_m, stats, depth + 1)
         )
 
     if count == 0:
@@ -185,22 +179,22 @@ def collect_sector_ids(start_angle, end_angle, stats, depth=0):
         data = sector_query(
             start_angle,
             end_angle,
+            radius_m,
             ['INSIGHT_COUNT', 'INSIGHT_PLACES'],
             retries=1
         )
         stats['aggregateRequests'] += 1
     except urllib.error.HTTPError as error:
-        # The count can change between the count and enumeration requests. If
-        # the region crossed the 100-place cap, split rather than retrying the
-        # same over-cap request.
-        if error.code != 429 or depth >= 12:
+        # The result count can change between COUNT and PLACES calls. If it
+        # crossed the cap, split rather than retrying an over-cap request.
+        if error.code != 429 or depth >= MAX_SPLIT_DEPTH:
             raise
         stats['aggregateRequests'] += 1
         stats['aggregateSplits'] += 1
         middle = (start_angle + end_angle) / 2
         return (
-            collect_sector_ids(start_angle, middle, stats, depth + 1)
-            | collect_sector_ids(middle, end_angle, stats, depth + 1)
+            collect_sector_ids(start_angle, middle, radius_m, stats, depth + 1)
+            | collect_sector_ids(middle, end_angle, radius_m, stats, depth + 1)
         )
 
     returned_count = int(data.get('count', count))
@@ -217,168 +211,97 @@ def collect_sector_ids(start_angle, end_angle, stats, depth=0):
     return place_ids
 
 
-def discover_with_aggregate(stats):
-    exact_count = circle_count()
-    stats['aggregateRequests'] += 1
-    print(f'aggregate_exact_count={exact_count}')
-
+def enumerate_radius(radius_m, stats, label):
     discovered = set()
     full_turn = 2 * math.pi
     for index in range(INITIAL_SECTORS):
         start = full_turn * index / INITIAL_SECTORS
         end = full_turn * (index + 1) / INITIAL_SECTORS
-        discovered |= collect_sector_ids(start, end, stats)
+        discovered |= collect_sector_ids(start, end, radius_m, stats)
         print(
-            f'sector={index + 1}/{INITIAL_SECTORS} '
+            f'{label}_sector={index + 1}/{INITIAL_SECTORS} '
             f'unique_candidate_ids={len(discovered)}'
         )
-
-    # Sector polygons are inscribed in the exact 1,200 m circle. With a 0.25
-    # degree maximum arc step, the largest chord sagitta is about 0.003 m.
-    # Therefore the sector union cannot include outside-circle places. The
-    # independent circle count is the strict completeness gate: equality proves
-    # that no in-scope Place ID was lost at the polygon boundary.
-    if len(discovered) != exact_count:
-        print(
-            'aggregate_polygon_union_mismatch '
-            f'exact_count={exact_count} enumerated={len(discovered)}; '
-            'using adaptive Nearby enumeration as a secondary enumerator.'
-        )
-        nearby = discover_with_adaptive_nearby(stats)
-        if nearby['count'] != exact_count:
-            raise RuntimeError(
-                'Area1 completeness check failed across independent count and '
-                f'secondary enumeration: aggregate_count={exact_count} '
-                f'aggregate_ids={len(discovered)} nearby_ids={nearby["count"]}'
-            )
-        nearby['independentCountVerified'] = True
-        nearby['completenessBasis'] = (
-            'aggregate_exact_count_equals_adaptive_nearby_in_circle_ids'
-        )
-        nearby['aggregateExactCount'] = exact_count
-        return nearby
-
-    return {
-        'method': 'places_aggregate_count_then_partition_v2',
-        'count': exact_count,
-        'complete': True,
-        'coverageVerified': True,
-        'independentCountVerified': True,
-        'completenessBasis': 'aggregate_circle_count_equals_inscribed_sector_id_union',
-        'aggregateExactCount': exact_count,
-        'googlePlaceIds': sorted(discovered)
-    }
+    return discovered
 
 
-def square_intersects_area(center_east_m, center_north_m, half_size_m):
-    dx = max(abs(center_east_m) - half_size_m, 0.0)
-    dy = max(abs(center_north_m) - half_size_m, 0.0)
-    return dx * dx + dy * dy <= AREA_RADIUS_M * AREA_RADIUS_M
-
-
-def nearby_search(center_east_m, center_north_m, half_size_m, stats):
-    center = local_point(center_east_m, center_north_m)
-    radius = max(1.0, half_size_m * math.sqrt(2.0) * NEARBY_COVER_MARGIN)
-    body = {
-        'includedTypes': SEARCH_TYPES,
-        'maxResultCount': MAX_NEARBY_RESULTS,
-        'rankPreference': 'DISTANCE',
-        'locationRestriction': {
-            'circle': {
-                'center': center,
-                'radius': radius
-            }
-        }
-    }
+def place_location_is_inside(place_id, stats):
     data = request_json(
-        NEARBY_URL,
-        body=body,
-        field_mask='places.id,places.location,places.businessStatus'
+        'https://places.googleapis.com/v1/places/' + place_id,
+        field_mask='location,businessStatus'
     )
-    stats['nearbyRequests'] += 1
-    return data.get('places') or []
+    stats['detailRequests'] += 1
+    if data.get('businessStatus') != 'OPERATIONAL':
+        return False
+    location = data.get('location') or {}
+    lat = location.get('latitude')
+    lng = location.get('longitude')
+    if lat is None or lng is None:
+        return False
+    return haversine(CENTER_LAT, CENTER_LNG, lat, lng) <= AREA_RADIUS_M
 
 
-def collect_nearby_cell(center_east_m, center_north_m, half_size_m, records, stats, depth=0):
-    if not square_intersects_area(center_east_m, center_north_m, half_size_m):
-        return
+def discover_exact(stats):
+    exact_count = circle_count()
+    stats['aggregateRequests'] += 1
+    print(f'aggregate_exact_count={exact_count}')
 
-    places = nearby_search(center_east_m, center_north_m, half_size_m, stats)
-    stats['maxNearbyDepth'] = max(stats['maxNearbyDepth'], depth)
+    inner_ids = enumerate_radius(AREA_RADIUS_M, stats, 'inner')
+    print(f'inner_geodesic_union={len(inner_ids)}')
 
-    if len(places) < MAX_NEARBY_RESULTS:
-        stats['nearbyLeafQueries'] += 1
-        for place in places:
-            place_id = place.get('id')
-            if place_id:
-                records[place_id] = place
-        return
+    if len(inner_ids) == exact_count:
+        return {
+            'method': 'places_aggregate_geodesic_partition_v3',
+            'count': exact_count,
+            'googlePlaceIds': sorted(inner_ids),
+            'boundaryCandidates': 0,
+            'boundaryRecovered': 0
+        }
 
-    stats['nearbySaturatedQueries'] += 1
-    if depth >= MAX_NEARBY_DEPTH:
+    if len(inner_ids) > exact_count:
         raise RuntimeError(
-            'Nearby completeness check blocked by a still-saturated cell: '
-            f'east={center_east_m:.2f} north={center_north_m:.2f} '
-            f'half={half_size_m:.3f} depth={depth}'
+            f'Geodesic sector union exceeds exact circle count: '
+            f'count={exact_count} ids={len(inner_ids)}'
         )
 
-    child_half = half_size_m / 2.0
-    for east_sign in (-1, 1):
-        for north_sign in (-1, 1):
-            collect_nearby_cell(
-                center_east_m + east_sign * child_half,
-                center_north_m + north_sign * child_half,
-                child_half,
-                records,
-                stats,
-                depth + 1
-            )
-
-
-def discover_with_adaptive_nearby(stats):
-    records = {}
-    collect_nearby_cell(0.0, 0.0, float(AREA_RADIUS_M), records, stats)
-
-    inside_ids = []
-    missing_locations = 0
-    non_operational = 0
-    for place_id, place in records.items():
-        status = place.get('businessStatus')
-        if status != 'OPERATIONAL':
-            non_operational += 1
-            continue
-        location = place.get('location') or {}
-        lat = location.get('latitude')
-        lng = location.get('longitude')
-        if lat is None or lng is None:
-            missing_locations += 1
-            continue
-        if haversine(CENTER_LAT, CENTER_LNG, lat, lng) <= AREA_RADIUS_M:
-            inside_ids.append(place_id)
-
-    if missing_locations:
-        raise RuntimeError(
-            f'Nearby completeness check cannot trim {missing_locations} places without locations'
-        )
-
-    inside_ids.sort()
+    # The exact circle and custom polygon filters can differ minutely at the
+    # boundary. Enumerate a 5 m outer guard band, then request transient
+    # location/status only for IDs absent from the inscribed union. This avoids
+    # fetching Place Details for the full inventory.
+    outer_ids = enumerate_radius(BOUNDARY_RECOVERY_RADIUS_M, stats, 'outer')
+    boundary_candidates = sorted(outer_ids - inner_ids)
+    stats['boundaryCandidates'] = len(boundary_candidates)
     print(
-        'adaptive_nearby_complete=true '
-        f'in_circle={len(inside_ids)} raw_union={len(records)} '
-        f'non_operational={non_operational} nearby_requests={stats["nearbyRequests"]} '
-        f'saturated_queries={stats["nearbySaturatedQueries"]} '
-        f'leaf_queries={stats["nearbyLeafQueries"]} max_depth={stats["maxNearbyDepth"]}'
+        f'boundary_candidates={len(boundary_candidates)} '
+        f'outer_union={len(outer_ids)}'
     )
+
+    recovered = set()
+    for place_id in boundary_candidates:
+        if place_location_is_inside(place_id, stats):
+            recovered.add(place_id)
+
+    final_ids = inner_ids | recovered
+    stats['boundaryRecovered'] = len(recovered)
+    print(
+        f'boundary_recovered={len(recovered)} '
+        f'final_unique_ids={len(final_ids)}'
+    )
+
+    if len(final_ids) != exact_count:
+        raise RuntimeError(
+            'Area1 completeness check failed after geodesic boundary recovery: '
+            f'aggregate_count={exact_count} inner_ids={len(inner_ids)} '
+            f'boundary_candidates={len(boundary_candidates)} '
+            f'recovered={len(recovered)} final_ids={len(final_ids)}'
+        )
+
     return {
-        'method': 'adaptive_nearby_partition_v1',
-        'count': len(inside_ids),
-        'complete': True,
-        'coverageVerified': True,
-        'independentCountVerified': False,
-        'completenessBasis': 'full_square_cover_with_every_leaf_below_nearby_20_result_cap',
-        'googlePlaceIds': inside_ids,
-        'rawNearbyUnionCount': len(records),
-        'nonOperationalReturned': non_operational
+        'method': 'places_aggregate_geodesic_partition_boundary_qc_v3',
+        'count': exact_count,
+        'googlePlaceIds': sorted(final_ids),
+        'boundaryCandidates': len(boundary_candidates),
+        'boundaryRecovered': len(recovered)
     }
 
 
@@ -398,54 +321,38 @@ def main():
     stats = {
         'aggregateRequests': 0,
         'aggregateSplits': 0,
-        'nearbyRequests': 0,
-        'nearbyLeafQueries': 0,
-        'nearbySaturatedQueries': 0,
-        'maxNearbyDepth': 0
+        'detailRequests': 0,
+        'boundaryCandidates': 0,
+        'boundaryRecovered': 0
     }
 
-    aggregate_blocked = False
-    try:
-        result = discover_with_aggregate(stats)
-    except urllib.error.HTTPError as error:
-        if error.code != 403:
-            raise
-        aggregate_blocked = True
-        print(
-            'Places Aggregate is blocked for this key; '
-            'falling back to completeness-audited adaptive Nearby Search.'
-        )
-        result = discover_with_adaptive_nearby(stats)
-
+    result = discover_exact(stats)
     ids = result['googlePlaceIds']
     id_set = set(ids)
+
     payload = {
-        'schemaVersion': 5,
+        'schemaVersion': 6,
         'scope': 'TOKYO/地区1️⃣',
         'radiusMeters': AREA_RADIUS_M,
         'method': result['method'],
         'checkedAt': dt.date.today().isoformat(),
         'count': result['count'],
-        'complete': result['complete'],
-        'coverageVerified': result['coverageVerified'],
-        'independentCountVerified': result['independentCountVerified'],
-        'completenessBasis': result['completenessBasis'],
-        'aggregateApiBlocked': aggregate_blocked,
+        'complete': True,
+        'coverageVerified': True,
+        'independentCountVerified': True,
+        'completenessBasis': 'aggregate_exact_circle_count_equals_geodesic_partition_inventory',
+        'aggregateExactCount': result['count'],
         'aggregateRequests': stats['aggregateRequests'],
         'aggregateSplits': stats['aggregateSplits'],
-        'nearbyRequests': stats['nearbyRequests'],
-        'nearbyLeafQueries': stats['nearbyLeafQueries'],
-        'nearbySaturatedQueries': stats['nearbySaturatedQueries'],
-        'maxNearbyDepth': stats['maxNearbyDepth'],
+        'detailRequests': stats['detailRequests'],
+        'boundaryCandidates': result['boundaryCandidates'],
+        'boundaryRecovered': result['boundaryRecovered'],
         'previousInventoryCount': len(previous_ids),
         'newSincePrevious': len(id_set - previous_ids),
         'missingFromPrevious': len(previous_ids - id_set),
         'searchTypes': SEARCH_TYPES,
         'googlePlaceIds': ids
     }
-    for key in ('aggregateExactCount', 'rawNearbyUnionCount', 'nonOperationalReturned'):
-        if key in result:
-            payload[key] = result[key]
 
     OUT_JSON.write_text(
         json.dumps(payload, ensure_ascii=False, separators=(',', ':')),
@@ -454,7 +361,9 @@ def main():
     print(
         f'complete=true method={result["method"]} count={result["count"]} '
         f'new_since_previous={payload["newSincePrevious"]} '
-        f'missing_from_previous={payload["missingFromPrevious"]}'
+        f'missing_from_previous={payload["missingFromPrevious"]} '
+        f'aggregate_requests={stats["aggregateRequests"]} '
+        f'detail_requests={stats["detailRequests"]}'
     )
 
 
