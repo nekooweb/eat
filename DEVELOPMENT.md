@@ -10,25 +10,34 @@ Identity discovery and the public product are already usable. The main bottlenec
 
 ## Random-button voice and mascot feedback
 
-The random-result button now has a deliberately isolated presentation layer. Restaurant selection remains owned by `app.js`; click feedback is implemented separately in `effects.js` and `effects.css` so media/animation changes cannot alter recommendation behavior.
+The random-result button has a deliberately isolated presentation layer. Restaurant selection remains owned by `app.js`; click feedback is implemented separately in `effects.js` and `effects.css` so media/animation changes cannot alter recommendation behavior.
 
 Public media assets are organized as:
 
-- `voice/1.mp3`, `voice/2.mp3` — random click voices;
-- `image/YahaUsagi.webp` — button-edge mascot artwork.
+- `voice/1.mp3`, `voice/1maybevaluable.mp3`, `voice/2.mp3`, `voice/2currency.mp3`, `voice/4maps.mp3` — current five-file random voice pool;
+- `image/YahaUsagi.webp`, `image/Momonga.webp`, `image/SweetBabyHachiware2.webp` — current three-character mascot pool.
 
 Runtime behavior:
 
 1. clicking `#generate` continues to execute the existing restaurant `generate()` handler;
-2. an additional `addEventListener` handler in `effects.js` selects one configured voice at random;
-3. playback volume is fixed at **0.55**;
+2. an additional `addEventListener` handler in `effects.js` selects one configured voice at random from the five-file pool;
+3. playback volume is fixed at **0.45**;
 4. playback is capped at **2,000 ms** after playback starts; shorter files end naturally;
 5. a repeated click stops and rewinds the previous voice before starting a new one, so voices never stack;
 6. playback failure is swallowed and must never block restaurant generation;
-7. the mascot independently pops out from the button edge for about **1.9 s** and then hides again;
-8. reduced-motion users receive the simplified fade animation from `effects.css`.
+7. one mascot is selected from the three configured WebP files;
+8. one placement is selected from **top-left, top-center, top-right, side-left or side-right**;
+9. the immediately previous mascot and immediately previous placement are excluded from the next selection, while voice selection itself remains ordinary random and may repeat;
+10. the selected mascot appears for about **1.9 s** and then hides;
+11. reduced-motion users receive the simplified fade animation from `effects.css`.
 
-The browser does not scan directories, so new voice files must be added to `voice/` **and** to the explicit `voices` array in `effects.js`. `index.html` uses a versioned `effects.js` URL so Pages clients do not retain stale click behavior after a release.
+Media release contract:
+
+- `.github/workflows/pages.yml` copies `voice/*.mp3` and `image/*.webp` into the Pages artifact, so new committed media files are published automatically;
+- the static browser still cannot enumerate repository directories at runtime, so selectable media must also be listed explicitly in the `voices` or `mascots` arrays in `effects.js`;
+- `scripts/audit_repository.mjs` scans the repository `voice/` and `image/` directories and fails CI if any MP3/WebP is present but missing from the runtime arrays;
+- the audit also locks the voice behavior to **45% volume** and **2,000 ms maximum playback**;
+- `index.html` uses a versioned `effects.js` URL so Pages clients do not retain stale click behavior after a release.
 
 This layer is intentionally non-essential: recommendation output must remain fully functional if audio playback is blocked, a media asset fails to load, or the mascot effect is unavailable.
 
@@ -165,7 +174,7 @@ Those 164 are the first review queue. They are **candidates**, not auto-approved
 1. builds the canonical dataset;
 2. runs repository/source/normalized-field audits;
 3. generates coverage and field-gap reports;
-4. assembles only public site assets;
+4. assembles only public site assets, including all `voice/*.mp3` and `image/*.webp` media;
 5. injects the existing `GOOGLE_MAP_API` value into the Google Maps Embed placeholder for deployed Pages output;
 6. deploys main or emits a review artifact for PRs.
 
