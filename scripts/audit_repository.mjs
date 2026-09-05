@@ -7,6 +7,7 @@ import { fileURLToPath } from 'node:url';
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, '..');
 const DATA = path.join(ROOT, 'data');
+const IMAGE = path.join(ROOT, 'image');
 const read = (relativePath) => fs.readFileSync(path.join(ROOT, relativePath), 'utf8');
 const fail = (message) => {
   console.error(`AUDIT FAIL: ${message}`);
@@ -16,6 +17,9 @@ const fail = (message) => {
 const enrichmentFiles = fs.readdirSync(DATA)
   .filter((filename) => /^source_enrichment(?:_[a-z0-9-]+)?\.js$/i.test(filename))
   .sort();
+const mascotFiles = fs.existsSync(IMAGE)
+  ? fs.readdirSync(IMAGE).filter((filename) => /\.webp$/i.test(filename)).sort()
+  : [];
 
 const index = read('index.html');
 const app = read('app.js');
@@ -41,19 +45,26 @@ const requiredEffectAssets = [
   'effects.js',
   'effects.css',
   'voice/1.mp3',
-  'voice/2.mp3',
-  'image/YahaUsagi.webp'
+  'voice/2.mp3'
 ];
 for (const relativePath of requiredEffectAssets) {
   if (!fs.existsSync(path.join(ROOT, relativePath))) fail(`missing public effect asset: ${relativePath}`);
 }
+if (!mascotFiles.length) fail('no mascot WebP assets found in image/');
+for (const filename of mascotFiles) {
+  const expectedPath = `./image/${filename}`;
+  if (!effects.includes(expectedPath)) fail(`mascot WebP is not configured in effects.js: ${filename}`);
+}
 if (!/effects\.css/.test(index)) fail('effect stylesheet is not loaded');
 if (!/effects\.js/.test(index)) fail('effect runtime is not loaded');
-if (!/YahaUsagi\.webp/.test(index)) fail('generate-button mascot is not wired into the page');
+if (!/generate-mascot/.test(index)) fail('generate-button mascot element is not wired into the page');
 if (!/voice\/1\.mp3/.test(effects) || !/voice\/2\.mp3/.test(effects)) {
   fail('configured random voice assets are missing from effects.js');
 }
 if (!/MAX_VOICE_MS\s*=\s*2000/.test(effects)) fail('voice playback cap must remain 2000 ms');
+if (!/lastMascotSource/.test(effects) || !/lastMascotPlacement/.test(effects)) {
+  fail('mascot character and placement should avoid immediate repeats');
+}
 
 const scriptSources = [...index.matchAll(/<script[^>]+src="([^"]+)"/gi)].map((match) => match[1]);
 const localRuntimeScripts = scriptSources.filter((source) => source.startsWith('./'));
@@ -169,6 +180,6 @@ if (!process.exitCode) {
     enrichmentRecords: enrichmentRows.length,
     awards: stats.awards,
     resultViews: ['overview-map', 'google-store-maps-with-leaflet-fallback', 'comparison-table'],
-    uiFeedback: ['random-voice-max-2s', 'button-edge-mascot']
+    uiFeedback: ['random-voice-max-2s', `${mascotFiles.length}-mascot-random-pool`, 'nonrepeating-random-position']
   }));
 }
