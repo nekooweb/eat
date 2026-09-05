@@ -1,13 +1,6 @@
 name: Promote official bulk fields
 
 on:
-  push:
-    branches: ["bulk-enrichment-under-2usd"]
-    paths:
-      - 'scripts/promote_official_index.mjs'
-      - 'scripts/extract_official_index_fields.mjs'
-      - 'scripts/build_auto_official_enrichment.mjs'
-      - '.github/workflows/promote-official-bulk.yml'
   workflow_dispatch:
 
 permissions:
@@ -18,10 +11,10 @@ jobs:
   promote:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout selected branch
         uses: actions/checkout@v4
         with:
-          ref: bulk-enrichment-under-2usd
+          ref: ${{ github.ref_name }}
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
@@ -74,6 +67,8 @@ jobs:
           path: _audit
           retention-days: 3
       - name: Commit generated official maintenance data
+        env:
+          TARGET_BRANCH: ${{ github.ref_name }}
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
@@ -82,8 +77,8 @@ jobs:
             echo 'No generated data changes.'
           else
             git commit -m 'Rebuild full bulk official source fields'
-            if ! git push origin HEAD:bulk-enrichment-under-2usd; then
-              git pull --rebase origin bulk-enrichment-under-2usd
-              git push origin HEAD:bulk-enrichment-under-2usd
+            if ! git push origin HEAD:$TARGET_BRANCH; then
+              git pull --rebase origin $TARGET_BRANCH
+              git push origin HEAD:$TARGET_BRANCH
             fi
           fi
