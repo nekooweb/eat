@@ -49,7 +49,7 @@ jobs:
       - name: Build conservative source enrichment
         env:
           AUTO_OFFICIAL_CHECKED_AT: '2026-09-06'
-        run: node scripts/build_auto_official_enrichment.mjs _audit/official_index_field_candidates.json data/source_enrichment_auto_official.js | tee _audit/official-auto-enrichment-summary.json
+        run: node scripts/build_auto_official_enrichment.mjs _audit/official_index_field_candidates.json data/source_enrichment_autoofficial.js | tee _audit/official-auto-enrichment-summary.json
       - name: Rebuild and audit production
         run: |
           node scripts/build_production_dataset.mjs | tee _audit/build-after-official.json
@@ -68,7 +68,7 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add data/official_candidate_index.json data/source_enrichment_auto_official.js
+          git add data/official_candidate_index.json data/source_enrichment_autoofficial.js
           if git diff --cached --quiet; then
             echo 'No generated data changes.'
           else
