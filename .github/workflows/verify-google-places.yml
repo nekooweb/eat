@@ -11,6 +11,7 @@ on:
     branches: ["main"]
     paths:
       - '.github/run-half-google'
+      - '.github/run-all-google'
 
 permissions:
   contents: write
@@ -30,10 +31,19 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Resolve verification mode
+        shell: bash
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            echo "GOOGLE_VERIFY_LIMIT=${{ inputs.limit }}" >> "$GITHUB_ENV"
+          elif git diff-tree --no-commit-id --name-only -r "${{ github.sha }}" | grep -Fxq '.github/run-all-google'; then
+            echo 'GOOGLE_VERIFY_LIMIT=0' >> "$GITHUB_ENV"
+          else
+            echo 'GOOGLE_VERIFY_LIMIT=-1' >> "$GITHUB_ENV"
+          fi
       - name: Verify source candidates against Google Places
         env:
           GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAP_API }}
-          GOOGLE_VERIFY_LIMIT: ${{ github.event_name == 'push' && '-1' || inputs.limit }}
         run: python scripts/verify_google_places.py
       - name: Commit identity-only verification state
         run: |
