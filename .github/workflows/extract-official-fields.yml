@@ -4,9 +4,9 @@ on:
   workflow_dispatch:
     inputs:
       google_limit:
-        description: 'Google website discovery limit; 0 scans all production rows without an official binding'
+        description: 'Google website discovery limit. Default 100 is a hard-cost-safe batch (~$2 worst case at current Enterprise list price if fully billable).'
         required: false
-        default: '0'
+        default: '100'
 
 permissions:
   contents: read

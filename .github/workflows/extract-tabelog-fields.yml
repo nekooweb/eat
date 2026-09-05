@@ -1,0 +1,39 @@
+name: Extract bound Tabelog fields
+
+on:
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: 'Maximum bound Tabelog pages to inspect; 0 = all. GitHub-hosted runners currently receive 403 from Tabelog, so this is diagnostic/manual only.'
+        required: false
+        default: '20'
+
+permissions:
+  contents: read
+
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Build canonical production dataset
+        run: node scripts/build_production_dataset.mjs
+      - name: Extract missing fields from already-bound Tabelog pages
+        env:
+          TABELOG_LIMIT: ${{ inputs.limit }}
+          TABELOG_CONCURRENCY: '4'
+          TABELOG_TIMEOUT_MS: '15000'
+        run: |
+          mkdir -p _audit
+          node scripts/extract_tabelog_fields.mjs _audit/tabelog_field_candidates.json | tee _audit/tabelog_field_summary.json
+      - name: Upload Tabelog review artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: tabelog-field-review
+          path: _audit
+          retention-days: 3
