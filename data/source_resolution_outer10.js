@@ -18,7 +18,7 @@ window.SOURCE_RESOLUTIONS.push(
   {
     name:'町田商店 水道橋店',
     googlePlaceId:'ChIJKQlfZLaNGGARTe95b99jJXE',
-    status:'temporary_status_conflict',
+    status:'ambiguous',
     reason:'The official chain site contains a 2026-08-25 reopening notice after the July fire, but the current branch presentation has recently carried temporary-closure state while Google QC remains operational. Do not copy potentially transitional hours/status into durable production fields until the branch page stabilizes.',
     checkedAt:'2026-09-05',
     refs:[
