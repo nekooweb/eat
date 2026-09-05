@@ -32,6 +32,7 @@ jobs:
           node --check app.js
           python3 -m py_compile \
             scripts/verify_google_places.py \
+            scripts/verify_curated_google.py \
             scripts/discover_google_area1.py \
             scripts/migrate_google_inventory.py \
             scripts/build_area1_osm.py
