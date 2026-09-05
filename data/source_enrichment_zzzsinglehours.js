@@ -20,6 +20,24 @@ const singleSiteHoursPatches = [
     "openingHoursRaw": "月 12:00-23:00; 火 12:00-23:00; 水 12:00-23:00; 木 12:00-23:00; 金 12:00-23:00; 土 12:00-23:00; 日 12:00-21:00; 祝 12:00-21:00",
     "closedDays": [],
     "knownDays": 8
+  },
+  {
+    "googlePlaceId": "ChIJK-zPABCMGGARny83K5PNya0",
+    "name": "まぐろ市場",
+    "sourceUrl": "https://www.giraud.co.jp/maguro-ichiba-u/",
+    "openingHoursRaw": "月 11:00-21:00; 火 11:00-21:00; 水 11:00-21:00; 木 11:00-21:00; 金 11:00-21:00; 日 11:00-15:00; 祝 11:00-15:00",
+    "closedDays": [
+      "土"
+    ],
+    "knownDays": 8
+  },
+  {
+    "googlePlaceId": "ChIJ3wcsHh2MGGAR-BCRlpETRq0",
+    "name": "麺屋武蔵 巌虎",
+    "sourceUrl": "https://menya634.co.jp/storelist/akihabara2/",
+    "openingHoursRaw": "月 11:00-22:00; 火 11:00-22:00; 水 11:00-22:00; 木 11:00-22:00; 金 11:00-22:00; 土 11:00-22:00; 日 11:00-22:00; 祝 11:00-22:00",
+    "closedDays": [],
+    "knownDays": 8
   }
 ];
 for (const patch of singleSiteHoursPatches) {
