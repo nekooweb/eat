@@ -1,12 +1,6 @@
 name: Promote single-site official hours
 
 on:
-  push:
-    branches:
-      - auto-single-site-hours
-    paths:
-      - 'scripts/build_single_site_hours_enrichment.mjs'
-      - '.github/workflows/promote-single-site-hours.yml'
   workflow_dispatch:
 
 concurrency:
