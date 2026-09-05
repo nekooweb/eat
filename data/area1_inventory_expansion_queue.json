@@ -1,0 +1,1170 @@
+{
+  "schemaVersion": 1,
+  "scope": "TOKYO/地区1️⃣",
+  "generatedAt": "2026-09-06",
+  "purpose": "Zero-Google-cost review queue for inventory-only identities that already have at least one rejected independent OSM candidate match. Candidate rejection does not invalidate the Google identity and does not establish an identity match.",
+  "summary": {
+    "queueIdentities": 56,
+    "candidateLinks": 64,
+    "reasonCounts": {
+      "name_mismatch": 27,
+      "location_mismatch": 31
+    },
+    "missingCandidateRows": 0
+  },
+  "priorityMeaning": {
+    "1": "name_mismatch: independent candidate exists; re-check branch/name evolution first",
+    "2": "location_mismatch: re-check coordinates/branch movement",
+    "3": "non_food_google_type: likely category/identity mismatch; lower confidence",
+    "4": "closed_permanently: source may be stale/replaced; do not promote without current evidence",
+    "5": "outside_1_2km: previous candidate-to-Google match was geographically invalid; likely wrong pairing"
+  },
+  "rows": [
+    {
+      "googlePlaceId": "ChIJM32v_xOMGGARTKGZx9b1XDQ",
+      "reviewPriority": 1,
+      "rejectionReasons": [
+        "name_mismatch"
+      ],
+      "candidates": [
+        {
+          "sourceCandidateId": "osm-n-4018943525",
+          "reason": "name_mismatch",
+          "sourceName": "新世界菜館",
+          "cuisine": "中华",
+          "distanceMeters": 34,
+          "lat": 35.696164,
+          "lng": 139.75742,
+          "address": ""
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJFQ43WRGMGGAR9SWArROqqkQ",
+      "reviewPriority": 1,
+      "rejectionReasons": [
+        "name_mismatch"
+      ],
+      "candidates": [
+        {
+          "sourceCandidateId": "osm-n-5456398068",
+          "reason": "name_mismatch",
+          "sourceName": "メナムのほとり",
+          "cuisine": "泰国菜",
+          "distanceMeters": 58,
+          "lat": 35.695395,
+          "lng": 139.757759,
+          "address": ""
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJIeIjchSMGGARG6CAh1yL5So",
+      "reviewPriority": 1,
+      "rejectionReasons": [
+        "name_mismatch"
+      ],
+      "candidates": [
+        {
+          "sourceCandidateId": "osm-n-7899845544",
+          "reason": "name_mismatch",
+          "sourceName": "蘭奢待",
+          "cuisine": "餐厅",
+          "distanceMeters": 107,
+          "lat": 35.696532,
+          "lng": 139.756705,
+          "address": ""
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJw0AFtD-NGGARnpptuPy-Zc4",
+      "reviewPriority": 1,
+      "rejectionReasons": [
+        "name_mismatch",
+        "location_mismatch"
+      ],
+      "candidates": [
+        {
+          "sourceCandidateId": "osm-n-13086509501",
+          "reason": "location_mismatch",
+          "sourceName": "Bánh Mì Sandwich Tokyo",
+          "cuisine": "越南菜",
+          "distanceMeters": 120,
+          "lat": 35.696063,
+          "lng": 139.756282,
+          "address": ""
+        },
+        {
+          "sourceCandidateId": "osm-n-3781782009",
+          "reason": "name_mismatch",
+          "sourceName": "リアン・サンドイッチ・カフェ",
+          "cuisine": "咖啡",
+          "distanceMeters": 552,
+          "lat": 35.700828,
+          "lng": 139.758362,
+          "address": ""
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJB_-42WyNGGAR_w8vpUY6Tzg",
+      "reviewPriority": 1,
+      "rejectionReasons": [
+        "name_mismatch"
+      ],
+      "candidates": [
+        {
+          "sourceCandidateId": "osm-n-3343070909",
+          "reason": "name_mismatch",
+          "sourceName": "東京油組総本店",
+          "cuisine": "面食",
+          "distanceMeters": 135,
+          "lat": 35.69615,
+          "lng": 139.759068,
+          "address": ""
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJDXvN4oGNGGARHwy-_K_aPsw",
+      "reviewPriority": 1,
+      "rejectionReasons": [
+        "name_mismatch"
+      ],
+      "candidates": [
+        {
+          "sourceCandidateId": "osm-n-3786123335",
+          "reason": "name_mismatch",
+          "sourceName": "おにぎりの小林",
+          "cuisine": "餐厅",
+          "distanceMeters": 143,
+          "lat": 35.695419,
+          "lng": 139.759072,
+          "address": ""
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJAZiLiBaMGGARR1eLT4uKELM",
+      "reviewPriority": 1,
+      "rejectionReasons": [
+        "name_mismatch"
+      ],
+      "candidates": [
+        {
+          "sourceCandidateId": "osm-n-3343111372",
+          "reason": "name_mismatch",
+          "sourceName": "インドカレーカーマ",
+          "cuisine": "咖喱",
+          "distanceMeters": 247,
+          "lat": 35.697388,
+          "lng": 139.759637,
+          "address": ""
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJK-Sit0uNGGARQRAvck6EsRs",
+      "reviewPriority": 1,
+      "rejectionReasons": [
+        "name_mismatch"
+      ],
+      "candidates": [
+        {
+          "sourceCandidateId": "osm-n-6187350571",
+          "reason": "name_mismatch",
+          "sourceName": "伊勢十",
+          "cuisine": "餐厅",
+          "distanceMeters": 276,
+          "lat": 35.694413,
+          "lng": 139.760048,
+          "address": ""
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJZQmTMxGMGGARsXTztOv6xGk",
+      "reviewPriority": 1,
+      "rejectionReasons": [
+        "name_mismatch"
+      ],
+      "candidates": [
+        {
+          "sourceCandidateId": "osm-n-11674977903",
+          "reason": "name_mismatch",
+          "sourceName": "なごみ",
+          "cuisine": "日式",
+          "distanceMeters": 338,
+          "lat": 35.696622,
+          "lng": 139.76124,
+          "address": ""
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJveghVBCMGGARC8qPJDaBV-0",
+      "reviewPriority": 1,
+      "rejectionReasons": [
+        "name_mismatch"
+      ],
+      "candidates": [
+        {
+          "sourceCandidateId": "osm-n-10600402265",
+          "reason": "name_mismatch",
+          "sourceName": "オオドリー",
+          "cuisine": "餐厅",
+          "distanceMeters": 348,
+          "lat": 35.696318,
+          "lng": 139.761424,
+          "address": ""
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJ6XK_phqMGGARb-dhCHEOB04",
+      "reviewPriority": 1,
+      "rejectionReasons": [
+        "name_mismatch"
+      ],
+      "candidates": [
+        {
+          "sourceCandidateId": "osm-n-4367332089",
+          "reason": "name_mismatch",
+          "sourceName": "龍盛楼",
+          "cuisine": "中华",
+          "distanceMeters": 371,
+          "lat": 35.694638,
+          "lng": 139.761401,
+          "address": ""
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJa7aZ2JWNGGARWbupeqzYFo0",
+      "reviewPriority": 1,
+      "rejectionReasons": [
+        "name_mismatch"
+      ],
+      "candidates": [
+        {
+          "sourceCandidateId": "osm-n-12920547484",
+          "reason": "name_mismatch",
+          "sourceName": "鮨のシマハラ",
+          "cuisine": "日式",
+          "distanceMeters": 415,
+          "lat": 35.694548,
+          "lng": 139.761889,
+          "address": ""
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJQ0rYTaaNGGARpXUbSobtn3I",
+      "reviewPriority": 1,
+      "rejectionReasons": [
+        "name_mismatch"
+      ],
+      "candidates": [
+        {
+          "sourceCandidateId": "osm-n-13076091113",
+          "reason": "name_mismatch",
+          "sourceName": "すずのおむすび",
+          "cuisine": "日式",
+          "distanceMeters": 534,
+          "lat": 35.696017,
+          "lng": 139.763512,
+          "address": ""
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJlag912qMGGARnmjhwOX073w",
+      "reviewPriority": 1,
+      "rejectionReasons": [
+        "name_mismatch"
+      ],
+      "candidates": [
+        {
+          "sourceCandidateId": "osm-n-6331068986",
+          "reason": "name_mismatch",
+          "sourceName": "九段下 洋々亭",
+          "cuisine": "中华",
+          "distanceMeters": 555,
+          "lat": 35.695841,
+          "lng": 139.751451,
+          "address": "九段北1-3-4"
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJJZtg9hqMGGARq8wdbhwCkoQ",
+      "reviewPriority": 1,
+      "rejectionReasons": [
+        "name_mismatch"
+      ],
+      "candidates": [
+        {
+          "sourceCandidateId": "osm-n-2452372126",
+          "reason": "name_mismatch",
+          "sourceName": "タリーズコーヒー",
+          "cuisine": "咖啡",
+          "distanceMeters": 667,
+          "lat": 35.696575,
+          "lng": 139.764937,
+          "address": "東京都 千代田区 神田駿河台三丁目"
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJAQDAQmuMGGARIyx-VvitiMc",
+      "reviewPriority": 1,
+      "rejectionReasons": [
+        "name_mismatch"
+      ],
+      "candidates": [
+        {
+          "sourceCandidateId": "osm-n-6408501343",
+          "reason": "name_mismatch",
+          "sourceName": "レストランカフェ",
+          "cuisine": "餐厅",
+          "distanceMeters": 758,
+          "lat": 35.69301,
+          "lng": 139.749992,
+          "address": ""
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJo8YUUluNGGAR7VGTAVgNXiE",
+      "reviewPriority": 1,
+      "rejectionReasons": [
+        "name_mismatch"
+      ],
+      "candidates": [
+        {
+          "sourceCandidateId": "osm-n-13124819777",
+          "reason": "name_mismatch",
+          "sourceName": "日本武道館 カフェ さくら",
+          "cuisine": "咖啡",
+          "distanceMeters": 763,
+          "lat": 35.692716,
+          "lng": 139.750118,
+          "address": ""
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJP6dVmD-MGGAR3kICQ_sZkbk",
+      "reviewPriority": 1,
+      "rejectionReasons": [
+        "name_mismatch"
+      ],
+      "candidates": [
+        {
+          "sourceCandidateId": "osm-n-4013840293",
+          "reason": "name_mismatch",
+          "sourceName": "やるき茶屋　水道橋本店",
+          "cuisine": "酒吧",
+          "distanceMeters": 774,
+          "lat": 35.70158,
+          "lng": 139.752653,
+          "address": ""
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJp_0Q0gOMGGARYo3ohP0O2d0",
+      "reviewPriority": 1,
+      "rejectionReasons": [
+        "name_mismatch",
+        "location_mismatch"
+      ],
+      "candidates": [
+        {
+          "sourceCandidateId": "osm-n-3669715405",
+          "reason": "location_mismatch",
+          "sourceName": "カフェ・ベローチェ",
+          "cuisine": "咖啡",
+          "distanceMeters": 833,
+          "lat": 35.692227,
+          "lng": 139.765634,
+          "address": "東京都 千代田区 内神田一丁目 10"
+        },
+        {
+          "sourceCandidateId": "osm-n-3669696056",
+          "reason": "location_mismatch",
+          "sourceName": "カフェ・ベローチェ",
+          "cuisine": "咖啡",
+          "distanceMeters": 845,
+          "lat": 35.690567,
+          "lng": 139.764266,
+          "address": "東京都 千代田区 神田錦町一丁目"
+        },
+        {
+          "sourceCandidateId": "osm-n-2130331642",
+          "reason": "name_mismatch",
+          "sourceName": "カフェ・ベローチェ",
+          "cuisine": "咖啡",
+          "distanceMeters": 1168,
+          "lat": 35.691191,
+          "lng": 139.769167,
+          "address": "東京都 千代田区 内神田三丁目 3"
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJfaHK_3iNGGARFia1rnU1dpY",
+      "reviewPriority": 1,
+      "rejectionReasons": [
+        "name_mismatch"
+      ],
+      "candidates": [
+        {
+          "sourceCandidateId": "osm-n-3626360231",
+          "reason": "name_mismatch",
+          "sourceName": "タリーズコーヒー",
+          "cuisine": "咖啡",
+          "distanceMeters": 899,
+          "lat": 35.688748,
+          "lng": 139.762239,
+          "address": "東京都 千代田区 大手町1丁目 7"
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJ2x1tGgSMGGAR790-vdAKkPk",
+      "reviewPriority": 1,
+      "rejectionReasons": [
+        "name_mismatch"
+      ],
+      "candidates": [
+        {
+          "sourceCandidateId": "osm-n-2995310233",
+          "reason": "name_mismatch",
+          "sourceName": "麺や そめいよしの",
+          "cuisine": "面食",
+          "distanceMeters": 975,
+          "lat": 35.691418,
+          "lng": 139.766878,
+          "address": ""
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJp6flawOMGGARUjOe-cACTSY",
+      "reviewPriority": 1,
+      "rejectionReasons": [
+        "name_mismatch"
+      ],
+      "candidates": [
+        {
+          "sourceCandidateId": "osm-n-4030932712",
+          "reason": "name_mismatch",
+          "sourceName": "栄屋ミルクホール",
+          "cuisine": "餐厅",
+          "distanceMeters": 1015,
+          "lat": 35.694868,
+          "lng": 139.768768,
+          "address": ""
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJ9TsbQzyMGGARGNkQ4gvzxy8",
+      "reviewPriority": 1,
+      "rejectionReasons": [
+        "name_mismatch"
+      ],
+      "candidates": [
+        {
+          "sourceCandidateId": "osm-n-5551684279",
+          "reason": "name_mismatch",
+          "sourceName": "スペイン酒場P",
+          "cuisine": "酒吧",
+          "distanceMeters": 1082,
+          "lat": 35.705297,
+          "lng": 139.760731,
+          "address": ""
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJ6TE_WwaMGGARQiQA3od8eLE",
+      "reviewPriority": 1,
+      "rejectionReasons": [
+        "name_mismatch"
+      ],
+      "candidates": [
+        {
+          "sourceCandidateId": "osm-n-13608703201",
+          "reason": "name_mismatch",
+          "sourceName": "銀座篝大手町店",
+          "cuisine": "拉面",
+          "distanceMeters": 1084,
+          "lat": 35.688162,
+          "lng": 139.764906,
+          "address": ""
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJN9zmDESMGGAR6bqpAoqqjzM",
+      "reviewPriority": 1,
+      "rejectionReasons": [
+        "name_mismatch"
+      ],
+      "candidates": [
+        {
+          "sourceCandidateId": "osm-n-3657661025",
+          "reason": "name_mismatch",
+          "sourceName": "サンマルクカフェ",
+          "cuisine": "咖啡",
+          "distanceMeters": 1099,
+          "lat": 35.700864,
+          "lng": 139.747076,
+          "address": "東京都 千代田区 飯田橋四丁目 10"
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJp3be1AeMGGAR2k9SBumlu2w",
+      "reviewPriority": 1,
+      "rejectionReasons": [
+        "name_mismatch"
+      ],
+      "candidates": [
+        {
+          "sourceCandidateId": "osm-n-13068009850",
+          "reason": "name_mismatch",
+          "sourceName": "Ishiraku Otemachi – Soba & Tempura",
+          "cuisine": "餐厅",
+          "distanceMeters": 1114,
+          "lat": 35.6876,
+          "lng": 139.764511,
+          "address": "東京都 千代田区 大手町 B1"
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJ71ygjdqNGGARcsiI_DFygEQ",
+      "reviewPriority": 1,
+      "rejectionReasons": [
+        "name_mismatch"
+      ],
+      "candidates": [
+        {
+          "sourceCandidateId": "osm-n-11364918799",
+          "reason": "name_mismatch",
+          "sourceName": "もうやんカレー",
+          "cuisine": "咖喱",
+          "distanceMeters": 1145,
+          "lat": 35.686174,
+          "lng": 139.76178,
+          "address": "東京都 千代田区 大手町 1丁目 2"
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJIW2VHRWMGGARyWGyHLqZc4c",
+      "reviewPriority": 2,
+      "rejectionReasons": [
+        "location_mismatch"
+      ],
+      "candidates": [
+        {
+          "sourceCandidateId": "osm-n-6934233785",
+          "reason": "location_mismatch",
+          "sourceName": "どんぶり丸福",
+          "cuisine": "日式",
+          "distanceMeters": 119,
+          "lat": 35.696148,
+          "lng": 139.758884,
+          "address": ""
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJFZOG0gSMGGARLCx2LGz54I8",
+      "reviewPriority": 2,
+      "rejectionReasons": [
+        "location_mismatch"
+      ],
+      "candidates": [
+        {
+          "sourceCandidateId": "osm-n-5594891737",
+          "reason": "location_mismatch",
+          "sourceName": "嵯峨谷",
+          "cuisine": "日式",
+          "distanceMeters": 125,
+          "lat": 35.695786,
+          "lng": 139.75898,
+          "address": ""
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJAQDsYkGMGGAR9-mzHpvnHNw",
+      "reviewPriority": 2,
+      "rejectionReasons": [
+        "location_mismatch"
+      ],
+      "candidates": [
+        {
+          "sourceCandidateId": "osm-n-5615071226",
+          "reason": "location_mismatch",
+          "sourceName": "ROBERTO",
+          "cuisine": "酒吧",
+          "distanceMeters": 138,
+          "lat": 35.697075,
+          "lng": 139.758109,
+          "address": ""
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJF-qjrhWMGGARUgPHykWut9A",
+      "reviewPriority": 2,
+      "rejectionReasons": [
+        "location_mismatch"
+      ],
+      "candidates": [
+        {
+          "sourceCandidateId": "osm-n-7899862080",
+          "reason": "location_mismatch",
+          "sourceName": "吉野鮨",
+          "cuisine": "餐厅",
+          "distanceMeters": 138,
+          "lat": 35.695141,
+          "lng": 139.75639,
+          "address": ""
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJY0YY_hSMGGARn8jebiB_KKM",
+      "reviewPriority": 2,
+      "rejectionReasons": [
+        "location_mismatch"
+      ],
+      "candidates": [
+        {
+          "sourceCandidateId": "osm-n-3606951990",
+          "reason": "location_mismatch",
+          "sourceName": "珈琲エリカ",
+          "cuisine": "咖啡",
+          "distanceMeters": 170,
+          "lat": 35.697222,
+          "lng": 139.758553,
+          "address": "東京都 千代田区 神田神保町一丁目"
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJxegySViNGGAR53GJLYt_ot4",
+      "reviewPriority": 2,
+      "rejectionReasons": [
+        "location_mismatch"
+      ],
+      "candidates": [
+        {
+          "sourceCandidateId": "osm-n-3343070437",
+          "reason": "location_mismatch",
+          "sourceName": "ゴーゴーカレー",
+          "cuisine": "咖喱",
+          "distanceMeters": 181,
+          "lat": 35.696167,
+          "lng": 139.759573,
+          "address": ""
+        },
+        {
+          "sourceCandidateId": "osm-n-5615113573",
+          "reason": "location_mismatch",
+          "sourceName": "ゴーゴーカレー",
+          "cuisine": "咖喱",
+          "distanceMeters": 649,
+          "lat": 35.699797,
+          "lng": 139.762955,
+          "address": ""
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJ1YYWBweMGGARIY5pvEdxPto",
+      "reviewPriority": 2,
+      "rejectionReasons": [
+        "location_mismatch"
+      ],
+      "candidates": [
+        {
+          "sourceCandidateId": "osm-n-6239135093",
+          "reason": "location_mismatch",
+          "sourceName": "Brussels",
+          "cuisine": "酒吧",
+          "distanceMeters": 243,
+          "lat": 35.696732,
+          "lng": 139.760094,
+          "address": ""
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJAwoukBWMGGARTHmG6FhUQQY",
+      "reviewPriority": 2,
+      "rejectionReasons": [
+        "location_mismatch"
+      ],
+      "candidates": [
+        {
+          "sourceCandidateId": "osm-n-7230407722",
+          "reason": "location_mismatch",
+          "sourceName": "新潟カツ丼 タレカツ",
+          "cuisine": "乌冬",
+          "distanceMeters": 280,
+          "lat": 35.695332,
+          "lng": 139.760623,
+          "address": ""
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJy_MdOgSMGGARXXWkTLIZa_I",
+      "reviewPriority": 2,
+      "rejectionReasons": [
+        "location_mismatch"
+      ],
+      "candidates": [
+        {
+          "sourceCandidateId": "osm-n-6564489387",
+          "reason": "location_mismatch",
+          "sourceName": "豆香房",
+          "cuisine": "咖啡",
+          "distanceMeters": 296,
+          "lat": 35.694848,
+          "lng": 139.760616,
+          "address": ""
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJc5E30wOMGGARDf8ehJqbx64",
+      "reviewPriority": 2,
+      "rejectionReasons": [
+        "location_mismatch"
+      ],
+      "candidates": [
+        {
+          "sourceCandidateId": "osm-n-5550113194",
+          "reason": "location_mismatch",
+          "sourceName": "花子",
+          "cuisine": "餐厅",
+          "distanceMeters": 387,
+          "lat": 35.696415,
+          "lng": 139.761839,
+          "address": ""
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJvZtWhoWNGGARAbGNbn2eeQs",
+      "reviewPriority": 2,
+      "rejectionReasons": [
+        "location_mismatch"
+      ],
+      "candidates": [
+        {
+          "sourceCandidateId": "osm-n-1635104715",
+          "reason": "location_mismatch",
+          "sourceName": "YAKI NIKU",
+          "cuisine": "餐厅",
+          "distanceMeters": 460,
+          "lat": 35.69446,
+          "lng": 139.762381,
+          "address": ""
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJN2OAtaKNGGARAQd-8mvb9Ao",
+      "reviewPriority": 2,
+      "rejectionReasons": [
+        "location_mismatch"
+      ],
+      "candidates": [
+        {
+          "sourceCandidateId": "osm-n-6127396930",
+          "reason": "location_mismatch",
+          "sourceName": "わしょくや",
+          "cuisine": "餐厅",
+          "distanceMeters": 489,
+          "lat": 35.695307,
+          "lng": 139.752235,
+          "address": ""
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJicJ6DTyNGGARee3lt0LagIU",
+      "reviewPriority": 2,
+      "rejectionReasons": [
+        "location_mismatch"
+      ],
+      "candidates": [
+        {
+          "sourceCandidateId": "osm-n-1898425565",
+          "reason": "location_mismatch",
+          "sourceName": "上島珈琲店",
+          "cuisine": "咖啡",
+          "distanceMeters": 550,
+          "lat": 35.690969,
+          "lng": 139.757127,
+          "address": ""
+        },
+        {
+          "sourceCandidateId": "osm-n-3394536062",
+          "reason": "location_mismatch",
+          "sourceName": "上島珈琲店",
+          "cuisine": "咖啡",
+          "distanceMeters": 964,
+          "lat": 35.697612,
+          "lng": 139.768064,
+          "address": ""
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJV6X7zcWNGGARyT1xchJ9ukA",
+      "reviewPriority": 2,
+      "rejectionReasons": [
+        "location_mismatch"
+      ],
+      "candidates": [
+        {
+          "sourceCandidateId": "osm-n-3626319679",
+          "reason": "location_mismatch",
+          "sourceName": "タリーズコーヒー",
+          "cuisine": "咖啡",
+          "distanceMeters": 554,
+          "lat": 35.691502,
+          "lng": 139.760491,
+          "address": "東京都 千代田区 神田錦町三丁目"
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJgQKzWACNGGARBF4CgPRxQ_o",
+      "reviewPriority": 2,
+      "rejectionReasons": [
+        "location_mismatch"
+      ],
+      "candidates": [
+        {
+          "sourceCandidateId": "osm-n-3583311403",
+          "reason": "location_mismatch",
+          "sourceName": "エクセルシオール カフェ",
+          "cuisine": "咖啡",
+          "distanceMeters": 588,
+          "lat": 35.696787,
+          "lng": 139.75118,
+          "address": ""
+        },
+        {
+          "sourceCandidateId": "osm-n-692764851",
+          "reason": "location_mismatch",
+          "sourceName": "エクセルシオール カフェ",
+          "cuisine": "咖啡",
+          "distanceMeters": 625,
+          "lat": 35.699985,
+          "lng": 139.762351,
+          "address": ""
+        },
+        {
+          "sourceCandidateId": "osm-n-10198658870",
+          "reason": "location_mismatch",
+          "sourceName": "エクセルシオール カフェ",
+          "cuisine": "咖啡",
+          "distanceMeters": 725,
+          "lat": 35.698915,
+          "lng": 139.764721,
+          "address": ""
+        },
+        {
+          "sourceCandidateId": "osm-n-4617594174",
+          "reason": "location_mismatch",
+          "sourceName": "エクセルシオール カフェ",
+          "cuisine": "咖啡",
+          "distanceMeters": 870,
+          "lat": 35.702355,
+          "lng": 139.752149,
+          "address": ""
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJY5bTFgaMGGARkzF0OhUeftQ",
+      "reviewPriority": 2,
+      "rejectionReasons": [
+        "location_mismatch"
+      ],
+      "candidates": [
+        {
+          "sourceCandidateId": "osm-n-1511441588",
+          "reason": "location_mismatch",
+          "sourceName": "Délifrance",
+          "cuisine": "法餐",
+          "distanceMeters": 603,
+          "lat": 35.699261,
+          "lng": 139.76284,
+          "address": ""
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJNaZsYReMGGARCAy68ykWn3s",
+      "reviewPriority": 2,
+      "rejectionReasons": [
+        "location_mismatch"
+      ],
+      "candidates": [
+        {
+          "sourceCandidateId": "osm-n-3343255433",
+          "reason": "location_mismatch",
+          "sourceName": "TENGU SAKABA",
+          "cuisine": "酒吧",
+          "distanceMeters": 614,
+          "lat": 35.701198,
+          "lng": 139.755674,
+          "address": ""
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJ5btnQgCNGGARpcVTxhQcaSE",
+      "reviewPriority": 2,
+      "rejectionReasons": [
+        "location_mismatch"
+      ],
+      "candidates": [
+        {
+          "sourceCandidateId": "osm-n-6067696337",
+          "reason": "location_mismatch",
+          "sourceName": "しんぱち食堂",
+          "cuisine": "餐厅",
+          "distanceMeters": 712,
+          "lat": 35.694948,
+          "lng": 139.765401,
+          "address": ""
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJXdA3nZCNGGARO9ylj2FvD8U",
+      "reviewPriority": 2,
+      "rejectionReasons": [
+        "location_mismatch"
+      ],
+      "candidates": [
+        {
+          "sourceCandidateId": "osm-n-12240814887",
+          "reason": "location_mismatch",
+          "sourceName": "しんぱち食堂",
+          "cuisine": "日式",
+          "distanceMeters": 718,
+          "lat": 35.699603,
+          "lng": 139.76412,
+          "address": ""
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJF9rPs7aNGGARlNDchi9yAew",
+      "reviewPriority": 2,
+      "rejectionReasons": [
+        "location_mismatch"
+      ],
+      "candidates": [
+        {
+          "sourceCandidateId": "osm-n-6698307821",
+          "reason": "location_mismatch",
+          "sourceName": "いきなり！ステーキ",
+          "cuisine": "牛排",
+          "distanceMeters": 723,
+          "lat": 35.694922,
+          "lng": 139.765511,
+          "address": ""
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJ9_YVEQaMGGARzFAjEm-lG8A",
+      "reviewPriority": 2,
+      "rejectionReasons": [
+        "location_mismatch"
+      ],
+      "candidates": [
+        {
+          "sourceCandidateId": "osm-n-2388254203",
+          "reason": "location_mismatch",
+          "sourceName": "おむすび権米衛",
+          "cuisine": "日式",
+          "distanceMeters": 823,
+          "lat": 35.698758,
+          "lng": 139.766003,
+          "address": ""
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJkbshpxyMGGAR8ZbEJnuVf5o",
+      "reviewPriority": 2,
+      "rejectionReasons": [
+        "location_mismatch"
+      ],
+      "candidates": [
+        {
+          "sourceCandidateId": "osm-n-5157288131",
+          "reason": "location_mismatch",
+          "sourceName": "Bar Orchard Knight",
+          "cuisine": "酒吧",
+          "distanceMeters": 925,
+          "lat": 35.693225,
+          "lng": 139.767305,
+          "address": ""
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJSe9xWBWMGGARl5Laa3izWaM",
+      "reviewPriority": 2,
+      "rejectionReasons": [
+        "location_mismatch"
+      ],
+      "candidates": [
+        {
+          "sourceCandidateId": "osm-n-6237378745",
+          "reason": "location_mismatch",
+          "sourceName": "小星星",
+          "cuisine": "台湾菜",
+          "distanceMeters": 968,
+          "lat": 35.694321,
+          "lng": 139.747054,
+          "address": ""
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJjZbrEUmNGGAR0HvejyaURFo",
+      "reviewPriority": 2,
+      "rejectionReasons": [
+        "location_mismatch"
+      ],
+      "candidates": [
+        {
+          "sourceCandidateId": "osm-n-8931799991",
+          "reason": "location_mismatch",
+          "sourceName": "ハンバーグ大地",
+          "cuisine": "餐厅",
+          "distanceMeters": 982,
+          "lat": 35.69349,
+          "lng": 139.768057,
+          "address": ""
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJh9NEL_GNGGARHxf778R3FtY",
+      "reviewPriority": 2,
+      "rejectionReasons": [
+        "location_mismatch"
+      ],
+      "candidates": [
+        {
+          "sourceCandidateId": "osm-n-12089239329",
+          "reason": "location_mismatch",
+          "sourceName": "ぴゅあ",
+          "cuisine": "烧烤",
+          "distanceMeters": 1006,
+          "lat": 35.690616,
+          "lng": 139.766639,
+          "address": ""
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJQf62hECMGGARahigFuCWd5w",
+      "reviewPriority": 2,
+      "rejectionReasons": [
+        "location_mismatch"
+      ],
+      "candidates": [
+        {
+          "sourceCandidateId": "osm-n-3021619275",
+          "reason": "location_mismatch",
+          "sourceName": "ゆで太郎",
+          "cuisine": "面食",
+          "distanceMeters": 1018,
+          "lat": 35.700615,
+          "lng": 139.74793,
+          "address": ""
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJN_DHXQOMGGAR3IDVaxyqoy8",
+      "reviewPriority": 2,
+      "rejectionReasons": [
+        "location_mismatch"
+      ],
+      "candidates": [
+        {
+          "sourceCandidateId": "osm-n-12090819984",
+          "reason": "location_mismatch",
+          "sourceName": "四川厨房 随苑",
+          "cuisine": "中华",
+          "distanceMeters": 1085,
+          "lat": 35.690664,
+          "lng": 139.767734,
+          "address": ""
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJyZx9RQCNGGARD8s1Ea-Mlrs",
+      "reviewPriority": 2,
+      "rejectionReasons": [
+        "location_mismatch"
+      ],
+      "candidates": [
+        {
+          "sourceCandidateId": "osm-n-5230026785",
+          "reason": "location_mismatch",
+          "sourceName": "酒亭 Tako",
+          "cuisine": "酒吧",
+          "distanceMeters": 1120,
+          "lat": 35.700359,
+          "lng": 139.768726,
+          "address": ""
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJcduc-w2MGGAR532BOTrYztQ",
+      "reviewPriority": 2,
+      "rejectionReasons": [
+        "location_mismatch"
+      ],
+      "candidates": [
+        {
+          "sourceCandidateId": "osm-n-1231861291",
+          "reason": "location_mismatch",
+          "sourceName": "おきらく食堂",
+          "cuisine": "餐厅",
+          "distanceMeters": 1142,
+          "lat": 35.694653,
+          "lng": 139.770154,
+          "address": ""
+        }
+      ]
+    }
+  ]
+}
