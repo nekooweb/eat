@@ -7,6 +7,11 @@
     './voice/1.mp3',
     './voice/2.mp3'
   ];
+  const mascots = [
+    './image/YahaUsagi.webp',
+    './image/Momonga.webp',
+    './image/SweetBabyHachiware2.webp'
+  ];
   const MAX_VOICE_MS = 2000;
   const mascotPlacements = [
     'mascot-top-left',
@@ -19,11 +24,19 @@
   let currentAudio = null;
   let voiceStopTimer = null;
   let mascotTimer = null;
+  let lastMascotSource = null;
   let lastMascotPlacement = null;
 
   function randomVoice() {
     if (!voices.length) return null;
     return voices[Math.floor(Math.random() * voices.length)];
+  }
+
+  function chooseDifferent(items, previous) {
+    if (!items.length) return null;
+    if (items.length === 1) return items[0];
+    const choices = items.filter((item) => item !== previous);
+    return choices[Math.floor(Math.random() * choices.length)];
   }
 
   function stopCurrentVoice() {
@@ -66,20 +79,17 @@
     });
   }
 
-  function chooseMascotPlacement() {
-    if (!mascotPlacements.length) return null;
-    const choices = mascotPlacements.filter((placement) => placement !== lastMascotPlacement);
-    const pool = choices.length ? choices : mascotPlacements;
-    const placement = pool[Math.floor(Math.random() * pool.length)];
-    lastMascotPlacement = placement;
-    return placement;
-  }
-
   function showMascot() {
-    if (!mascot) return;
+    if (!mascot || !mascots.length) return;
     clearTimeout(mascotTimer);
+
+    const source = chooseDifferent(mascots, lastMascotSource);
+    const placement = chooseDifferent(mascotPlacements, lastMascotPlacement);
+    lastMascotSource = source;
+    lastMascotPlacement = placement;
+
     mascot.classList.remove('is-popping', ...mascotPlacements);
-    const placement = chooseMascotPlacement();
+    mascot.src = source;
     if (placement) mascot.classList.add(placement);
     void mascot.offsetWidth;
     mascot.classList.add('is-popping');
