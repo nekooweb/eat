@@ -8,7 +8,7 @@
   <title>Eat — 今天吃什么？</title>
   <meta name="description" content="在附近餐厅里随机给出三个不同方向，减少选择困难。">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-  <link rel="stylesheet" href="./styles.css?v=20260905-review4">
+  <link rel="stylesheet" href="./styles.css?v=20260906-voice1">
 </head>
 <body>
   <main class="shell">
@@ -52,7 +52,10 @@
       </div>
     </section>
 
-    <button class="generate" id="generate">🎲 随机给我 3 家</button>
+    <div class="generate-wrap">
+      <img class="generate-mascot" id="generate-mascot" src="./image/YahaUsagi.webp" alt="" aria-hidden="true">
+      <button class="generate" id="generate">🎲 随机给我 3 家</button>
+    </div>
 
     <section class="results" id="results" aria-live="polite">
       <div class="panel empty">设置条件后生成三个候选。</div>
@@ -73,6 +76,6 @@
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="./data/production_area1.js?v=20260905-review4"></script>
-  <script src="./app.js?v=20260905-review4"></script>
+  <script src="./app.js?v=20260906-voice1"></script>
 </body>
 </html>
