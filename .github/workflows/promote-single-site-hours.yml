@@ -1,0 +1,79 @@
+name: Promote single-site official hours
+
+on:
+  push:
+    branches:
+      - auto-single-site-hours
+    paths:
+      - 'scripts/build_single_site_hours_enrichment.mjs'
+      - '.github/workflows/promote-single-site-hours.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: promote-single-hours-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout selected branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Build stable baseline
+        run: |
+          set -o pipefail
+          node scripts/test_opening_hours.mjs
+          node scripts/build_production_dataset.mjs | tee /tmp/single-hours-baseline.json
+      - name: Fetch current direct official sites and parse hours
+        env:
+          SINGLE_SITE_HOURS_CONCURRENCY: '8'
+          SINGLE_SITE_HOURS_TIMEOUT_MS: '12000'
+          SINGLE_SITE_HOURS_CHECKED_AT: '2026-09-06'
+        run: |
+          set -o pipefail
+          mkdir -p _audit
+          node scripts/build_single_site_hours_enrichment.mjs \
+            data/official_candidate_index.json \
+            data/source_enrichment_zzzsinglehours.js \
+            _audit/single-site-hours-review.json \
+            | tee _audit/single-site-hours-summary.json
+      - name: Rebuild and audit
+        run: |
+          set -o pipefail
+          node scripts/build_production_dataset.mjs | tee _audit/build-after-single-hours.json
+          node scripts/audit_repository.mjs
+          node scripts/audit_source_bindings.mjs
+          node scripts/audit_normalized_fields.mjs
+          node scripts/coverage_report.mjs | tee _audit/coverage-after-single-hours.json
+          node scripts/build_enrichment_queue.mjs | tee _audit/enrichment-queue-after-single-hours.json
+      - name: Upload review evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: single-site-hours-audit
+          path: _audit
+          retention-days: 3
+      - name: Commit generated hours shard
+        env:
+          TARGET_BRANCH: ${{ github.ref_name }}
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/source_enrichment_zzzsinglehours.js
+          if git diff --cached --quiet; then
+            echo 'No single-site hours changes.'
+          else
+            git commit -m 'Promote high-confidence single-site hours'
+            if ! git push origin HEAD:$TARGET_BRANCH; then
+              git pull --rebase origin $TARGET_BRANCH
+              git push origin HEAD:$TARGET_BRANCH
+            fi
+          fi
