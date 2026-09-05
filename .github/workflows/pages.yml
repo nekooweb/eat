@@ -38,6 +38,7 @@ jobs:
             scripts/build_area1_osm.py
           test -s data/production_area1.js
           node scripts/audit_repository.mjs
+          node scripts/audit_source_bindings.mjs
       - name: Coverage report
         run: |
           node scripts/coverage_report.mjs
