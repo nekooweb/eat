@@ -61,7 +61,7 @@ jobs:
           retention-days: 3
       - name: Assemble public site
         env:
-          GOOGLE_MAPS_EMBED_KEY: ${{ secrets.GOOGLE_MAPS_EMBED_KEY }}
+          GOOGLE_MAPS_EMBED_KEY: ${{ secrets.GOOGLE_MAP_API }}
         run: |
           mkdir -p _site/data
           cp index.html styles.css app.js privacy.html terms.html _site/

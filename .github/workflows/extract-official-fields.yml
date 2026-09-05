@@ -1,0 +1,52 @@
+name: Extract official restaurant fields
+
+on:
+  workflow_dispatch:
+    inputs:
+      google_limit:
+        description: 'Google website discovery limit; 0 scans all production rows without an official binding'
+        required: false
+        default: '0'
+
+permissions:
+  contents: read
+
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Build canonical production dataset
+        run: node scripts/build_production_dataset.mjs
+      - name: Extract already-known official-source fields
+        env:
+          OFFICIAL_FETCH_CONCURRENCY: '4'
+          OFFICIAL_FETCH_TIMEOUT_MS: '15000'
+        run: |
+          mkdir -p _audit
+          node scripts/extract_official_fields.mjs _audit/official_extraction_candidates.json | tee _audit/official_extraction_summary.json
+      - name: Discover and inspect additional official sites
+        env:
+          GOOGLE_MAP_API: ${{ secrets.GOOGLE_MAP_API }}
+          GOOGLE_OFFICIAL_SITE_LIMIT: ${{ inputs.google_limit }}
+          GOOGLE_OFFICIAL_SITE_CONCURRENCY: '6'
+          GOOGLE_OFFICIAL_SITE_TIMEOUT_MS: '12000'
+        run: |
+          node scripts/discover_google_official_sites.mjs _audit/google_official_site_candidates.json | tee _audit/google_official_site_summary.json
+      - name: Build high-confidence official review queue
+        run: |
+          node scripts/filter_official_site_candidates.mjs \
+            _audit/google_official_site_candidates.json \
+            _audit/google_official_site_priority.json \
+            | tee _audit/google_official_site_priority_summary.json
+      - name: Upload extraction review artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: official-extraction-review
+          path: _audit
+          retention-days: 3

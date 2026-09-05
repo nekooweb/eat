@@ -1,195 +1,192 @@
 # Eat Development Plan
 
-Updated: 2026-09-05
+Updated: 2026-09-06
 
 ## Current milestone
 
-`TOKYO / 地区1️⃣` is now in the **exact identity inventory + full-information reconciliation** phase.
+`TOKYO / 地区1️⃣` has moved from manual source-by-source completion into **bulk field acquisition and official-site reconciliation**.
 
-The important distinction is:
+Identity discovery and the public product are already usable. The main bottleneck is now durable field coverage: branch-specific source URLs, Chinese recommendation labels, reference hours, budget, address and cuisine normalization.
 
-- **identity-count completeness is solved**: 2,804 / 2,804 in-scope food-business Place IDs inside the strict 1.2 km circle;
-- **full-information completeness is not solved yet**: independent source identity and durable branch fields still have to be reconciled.
+## Current production baseline
 
-Latest audited state:
+Latest validated production baseline before this branch:
 
-- exact in-scope operational food-business identities: **2,804**;
-- exact Place-ID inventory: **2,804 / 2,804**;
+- exact in-scope Google food-business identity inventory: **2,804 / 2,804**;
 - OSM independent-source candidates: **1,273**;
-- Google QC-v4: **658 verified / 615 rejected / 0 pending**;
-- unique verified Google IDs in the QC cache: 647;
-- exact-inventory IDs with verified independent-source coverage: **643**;
-- exact-inventory IDs still without verified independent-source identity: **2,161**;
+- Google QC-v4 source rows: **658 verified / 615 rejected / 0 pending**;
 - canonical production entities: **648** unique Place IDs;
-- usable Tabelog/official bindings: **275**;
-- explicit source resolutions: **34**;
-- source outcomes accounted for: **309 / 648**;
-- unresolved live-production source queue: **339**.
+- production IDs present in the exact Google inventory: **645**;
+- usable Tabelog/official source bindings: **356 / 648 = 54.9%**;
+- explicit terminal source resolutions: **44**;
+- source outcomes accounted for: **400 / 648 = 61.7%**;
+- unresolved production source queue: **248**;
+- non-generic cuisine: **568 / 648**;
+- budget known: **192 / 648**;
+- address known: **207 / 648**;
+- reference hours/holiday information: **302 / 648**;
+- legacy representative-dish data: **72 / 648**;
+- 百名店: **22**.
 
-## Product/runtime contract
+The exact-inventory reconciliation queue remains large: **2,161** Google inventory Place IDs do not yet have a verified independent-source identity. That expansion work is separate from completing the 648 current production rows.
 
-- static GitHub Pages site;
-- strict production boundary <=1,200 m;
-- Google Place ID required for production identity;
-- Google Places data used transiently for identity/QC/discovery rather than as the durable restaurant database;
-- persistent facts come from OSM, Tabelog, official pages and reviewed curated sources;
-- one deploy-time canonical dataset;
-- browser-side filtering/random selection only;
-- Leaflet/OpenStreetMap overview, per-store maps and comparison table;
-- no browser-side source matching or runtime backend.
+## Normalized public fields
 
-## Exact Area1 inventory
+Every canonical production row now exposes the same display contract:
 
-`data/area1_google_ids.json` is authoritative for the exact Google food-business identity universe:
+- `name`;
+- `cuisine`;
+- `address`;
+- `lat`, `lng`, `distanceMeters`;
+- `lunch`, `dinner`;
+- `recommendedDishes` — always an array, **0-2 Chinese names**;
+- `hoursReference` — always a string or `null`, descriptive only;
+- `googlePlaceId`;
+- award/weight fields and compact provider labels.
 
-- radius: 1,200 m;
-- count: 2,804;
-- method: `places_aggregate_geodesic_partition_boundary_qc_v3`;
-- complete / coverage verified / independent count verified.
+### Recommendation rule
 
-`scripts/discover_google_area1.py` uses an exact Aggregate count, recursively split geodesic sectors and a 5 m boundary-recovery guard band. It refuses to mark the inventory complete unless the final unique Place-ID count equals the independent exact-circle count.
+`recommendedDishes` is deliberately sparse. A dish is added only when a reviewed source explicitly identifies a concrete item as recommended, popular, signature, specialty, famous/名物, 看板, 自慢 or an equivalent clear claim.
 
-Successful exact run `33953718846`:
+Generic menu items and historical `dishes` values are **not** automatically promoted to recommendations. If no reliable recommendation exists, the public field stays `[]`.
 
-- exact count 2,804;
-- inner sector union 2,801;
-- boundary candidates 34;
-- recovered inside strict circle 3;
-- final 2,804.
+The first reviewed explicit recommendation set contains **10 restaurants**. This replaces the earlier transitional behavior that translated generic representative dishes and incorrectly made 68 rows appear to have recommendations.
 
-## Independent-source coverage correction
+### Hours rule
 
-The previous OSM query omitted several food/business types that were present in the exact Google scope. Commit `732dcf1ce7c0b80128d577cfa3a3e43b1ece826a` added OSM bar/pub/biergarten/ice-cream coverage.
+`hoursReference` combines maintained opening-hours / regular-closure notes into one display field. It is a reference only and does not currently remove a restaurant from the random pool.
 
-Result:
+## Result-map state
 
-- candidates 990 -> **1,273** (+283);
-- verified source rows 526 -> **658**;
-- production 517 -> **648** (+131).
+The requested hybrid map design is implemented:
 
-Current expanded-pool rejection reasons:
+- three-store overview: **Leaflet + OpenStreetMap**;
+- per-store result map: **Google Maps Embed `place` mode using the verified Place ID**;
+- direct Google Maps link remains available;
+- if no usable Embed key is injected, the per-store map automatically falls back to Leaflet.
 
-- outside 1.2 km: 371;
-- location mismatch: 97;
-- closed permanently: 79;
-- name mismatch: 44;
-- non-food Google type: 18;
-- no Google place: 6.
+The Pages workflow now reuses the existing `GOOGLE_MAP_API` secret for the Embed key, per project decision. The built browser page therefore contains that key. API restrictions/quotas must account for both server-side Places maintenance calls and browser-side Maps Embed usage.
 
-Do not weaken these gates merely to increase production count.
+## Bulk field-acquisition pipeline
 
-## Canonical identity rule
+The old workflow was effectively:
 
-The type expansion exposed a serious merge risk: a historical rich metadata row could rename a newly verified independent OSM identity when both were associated with the same Place ID.
+```text
+next restaurant
+ -> manually search source
+ -> manually copy fields
+ -> repeat
+```
 
-Commit `697e85581317216f014d2f7ae1b5dd641663ee4e` fixes the canonical name/address priority:
+The new workflow is:
 
-1. exact Place-ID enrichment explicitly claiming `name`;
-2. otherwise exact verified OSM identity name;
-3. historical rich rows may contribute only fields that are safely mergeable and must not rename the identity by detail-score priority.
+```text
+canonical Place IDs
+ -> existing official-source batch fetch
+ -> transient Google websiteUri discovery for identities lacking an official source
+ -> fetch the website itself
+ -> structured HTML / JSON-LD / menu / recommendation signal extraction
+ -> high-confidence official-site review queue
+ -> reviewed source binding + fields
+ -> canonical build + audits
+```
 
-Geospatial production identity remains anchored to independent OSM coordinates/distance. Pages run `33954834163` passed after this correction.
+Google `websiteUri` is used only as a transient discovery input. The discovery output does not retain the Google-returned URI as a Places response field; the review artifact retains the final URL independently returned by the website fetch.
 
-## Current canonical production
+### Existing official-source extraction test
 
-Latest Batch 4 build (`33954926963`):
+Run `33974331919` proved that one batch job can inspect the already-bound official pages rather than querying restaurants individually:
 
-- production: **648**;
-- unique Place IDs: **648**;
-- production present in exact Google inventory: 645;
-- cuisine known/non-generic: **562**;
-- address known: **140**;
-- budget known: **126**;
-- schedule/holiday known: **239**;
-- representative dishes known: **31**;
-- source-backed: **275**;
-- 百名店: 22.
+- official URLs targeted: **60**;
+- successfully fetched: **55** in the first run;
+- pages with JSON-LD/structured facts: **10**;
+- pages with recommendation/signature signals: **21**;
+- pages with price signals: **22**;
+- pages with menu links: **36**.
 
-Distance pools:
+Remote websites are variable; a later run fetched fewer of the same 60 pages. Therefore fetch failure is treated as a retry/review condition, not as evidence that a restaurant or source is invalid.
 
-- <=300 m: 137;
-- <=500 m: 220;
-- <=800 m: 359;
-- <=1,200 m: 648.
+### Google-assisted official-site discovery test
 
-## Full-information batches completed
+Run `33974475744` used the existing `GOOGLE_MAP_API` and scanned the **589 production identities without an existing official binding**:
 
-During this completion pass:
+- Place Details requests successful: **589 / 589**;
+- website available: **445**;
+- website fetched successfully: **287**;
+- fetched page text matched the canonical restaurant name: **195**;
+- candidate non-platform/official hosts: **265**;
+- pages with structured facts: **121**;
+- pages with recommendation signals: **160**;
+- pages with price signals: **107**;
+- pages with menu links: **223**;
+- no website returned: **144**;
+- Google lookup errors: **0**;
+- website fetch failures/timeouts: **158**.
 
-- Batch 1: 8 safe bindings + 2 explicit conflicts;
-- Batch 2: 10 safe bindings;
-- Batch 3: 10 safe bindings;
-- Batch 4: 10 safe bindings.
+A stricter review filter requiring successful fetch + candidate official host + canonical-name match + HTTPS reduces this to **164 high-confidence official-site candidates**:
 
-Batch 4 (`fe128c9078a351010ea92f4a430324e0b6ad8b7f`) added:
+- structured facts: **72**;
+- recommendation signals: **97**;
+- price signals: **60**;
+- menu links: **134**.
 
-- 馬さん餃子酒場 神保町店;
-- 神保町 加賀廣;
-- CRAFT BEER MARKET 神保町店;
-- 大金星 神保町店;
-- Bar Plat 本店;
-- Bar 37℃;
-- 鳥貴族 神保町店;
-- おかん;
-- 大衆酒場 けいちゃん 神保町店;
-- あつ盛.
+Those 164 are the first review queue. They are **candidates**, not auto-approved facts.
 
-This moved source-backed production **265 -> 275** and unresolved live production **349 -> 339**.
+## Maintenance workflows
+
+### Pages
+
+`.github/workflows/pages.yml`:
+
+1. builds the canonical dataset;
+2. runs repository/source/normalized-field audits;
+3. generates coverage and field-gap reports;
+4. assembles only public site assets;
+5. injects the existing `GOOGLE_MAP_API` value into the Google Maps Embed placeholder for deployed Pages output;
+6. deploys main or emits a review artifact for PRs.
+
+### Bulk source extraction
+
+`.github/workflows/extract-official-fields.yml` is an explicit `workflow_dispatch` maintenance job so a routine data commit does **not** automatically repeat hundreds of Places requests.
+
+It:
+
+1. rebuilds canonical production;
+2. fetches all already-known official pages;
+3. transiently requests `websiteUri` for production identities without an official binding;
+4. fetches those websites;
+5. generates a high-confidence review queue;
+6. uploads short-lived review artifacts.
+
+The dispatch accepts `google_limit`; `0` means all currently eligible rows.
 
 ## Ordered next work
 
-### Priority 1 — remaining 339 live production identities
+### Priority 1 — promote the 164 high-confidence official candidates
 
-For each unresolved production Place ID:
+Process by host/template rather than restaurant distance. For each candidate:
 
-1. use exact verified OSM identity/name/coordinates as the anchor;
-2. locate the exact Tabelog or official branch page;
-3. bind only when branch identity is supported;
-4. write an explicit terminal/ambiguous resolution when evidence conflicts;
-5. extract name/address/cuisine/budget/hours/closure/dishes only where the cited source supports the field.
+1. confirm the fetched page represents the exact branch/business;
+2. bind the final website URL as an official source;
+3. import structured address/hours/cuisine only where directly supported;
+4. add 1-2 Chinese recommendation names only where the page explicitly recommends concrete dishes;
+5. leave unsupported fields empty;
+6. run canonical/source audits after each batch.
 
-Nearest current queue:
+Chain/template groups should be handled together (for example Starbucks, Tully's, Doutor/C-United, Royal Host, Yoshinoya and other repeated hosts).
 
-`やまじょう`, `レピック神保町`, `森のブッチャーズ`, `座楽`, `Beer Pub 8taps`, `餃子八`, followed by the remaining inner-to-outer production identities.
+### Priority 2 — recover the website-fetch failures
 
-### Priority 2 — exact inventory reconciliation
+The 158 fetch failures are not identity failures. Retry with host-specific handling where worthwhile, especially JavaScript-heavy or anti-bot sites. Do not mark them closed or source-not-found merely because the generic fetcher failed.
 
-Current exact audit:
+### Priority 3 — rows with no official website
 
-- exact IDs: 2,804;
-- independently verified IDs inside exact inventory: 643;
-- remaining identity-reconciliation queue: **2,161**;
-- rejected source-match IDs present in exact inventory: 106;
-- verified source IDs outside exact inventory: 4.
+The 144 rows where Places returned no website continue through existing Tabelog/manual source research. They should not trigger repeated Google identity searches because their Place IDs are already known.
 
-For Google-only IDs, fetch name/location/status transiently as a discovery aid, then establish an independent OSM/Tabelog/official identity before production admission. Do not build a long-lived Google Details database.
+### Priority 4 — remaining source outcomes and exact-inventory expansion
 
-### Priority 3 — field completion
+Continue the **248** unresolved source outcomes for current production, then separately reconcile the **2,161** exact-inventory Place IDs without independent-source identity. Do not weaken the 1.2 km or identity QC gates to increase counts.
 
-For all production rows, prioritize:
+### Priority 5 — recommendation/runtime logic after data stabilization
 
-1. address;
-2. cuisine normalization;
-3. opening hours / regular holidays;
-4. lunch/dinner budget;
-5. representative dishes;
-6. award metadata.
-
-Unknown stays unknown until a supporting source is found.
-
-## CI / validation
-
-Every Pages build now runs:
-
-- canonical production build;
-- JavaScript/Python syntax checks;
-- repository/runtime audit;
-- source-binding audit;
-- source queue report;
-- coverage report;
-- **exact Area1 identity coverage audit**;
-- public-site assembly and deployment.
-
-Latest Batch 4 build passed all build/source/exact-coverage gates. Exact-count drift can therefore no longer silently diverge from the deploy state.
-
-See `AREA1_COMPLETENESS.md` for the authoritative numbers and `AREA1_COMPLETION_LOG.md` for batch history.
+Do not add automatic open-now filtering yet. First improve `hoursReference` coverage and semantics. Recommendation weighting remains 百名店 2.2 vs ordinary 1.0; no ratings/review-count ranking is introduced.
