@@ -1,0 +1,73 @@
+name: Promote explicit official budget and address
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: promote-explicit-fields-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout selected branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Build clean baseline
+        run: |
+          set -o pipefail
+          rm -f data/source_enrichment_zzzzexplicitfields.js
+          node scripts/build_production_dataset.mjs | tee /tmp/explicit-fields-baseline.json
+      - name: Fetch direct official pages and parse explicit fields
+        env:
+          EXPLICIT_FIELDS_CONCURRENCY: '8'
+          EXPLICIT_FIELDS_TIMEOUT_MS: '12000'
+          EXPLICIT_FIELDS_CHECKED_AT: '2026-09-06'
+        run: |
+          set -o pipefail
+          mkdir -p _audit
+          node scripts/build_explicit_budget_address_enrichment.mjs \
+            data/official_candidate_index.json \
+            data/source_enrichment_zzzzexplicitfields.js \
+            _audit/explicit-budget-address-review.json \
+            | tee _audit/explicit-budget-address-summary.json
+      - name: Rebuild and audit
+        run: |
+          set -o pipefail
+          node scripts/build_production_dataset.mjs | tee _audit/build-after-explicit-fields.json
+          node scripts/audit_repository.mjs
+          node scripts/audit_source_bindings.mjs
+          node scripts/audit_normalized_fields.mjs
+          node scripts/coverage_report.mjs | tee _audit/coverage-after-explicit-fields.json
+          node scripts/build_enrichment_queue.mjs | tee _audit/enrichment-queue-after-explicit-fields.json
+      - name: Upload review evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: explicit-budget-address-audit
+          path: _audit
+          retention-days: 3
+      - name: Commit generated explicit fields shard
+        env:
+          TARGET_BRANCH: ${{ github.ref_name }}
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/source_enrichment_zzzzexplicitfields.js
+          if git diff --cached --quiet; then
+            echo 'No explicit field changes.'
+          else
+            git commit -m 'Promote explicit official budget and address fields'
+            if ! git push origin HEAD:$TARGET_BRANCH; then
+              git pull --rebase origin $TARGET_BRANCH
+              git push origin HEAD:$TARGET_BRANCH
+            fi
+          fi
