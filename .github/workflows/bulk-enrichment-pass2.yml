@@ -1,0 +1,84 @@
+name: Bulk enrichment pass 2
+
+on:
+  push:
+    branches:
+      - bulk-enrichment-pass2
+    paths:
+      - 'data/source_enrichment_zchainmenus.js'
+      - 'scripts/build_locator_hours_enrichment.mjs'
+      - '.github/workflows/bulk-enrichment-pass2.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  enrich:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Build baseline with stable reviewed official data
+        run: |
+          # The existing autoofficial shard is intentionally retained. A failed
+          # website refetch is not evidence that previously reviewed data became
+          # invalid and must not cause coverage to disappear.
+          rm -f data/source_enrichment_zlocatorhours.js
+          node scripts/build_production_dataset.mjs | tee /tmp/pass2-baseline.json
+      - name: Refetch persisted official index without Google API
+        env:
+          OFFICIAL_INDEX_CONCURRENCY: '6'
+          OFFICIAL_INDEX_TIMEOUT_MS: '15000'
+          OFFICIAL_INDEX_MENU_LIMIT: '3'
+        run: |
+          mkdir -p _audit
+          node scripts/extract_official_index_fields.mjs \
+            data/official_candidate_index.json \
+            _audit/official_index_field_candidates.json \
+            | tee _audit/pass2-official-extraction.json
+      - name: Promote current trusted-locator hours
+        env:
+          LOCATOR_HOURS_CHECKED_AT: '2026-09-06'
+        run: |
+          node scripts/build_locator_hours_enrichment.mjs \
+            _audit/official_index_field_candidates.json \
+            data/source_enrichment_zlocatorhours.js \
+            | tee _audit/pass2-locator-hours.json
+      - name: Rebuild and audit
+        run: |
+          node scripts/test_opening_hours.mjs
+          node scripts/build_production_dataset.mjs | tee _audit/pass2-build.json
+          node scripts/audit_repository.mjs
+          node scripts/audit_source_bindings.mjs
+          node scripts/audit_normalized_fields.mjs
+          node scripts/coverage_report.mjs | tee _audit/pass2-coverage.json
+          node scripts/source_queue.mjs | tee _audit/pass2-source-queue.json
+          node scripts/build_enrichment_queue.mjs | tee _audit/pass2-enrichment-queue.json
+          node scripts/dish_gap_report.mjs | tee _audit/pass2-dish-gap.json
+      - name: Upload audit
+        uses: actions/upload-artifact@v4
+        with:
+          name: bulk-enrichment-pass2-audit
+          path: _audit
+          retention-days: 3
+      - name: Commit generated locator-hours shard
+        env:
+          TARGET_BRANCH: ${{ github.ref_name }}
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/source_enrichment_zlocatorhours.js
+          if git diff --cached --quiet; then
+            echo 'No generated locator-hours changes.'
+          else
+            git commit -m 'Add trusted official locator hours'
+            git push origin HEAD:$TARGET_BRANCH
+          fi
