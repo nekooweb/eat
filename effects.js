@@ -5,7 +5,10 @@
 
   const voices = [
     './voice/1.mp3',
-    './voice/2.mp3'
+    './voice/1maybevaluable.mp3',
+    './voice/2.mp3',
+    './voice/2currency.mp3',
+    './voice/4maps.mp3'
   ];
   const mascots = [
     './image/YahaUsagi.webp',
@@ -56,7 +59,7 @@
 
     const audio = new Audio(source);
     currentAudio = audio;
-    audio.volume = 0.55;
+    audio.volume = 0.45;
 
     audio.addEventListener('ended', () => {
       if (currentAudio !== audio) return;
