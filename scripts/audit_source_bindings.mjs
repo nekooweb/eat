@@ -44,10 +44,13 @@ if (missingLabel.length) {
   process.exit(1);
 }
 
-const resolutionSandbox = { window: {} };
+const resolutionFiles = fs.readdirSync(DATA)
+  .filter((filename) => /^source_resolution(?:_[a-z0-9-]+)?\.js$/i.test(filename))
+  .sort();
+const resolutionSandbox = { window: { SOURCE_RESOLUTIONS: [] } };
 vm.createContext(resolutionSandbox);
-if (fs.existsSync(path.join(DATA, 'source_resolution.js'))) {
-  vm.runInContext(read('data/source_resolution.js'), resolutionSandbox, { filename: 'source_resolution.js' });
+for (const filename of resolutionFiles) {
+  vm.runInContext(read(`data/${filename}`), resolutionSandbox, { filename });
 }
 const resolutions = resolutionSandbox.window.SOURCE_RESOLUTIONS || [];
 const allowedStatuses = new Set(['listing_hold', 'ambiguous', 'no_current_usable_source', 'source_not_found']);
@@ -86,6 +89,7 @@ console.log(JSON.stringify({
   enrichmentRecords: enrichment.length,
   attachedEnrichmentRecords: enrichment.length,
   sourceBackedProduction: sourceBacked.length,
+  resolutionShards: resolutionFiles.length,
   explicitResolutions: resolutions.length,
   unresolvedByBindingAudit: 0,
   unattached: 0
