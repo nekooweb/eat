@@ -8,8 +8,8 @@ const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, '..');
 const INDEX = process.argv[2] || path.join(ROOT, 'data', 'official_candidate_index.json');
 const OUTPUT = process.argv[3] || path.join(ROOT, '_audit', 'official_index_field_candidates.json');
-const CONCURRENCY = Math.max(1, Math.min(8, Number(process.env.OFFICIAL_INDEX_CONCURRENCY || 5)));
-const TIMEOUT_MS = Math.max(3000, Number(process.env.OFFICIAL_INDEX_TIMEOUT_MS || 15000));
+const CONCURRENCY = Math.max(1, Math.min(12, Number(process.env.OFFICIAL_INDEX_CONCURRENCY || 8)));
+const TIMEOUT_MS = Math.max(3000, Number(process.env.OFFICIAL_INDEX_TIMEOUT_MS || 12000));
 const MENU_LIMIT = Math.max(0, Math.min(5, Number(process.env.OFFICIAL_INDEX_MENU_LIMIT || 3)));
 const USER_AGENT = 'eat-data-maintenance/1.0 (+https://github.com/nekooweb/eat)';
 
@@ -51,7 +51,7 @@ function jsonLdFacts(html) {
     let parsed;
     try { parsed = JSON.parse(decodeEntities(m[1]).trim()); } catch { continue; }
     const stack = Array.isArray(parsed) ? [...parsed] : [parsed];
-    while (stack.length && facts.length < 20) {
+    while (stack.length && facts.length < 40) {
       const node = stack.shift();
       if (!node || typeof node !== 'object') continue;
       if (Array.isArray(node['@graph'])) stack.push(...node['@graph']);
@@ -159,6 +159,21 @@ async function fetchPage(url) {
     return { ok: false, status: null, finalUrl: null, title: null, structuredFacts: [], visibleAddress: null, visibleHours: null, visibleCuisine: null, recommendationSnippets: [], priceSnippets: [], error: error?.name === 'AbortError' ? 'timeout' : String(error?.message || error) };
   } finally { clearTimeout(timer); }
 }
+
+const fetchCache = new Map();
+let cacheHits = 0;
+function fetchPageCached(url) {
+  const key = String(url || '').trim();
+  if (!key) return Promise.resolve({ ok:false, status:null, finalUrl:null, title:null, structuredFacts:[], visibleAddress:null, visibleHours:null, visibleCuisine:null, recommendationSnippets:[], priceSnippets:[], error:'empty_url' });
+  if (fetchCache.has(key)) {
+    cacheHits += 1;
+    return fetchCache.get(key);
+  }
+  const promise = fetchPage(key);
+  fetchCache.set(key, promise);
+  return promise;
+}
+
 async function mapLimit(items, limit, worker) {
   const results = new Array(items.length); let cursor = 0;
   async function runner() { while (true) { const i = cursor++; if (i >= items.length) return; results[i] = await worker(items[i]); } }
@@ -166,14 +181,29 @@ async function mapLimit(items, limit, worker) {
   return results;
 }
 
+function needsMenuSignals(current) {
+  const noBudget = !Array.isArray(current?.lunch) && !Array.isArray(current?.dinner);
+  const noFeatured = !Array.isArray(current?.featuredDishes) || !current.featuredDishes.length;
+  return noBudget || noFeatured;
+}
+function needsAnyOfficialWork(current) {
+  return !current?.address
+    || !current?.openingHours
+    || !current?.cuisine
+    || current.cuisine === '餐厅'
+    || needsMenuSignals(current);
+}
+
 const index = JSON.parse(fs.readFileSync(INDEX, 'utf8'));
 const production = loadProduction();
 const productionById = new Map(production.map((row) => [row.googlePlaceId, row]));
-const records = (index.records || []).filter((row) => productionById.has(row.googlePlaceId));
+const allRecords = (index.records || []).filter((row) => productionById.has(row.googlePlaceId));
+const records = allRecords.filter((row) => needsAnyOfficialWork(productionById.get(row.googlePlaceId)));
 const results = await mapLimit(records, CONCURRENCY, async (row) => {
-  const main = await fetchPage(row.pageUrl);
-  const menuTargets = (row.menuUrls || []).slice(0, MENU_LIMIT);
-  const menus = await mapLimit(menuTargets, Math.min(2, CONCURRENCY), fetchPage);
+  const current = productionById.get(row.googlePlaceId);
+  const main = await fetchPageCached(row.pageUrl);
+  const menuTargets = needsMenuSignals(current) ? (row.menuUrls || []).slice(0, MENU_LIMIT) : [];
+  const menus = await mapLimit(menuTargets, Math.min(3, CONCURRENCY), fetchPageCached);
   const combinedSignals = [...main.recommendationSnippets, ...menus.flatMap((x) => x.recommendationSnippets || [])].slice(0, 30);
   const normName = normalize(row.name);
   const searchable = normalize(`${main.title || ''} ${main.structuredFacts.map((x) => x.name || '').join(' ')}`);
@@ -181,7 +211,12 @@ const results = await mapLimit(records, CONCURRENCY, async (row) => {
   return { ...row, main, menus, nameMatched, recommendationSnippets: combinedSignals };
 });
 const summary = {
-  records: records.length,
+  indexRecords: (index.records || []).length,
+  productionIndexed: allRecords.length,
+  targetRecords: records.length,
+  skippedComplete: allRecords.length - records.length,
+  uniqueUrlsFetched: fetchCache.size,
+  cacheHits,
   mainFetchedOk: results.filter((r) => r.main.ok).length,
   mainNameMatched: results.filter((r) => r.main.ok && r.nameMatched).length,
   withStructuredFacts: results.filter((r) => r.main.structuredFacts.length).length,
@@ -189,7 +224,7 @@ const summary = {
   withVisibleHours: results.filter((r) => r.main.visibleHours).length,
   withCuisineSignal: results.filter((r) => r.main.visibleCuisine).length,
   withRecommendationSignals: results.filter((r) => r.recommendationSnippets.length).length,
-  menuFetches: results.reduce((n, r) => n + r.menus.length, 0),
+  menuFetchesRequested: results.reduce((n, r) => n + r.menus.length, 0),
   menuFetchedOk: results.reduce((n, r) => n + r.menus.filter((x) => x.ok).length, 0)
 };
 fs.mkdirSync(path.dirname(OUTPUT), { recursive: true });
