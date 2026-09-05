@@ -57,7 +57,7 @@ function pickAddress(row) {
     const a = areaAddress(f.address);
     if (a) return a;
   }
-  if (titleStrongMatch(row.name, row.main?.title)) return areaAddress(row.main?.visibleAddress);
+  if (normalize(row.name).length >= 5 && row.nameMatched) return areaAddress(row.main?.visibleAddress);
   return null;
 }
 function pickHours(row) {
@@ -132,6 +132,7 @@ records.sort((a, b) => a.name.localeCompare(b.name, 'ja'));
 const lines = [
   '// Auto-reviewed official-source enrichments generated from independently fetched official pages.',
   '// Current hours and cuisine require matching structured data; stale free-text announcements are not promoted.',
+  '// Visible addresses require a full-page name match plus an Area1 address and a non-trivial canonical name.',
   '// Only exact production Place IDs are eligible; source-resolution conflicts are skipped.',
   'window.RESTAURANTS.push(',
   ...records.map((r, i) => {
