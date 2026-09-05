@@ -52,4 +52,24 @@ function hours(raw, closed = []) {
   assert.equal(value, null);
 }
 
-console.log(JSON.stringify({ status: 'pass', cases: 6 }));
+{
+  const value = hours('11:00–20:00', ['水']);
+  assert.deepEqual(value.days.mon, [['11:00', '20:00']]);
+  assert.deepEqual(value.days.wed, []);
+  assert.deepEqual(value.days.sun, [['11:00', '20:00']]);
+  assert.equal(Object.hasOwn(value.days, 'holiday'), false);
+}
+
+{
+  const value = hours('11:00–20:00', ['無休']);
+  for (const day of ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun', 'holiday']) {
+    assert.deepEqual(value.days[day], [['11:00', '20:00']]);
+  }
+}
+
+{
+  assert.equal(hours('11:00–20:00'), null);
+  assert.equal(hours('11:00–20:00', ['不定休']), null);
+}
+
+console.log(JSON.stringify({ status: 'pass', cases: 9 }));
