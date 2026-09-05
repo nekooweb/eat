@@ -109,14 +109,18 @@ function parseIntervals(value) {
   return uniq(out.map((x) => x.join('|'))).map((x) => x.split('|'));
 }
 
-function parseClosedDays(values) {
-  const result = [];
-  for (const value of Array.isArray(values) ? values : []) {
-    const s = String(value || '').normalize('NFKC').trim();
-    if (!s || /不定|無休|なし|無し/u.test(s)) continue;
-    result.push(...parseDays(s));
+function closureFacts(values) {
+  const normalized = (Array.isArray(values) ? values : [])
+    .map((value) => String(value || '').normalize('NFKC').trim())
+    .filter(Boolean);
+  const irregular = normalized.some((value) => /不定|臨時|変則|カレンダー|SNS|公式/u.test(value));
+  const noRegularClosure = normalized.some((value) => /無休|なし|無し/u.test(value));
+  const explicitClosed = [];
+  for (const value of normalized) {
+    if (/不定|臨時|変則|カレンダー|SNS|公式|無休|なし|無し/u.test(value)) continue;
+    explicitClosed.push(...parseDays(value));
   }
-  return uniq(result);
+  return { explicitClosed: uniq(explicitClosed), irregular, noRegularClosure };
 }
 
 function normalizeSegments(raw) {
@@ -134,7 +138,7 @@ export function normalizeOpeningHours(raw, closedDays = []) {
   const text = String(raw || '').trim();
   if (!text || !/\d{1,2}:\d{2}/.test(text)) return null;
 
-  const explicitClosed = parseClosedDays(closedDays);
+  const { explicitClosed, irregular, noRegularClosure } = closureFacts(closedDays);
   const days = {};
   let openPeriodCount = 0;
   const segments = normalizeSegments(text);
@@ -146,9 +150,13 @@ export function normalizeOpeningHours(raw, closedDays = []) {
     const prefix = firstTime >= 0 ? segment.slice(0, firstTime) : '';
     let targetDays = parseDays(prefix);
     if (!targetDays.length) {
-      // A day-less schedule is interpreted only for ordinary weekdays/weekends;
-      // holidays remain unknown unless explicitly stated by the source.
-      targetDays = WEEKDAYS.filter((day) => !explicitClosed.includes(day));
+      // Never invent a seven-day schedule from a bare time interval. A generic
+      // interval can be expanded only when the source separately states exact
+      // regular closed days or explicitly says there is no regular closure.
+      if (irregular) continue;
+      if (noRegularClosure) targetDays = [...WEEKDAYS, 'holiday'];
+      else if (explicitClosed.length) targetDays = WEEKDAYS.filter((day) => !explicitClosed.includes(day));
+      else continue;
     }
     for (const day of targetDays) {
       if (!days[day]) days[day] = [];
