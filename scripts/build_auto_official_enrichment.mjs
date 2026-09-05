@@ -34,6 +34,10 @@ function nameMatch(a, b) {
   const x = normalize(a), y = normalize(b);
   return Boolean(x && y && (x.includes(y) || y.includes(x)));
 }
+function titleStrongMatch(name, title) {
+  const x = normalize(name), y = normalize(title);
+  return Boolean(x.length >= 5 && y && (y.includes(x) || (y.length >= 5 && x.includes(y))));
+}
 function areaAddress(value) {
   const s = String(value || '').replace(/\s+/g, ' ').trim();
   return (s.includes('千代田区') || s.includes('文京区')) ? s.slice(0, 220) : null;
@@ -53,21 +57,52 @@ function pickAddress(row) {
     const a = areaAddress(f.address);
     if (a) return a;
   }
-  return areaAddress(row.main?.visibleAddress);
+  if (titleStrongMatch(row.name, row.main?.title)) return areaAddress(row.main?.visibleAddress);
+  return null;
 }
-function pickHours(row, address) {
+function pickHours(row) {
   for (const f of safeStructured(row)) {
-    if (Array.isArray(f.openingHours) && f.openingHours.length && (areaAddress(f.address) || pathSpecific(row.pageUrl))) {
+    if (areaAddress(f.address) && Array.isArray(f.openingHours) && f.openingHours.length) {
       return f.openingHours.join('; ').slice(0, 520);
     }
   }
-  if (row.main?.visibleHours && (address || pathSpecific(row.pageUrl))) return String(row.main.visibleHours).slice(0, 520);
   return null;
 }
-function pickCuisine(row, address) {
-  const value = row.main?.visibleCuisine || null;
-  if (!value) return null;
-  if (address || safeStructured(row).length) return value;
+function cuisineFromStructured(value) {
+  const s = Array.isArray(value) ? value.join(' ') : String(value || '');
+  const rules = [
+    [/カフェ|喫茶|コーヒー|珈琲|coffee|cafe/i, '咖啡'],
+    [/居酒屋|izakaya/i, '居酒屋'],
+    [/ラーメン|中華そば|ramen/i, '拉面'],
+    [/そば|蕎麦|soba/i, '荞麦面'],
+    [/うどん|udon/i, '乌冬'],
+    [/カレー|カリー|curry/i, '咖喱'],
+    [/中華|中国料理|四川|広東|餃子|chinese/i, '中华'],
+    [/インド|ネパール|ビリヤニ|indian|biryani/i, '印度菜'],
+    [/イタリアン|パスタ|ピザ|italian|pasta|pizza/i, '意大利菜'],
+    [/韓国|korean/i, '韩国菜'],
+    [/焼肉|ホルモン|yakiniku/i, '烤肉'],
+    [/寿司|鮨|sushi/i, '寿司'],
+    [/焼き鳥|やきとり|yakitori/i, '烤鸡'],
+    [/とんかつ|豚カツ|tonkatsu/i, '炸猪排'],
+    [/ステーキ|steak/i, '牛排'],
+    [/天ぷら|天婦羅|tempura/i, '天妇罗'],
+    [/バー|bar|pub/i, '酒吧'],
+    [/パン|ベーカリー|bakery|bread/i, '面包・烘焙'],
+    [/スイーツ|ケーキ|甘味|dessert|sweets/i, '甜品'],
+    [/魚介|海鮮|seafood/i, '海鲜'],
+    [/定食|食堂/i, '食堂'],
+    [/フレンチ|ビストロ|french|bistro/i, '西餐'],
+    [/日本料理|和食|割烹|懐石|おでん|japanese/i, '日式']
+  ];
+  for (const [re, result] of rules) if (re.test(s)) return result;
+  return null;
+}
+function pickCuisine(row) {
+  for (const f of safeStructured(row)) {
+    const value = cuisineFromStructured(f.cuisine);
+    if (value) return value;
+  }
   return null;
 }
 function js(value) { return JSON.stringify(value).replace(/</g, '\\u003c'); }
@@ -84,11 +119,11 @@ for (const row of payload.results || []) {
   const out = {};
   const address = !current.address ? pickAddress(row) : null;
   if (address) { out.address = address; fields.push('address'); }
-  const hours = !current.hoursReference ? pickHours(row, address) : null;
+  const hours = !current.hoursReference ? pickHours(row) : null;
   if (hours) { out.openingHoursRaw = hours; fields.push('hours'); }
-  const cuisine = (!current.cuisine || current.cuisine === '餐厅') ? pickCuisine(row, address) : null;
+  const cuisine = (!current.cuisine || current.cuisine === '餐厅') ? pickCuisine(row) : null;
   if (cuisine) { out.cuisine = cuisine; out.tags = [cuisine]; fields.push('cuisine'); }
-  const branchSource = fields.length || (pathSpecific(row.pageUrl) && normalize(row.main.title || '').includes(normalize(row.name)));
+  const branchSource = fields.length || (pathSpecific(row.pageUrl) && titleStrongMatch(row.name, row.main?.title));
   if (!branchSource) continue;
   if (!fields.includes('name')) fields.unshift('name');
   records.push({ googlePlaceId: row.googlePlaceId, name: row.name, pageUrl: row.pageUrl, fields, out });
@@ -96,6 +131,7 @@ for (const row of payload.results || []) {
 records.sort((a, b) => a.name.localeCompare(b.name, 'ja'));
 const lines = [
   '// Auto-reviewed official-source enrichments generated from independently fetched official pages.',
+  '// Current hours and cuisine require matching structured data; stale free-text announcements are not promoted.',
   '// Only exact production Place IDs are eligible; source-resolution conflicts are skipped.',
   'window.RESTAURANTS.push(',
   ...records.map((r, i) => {
