@@ -41,8 +41,15 @@ jobs:
           node scripts/audit_source_bindings.mjs
       - name: Coverage report
         run: |
-          node scripts/coverage_report.mjs
-          node scripts/source_queue.mjs
+          mkdir -p _audit
+          node scripts/coverage_report.mjs | tee _audit/coverage.json
+          node scripts/source_queue.mjs | tee _audit/source_queue.json
+      - name: Upload private data audit
+        uses: actions/upload-artifact@v4
+        with:
+          name: eat-data-audit
+          path: _audit
+          retention-days: 3
       - name: Assemble public site
         run: |
           mkdir -p _site/data
