@@ -9,11 +9,14 @@
   let budget = 'all';
   let distanceLimit = MAX_DISTANCE;
   const rejected = new Set();
+  const activeMaps = [];
 
   const validPrice = (price) => Array.isArray(price)
     && price.length >= 2
     && Number.isFinite(price[0])
     && Number.isFinite(price[1]);
+
+  const validCoords = (restaurant) => Number.isFinite(restaurant.lat) && Number.isFinite(restaurant.lng);
 
   const escapeHtml = (value) => String(value ?? '')
     .replaceAll('&', '&amp;')
@@ -167,6 +170,9 @@
     const dishes = (restaurant.dishes || []).slice(0, 2).map(escapeHtml).join(' · ');
     const price = budgetText(restaurant);
     const schedule = scheduleText(restaurant);
+    const map = validCoords(restaurant)
+      ? `<div class="store-map" id="store-map-${index}" aria-label="${escapeHtml(restaurant.name)} 周边地图"></div>`
+      : '';
     return `<article class="card result-card">
       <div class="card-main">
         <div class="result-heading">
@@ -181,9 +187,63 @@
         ${price ? `<p class="budget"><b>预算：</b>${escapeHtml(price)}</p>` : ''}
         ${dishes ? `<p class="dish"><b>可以吃：</b>${dishes}</p>` : ''}
         ${schedule ? `<p class="hours"><b>营业：</b>${escapeHtml(schedule)}</p>` : ''}
+        ${map}
         <a class="maps-link primary-link" href="${escapeHtml(mapsUrl(restaurant))}" target="_blank" rel="noopener">在 Google Maps 查看 ↗</a>
       </div>
     </article>`;
+  }
+
+  function compareCell(value, fallback = '—') {
+    return value ? escapeHtml(value) : fallback;
+  }
+
+  function renderComparison(restaurants) {
+    const rows = [
+      ['菜系', ...restaurants.map((restaurant) => restaurant.cuisine || '餐厅')],
+      ['距离', ...restaurants.map(distanceText)],
+      ['预算', ...restaurants.map((restaurant) => budgetText(restaurant) || '—')],
+      ['推荐菜', ...restaurants.map((restaurant) => (restaurant.dishes || []).slice(0, 2).join(' · ') || '—')],
+      ['营业信息', ...restaurants.map((restaurant) => scheduleText(restaurant) || '—')],
+      ['百名店', ...restaurants.map((restaurant) => restaurant.hyakumeiten
+        ? [restaurant.hyakumeitenYear, restaurant.hyakumeitenCategory].filter(Boolean).join(' · ') || '是'
+        : '—')]
+    ];
+
+    return `<section class="panel compare-panel">
+      <div class="section-heading">
+        <div>
+          <div class="eyebrow">COMPARE</div>
+          <h2>三家快速对比</h2>
+        </div>
+      </div>
+      <div class="compare-scroll">
+        <table class="compare-table">
+          <thead>
+            <tr>
+              <th>项目</th>
+              ${restaurants.map((restaurant, index) => `<th><span class="compare-number">${index + 1}</span>${escapeHtml(restaurant.name)}</th>`).join('')}
+            </tr>
+          </thead>
+          <tbody>
+            ${rows.map(([label, ...values]) => `<tr><th>${escapeHtml(label)}</th>${values.map((value) => `<td>${compareCell(value)}</td>`).join('')}</tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+    </section>`;
+  }
+
+  function renderOverviewMapShell(restaurants) {
+    if (!restaurants.some(validCoords)) return '';
+    return `<section class="panel overview-panel">
+      <div class="section-heading">
+        <div>
+          <div class="eyebrow">OVERVIEW</div>
+          <h2>三家位置总览</h2>
+        </div>
+        <span class="map-note">1–3 对应下方餐厅</span>
+      </div>
+      <div id="overview-map" class="overview-map" aria-label="三家餐厅位置总览地图"></div>
+    </section>`;
   }
 
   function eligible(restaurant) {
@@ -192,6 +252,78 @@
     if (restaurant.distanceMeters > distanceLimit) return false;
     if (rejected.has(restaurant.cuisine)) return false;
     return budgetOK(restaurant);
+  }
+
+  function clearMaps() {
+    while (activeMaps.length) {
+      const map = activeMaps.pop();
+      try {
+        map.remove();
+      } catch (_) {
+        // A removed result container is harmless; continue cleaning up.
+      }
+    }
+  }
+
+  function addTiles(map) {
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+  }
+
+  function numberIcon(number) {
+    return L.divIcon({
+      className: 'numbered-marker-wrap',
+      html: `<span class="numbered-marker">${number}</span>`,
+      iconSize: [32, 32],
+      iconAnchor: [16, 16],
+      popupAnchor: [0, -18]
+    });
+  }
+
+  function initResultMaps(restaurants) {
+    if (!window.L) return;
+
+    const mappable = restaurants
+      .map((restaurant, index) => ({ restaurant, index }))
+      .filter(({ restaurant }) => validCoords(restaurant));
+
+    const overviewNode = $('#overview-map');
+    if (overviewNode && mappable.length) {
+      const overview = L.map(overviewNode, { scrollWheelZoom: false });
+      addTiles(overview);
+      const bounds = [];
+      mappable.forEach(({ restaurant, index }) => {
+        const point = [restaurant.lat, restaurant.lng];
+        bounds.push(point);
+        L.marker(point, { icon: numberIcon(index + 1) })
+          .addTo(overview)
+          .bindPopup(`<b>${escapeHtml(restaurant.name)}</b><br>${escapeHtml(restaurant.cuisine)} · ${escapeHtml(distanceText(restaurant))}`);
+      });
+      if (bounds.length === 1) overview.setView(bounds[0], 16);
+      else overview.fitBounds(bounds, { padding: [34, 34], maxZoom: 16 });
+      activeMaps.push(overview);
+    }
+
+    mappable.forEach(({ restaurant, index }) => {
+      const node = $(`#store-map-${index}`);
+      if (!node) return;
+      const map = L.map(node, {
+        zoomControl: false,
+        attributionControl: false,
+        dragging: true,
+        scrollWheelZoom: false,
+        doubleClickZoom: false
+      }).setView([restaurant.lat, restaurant.lng], 17);
+      addTiles(map);
+      L.marker([restaurant.lat, restaurant.lng], { icon: numberIcon(index + 1) }).addTo(map);
+      L.control.zoom({ position: 'bottomright' }).addTo(map);
+      L.control.attribution({ position: 'bottomleft', prefix: false }).addTo(map);
+      activeMaps.push(map);
+    });
+
+    requestAnimationFrame(() => activeMaps.forEach((map) => map.invalidateSize(false)));
   }
 
   function renderCuisineFilters() {
@@ -231,6 +363,7 @@
   }
 
   function showMessage(message) {
+    clearMaps();
     $('#results').innerHTML = `<div class="panel empty">${escapeHtml(message)}</div>`;
   }
 
@@ -242,7 +375,14 @@
     }
 
     const result = pickThree(pool);
-    $('#results').innerHTML = `<div class="result-summary">从 ${pool.length} 家符合条件的店里随机选出 3 家；优先避免重复菜系。</div>${result.map(renderCard).join('')}`;
+    clearMaps();
+    $('#results').innerHTML = `
+      <div class="result-summary">从 ${pool.length} 家符合条件的店里随机选出 3 家；优先避免重复菜系。</div>
+      ${renderOverviewMapShell(result)}
+      <div class="result-cards">${result.map(renderCard).join('')}</div>
+      ${renderComparison(result)}
+    `;
+    initResultMaps(result);
   }
 
   $$('[data-budget]').forEach((button) => {
