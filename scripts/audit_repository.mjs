@@ -15,6 +15,7 @@ const fail = (message) => {
 const index = read('index.html');
 const app = read('app.js');
 const productionSource = read('data/production_area1.js');
+const enrichmentSource = read('data/source_enrichment.js');
 
 if (!/leaflet@1\.9\.4/i.test(index)) fail('Leaflet 1.9.4 is not loaded by the public page');
 if (!/overview-map/.test(app)) fail('three-result overview map is missing');
@@ -41,6 +42,45 @@ if (/googleBusinessStatus|googlePrimaryType|googleDisplayName|googleTypes/.test(
 if (!/translate="no">Google Maps</.test(index)) fail('Google Maps text attribution is missing');
 if (!/OpenStreetMap contributors/.test(index)) fail('OpenStreetMap attribution is missing');
 
+const forbiddenGoogleFields = [
+  'googleMapsUrl',
+  'googleDisplayName',
+  'googleBusinessStatus',
+  'googlePrimaryType',
+  'googleTypes'
+];
+
+// Source-backed enrichment must remain enrichment-only: a record may carry the
+// durable Place ID cross-reference, but it cannot declare itself Google-verified.
+const enrichmentSandbox = { window: { RESTAURANTS: [] } };
+vm.createContext(enrichmentSandbox);
+vm.runInContext(enrichmentSource, enrichmentSandbox, { filename: 'source_enrichment.js' });
+const enrichmentRows = enrichmentSandbox.window.RESTAURANTS || [];
+const enrichmentKeys = new Set();
+for (const row of enrichmentRows) {
+  if (!row.sourceOnly) fail(`source enrichment is not sourceOnly: ${row.id || row.name}`);
+  if (!row.googlePlaceId) fail(`source enrichment lacks Place ID key: ${row.id || row.name}`);
+  if (row.googleStatus === 'verified') fail(`source enrichment may not self-verify: ${row.id || row.name}`);
+  if (!['Tabelog', 'official'].includes(row.source)) fail(`unsupported enrichment source: ${row.source}`);
+  if (!Array.isArray(row.sourceRefs) || !row.sourceRefs.length) {
+    fail(`source enrichment lacks provenance: ${row.id || row.name}`);
+  }
+  const key = `${row.source}:${row.googlePlaceId}`;
+  if (enrichmentKeys.has(key)) fail(`duplicate provider/Place-ID enrichment: ${key}`);
+  enrichmentKeys.add(key);
+  for (const ref of row.sourceRefs || []) {
+    if (!ref.provider || !ref.url || !/^https:\/\//.test(ref.url)) {
+      fail(`invalid source reference: ${row.id || row.name}`);
+    }
+    if (!Array.isArray(ref.fields) || !ref.fields.length) {
+      fail(`source reference has no field provenance: ${row.id || row.name}`);
+    }
+  }
+  for (const field of forbiddenGoogleFields) {
+    if (Object.hasOwn(row, field)) fail(`persisted Google content field ${field} in enrichment: ${row.name}`);
+  }
+}
+
 const sandbox = { window: {} };
 vm.createContext(sandbox);
 vm.runInContext(productionSource, sandbox, { filename: 'production_area1.js' });
@@ -51,14 +91,6 @@ if (!Array.isArray(rows) || rows.length < 3) fail('canonical production pool has
 if (!stats || stats.productionEntities !== rows?.length) fail('production statistics do not match dataset length');
 
 const placeIds = new Set();
-const forbiddenGoogleFields = [
-  'googleMapsUrl',
-  'googleDisplayName',
-  'googleBusinessStatus',
-  'googlePrimaryType',
-  'googleTypes'
-];
-
 for (const row of rows || []) {
   if (!row.googlePlaceId) fail(`missing Google Place ID: ${row.id || row.name}`);
   if (row.googleStatus !== 'verified') fail(`non-verified production row: ${row.name}`);
@@ -70,6 +102,13 @@ for (const row of rows || []) {
   for (const field of forbiddenGoogleFields) {
     if (Object.hasOwn(row, field)) fail(`persisted Google content field ${field}: ${row.name}`);
   }
+  if (Object.hasOwn(row, 'sourceRefs') || Object.hasOwn(row, 'sourceOnly')) {
+    fail(`maintenance provenance leaked into public canonical row: ${row.name}`);
+  }
+}
+
+if (enrichmentRows.length && !(rows || []).some((row) => row.sources?.includes('Tabelog') || row.sources?.includes('official'))) {
+  fail('source enrichment exists but no source-backed row reaches canonical production');
 }
 
 if (!process.exitCode) {
@@ -79,6 +118,9 @@ if (!process.exitCode) {
     uniquePlaceIds: placeIds.size,
     cuisineKnown: stats.cuisineKnown,
     budgetKnown: stats.budgetKnown,
+    scheduleKnown: stats.scheduleKnown,
+    sourceBacked: stats.sourceBacked,
+    enrichmentRecords: enrichmentRows.length,
     awards: stats.awards,
     resultViews: ['overview-map', 'store-maps', 'comparison-table']
   }));
