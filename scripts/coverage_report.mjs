@@ -6,6 +6,7 @@ import { fileURLToPath } from 'node:url';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, '..');
+const DATA = path.join(ROOT, 'data');
 const read = (p) => fs.readFileSync(path.join(ROOT, p), 'utf8');
 const readJson = (p) => JSON.parse(read(p));
 const loadRestaurantFile = (p) => {
@@ -14,6 +15,9 @@ const loadRestaurantFile = (p) => {
   vm.runInContext(read(p), sandbox, { filename: p });
   return sandbox.window.RESTAURANTS || [];
 };
+const enrichmentFiles = fs.readdirSync(DATA)
+  .filter((filename) => /^source_enrichment(?:_[a-z0-9-]+)?\.js$/i.test(filename))
+  .sort();
 
 const productionSandbox = { window: {} };
 vm.createContext(productionSandbox);
@@ -22,9 +26,7 @@ const production = productionSandbox.window.PRODUCTION_RESTAURANTS || [];
 const productionStats = productionSandbox.window.PRODUCTION_STATS || {};
 
 const sourceRows = loadRestaurantFile('data/area1_osm.js');
-const enrichmentRows = fs.existsSync(path.join(ROOT, 'data/source_enrichment.js'))
-  ? loadRestaurantFile('data/source_enrichment.js')
-  : [];
+const enrichmentRows = enrichmentFiles.flatMap((filename) => loadRestaurantFile(`data/${filename}`));
 
 const inventory = fs.existsSync(path.join(ROOT, 'data/area1_google_ids.json'))
   ? readJson('data/area1_google_ids.json')
@@ -80,10 +82,7 @@ const curatedOverlapVerification = countBy(
   (row) => row.status
 );
 
-const enrichmentProviders = countBy(
-  enrichmentRows.flatMap((row) => row.sourceRefs || []),
-  (ref) => ref.provider
-);
+const enrichmentProviders = countBy(enrichmentRows, (row) => row.source);
 const enrichmentFieldRefs = countBy(
   enrichmentRows.flatMap((row) =>
     (row.sourceRefs || []).flatMap((ref) => (ref.fields || []).map((field) => ({ field })))),
@@ -93,6 +92,13 @@ const productionSourceCounts = countBy(
   production.flatMap((row) => row.sources || []).map((source) => ({ source })),
   (row) => row.source
 );
+const sourceBackedIds = new Set(
+  production
+    .filter((row) => (row.sources || []).some((source) => source === 'Tabelog' || source === 'official'))
+    .map((row) => row.googlePlaceId)
+);
+const enrichmentIds = new Set(enrichmentRows.map((row) => row.googlePlaceId).filter(Boolean));
+const enrichmentAttached = [...enrichmentIds].filter((id) => sourceBackedIds.has(id)).length;
 
 const report = {
   sourceCandidates: sourceRows.length,
@@ -103,17 +109,22 @@ const report = {
   verificationStatus: statusCounts,
   verificationQcVersions: qcVersions,
   rejectionReasons,
+  enrichmentShards: enrichmentFiles,
   enrichmentRecords: enrichmentRows.length,
   enrichmentProviders,
   enrichmentFieldRefs,
+  enrichmentAttachedToProduction: enrichmentAttached,
+  enrichmentUnattached: enrichmentRows.length - enrichmentAttached,
   productionEntities: production.length,
   productionInGoogleInventory: productionInInventory,
   productionInventoryCoveragePct: inventoryIds.size
     ? Number((100 * productionInInventory / inventoryIds.size).toFixed(1))
     : null,
   productionSourceCounts,
-  sourceBackedProduction: productionStats.sourceBacked
-    ?? production.filter((row) => (row.sources || []).some((source) => source === 'Tabelog' || source === 'official')).length,
+  sourceBackedProduction: productionStats.sourceBacked ?? sourceBackedIds.size,
+  sourceBackedProductionPct: production.length
+    ? Number((100 * sourceBackedIds.size / production.length).toFixed(1))
+    : null,
   distinctCuisineLabels: Object.keys(cuisines).length,
   genericCuisineRows: production.filter((row) => row.cuisine === '餐厅').length,
   topCuisineCounts: Object.entries(cuisines).sort((a, b) => b[1] - a[1]).slice(0, 12),
