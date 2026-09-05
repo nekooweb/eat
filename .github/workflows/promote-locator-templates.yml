@@ -1,6 +1,12 @@
 name: Promote trusted locator templates
 
 on:
+  push:
+    branches:
+      - accelerate-locator-templates
+    paths:
+      - 'scripts/build_locator_template_enrichment.mjs'
+      - '.github/workflows/promote-locator-templates.yml'
   workflow_dispatch:
 
 concurrency:
