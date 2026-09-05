@@ -1,7 +1,27 @@
 // Generated from current single-business official pages with explicit weekly hours.
 // Existing source-backed identities only; platform/locator/resolution/conditional schedules are excluded.
 const SINGLE_SITE_HOURS_CHECKED_AT = "2026-09-06";
-const singleSiteHoursPatches = [];
+const singleSiteHoursPatches = [
+  {
+    "googlePlaceId": "ChIJDUGL7RCMGGARErPxhJ7bXgc",
+    "name": "ヒナタ屋",
+    "sourceUrl": "https://hinata-ya.info/",
+    "openingHoursRaw": "月 11:30-15:30; 火 11:30-15:30; 水 11:30-15:30; 木 11:30-15:30; 金 11:30-15:30; 土 11:30-15:30",
+    "closedDays": [
+      "日",
+      "祝"
+    ],
+    "knownDays": 8
+  },
+  {
+    "googlePlaceId": "ChIJ2QzuEhCMGGAR_GwijOC6vao",
+    "name": "眞踏珈琲店",
+    "sourceUrl": "https://mafumicofffee.vercel.app/",
+    "openingHoursRaw": "月 12:00-23:00; 火 12:00-23:00; 水 12:00-23:00; 木 12:00-23:00; 金 12:00-23:00; 土 12:00-23:00; 日 12:00-21:00; 祝 12:00-21:00",
+    "closedDays": [],
+    "knownDays": 8
+  }
+];
 for (const patch of singleSiteHoursPatches) {
   const ref={provider:'official',url:patch.sourceUrl,checkedAt:SINGLE_SITE_HOURS_CHECKED_AT,fields:['name','hours']};
   let row=[...window.RESTAURANTS].reverse().find((item)=>item&&item.googlePlaceId===patch.googlePlaceId&&item.source==='official'&&item.sourceOnly);
