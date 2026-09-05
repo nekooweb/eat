@@ -20,11 +20,11 @@ window.RESTAURANTS.push(
   },
   {
     id:'src-tabelog-jimbocho-yakisoba-mikasa', profile:'TOKYO', area:'地区1️⃣',
-    name:'神保町 やきそば みかさ', googlePlaceId:'ChIJ93J8IxSMGGARcOixOZM4jw',
+    name:'神保町 やきそば みかさ', googlePlaceId:'ChIJ93J8IxSMGGARcOixOZM4jwQ',
     source:'Tabelog', sourceOnly:true, cuisine:'面食', tags:['面食','焼きそば'],
-    openingHoursRaw:'月–土・祝 11:00–20:30', closedDays:['日'],
+    lunch:[0,999], dinner:[0,999], openingHoursRaw:'月–土・祝 11:00–20:30', closedDays:['日'],
     closedNote:'麺売り切れ次第終了; 臨時休業は公式Xで告知',
-    sourceRefs:[{provider:'Tabelog',url:'https://tabelog.com/tokyo/A1310/A131003/13163715/',checkedAt:'2026-09-05',fields:['name','cuisine','hours','closure']}]
+    sourceRefs:[{provider:'Tabelog',url:'https://tabelog.com/tokyo/A1310/A131003/13163715/',checkedAt:'2026-09-05',fields:['name','cuisine','budget','hours','closure']}]
   },
   {
     id:'src-tabelog-milonga-nueva', profile:'TOKYO', area:'地区1️⃣',
