@@ -5,6 +5,7 @@ on:
     branches: ["reuse-google-api-and-batch-enrichment"]
     paths:
       - 'scripts/extract_official_fields.mjs'
+      - 'scripts/discover_google_official_sites.mjs'
       - 'data/source_enrichment*.js'
       - '.github/workflows/extract-official-fields.yml'
   workflow_dispatch:
@@ -24,13 +25,21 @@ jobs:
           node-version: '22'
       - name: Build canonical production dataset
         run: node scripts/build_production_dataset.mjs
-      - name: Extract official-source field candidates
+      - name: Extract already-known official-source fields
         env:
           OFFICIAL_FETCH_CONCURRENCY: '4'
           OFFICIAL_FETCH_TIMEOUT_MS: '15000'
         run: |
           mkdir -p _audit
           node scripts/extract_official_fields.mjs _audit/official_extraction_candidates.json | tee _audit/official_extraction_summary.json
+      - name: Discover and inspect additional official sites
+        env:
+          GOOGLE_MAP_API: ${{ secrets.GOOGLE_MAP_API }}
+          GOOGLE_OFFICIAL_SITE_LIMIT: '0'
+          GOOGLE_OFFICIAL_SITE_CONCURRENCY: '6'
+          GOOGLE_OFFICIAL_SITE_TIMEOUT_MS: '12000'
+        run: |
+          node scripts/discover_google_official_sites.mjs _audit/google_official_site_candidates.json | tee _audit/google_official_site_summary.json
       - name: Upload extraction review artifact
         uses: actions/upload-artifact@v4
         with:
