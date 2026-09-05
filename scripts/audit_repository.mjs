@@ -16,16 +16,27 @@ const index = read('index.html');
 const app = read('app.js');
 const productionSource = read('data/production_area1.js');
 
-if (/leaflet/i.test(index)) fail('Leaflet is still referenced by the public page');
-if (/<iframe\b/i.test(index + app)) fail('embedded result maps reappeared');
+if (!/leaflet@1\.9\.4/i.test(index)) fail('Leaflet 1.9.4 is not loaded by the public page');
+if (!/overview-map/.test(app)) fail('three-result overview map is missing');
+if (!/store-map-/.test(app)) fail('per-store result maps are missing');
+if (!/renderComparison/.test(app)) fail('three-store comparison table is missing');
+if (/<iframe\b/i.test(index + app)) fail('iframe map implementation should not be used');
 if (/area1_google(?:_places)?\.(?:js|json)/i.test(index)) fail('legacy Google discovery payload is public');
 if (/google_entities(?:\.generated)?\.js/i.test(index)) fail('maintenance overlays are public runtime dependencies');
 if (!/data\/production_area1\.js/.test(index)) fail('canonical production dataset is not loaded');
-if ((index.match(/<script\b/gi) || []).length !== 2) fail('public page should load exactly production data + app.js');
+
+const scriptSources = [...index.matchAll(/<script[^>]+src="([^"]+)"/gi)].map((match) => match[1]);
+const localRuntimeScripts = scriptSources.filter((source) => source.startsWith('./'));
+if (localRuntimeScripts.length !== 2
+  || !localRuntimeScripts.some((source) => source.includes('production_area1.js'))
+  || !localRuntimeScripts.some((source) => source.includes('app.js'))) {
+  fail('public local runtime should load exactly canonical production data + app.js');
+}
+
 if (/data-filter-toggle|filterEnabled/.test(index + app)) fail('redundant filter enable/disable state reappeared');
 if (/身份已核验/.test(app)) fail('generic verification badge should not appear on every result');
-if (/overview-map|renderCompare|embedUrl|googleBusinessStatus|googlePrimaryType/.test(app)) {
-  fail('removed map/comparison/Google-content runtime logic is still present');
+if (/googleBusinessStatus|googlePrimaryType|googleDisplayName|googleTypes/.test(app)) {
+  fail('Google Places response-content runtime logic reappeared');
 }
 if (!/translate="no">Google Maps</.test(index)) fail('Google Maps text attribution is missing');
 if (!/OpenStreetMap contributors/.test(index)) fail('OpenStreetMap attribution is missing');
@@ -68,6 +79,7 @@ if (!process.exitCode) {
     uniquePlaceIds: placeIds.size,
     cuisineKnown: stats.cuisineKnown,
     budgetKnown: stats.budgetKnown,
-    awards: stats.awards
+    awards: stats.awards,
+    resultViews: ['overview-map', 'store-maps', 'comparison-table']
   }));
 }
