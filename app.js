@@ -150,7 +150,18 @@
     return restaurant.hoursReference || null;
   }
 
+  function featuredDishText(dish) {
+    if (typeof dish === 'string') return dish;
+    if (!dish || typeof dish !== 'object') return '';
+    const name = dish.nameZh || dish.nameJa || '';
+    if (!name) return '';
+    return dish.priceText ? `${name} ${dish.priceText}` : name;
+  }
+
   function recommendationText(restaurant) {
+    if (Array.isArray(restaurant.featuredDishes) && restaurant.featuredDishes.length) {
+      return restaurant.featuredDishes.slice(0, 2).map(featuredDishText).filter(Boolean).join(' · ');
+    }
     return Array.isArray(restaurant.recommendedDishes)
       ? restaurant.recommendedDishes.slice(0, 2).filter(Boolean).join(' · ')
       : '';
@@ -209,8 +220,8 @@
           <span class="pill">${escapeHtml(distanceText(restaurant))}</span>
         </div>
         ${price ? `<p class="budget"><b>预算：</b>${escapeHtml(price)}</p>` : ''}
-        ${dishes ? `<p class="dish"><b>推荐菜：</b>${escapeHtml(dishes)}</p>` : ''}
-        ${schedule ? `<p class="hours"><b>营业参考：</b>${escapeHtml(schedule)}</p>` : ''}
+        ${dishes ? `<p class="dish"><b>特色菜：</b>${escapeHtml(dishes)}</p>` : ''}
+        ${schedule ? `<p class="hours"><b>营业时间：</b>${escapeHtml(schedule)}</p>` : ''}
         ${map}
         <a class="maps-link primary-link" href="${escapeHtml(mapsUrl(restaurant))}" target="_blank" rel="noopener">在 Google Maps 查看 ↗</a>
       </div>
@@ -226,8 +237,8 @@
       ['菜系', ...restaurants.map((restaurant) => restaurant.cuisine || '餐厅')],
       ['距离', ...restaurants.map(distanceText)],
       ['预算', ...restaurants.map((restaurant) => budgetText(restaurant) || '—')],
-      ['推荐菜', ...restaurants.map((restaurant) => recommendationText(restaurant) || '—')],
-      ['营业参考', ...restaurants.map((restaurant) => scheduleText(restaurant) || '—')],
+      ['特色菜', ...restaurants.map((restaurant) => recommendationText(restaurant) || '—')],
+      ['营业时间', ...restaurants.map((restaurant) => scheduleText(restaurant) || '—')],
       ['百名店', ...restaurants.map((restaurant) => restaurant.hyakumeiten
         ? [restaurant.hyakumeitenYear, restaurant.hyakumeitenCategory].filter(Boolean).join(' · ') || '是'
         : '—')]
