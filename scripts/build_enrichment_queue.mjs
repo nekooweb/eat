@@ -47,7 +47,7 @@ function sourceHosts(rows) {
 
 function gaps(row) {
   const missing = [];
-  if (!Array.isArray(row.recommendedDishes) || !row.recommendedDishes.length) missing.push('recommendedDishes');
+  if (!Array.isArray(row.featuredDishes) || !row.featuredDishes.length) missing.push('featuredDishes');
   if (!row.openingHours) missing.push('openingHours');
   if (!Array.isArray(row.lunch) && !Array.isArray(row.dinner)) missing.push('budget');
   if (!row.address) missing.push('address');
@@ -97,6 +97,8 @@ const report = {
   withUsableSource: withUsableSource.length,
   withoutUsableSource: withoutUsableSource.length,
   usableSourceRowsNeedingFields: needingFields.length,
+  strictRecommendationCoverage: production.filter((row) => row.recommendedDishes?.length).length,
+  featuredDishCoverage: production.filter((row) => row.featuredDishes?.length).length,
   gapCounts: needingFields.reduce((acc, row) => {
     for (const gap of row.gaps) acc[gap] = (acc[gap] || 0) + 1;
     return acc;
