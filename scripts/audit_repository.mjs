@@ -8,6 +8,7 @@ const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, '..');
 const DATA = path.join(ROOT, 'data');
 const IMAGE = path.join(ROOT, 'image');
+const VOICE = path.join(ROOT, 'voice');
 const read = (relativePath) => fs.readFileSync(path.join(ROOT, relativePath), 'utf8');
 const fail = (message) => {
   console.error(`AUDIT FAIL: ${message}`);
@@ -19,6 +20,9 @@ const enrichmentFiles = fs.readdirSync(DATA)
   .sort();
 const mascotFiles = fs.existsSync(IMAGE)
   ? fs.readdirSync(IMAGE).filter((filename) => /\.webp$/i.test(filename)).sort()
+  : [];
+const voiceFiles = fs.existsSync(VOICE)
+  ? fs.readdirSync(VOICE).filter((filename) => /\.mp3$/i.test(filename)).sort()
   : [];
 
 const index = read('index.html');
@@ -43,12 +47,15 @@ if (!/data\/production_area1\.js/.test(index)) fail('canonical production datase
 
 const requiredEffectAssets = [
   'effects.js',
-  'effects.css',
-  'voice/1.mp3',
-  'voice/2.mp3'
+  'effects.css'
 ];
 for (const relativePath of requiredEffectAssets) {
   if (!fs.existsSync(path.join(ROOT, relativePath))) fail(`missing public effect asset: ${relativePath}`);
+}
+if (!voiceFiles.length) fail('no MP3 voice assets found in voice/');
+for (const filename of voiceFiles) {
+  const expectedPath = `./voice/${filename}`;
+  if (!effects.includes(expectedPath)) fail(`voice MP3 is not configured in effects.js: ${filename}`);
 }
 if (!mascotFiles.length) fail('no mascot WebP assets found in image/');
 for (const filename of mascotFiles) {
@@ -58,10 +65,8 @@ for (const filename of mascotFiles) {
 if (!/effects\.css/.test(index)) fail('effect stylesheet is not loaded');
 if (!/effects\.js/.test(index)) fail('effect runtime is not loaded');
 if (!/generate-mascot/.test(index)) fail('generate-button mascot element is not wired into the page');
-if (!/voice\/1\.mp3/.test(effects) || !/voice\/2\.mp3/.test(effects)) {
-  fail('configured random voice assets are missing from effects.js');
-}
 if (!/MAX_VOICE_MS\s*=\s*2000/.test(effects)) fail('voice playback cap must remain 2000 ms');
+if (!/audio\.volume\s*=\s*0\.45/.test(effects)) fail('voice playback volume must remain 45%');
 if (!/lastMascotSource/.test(effects) || !/lastMascotPlacement/.test(effects)) {
   fail('mascot character and placement should avoid immediate repeats');
 }
@@ -180,6 +185,10 @@ if (!process.exitCode) {
     enrichmentRecords: enrichmentRows.length,
     awards: stats.awards,
     resultViews: ['overview-map', 'google-store-maps-with-leaflet-fallback', 'comparison-table'],
-    uiFeedback: ['random-voice-max-2s', `${mascotFiles.length}-mascot-random-pool`, 'nonrepeating-random-position']
+    uiFeedback: [
+      `${voiceFiles.length}-voice-random-pool-45pct-max-2s`,
+      `${mascotFiles.length}-mascot-random-pool`,
+      'nonrepeating-random-position'
+    ]
   }));
 }
