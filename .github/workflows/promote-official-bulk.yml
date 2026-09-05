@@ -1,14 +1,6 @@
 name: Promote official bulk fields
 
 on:
-  push:
-    branches:
-      - accelerate-auto-enrichment
-    paths:
-      - 'scripts/extract_official_index_fields.mjs'
-      - 'scripts/build_auto_official_enrichment.mjs'
-      - 'scripts/build_official_fast_review_queue.mjs'
-      - '.github/workflows/promote-official-bulk.yml'
   workflow_dispatch:
 
 concurrency:
