@@ -8,7 +8,8 @@ The product should optimize for:
 - low decision cost;
 - understandable filtering;
 - trustworthy business identity;
-- simple mobile-first presentation;
+- useful spatial context;
+- fast comparison between the three generated choices;
 - maintainable static data rather than browser-side data engineering.
 
 It is **not** intended to reproduce Google Maps, Tabelog, or a restaurant search portal.
@@ -80,6 +81,7 @@ Missing budget, dish, holiday or opening-hour data must remain unknown. Do not i
 ### OpenStreetMap
 - independent POI discovery and coordinates;
 - source of display metadata where available;
+- source of map coordinates used by Leaflet result views when present in canonical data;
 - coverage comparison against Google identity inventory;
 - does not by itself admit a restaurant into production.
 
@@ -112,14 +114,17 @@ build_production_dataset.mjs
 production_area1.js
        |
        v
-browser filtering + random selection + rendering
+browser filtering + random selection + result visualization
 ```
 
-The public page should load only:
+The public application may load:
+- Leaflet as a presentation dependency;
 - the canonical production dataset;
 - `app.js`.
 
 Raw source files, verification caches and maintenance overlays are not public runtime dependencies.
+
+Leaflet does not perform entity matching or data enrichment. It only visualizes coordinates already present in the canonical production records.
 
 ## 7. Filters
 
@@ -177,8 +182,18 @@ Preference behavior:
 
 ## 9. Results
 
-The result layer should stay intentionally small:
-- three restaurant cards;
+Every successful three-choice result should provide four complementary layers:
+
+### A. Three-store overview map
+- Leaflet/OpenStreetMap map above the cards;
+- show all generated stores that have canonical coordinates;
+- markers numbered `1`, `2`, `3` to match the cards and comparison table;
+- fit the map to the generated points rather than exposing the private Area1 anchor.
+
+Purpose: answer **where are the three options relative to one another?**
+
+### B. Three restaurant cards
+Each card should show:
 - restaurant name;
 - cuisine;
 - distance;
@@ -186,13 +201,30 @@ The result layer should stay intentionally small:
 - optional representative dishes when available;
 - known opening/holiday note when available;
 - 百名店 badge when verified;
+- a small Leaflet/OpenStreetMap location map when canonical coordinates exist;
 - direct Google Maps link using the Place ID.
 
 Do not show a generic `identity verified` badge on every card. Verification is an admission rule, not useful differentiating result content.
 
-Do not duplicate the same result information into an overview map, per-store embedded map and comparison table unless a future user need clearly justifies that complexity.
+Purpose of the small map: answer **where exactly is this restaurant and what does its immediate location look like spatially?**
 
-If Google Places content is displayed, follow current Google Maps Platform attribution/display rules. The current product does not render Places content over a non-Google map.
+### C. Three-store comparison table
+A comparison table should appear after the cards and compare the same three numbered choices across useful dimensions, currently:
+- cuisine;
+- distance;
+- budget;
+- representative dishes;
+- opening/holiday information;
+- 百名店 status.
+
+Unknown values should display compactly as `—` rather than invented data.
+
+Purpose: answer **what is different among the three choices without rereading all cards?**
+
+### D. Google Maps navigation
+Each restaurant keeps a direct Google Maps link based on the verified Place ID for navigation/business lookup.
+
+The overview and per-store Leaflet maps must use independently maintained canonical coordinates, not transient Google Places response coordinates. Google Places content must not be rendered onto the non-Google map layer.
 
 ## 10. Database statistics
 
@@ -218,6 +250,7 @@ Maintenance audits should additionally check:
 - Persist Google Place IDs rather than full Places responses for durable identity.
 - Public Pages artifacts contain only deployable site assets, not the maintenance repository.
 - Keep visible Google/OSM attribution and public privacy/terms pages as required by the services in use.
+- Leaflet/OSM result maps are presentation-only and must not reintroduce browser-side source merging.
 
 ## 12. Still TBD
 
@@ -227,4 +260,4 @@ Not blockers for the current Area1 release:
 - final open-now/holiday exclusion logic;
 - local recommendation history/device identifier behavior;
 - deeper cuisine-family taxonomy if primary labels become too fragmented;
-- optional richer result UI only if it solves a demonstrated user need.
+- further result interaction refinements after the required overview/store-map/comparison structure is stable.
