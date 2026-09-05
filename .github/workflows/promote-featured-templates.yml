@@ -1,0 +1,74 @@
+name: Promote reviewed featured templates
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: promote-featured-templates-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout selected branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Build clean baseline
+        run: |
+          set -o pipefail
+          rm -f data/source_enrichment_zzzzzfeaturedtemplates.js
+          node scripts/build_production_dataset.mjs | tee /tmp/featured-template-baseline.json
+      - name: Audit reusable reviewed templates
+        run: |
+          set -o pipefail
+          mkdir -p _audit
+          node scripts/audit_featured_template_gaps.mjs | tee _audit/featured-template-gaps-before.json
+      - name: Promote only source-backed exact identities
+        env:
+          FEATURED_TEMPLATE_CHECKED_AT: '2026-09-06'
+        run: |
+          set -o pipefail
+          node scripts/build_featured_template_propagation.mjs \
+            data/source_enrichment_zzzzzfeaturedtemplates.js \
+            | tee _audit/featured-template-promotion-summary.json
+      - name: Rebuild and audit
+        run: |
+          set -o pipefail
+          node scripts/build_production_dataset.mjs | tee _audit/build-after-featured-templates.json
+          node scripts/audit_repository.mjs
+          node scripts/audit_source_bindings.mjs
+          node scripts/audit_normalized_fields.mjs
+          node scripts/coverage_report.mjs | tee _audit/coverage-after-featured-templates.json
+          node scripts/build_enrichment_queue.mjs | tee _audit/enrichment-queue-after-featured-templates.json
+          node scripts/dish_gap_report.mjs | tee _audit/dish-gap-after-featured-templates.json
+      - name: Upload featured template audit
+        uses: actions/upload-artifact@v4
+        with:
+          name: featured-template-promotion-audit
+          path: _audit
+          retention-days: 3
+      - name: Commit generated featured-template shard
+        env:
+          TARGET_BRANCH: ${{ github.ref_name }}
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/source_enrichment_zzzzzfeaturedtemplates.js
+          if git diff --cached --quiet; then
+            echo 'No featured-template changes.'
+          else
+            git commit -m 'Promote reviewed featured dish templates'
+            if ! git push origin HEAD:$TARGET_BRANCH; then
+              git pull --rebase origin $TARGET_BRANCH
+              git push origin HEAD:$TARGET_BRANCH
+            fi
+          fi
