@@ -1,0 +1,18 @@
+// Source index batch: reviewed production identities in the ~475-590 m ring.
+// Place IDs are copied only from the canonical source queue. This pass resolves
+// source identity; detailed field enrichment remains a separate audited pass.
+
+window.RESTAURANTS.push(
+  {id:'src-index-santosham',profile:'TOKYO',area:'地区1️⃣',name:'南インドの定食と軽食 三燈舎',googlePlaceId:'ChIJsw2B-mqNGGARnGg5qLOjwFk',source:'Tabelog',sourceOnly:true,sourceRefs:[{provider:'Tabelog',url:'https://tabelog.com/tokyo/A1310/A131002/13234867/',checkedAt:'2026-09-05',fields:['name']}]},
+  {id:'src-index-chantoya',profile:'TOKYO',area:'地区1️⃣',name:'チャントーヤ・ココナッツカリー',googlePlaceId:'ChIJ66JZhxqMGGARafukTgY53_k',source:'Tabelog',sourceOnly:true,sourceRefs:[{provider:'Tabelog',url:'https://tabelog.com/tokyo/A1310/A131002/13131134/',checkedAt:'2026-09-05',fields:['name']}]},
+  {id:'src-index-trattoria-lemon',profile:'TOKYO',area:'地区1️⃣',name:'Trattoria Lemon',googlePlaceId:'ChIJG41SFReMGGAR9Rhstg2RMho',source:'Tabelog',sourceOnly:true,sourceRefs:[{provider:'Tabelog',url:'https://tabelog.com/tokyo/A1310/A131002/13000634/',checkedAt:'2026-09-05',fields:['name']}]},
+  {id:'src-official-tsujita-tantan-ogawamachi',profile:'TOKYO',area:'地区1️⃣',name:'成都正宗担々麺 つじ田',googlePlaceId:'ChIJNRfophqMGGARU_M1YQ8LZPo',source:'official',sourceOnly:true,sourceRefs:[{provider:'official',url:'https://tsukemen-tsujita.com/shop/?id=0010009',checkedAt:'2026-09-05',fields:['name']}]},
+  {id:'src-index-bolts-kanda',profile:'TOKYO',area:'地区1️⃣',name:'ボルツ',googlePlaceId:'ChIJgwB6yw-MGGARz1e_MPGRIlM',source:'Tabelog',sourceOnly:true,sourceRefs:[{provider:'Tabelog',url:'https://tabelog.com/tokyo/A1310/A131003/13011142/',checkedAt:'2026-09-05',fields:['name']}]},
+  {id:'src-index-seishinken',profile:'TOKYO',area:'地区1️⃣',name:'青新軒',googlePlaceId:'ChIJK-zPABCMGGARXZAJ9C8lHCY',source:'Tabelog',sourceOnly:true,sourceRefs:[{provider:'Tabelog',url:'https://tabelog.com/tokyo/A1310/A131002/13037282/',checkedAt:'2026-09-05',fields:['name']}]},
+  {id:'src-index-boulangerie-marble',profile:'TOKYO',area:'地区1️⃣',name:'Boulangerie Marble',googlePlaceId:'ChIJT9EwYBWMGGARYzUZzsZaZk8',source:'Tabelog',sourceOnly:true,sourceRefs:[{provider:'Tabelog',url:'https://tabelog.com/tokyo/A1310/A131003/13194383/',checkedAt:'2026-09-05',fields:['name']}]},
+  {id:'src-index-aji-no-futaba',profile:'TOKYO',area:'地区1️⃣',name:'味のふたば',googlePlaceId:'ChIJ4Rl_oxqMGGARrfMHk00Q43A',source:'Tabelog',sourceOnly:true,sourceRefs:[{provider:'Tabelog',url:'https://tabelog.com/tokyo/A1310/A131002/13082784/',checkedAt:'2026-09-05',fields:['name']}]},
+  {id:'src-index-coffee-ito',profile:'TOKYO',area:'地区1️⃣',name:'Coffee ITO',googlePlaceId:'ChIJV7G3CiGNGGAR8zS986tcWoE',source:'Tabelog',sourceOnly:true,sourceRefs:[{provider:'Tabelog',url:'https://tabelog.com/tokyo/A1310/A131002/13086531/',checkedAt:'2026-09-05',fields:['name']}]},
+  {id:'src-index-ponchiken',profile:'TOKYO',area:'地区1️⃣',name:'神田 ポンチ軒',googlePlaceId:'ChIJKcFRvxqMGGARWVqXhSV05_k',source:'Tabelog',sourceOnly:true,sourceRefs:[{provider:'Tabelog',url:'https://tabelog.com/tokyo/A1310/A131002/13141456/',checkedAt:'2026-09-05',fields:['name']}]},
+  {id:'src-index-dill-coffee-parlor',profile:'TOKYO',area:'地区1️⃣',name:'Dill Coffee Parlor',googlePlaceId:'ChIJ6bngWwCNGGARsN6Dr2NL36E',source:'Tabelog',sourceOnly:true,sourceRefs:[{provider:'Tabelog',url:'https://tabelog.com/tokyo/A1310/A131002/13294754/',checkedAt:'2026-09-05',fields:['name']}]},
+  {id:'src-index-napoli-shitamachi-ochanomizu',profile:'TOKYO',area:'地区1️⃣',name:'ナポリの下町食堂',googlePlaceId:'ChIJ-YkEWBeMGGARfOUCHahbddE',source:'Tabelog',sourceOnly:true,sourceRefs:[{provider:'Tabelog',url:'https://tabelog.com/tokyo/A1310/A131002/13000605/',checkedAt:'2026-09-05',fields:['name']}]}
+);
