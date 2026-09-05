@@ -1,12 +1,6 @@
 name: Promote explicit official budget and address
 
 on:
-  push:
-    branches:
-      - auto-explicit-budget-address
-    paths:
-      - 'scripts/build_explicit_budget_address_enrichment.mjs'
-      - '.github/workflows/promote-explicit-budget-address.yml'
   workflow_dispatch:
 
 concurrency:
