@@ -30,7 +30,7 @@ const PLATFORM_SUFFIXES = [
   'hotpepper.jp','tabelog.com','instagram.com','facebook.com','x.com','twitter.com',
   'linktr.ee','ameblo.jp','exblog.jp'
 ];
-const STALE = /(?:臨時|営業時間変更|営業時間を変更|時短|短縮営業|新型コロナ|コロナ|年末年始|特別営業時間|期間限定|temporary|special hours)/iu;
+const STALE = /(?:臨時|営業時間変更|営業時間を変更|変更になる可能性|時短|短縮営業|新型コロナ|コロナ|年末年始|特別営業時間|期間限定|夏季休業|お正月|正月休み|お盆|temporary|special hours)/iu;
 const DATED = /(?:20\d{2}年\s*\d{1,2}月|20\d{2}[./-]\d{1,2}[./-]\d{1,2})/u;
 const IRREGULAR = /(?:不定休|不定期|臨時休業|カレンダー|SNS|公式.*確認|予約時のみ)/u;
 // Conditional calendars cannot be represented faithfully by the static weekly model.
@@ -119,13 +119,20 @@ function extractHoursBlock(lines) {
   }
   return out;
 }
+function normalizedClosureHint(value) {
+  const s=String(value||'').normalize('NFKC').trim();
+  if(/^(?:無|なし|無し)$/u.test(s))return '無休';
+  return s;
+}
 function closureHints(lines,block) {
   const candidates=[];
   const combined=[...block,...lines.slice(0,Math.min(lines.length,180))];
   for(let i=0;i<combined.length;i+=1){
     const line=normalizeDashes(combined[i]);
-    if(/^定休日\s*(?:[|｜:：])?\s*$/u.test(line)&&combined[i+1])candidates.push(combined[i+1]);
-    const m=line.match(/^(?:定休日|休業日)\s*(?:[|｜:：])\s*(.+)$/u); if(m)candidates.push(m[1]);
+    if(/^定休日\s*(?:[|｜:：])?\s*$/u.test(line)&&combined[i+1])candidates.push(normalizedClosureHint(combined[i+1]));
+    const m=line.match(/^(?:定休日|休業日)\s*(?:[|｜:：])\s*(.+)$/u); if(m)candidates.push(normalizedClosureHint(m[1]));
+    const weeklyClosed=line.match(/^※?\s*([月火水木金土日](?:曜日|曜)?)\s*(?:定休|休業|休み)$/u);
+    if(weeklyClosed)candidates.push(weeklyClosed[1].replace(/曜日|曜/g,''));
   }
   return [...new Set(candidates.map((x)=>String(x).trim()).filter(Boolean))].slice(0,6);
 }
@@ -134,13 +141,16 @@ function splitDaySegments(text) {
     .replace(new RegExp(`\\s+(?=${DAY_TOKEN}(?:[・･、,\\s]+(?:祝|祝日))?\\s*(?:[|｜:：])?)`,'gu'),'\n')
     .split(/\n+/).map((x)=>x.trim()).filter(Boolean);
 }
+function cleanDayPrefix(value) {
+  return String(value||'')
+    .replace(/^[\[\]【】()（）|｜:：\s]+|[\[\]【】()（）|｜:：\s]+$/g,'')
+    .replace(/曜日/g,'').replace(/曜/g,'')
+    .trim();
+}
 function looksLikeDayGroup(value) {
-  const s=String(value||'').replace(/^[|｜:：\s]+|[|｜:：\s]+$/g,'').trim();
+  const s=cleanDayPrefix(value);
   if(!s||s.length>30)return false;
   return /^(?:毎日|全日|平日|土日祝|[月火水木金土日祝])/.test(s) && !/営業時間|定休日/u.test(s);
-}
-function cleanDayPrefix(value) {
-  return String(value||'').replace(/^[|｜:：\s]+|[|｜:：\s]+$/g,'').trim();
 }
 function buildNormalizedRaw(block) {
   const segments=[];
@@ -169,6 +179,7 @@ function parseSchedule(lines) {
   if(STALE.test(text)||DATED.test(text))return {schedule:null,reason:'temporary_or_dated',block};
   const closed=closureHints(lines,block);
   const semanticText=`${text}\n${closed.join('\n')}`;
+  if(STALE.test(semanticText)||DATED.test(semanticText))return {schedule:null,reason:'temporary_or_dated',block,closed};
   if(IRREGULAR.test(semanticText))return {schedule:null,reason:'irregular_closure',block,closed};
   if(CONDITIONAL.test(semanticText))return {schedule:null,reason:'conditional_calendar',block,closed};
   const raw=buildNormalizedRaw(block);
