@@ -11,6 +11,7 @@ vm.runInContext(source, sandbox, { filename: 'production_area1.js' });
 const rows = sandbox.window.PRODUCTION_RESTAURANTS || [];
 const failures = [];
 let recommendedKnown = 0;
+let featuredKnown = 0;
 let openingHoursKnown = 0;
 
 for (const row of rows) {
@@ -22,6 +23,28 @@ for (const row of rows) {
       failures.push(`${row.name}: recommendedDishes contains an invalid value`);
     }
     if (row.recommendedDishes.length) recommendedKnown += 1;
+  }
+
+  if (!Object.hasOwn(row, 'featuredDishes') || !Array.isArray(row.featuredDishes)) {
+    failures.push(`${row.name}: featuredDishes must always be an array`);
+  } else {
+    if (row.featuredDishes.length > 2) failures.push(`${row.name}: featuredDishes has more than 2 items`);
+    for (const dish of row.featuredDishes) {
+      if (!dish || typeof dish !== 'object' || typeof dish.nameZh !== 'string' || !dish.nameZh.trim()) {
+        failures.push(`${row.name}: featuredDishes contains an invalid Chinese name`);
+        continue;
+      }
+      if (!['representative', 'recommended', 'signature'].includes(dish.kind)) {
+        failures.push(`${row.name}: featuredDishes contains invalid kind ${dish.kind}`);
+      }
+      if (dish.priceYen != null && (!Number.isInteger(dish.priceYen) || dish.priceYen <= 0)) {
+        failures.push(`${row.name}: featuredDishes contains invalid priceYen`);
+      }
+      if (dish.priceText != null && (typeof dish.priceText !== 'string' || !dish.priceText.trim())) {
+        failures.push(`${row.name}: featuredDishes contains invalid priceText`);
+      }
+    }
+    if (row.featuredDishes.length) featuredKnown += 1;
   }
 
   // Raw/prose schedule fields belong only to maintenance sources. Canonical
@@ -53,5 +76,6 @@ console.log(JSON.stringify({
   status: 'pass',
   productionEntities: rows.length,
   recommendedDishesKnown: recommendedKnown,
+  featuredDishesKnown: featuredKnown,
   openingHoursKnown
 }));
