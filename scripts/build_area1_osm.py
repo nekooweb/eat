@@ -16,10 +16,17 @@ def curated_names():
    for m in pat.finditer(p.read_text(encoding='utf-8')):names.add(norm(m.group(1) or m.group(2)))
  return names
 def fetch_overpass():
- q=f'''[out:json][timeout:180];(nwr(around:{RADIUS_M},{CENTER_LAT},{CENTER_LNG})["amenity"~"^(restaurant|fast_food|cafe|food_court)$"]["name"];nwr(around:{RADIUS_M},{CENTER_LAT},{CENTER_LNG})["shop"~"^(bakery|pastry|confectionery|deli|coffee|tea)$"]["name"];);out center tags;''';data=urllib.parse.urlencode({'data':q}).encode();last=None
+ # Keep the independent OSM candidate universe aligned with the repository's
+ # Google food-business scope. The previous query omitted bar/pub/ice-cream
+ # features even though those Google place types are intentionally included in
+ # exact Area1 discovery, which created an avoidable independent-source gap.
+ q=f'''[out:json][timeout:180];(
+ nwr(around:{RADIUS_M},{CENTER_LAT},{CENTER_LNG})["amenity"~"^(restaurant|fast_food|cafe|food_court|bar|pub|biergarten|ice_cream)$"]["name"];
+ nwr(around:{RADIUS_M},{CENTER_LAT},{CENTER_LNG})["shop"~"^(bakery|pastry|confectionery|deli|coffee|tea|ice_cream)$"]["name"];
+ );out center tags;''';data=urllib.parse.urlencode({'data':q}).encode();last=None
  for ep in ENDPOINTS:
   try:
-   req=urllib.request.Request(ep,data=data,headers={'User-Agent':'nekooweb-eat-static-builder/2.1'});return json.loads(urllib.request.urlopen(req,timeout=210).read().decode())
+   req=urllib.request.Request(ep,data=data,headers={'User-Agent':'nekooweb-eat-static-builder/2.2'});return json.loads(urllib.request.urlopen(req,timeout=210).read().decode())
   except Exception as e:last=e;time.sleep(3)
  raise RuntimeError(last)
 def cuisine_for(t):
@@ -30,6 +37,8 @@ def cuisine_for(t):
    if k in token:return v
  if t.get('amenity')=='cafe' or t.get('shop') in {'coffee','tea'}:return '咖啡'
  if t.get('amenity')=='fast_food':return '快餐'
+ if t.get('amenity') in {'bar','pub','biergarten'}:return '酒吧'
+ if t.get('amenity')=='ice_cream' or t.get('shop')=='ice_cream':return '甜品'
  if t.get('shop') in {'bakery','pastry'}:return '面包・烘焙'
  if t.get('shop')=='confectionery':return '甜品'
  return '餐厅'
