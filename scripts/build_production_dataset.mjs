@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import vm from 'node:vm';
 import { fileURLToPath } from 'node:url';
+import { normalizeOpeningHours, formatOpeningHoursZh, validateOpeningHours } from './opening_hours.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, '..');
@@ -149,14 +150,6 @@ function isSuppressed(rowsToSearch, field) {
     && row.suppressFields.includes(field));
 }
 
-function combineHoursReference(openingHoursRaw, closedDays, closedNote) {
-  const parts = [];
-  if (openingHoursRaw) parts.push(openingHoursRaw);
-  if (Array.isArray(closedDays) && closedDays.length) parts.push(`定休：${closedDays.join('、')}`);
-  if (closedNote) parts.push(closedNote);
-  return parts.length ? parts.join('；') : null;
-}
-
 function canonicalize(placeId, sourceRows) {
   const sorted = [...sourceRows].sort((a, b) => detailScore(b) - detailScore(a));
   const base = sorted[0];
@@ -223,6 +216,10 @@ function canonicalize(placeId, sourceRows) {
       : unique(sourceRows.flatMap((row) => row.dishes || [])).slice(0, 4);
   const recommendedDishes = recommendationsByPlaceId.get(placeId) || [];
 
+  // Source shards may retain human-readable schedule strings for provenance,
+  // but canonical production exposes only a normalized machine-readable
+  // schedule. If no reliable time interval can be parsed, no schedule field is
+  // emitted at all.
   const hoursClaim = bestClaimingRow(sourceRows, 'hours');
   const openingHoursRaw = isSuppressed(sourceRows, 'hours')
     ? null
@@ -236,12 +233,8 @@ function canonicalize(placeId, sourceRows) {
     : closureClaim
       ? (Array.isArray(closureClaim.closedDays) ? closureClaim.closedDays : [])
       : firstBy(sourceRows, (row) => Array.isArray(row.closedDays) && row.closedDays.length, (row) => row.closedDays) || [];
-  const closedNote = isSuppressed(sourceRows, 'closure')
-    ? null
-    : closureClaim
-      ? (closureClaim.closedNote || null)
-      : firstBy(sourceRows, (row) => Boolean(row.closedNote), (row) => row.closedNote);
-  const hoursReference = combineHoursReference(openingHoursRaw, closedDays, closedNote);
+  const openingHours = normalizeOpeningHours(openingHoursRaw, closedDays);
+  const hoursText = openingHours ? formatOpeningHoursZh(openingHours) : null;
 
   const awardClaim = bestClaimingRow(sourceRows, 'hyakumeiten');
   const awardRow = awardClaim || [...sourceRows]
@@ -269,11 +262,8 @@ function canonicalize(placeId, sourceRows) {
     lunch: lunch || null,
     dinner: dinner || null,
     recommendedDishes,
-    hoursReference,
     dishes,
-    openingHoursRaw: openingHoursRaw || null,
-    closedDays,
-    closedNote: closedNote || null,
+    ...(openingHours ? { openingHours, hoursText } : {}),
     googlePlaceId: placeId,
     googleStatus: 'verified',
     hyakumeiten,
@@ -296,7 +286,8 @@ const invalid = production.filter((row) => !row.name || !row.googlePlaceId || !r
 const schemaInvalid = production.filter((row) =>
   !Array.isArray(row.recommendedDishes)
   || row.recommendedDishes.length > 2
-  || !Object.hasOwn(row, 'hoursReference'));
+  || (row.openingHours && (!validateOpeningHours(row.openingHours) || !row.hoursText))
+  || (!row.openingHours && Object.hasOwn(row, 'hoursText')));
 
 if (duplicatePlaceIds) throw new Error(`duplicate Place IDs: ${duplicatePlaceIds}`);
 if (outside.length) throw new Error(`outside ${MAX_DISTANCE}m: ${outside.length}`);
@@ -312,9 +303,9 @@ const stats = {
   cuisineKnown: production.filter((row) => row.cuisine !== '餐厅').length,
   budgetKnown: production.filter((row) => isPrice(row.lunch) || isPrice(row.dinner)).length,
   recommendedDishesKnown: production.filter((row) => row.recommendedDishes.length).length,
-  hoursReferenceKnown: production.filter((row) => Boolean(row.hoursReference)).length,
+  openingHoursKnown: production.filter((row) => Boolean(row.openingHours)).length,
   dishesKnown: production.filter((row) => row.dishes.length).length,
-  scheduleKnown: production.filter((row) => Boolean(row.hoursReference)).length,
+  scheduleKnown: production.filter((row) => Boolean(row.openingHours)).length,
   sourceBacked: production.filter((row) =>
     row.sources.some((source) => source === 'Tabelog' || source === 'official')).length,
   awards: production.filter((row) => row.hyakumeiten).length
