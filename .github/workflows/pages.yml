@@ -67,8 +67,8 @@ jobs:
           mkdir -p _site/data _site/voice _site/image
           cp index.html styles.css effects.css app.js effects.js privacy.html terms.html _site/
           cp data/production_area1.js _site/data/
-          cp voice/1.mp3 voice/2.mp3 _site/voice/
-          cp image/YahaUsagi.webp _site/image/
+          cp voice/*.mp3 _site/voice/
+          cp image/*.webp _site/image/
           python3 - <<'PY'
           import os
           from pathlib import Path
