@@ -10,14 +10,15 @@ Help the user make a fast nearby-restaurant decision without turning the page in
 
 Current public scope:
 - `TOKYO / 地区1️⃣` only;
-- strict straight-line production boundary <=1.2 km from a private internal anchor;
+- strict straight-line production boundary <=1.2 km from the internal Area1 anchor;
 - optional cuisine exclusion;
-- optional budget filter only when enough budget metadata exists;
+- optional budget filter when metadata exists;
 - 300 m / 500 m / 800 m / 1.2 km distance choices;
-- exactly three randomized proposals whenever at least three entities satisfy the current constraints;
-- spatial overview, per-store map context and direct three-store comparison for each result set.
+- exactly three randomized proposals whenever at least three entities satisfy the constraints;
+- Leaflet/OpenStreetMap overview map, per-store maps and three-store comparison;
+- direct Google Maps navigation by verified Place ID.
 
-Future areas/profiles are not exposed as clickable UI until their production datasets exist.
+Future areas/profiles are not exposed until production data exists.
 
 ## Architecture in one sentence
 
@@ -27,40 +28,112 @@ There is no runtime application server, runtime database or visitor-time Places 
 
 ## Runtime stack
 
-- static HTML;
-- CSS;
-- vanilla JavaScript;
-- Leaflet + OpenStreetMap tiles for result maps;
+- static HTML/CSS/vanilla JavaScript;
+- Leaflet + OpenStreetMap tiles;
 - one generated canonical restaurant dataset;
 - direct Google Maps navigation links;
-- GitHub Pages hosting.
+- GitHub Pages.
 
-The browser does not perform source matching and does not load raw OSM/Tabelog/Google maintenance files. Leaflet only visualizes independently maintained coordinates that are already present in the canonical dataset.
+The browser does not perform source matching and does not load raw OSM/Tabelog/Google maintenance files.
 
-## Maintenance/data stack
+## Data-source roles
 
-- Python/Node maintenance scripts under `scripts/`;
-- OpenStreetMap candidate collection and independent geospatial metadata;
-- Google Places API (New) for business identity/QC;
-- Place-ID keyed Tabelog/official source-resolution and field enrichment;
-- curated source-backed metadata and 百名店 enrichment;
-- GitHub Actions for verification, canonical build, source-binding audit, coverage reporting and deployment.
+### Google Places / Places Aggregate
+Used for:
+- durable Google Place ID identity;
+- transient business/location/type/status QC;
+- exact Area1 food-business identity counting and Place-ID inventory.
 
-Google credentials are maintenance-only GitHub Secrets and are never shipped to the browser.
+Google-returned display name, formatted address, coordinates, business status, type and Maps URI are not the permanent restaurant database.
+
+### OpenStreetMap
+Used as an independent candidate/geospatial source for name/category/coordinates and coverage leads.
+
+### Tabelog / official restaurant sources
+Used for durable branch-specific facts such as:
+- exact/current name;
+- cuisine;
+- lunch/dinner budget;
+- opening hours and regular holidays;
+- representative dishes;
+- current listing/closure evidence;
+- 百名店 metadata.
+
+## Exact Area1 identity inventory
+
+The exact Google-derived count phase is complete as of 2026-09-05.
+
+- strict radius: **1,200 m**;
+- exact in-scope operational food-business count: **2,804**;
+- enumerated unique Place IDs: **2,804 / 2,804**;
+- inventory: `data/area1_google_ids.json`;
+- method: `places_aggregate_geodesic_partition_boundary_qc_v3`;
+- `complete:true`;
+- `coverageVerified:true`;
+- `independentCountVerified:true`.
+
+The food-business scope includes restaurant/cafe/bakery/bar/takeaway and related configured food-service types. `2,804` is not a count of every retail shop or every Google Maps POI category.
+
+The prior gridded Nearby Search inventory contained 1,613 IDs and was only a lead set. The exact inventory adds 1,215 IDs and excludes 24 old IDs under the current operational/type/radius criteria.
+
+See `AREA1_COMPLETENESS.md` for the reproducible completeness logic and reconciliation accounting.
+
+## Current production baseline
+
+Latest passing 2026-09-05 build after full OSM verification and exact Area1 discovery:
+
+- OSM source candidates: 990;
+- Google QC-v4 cache: **990 / 990 processed**;
+  - verified source rows: 526;
+  - rejected source rows: 464;
+  - pending: 0;
+- canonical production entities: **517**;
+- unique production Place IDs: 517;
+- production entities represented in the exact Google inventory: 515;
+- usable Tabelog/official source bindings: 237;
+  - Tabelog: 221;
+  - official: 16;
+- explicit terminal source resolutions inherited from the previous source pass: 32;
+- production source outcomes already accounted for: 269 / 517;
+- newly unresolved production source queue: **248**.
+
+Current field coverage:
+- cuisine known: 425 / 517;
+- budget known: 95 / 517;
+- opening/holiday information known: 202 / 517;
+- representative dishes known: 20 / 517;
+- display address known: 95 / 517;
+- 百名店: 22.
+
+Distance pools:
+- <=300 m: 116;
+- <=500 m: 192;
+- <=800 m: 295;
+- <=1,200 m: 517.
+
+The previously empty 800–1,200 m ring now contains **222 production entities**.
+
+## Remaining exact-inventory reconciliation
+
+The exact count and the production count intentionally differ.
+
+Current exact-identity audit:
+- exact inventory IDs: 2,804;
+- unique verified IDs in the source-verification cache: 516;
+- verified IDs covered by the exact inventory: 513;
+- exact-inventory IDs without a verified independent-source identity: **2,291**;
+- rejected source-match IDs still present in the exact inventory: 91;
+- verified source IDs outside the exact inventory: 3.
+
+`2,291` is a reconciliation queue, not a claim that 2,291 restaurants should be blindly admitted. Each identity still needs an independent-source relationship or an explicit reviewed outcome.
 
 ## Identity and data model
 
-A production restaurant requires a verified Google Place ID.
+A production restaurant requires a verified Google Place ID and an independent <=1,200 m production distance.
 
-Google Places is the **business identity/QC gate**, not the permanent application database. Google display name/address/location/status/type fields used during verification are transient QC inputs. Durable display/recommendation metadata is maintained independently where possible.
+Canonical identity is one row per Place ID. Durable fields are maintained independently where possible. Unknown optional metadata remains unknown and is never fabricated.
 
-Every production identity must also have a source-resolution terminal state. It is either:
-- attached to a current usable Tabelog or restaurant/organization official source; or
-- explicitly recorded as `ambiguous`, `listing_hold`, `no_current_usable_source`, or `source_not_found` with reviewed evidence.
-
-This prevents unknown source state from being confused with genuinely missing metadata and prevents same-name/chain branch pages from being attached speculatively.
-
-Persistent production information includes:
+Production information can include:
 - name/cuisine;
 - independent address/coordinates/distance;
 - optional lunch/dinner budget;
@@ -70,55 +143,18 @@ Persistent production information includes:
 - optional 百名店 metadata;
 - compact source provenance.
 
-Unknown optional metadata remains unknown and is not fabricated.
-
-## Current production baseline
-
-Latest passing 2026-09-05 source-resolution build:
-- OSM candidates: 990;
-- Google verification cache: 274 verified / 225 rejected / 0 pending;
-- processed OSM candidates: 499 / 990; candidates with no cache entry: 491;
-- canonical production entities: 269;
-- unique Google Place IDs: 269;
-- current usable Tabelog/official source bindings: 237 / 269 (88.1%);
-  - Tabelog-backed: 221;
-  - official-source-backed: 16;
-- explicit source-resolution terminal records: 32;
-  - `ambiguous`: 27;
-  - `listing_hold`: 2;
-  - `no_current_usable_source`: 1;
-  - `source_not_found`: 2;
-- **source-resolution coverage: 269 / 269 = 100%; unresolved: 0**;
-- distinct cuisine labels: 33;
-- generic `餐厅` cuisine rows: 22;
-- budget known: 95;
-- schedule/holiday known: 154;
-- representative dishes known: 20;
-- display address known: 61;
-- 百名店: 19.
-
-The 100% source-resolution figure counts 237 usable sources plus 32 documented exceptions. It measures whether a source outcome was recorded, not field completeness or current business status. Of the usable-source records, 114 currently declare only name evidence. `pending:0` applies to processed cache entries; 491 candidates have not been checked.
-
-Distance pools:
-- <=300 m: 116;
-- <=500 m: 192;
-- <=800 m: 269;
-- <=1,200 m: 269.
-
-The farthest production record is approximately 741 m away. The 800–1,200 m ring currently contains no production restaurants, so the 800 m and 1.2 km choices have identical pools.
-
-The original half-pool was concentrated in nearer source rows; future half-mode verification now uses distance-balanced sampling so the same bias is not repeated.
-
-Historical Google-first discovery produced 1,613 unique Area1 Place IDs. That result is stored as a Place-ID-only coverage inventory rather than a full Google Places browser dataset.
+Source-resolution states for identities without a safe current Tabelog/official binding are:
+- `ambiguous`;
+- `listing_hold`;
+- `no_current_usable_source`;
+- `source_not_found`.
 
 ## User-facing behavior
 
 ### Filters
 - Cuisine: no selections means unrestricted; selected primary cuisines are excluded.
-- Budget: `不限` means unrestricted. The module is available now that substantially more production entities carry source-backed budget metadata.
+- Budget: `不限` means unrestricted.
 - Distance: 1.2 km is the neutral choice and absolute production boundary.
-
-Separate enable/disable switches are intentionally not used because they duplicate those neutral states.
 
 ### Random selection
 - Web Crypto randomness;
@@ -128,106 +164,85 @@ Separate enable/disable switches are intentionally not used because they duplica
 - no rating/review-count popularity ranking.
 
 ### Results
-A successful result intentionally has complementary views rather than a card-only layout:
-
-1. **Three-store overview map** — Leaflet/OpenStreetMap, numbered 1–3, showing where the three generated choices sit relative to one another.
-2. **Three restaurant cards** — name, cuisine, distance, known metadata, 百名店 badge, a small per-store Leaflet map and direct Google Maps navigation.
-3. **Three-store comparison table** — cuisine, distance, budget, dishes, schedule/holiday data and 百名店 status in one horizontal comparison.
-4. **Google Maps business link** — verified Place-ID-based navigation/business lookup remains separate from the OSM visualization layer.
-
-The Leaflet maps use canonical independent coordinates, not transient Google Places response coordinates.
+1. Three-store Leaflet/OpenStreetMap overview map.
+2. Three restaurant cards with known metadata, small per-store maps and Google Maps navigation.
+3. Three-store comparison table.
+4. Place-ID-based Google Maps business/navigation link.
 
 ## Repository map
 
 ### Public frontend
-- `index.html` — current Area1 scope, filters, Leaflet dependency, result container, attribution/legal links.
-- `styles.css` — mobile-first yellow/white UI, cards, maps and comparison layout.
-- `app.js` — filtering, weighted random selection, map rendering and result comparison.
-
-Public application runtime includes:
-1. Leaflet as the map presentation library;
-2. `data/production_area1.js` — generated during build;
-3. `app.js`.
-
-Only the latter two are local application JavaScript/data dependencies.
+- `index.html` — scope, filters, Leaflet dependency, result container and legal links;
+- `styles.css` — mobile-first UI and result/map/comparison layout;
+- `app.js` — filtering, weighted random selection, map rendering and comparison;
+- `data/production_area1.js` — generated canonical runtime data.
 
 ### Maintenance data
 - `data/restaurants.js` — early curated records;
-- `data/area1_bulk.js` / `data/area1_more.js` — historical/curated enrichment records;
+- `data/area1_bulk.js`, `data/area1_more.js` — historical/curated enrichment;
 - `data/area1_osm.js` — independent OSM Area1 candidates;
 - `data/hyakumeiten.js` — award enrichment;
 - `data/google_entities.js` — conservative manual Place-ID hints/corrections;
-- `data/google_entities.generated.js` — source-ID keyed verification overlay;
+- `data/google_entities.generated.js` — source-ID keyed QC overlay;
 - `data/google_places_cache.json` — compact Place-ID/QC state;
-- `data/area1_google_ids.json` — 1,613-ID Google Area1 coverage inventory;
-- `data/source_enrichment*.js` — reviewed Place-ID keyed Tabelog/official source bindings and field-level enrichment shards;
-- `data/source_resolution*.js` — terminal records for production identities that cannot safely attach to a current usable Tabelog/official page.
+- `data/area1_google_ids.json` — exact 2,804-ID Area1 coverage inventory;
+- `data/source_enrichment*.js` — reviewed Place-ID keyed Tabelog/official field enrichment;
+- `data/source_resolution*.js` — explicit terminal source states.
 
-These maintenance files are not directly published as runtime data.
+Maintenance files are not directly published as runtime data.
 
 ### Maintenance/build scripts
-- `scripts/build_area1_osm.py` — collect independent OSM candidates inside Area1;
-- `scripts/verify_google_places.py` — source -> Google Place ID verification, QC v4;
-- `scripts/verify_curated_google.py` — targeted verification for curated/OSM overlap candidates;
-- `scripts/discover_google_area1.py` — Place-ID-only Google coverage discovery;
-- `scripts/migrate_google_inventory.py` — one-time legacy full Places -> ID-only migration;
+- `scripts/build_area1_osm.py` — collect OSM candidates;
+- `scripts/verify_google_places.py` — source -> Google Place ID QC v4;
+- `scripts/verify_curated_google.py` — targeted curated-overlap verification;
+- `scripts/discover_google_area1.py` — exact Place-ID-only Google coverage discovery;
+- `scripts/audit_area1_identity_coverage.mjs` — independent exact-inventory gate and reconciliation counts;
 - `scripts/build_production_dataset.mjs` — canonical one-Place-ID-per-entity build;
-- `scripts/audit_repository.mjs` — blocking integrity/runtime contract checks;
-- `scripts/audit_source_bindings.mjs` — blocking source-binding/resolution identity audit;
-- `scripts/source_queue.mjs` — source-resolution completeness and unresolved queue report;
-- `scripts/coverage_report.mjs` — coverage/completeness diagnostics.
+- `scripts/audit_repository.mjs` — blocking repository/runtime audit;
+- `scripts/audit_source_bindings.mjs` — source-binding/resolution integrity audit;
+- `scripts/source_queue.mjs` — source-resolution queue;
+- `scripts/coverage_report.mjs` — coverage diagnostics.
 
 ### GitHub Actions
-- `.github/workflows/pages.yml` — canonical build, source/repository audit, coverage reports, private data-audit artifact and minimal Pages deployment;
+- `.github/workflows/pages.yml` — canonical build, audits, private data-audit artifact and Pages deployment;
 - `.github/workflows/pr-review.yml` — read-only PR validation;
 - `.github/workflows/refresh-area1.yml` — OSM candidate refresh;
-- `.github/workflows/verify-google-places.yml` — staged Google verification;
-- `.github/workflows/discover-google-area1.yml` — Place-ID-only coverage discovery;
-- `.github/workflows/migrate-google-storage.yml` — legacy storage migration.
-
-Pages publishes an assembled `_site` containing only deployable assets, not the maintenance repository. Data/source audit reports are uploaded as short-lived private workflow artifacts instead of public site files.
+- `.github/workflows/verify-google-places.yml` — staged/full Google verification;
+- `.github/workflows/discover-google-area1.yml` — exact Area1 identity discovery.
 
 ## Validation invariants
 
-CI blocks release when:
-- canonical production contains fewer than three entities;
-- a production Place ID is missing/duplicated;
-- a production entity is not verified;
-- a production distance is outside 1.2 km;
-- a source-enrichment row does not attach to a current production Place ID;
-- a source-resolution record does not attach to a current production Place ID, duplicates a usable source binding, lacks a supported terminal status, or lacks evidence;
-- forbidden persisted Google Places response fields reappear in canonical browser data;
-- raw maintenance overlays are loaded by the public page;
-- the Leaflet overview map, per-store maps or three-store comparison table disappears;
-- an iframe-map implementation is introduced;
-- redundant filter toggle state or the generic verification badge reappears;
-- required Google Maps/OpenStreetMap attribution disappears.
+CI/research gates protect:
+- unique verified production Place IDs;
+- <=1,200 m production boundary;
+- independently counted exact Area1 inventory before it can be called complete;
+- valid source bindings/resolution states;
+- absence of forbidden long-lived Google Places response fields in browser data;
+- no raw maintenance overlays in the public site;
+- required overview map, per-store maps and comparison table;
+- Google Maps/OpenStreetMap attribution.
 
 ## Documentation
 
-- `REQUIREMENTS.md` — authoritative current product/data requirements;
-- `ARCHITECTURE.md` — current frontend/build/verification architecture;
-- `DEVELOPMENT.md` — review status and next data priorities;
+- `REQUIREMENTS.md` — product/data requirements;
+- `ARCHITECTURE.md` — frontend/build/verification architecture;
+- `DEVELOPMENT.md` — development review and planning history;
 - `DATA_PIPELINE.md` — source roles and record lifecycle;
+- `AREA1_COMPLETENESS.md` — authoritative current 1.2 km completeness state;
 - `DATA_RESEARCH.md` — historical/manual research notes;
 - `CHANGELOG.md` — implementation and decision history.
 
-Priority when information conflicts:
-1. latest explicit product-owner requirement;
-2. `REQUIREMENTS.md`;
-3. current verified implementation behavior;
-4. `ARCHITECTURE.md` / `DEVELOPMENT.md` / `DATA_PIPELINE.md`;
-5. historical research/log entries.
+When numerical progress statements conflict, use the newest audited result in `AREA1_COMPLETENESS.md` and current CI output.
 
-## Next work
+## Next data work
 
-The current phase is **operating-status recheck followed by field enrichment**. The following work is planned; the latest documentation review did not add restaurant data:
+The current phase is **full-information reconciliation after identity-count completion**.
 
-1. Recheck current Google status for キッチン グラン, 明神丸 and カフェ ド クルーセ. Their source records flag operating-status questions, but all three remain in production.
-2. Enrich the 237 existing usable-source restaurants: budget, opening/regular holidays, cuisine, representative dishes and address. In this subset, 142 lack budget, 102 lack schedule information, 22 retain generic cuisine, 217 lack dishes and 191 lack an address.
-3. Resolve the 27 branch-ambiguous source records and revisit the two source-not-found cases; then target verification in the empty 800–1,200 m production ring. Keep the 7 curated-overlap candidates as a separate expansion queue.
-4. Implement opening/holiday exclusion after schedule coverage and semantics are ready. It is currently display-only. Area2/SHIZUOKA follow the Area1 data work.
+Ordered queue:
+1. resolve/enrich the **248 newly admitted OSM-backed production identities** first; they already have independent name/location and a verified Google identity;
+2. process the **2,291 exact-inventory IDs without a verified independent-source identity**, using Google only transiently to locate an independent durable source;
+3. reconcile the 91 rejected source matches that still point to an exact-inventory identity;
+4. review the 3 verified-source IDs outside the exact inventory separately rather than weakening the radius gate;
+5. continue field completion for budget, hours/holidays, cuisine, dishes, address and awards with branch-specific provenance.
 
-Keep the current 19 百名店 records, all of which already have year/category fields, and check new award additions against the correct branch. Record per-batch additions, remaining gaps, provenance and validation results in `DEVELOPMENT.md` and `CHANGELOG.md`.
-
-Do not rerun the full Google coverage discovery merely to improve source verification; the 1,613-ID identity inventory is already preserved.
+Do not rerun broad Google discovery merely to fill Tabelog/official fields: the exact 2,804-ID identity universe is now established.
