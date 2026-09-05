@@ -9,16 +9,19 @@ const ROOT = path.resolve(HERE, '..');
 const DATA = path.join(ROOT, 'data');
 const INPUT = process.argv[2] || path.join(ROOT, '_audit', 'official_index_field_candidates.json');
 const OUTPUT = process.argv[3] || path.join(DATA, 'source_enrichment_autoofficial.js');
-const CHECKED_AT = process.env.AUTO_OFFICIAL_CHECKED_AT || '2026-09-06';
+const CHECKED_AT = process.env.AUTO_OFFICIAL_CHECKED_AT || new Date().toISOString().slice(0, 10);
 const FOOD_TYPES = new Set(['Restaurant','FoodEstablishment','CafeOrCoffeeShop','Bakery','BarOrPub','FastFoodRestaurant','Store','LocalBusiness']);
+const STALE_OR_EXCEPTION = /(?:臨時|営業時間変更|営業時間を変更|時短|短縮営業|新型コロナ|コロナ|年末年始|特別営業時間|休業のお知らせ|休館日|期間限定)/u;
 
 const read = (relative) => fs.readFileSync(path.join(ROOT, relative), 'utf8');
+
 function loadProduction() {
   const sandbox = { window: {} };
   vm.createContext(sandbox);
-  vm.runInContext(read('data/production_area1.js'), sandbox);
+  vm.runInContext(read('data/production_area1.js'), sandbox, { filename: 'production_area1.js' });
   return sandbox.window.PRODUCTION_RESTAURANTS || [];
 }
+
 function loadResolutions() {
   const files = fs.readdirSync(DATA).filter((f) => /^source_resolution(?:_[a-z0-9-]+)?\.js$/i.test(f)).sort();
   const sandbox = { window: { SOURCE_RESOLUTIONS: [] } };
@@ -26,48 +29,81 @@ function loadResolutions() {
   for (const f of files) vm.runInContext(read(`data/${f}`), sandbox, { filename: f });
   return sandbox.window.SOURCE_RESOLUTIONS || [];
 }
+
+function loadExistingAutoOfficial() {
+  if (!fs.existsSync(OUTPUT)) return [];
+  const sandbox = { window: { RESTAURANTS: [] } };
+  vm.createContext(sandbox);
+  try {
+    vm.runInContext(fs.readFileSync(OUTPUT, 'utf8'), sandbox, { filename: path.basename(OUTPUT) });
+    return sandbox.window.RESTAURANTS || [];
+  } catch (error) {
+    throw new Error(`Cannot load existing auto-official shard: ${error?.message || error}`);
+  }
+}
+
 function normalize(value) {
   return String(value || '').normalize('NFKC').toLowerCase()
     .replace(/[\s　・･’'"\-—_()（）\[\]【】「」『』&＆!！?？.,，。:：/\\]+/g, '');
 }
+
 function nameMatch(a, b) {
   const x = normalize(a), y = normalize(b);
   return Boolean(x && y && (x.includes(y) || y.includes(x)));
 }
+
 function titleStrongMatch(name, title) {
   const x = normalize(name), y = normalize(title);
   return Boolean(x.length >= 5 && y && (y.includes(x) || (y.length >= 5 && x.includes(y))));
 }
-function areaAddress(value) {
-  const s = String(value || '').replace(/\s+/g, ' ').trim();
-  return (s.includes('千代田区') || s.includes('文京区')) ? s.slice(0, 220) : null;
-}
+
 function pathSpecific(url) {
   try {
     const u = new URL(url);
     return Boolean(u.pathname.replace(/\/+$/, '').length > 1 || u.search);
   } catch { return false; }
 }
+
+function plausibleAreaAddress(value) {
+  const s = String(value || '').normalize('NFKC').replace(/\s+/g, ' ').trim();
+  if (!s || s.length > 140) return null;
+  if (!(s.includes('千代田区') || s.includes('文京区'))) return null;
+  if (!/\d/.test(s)) return null;
+  if (/[。！？]/u.test(s)) return null;
+  if (/(?:おすすめ|受賞|雰囲気|お客様|印象|こだわり|訪れる|レストランにも)/u.test(s)) return null;
+  return s;
+}
+
+function safeHours(value) {
+  const s = String(value || '').normalize('NFKC').replace(/\s+/g, ' ').trim();
+  if (!s || !/\d{1,2}:\d{2}/.test(s) || s.length > 520) return null;
+  if (STALE_OR_EXCEPTION.test(s)) return null;
+  return s;
+}
+
 function safeStructured(row) {
-  return (row.main?.structuredFacts || []).filter((f) =>
-    (f.types || []).some((t) => FOOD_TYPES.has(t)) && nameMatch(row.name, f.name));
+  return (row.main?.structuredFacts || []).filter((fact) =>
+    (fact.types || []).some((type) => FOOD_TYPES.has(type)) && nameMatch(row.name, fact.name));
 }
+
 function pickAddress(row) {
-  for (const f of safeStructured(row)) {
-    const a = areaAddress(f.address);
-    if (a) return a;
+  for (const fact of safeStructured(row)) {
+    const address = plausibleAreaAddress(fact.address);
+    if (address) return address;
   }
-  if (normalize(row.name).length >= 5 && row.nameMatched) return areaAddress(row.main?.visibleAddress);
   return null;
 }
+
 function pickHours(row) {
-  for (const f of safeStructured(row)) {
-    if (areaAddress(f.address) && Array.isArray(f.openingHours) && f.openingHours.length) {
-      return f.openingHours.join('; ').slice(0, 520);
-    }
+  for (const fact of safeStructured(row)) {
+    if (!plausibleAreaAddress(fact.address)) continue;
+    if (!Array.isArray(fact.openingHours) || !fact.openingHours.length) continue;
+    const hours = safeHours(fact.openingHours.join('; '));
+    if (hours) return hours;
   }
   return null;
 }
+
 function cuisineFromStructured(value) {
   const s = Array.isArray(value) ? value.join(' ') : String(value || '');
   const rules = [
@@ -98,68 +134,183 @@ function cuisineFromStructured(value) {
   for (const [re, result] of rules) if (re.test(s)) return result;
   return null;
 }
+
 function pickCuisine(row) {
-  for (const f of safeStructured(row)) {
-    const value = cuisineFromStructured(f.cuisine);
+  for (const fact of safeStructured(row)) {
+    const value = cuisineFromStructured(fact.cuisine);
     if (value) return value;
   }
   return null;
 }
+
+function compactExisting(row) {
+  const out = {
+    googlePlaceId: row.googlePlaceId,
+    name: row.name,
+    cuisine: typeof row.cuisine === 'string' ? row.cuisine : null,
+    tags: Array.isArray(row.tags) ? row.tags.filter(Boolean).slice(0, 8) : [],
+    address: plausibleAreaAddress(row.address),
+    openingHoursRaw: safeHours(row.openingHoursRaw),
+    sourceRefs: Array.isArray(row.sourceRefs) ? row.sourceRefs : []
+  };
+  if (!out.cuisine) out.tags = [];
+  return out;
+}
+
+function cleanSourceRefs(refs, record) {
+  const allowed = new Set(['name']);
+  if (record.address) allowed.add('address');
+  if (record.openingHoursRaw) allowed.add('hours');
+  if (record.cuisine) allowed.add('cuisine');
+  const output = [];
+  for (const ref of refs || []) {
+    if (!ref || ref.provider !== 'official' || typeof ref.url !== 'string') continue;
+    const fields = [...new Set((ref.fields || []).filter((field) => allowed.has(field)))];
+    if (!fields.length) continue;
+    const normalized = { provider:'official', url:ref.url, checkedAt:ref.checkedAt || CHECKED_AT, fields };
+    const key = `${normalized.url}|${fields.sort().join(',')}`;
+    if (!output.some((item) => `${item.url}|${[...(item.fields || [])].sort().join(',')}` === key)) output.push(normalized);
+  }
+  return output;
+}
+
+function mergeOfficialRef(record, pageUrl, fields) {
+  const keep = new Set(fields);
+  record.sourceRefs = (record.sourceRefs || []).map((ref) => {
+    if (ref.provider !== 'official' || ref.url !== pageUrl) return ref;
+    return { ...ref, fields:(ref.fields || []).filter((field) => !keep.has(field)) };
+  }).filter((ref) => (ref.fields || []).length);
+  record.sourceRefs.push({ provider:'official', url:pageUrl, checkedAt:CHECKED_AT, fields:[...fields] });
+}
+
 function js(value) { return JSON.stringify(value).replace(/</g, '\\u003c'); }
 
 const payload = JSON.parse(fs.readFileSync(INPUT, 'utf8'));
 const production = loadProduction();
-const productionById = new Map(production.map((r) => [r.googlePlaceId, r]));
-const resolutionIds = new Set(loadResolutions().map((r) => r.googlePlaceId));
-const records = [];
+const productionById = new Map(production.map((row) => [row.googlePlaceId, row]));
+const resolutionIds = new Set(loadResolutions().map((row) => row.googlePlaceId));
+const existingRows = loadExistingAutoOfficial();
+const existingById = new Map(existingRows.map((row) => [row.googlePlaceId, compactExisting(row)]));
+const recordsById = new Map();
+
+let invalidExistingAddressRemoved = 0;
+for (const row of existingRows) {
+  const compact = compactExisting(row);
+  if (row.address && !compact.address) invalidExistingAddressRemoved += 1;
+  compact.sourceRefs = cleanSourceRefs(compact.sourceRefs, compact);
+  recordsById.set(row.googlePlaceId, compact);
+}
+
+let refreshed = 0;
+let added = 0;
+let preservedOnFetchFailure = 0;
+let structuredAddressUpdates = 0;
+let structuredHoursUpdates = 0;
+let structuredCuisineUpdates = 0;
+
 for (const row of payload.results || []) {
   const current = productionById.get(row.googlePlaceId);
-  if (!current || resolutionIds.has(row.googlePlaceId) || !row.main?.ok || !row.nameMatched) continue;
-  const fields = [];
-  const out = {};
-  const address = !current.address ? pickAddress(row) : null;
-  if (address) { out.address = address; fields.push('address'); }
-  const hours = !current.hoursReference ? pickHours(row) : null;
-  if (hours) { out.openingHoursRaw = hours; fields.push('hours'); }
-  const cuisine = (!current.cuisine || current.cuisine === '餐厅') ? pickCuisine(row) : null;
-  if (cuisine) { out.cuisine = cuisine; out.tags = [cuisine]; fields.push('cuisine'); }
-  const branchSource = fields.length || (pathSpecific(row.pageUrl) && titleStrongMatch(row.name, row.main?.title));
-  if (!branchSource) continue;
-  if (!fields.includes('name')) fields.unshift('name');
-  records.push({ googlePlaceId: row.googlePlaceId, name: row.name, pageUrl: row.pageUrl, fields, out });
+  if (!current || resolutionIds.has(row.googlePlaceId)) continue;
+  const existing = existingById.get(row.googlePlaceId);
+
+  if (!row.main?.ok || !row.nameMatched) {
+    if (existing) preservedOnFetchFailure += 1;
+    continue;
+  }
+
+  const canOwnAddress = !current.address || Boolean(existing?.address);
+  const canOwnHours = !current.hoursReference || Boolean(existing?.openingHoursRaw);
+  const canOwnCuisine = !current.cuisine || current.cuisine === '餐厅' || Boolean(existing?.cuisine);
+
+  const address = canOwnAddress ? pickAddress(row) : null;
+  const hours = canOwnHours ? pickHours(row) : null;
+  const cuisine = canOwnCuisine ? pickCuisine(row) : null;
+  const autoFields = [];
+  if (address) autoFields.push('address');
+  if (hours) autoFields.push('hours');
+  if (cuisine) autoFields.push('cuisine');
+
+  const branchSource = autoFields.length || (pathSpecific(row.pageUrl) && titleStrongMatch(row.name, row.main?.title));
+  if (!branchSource && !existing) continue;
+
+  const record = recordsById.get(row.googlePlaceId) || {
+    googlePlaceId:row.googlePlaceId,
+    name:row.name,
+    cuisine:null,
+    tags:[],
+    address:null,
+    openingHoursRaw:null,
+    sourceRefs:[]
+  };
+  const wasExisting = recordsById.has(row.googlePlaceId);
+  record.name = row.name;
+
+  if (address) {
+    record.address = address;
+    structuredAddressUpdates += 1;
+  }
+  if (hours) {
+    record.openingHoursRaw = hours;
+    structuredHoursUpdates += 1;
+  }
+  if (cuisine) {
+    record.cuisine = cuisine;
+    record.tags = [cuisine];
+    structuredCuisineUpdates += 1;
+  }
+
+  const refFields = ['name', ...autoFields];
+  mergeOfficialRef(record, row.pageUrl, refFields);
+  record.sourceRefs = cleanSourceRefs(record.sourceRefs, record);
+  recordsById.set(row.googlePlaceId, record);
+  if (wasExisting) refreshed += 1;
+  else added += 1;
 }
-records.sort((a, b) => a.name.localeCompare(b.name, 'ja'));
+
+const records = [...recordsById.values()]
+  .filter((row) => productionById.has(row.googlePlaceId) && !resolutionIds.has(row.googlePlaceId))
+  .sort((a, b) => a.name.localeCompare(b.name, 'ja'));
+
 const lines = [
-  '// Auto-reviewed official-source enrichments generated from independently fetched official pages.',
-  '// Current hours and cuisine require matching structured data; stale free-text announcements are not promoted.',
-  '// Visible addresses require a full-page name match plus an Area1 address and a non-trivial canonical name.',
-  '// Only exact production Place IDs are eligible; source-resolution conflicts are skipped.',
+  '// Stable high-confidence official-source enrichments generated from independently fetched official pages.',
+  '// Automatic field promotion requires exact Place ID, page/name agreement and structured official evidence.',
+  '// Free-text visible addresses are review-only and are never automatically promoted.',
+  '// A temporary fetch failure preserves the previous reviewed auto-official row.',
   'window.RESTAURANTS.push(',
-  ...records.map((r, i) => {
+  ...records.map((record, index) => {
     const props = [
-      `id:${js('src-auto-official-' + r.googlePlaceId.slice(-12).replace(/[^A-Za-z0-9_-]/g, ''))}`,
+      `id:${js('src-auto-official-' + record.googlePlaceId.slice(-12).replace(/[^A-Za-z0-9_-]/g, ''))}`,
       "profile:'TOKYO'",
       "area:'地区1️⃣'",
-      `name:${js(r.name)}`,
-      `googlePlaceId:${js(r.googlePlaceId)}`,
+      `name:${js(record.name)}`,
+      `googlePlaceId:${js(record.googlePlaceId)}`,
       "source:'official'",
       'sourceOnly:true'
     ];
-    if (r.out.cuisine) props.push(`cuisine:${js(r.out.cuisine)}`, `tags:${js(r.out.tags)}`);
-    if (r.out.address) props.push(`address:${js(r.out.address)}`);
-    if (r.out.openingHoursRaw) props.push(`openingHoursRaw:${js(r.out.openingHoursRaw)}`, 'closedDays:[]', 'closedNote:null');
-    props.push(`sourceRefs:[{provider:'official',url:${js(r.pageUrl)},checkedAt:${js(CHECKED_AT)},fields:${js(r.fields)}}]`);
-    return `  { ${props.join(', ')} }${i === records.length - 1 ? '' : ','}`;
+    if (record.cuisine) props.push(`cuisine:${js(record.cuisine)}`, `tags:${js(record.tags)}`);
+    if (record.address) props.push(`address:${js(record.address)}`);
+    if (record.openingHoursRaw) props.push(`openingHoursRaw:${js(record.openingHoursRaw)}`, 'closedDays:[]', 'closedNote:null');
+    props.push(`sourceRefs:${js(record.sourceRefs)}`);
+    return `  { ${props.join(', ')} }${index === records.length - 1 ? '' : ','}`;
   }),
   ');',
   ''
 ];
+
 fs.writeFileSync(OUTPUT, lines.join('\n'), 'utf8');
 const summary = {
   records: records.length,
-  address: records.filter((r) => r.out.address).length,
-  hours: records.filter((r) => r.out.openingHoursRaw).length,
-  cuisine: records.filter((r) => r.out.cuisine).length,
-  nameOnly: records.filter((r) => r.fields.length === 1).length
+  existingBefore: existingRows.length,
+  added,
+  refreshed,
+  preservedOnFetchFailure,
+  structuredAddressUpdates,
+  structuredHoursUpdates,
+  structuredCuisineUpdates,
+  invalidExistingAddressRemoved,
+  address: records.filter((row) => row.address).length,
+  hours: records.filter((row) => row.openingHoursRaw).length,
+  cuisine: records.filter((row) => row.cuisine).length,
+  nameOnly: records.filter((row) => !row.address && !row.openingHoursRaw && !row.cuisine).length
 };
 console.log(JSON.stringify(summary));
