@@ -1,0 +1,72 @@
+name: Promote trusted locator templates
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: promote-locator-templates-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout selected branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Build stable baseline
+        run: |
+          set -o pipefail
+          node scripts/test_opening_hours.mjs
+          node scripts/build_production_dataset.mjs | tee /tmp/locator-template-baseline.json
+      - name: Fetch trusted locator templates
+        env:
+          LOCATOR_TEMPLATE_CONCURRENCY: '8'
+          LOCATOR_TEMPLATE_TIMEOUT_MS: '12000'
+          LOCATOR_TEMPLATE_CHECKED_AT: '2026-09-06'
+        run: |
+          set -o pipefail
+          mkdir -p _audit
+          node scripts/build_locator_template_enrichment.mjs \
+            data/official_candidate_index.json \
+            data/source_enrichment_zzlocatorauto.js \
+            | tee _audit/locator-template-summary.json
+      - name: Rebuild and audit promoted fields
+        run: |
+          set -o pipefail
+          node scripts/build_production_dataset.mjs | tee _audit/build-after-locator-templates.json
+          node scripts/audit_repository.mjs
+          node scripts/audit_source_bindings.mjs
+          node scripts/audit_normalized_fields.mjs
+          node scripts/coverage_report.mjs | tee _audit/coverage-after-locator-templates.json
+          node scripts/build_enrichment_queue.mjs | tee _audit/enrichment-queue-after-locator-templates.json
+      - name: Upload locator audit
+        uses: actions/upload-artifact@v4
+        with:
+          name: locator-template-enrichment-audit
+          path: _audit
+          retention-days: 3
+      - name: Commit generated locator maintenance data
+        env:
+          TARGET_BRANCH: ${{ github.ref_name }}
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/source_enrichment_zzlocatorauto.js
+          if git diff --cached --quiet; then
+            echo 'No locator template data changes.'
+          else
+            git commit -m 'Refresh trusted locator template fields'
+            if ! git push origin HEAD:$TARGET_BRANCH; then
+              git pull --rebase origin $TARGET_BRANCH
+              git push origin HEAD:$TARGET_BRANCH
+            fi
+          fi
