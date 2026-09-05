@@ -60,10 +60,23 @@ jobs:
           if-no-files-found: warn
           retention-days: 3
       - name: Assemble public site
+        env:
+          GOOGLE_MAPS_EMBED_KEY: ${{ secrets.GOOGLE_MAPS_EMBED_KEY }}
         run: |
           mkdir -p _site/data
           cp index.html styles.css app.js privacy.html terms.html _site/
           cp data/production_area1.js _site/data/
+          python3 - <<'PY'
+          import os
+          from pathlib import Path
+
+          path = Path('_site/index.html')
+          text = path.read_text(encoding='utf-8')
+          key = os.environ.get('GOOGLE_MAPS_EMBED_KEY', '').strip()
+          if key:
+              text = text.replace('__GOOGLE_MAPS_EMBED_KEY__', key)
+          path.write_text(text, encoding='utf-8')
+          PY
       - name: Upload build for review
         if: github.event_name == 'pull_request'
         uses: actions/upload-artifact@v4
