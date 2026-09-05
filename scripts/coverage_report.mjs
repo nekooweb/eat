@@ -8,16 +8,23 @@ const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, '..');
 const read = (p) => fs.readFileSync(path.join(ROOT, p), 'utf8');
 const readJson = (p) => JSON.parse(read(p));
+const loadRestaurantFile = (p) => {
+  const sandbox = { window: { RESTAURANTS: [] } };
+  vm.createContext(sandbox);
+  vm.runInContext(read(p), sandbox, { filename: p });
+  return sandbox.window.RESTAURANTS || [];
+};
 
 const productionSandbox = { window: {} };
 vm.createContext(productionSandbox);
 vm.runInContext(read('data/production_area1.js'), productionSandbox, { filename: 'production_area1.js' });
 const production = productionSandbox.window.PRODUCTION_RESTAURANTS || [];
+const productionStats = productionSandbox.window.PRODUCTION_STATS || {};
 
-const sourceSandbox = { window: { RESTAURANTS: [] } };
-vm.createContext(sourceSandbox);
-vm.runInContext(read('data/area1_osm.js'), sourceSandbox, { filename: 'area1_osm.js' });
-const sourceRows = sourceSandbox.window.RESTAURANTS || [];
+const sourceRows = loadRestaurantFile('data/area1_osm.js');
+const enrichmentRows = fs.existsSync(path.join(ROOT, 'data/source_enrichment.js'))
+  ? loadRestaurantFile('data/source_enrichment.js')
+  : [];
 
 const inventory = fs.existsSync(path.join(ROOT, 'data/area1_google_ids.json'))
   ? readJson('data/area1_google_ids.json')
@@ -28,6 +35,9 @@ const cache = fs.existsSync(path.join(ROOT, 'data/google_places_cache.json'))
   ? readJson('data/google_places_cache.json')
   : {};
 const verification = Object.values(cache).filter((row) => row && typeof row === 'object');
+const verificationBySourceId = new Map(
+  verification.filter((row) => row.sourceId).map((row) => [row.sourceId, row])
+);
 
 const countBy = (rows, keyFn) => rows.reduce((acc, row) => {
   const key = keyFn(row) || 'unknown';
@@ -37,6 +47,9 @@ const countBy = (rows, keyFn) => rows.reduce((acc, row) => {
 const validPrice = (p) => Array.isArray(p) && p.length >= 2 && Number.isFinite(p[0]) && Number.isFinite(p[1]);
 const priceMatches = (p, min, max = Infinity) => validPrice(p) && p[0] <= max && p[1] >= min;
 const anyPrice = (row, predicate) => [row.lunch, row.dinner].some(predicate);
+const scheduleKnown = (row) => Boolean(
+  row.openingHoursRaw || (row.closedDays && row.closedDays.length) || row.closedNote
+);
 
 const distances = Object.fromEntries([300, 500, 800, 1200].map((limit) => [
   `lte${limit}`,
@@ -61,20 +74,52 @@ const rejectionReasons = countBy(
 const qcVersions = countBy(verification, (row) => row.qcVersion == null ? 'unversioned' : `v${row.qcVersion}`);
 const cuisines = countBy(production, (row) => row.cuisine);
 
+const curatedOverlapRows = sourceRows.filter((row) => row.curatedOverlap);
+const curatedOverlapVerification = countBy(
+  curatedOverlapRows.map((row) => verificationBySourceId.get(row.sourceId) || { status: 'unresolved' }),
+  (row) => row.status
+);
+
+const enrichmentProviders = countBy(
+  enrichmentRows.flatMap((row) => row.sourceRefs || []),
+  (ref) => ref.provider
+);
+const enrichmentFieldRefs = countBy(
+  enrichmentRows.flatMap((row) =>
+    (row.sourceRefs || []).flatMap((ref) => (ref.fields || []).map((field) => ({ field })))),
+  (row) => row.field
+);
+const productionSourceCounts = countBy(
+  production.flatMap((row) => row.sources || []).map((source) => ({ source })),
+  (row) => row.source
+);
+
 const report = {
   sourceCandidates: sourceRows.length,
+  curatedOverlapCandidates: curatedOverlapRows.length,
+  curatedOverlapVerification,
   googleInventoryPlaceIds: inventoryIds.size,
   verificationCacheEntries: verification.length,
   verificationStatus: statusCounts,
   verificationQcVersions: qcVersions,
   rejectionReasons,
+  enrichmentRecords: enrichmentRows.length,
+  enrichmentProviders,
+  enrichmentFieldRefs,
   productionEntities: production.length,
   productionInGoogleInventory: productionInInventory,
   productionInventoryCoveragePct: inventoryIds.size
     ? Number((100 * productionInInventory / inventoryIds.size).toFixed(1))
     : null,
+  productionSourceCounts,
+  sourceBackedProduction: productionStats.sourceBacked
+    ?? production.filter((row) => (row.sources || []).some((source) => source === 'Tabelog' || source === 'official')).length,
   distinctCuisineLabels: Object.keys(cuisines).length,
+  genericCuisineRows: production.filter((row) => row.cuisine === '餐厅').length,
   topCuisineCounts: Object.entries(cuisines).sort((a, b) => b[1] - a[1]).slice(0, 12),
+  addressKnown: production.filter((row) => Boolean(row.address)).length,
+  scheduleKnown: productionStats.scheduleKnown ?? production.filter(scheduleKnown).length,
+  dishesKnown: productionStats.dishesKnown ?? production.filter((row) => row.dishes?.length).length,
   distancePools: distances,
   budgetPools: budgets,
   awards: production.filter((row) => row.hyakumeiten).length
