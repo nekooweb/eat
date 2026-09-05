@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import vm from 'node:vm';
 import { fileURLToPath } from 'node:url';
+import { normalizeOpeningHours, validateOpeningHours } from './opening_hours.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, '..');
@@ -11,7 +12,32 @@ const INPUT = process.argv[2] || path.join(ROOT, '_audit', 'official_index_field
 const OUTPUT = process.argv[3] || path.join(DATA, 'source_enrichment_autoofficial.js');
 const CHECKED_AT = process.env.AUTO_OFFICIAL_CHECKED_AT || new Date().toISOString().slice(0, 10);
 const FOOD_TYPES = new Set(['Restaurant','FoodEstablishment','CafeOrCoffeeShop','Bakery','BarOrPub','FastFoodRestaurant','Store','LocalBusiness']);
+const TRUSTED_LOCATOR_HOSTS = new Set([
+  'shop.tullys.co.jp',
+  'store.starbucks.co.jp',
+  'c-united.co.jp',
+  'shop.doutor.co.jp',
+  'map.torikizoku.co.jp',
+  'locations.royalhost.jp',
+  'stores.hanamaruudon.com',
+  'tenpo.ichibanya.co.jp',
+  'shop.saizeriya.co.jp',
+  'shop.ufs.co.jp',
+  'maps.nakau.co.jp',
+  'maps.cocos-jpn.co.jp',
+  'map.reins.co.jp',
+  'shop.butayama.com',
+  'shop.pronto.co.jp',
+  'search.daisyo.co.jp',
+  'shoplist.teke-teke.com',
+  'skylark.co.jp',
+  'yomenya-goemon.com',
+  'tsukemen-tsujita.com',
+  'ginza-renoir.co.jp',
+  'stores.yoshinoya.com'
+]);
 const STALE_OR_EXCEPTION = /(?:臨時|営業時間変更|営業時間を変更|時短|短縮営業|新型コロナ|コロナ|年末年始|特別営業時間|休業のお知らせ|休館日|期間限定)/u;
+const DATE_NOTICE = /(?:20(?:1\d|2[0-5])年\s*\d{1,2}月|20(?:1\d|2[0-5])[./-]\d{1,2}[./-]\d{1,2})/u;
 
 const read = (relative) => fs.readFileSync(path.join(ROOT, relative), 'utf8');
 
@@ -64,6 +90,21 @@ function pathSpecific(url) {
   } catch { return false; }
 }
 
+function host(url) {
+  try { return new URL(url).hostname.toLowerCase().replace(/^www\./, ''); }
+  catch { return ''; }
+}
+
+function trustedLocatorPage(row) {
+  const sourceUrl = row.pageUrl || row.main?.finalUrl;
+  return Boolean(
+    sourceUrl
+    && TRUSTED_LOCATOR_HOSTS.has(host(sourceUrl))
+    && pathSpecific(sourceUrl)
+    && titleStrongMatch(row.name, row.main?.title)
+  );
+}
+
 function plausibleAreaAddress(value) {
   const s = String(value || '').normalize('NFKC').replace(/\s+/g, ' ').trim();
   if (!s || s.length > 140) return null;
@@ -77,7 +118,7 @@ function plausibleAreaAddress(value) {
 function safeHours(value) {
   const s = String(value || '').normalize('NFKC').replace(/\s+/g, ' ').trim();
   if (!s || !/\d{1,2}:\d{2}/.test(s) || s.length > 520) return null;
-  if (STALE_OR_EXCEPTION.test(s)) return null;
+  if (STALE_OR_EXCEPTION.test(s) || DATE_NOTICE.test(s)) return null;
   return s;
 }
 
@@ -86,7 +127,7 @@ function safeStructured(row) {
     (fact.types || []).some((type) => FOOD_TYPES.has(type)) && nameMatch(row.name, fact.name));
 }
 
-function pickAddress(row) {
+function pickStructuredAddress(row) {
   for (const fact of safeStructured(row)) {
     const address = plausibleAreaAddress(fact.address);
     if (address) return address;
@@ -94,14 +135,29 @@ function pickAddress(row) {
   return null;
 }
 
-function pickHours(row) {
+function pickStructuredHours(row) {
   for (const fact of safeStructured(row)) {
     if (!plausibleAreaAddress(fact.address)) continue;
     if (!Array.isArray(fact.openingHours) || !fact.openingHours.length) continue;
     const hours = safeHours(fact.openingHours.join('; '));
-    if (hours) return hours;
+    if (!hours) continue;
+    const normalized = normalizeOpeningHours(hours, []);
+    if (normalized && validateOpeningHours(normalized)) return hours;
   }
   return null;
+}
+
+function pickLocatorAddress(row) {
+  if (!trustedLocatorPage(row)) return null;
+  return plausibleAreaAddress(row.main?.visibleAddress);
+}
+
+function pickLocatorHours(row) {
+  if (!trustedLocatorPage(row)) return null;
+  const hours = safeHours(row.main?.visibleHours);
+  if (!hours) return null;
+  const normalized = normalizeOpeningHours(hours, []);
+  return normalized && validateOpeningHours(normalized) ? hours : null;
 }
 
 function cuisineFromStructured(value) {
@@ -207,6 +263,8 @@ let preservedOnFetchFailure = 0;
 let structuredAddressUpdates = 0;
 let structuredHoursUpdates = 0;
 let structuredCuisineUpdates = 0;
+let locatorAddressUpdates = 0;
+let locatorHoursUpdates = 0;
 
 for (const row of payload.results || []) {
   const current = productionById.get(row.googlePlaceId);
@@ -219,11 +277,15 @@ for (const row of payload.results || []) {
   }
 
   const canOwnAddress = !current.address || Boolean(existing?.address);
-  const canOwnHours = !current.hoursReference || Boolean(existing?.openingHoursRaw);
+  const canOwnHours = !current.openingHours || Boolean(existing?.openingHoursRaw);
   const canOwnCuisine = !current.cuisine || current.cuisine === '餐厅' || Boolean(existing?.cuisine);
 
-  const address = canOwnAddress ? pickAddress(row) : null;
-  const hours = canOwnHours ? pickHours(row) : null;
+  const structuredAddress = canOwnAddress ? pickStructuredAddress(row) : null;
+  const locatorAddress = canOwnAddress && !structuredAddress ? pickLocatorAddress(row) : null;
+  const address = structuredAddress || locatorAddress;
+  const structuredHours = canOwnHours ? pickStructuredHours(row) : null;
+  const locatorHours = canOwnHours && !structuredHours ? pickLocatorHours(row) : null;
+  const hours = structuredHours || locatorHours;
   const cuisine = canOwnCuisine ? pickCuisine(row) : null;
   const autoFields = [];
   if (address) autoFields.push('address');
@@ -247,11 +309,13 @@ for (const row of payload.results || []) {
 
   if (address) {
     record.address = address;
-    structuredAddressUpdates += 1;
+    if (structuredAddress) structuredAddressUpdates += 1;
+    else locatorAddressUpdates += 1;
   }
   if (hours) {
     record.openingHoursRaw = hours;
-    structuredHoursUpdates += 1;
+    if (structuredHours) structuredHoursUpdates += 1;
+    else locatorHoursUpdates += 1;
   }
   if (cuisine) {
     record.cuisine = cuisine;
@@ -273,9 +337,8 @@ const records = [...recordsById.values()]
 
 const lines = [
   '// Stable high-confidence official-source enrichments generated from independently fetched official pages.',
-  '// Automatic field promotion requires exact Place ID, page/name agreement and structured official evidence.',
-  '// Free-text visible addresses are review-only and are never automatically promoted.',
-  '// A temporary fetch failure preserves the previous reviewed auto-official row.',
+  '// Automatic promotion requires exact Place ID plus either matching structured data or a trusted branch locator.',
+  '// Generic free-text evidence remains review-only. Temporary fetch failure preserves previous reviewed fields.',
   'window.RESTAURANTS.push(',
   ...records.map((record, index) => {
     const props = [
@@ -305,7 +368,9 @@ const summary = {
   refreshed,
   preservedOnFetchFailure,
   structuredAddressUpdates,
+  locatorAddressUpdates,
   structuredHoursUpdates,
+  locatorHoursUpdates,
   structuredCuisineUpdates,
   invalidExistingAddressRemoved,
   address: records.filter((row) => row.address).length,
