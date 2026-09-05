@@ -6,6 +6,7 @@ on:
       - accelerate-locator-templates
     paths:
       - 'scripts/build_locator_template_fields.mjs'
+      - 'scripts/filter_locator_resolution_conflicts.mjs'
       - '.github/workflows/promote-locator-templates.yml'
   workflow_dispatch:
 
@@ -45,6 +46,9 @@ jobs:
             data/official_candidate_index.json \
             data/source_enrichment_zzlocatorauto.js \
             | tee _audit/locator-template-summary.json
+          node scripts/filter_locator_resolution_conflicts.mjs \
+            data/source_enrichment_zzlocatorauto.js \
+            | tee _audit/locator-resolution-filter.json
       - name: Rebuild and audit promoted fields
         run: |
           set -o pipefail
