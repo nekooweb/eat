@@ -8,10 +8,18 @@
     './voice/2.mp3'
   ];
   const MAX_VOICE_MS = 2000;
+  const mascotPlacements = [
+    'mascot-top-left',
+    'mascot-top-center',
+    'mascot-top-right',
+    'mascot-side-left',
+    'mascot-side-right'
+  ];
 
   let currentAudio = null;
   let voiceStopTimer = null;
   let mascotTimer = null;
+  let lastMascotPlacement = null;
 
   function randomVoice() {
     if (!voices.length) return null;
@@ -58,10 +66,21 @@
     });
   }
 
+  function chooseMascotPlacement() {
+    if (!mascotPlacements.length) return null;
+    const choices = mascotPlacements.filter((placement) => placement !== lastMascotPlacement);
+    const pool = choices.length ? choices : mascotPlacements;
+    const placement = pool[Math.floor(Math.random() * pool.length)];
+    lastMascotPlacement = placement;
+    return placement;
+  }
+
   function showMascot() {
     if (!mascot) return;
     clearTimeout(mascotTimer);
-    mascot.classList.remove('is-popping');
+    mascot.classList.remove('is-popping', ...mascotPlacements);
+    const placement = chooseMascotPlacement();
+    if (placement) mascot.classList.add(placement);
     void mascot.offsetWidth;
     mascot.classList.add('is-popping');
     mascotTimer = setTimeout(() => mascot.classList.remove('is-popping'), 1900);
