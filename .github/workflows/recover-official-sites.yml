@@ -1,11 +1,6 @@
 name: Recover failed official sites under cost cap
 
 on:
-  push:
-    branches: ["bulk-enrichment-under-2usd"]
-    paths:
-      - 'scripts/recover_failed_official_sites.mjs'
-      - '.github/workflows/recover-official-sites.yml'
   workflow_dispatch:
 
 permissions:
@@ -18,8 +13,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          ref: bulk-enrichment-under-2usd
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
@@ -65,6 +58,8 @@ jobs:
         env:
           AUTO_OFFICIAL_CHECKED_AT: '2026-09-06'
         run: |
+          rm -f data/source_enrichment_autoofficial.js
+          node scripts/build_production_dataset.mjs >/tmp/baseline-without-autoofficial.json
           node scripts/build_auto_official_enrichment.mjs \
             _audit/official_index_field_candidates.json \
             data/source_enrichment_autoofficial.js \
@@ -92,8 +87,5 @@ jobs:
             echo 'No recovered data changes.'
           else
             git commit -m 'Recover failed official site sources under cost cap'
-            if ! git push origin HEAD:bulk-enrichment-under-2usd; then
-              git pull --rebase origin bulk-enrichment-under-2usd
-              git push origin HEAD:bulk-enrichment-under-2usd
-            fi
+            git push
           fi
