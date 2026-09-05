@@ -1,0 +1,72 @@
+.generate-wrap {
+  position: relative;
+  margin: 2px 0 14px;
+  isolation: isolate;
+}
+
+.generate-wrap .generate {
+  position: relative;
+  z-index: 2;
+  margin: 0;
+}
+
+.generate-mascot {
+  position: absolute;
+  z-index: 1;
+  top: -58px;
+  right: 18px;
+  width: clamp(78px, 14vw, 118px);
+  height: auto;
+  pointer-events: none;
+  user-select: none;
+  opacity: 0;
+  transform: translateY(42px) rotate(7deg) scale(.82);
+  transform-origin: 70% 100%;
+  filter: drop-shadow(0 5px 8px rgba(0, 0, 0, .14));
+}
+
+.generate-mascot.is-popping {
+  animation: mascot-pop 1.9s cubic-bezier(.22, .8, .24, 1) both;
+}
+
+@keyframes mascot-pop {
+  0% {
+    opacity: 0;
+    transform: translateY(42px) rotate(7deg) scale(.82);
+  }
+  20% {
+    opacity: 1;
+    transform: translateY(0) rotate(-4deg) scale(1.04);
+  }
+  34% {
+    opacity: 1;
+    transform: translateY(-4px) rotate(3deg) scale(1);
+  }
+  72% {
+    opacity: 1;
+    transform: translateY(0) rotate(-2deg) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(34px) rotate(6deg) scale(.9);
+  }
+}
+
+@media (max-width: 560px) {
+  .generate-mascot {
+    top: -48px;
+    right: 10px;
+    width: 84px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .generate-mascot.is-popping {
+    animation: mascot-fade 1.2s ease both;
+  }
+}
+
+@keyframes mascot-fade {
+  0%, 100% { opacity: 0; }
+  20%, 75% { opacity: 1; }
+}
