@@ -14,13 +14,14 @@ Current public scope:
 - optional cuisine exclusion;
 - optional budget filter only when enough budget metadata exists;
 - 300 m / 500 m / 800 m / 1.2 km distance choices;
-- exactly three randomized proposals whenever at least three entities satisfy the current constraints.
+- exactly three randomized proposals whenever at least three entities satisfy the current constraints;
+- spatial overview, per-store map context and direct three-store comparison for each result set.
 
 Future areas/profiles are not exposed as clickable UI until their production datasets exist.
 
 ## Architecture in one sentence
 
-**Independent restaurant metadata + Google Place ID verification -> deploy-time canonical dataset -> static browser filtering/randomization/cards.**
+**Independent restaurant metadata + Google Place ID verification -> deploy-time canonical dataset -> static browser filtering/randomization/visualization.**
 
 There is no runtime application server, runtime database or visitor-time Places API request.
 
@@ -29,11 +30,12 @@ There is no runtime application server, runtime database or visitor-time Places 
 - static HTML;
 - CSS;
 - vanilla JavaScript;
+- Leaflet + OpenStreetMap tiles for result maps;
 - one generated canonical restaurant dataset;
 - direct Google Maps navigation links;
 - GitHub Pages hosting.
 
-The browser does not perform source matching and does not load raw OSM/Tabelog/Google maintenance files.
+The browser does not perform source matching and does not load raw OSM/Tabelog/Google maintenance files. Leaflet only visualizes independently maintained coordinates that are already present in the canonical dataset.
 
 ## Maintenance/data stack
 
@@ -82,9 +84,9 @@ Distance pools:
 - <=800 m: 262;
 - <=1,200 m: 262.
 
-The currently verified half-pool is concentrated in nearer source rows; broader 800-1,200 m coverage remains a measured future data task.
+The original half-pool was concentrated in nearer source rows; future half-mode verification now uses distance-balanced sampling so the same bias is not repeated.
 
-Historical Google-first discovery produced 1,613 unique Area1 Place IDs. That result is now stored as a Place-ID-only coverage inventory rather than a full Google Places browser dataset.
+Historical Google-first discovery produced 1,613 unique Area1 Place IDs. That result is stored as a Place-ID-only coverage inventory rather than a full Google Places browser dataset.
 
 ## User-facing behavior
 
@@ -103,31 +105,28 @@ Separate enable/disable switches are intentionally not used because they duplica
 - no rating/review-count popularity ranking.
 
 ### Results
-Each result is one compact card containing only known/useful information:
-- name;
-- cuisine;
-- distance;
-- known budget/dishes/opening information when available;
-- 百名店 badge when applicable;
-- Google Maps link using the Place ID.
+A successful result intentionally has complementary views rather than a card-only layout:
 
-Removed as unnecessary duplication:
-- Leaflet overview map;
-- per-store embedded maps;
-- separate comparison table;
-- generic `verified` badge on every card;
-- repeated missing-data placeholders.
+1. **Three-store overview map** — Leaflet/OpenStreetMap, numbered 1–3, showing where the three generated choices sit relative to one another.
+2. **Three restaurant cards** — name, cuisine, distance, known metadata, 百名店 badge, a small per-store Leaflet map and direct Google Maps navigation.
+3. **Three-store comparison table** — cuisine, distance, budget, dishes, schedule/holiday data and 百名店 status in one horizontal comparison.
+4. **Google Maps business link** — verified Place-ID-based navigation/business lookup remains separate from the OSM visualization layer.
+
+The Leaflet maps use canonical independent coordinates, not transient Google Places response coordinates.
 
 ## Repository map
 
 ### Public frontend
-- `index.html` — current Area1 scope, filters, result container, attribution/legal links.
-- `styles.css` — mobile-first yellow/white UI and cards.
-- `app.js` — filtering, weighted random selection and rendering only.
+- `index.html` — current Area1 scope, filters, Leaflet dependency, result container, attribution/legal links.
+- `styles.css` — mobile-first yellow/white UI, cards, maps and comparison layout.
+- `app.js` — filtering, weighted random selection, map rendering and result comparison.
 
-Public runtime JavaScript dependencies are exactly:
-1. `data/production_area1.js` — generated during build;
-2. `app.js`.
+Public application runtime includes:
+1. Leaflet as the map presentation library;
+2. `data/production_area1.js` — generated during build;
+3. `app.js`.
+
+Only the latter two are local application JavaScript/data dependencies.
 
 ### Maintenance data
 - `data/restaurants.js` — early curated records;
@@ -147,7 +146,7 @@ These maintenance files are not directly published as runtime data.
 - `scripts/discover_google_area1.py` — Place-ID-only Google coverage discovery;
 - `scripts/migrate_google_inventory.py` — one-time legacy full Places -> ID-only migration;
 - `scripts/build_production_dataset.mjs` — canonical one-Place-ID-per-entity build;
-- `scripts/audit_repository.mjs` — blocking integrity/runtime-complexity checks;
+- `scripts/audit_repository.mjs` — blocking integrity/runtime contract checks;
 - `scripts/coverage_report.mjs` — coverage/completeness diagnostics.
 
 ### GitHub Actions
@@ -169,7 +168,8 @@ CI blocks release when:
 - a production distance is outside 1.2 km;
 - forbidden persisted Google Places response fields reappear in canonical browser data;
 - raw maintenance overlays are loaded by the public page;
-- Leaflet/iframe result-map layers reappear;
+- the Leaflet overview map, per-store maps or three-store comparison table disappears;
+- an iframe-map implementation is introduced;
 - redundant filter toggle state or the generic verification badge reappears;
 - required Google Maps/OpenStreetMap attribution disappears.
 
@@ -191,12 +191,14 @@ Priority when information conflicts:
 
 ## Next work
 
-The architecture/runtime review is complete. The next useful work is data quality rather than adding more browser logic:
+The current map/comparison result structure is required product behavior. Further logic changes should build on it rather than remove it as generic duplication.
+
+Remaining data priorities include:
 1. lunch/dinner budget enrichment;
 2. representative dishes;
 3. opening hours / regular holidays;
 4. Place-ID-centric Tabelog and 百名店 branch audit;
 5. cuisine normalization for generic `餐厅` rows;
-6. distance-balanced verification of remaining outer-ring candidates only if broader practical 1.2 km coverage is needed.
+6. broader outer-ring verification only if practical 1.2 km coverage needs expansion.
 
 Do not rerun the full Google coverage discovery merely to improve source verification; the 1,613-ID identity inventory is already preserved.
