@@ -73,5 +73,8 @@ jobs:
             echo 'No generated data changes.'
           else
             git commit -m 'Promote bulk official source fields'
-            git push origin HEAD:bulk-enrichment-under-2usd
+            if ! git push origin HEAD:bulk-enrichment-under-2usd; then
+              git pull --rebase origin bulk-enrichment-under-2usd
+              git push origin HEAD:bulk-enrichment-under-2usd
+            fi
           fi
