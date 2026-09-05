@@ -7,7 +7,7 @@
 
 window.SOURCE_RESOLUTIONS = [
   {
-    googlePlaceId: 'ChIJjSI8ARGMGGARkjGDVK4O_5g',
+    googlePlaceId: 'ChIJpRYOHUWNGGAR-hMMND46JMs',
     name: 'キッチン グラン',
     status: 'listing_hold',
     reason: 'Tabelog currently marks the restaurant as 掲載保留 because its operating status cannot be confirmed; do not use the listing as a current factual enrichment source.',
