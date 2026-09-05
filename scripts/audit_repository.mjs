@@ -19,6 +19,7 @@ const enrichmentFiles = fs.readdirSync(DATA)
 
 const index = read('index.html');
 const app = read('app.js');
+const effects = read('effects.js');
 const productionSource = read('data/production_area1.js');
 
 if (!/leaflet@1\.9\.4/i.test(index)) fail('Leaflet 1.9.4 is not loaded by the public page');
@@ -36,12 +37,31 @@ if (/area1_google(?:_places)?\.(?:js|json)/i.test(index)) fail('legacy Google di
 if (/google_entities(?:\.generated)?\.js/i.test(index)) fail('maintenance overlays are public runtime dependencies');
 if (!/data\/production_area1\.js/.test(index)) fail('canonical production dataset is not loaded');
 
+const requiredEffectAssets = [
+  'effects.js',
+  'effects.css',
+  'voice/1.mp3',
+  'voice/2.mp3',
+  'image/YahaUsagi.webp'
+];
+for (const relativePath of requiredEffectAssets) {
+  if (!fs.existsSync(path.join(ROOT, relativePath))) fail(`missing public effect asset: ${relativePath}`);
+}
+if (!/effects\.css/.test(index)) fail('effect stylesheet is not loaded');
+if (!/effects\.js/.test(index)) fail('effect runtime is not loaded');
+if (!/YahaUsagi\.webp/.test(index)) fail('generate-button mascot is not wired into the page');
+if (!/voice\/1\.mp3/.test(effects) || !/voice\/2\.mp3/.test(effects)) {
+  fail('configured random voice assets are missing from effects.js');
+}
+if (!/MAX_VOICE_MS\s*=\s*2000/.test(effects)) fail('voice playback cap must remain 2000 ms');
+
 const scriptSources = [...index.matchAll(/<script[^>]+src="([^"]+)"/gi)].map((match) => match[1]);
 const localRuntimeScripts = scriptSources.filter((source) => source.startsWith('./'));
-if (localRuntimeScripts.length !== 2
+if (localRuntimeScripts.length !== 3
   || !localRuntimeScripts.some((source) => source.includes('production_area1.js'))
-  || !localRuntimeScripts.some((source) => source.includes('app.js'))) {
-  fail('public local runtime should load exactly canonical production data + app.js');
+  || !localRuntimeScripts.some((source) => source.includes('app.js'))
+  || !localRuntimeScripts.some((source) => source.includes('effects.js'))) {
+  fail('public local runtime should load canonical production data + app.js + effects.js');
 }
 
 if (/data-filter-toggle|filterEnabled/.test(index + app)) fail('redundant filter enable/disable state reappeared');
@@ -148,6 +168,7 @@ if (!process.exitCode) {
     enrichmentShards: enrichmentFiles.length,
     enrichmentRecords: enrichmentRows.length,
     awards: stats.awards,
-    resultViews: ['overview-map', 'google-store-maps-with-leaflet-fallback', 'comparison-table']
+    resultViews: ['overview-map', 'google-store-maps-with-leaflet-fallback', 'comparison-table'],
+    uiFeedback: ['random-voice-max-2s', 'button-edge-mascot']
   }));
 }
