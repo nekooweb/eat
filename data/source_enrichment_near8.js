@@ -4,21 +4,21 @@
 window.RESTAURANTS.push(
   {
     id:'src-tabelog-jinbo', profile:'TOKYO', area:'地区1️⃣',
-    name:'神房', googlePlaceId:'ChIJ18cIESmMGGARdyKC7pTJdVo',
+    name:'神房', googlePlaceId:'ChIJ18cV4xOMGGARjNGyZdh33Ik',
     source:'Tabelog', sourceOnly:true, cuisine:'海鲜', tags:['海鲜','居酒屋'],
     lunch:[1000,1999], dinner:[4000,4999], closedDays:['土','日','祝'], closedNote:null,
     sourceRefs:[{provider:'Tabelog',url:'https://tabelog.com/tokyo/A1310/A131003/13218314/',checkedAt:'2026-09-05',fields:['name','cuisine','budget','closure']}]
   },
   {
     id:'src-tabelog-kingken-jimbocho', profile:'TOKYO', area:'地区1️⃣',
-    name:'キング軒 神保町店', googlePlaceId:'ChIJ5xWMBBGMGGARaRGMopzpob8',
+    name:'キング軒 神保町店', googlePlaceId:'ChIJ5xWMolyNGGARAMCqKahm6eE',
     source:'Tabelog', sourceOnly:true, cuisine:'中华', tags:['中华','汁なし担担麺'],
     lunch:[0,999], dinner:[0,999],
     sourceRefs:[{provider:'Tabelog',url:'https://tabelog.com/tokyo/A1310/A131003/13197662/',checkedAt:'2026-09-05',fields:['name','cuisine','budget']}]
   },
   {
     id:'src-tabelog-front-du-chaton', profile:'TOKYO', area:'地区1️⃣',
-    name:'Front du CHATON', googlePlaceId:'ChIJOeeSQCeNGGARsH-bXAvwECU',
+    name:'Front du CHATON', googlePlaceId:'ChIJOeeMRyuNGGARKnRqvu0io-E',
     source:'Tabelog', sourceOnly:true, cuisine:'甜品', tags:['甜品','咖啡'],
     lunch:[1000,1999], dinner:null,
     openingHoursRaw:'月–金 11:30–17:00', closedDays:['土','日','祝'], closedNote:null,
@@ -26,7 +26,7 @@ window.RESTAURANTS.push(
   },
   {
     id:'src-official-doutor-jimbocho-hakusan', profile:'TOKYO', area:'地区1️⃣',
-    name:'ドトールコーヒーショップ 神保町白山通り店', googlePlaceId:'ChIJb1NJMlWNGGARXwVni7dS-q4',
+    name:'ドトールコーヒーショップ 神保町白山通り店', googlePlaceId:'ChIJb1NJHRSMGGARQHQ71gBl4Dg',
     source:'official', sourceOnly:true, cuisine:'咖啡', tags:['咖啡'],
     openingHoursRaw:'月–金 07:00–20:00; 日祝 08:00–18:00',
     closedDays:['土'], closedNote:null,
@@ -34,14 +34,14 @@ window.RESTAURANTS.push(
   },
   {
     id:'src-tabelog-bistro-liberte', profile:'TOKYO', area:'地区1️⃣',
-    name:'Bistro Liberté', googlePlaceId:'ChIJbTOaERGMGGARMP5wquqbRSU',
+    name:'Bistro Liberté', googlePlaceId:'ChIJbTOaERGMGGARRbVxba8mOck',
     source:'Tabelog', sourceOnly:true, cuisine:'法餐', tags:['法餐','ビストロ'],
     lunch:[0,999], dinner:[3000,3999],
     sourceRefs:[{provider:'Tabelog',url:'https://tabelog.com/tokyo/A1310/A131003/13286582/',checkedAt:'2026-09-05',fields:['name','cuisine','budget']}]
   },
   {
     id:'src-official-tullys-jimbocho', profile:'TOKYO', area:'地区1️⃣',
-    name:'タリーズコーヒー 神保町店', googlePlaceId:'ChIJH8GYZt-NGGARtvcEAqNyxbk',
+    name:'タリーズコーヒー 神保町店', googlePlaceId:'ChIJH8GYiROMGGARAjxscGAOoIA',
     source:'official', sourceOnly:true, cuisine:'咖啡', tags:['咖啡'],
     openingHoursRaw:'月–金 07:00–20:00; 土 08:00–19:00; 日 09:00–19:00',
     closedDays:[], closedNote:null,
@@ -57,7 +57,7 @@ window.RESTAURANTS.push(
   },
   {
     id:'src-tabelog-kissako', profile:'TOKYO', area:'地区1️⃣',
-    name:'きっさこ', googlePlaceId:'ChIJ93J8IxSMGGARFrVZZEkDzcM',
+    name:'きっさこ', googlePlaceId:'ChIJ93J8IxSMGGARFrVeeNZYq-g',
     source:'Tabelog', sourceOnly:true, cuisine:'咖啡', tags:['咖啡','喫茶店'],
     lunch:[0,999], dinner:null,
     openingHoursRaw:'火–金 12:00–17:00; 土日祝 12:00–18:00',
@@ -75,14 +75,14 @@ window.RESTAURANTS.push(
   },
   {
     id:'src-tabelog-nibantei', profile:'TOKYO', area:'地区1️⃣',
-    name:'日本式カレー 弐番亭', googlePlaceId:'ChIJNeiCISGMGGAR3UkXLaEmWgE',
+    name:'日本式カレー 弐番亭', googlePlaceId:'ChIJNeiJsjqNGGARUwCL2ZS0u34',
     source:'Tabelog', sourceOnly:true, cuisine:'咖喱', tags:['咖喱','炸猪排'],
     lunch:[1000,1999], dinner:[1000,1999], closedDays:['土','日','祝'], closedNote:null,
     sourceRefs:[{provider:'Tabelog',url:'https://tabelog.com/tokyo/A1310/A131003/13309507/',checkedAt:'2026-09-05',fields:['name','cuisine','budget','closure']}]
   },
   {
     id:'src-official-pharos-coffee', profile:'TOKYO', area:'地区1️⃣',
-    name:'Pharos Coffee', googlePlaceId:'ChIJgaPNIHuNGGAR6FgGwNDM8K8',
+    name:'Pharos Coffee', googlePlaceId:'ChIJgaPNVhCMGGARILh-OhDkTn8',
     source:'official', sourceOnly:true, cuisine:'咖啡', tags:['咖啡'],
     openingHoursRaw:'11:00–18:00', closedDays:[], closedNote:'不定休',
     sourceRefs:[{provider:'official',url:'https://pharoscoffee.com/zh/policies/legal-notice',checkedAt:'2026-09-05',fields:['name','cuisine','hours','closure']}]
