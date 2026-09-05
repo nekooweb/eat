@@ -4,15 +4,13 @@ Updated: 2026-09-06
 
 ## Current milestone
 
-`TOKYO / 地区1️⃣` is in **bulk source/field completion**.
+`TOKYO / 地区1️⃣` is in **bulk source/field completion and runtime-field normalization**.
 
-The product/runtime layer is already usable. The current work is data quality and coverage: identify exact branch sources, fill durable factual fields conservatively, and keep Google Places usage as a bounded identity/discovery aid rather than the long-lived restaurant database.
-
-The project now has a repeatable bulk path instead of a one-restaurant-at-a-time search loop.
+The product/runtime layer is usable. Current work is focused on durable source coverage, filter-ready opening hours, representative/featured dishes, budget, address and cuisine quality. Missing or ambiguous values are intentionally omitted rather than fabricated.
 
 ## Current audited production state
 
-Latest validated bulk build after the 2026-09-06 acceleration pass:
+Latest validated PR #6 build:
 
 - exact in-scope Google food-business identity inventory: **2,804 / 2,804**;
 - OSM independent-source candidates: **1,273**;
@@ -26,9 +24,10 @@ Latest validated bulk build after the 2026-09-06 acceleration pass:
 - non-generic cuisine: **571 / 648**;
 - budget known: **192 / 648**;
 - address known: **261 / 648**;
-- reference hours/holiday information: **304 / 648**;
-- reviewed Chinese recommendations: **27 / 648**;
-- legacy representative dishes: **72 / 648**;
+- normalized filterable opening hours: **273 / 648**;
+- strict reviewed Chinese recommendations: **27 / 648**;
+- public featured/representative dishes: **84 / 648**;
+- legacy representative-dish source data: **72 / 648**;
 - 百名店: **22**.
 
 Distance pools remain:
@@ -38,128 +37,112 @@ Distance pools remain:
 - <=800 m: 359;
 - <=1,200 m: 648.
 
-## What “full data” means
+## Completion levels
 
-Three different completion levels must not be conflated:
+Three levels remain separate:
 
-1. **Exact Google identity inventory — complete.** `data/area1_google_ids.json` contains 2,804 / 2,804 in-scope operational food-business Place IDs inside the strict 1.2 km Area1 circle.
-2. **Current canonical production — 648 entities.** These have independently maintained geospatial/source identities that passed Google identity QC and are safe for the public recommendation pool.
-3. **Full-information completion — still in progress.** Exact-inventory IDs without a verified independent-source identity remain **2,161**. Current production also still has field gaps.
+1. **Exact Google identity inventory — complete.** `data/area1_google_ids.json` contains 2,804 / 2,804 in-scope food-business Place IDs inside the strict 1.2 km Area1 circle.
+2. **Current canonical production — 648 entities.** These identities have independently maintained geospatial/source evidence and passed Google identity QC.
+3. **Full-information completion — still in progress.** Exact-inventory IDs without verified independent-source identity remain **2,161**. Current production also still has field gaps.
 
-A Google Place ID in the exact inventory is not automatically promoted into production. Expanding 2,804 identities into a durable public database requires an independent source identity and cannot be achieved safely by persisting Google Places display payloads.
+A Google Place ID in the exact inventory is not automatically promoted into production. Expansion to a durable public database continues to require independent-source identity evidence.
 
-## 2026-09-06 accelerated bulk acquisition pass
+## Opening-hours normalization — 2026-09-06
 
-### Result
+The former schedule field was descriptive prose and was not reliable enough for future open/closed filtering. The canonical runtime now uses a normalized structure documented in `DATA_SCHEMA.md`.
 
-This pass replaced most manual source discovery with a staged bulk workflow.
+Example:
 
-Starting point:
+```js
+openingHours: {
+  timezone: 'Asia/Tokyo',
+  days: {
+    mon: [['11:30', '14:00'], ['17:00', '23:00']],
+    tue: [['11:30', '14:00'], ['17:00', '23:00']],
+    wed: []
+  }
+}
+```
 
-- source-backed: 356;
-- source outcomes: 400;
-- unresolved: 248;
-- address: 207;
-- reference hours: 302;
-- non-generic cuisine: 568;
-- strict recommendations: 10.
+Semantics:
 
-Final audited result:
+- missing day key = schedule unknown for that day;
+- `[]` = explicitly closed;
+- time pairs = known opening periods;
+- close times may extend beyond midnight;
+- timezone is `Asia/Tokyo`.
 
-- source-backed: **396** (+40);
-- source outcomes: **440** (+40);
-- unresolved: **208** (-40);
-- address: **261** (+54);
-- reference hours: **304** (+2, structured evidence only);
-- non-generic cuisine: **571** (+3, structured evidence only);
-- strict recommendations: **27** (+17).
+The old descriptive schedule/reference count was **304**. After normalization and conservative review, **273** restaurants have filter-ready weekly hours. The remaining **31** old schedule references were deliberately not promoted because they were prose-only, reservation-only, irregular, calendar/SNS-dependent, or otherwise unsafe to interpret as a weekly schedule.
 
-All canonical build, repository audit, source-binding audit and normalized-field audit checks passed.
+Raw maintenance fields such as `openingHoursRaw`, `closedDays`, and `closedNote` remain in source shards for provenance but are forbidden from leaking into canonical production. `hoursReference` is now only a Chinese display string generated from normalized `openingHours`; if no normalized schedule exists, neither field is emitted.
 
-### Reusable official-site index
+A bare time interval such as `11:00–20:00` is not assumed to mean seven-day opening. It is expanded only when the same maintained source provides exact regular closed days or explicitly states no regular closure. `不定休` does not become a weekly schedule.
 
-`data/official_candidate_index.json` is now a reusable maintenance index of independently fetched official pages.
+Parser tests cover Japanese and English weekday ranges, compact weekend/holiday forms, split lunch/dinner periods, L.O. text, exact closed days, `無休`, dayless hours and irregular schedules. Current test suite: **9 / 9 pass**.
 
-Current index:
+## Featured dishes — 2026-09-06
 
-- records: **187**;
-- latest zero-Google refetch: 186 pages fetched successfully;
-- canonical-name matched: 161;
-- pages with structured facts: 83;
-- pages with visible Area1 address signals: 148;
-- pages with recommendation signals: 126;
-- same-host menu links are retained where useful.
+The data model now separates two concepts:
 
-The index stores the **final URL returned by the website fetch**, not the Google Places `websiteUri` response field. This allows future field extraction runs to re-fetch official pages without repeating Places calls.
+- `recommendedDishes`: strict source-explicit recommendations/popular/signature items;
+- `featuredDishes`: the public broader field containing strict recommendations plus source-backed representative dishes.
 
-### Conservative automatic official enrichment
+Strict recommendation coverage remains **27 restaurants**. It was not loosened.
 
-Generated shard:
+This pass added **57** reviewed Chinese representative-dish rows from existing maintained dish claims. Every added `featuredDishes` record is exact-Place-ID keyed and its source URL must already be registered as a `dishes` field claim for the same Place ID; the canonical builder rejects unsupported rows.
 
-- `data/source_enrichment_autoofficial.js`.
+Result:
 
-Latest full generation contains:
+- public featured-dish coverage: **84 / 648**;
+- source-backed legacy dish rows: **64**;
+- source-backed legacy dish rows with reviewed Chinese featured output: **64 / 64**;
+- remaining conversion gap inside that already-sourced legacy subset: **0**.
 
-- 74 exact-Place-ID official enrichment rows;
-- 54 new address claims;
-- 2 opening-hours claims;
-- 3 cuisine claims;
-- 19 branch-specific name/source-only bindings.
+`featuredDishes` stores structured objects with Chinese name, Japanese source name and semantic kind (`recommended`, `signature`, or `representative`). Optional `priceYen` / `priceText` fields are reserved for directly supported menu prices. Restaurant-level budget must never be reused as a dish price.
 
-Safety rules:
+The browser now labels the broader public field as **特色菜**. Missing featured dishes are simply omitted.
 
-- source-resolution conflicts are skipped;
-- an auto row attaches only to an already verified production Place ID;
-- free-text historical announcements are **not** promoted as current opening hours;
-- current hours require matching structured data (JSON-LD/opening-hours object) tied to an Area1 address;
-- cuisine auto-promotion requires matching structured `servesCuisine`-type evidence;
-- visible addresses are accepted only after the official page is already tied to the exact Place ID, the page matches the canonical restaurant name, the address is in Area1 (`千代田区` / `文京区`), and the canonical name is non-trivial;
-- generated enrichment is always rebuilt from a baseline that excludes the prior auto shard, preventing self-referential pruning.
+## Remaining field gaps among usable-source restaurants
 
-### Reviewed recommendations
+Among the **396** production restaurants that already have a usable Tabelog/official source, the current enrichment queue contains overlapping gaps:
 
-`data/recommended_dishes.js` is exact-Place-ID keyed and intentionally sparse.
+- `featuredDishes`: **314**;
+- normalized `openingHours`: **161**;
+- budget: **204**;
+- address: **169**;
+- cuisine: **27**.
 
-A recommendation is written only when the reviewed source explicitly identifies a concrete item as recommended, popular, signature, specialty, famous/名物, 看板, 自慢 or equivalent. Generic menu items and old representative-dish data are not promoted automatically.
+These rows are the next field-completion priority because their identities/sources are already established. Tabelog pages are not bulk-crawled from GitHub-hosted runners because they return 403; automated work prioritizes official restaurant/brand sites and already-reviewed Tabelog facts.
 
-Current reviewed recommendation coverage: **27 restaurants**.
+## 2026-09-06 accelerated bulk source pass
 
-Examples added in this pass include Thai suki, 大金星's signature yakisoba, 川府's Peking duck / dandan knife-cut noodles, folk burgers' popular burgers, ベト屋's pho, 漢陽楼's lion's-head meatball and 淡路坂珈琲's shrimp-and-egg sandwich.
+The preceding bulk pass replaced much of the one-restaurant-at-a-time source discovery loop with reusable official-site indexing.
+
+Starting point -> audited result:
+
+- source-backed: **356 -> 396**;
+- source outcomes: **400 -> 440**;
+- unresolved: **248 -> 208**;
+- address: **207 -> 261**;
+- non-generic cuisine: **568 -> 571**;
+- strict recommendations: **10 -> 27**.
+
+`data/official_candidate_index.json` currently keeps **187** independently fetched official website URLs. Routine re-fetch/extraction of those URLs requires zero Google Places calls.
+
+Generated `data/source_enrichment_autoofficial.js` contains conservative exact-Place-ID official claims. Historical announcements and unstructured free-text hours are not automatically promoted into current filterable schedules.
 
 ## Google API cost control
 
-The existing `GOOGLE_MAP_API` remains the single project key.
+The cost-sensitive official-site recovery pass made exactly **100** Place Details requests using the Enterprise `websiteUri` field mask. At the list-price marginal rate used for the project budget calculation, the conservative worst-case exposure was **USD 2.00**; actual billing may be lower if monthly free-tier quota remained.
 
-### This pass
+That pass recovered 24 additional independently fetched official URLs, including 18 previously unresolved production identities, and expanded the reusable independent official index from 163 to 187.
 
-The cost-sensitive recovery job made exactly **100** Place Details requests using the Enterprise `websiteUri` field mask. At the current list-price marginal rate of USD 20 / 1,000 requests, the **worst-case billable exposure is USD 2.00**.
+Guardrails remain:
 
-Actual billing may be lower or zero if the account still has unused monthly free-tier quota; repository Actions cannot see the billing account, so project reporting uses the conservative worst-case figure.
-
-The recovery produced:
-
-- 24 additional independently fetched usable official-site URLs;
-- 18 of those belonged to previously unresolved current-production identities;
-- official index expanded from 163 to 187.
-
-### Guardrails
-
-- no further paid Google discovery was run after reaching the USD 2 worst-case cap;
-- `.github/workflows/recover-official-sites.yml` is now **manual-dispatch only**;
-- the generic official discovery workflow defaults to a bounded request batch instead of unlimited discovery;
-- routine official-index extraction uses only persisted independent HTTPS website URLs and makes **zero Google API calls**;
-- Maps Embed is separate from the maintenance discovery loop and remains the per-store result map with Leaflet fallback.
-
-## Tabelog bulk extraction result
-
-A bulk extractor for already-bound Tabelog URLs was implemented, but GitHub-hosted Actions received HTTP 403 for **211 / 211** tested bound pages.
-
-Therefore:
-
-- no anti-bot bypass is used;
-- the Tabelog extractor is diagnostic/manual only;
-- current automated bulk completion prioritizes restaurant/brand official sites;
-- existing reviewed Tabelog records remain valid durable sources and are not removed.
+- no further paid discovery is triggered by ordinary commits;
+- paid recovery is manual-dispatch only;
+- ordinary official-index extraction uses persisted independent HTTPS URLs and makes zero Google Places calls;
+- the normalized-hours/featured-dish pass makes **no new Google Places calls**.
 
 ## Runtime/product contract
 
@@ -174,15 +157,15 @@ The public site remains static GitHub Pages:
 - 百名店 weight 2.2 vs ordinary 1.0;
 - no rating/review-count popularity ranking.
 
-Result views:
+Result views remain:
 
 1. three-store overview: Leaflet + OpenStreetMap;
-2. one per-store Google Maps Embed place map using verified Place ID, with Leaflet fallback;
-3. three restaurant cards;
+2. per-store Google Maps Embed place map using verified Place ID, with Leaflet fallback;
+3. restaurant cards;
 4. three-store comparison table;
-5. direct Google Maps navigation/business link.
+5. direct Google Maps business/navigation link.
 
-Opening/holiday information remains descriptive only; it does not yet implement a reliable “open now” exclusion.
+Open-now filtering is still **not enabled yet**. The backend is now structurally ready, but the remaining 161 usable-source schedule gaps should be reduced before missing-day semantics are turned into a user-facing filter.
 
 ## Data pipeline
 
@@ -190,7 +173,7 @@ Opening/holiday information remains descriptive only; it does not yet implement 
 OSM / curated independent candidates
           |
           v
-Google identity QC ----> exact Google ID inventory (coverage audit)
+Google identity QC ----> exact Google ID inventory
           |
     verified Place ID
           |
@@ -204,9 +187,14 @@ reviewed Tabelog/official source    official candidate index
           +-----------+-------------------+
                       v
               source_enrichment*.js
-                      +
-              reviewed recommendations
+                 + raw source evidence
                       |
+        +-------------+-------------+
+        |                           |
+        v                           v
+normalized openingHours      reviewed featured dishes
+        |                           |
+        +-------------+-------------+
                       v
           build_production_dataset.mjs
                       |
@@ -217,50 +205,25 @@ reviewed Tabelog/official source    official candidate index
                     browser
 ```
 
-The browser never performs source matching or source enrichment.
+The browser does not perform source matching or enrichment.
 
 ## Ordered next work
 
-### Priority 1 — remaining 208 current-production source outcomes
-
-Continue exact Place-ID source reconciliation, prioritizing official pages already discoverable without new paid Google requests. Ambiguous branches stay unresolved rather than being force-bound.
-
-### Priority 2 — field completion for 648 production rows
-
-Largest remaining gaps:
-
-- budget: 192 known / 456 missing;
-- reference hours: 304 known / 344 missing;
-- address: 261 known / 387 missing;
-- non-generic cuisine: 571 known / 77 generic;
-- explicit recommendation: 27 known / unknown by design for the remainder.
-
-Recommendations should remain sparse; no target percentage is required if sources do not make a recommendation claim.
-
-### Priority 3 — exact-inventory expansion
-
-2,161 exact Google inventory IDs still lack a verified independent-source identity. This is the long-term expansion queue.
-
-Do not spend large Places quotas or persist full Google Details responses merely to inflate production count. Expansion should proceed in bounded batches when an independent OSM/official/Tabelog identity can be established.
-
-### Priority 4 — opening/holiday exclusion
-
-Implement only after schedule semantics and coverage are strong enough to avoid systematically excluding restaurants with missing or stale data.
-
-### Priority 5 — future scopes
-
-- TOKYO / 地区2️⃣;
-- SHIZUOKA;
-- optional local recommendation history after persistence/privacy semantics are defined.
+1. **Complete the 161 normalized opening-hours gaps with existing usable sources**, prioritizing official chain/store pages and explicit weekly schedules.
+2. **Expand featured dishes beyond the first 84 rows**, prioritizing official menu/signature pages. Preserve `representative` vs `recommended` semantics and add prices only when directly supported.
+3. Continue budget/address/cuisine extraction for the 396 usable-source restaurants.
+4. Continue the 208 unresolved current-production source outcomes without weakening identity rules.
+5. Expand the 2,161 exact-inventory IDs only when independent-source identity can be established.
+6. Enable open-now/open-at-time filtering only after schedule coverage and edge-case semantics are sufficiently strong.
 
 ## Validation evidence
 
-Key successful Actions runs in this pass:
+Key runs:
 
-- existing official-source batch extraction: `33974331919`;
-- Google-assisted initial official discovery: `33974475744`;
 - zero-Google safe bulk rebuild: `33975776551`;
 - cost-capped official recovery: `33975941715`;
-- final clean-baseline zero-Google rebuild: `33976128092`.
+- final clean-baseline zero-Google rebuild: `33976128092`;
+- normalized hours + featured dishes Pages validation: `33977684773`;
+- normalized hours PR validation: `33977684766`.
 
-The final clean-baseline build is the authoritative state for the metrics at the top of this document.
+Current authoritative runtime-field metrics are the latest successful normalized-hours/featured-dish build: **648 production / 273 filterable schedules / 84 featured dishes / 27 strict recommendations / 396 source-backed**.

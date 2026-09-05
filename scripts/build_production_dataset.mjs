@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import vm from 'node:vm';
 import { fileURLToPath } from 'node:url';
+import { normalizeOpeningHours, formatOpeningHoursZh, validateOpeningHours } from './opening_hours.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, '..');
@@ -25,11 +26,12 @@ const INPUTS = [
   'google_entities.generated.js',
   'hyakumeiten.js',
   'recommended_dishes.js',
+  'featured_dishes.js',
   ...enrichmentInputs
 ];
 
 const sandbox = {
-  window: { RESTAURANTS: [], RECOMMENDED_DISHES: [] },
+  window: { RESTAURANTS: [], RECOMMENDED_DISHES: [], FEATURED_DISHES: [] },
   console
 };
 vm.createContext(sandbox);
@@ -39,8 +41,10 @@ for (const filename of INPUTS) {
 
 const rows = sandbox.window.RESTAURANTS;
 const recommendationRows = sandbox.window.RECOMMENDED_DISHES || [];
+const featuredRows = sandbox.window.FEATURED_DISHES || [];
 if (!Array.isArray(rows)) throw new Error('window.RESTAURANTS was not created');
 if (!Array.isArray(recommendationRows)) throw new Error('window.RECOMMENDED_DISHES must be an array');
+if (!Array.isArray(featuredRows)) throw new Error('window.FEATURED_DISHES must be an array');
 
 const norm = (value) => String(value || '')
   .normalize('NFKC')
@@ -107,6 +111,69 @@ for (const row of recommendationRows) {
   recommendationsByPlaceId.set(row.googlePlaceId, unique(row.dishes).slice(0, 2));
 }
 
+function claimedDishSourceUrls(placeId) {
+  const urls = new Set();
+  for (const row of groupsByPlaceId.get(placeId) || []) {
+    for (const ref of row.sourceRefs || []) {
+      if ((ref.fields || []).includes('dishes') && ref.url) urls.add(ref.url);
+    }
+  }
+  return urls;
+}
+
+function normalizeFeaturedDish(dish, placeId) {
+  if (!dish || typeof dish !== 'object') throw new Error(`invalid featured dish object: ${placeId}`);
+  const nameJa = String(dish.nameJa || '').trim();
+  const nameZh = String(dish.nameZh || '').trim();
+  const kind = String(dish.kind || 'representative').trim();
+  if (!nameJa || !nameZh) throw new Error(`featured dish lacks bilingual name: ${placeId}`);
+  if (!['representative', 'recommended', 'signature'].includes(kind)) {
+    throw new Error(`unsupported featured dish kind ${kind}: ${placeId}`);
+  }
+  const output = { nameJa, nameZh, kind };
+  if (dish.priceText != null) {
+    if (typeof dish.priceText !== 'string' || !dish.priceText.trim()) {
+      throw new Error(`invalid featured dish priceText: ${placeId}`);
+    }
+    output.priceText = dish.priceText.trim();
+  }
+  if (dish.priceYen != null) {
+    if (!Number.isInteger(dish.priceYen) || dish.priceYen <= 0) {
+      throw new Error(`invalid featured dish priceYen: ${placeId}`);
+    }
+    output.priceYen = dish.priceYen;
+  }
+  return output;
+}
+
+// Featured dishes are broader than strict recommendations but still require a
+// maintained exact-Place-ID source that explicitly claims the legacy dish field.
+const representativeDishesByPlaceId = new Map();
+for (const row of featuredRows) {
+  if (!row.googlePlaceId || !groupsByPlaceId.has(row.googlePlaceId)) {
+    throw new Error(`featured dish row is not attached to production: ${row.googlePlaceId || 'missing-id'}`);
+  }
+  if (representativeDishesByPlaceId.has(row.googlePlaceId)) {
+    throw new Error(`duplicate featured dish row: ${row.googlePlaceId}`);
+  }
+  if (!Array.isArray(row.dishes) || row.dishes.length < 1 || row.dishes.length > 2) {
+    throw new Error(`invalid featured dish list: ${row.googlePlaceId}`);
+  }
+  if (!row.sourceUrl || !/^https:\/\//.test(row.sourceUrl)) {
+    throw new Error(`invalid featured dish source URL: ${row.googlePlaceId}`);
+  }
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(row.checkedAt || '')) {
+    throw new Error(`invalid featured dish check date: ${row.googlePlaceId}`);
+  }
+  if (!claimedDishSourceUrls(row.googlePlaceId).has(row.sourceUrl)) {
+    throw new Error(`featured dish source is not a maintained dish claim: ${row.googlePlaceId}`);
+  }
+  representativeDishesByPlaceId.set(
+    row.googlePlaceId,
+    row.dishes.map((dish) => normalizeFeaturedDish(dish, row.googlePlaceId))
+  );
+}
+
 function sourceLabel(row) {
   if (row.source === 'OpenStreetMap') return 'OpenStreetMap';
   return row.source || 'curated';
@@ -149,12 +216,17 @@ function isSuppressed(rowsToSearch, field) {
     && row.suppressFields.includes(field));
 }
 
-function combineHoursReference(openingHoursRaw, closedDays, closedNote) {
-  const parts = [];
-  if (openingHoursRaw) parts.push(openingHoursRaw);
-  if (Array.isArray(closedDays) && closedDays.length) parts.push(`定休：${closedDays.join('、')}`);
-  if (closedNote) parts.push(closedNote);
-  return parts.length ? parts.join('；') : null;
+function featuredFor(placeId, recommendedDishes) {
+  const strict = recommendedDishes.map((nameZh) => ({ nameZh, kind: 'recommended' }));
+  const representative = representativeDishesByPlaceId.get(placeId) || [];
+  const combined = [...strict, ...representative];
+  const seen = new Set();
+  return combined.filter((dish) => {
+    const key = norm(dish.nameZh || dish.nameJa);
+    if (!key || seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  }).slice(0, 2);
 }
 
 function canonicalize(placeId, sourceRows) {
@@ -213,8 +285,8 @@ function canonicalize(placeId, sourceRows) {
       ? (isPrice(budgetClaim.dinner) ? budgetClaim.dinner : null)
       : firstBy(sourceRows, (row) => isPrice(row.dinner), (row) => row.dinner);
 
-  // Keep legacy representative dishes for maintenance compatibility, but only
-  // explicit reviewed recommendations reach the public recommendation field.
+  // Legacy Japanese dish strings remain for maintenance compatibility. Public
+  // cards use featuredDishes, while recommendedDishes keeps the strict subset.
   const dishesClaim = bestClaimingRow(sourceRows, 'dishes');
   const dishes = isSuppressed(sourceRows, 'dishes')
     ? []
@@ -222,7 +294,12 @@ function canonicalize(placeId, sourceRows) {
       ? unique(dishesClaim.dishes || []).slice(0, 4)
       : unique(sourceRows.flatMap((row) => row.dishes || [])).slice(0, 4);
   const recommendedDishes = recommendationsByPlaceId.get(placeId) || [];
+  const featuredDishes = featuredFor(placeId, recommendedDishes);
 
+  // Source shards may retain human-readable schedule strings for provenance,
+  // but canonical production exposes only a normalized machine-readable
+  // schedule. If no reliable time interval can be parsed, no schedule field is
+  // emitted at all. hoursReference is derived only from that normalized object.
   const hoursClaim = bestClaimingRow(sourceRows, 'hours');
   const openingHoursRaw = isSuppressed(sourceRows, 'hours')
     ? null
@@ -236,12 +313,8 @@ function canonicalize(placeId, sourceRows) {
     : closureClaim
       ? (Array.isArray(closureClaim.closedDays) ? closureClaim.closedDays : [])
       : firstBy(sourceRows, (row) => Array.isArray(row.closedDays) && row.closedDays.length, (row) => row.closedDays) || [];
-  const closedNote = isSuppressed(sourceRows, 'closure')
-    ? null
-    : closureClaim
-      ? (closureClaim.closedNote || null)
-      : firstBy(sourceRows, (row) => Boolean(row.closedNote), (row) => row.closedNote);
-  const hoursReference = combineHoursReference(openingHoursRaw, closedDays, closedNote);
+  const openingHours = normalizeOpeningHours(openingHoursRaw, closedDays);
+  const hoursReference = openingHours ? formatOpeningHoursZh(openingHours) : null;
 
   const awardClaim = bestClaimingRow(sourceRows, 'hyakumeiten');
   const awardRow = awardClaim || [...sourceRows]
@@ -269,11 +342,9 @@ function canonicalize(placeId, sourceRows) {
     lunch: lunch || null,
     dinner: dinner || null,
     recommendedDishes,
-    hoursReference,
+    featuredDishes,
     dishes,
-    openingHoursRaw: openingHoursRaw || null,
-    closedDays,
-    closedNote: closedNote || null,
+    ...(openingHours ? { openingHours, hoursReference } : {}),
     googlePlaceId: placeId,
     googleStatus: 'verified',
     hyakumeiten,
@@ -296,7 +367,11 @@ const invalid = production.filter((row) => !row.name || !row.googlePlaceId || !r
 const schemaInvalid = production.filter((row) =>
   !Array.isArray(row.recommendedDishes)
   || row.recommendedDishes.length > 2
-  || !Object.hasOwn(row, 'hoursReference'));
+  || !Array.isArray(row.featuredDishes)
+  || row.featuredDishes.length > 2
+  || row.featuredDishes.some((dish) => !dish || typeof dish !== 'object' || !dish.nameZh || !dish.kind)
+  || (row.openingHours && (!validateOpeningHours(row.openingHours) || !row.hoursReference))
+  || (!row.openingHours && Object.hasOwn(row, 'hoursReference')));
 
 if (duplicatePlaceIds) throw new Error(`duplicate Place IDs: ${duplicatePlaceIds}`);
 if (outside.length) throw new Error(`outside ${MAX_DISTANCE}m: ${outside.length}`);
@@ -312,9 +387,10 @@ const stats = {
   cuisineKnown: production.filter((row) => row.cuisine !== '餐厅').length,
   budgetKnown: production.filter((row) => isPrice(row.lunch) || isPrice(row.dinner)).length,
   recommendedDishesKnown: production.filter((row) => row.recommendedDishes.length).length,
-  hoursReferenceKnown: production.filter((row) => Boolean(row.hoursReference)).length,
+  featuredDishesKnown: production.filter((row) => row.featuredDishes.length).length,
+  openingHoursKnown: production.filter((row) => Boolean(row.openingHours)).length,
   dishesKnown: production.filter((row) => row.dishes.length).length,
-  scheduleKnown: production.filter((row) => Boolean(row.hoursReference)).length,
+  scheduleKnown: production.filter((row) => Boolean(row.openingHours)).length,
   sourceBacked: production.filter((row) =>
     row.sources.some((source) => source === 'Tabelog' || source === 'official')).length,
   awards: production.filter((row) => row.hyakumeiten).length

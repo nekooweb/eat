@@ -20,6 +20,8 @@ jobs:
         run: |
           node --check app.js
           if [ -f scripts/build_production_dataset.mjs ]; then
+            node scripts/test_opening_hours.mjs
             node scripts/build_production_dataset.mjs
             node scripts/audit_repository.mjs
+            node scripts/audit_normalized_fields.mjs
           fi

@@ -49,9 +49,7 @@ const countBy = (rows, keyFn) => rows.reduce((acc, row) => {
 const validPrice = (p) => Array.isArray(p) && p.length >= 2 && Number.isFinite(p[0]) && Number.isFinite(p[1]);
 const priceMatches = (p, min, max = Infinity) => validPrice(p) && p[0] <= max && p[1] >= min;
 const anyPrice = (row, predicate) => [row.lunch, row.dinner].some(predicate);
-const scheduleKnown = (row) => Boolean(
-  row.openingHoursRaw || (row.closedDays && row.closedDays.length) || row.closedNote
-);
+const scheduleKnown = (row) => Boolean(row.openingHours);
 
 const distances = Object.fromEntries([300, 500, 800, 1200].map((limit) => [
   `lte${limit}`,
@@ -129,7 +127,10 @@ const report = {
   genericCuisineRows: production.filter((row) => row.cuisine === '餐厅').length,
   topCuisineCounts: Object.entries(cuisines).sort((a, b) => b[1] - a[1]).slice(0, 12),
   addressKnown: production.filter((row) => Boolean(row.address)).length,
+  openingHoursKnown: productionStats.openingHoursKnown ?? production.filter(scheduleKnown).length,
   scheduleKnown: productionStats.scheduleKnown ?? production.filter(scheduleKnown).length,
+  recommendedDishesKnown: productionStats.recommendedDishesKnown ?? production.filter((row) => row.recommendedDishes?.length).length,
+  featuredDishesKnown: productionStats.featuredDishesKnown ?? production.filter((row) => row.featuredDishes?.length).length,
   dishesKnown: productionStats.dishesKnown ?? production.filter((row) => row.dishes?.length).length,
   distancePools: distances,
   budgetPools: budgets,
