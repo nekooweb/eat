@@ -2,6 +2,78 @@
 
 This file records product/architecture decisions and meaningful implementation milestones. It is not a replacement for Git history.
 
+## 2026-09-06 — Normalized hours, featured dishes, and full-range expansion approval
+
+### Release and validation
+- Merged PR #6, `Normalize opening hours and featured dishes`, into `main` as commit `907ac8afefefc795e4aaf8ecaecae23f695dbd66`.
+- Production Pages run `33977830093` completed successfully after canonical build, repository audit, source-binding audit, normalized-field audit, coverage generation, artifact assembly and deployment.
+- The normalization/featured-dish pass introduced no new Google Places calls.
+- The current production pool remains **648 unique verified Place IDs** inside the strict Area1 <=1,200 m boundary.
+
+### Opening-hours normalization
+- Replaced mixed display-oriented schedule prose in canonical production with filter-ready `openingHours`.
+- `openingHours.timezone` is fixed to `Asia/Tokyo`.
+- Missing day key means unknown; `[]` means explicitly closed; interval arrays mean known opening periods.
+- `hoursReference` is now derived from normalized schedule data instead of copied from raw source prose.
+- Raw `openingHoursRaw`, `closedDays` and `closedNote` remain maintenance/source-only fields.
+- Day-less time ranges are accepted only when weekly coverage can be inferred safely from explicit closure/no-closure evidence.
+- `不定休`, reservation-only prose, calendar/SNS-dependent schedules and otherwise ambiguous weekly schedules are omitted from canonical filterable hours.
+- Previous descriptive schedule coverage was 304 restaurants; conservative filter-ready coverage is now **273 / 648**.
+- The parser regression suite covers Japanese/English weekday ranges, weekends/holidays, split lunch+dinner periods, L.O. text, exact closed days, 無休 and irregular schedules; **9 / 9 tests pass**.
+
+### Featured-dish model
+- Kept strict `recommendedDishes` separate from the broader display field.
+- Added structured `featuredDishes` with Chinese/Japanese names, `recommended` / `signature` / `representative` semantics and optional direct menu-price fields.
+- Strict reviewed recommendation coverage remains **27 / 648**.
+- Public featured-dish coverage increased to **84 / 648**.
+- Added **57** source-backed representative-dish rows with reviewed Chinese display names.
+- All existing legacy dish rows with maintained dish-source evidence now have reviewed Chinese featured output: **64 / 64**; remaining legacy conversion gap is zero.
+- Representative featured dishes must resolve to an already-maintained dish source for the same Place ID or the canonical build fails.
+- Public UI label changed from the overly strict `推荐菜` wording to `特色菜`; strict recommendations remain available separately in the data model.
+
+### Current data baseline after the pass
+- exact Area1 Google identity inventory: **2,804 / 2,804**;
+- OSM candidates: **1,273**;
+- Google QC-v4: **658 verified / 615 rejected / 0 pending**;
+- canonical production: **648**;
+- usable Tabelog/official source-backed production: **396 / 648 = 61.1%**;
+- explicit terminal source resolutions: **44**;
+- source outcomes accounted for: **440 / 648 = 67.9%**;
+- unresolved current-production source queue: **208**;
+- non-generic cuisine: **571 / 648**;
+- budget known: **192 / 648**;
+- address known: **261 / 648**;
+- filter-ready `openingHours`: **273 / 648**;
+- `featuredDishes`: **84 / 648**;
+- strict `recommendedDishes`: **27 / 648**;
+- 百名店: **22**.
+
+Among the 396 restaurants that already have a usable maintained Tabelog/official source, the immediate field gaps are:
+- `openingHours`: **161**;
+- `featuredDishes`: **314**;
+- budget: **204**;
+- address: **169**;
+- cuisine: **27**.
+
+### Approved expansion sequence
+The data roadmap is now explicitly ordered rather than treated as a loose backlog:
+
+1. complete useful durable fields for the current 648 production restaurants, prioritizing normalized hours and featured dishes;
+2. close the remaining 208 current-production source outcomes conservatively;
+3. expand the same identity/source pipeline across the full **2,804-ID Area1 inventory**;
+4. apply the same normalized field-completion process to newly promoted production identities;
+5. enable opening-hours runtime filtering only after coverage/freshness review, with missing schedules treated as unknown rather than closed.
+
+The full-range expansion queue is currently **2,161** inventory Place IDs without a verified independent-source identity suitable for production admission.
+
+“Full range” means all 2,804 inventory identities receive an explicit auditable outcome. It does **not** require the public production count to equal 2,804. An identity may remain needs-review, no-independent-source-yet or terminally excluded rather than being force-promoted.
+
+### Documentation contract
+- Rewrote `DEVELOPMENT.md` around the current 2026-09-06 baseline, normalized field schemas and approved full-range expansion gates.
+- `DATA_SCHEMA.md` remains the field-level contract for normalized hours and featured dishes.
+- `DATA_ENRICHMENT_PROGRESS.md` remains the detailed source-acquisition/coverage progress report.
+- This 2026-09-06 entry supersedes the stale numerical pending items in older log sections below; older sections are retained as historical development context.
+
 ## 2026-09-05 — Progress recheck, documentation correction and ordered next work
 
 ### Review scope and evidence
