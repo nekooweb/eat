@@ -55,20 +55,22 @@ const candidates = production
     name: row.name,
     cuisine: row.cuisine,
     legacyDishes: row.dishes,
-    reviewedChinese: Array.isArray(row.recommendedDishes) ? row.recommendedDishes : [],
+    featuredDishes: Array.isArray(row.featuredDishes) ? row.featuredDishes : [],
+    strictRecommendations: Array.isArray(row.recommendedDishes) ? row.recommendedDishes : [],
     sources: dishSources(row.googlePlaceId)
   }))
   .filter((row) => row.sources.length)
-  .sort((a, b) => Number(Boolean(a.reviewedChinese.length)) - Number(Boolean(b.reviewedChinese.length)) || a.name.localeCompare(b.name, 'ja'));
+  .sort((a, b) => Number(Boolean(a.featuredDishes.length)) - Number(Boolean(b.featuredDishes.length)) || a.name.localeCompare(b.name, 'ja'));
 
-const missingReviewed = candidates.filter((row) => !row.reviewedChinese.length);
+const missingFeatured = candidates.filter((row) => !row.featuredDishes.length);
 const report = {
   productionEntities: production.length,
   sourceBackedLegacyDishRows: candidates.length,
-  alreadyReviewedChinese: candidates.filter((row) => row.reviewedChinese.length).length,
-  sourceBackedDishRowsMissingReviewedChinese: missingReviewed.length,
-  uniqueLegacyDishNamesMissingReview: [...new Set(missingReviewed.flatMap((row) => row.legacyDishes))].sort((a, b) => a.localeCompare(b, 'ja')),
-  candidates: missingReviewed
+  featuredChineseComplete: candidates.filter((row) => row.featuredDishes.length).length,
+  strictRecommendationRowsWithinLegacy: candidates.filter((row) => row.strictRecommendations.length).length,
+  sourceBackedDishRowsMissingFeaturedChinese: missingFeatured.length,
+  uniqueLegacyDishNamesMissingFeatureReview: [...new Set(missingFeatured.flatMap((row) => row.legacyDishes))].sort((a, b) => a.localeCompare(b, 'ja')),
+  candidates: missingFeatured
 };
 
 console.log(JSON.stringify(report));
