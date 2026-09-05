@@ -2,6 +2,64 @@
 
 This file records product/architecture decisions and meaningful implementation milestones. It is not a replacement for Git history.
 
+## 2026-09-06 — Zero-cost Pass 2 enrichment and full 2,804-ID maintenance ledger
+
+### Pass 2 result
+- Added a second zero-Google-cost official/menu/locator enrichment pass; authoritative workflow run: `33978590468`.
+- Canonical production remains **648** exact Place-ID identities.
+- Source-backed production increased **396 -> 397**.
+- Source outcomes increased **440 -> 441**; unresolved current-production queue decreased **208 -> 207**.
+- Filter-ready `openingHours` increased **273 -> 278**.
+- Public `featuredDishes` increased **84 -> 120** while strict `recommendedDishes` remains **27**.
+- Maintained source-backed dish claims represented by the build increased **72 -> 108**.
+- Cuisine remains 571, budget 192, address 261 and 百名店 22.
+- All canonical, repository, source-binding and normalized-field audits passed.
+- Pass 2 makes **zero new Google Places requests**.
+
+### Official field provenance and refresh fixes
+- Added `data/source_enrichment_zchainmenus.js` for exact-Place-ID official brand/menu dish claims.
+- Added `scripts/build_locator_hours_enrichment.mjs` plus generated `data/source_enrichment_zlocatorhours.js` for conservative current branch hours.
+- Trusted locator hours reject temporary/dated/special-hours text and must normalize under the canonical weekly-hours contract before promotion.
+- A restaurant can now use different official pages for different fields while retaining the invariant of one `official` enrichment row per Place ID: later z-shards augment the existing row with field-specific `sourceRefs` rather than adding a duplicate provider row.
+- An early Pass 2 attempt exposed a network-volatility bug: regenerating the automatic official shard from one refetch would have reduced the stable 74-row set to 65 when websites timed out. That result was rejected and not merged.
+- Stable rule established: transient website failure does not delete previously reviewed official facts; removal requires explicit contradictory/current evidence or review.
+
+### Featured-dish expansion
+- Added **36** additional restaurants from current official menu/brand evidence, including chain/template batches rather than one-store-at-a-time manual entry.
+- `representative` remains distinct from `signature` and strict `recommended`; stable core items are not falsely labeled as recommendations.
+- Exact source URL + Place-ID dish provenance remains enforced by the canonical builder.
+- After the pass, the source-backed legacy/current dish subset is **100 / 100** covered by reviewed Chinese `featuredDishes` output.
+
+### Full exact-inventory ledger
+- Added `scripts/build_inventory_ledger.mjs` and generated `data/area1_inventory_ledger.json`.
+- Ledger validation workflow `33978758946` covered **2,804 / 2,804** exact Area1 inventory Place IDs.
+- Ledger persists Place ID + internal processing/QC status only; it does not persist Google display names, addresses, coordinates or full Place Details payloads.
+- Current exact-inventory partition:
+  - `production`: **645**;
+  - `inventory_only`: **2,159**;
+  - `verified_independent_source_not_production`: **0**;
+  - canonical production outside this exact inventory snapshot: **3**.
+- The historical `2,161 without verified independent source` metric differs from `2,159 inventory_only` because two inventory production identities were admitted through other canonical/curated evidence even though they are not among the 643 OSM-QC-verified inventory IDs.
+
+### Prioritized full-range expansion queue
+- Added `scripts/build_inventory_expansion_queue.mjs` and generated `data/area1_inventory_expansion_queue.json`.
+- Validation run `33978820748` produced a first zero-cost expansion queue of **56 inventory identities / 64 OSM candidate links**.
+- Queue reason coverage: **27 identities with name-mismatch evidence** and **31 with location-mismatch evidence**; counts overlap when one identity has multiple candidates/reasons.
+- All 64 referenced OSM candidate rows were recovered; missing candidate rows = 0.
+- Candidate rejection is context only and does not invalidate the exact Google identity or assert that the OSM candidate is the same business.
+- These 56 identities are reviewed before the **2,103 untouched inventory-only identities**, because they already have an independent-source lead.
+
+### Current next queue
+- Source-backed production field gaps: `openingHours` **157**, `featuredDishes` **279**, budget **205**, address **170**, cuisine **28**.
+- Current-production source outcomes: **207 unresolved**.
+- Full-range identity work: review the 56 existing-candidate identities first, then process the 2,103 untouched inventory-only identities in bounded independent-source batches.
+- Opening-hours runtime filtering remains disabled until coverage/freshness review; unknown schedules remain unknown, never implicitly closed.
+
+### Documentation
+- Rewrote `DEVELOPMENT.md` to the new 397-source-backed / 278-hours / 120-featured / full-ledger baseline.
+- Rewrote `DATA_ENRICHMENT_PROGRESS.md` with Pass 2 deltas, stable official-refresh semantics and the complete 2,804-ID ledger/expansion queue.
+- This entry supersedes older numerical baselines below while retaining them as historical development context.
+
 ## 2026-09-06 — Normalized hours, featured dishes, and full-range expansion approval
 
 ### Release and validation
@@ -99,7 +157,7 @@ The full-range expansion queue is currently **2,161** inventory Place IDs withou
 - Supplemental name-only/field-gap counts were calculated from the rebuilt data and source shards. Adding these metrics to the automated report remains planned work.
 
 ### Operating-status and maintenance findings
-- キッチン グラン and 明神丸 have `listing_hold` source records; カフェ ド クルーセ has a `no_current_usable_source` record referencing a matching source recorded as closed. All three remain in the recommendation pool and need current Google status QC using their existing Place IDs.
+- キッチン グラン and 明神丸 have `listing_hold` source records; カフェ ド クルーセ has a `no_current_usable_source` source record referencing a matching source recorded as closed. All three remain in the recommendation pool and need current Google status QC using their existing Place IDs.
 - The source-resolution ledger is a maintenance input, not a canonical/runtime admission filter. All 32 exception identities remain in production.
 - The current Google cache has no per-entry verification timestamp, and ordinary runs skip terminal QC-v4 records. A deliberate targeted refresh path and dated compact outcomes are needed for the status rechecks.
 - `source_queue.mjs` computes completeness but does not fail on missing outcomes. `audit_source_bindings.mjs` prints a fixed `unresolvedByBindingAudit:0`; that field must not be treated as the completeness calculation. The actual reviewed queue is zero. A computed blocking completeness gate remains planned work.
