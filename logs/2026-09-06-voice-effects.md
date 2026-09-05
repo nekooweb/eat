@@ -7,6 +7,7 @@ This release is intentionally limited to the random-button media feedback layer.
 ## Asset organization
 
 - random voices live under `voice/`;
+- current voice pool: `1.mp3`, `1maybevaluable.mp3`, `2.mp3`, `2currency.mp3`, `4maps.mp3`;
 - mascot artwork lives under `image/`;
 - current mascot pool: `YahaUsagi.webp`, `Momonga.webp`, `SweetBabyHachiware2.webp`;
 - presentation behavior lives in `effects.js` and `effects.css`, separate from `app.js`.
@@ -16,9 +17,9 @@ This release is intentionally limited to the random-button media feedback layer.
 On every click of `#generate`:
 
 1. the existing restaurant generation logic continues unchanged;
-2. `effects.js` randomly chooses one configured voice;
+2. `effects.js` randomly chooses one configured voice from the five-file pool;
 3. any previous voice is paused, rewound and discarded before the new voice starts;
-4. playback volume is `0.55`;
+4. playback volume is `0.45`;
 5. voice playback is capped at **2 seconds**; shorter clips end naturally;
 6. audio errors are ignored so they cannot block restaurant generation;
 7. one mascot is chosen from the configured WebP pool;
@@ -45,7 +46,7 @@ This is still a presentation-only effect. Mascot choice and placement have no re
 
 ## Cache / release handling
 
-`index.html` currently loads `effects.css?v=20260906-mascot2` and `effects.js?v=20260906-mascot3`. The JavaScript cache version was incremented for the new multi-mascot pool while the placement CSS itself did not require another change.
+`index.html` currently loads `effects.css?v=20260906-mascot2` and `effects.js?v=20260906-voice3`. The JavaScript cache version was incremented so Pages clients immediately receive the expanded five-voice pool and the new 45% playback volume.
 
 ## CI / Pages integration
 
@@ -62,7 +63,7 @@ These were corrected and later generalized:
 - Pages static checks run `node --check effects.js`;
 - public-site assembly copies `voice/*.mp3` and `image/*.webp` rather than hard-coding individual media filenames.
 
-This means newly committed WebP files are automatically included in the deployed Pages artifact. They still need to be added to the `mascots` array in `effects.js` before the audit will allow deployment, because a static browser cannot enumerate a repository directory at runtime.
+This means newly committed MP3 and WebP files are automatically included in the deployed Pages artifact. Runtime selection is still controlled explicitly by the `voices` and `mascots` arrays in `effects.js`, because a static browser cannot enumerate repository directories at runtime.
 
 The failed pre-fix Pages run was `33975561481`; its failure was the expected old audit assertion, not a data-build or JavaScript syntax failure.
 
@@ -79,11 +80,13 @@ The failed pre-fix Pages run was `33975561481`; its failure was the expected old
 - `8a3bbce20678dacbce68bf2737ff9391800a5bcd` — add YahaUsagi, Momonga and SweetBabyHachiware2 to the mascot pool and prevent immediate character repeats;
 - `d9155f616b47ec9309ced75aab0553af84421775` — deploy all MP3/WebP assets via wildcard media copying;
 - `a19e94f71f0166dab37ad6e06c1cb9381d07f1d9` — audit every repository WebP against the configured mascot pool;
-- `9009f57e21e74989e666722f13b02abd837dcc72` — bump the multi-mascot JavaScript cache version.
+- `9009f57e21e74989e666722f13b02abd837dcc72` — bump the multi-mascot JavaScript cache version;
+- `96dab607a972d6838796299888fac4b0b5348c6f` — expand the random voice pool to five MP3 files and lower playback volume to 45%;
+- `4a4420102209f4e1641a1b4e872745ebb1eefcd3` — bump the public effect runtime cache to `voice3`.
 
 ## Maintenance rule
 
-Adding a new voice requires placing the media file under `voice/` and, if it should be selectable, adding its path to the `voices` array in `effects.js`.
+Adding a new voice requires placing the media file under `voice/` and adding its path to the `voices` array in `effects.js` if it should be selectable. Pages already copies all `voice/*.mp3` files automatically.
 
 Adding a new mascot requires placing the `.webp` file under `image/` and adding its path to the `mascots` array in `effects.js`. Pages will copy all WebPs automatically, while the repository audit intentionally fails if an image exists but was forgotten in the runtime pool.
 
