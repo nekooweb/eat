@@ -144,6 +144,12 @@ function canonicalize(placeId, sourceRows) {
   // preferred even when richer Tabelog/official metadata is available.
   const geo = sourceRows.find((row) =>
     row.source === 'OpenStreetMap'
+    && row.googleStatus === 'verified'
+    && isFiniteNumber(row.lat)
+    && isFiniteNumber(row.lng)
+    && isFiniteNumber(row.distanceMeters)
+  ) || sourceRows.find((row) =>
+    row.source === 'OpenStreetMap'
     && isFiniteNumber(row.lat)
     && isFiniteNumber(row.lng)
     && isFiniteNumber(row.distanceMeters)
@@ -167,6 +173,20 @@ function canonicalize(placeId, sourceRows) {
     );
 
   if (!isFiniteNumber(distanceMeters) || distanceMeters > MAX_DISTANCE) return null;
+
+  // Canonical name is an identity field, not a "richest row wins" display
+  // field. Prefer an exact Place-ID source that explicitly claims the name;
+  // otherwise keep the name attached to the verified independent geospatial
+  // identity. This prevents historical curated metadata with a stale/manual
+  // Place ID from renaming a newly verified OSM business to a different shop.
+  const nameClaim = bestClaimingRow(sourceRows, 'name');
+  const identityNameRow = sourceRows.find((row) =>
+    row.source === 'OpenStreetMap'
+    && row.googleStatus === 'verified'
+    && row.googlePlaceId === placeId
+    && row.name
+  ) || geo;
+  const canonicalName = nameClaim?.name || identityNameRow?.name || base.name;
 
   const cuisineClaim = bestClaimingRow(sourceRows, 'cuisine');
   const cuisine = cuisineClaim
@@ -226,14 +246,20 @@ function canonicalize(placeId, sourceRows) {
     .find((row) => row.hyakumeiten);
   const hyakumeiten = awardClaim ? Boolean(awardClaim.hyakumeiten) : Boolean(awardRow);
 
+  const addressClaim = bestClaimingRow(sourceRows, 'address');
+  const address = addressClaim?.address
+    || geo?.address
+    || firstBy(sourceRows, (row) => Boolean(row.address), (row) => row.address)
+    || '';
+
   return {
     id: `g-${placeId}`,
     profile: PROFILE,
     area: AREA,
-    name: base.name,
+    name: canonicalName,
     cuisine,
     tags: unique([cuisine, ...sourceRows.flatMap((row) => row.tags || [])]),
-    address: firstBy(sourceRows, (row) => Boolean(row.address), (row) => row.address) || '',
+    address,
     lat: geo?.lat ?? null,
     lng: geo?.lng ?? null,
     distanceMeters: Math.round(distanceMeters),
