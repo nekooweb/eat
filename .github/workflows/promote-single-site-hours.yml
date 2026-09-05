@@ -28,9 +28,12 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Build stable baseline
+      - name: Build clean baseline
         run: |
           set -o pipefail
+          # Generated single-site hours must never influence target selection on
+          # the next refresh. Recompute the shard from the durable base every run.
+          rm -f data/source_enrichment_zzzsinglehours.js
           node scripts/test_opening_hours.mjs
           node scripts/build_production_dataset.mjs | tee /tmp/single-hours-baseline.json
       - name: Fetch current direct official sites and parse hours
