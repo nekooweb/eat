@@ -1,0 +1,49 @@
+name: Build full Area1 inventory ledger
+
+on:
+  push:
+    branches:
+      - bulk-enrichment-pass2
+    paths:
+      - 'scripts/build_inventory_ledger.mjs'
+      - '.github/workflows/build-inventory-ledger.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  ledger:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Rebuild canonical production
+        run: node scripts/build_production_dataset.mjs
+      - name: Build exact 2,804-ID maintenance ledger
+        run: node scripts/build_inventory_ledger.mjs data/area1_inventory_ledger.json | tee /tmp/inventory-ledger-summary.json
+      - name: Validate identity and production contracts
+        run: |
+          node scripts/audit_area1_identity_coverage.mjs
+          node scripts/audit_repository.mjs
+          node scripts/audit_source_bindings.mjs
+          node scripts/audit_normalized_fields.mjs
+      - name: Commit generated ledger
+        env:
+          TARGET_BRANCH: ${{ github.ref_name }}
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/area1_inventory_ledger.json
+          if git diff --cached --quiet; then
+            echo 'Inventory ledger unchanged.'
+          else
+            git commit -m 'Add full Area1 identity processing ledger'
+            git push origin HEAD:$TARGET_BRANCH
+          fi
