@@ -129,6 +129,8 @@ const report = {
   addressKnown: production.filter((row) => Boolean(row.address)).length,
   openingHoursKnown: productionStats.openingHoursKnown ?? production.filter(scheduleKnown).length,
   scheduleKnown: productionStats.scheduleKnown ?? production.filter(scheduleKnown).length,
+  recommendedDishesKnown: productionStats.recommendedDishesKnown ?? production.filter((row) => row.recommendedDishes?.length).length,
+  featuredDishesKnown: productionStats.featuredDishesKnown ?? production.filter((row) => row.featuredDishes?.length).length,
   dishesKnown: productionStats.dishesKnown ?? production.filter((row) => row.dishes?.length).length,
   distancePools: distances,
   budgetPools: budgets,
