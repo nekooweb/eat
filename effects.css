@@ -2,6 +2,7 @@
   position: relative;
   margin: 2px 0 14px;
   isolation: isolate;
+  overflow: visible;
 }
 
 .generate-wrap .generate {
@@ -12,17 +13,86 @@
 
 .generate-mascot {
   position: absolute;
-  z-index: 1;
-  top: -58px;
-  right: 18px;
-  width: clamp(78px, 14vw, 118px);
+  z-index: 4;
+  width: clamp(78px, 13vw, 112px);
   height: auto;
   pointer-events: none;
   user-select: none;
   opacity: 0;
-  transform: translateY(42px) rotate(7deg) scale(.82);
-  transform-origin: 70% 100%;
   filter: drop-shadow(0 5px 8px rgba(0, 0, 0, .14));
+  --mascot-enter-x: 0px;
+  --mascot-enter-y: 18px;
+  --mascot-enter-rotate: 4deg;
+  --mascot-show-rotate: -2deg;
+  --mascot-exit-x: 0px;
+  --mascot-exit-y: 12px;
+  --mascot-exit-rotate: 3deg;
+}
+
+.generate-mascot.mascot-top-left {
+  top: -78px;
+  left: 7%;
+  transform-origin: 35% 100%;
+  --mascot-enter-x: -10px;
+  --mascot-enter-y: 20px;
+  --mascot-enter-rotate: -10deg;
+  --mascot-show-rotate: -4deg;
+  --mascot-exit-x: -5px;
+  --mascot-exit-y: 14px;
+  --mascot-exit-rotate: -7deg;
+}
+
+.generate-mascot.mascot-top-center {
+  top: -88px;
+  left: 50%;
+  translate: -50% 0;
+  transform-origin: 50% 100%;
+  --mascot-enter-y: 22px;
+  --mascot-enter-rotate: 3deg;
+  --mascot-show-rotate: 0deg;
+  --mascot-exit-y: 15px;
+  --mascot-exit-rotate: -3deg;
+}
+
+.generate-mascot.mascot-top-right {
+  top: -78px;
+  right: 7%;
+  transform-origin: 65% 100%;
+  --mascot-enter-x: 10px;
+  --mascot-enter-y: 20px;
+  --mascot-enter-rotate: 10deg;
+  --mascot-show-rotate: 4deg;
+  --mascot-exit-x: 5px;
+  --mascot-exit-y: 14px;
+  --mascot-exit-rotate: 7deg;
+}
+
+.generate-mascot.mascot-side-left {
+  top: -18px;
+  left: -24px;
+  width: clamp(70px, 11vw, 94px);
+  transform-origin: 100% 70%;
+  --mascot-enter-x: -22px;
+  --mascot-enter-y: 4px;
+  --mascot-enter-rotate: -12deg;
+  --mascot-show-rotate: -6deg;
+  --mascot-exit-x: -16px;
+  --mascot-exit-y: 7px;
+  --mascot-exit-rotate: -10deg;
+}
+
+.generate-mascot.mascot-side-right {
+  top: -18px;
+  right: -24px;
+  width: clamp(70px, 11vw, 94px);
+  transform-origin: 0 70%;
+  --mascot-enter-x: 22px;
+  --mascot-enter-y: 4px;
+  --mascot-enter-rotate: 12deg;
+  --mascot-show-rotate: 6deg;
+  --mascot-exit-x: 16px;
+  --mascot-exit-y: 7px;
+  --mascot-exit-rotate: 10deg;
 }
 
 .generate-mascot.is-popping {
@@ -32,31 +102,56 @@
 @keyframes mascot-pop {
   0% {
     opacity: 0;
-    transform: translateY(42px) rotate(7deg) scale(.82);
+    transform: translate(var(--mascot-enter-x), var(--mascot-enter-y)) rotate(var(--mascot-enter-rotate)) scale(.82);
   }
   20% {
     opacity: 1;
-    transform: translateY(0) rotate(-4deg) scale(1.04);
+    transform: translate(0, -3px) rotate(var(--mascot-show-rotate)) scale(1.05);
   }
-  34% {
+  36% {
     opacity: 1;
-    transform: translateY(-4px) rotate(3deg) scale(1);
+    transform: translate(0, 1px) rotate(calc(var(--mascot-show-rotate) * -.45)) scale(1);
   }
   72% {
     opacity: 1;
-    transform: translateY(0) rotate(-2deg) scale(1);
+    transform: translate(0, 0) rotate(var(--mascot-show-rotate)) scale(1);
   }
   100% {
     opacity: 0;
-    transform: translateY(34px) rotate(6deg) scale(.9);
+    transform: translate(var(--mascot-exit-x), var(--mascot-exit-y)) rotate(var(--mascot-exit-rotate)) scale(.9);
   }
 }
 
 @media (max-width: 560px) {
   .generate-mascot {
-    top: -48px;
-    right: 10px;
-    width: 84px;
+    width: 82px;
+  }
+
+  .generate-mascot.mascot-top-left {
+    top: -66px;
+    left: 5%;
+  }
+
+  .generate-mascot.mascot-top-center {
+    top: -72px;
+    width: 86px;
+  }
+
+  .generate-mascot.mascot-top-right {
+    top: -66px;
+    right: 5%;
+  }
+
+  .generate-mascot.mascot-side-left {
+    top: -12px;
+    left: -7px;
+    width: 70px;
+  }
+
+  .generate-mascot.mascot-side-right {
+    top: -12px;
+    right: -7px;
+    width: 70px;
   }
 }
 
