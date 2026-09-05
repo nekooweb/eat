@@ -33,6 +33,7 @@ jobs:
           set -o pipefail
           {
             node --check app.js
+            node --check effects.js
             python3 -m py_compile \
               scripts/verify_google_places.py \
               scripts/verify_curated_google.py \
@@ -63,9 +64,11 @@ jobs:
         env:
           GOOGLE_MAPS_EMBED_KEY: ${{ secrets.GOOGLE_MAP_API }}
         run: |
-          mkdir -p _site/data
-          cp index.html styles.css app.js privacy.html terms.html _site/
+          mkdir -p _site/data _site/voice _site/image
+          cp index.html styles.css effects.css app.js effects.js privacy.html terms.html _site/
           cp data/production_area1.js _site/data/
+          cp voice/1.mp3 voice/2.mp3 _site/voice/
+          cp image/YahaUsagi.webp _site/image/
           python3 - <<'PY'
           import os
           from pathlib import Path
