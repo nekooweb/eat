@@ -1,5 +1,7 @@
 # Initial Restaurant Research and Data Notes
 
+> Historical research notes, retained for provenance. Current requirements and implementation are defined in `REQUIREMENTS.md`, `ARCHITECTURE.md` and `DATA_PIPELINE.md`; current counts and next work are in `DEVELOPMENT.md`. Earlier proposals below for clock-selected meal budgets, iframe/Embed maps, unweighted sampling and automatic opening-time exclusion are superseded: the runtime uses separate meal budgets, Leaflet overview/store maps, a three-store comparison, 百名店 weighting of 2.2 and descriptive-only schedule fields. Sample restaurant facts below have not been refreshed by the 2026-09-05 documentation review.
+
 ## Budget display rule
 - Do not display abstract labels such as `💰💰 中等` in result cards.
 - Display a concrete yen range sourced from the maintained restaurant record, e.g. `¥1,000–1,999`, `¥4,000–4,999`, `¥6,000–7,999`.

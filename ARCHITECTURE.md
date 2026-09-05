@@ -4,26 +4,17 @@
 
 Eat remains intentionally static: no runtime application server, no runtime database, and no browser-side Places API key.
 
-```text
-OpenStreetMap / curated / Tabelog metadata
-                 |
-                 +------------------+
-                                    |
-Google Places verification --------+
-(Place ID + transient QC only)      |
-                                    v
-                       canonical build step
-                  build_production_dataset.mjs
-                                    |
-                                    v
-                       production_area1.js
-                                    |
-                                    v
-                         GitHub Pages artifact
-                          (site assets only)
-                                    |
-                                    v
-                    filter -> weighted random -> 3 cards
+Current implementation was rechecked against `8c01e125` on 2026-09-05. Progress counts and the ordered work queue are maintained in `DEVELOPMENT.md`.
+
+```mermaid
+flowchart TD
+    candidates["OSM and curated candidates"] --> qc["Google identity QC"]
+    candidates --> build["Canonical build"]
+    qc --> build
+    qc --> research["Source research and outcome ledger"]
+    research -->|Usable branch source| fields["Reviewed factual fields"]
+    fields --> build
+    build --> site["Pages dataset and result views"]
 ```
 
 The central design distinction is:
@@ -42,7 +33,7 @@ Current public page contains:
 - compact database statistics;
 - service attribution and privacy/terms links.
 
-It loads exactly two JavaScript assets:
+It loads Leaflet 1.9.4 for map presentation and exactly two local JavaScript assets:
 1. `data/production_area1.js`;
 2. `app.js`.
 
@@ -55,6 +46,8 @@ Browser responsibilities are deliberately limited to:
 - weighted Web Crypto random selection;
 - cuisine-diversity preference;
 - rendering three result cards;
+- rendering the Leaflet/OpenStreetMap overview and one map per store;
+- rendering the three-store comparison table;
 - direct Place-ID-based Google Maps links;
 - compact production statistics.
 
@@ -62,12 +55,14 @@ The browser does **not**:
 - read raw OSM/Tabelog/Google maintenance datasets;
 - match businesses by name/address;
 - merge enrichment sources;
-- render a Leaflet/OSM map for Google Places content;
-- embed one map per restaurant;
-- build a duplicate comparison table.
+- use Google Places response coordinates/content for Leaflet maps;
+- use iframe maps;
+- call Google Places or evaluate source-resolution ledgers at recommendation time.
+
+Opening/holiday fields are currently descriptive and do not exclude restaurants from the eligible pool.
 
 ### `styles.css`
-CSS owns presentation only: mobile-first yellow/white visual system, filter controls, cards, badges, statistics, and legal pages.
+CSS owns presentation only: mobile-first yellow/white visual system, filter controls, cards, overview/store maps, comparison table, badges, statistics and legal pages.
 
 ## 3. Canonical production build
 
@@ -80,7 +75,8 @@ Inputs currently include:
 - `area1_osm.js`;
 - manual Google identity hints;
 - generated Google verification overlay;
-- 百名店 metadata.
+- 百名店 metadata;
+- all `source_enrichment*.js` shards containing Place-ID-keyed Tabelog/official field evidence.
 
 Build rules:
 1. only `TOKYO / 地区1️⃣` is considered;
@@ -91,6 +87,10 @@ Build rules:
 6. every production distance must be <=1,200 m;
 7. missing budget/dishes/opening data stays missing;
 8. duplicate Place IDs fail the build.
+
+Place-ID enrichment attaches only to already verified identity groups and cannot self-verify or admit new restaurants. Field-specific `sourceRefs` claims and `suppressFields` controls take precedence over legacy fallback data; richer independently maintained source records supply display fields, while OSM coordinates/distance are preferred.
+
+`source_resolution*.js` is read by the maintenance audits and source queue, not by the canonical builder. A `listing_hold`, `ambiguous`, `no_current_usable_source` or `source_not_found` record therefore does not automatically remove the corresponding restaurant from production. The three recorded operating-status conflicts are awaiting targeted QC; see `DEVELOPMENT.md`.
 
 Output:
 - `data/production_area1.js` generated at build/deploy time.
@@ -132,6 +132,8 @@ Durable repository state is limited to fields needed for identity/audit, princip
 
 Google display names, formatted addresses, coordinates, Maps URIs and place types used for verification are transient and are not written into the long-lived verification cache.
 
+The current compact cache does not record a verification timestamp. Normal verification skips existing terminal QC-v4 entries. The next operating-status recheck needs an explicit targeted refresh path and a dated compact outcome; that work is planned, not implemented by this documentation update.
+
 ## 5. Google coverage discovery
 
 ### `scripts/discover_google_area1.py`
@@ -170,19 +172,11 @@ Useful for factual enrichment such as:
 
 Identity matching should prefer Place ID and branch-aware evidence. Ambiguous enrichment remains unresolved.
 
+`source_enrichment*.js` records the usable source bindings and exact field evidence. `source_resolution*.js` records researched exceptions with status, reason, date and evidence URLs. Source-outcome accounting includes both sets; 100% accounting is distinct from usable-source coverage and field completeness.
+
 ## 7. Recommendation algorithm
 
-```text
-canonical production rows
- -> absolute <=1.2 km check
- -> optional cuisine exclusion
- -> optional budget filter
- -> optional preferred distance
- -> group by primary cuisine
- -> weighted random picks across distinct cuisine groups
- -> if fewer than 3 cuisine groups remain, fill remaining slots from other eligible rows
- -> shuffle -> 3 cards
-```
+Filter canonical rows by the absolute 1.2 km boundary, cuisine exclusions, budget and selected distance. Group eligible rows by primary cuisine, choose weighted random restaurants across different groups and fill any remaining slots from unused eligible restaurants. Shuffle the three selected identities, then use that same result set for the overview map, cards/store maps and comparison table.
 
 Hard rule: if at least three distinct production entities satisfy filters, return three.
 
@@ -202,15 +196,13 @@ The browser no longer chooses a budget field based on local clock time. A budget
 
 ## 9. Result presentation
 
-Current result UI is intentionally one layer:
-- three cards;
-- primary facts needed to decide;
-- direct Google Maps link with `query_place_id`.
+Every successful result provides:
+1. a Leaflet/OpenStreetMap overview fitted to the three selected stores, with numbered markers;
+2. three restaurant cards with known facts and one small Leaflet map per store when coordinates exist;
+3. a horizontal comparison of the same three numbered restaurants;
+4. direct Google Maps links with `query_place_id` for business lookup/navigation.
 
-Removed as redundant for the current use case:
-- Leaflet overview map;
-- per-restaurant embedded maps;
-- horizontal three-store comparison table.
+Maps use canonical independent coordinates and never display the private Area1 anchor. Before rerendering, the app removes previous Leaflet map instances. Map presentation and the comparison table consume the same canonical data as the cards; they do not create another source-matching layer.
 
 ## 10. Deployment and validation
 
@@ -218,9 +210,10 @@ Removed as redundant for the current use case:
 Deployment flow:
 1. checkout;
 2. build canonical dataset;
-3. syntax check + repository audit;
-4. assemble `_site` containing only deployable assets;
-5. deploy `_site` to Pages.
+3. JavaScript/Python syntax checks, repository audit and source-binding audit;
+4. generate coverage/source queue reports and upload the three-day `eat-data-audit` artifact;
+5. assemble `_site` containing only deployable assets;
+6. upload a review artifact for pull requests, or deploy `_site` to Pages for main/manual runs.
 
 Raw maintenance files, scripts and verification caches are not copied into the public artifact.
 
@@ -231,8 +224,18 @@ Blocking checks include:
 - all production rows verified;
 - all distances within 1.2 km;
 - no Google Places response fields such as Maps URI/display name/business status/type in the canonical production records;
-- public `index.html` does not load Leaflet, legacy Google payloads or maintenance overlays;
-- public page loads only production data + `app.js`.
+- public page loads Leaflet 1.9.4 and retains overview/store-map/comparison rendering hooks;
+- iframe maps, legacy Google payloads and maintenance overlays are absent from the public runtime;
+- exactly two local runtime scripts are loaded: production data + `app.js`;
+- source-enrichment records have supported provenance and do not self-verify.
+
+### Source-binding audit and completeness reports
+
+`audit_source_bindings.mjs` validates that enrichment and exception records attach to current production identities, have valid structure/evidence, and do not assign both a usable binding and an exception to the same Place ID.
+
+`coverage_report.mjs` reports candidate/QC counts and field/distance coverage. `source_queue.mjs` calculates source-outcome completeness. A nonzero source queue currently only appears in the report; it does not fail CI. The binding audit's `unresolvedByBindingAudit:0` is a fixed output, not that calculation. An enforced completeness gate and additional field-gap metrics remain planned maintenance improvements.
+
+These checks validate repository contracts and data consistency. They do not refresh restaurant operating status, verify the truth of remote source content or replace browser interaction testing.
 
 ### `.github/workflows/pr-review.yml`
 Read-only PR validation workflow. It does not deploy and does not receive the Google API secret.
@@ -249,11 +252,11 @@ Read-only PR validation workflow. It does not deploy and does not receive the Go
 
 ## 12. Remaining work
 
-Non-blocking architecture/product work:
-1. expand Google verification coverage for the Area1 independent-source pool;
-2. enrich budget/dishes/opening information for verified entities;
-3. improve Place-ID-centric Tabelog/award matching;
-4. audit Google coverage inventory vs verified independent-source coverage;
-5. implement Area2/SHIZUOKA only when their data is ready;
-6. design opening/holiday exclusion rules before enabling them;
-7. add local interaction history only after persistence/privacy semantics are defined.
+The ordered plan is in `DEVELOPMENT.md`:
+1. targeted current-status QC for the three source/operating-status conflicts;
+2. field extraction for the 237 usable-source restaurants, with reproducible gap reporting;
+3. resolution of branch/source exceptions, then distance-balanced verification in the empty 800–1,200 m production ring and separate curated-overlap recovery;
+4. opening/holiday exclusion after schedule semantics and coverage are ready;
+5. Area2/SHIZUOKA once their production data is ready, and local history after persistence/privacy semantics are defined.
+
+The Leaflet overview, per-store maps and three-store comparison are implemented requirements throughout this work.

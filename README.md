@@ -77,6 +77,7 @@ Unknown optional metadata remains unknown and is not fabricated.
 Latest passing 2026-09-05 source-resolution build:
 - OSM candidates: 990;
 - Google verification cache: 274 verified / 225 rejected / 0 pending;
+- processed OSM candidates: 499 / 990; candidates with no cache entry: 491;
 - canonical production entities: 269;
 - unique Google Place IDs: 269;
 - current usable Tabelog/official source bindings: 237 / 269 (88.1%);
@@ -93,13 +94,18 @@ Latest passing 2026-09-05 source-resolution build:
 - budget known: 95;
 - schedule/holiday known: 154;
 - representative dishes known: 20;
+- display address known: 61;
 - 百名店: 19.
+
+The 100% source-resolution figure counts 237 usable sources plus 32 documented exceptions. It measures whether a source outcome was recorded, not field completeness or current business status. Of the usable-source records, 114 currently declare only name evidence. `pending:0` applies to processed cache entries; 491 candidates have not been checked.
 
 Distance pools:
 - <=300 m: 116;
 - <=500 m: 192;
 - <=800 m: 269;
 - <=1,200 m: 269.
+
+The farthest production record is approximately 741 m away. The 800–1,200 m ring currently contains no production restaurants, so the 800 m and 1.2 km choices have identical pools.
 
 The original half-pool was concentrated in nearer source rows; future half-mode verification now uses distance-balanced sampling so the same bias is not repeated.
 
@@ -215,15 +221,13 @@ Priority when information conflicts:
 
 ## Next work
 
-The Area1 **source identity/resolution layer is complete** for the current 269 production entities. New data work should now enrich fields against those stable Place-ID/source bindings rather than search for sources again by loose name matching.
+The current phase is **operating-status recheck followed by field enrichment**. The following work is planned; the latest documentation review did not add restaurant data:
 
-Next field-quality priorities:
-1. increase lunch/dinner budget coverage beyond the current 95/269;
-2. increase representative-dish coverage beyond 20/269;
-3. increase opening-hours / regular-holiday coverage beyond 154/269;
-4. normalize the remaining 22 generic `餐厅` cuisine rows and correct source-confirmed cuisine mismatches;
-5. complete 百名店 award/year/category enrichment using the reviewed business identity;
-6. separately resolve the 7 curated-overlap candidates if their historical metadata is worth admitting to production;
-7. broader outer-ring Google verification only if practical 1.2 km coverage needs expansion.
+1. Recheck current Google status for キッチン グラン, 明神丸 and カフェ ド クルーセ. Their source records flag operating-status questions, but all three remain in production.
+2. Enrich the 237 existing usable-source restaurants: budget, opening/regular holidays, cuisine, representative dishes and address. In this subset, 142 lack budget, 102 lack schedule information, 22 retain generic cuisine, 217 lack dishes and 191 lack an address.
+3. Resolve the 27 branch-ambiguous source records and revisit the two source-not-found cases; then target verification in the empty 800–1,200 m production ring. Keep the 7 curated-overlap candidates as a separate expansion queue.
+4. Implement opening/holiday exclusion after schedule coverage and semantics are ready. It is currently display-only. Area2/SHIZUOKA follow the Area1 data work.
+
+Keep the current 19 百名店 records, all of which already have year/category fields, and check new award additions against the correct branch. Record per-batch additions, remaining gaps, provenance and validation results in `DEVELOPMENT.md` and `CHANGELOG.md`.
 
 Do not rerun the full Google coverage discovery merely to improve source verification; the 1,613-ID identity inventory is already preserved.

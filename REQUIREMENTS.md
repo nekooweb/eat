@@ -94,6 +94,8 @@ Missing budget, dish, holiday or opening-hour data must remain unknown. Do not i
 
 External-source data must be attached to a Google identity conservatively. Ambiguous matches stay unresolved rather than being forced.
 
+An explicit source exception records the outcome of research; it does not confirm a business is open or closed. When source evidence questions an existing production restaurant's status, recheck the existing Google identity and current status, following the Google-first admission rule. Record the dated QC outcome and resulting recommendation eligibility. The current exception ledger does not automatically filter production; the three pending status rechecks are tracked in `DEVELOPMENT.md`.
+
 ## 6. Canonical build model
 
 The browser must not merge raw source datasets.
@@ -240,6 +242,15 @@ Maintenance audits should additionally check:
 - verification status;
 - source coverage/match rates;
 - metadata completeness.
+
+Progress reporting must distinguish:
+- candidate count, processed QC records, pending records and candidates never checked;
+- unique production identities and the separate Google discovery-ID inventory;
+- usable source coverage and source-outcome accounting, including recorded exceptions;
+- field-level source evidence, populated fields and reviewed-but-unavailable fields;
+- the configured distance boundary and actual coverage within distance rings.
+
+Always state the denominator for completeness percentages. `pending:0` and 100% source-outcome accounting must not imply full candidate verification, complete restaurant fields or confirmed current operation. Opening/holiday information remains display-only until the planned exclusion logic is implemented and verified.
 
 ## 11. Security / cost / policy requirements
 

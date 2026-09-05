@@ -2,9 +2,53 @@
 
 This file records product/architecture decisions and meaningful implementation milestones. It is not a replacement for Git history.
 
+## 2026-09-05 — Progress recheck, documentation correction and ordered next work
+
+### Review scope and evidence
+- Reviewed `main` at [`8c01e125`](https://github.com/nekooweb/eat/commit/8c01e125fcb08ea5ad9a8b493924bf077374b6c6), committed at 13:38 JST.
+- Confirmed the associated [Pages build and deployment](https://github.com/nekooweb/eat/actions/runs/33945096799) succeeded.
+- Reproduced the canonical build, repository audit, source-binding audit, coverage report and source queue locally.
+- This entry records a repository/data review and documentation update. No restaurant fields, live business-status results, API verification runs or runtime features were added in this pass.
+
+### Corrected progress interpretation
+- Production remains 269 restaurants with 269 unique Google Place IDs.
+- Source-outcome accounting is 269/269, comprising 237 usable bindings (221 Tabelog, 16 official) and 32 exceptions (27 ambiguous, 2 listing holds, 1 unusable/closed source, 2 source-not-found).
+- The 100% accounting figure does not mean all restaurants have usable sources, complete fields or freshly confirmed operating status.
+- The Google QC cache covers 499 of 990 OSM candidates: 274 verified source rows, 225 rejected, 0 pending. **491 candidates have no cache entry.** Zero pending is not full-pool verification.
+- The 1,613 Google Place IDs remain a discovery inventory; inventory, verified source-row and unique production counts have different meanings.
+- **114 usable-source records declare name evidence only**, so page identification has not yet been followed by broader source-backed field extraction for those rows.
+
+### Field and geographic gaps
+- Known production fields: non-generic cuisine 247/269; budget 95/269; opening/holiday information 154/269; dishes 20/269; display address 61/269.
+- Lunch budget 88, dinner budget 77, both 70; 143 rows have opening-hours text, while 11 more have closure/holiday information only.
+- All 19 百名店 records already contain award year and category.
+- Within the 237 usable-source restaurants, missing fields are budget 142, schedule 102, non-generic cuisine 22, dishes 217 and address 191. These overlapping gaps use a different denominator from whole-production completeness.
+- Distance pools remain 116/192/269/269 at 300/500/800/1,200 m. The farthest production record is about 741 m; the 800–1,200 m ring has no production coverage.
+- Supplemental name-only/field-gap counts were calculated from the rebuilt data and source shards. Adding these metrics to the automated report remains planned work.
+
+### Operating-status and maintenance findings
+- キッチン グラン and 明神丸 have `listing_hold` source records; カフェ ド クルーセ has a `no_current_usable_source` record referencing a matching source recorded as closed. All three remain in the recommendation pool and need current Google status QC using their existing Place IDs.
+- The source-resolution ledger is a maintenance input, not a canonical/runtime admission filter. All 32 exception identities remain in production.
+- The current Google cache has no per-entry verification timestamp, and ordinary runs skip terminal QC-v4 records. A deliberate targeted refresh path and dated compact outcomes are needed for the status rechecks.
+- `source_queue.mjs` computes completeness but does not fail on missing outcomes. `audit_source_bindings.mjs` prints a fixed `unresolvedByBindingAudit:0`; that field must not be treated as the completeness calculation. The actual reviewed queue is zero. A computed blocking completeness gate remains planned work.
+
+### Documentation changes
+- Updated `DEVELOPMENT.md` with the verified baseline, explicit denominators, field-gap table, three status-conflict cases and completion evidence for the next work.
+- Updated `DATA_PIPELINE.md` with outcome-ledger semantics, unprocessed-candidate/refresh rules, enrichment metrics and per-batch reporting requirements.
+- Corrected stale `ARCHITECTURE.md` statements that maps/comparison were removed or Leaflet was forbidden. The actual runtime retains the overview map, per-store maps and comparison; the current source shards and CI/reporting flow are documented.
+- Aligned `README.md` and `REQUIREMENTS.md` with the progress definitions and Google-first status-conflict review rule.
+- Marked conflicting proposals in `DATA_RESEARCH.md` as historical without treating its sample restaurant facts as newly verified.
+
+### Next work — pending
+1. Recheck the three operating-status conflicts with targeted current Google QC and record the resulting recommendation decisions.
+2. Review fields for all 237 usable-source restaurants, prioritizing budget, opening/regular holidays, cuisine, dishes and address; preserve branch-specific provenance and record reviewed gaps.
+3. Resolve branch/source exceptions, then target the 800–1,200 m coverage gap using existing candidates/inventory; keep the seven curated-overlap candidates in a separate expansion queue.
+4. Implement opening/holiday exclusion after schedule coverage and semantics are ready. Preserve the required maps and comparison; Area2/SHIZUOKA follow Area1 work.
+5. With each batch, update development/log records with new facts, remaining gaps, check dates/source references, coverage deltas and validation evidence.
+
 ## 2026-09-05 — Current source-resolution and result-view state
 
-This section is the current state and supersedes same-day historical statements below where they conflict.
+This is the preceding source-accounting milestone. The progress recheck above clarifies its completion claims and supersedes its next-work ordering where they differ.
 
 ### Required result views restored
 - Restored the Leaflet/OpenStreetMap three-store overview map.

@@ -85,6 +85,8 @@ Each resolution must contain:
 
 A production identity must never have both a usable source binding and a terminal resolution at the same time.
 
+These statuses are terminal for a source-research pass, not permanent business-status decisions. The current canonical builder does not consume the resolution ledger, so all 32 exception identities remain in the recommendation pool. Current Google identity/status QC remains authoritative for admission; source conflicts must trigger targeted review of that existing identity.
+
 ### Legacy curated records
 Historical files such as `restaurants.js`, `area1_bulk.js` and `area1_more.js` remain bridge/enrichment inputs. They are not the preferred destination for new source research.
 
@@ -143,7 +145,11 @@ Latest passing 2026-09-05 build:
 - unresolved: **0**;
 - unattached enrichment records: 0.
 
-This means the source identity layer is complete for the current production set. Remaining work is primarily field extraction/completeness, not source discovery.
+Every current production identity has a recorded source outcome. The 100% figure includes all 32 exceptions and must be reported alongside the 88.1% usable-source coverage. It does not establish complete fields or current operating status.
+
+The review at `8c01e125` also found 114 usable-source records with only `name` evidence. These bindings support the next field-extraction pass without repeating source discovery.
+
+Three exception records need current Google status rechecks before the broader field pass: キッチン グラン and 明神丸 (`listing_hold`), and カフェ ド クルーセ (`no_current_usable_source`, matching Tabelog page recorded as closed). These are recorded source issues, not freshly confirmed business closures. All three are still production-eligible under normal filters. Dates, compact QC results and resulting eligibility must be recorded when the planned recheck is performed.
 
 ## 4. Source candidate discovery
 
@@ -240,6 +246,14 @@ API/network failure or other unresolved state; retry is allowed later.
 
 A rejected source candidate means the source-to-Google match is not trusted. It does not prove that no restaurant exists.
 
+### Unprocessed candidates and refresh semantics
+
+At the reviewed baseline, 499 of 990 current OSM candidates have cache entries: 274 verified, 225 rejected, 0 pending. The remaining **491 candidates have no cache entry**. Keep this unprocessed count separate from `pending`; zero pending does not mean full-pool verification is complete.
+
+Cache verification counts refer to source rows, while the canonical count refers to unique production Place IDs. Do not subtract the two as though both counted restaurants.
+
+Existing terminal QC-v4 entries are skipped by ordinary verification, and current entries carry no verification timestamp. A deliberate targeted refresh path and dated compact QC outcomes are needed for the three operating-status conflicts. This documentation update does not implement that path or refresh those statuses.
+
 ## 7. Google-side coverage discovery
 
 Script:
@@ -261,6 +275,8 @@ Output:
 Current preserved inventory: 1,613 unique Place IDs.
 
 This is a coverage inventory, not a browser dataset and not a reason to re-run Google discovery during normal Tabelog/official field enrichment.
+
+The current production distance pools are 116 within 300 m, 192 within 500 m and 269 within both 800 m and 1,200 m. The maximum canonical distance is about 741 m. No production restaurant currently represents the 800–1,200 m ring. Expansion should target that gap after the existing-source field work, using unprocessed independent candidates and the preserved identity inventory.
 
 ## 8. Legacy Google discovery migration
 
@@ -339,7 +355,7 @@ Forbidden long-lived Places-response fields include Google-returned display name
 
 ## 11. Field-enrichment phase
 
-With source resolution at 100%, new data work should use existing Place-ID/source bindings.
+New data work should reuse existing Place-ID/source bindings after the priority operating-status rechecks. Source-outcome accounting and field completion are separate progress measures.
 
 Current field completeness:
 - cuisine refs: 123;
@@ -355,12 +371,32 @@ Current field completeness:
 - address known: 61 / 269;
 - production 百名店: 19.
 
+Supplementary counts reproduced from the canonical dataset/source shards:
+- lunch budget: 88; dinner budget: 77; both meal budgets: 70;
+- opening-hours text: 143; closure/holiday information without opening-hours text: 11;
+- all 19 award rows carry year and category;
+- 114 usable-source rows have name evidence only.
+
+| Field gap | Missing among the 237 usable-source production identities |
+| --- | ---: |
+| Budget | 142 |
+| Opening/regular-holiday information | 102 |
+| Non-generic cuisine | 22 |
+| Representative dishes | 217 |
+| Display address | 191 |
+
+These counts overlap. A usable source, a source reference supporting a field, a populated production field and a field reviewed but unavailable are distinct states. Existing OSM/curated values can also supply production fields.
+
 Field extraction rules:
 - keep lunch and dinner distinct;
 - declare exactly which fields a `sourceRefs` entry supports;
 - do not infer missing facts from cuisine stereotypes or neighboring businesses;
 - do not extract source-derived fields from terminal/ambiguous resolutions until their branch identity is resolved;
 - do not re-run Google identity search merely to fill Tabelog/official fields.
+
+For each batch, report source/Place IDs reviewed, newly populated fields, reviewed gaps with reasons, check dates and URLs, before/after production coverage and remaining exception/unprocessed queues. Prioritize budget, opening/regular holidays, cuisine, dishes and address. Keep new facts keyed to the exact branch and update `DEVELOPMENT.md` and `CHANGELOG.md` after validation.
+
+Supplementary name-only and usable-source gap counts are currently review calculations, not outputs of the checked-in coverage script. Automating them and adding a computed source-completeness gate are planned improvements.
 
 ## 12. 百名店 enrichment
 
@@ -394,6 +430,8 @@ Scripts:
 - `scripts/source_queue.mjs`.
 
 Pages CI uploads `coverage.json` and `source_queue.json` as a short-lived private `eat-data-audit` workflow artifact so source/data completeness can be inspected without publishing maintenance evidence.
+
+Current limitation: `source_queue.mjs` reports a nonzero unresolved count without failing, while `audit_source_bindings.mjs` prints a fixed `unresolvedByBindingAudit:0`. Read the calculated queue for completeness; the reviewed baseline is zero. Existing audits check structure/linkage and do not perform live status or source-content research. New production expansion should include a real completeness gate as planned maintenance work.
 
 ## 14. Frontend behavior
 

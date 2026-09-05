@@ -1,8 +1,10 @@
 # Eat Development Plan
 
-## Current status — 2026-09-05 source layer complete
+## Current status — 2026-09-05 progress recheck and next work
 
-The `TOKYO / 地区1️⃣` runtime architecture and current production identity/source layer are reviewed and stable.
+The `TOKYO / 地区1️⃣` static runtime is implemented and its current build/audits pass. All 269 production identities have a recorded source outcome, but field enrichment, source exceptions and geographic coverage remain unfinished.
+
+Review baseline: [`8c01e125`](https://github.com/nekooweb/eat/commit/8c01e125fcb08ea5ad9a8b493924bf077374b6c6), committed at 2026-09-05 13:38 JST. Its [Pages build/deployment](https://github.com/nekooweb/eat/actions/runs/33945096799) succeeded. A local rebuild, both audits, coverage report and source queue reproduced that baseline. This documentation update records the findings and planned work; it does not represent new restaurant verification or field entry.
 
 Required product behavior remains:
 - static GitHub Pages site;
@@ -24,9 +26,12 @@ Latest passing Pages build after source-resolution completion:
 - Google verification cache: 499 terminal QC-v4 entries;
 - verified: 274;
 - rejected: 225;
-- pending: 0;
+- pending within the existing cache: 0;
+- OSM candidates with no verification-cache entry: **491 / 990**;
 - canonical production entities: 269;
 - unique Google Place IDs: 269.
+
+`pending:0` describes only the 499 processed source records. It does not mean all 990 candidates have been checked. Verified cache rows are source records, whereas production counts distinct Place IDs after canonical merging. The separate 1,613-ID Google discovery inventory is a coverage lead list, not 1,613 production restaurants.
 
 Current rejection reasons remain:
 - `outside_1_2km`: 114;
@@ -42,9 +47,11 @@ Distance pools:
 - <=800 m: 269;
 - <=1,200 m: 269.
 
+The farthest canonical record is approximately 741 m away. The 800 m and 1.2 km options currently select the same pool; there are no production records in the 800–1,200 m ring. The 1.2 km boundary is implemented, but coverage of that full radius is incomplete.
+
 The original half-pool run was near-biased because of historical source ordering. Future half-mode verification uses deterministic distance-balanced sampling instead.
 
-## Source identity/resolution — COMPLETE
+## Source outcome accounting — complete for the current 269 identities
 
 Every one of the current 269 production identities now has a terminal source state.
 
@@ -71,6 +78,8 @@ Final source-resolution result:
 - coverage: **100%**;
 - unresolved queue: **0**.
 
+This is **source-outcome accounting coverage**: 237 usable bindings plus 32 documented exceptions. It does not mean 269 usable sources, complete restaurant fields or current operating-status confirmation. All 32 exception identities remain in the canonical recommendation pool; source-resolution records currently control the research ledger, not runtime admission.
+
 ### Source-resolution infrastructure
 
 Current maintenance layer:
@@ -84,16 +93,22 @@ Source-resolution shards are intentionally supported so future additions do not 
 
 ## Current metadata completeness
 
-The weak point has moved from source discovery to field completeness.
+| Field | Known in all 269 production entities | Coverage | Missing within the 237 usable-source entities |
+| --- | ---: | ---: | ---: |
+| Non-generic cuisine | 247 | 91.8% | 22 |
+| Lunch or dinner budget | 95 | 35.3% | 142 |
+| Opening or regular-holiday information | 154 | 57.2% | 102 |
+| Representative dishes | 20 | 7.4% | 217 |
+| Display address | 61 | 22.7% | 191 |
 
-Latest coverage:
-- distinct cuisine labels: 33;
-- generic `餐厅` rows: 22;
-- address known: 61 / 269;
-- lunch/dinner budget known: 95 / 269;
-- schedule / regular-holiday information known: 154 / 269;
-- representative dishes known: 20 / 269;
-- 百名店: 19.
+The last column uses the 237 usable-source entities as its denominator, not all 269 restaurants. The gaps overlap and must not be summed as distinct restaurants.
+
+Additional detail from the rebuilt data:
+- 33 distinct cuisine labels; 22 rows still use generic `餐厅`;
+- lunch budget known: 88; dinner budget known: 77; both known: 70;
+- `openingHoursRaw` present: 143; another 11 rows have only closure/holiday information;
+- 19 百名店 records, all carrying year and category; this is an award count, not a completeness target for all restaurants;
+- **114 of the 237 usable-source records declare only `name` in their source references**. Their source pages have been located, but richer field extraction is still pending. Existing OSM/curated fields may already appear on those restaurants.
 
 Source-reference coverage by field currently includes:
 - cuisine: 123 reviewed refs;
@@ -103,17 +118,41 @@ Source-reference coverage by field currently includes:
 - closure/status: 103;
 - 百名店: 17.
 
-These figures should rise through field-level enrichment against the completed Place-ID/source map. Do **not** restart loose name-based source matching for every field.
+Source-reference counts measure field evidence entries and can differ from production field counts because canonical data also incorporates OSM/curated information. They must be reported separately. New extraction should reuse the reviewed Place-ID/source bindings.
 
-## Immediate development phase — field enrichment
+## Next work — planned, not yet executed
 
-Priority order:
-1. **budget** — expand lunch/dinner price coverage from 95/269;
-2. **opening / regular holidays** — expand schedule coverage from 154/269 and normalize semantics;
-3. **cuisine normalization** — resolve 22 generic `餐厅` rows and correct source-confirmed mismatches (for example ramen/udon distinctions);
-4. **representative dishes** — expand the current 20/269 carefully from menu/official/Tabelog evidence;
-5. **百名店** — finish year/category identity attachment, including newly identified current award pages;
-6. **address** — increase independent/source-backed display address coverage where licensing/storage is appropriate.
+### 1. Recheck three operating-status conflicts
+
+| Current production name | Recorded source issue | Current recommendation state |
+| --- | --- | --- |
+| キッチン グラン | `listing_hold`: Tabelog operating status unconfirmed | Still eligible under normal filters |
+| 明神丸 | `listing_hold`: Tabelog operating status unconfirmed | Still eligible under normal filters |
+| カフェ ド クルーセ | `no_current_usable_source`: matching Tabelog source marked closed | Still eligible under normal filters |
+
+Use the existing Place IDs for targeted current Google identity/status QC, following the product owner's Google-first decision. Record the check date, compact QC outcome and resulting recommendation eligibility. A source-page exception alone does not establish the business's current status. The present cache has no per-entry verification timestamp, and ordinary runs skip terminal QC-v4 entries; an explicit targeted recheck path is needed to refresh these cases without rerunning the whole pool.
+
+Completion evidence: an explicit fresh QC outcome for each of the three identities, consistent source/production records and passing audits. These checks have not been performed in this documentation pass.
+
+### 2. Enrich the 237 existing usable-source restaurants
+
+Process budget first, then opening/regular holidays, cuisine normalization, representative dishes and address. Use the missing-field counts above to select work, including the 114 name-only source records. Maintain the existing 19 award records and add or correct award facts only with branch-specific evidence; year/category fields are already present for all 19.
+
+Each restaurant should receive a field review even when a source does not provide every value. Store supported facts and record the reason for any reviewed gap. A completed review is distinct from a populated field.
+
+### 3. Resolve remaining source exceptions, then expand distance coverage
+
+- Resolve the 27 branch-ambiguous records using existing Place IDs, independent coordinates/address and official branch information; move an exception to usable enrichment only when the specific branch is supported.
+- Revisit the two `source_not_found` cases when better evidence becomes available.
+- Target unverified candidates in the 800–1,200 m ring using distance-balanced verification and reuse the existing 1,613-ID inventory.
+- Keep the seven unresolved `curatedOverlap` candidates as a separate expansion queue.
+- Apply the same source-outcome and field-review process to every newly admitted production identity.
+
+### 4. Implement opening/holiday filtering after schedule data is stronger
+
+Opening information is currently descriptive. Design and verify Japan-time interpretation, split service periods, regular holidays and unknown/irregular schedules before using it to exclude recommendations. Preserve the overview map, per-store maps and three-store comparison. Area2 and SHIZUOKA follow the current Area1 data work.
+
+### Field entry and batch reporting rules
 
 Field extraction rules:
 - use the already reviewed Place-ID -> source relationship;
@@ -123,6 +162,15 @@ Field extraction rules:
 - no visitor-clock-dependent price selection;
 - no fabricated `unknown` replacements;
 - ambiguous/terminal source-resolution records stay excluded from source-derived field extraction until the identity issue is resolved.
+
+For each future batch, update this document and `CHANGELOG.md` with:
+- scope/Place IDs processed and source URLs/check dates;
+- before/after production count and field coverage;
+- newly populated fields and reviewed-but-missing fields with reasons;
+- source-exception changes and remaining unverified candidates;
+- distance-ring counts and validation results/commit or CI reference.
+
+The current coverage script does not yet emit every supplementary metric in this review, including name-only source counts and usable-source field gaps. Those values were calculated from the same rebuilt canonical dataset and source shards. Extending the maintenance reports to reproduce them is planned work; it must not be presented as an existing automated gate.
 
 ## Google identity/QC design
 
@@ -185,14 +233,13 @@ Pages CI currently runs:
 - minimal public-site assembly;
 - GitHub Pages deployment.
 
-Current source-completion build passed all of these checks and deployed successfully.
+The reviewed baseline passed all of these checks and deployed successfully. They establish build and repository consistency; they do not perform live restaurant-status research or prove field completeness.
+
+Current completeness-gate limitation: `source_queue.mjs` calculates and reports missing source outcomes, but does not fail on a nonzero unresolved count. `audit_source_bindings.mjs` validates existing rows and emits a fixed `unresolvedByBindingAudit:0`; that field is not a computed completeness measure. The actual reviewed queue is zero. Future expansion should add a real completeness gate rather than rely on that fixed value.
 
 ## Later work
 
-After field enrichment is materially stronger:
-- opening/holiday exclusion semantics;
-- optional curated-overlap Google verification if the seven historical rows are worth admitting;
-- broader distance-balanced outer-ring verification only if practical 1.2 km coverage needs expansion;
+After the ordered Area1 work above:
 - local recommendation history after privacy/persistence rules are defined;
 - TOKYO 地区2️⃣ after production data exists;
 - SHIZUOKA after production data exists.
