@@ -12,6 +12,10 @@ const AREA = '地区1️⃣';
 const PROFILE = 'TOKYO';
 const MAX_DISTANCE = 1200;
 
+const enrichmentInputs = fs.readdirSync(DATA)
+  .filter((filename) => /^source_enrichment(?:_[a-z0-9-]+)?\.js$/i.test(filename))
+  .sort();
+
 const INPUTS = [
   'restaurants.js',
   'area1_bulk.js',
@@ -24,7 +28,7 @@ const INPUTS = [
   'hyakumeiten.js',
   // Place-ID keyed, field-level source-backed metadata. These rows are
   // enrichment-only and may not admit a restaurant into production themselves.
-  'source_enrichment.js'
+  ...enrichmentInputs
 ];
 
 const sandbox = {
