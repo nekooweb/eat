@@ -1,64 +1,34 @@
 # Eat Development Plan
 
-## Current status — 2026-09-05 reviewed baseline
+## Current status — 2026-09-05 source layer complete
 
-The `TOKYO / 地区1️⃣` data/runtime architecture remains reviewed and stable, with one product correction after the first review pass: **the Leaflet three-store overview, per-store maps and three-store comparison table are required result views and have been restored.**
+The `TOKYO / 地区1️⃣` runtime architecture and current production identity/source layer are reviewed and stable.
 
-Current implementation:
+Required product behavior remains:
 - static GitHub Pages site;
 - strict internal Area1 boundary <=1,200 m;
 - Google Place ID required for production identity;
-- Google Places response fields used only transiently for QC;
-- independently maintainable OSM/curated/Tabelog/official metadata;
+- Google Places details used only transiently for QC;
+- build-time OSM/curated/Tabelog/official enrichment;
 - one deploy-time canonical dataset;
-- browser handles filtering, random selection, cards, Leaflet visualization and comparison only;
-- browser does not perform source matching/enrichment;
+- browser filtering/random selection only, plus the required Leaflet overview map, per-store maps and three-store comparison;
+- no browser-side source matching;
 - Pages publishes only deployable assets, not maintenance data/scripts.
 
-The September 5 architecture review still supersedes the earlier plan to keep full Google Places business records as the long-lived browser production dataset. Restoring result maps does **not** restore that old data architecture.
+Restoring result maps/comparison does **not** restore the old browser-side multi-source architecture.
 
-## Verification baseline
+## Current production / verification baseline
 
-The requested half-pool verification processed 492 of 983 OSM candidates with QC v4.
+Latest passing Pages build after source-resolution completion:
+- OSM source candidates: 990;
+- Google verification cache: 499 terminal QC-v4 entries;
+- verified: 274;
+- rejected: 225;
+- pending: 0;
+- canonical production entities: 269;
+- unique Google Place IDs: 269.
 
-First pass:
-- 262 verified;
-- 223 rejected;
-- 7 pending due temporary Google 500/503 errors;
-- 948 API calls.
-
-Pending-only retry:
-- 14 API calls;
-- 267 verified;
-- 225 rejected;
-- 0 pending.
-
-The retry did not reprocess already-final QC v4 entries.
-
-## Canonical production baseline
-
-Latest reviewed build:
-- source rows considered: 1,045;
-- verified source rows: 269;
-- production entities: 262;
-- unique Google Place IDs: 262;
-- cuisine known: 222;
-- distinct cuisine labels: 25;
-- budget known: 2;
-- representative dishes known: 2;
-- 百名店: 8.
-
-Distance pools:
-- <=300 m: 114;
-- <=500 m: 187;
-- <=800 m: 262;
-- <=1,200 m: 262.
-
-The completed half-pool run was concentrated in nearer source rows because of the old source ordering. Future `half` mode now uses deterministic distance-balanced systematic sampling, so this bias is not repeated.
-
-## Verification rejection reasons
-
-Final half-pool rejections:
+Current rejection reasons remain:
 - `outside_1_2km`: 114;
 - `location_mismatch`: 42;
 - `closed_permanently`: 35;
@@ -66,208 +36,165 @@ Final half-pool rejections:
 - `non_food_google_type`: 5;
 - `no_google_place`: 2.
 
-These are source-to-Google match failures, not claims that no restaurant exists at those locations.
+Distance pools:
+- <=300 m: 116;
+- <=500 m: 192;
+- <=800 m: 269;
+- <=1,200 m: 269.
 
-## Google coverage inventory
+The original half-pool run was near-biased because of historical source ordering. Future half-mode verification uses deterministic distance-balanced sampling instead.
 
-Historical Google-first discovery was migrated without new API calls:
-- 1,613 unique Google Place IDs preserved in `data/area1_google_ids.json`;
-- legacy full `area1_google_places.json` removed;
-- legacy `area1_google.js` removed.
+## Source identity/resolution — COMPLETE
 
-Current canonical overlap with the 1,613-ID inventory:
-- 184 production IDs;
-- 11.4% of the Google identity inventory.
+Every one of the current 269 production identities now has a terminal source state.
 
-The inventory is a coverage reference, not a target requiring every Google ID to become a production recommendation.
+### Usable source bindings
 
-## Runtime architecture
+237 / 269 production identities have a current usable Tabelog or official source binding:
+- Tabelog-backed: 221;
+- official-source-backed: 16;
+- attached enrichment rows: 237;
+- unattached enrichment rows: 0.
 
-### Kept intentionally simple
+These bindings are keyed by the existing canonical Google Place ID. Source discovery never replaces the verified Place ID with a newly guessed identity.
 
-Removed and still removed:
-- browser-side multi-source entity matching;
-- selectable TBD areas/profiles;
-- redundant per-filter enable/disable toggles;
-- generic `identity verified` badge on every card;
-- repeated `unknown` budget/opening placeholders;
-- browser-clock-dependent lunch/dinner selection;
-- iframe-based maps;
-- direct loading of raw maintenance overlays.
+### Explicit terminal resolutions
 
-### Required result views
+The remaining 32 production identities are explicitly resolved rather than left unknown:
+- `ambiguous`: 27 — usually a chain/brand-only canonical name where a specific branch cannot be assigned safely;
+- `listing_hold`: 2 — matching listing exists but current operating status is not established;
+- `no_current_usable_source`: 1 — evidence exists but the matched current source is explicitly unusable/closed;
+- `source_not_found`: 2 — exact-name/area research found no current Tabelog or restaurant-official page; identity evidence is retained without inventing a source.
 
-Restored as product requirements:
-1. **Leaflet/OpenStreetMap three-store overview map**
-   - all generated restaurants with canonical coordinates;
-   - numbered 1–3 to match cards/comparison;
-   - fitted to generated points;
-   - does not expose the private Area1 anchor.
-2. **Per-store Leaflet/OpenStreetMap map**
-   - one small map inside each result card when canonical coordinates exist;
-   - shows immediate spatial context;
-   - same numbered marker as overview.
-3. **Three-store comparison table**
-   - cuisine;
-   - distance;
-   - budget;
-   - representative dishes;
-   - opening/holiday information;
-   - 百名店 status.
-4. **Direct Google Maps business link**
-   - uses verified Place ID for business/navigation lookup;
-   - remains separate from the OSM visualization layer.
+Final source-resolution result:
+- resolved: **269 / 269**;
+- coverage: **100%**;
+- unresolved queue: **0**.
 
-These views are complementary UI, not separate data pipelines. All of them consume the same `production_area1.js` records.
+### Source-resolution infrastructure
 
-Leaflet maps use independently maintained canonical coordinates. Transient Google Places response coordinates are not rendered onto the non-Google map layer.
+Current maintenance layer:
+- `data/source_enrichment*.js` — Place-ID keyed usable Tabelog/official bindings and field enrichment;
+- `data/source_resolution*.js` — explicit terminal source states;
+- `scripts/source_queue.mjs` — completeness/unresolved report;
+- `scripts/audit_source_bindings.mjs` — blocks stale/unattached source rows, invalid resolutions, duplicate usable/resolution states and unsupported evidence;
+- Pages CI uploads `coverage.json` + `source_queue.json` as a short-lived private `eat-data-audit` artifact.
 
-## Recommendation behavior
+Source-resolution shards are intentionally supported so future additions do not require editing one conflict-prone monolithic ledger.
 
-Hard rule:
-- if >=3 restaurants pass current constraints, return exactly 3 distinct Place IDs.
+## Current metadata completeness
 
-Selection preference:
-- maximize feasible cuisine diversity first;
-- fill remaining slots even if fewer than three cuisine groups remain;
-- Web Crypto randomness;
-- verified 百名店 weight 2.2 vs ordinary 1.0;
-- no rating/review popularity ranking.
+The weak point has moved from source discovery to field completeness.
 
-## Filters
+Latest coverage:
+- distinct cuisine labels: 33;
+- generic `餐厅` rows: 22;
+- address known: 61 / 269;
+- lunch/dinner budget known: 95 / 269;
+- schedule / regular-holiday information known: 154 / 269;
+- representative dishes known: 20 / 269;
+- 百名店: 19.
 
-Neutral selections replace redundant enable/disable state:
-- no cuisine exclusions;
-- budget `不限`;
-- distance `1.2km`.
+Source-reference coverage by field currently includes:
+- cuisine: 123 reviewed refs;
+- budget: 95;
+- dishes: 15;
+- hours: 94;
+- closure/status: 103;
+- 百名店: 17.
 
-Budget metadata currently exists for only 2 production entities, so the runtime hides the budget module until at least 3 production entities have known lunch/dinner budget. The feature should reappear automatically after enrichment rather than remain as a knowingly unusable control.
+These figures should rise through field-level enrichment against the completed Place-ID/source map. Do **not** restart loose name-based source matching for every field.
+
+## Immediate development phase — field enrichment
+
+Priority order:
+1. **budget** — expand lunch/dinner price coverage from 95/269;
+2. **opening / regular holidays** — expand schedule coverage from 154/269 and normalize semantics;
+3. **cuisine normalization** — resolve 22 generic `餐厅` rows and correct source-confirmed mismatches (for example ramen/udon distinctions);
+4. **representative dishes** — expand the current 20/269 carefully from menu/official/Tabelog evidence;
+5. **百名店** — finish year/category identity attachment, including newly identified current award pages;
+6. **address** — increase independent/source-backed display address coverage where licensing/storage is appropriate.
+
+Field extraction rules:
+- use the already reviewed Place-ID -> source relationship;
+- declare exactly which fields each `sourceRefs` entry supports;
+- do not infer a value merely because a restaurant category normally implies it;
+- lunch and dinner remain separate;
+- no visitor-clock-dependent price selection;
+- no fabricated `unknown` replacements;
+- ambiguous/terminal source-resolution records stay excluded from source-derived field extraction until the identity issue is resolved.
 
 ## Google identity/QC design
 
-`scripts/verify_google_places.py` QC v4:
+`scripts/verify_google_places.py` QC v4 remains authoritative:
 - source-ID keyed overlay;
 - Text Search persists only Place ID;
 - Place Details fields are transient QC inputs;
 - permanent-closure rejection;
 - Google-side Area1 boundary check;
 - <=300 m source/Google maximum match distance;
-- current food-related place type check;
-- strong name evidence for wider matches;
-- <=45 m transliteration-tolerant path for Japanese vs English/romanized display names;
-- persistent cache limited to source ID/status/Place ID/reason/QC version;
-- `GOOGLE_VERIFY_LIMIT=-1` half mode sorts by distance and takes alternating rows, producing a deterministic ~50% sample distributed across the full Area1 radius instead of the nearest half.
+- current food-related type check;
+- stronger name evidence for wider matches;
+- <=45 m transliteration-tolerant path for Japanese vs English/romanized names;
+- persistent cache limited to source ID/status/Place ID/reason/QC version.
 
-Changing half-sampling logic does not itself trigger another Google verification run.
+Do not weaken QC rules to increase the production count.
 
-Do not weaken QC rules merely to increase production count.
+Seven `curatedOverlap` candidates are currently visible in coverage reporting but still unresolved by the targeted curated-overlap verifier. They are a **separate possible production-expansion task**, not a gap in the current 269-entity source-resolution layer.
 
 ## Canonical build
 
 `scripts/build_production_dataset.mjs`:
 - admits only verified Google identities;
 - collapses one production entity per Place ID;
-- conservatively merges independent enrichment;
+- merges reviewed independent enrichment conservatively;
 - prefers independent/OSM geospatial metadata;
-- blocks >1,200 m rows;
-- blocks duplicate Place IDs;
+- blocks >1,200 m rows and duplicate Place IDs;
 - leaves missing metadata missing;
 - writes `data/production_area1.js` only during build/deploy.
 
-## Validation infrastructure
+## Runtime/result contract
 
-### `scripts/audit_repository.mjs`
-Blocking checks guard both data integrity and the current result-view contract:
-- production >=3;
-- unique Place IDs;
-- every production row verified;
-- every production distance <=1,200 m;
-- forbidden long-lived Google response fields absent;
-- local public runtime limited to canonical production data + `app.js`;
-- Leaflet dependency present;
-- overview map present;
-- per-store maps present;
-- three-store comparison table present;
-- iframe map implementation absent;
-- maintenance overlays absent from public runtime;
-- redundant filter toggle state absent;
-- generic verification badge absent;
-- Google Maps and OpenStreetMap attribution present.
+Required result views:
+1. Leaflet/OpenStreetMap three-store overview map;
+2. per-store Leaflet map inside each result card;
+3. three-store comparison table;
+4. direct Place-ID-based Google Maps business/navigation link.
 
-### `scripts/coverage_report.mjs`
-Reports:
-- source candidates;
-- verification status/QC versions;
-- rejection reasons;
-- Google inventory overlap;
-- production count;
-- cuisine distribution;
-- 300/500/800/1200 m pools;
-- budget pools;
-- award count.
+These are presentation views over the same canonical records, not separate data pipelines.
 
-### Workflows
-- `pr-review.yml`: read-only PR build/audit, no deployment/API secret;
-- `pages.yml`: canonical build -> JavaScript/Python syntax checks -> repository audit -> coverage report -> minimal `_site` -> Pages deployment;
-- `verify-google-places.yml`: staged source -> Google Place ID verification;
-- `discover-google-area1.yml`: Place-ID-only Google coverage discovery;
-- `migrate-google-storage.yml`: one-time legacy full Places -> Place-ID-only migration;
-- `refresh-area1.yml`: independent OSM candidate refresh.
+Still intentionally absent:
+- browser-side source matching;
+- iframe maps;
+- raw maintenance datasets as public dependencies;
+- redundant filter enable/disable state;
+- generic identity-verification badge on every result;
+- visitor-time Google Places calls.
 
-## Current decision
+## Validation / CI
 
-The current architecture still passes review because:
-- source matching remains build-time only;
-- canonical build and data integrity rules remain unchanged;
-- result visualization is now explicitly separated from data engineering;
-- enough verified entities exist for cuisine/distance-based random choice;
-- no pending verification remains in the requested half pool;
-- weak metadata remains omitted rather than fabricated;
-- coverage gaps are measured by CI.
+Pages CI currently runs:
+- canonical production build;
+- JavaScript syntax check;
+- Python compile checks;
+- repository/runtime audit;
+- source-binding/resolution audit;
+- coverage report;
+- source-resolution queue report;
+- private data-audit artifact upload;
+- minimal public-site assembly;
+- GitHub Pages deployment.
 
-The earlier conclusion that maps/comparison were unnecessary duplication is superseded by the product requirement that they provide distinct spatial/comparison value.
+Current source-completion build passed all of these checks and deployed successfully.
 
-## Next priority 1 — product logic corrections
+## Later work
 
-Further product/interaction changes should be applied incrementally to the current result structure rather than removing required views. Preserve:
-- overview map;
-- per-store maps;
-- three-store comparison;
-- direct Google Maps lookup.
-
-## Next priority 2 — metadata enrichment
-
-Current weak point is not restaurant count; it is metadata completeness.
-
-Priority order:
-1. lunch/dinner budget;
-2. representative dishes;
-3. opening hours / regular holidays;
-4. Place-ID-centric 百名店/Tabelog branch matching;
-5. cuisine normalization for generic `餐厅` rows.
-
-Tabelog/official matching priority:
-1. exact Place ID mapping when available;
-2. branch-aware name + address + close coordinates;
-3. strong unique name/location evidence;
-4. otherwise unresolved/manual review.
-
-Do not fabricate missing values.
-
-## Next priority 3 — outer-ring coverage
-
-If broader 1.2 km practical coverage is needed later:
-- run the now distance-balanced `half` mode as an intentional new coverage task, which will reuse existing QC v4 results and only call Google for selected unresolved rows; or
-- process the remaining candidate pool as a separate coverage task.
-
-Do not rerun the 1,613-ID Google discovery merely for this purpose; the inventory already exists.
-
-## Later product scope
-
-Only after Area1 quality is stable:
+After field enrichment is materially stronger:
 - opening/holiday exclusion semantics;
+- optional curated-overlap Google verification if the seven historical rows are worth admitting;
+- broader distance-balanced outer-ring verification only if practical 1.2 km coverage needs expansion;
 - local recommendation history after privacy/persistence rules are defined;
-- TOKYO 地区2️⃣ after its production data exists;
-- SHIZUOKA after its production data exists.
+- TOKYO 地区2️⃣ after production data exists;
+- SHIZUOKA after production data exists.
 
-Do not reintroduce inactive selector UI or browser-side source merging by default.
+Do not rerun the 1,613-ID Google coverage discovery merely to improve source/field enrichment; that identity inventory already exists.
