@@ -1,0 +1,17 @@
+// Source index batch: reviewed current restaurant pages from the remaining Area1 queue.
+// Place IDs come only from the canonical source queue. This shard establishes
+// source identity; detailed budget/hours/dish extraction remains a separate pass.
+
+window.RESTAURANTS.push(
+  {id:'src-index-pawell',profile:'TOKYO',area:'地区1️⃣',name:'パウえる',googlePlaceId:'ChIJl_NG_yeNGGARWVRjUkuOH8U',source:'Tabelog',sourceOnly:true,sourceRefs:[{provider:'Tabelog',url:'https://tabelog.com/tokyo/A1310/A131003/13256122/',checkedAt:'2026-09-05',fields:['name']}]},
+  {id:'src-index-kudanshita-sushimasa',profile:'TOKYO',area:'地区1️⃣',name:'寿司政',googlePlaceId:'ChIJbS0GS2uMGGARE_vV-2kWt08',source:'Tabelog',sourceOnly:true,sourceRefs:[{provider:'Tabelog',url:'https://tabelog.com/tokyo/A1309/A130906/13000407/',checkedAt:'2026-09-05',fields:['name']}]},
+  {id:'src-index-yakiniku-shoen',profile:'TOKYO',area:'地区1️⃣',name:'匠苑',googlePlaceId:'ChIJs-O79UyNGGARoDH2Vg85mXM',source:'Tabelog',sourceOnly:true,sourceRefs:[{provider:'Tabelog',url:'https://tabelog.com/tokyo/A1309/A130906/13271727/',checkedAt:'2026-09-05',fields:['name']}]},
+  {id:'src-index-bistro-u',profile:'TOKYO',area:'地区1️⃣',name:'Bistro U',googlePlaceId:'ChIJN9mduz-MGGARrDM-Q646HxM',source:'Tabelog',sourceOnly:true,sourceRefs:[{provider:'Tabelog',url:'https://tabelog.com/tokyo/A1310/A131003/13187320/',checkedAt:'2026-09-05',fields:['name']}]},
+  {id:'src-index-cafe-rijn',profile:'TOKYO',area:'地区1️⃣',name:'CAFE RIJN',googlePlaceId:'ChIJN9mduz-MGGARERceklzaplk',source:'Tabelog',sourceOnly:true,sourceRefs:[{provider:'Tabelog',url:'https://tabelog.com/tokyo/A1310/A131003/13076307/',checkedAt:'2026-09-05',fields:['name']}]},
+  {id:'src-index-kenukisushi',profile:'TOKYO',area:'地区1️⃣',name:'笹巻けぬきすし総本店',googlePlaceId:'ChIJaX3VAwGMGGARbHc4XStP4no',source:'Tabelog',sourceOnly:true,sourceRefs:[{provider:'Tabelog',url:'https://tabelog.com/tokyo/A1310/A131002/13000597/',checkedAt:'2026-09-05',fields:['name']}]},
+  {id:'src-index-nazesoba-ochanomizu',profile:'TOKYO',area:'地区1️⃣',name:'なぜ蕎麦にラー油を入れるのか。',googlePlaceId:'ChIJn1tmVgCNGGARIE-0f0iVnsQ',source:'Tabelog',sourceOnly:true,sourceRefs:[{provider:'Tabelog',url:'https://tabelog.com/tokyo/A1310/A131002/13308614/',checkedAt:'2026-09-05',fields:['name']}]},
+  {id:'src-index-ochanomizu-toridori',profile:'TOKYO',area:'地区1️⃣',name:'お茶の水 鳥どり',googlePlaceId:'ChIJ_e5g3SCNGGAR6qW5ceaLoco',source:'Tabelog',sourceOnly:true,sourceRefs:[{provider:'Tabelog',url:'https://tabelog.com/tokyo/A1310/A131002/13210751/',checkedAt:'2026-09-05',fields:['name']}]},
+  {id:'src-index-chukasoba-katsumoto',profile:'TOKYO',area:'地区1️⃣',name:'勝本',googlePlaceId:'ChIJhae4jz-MGGARVDKWzSuUHUk',source:'Tabelog',sourceOnly:true,sourceRefs:[{provider:'Tabelog',url:'https://tabelog.com/tokyo/A1310/A131003/13179757/',checkedAt:'2026-09-05',fields:['name']}]},
+  {id:'src-index-dontatsu-suidobashi',profile:'TOKYO',area:'地区1️⃣',name:'丼の達人',googlePlaceId:'ChIJ2VjLuz-MGGARVthejOl8u2Q',source:'Tabelog',sourceOnly:true,sourceRefs:[{provider:'Tabelog',url:'https://tabelog.com/tokyo/A1310/A131003/13036162/',checkedAt:'2026-09-05',fields:['name']}]},
+  {id:'src-index-royal-korean-dining',profile:'TOKYO',area:'地区1️⃣',name:'Royal Korean Dining & Bar',googlePlaceId:'ChIJJalWqUSNGGARs8tMWoE5tM4',source:'Tabelog',sourceOnly:true,sourceRefs:[{provider:'Tabelog',url:'https://tabelog.com/tokyo/A1302/A130201/13221993/',checkedAt:'2026-09-05',fields:['name']}]}
+);
