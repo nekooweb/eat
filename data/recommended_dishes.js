@@ -1,0 +1,66 @@
+// Reviewed Chinese recommendation labels. These are intentionally sparse:
+// add a row only when the cited branch/official source explicitly identifies a
+// concrete dish as recommended, popular, signature, specialty or equivalent.
+// Unknown recommendations stay empty in the canonical dataset.
+window.RECOMMENDED_DISHES = [
+  {
+    googlePlaceId:'ChIJM0vzIRWMGGARqpo1bPU9a44',
+    dishes:['炸牡蛎','烤河豚白子'],
+    sourceUrl:'https://sushi-tatsumiya.com/',
+    checkedAt:'2026-09-06'
+  },
+  {
+    googlePlaceId:'ChIJy0Fe3GqMGGARO8F_a1xFGfI',
+    dishes:['自制猪五花叉烧'],
+    sourceUrl:'https://restaurant-mrs.com/yoshimaru/',
+    checkedAt:'2026-09-06'
+  },
+  {
+    googlePlaceId:'ChIJJZS1WhuMGGARi3Ec1n031R4',
+    dishes:['蔬菜披萨'],
+    sourceUrl:'https://cappuccettorosso.owst.jp/',
+    checkedAt:'2026-09-06'
+  },
+  {
+    googlePlaceId:'ChIJ8YrMy7qNGGARLO2JDbagXNo',
+    dishes:['全料芝加哥深盘披萨','肉食芝加哥深盘披萨'],
+    sourceUrl:'https://www.devilcraft.jp/the-corner/',
+    checkedAt:'2026-09-06'
+  },
+  {
+    googlePlaceId:'ChIJVVWVxQSMGGARepPjnzW2-Cg',
+    dishes:['炙烤葱蛋黄酱府中烧'],
+    sourceUrl:'https://www.neki-hiroshimafuchu.com/info/',
+    checkedAt:'2026-09-06'
+  },
+  {
+    googlePlaceId:'ChIJe0Nwg0CMGGAR49Bu9pWI0TI',
+    dishes:['浓厚鸡汤拉面'],
+    sourceUrl:'https://www.tenkaippin.co.jp/shop/878/',
+    checkedAt:'2026-09-06'
+  },
+  {
+    googlePlaceId:'ChIJS4nF7xOMGGARFzUis-fRspU',
+    dishes:['招牌烤鸡'],
+    sourceUrl:'https://www.craftbeermarket.jp/jimbocho/',
+    checkedAt:'2026-09-06'
+  },
+  {
+    googlePlaceId:'ChIJC2yhZOeNGGAR-4zyNEEEQoc',
+    dishes:['盐味炖牛杂','海鲜破竹卷'],
+    sourceUrl:'https://hachiku-japan.com/',
+    checkedAt:'2026-09-06'
+  },
+  {
+    googlePlaceId:'ChIJIagAawCNGGARvwW9Z6rmvS0',
+    dishes:['炭火蔬菜卷串拼盘','芝麻拌红甘鱼'],
+    sourceUrl:'https://yokayokaogawamati.owst.jp/',
+    checkedAt:'2026-09-06'
+  },
+  {
+    googlePlaceId:'ChIJd49TtwSMGGARlKP5sGO5e6g',
+    dishes:['蒜香烤五花肉','海鲜煎饼'],
+    sourceUrl:'https://sujya-kanda-yoyaku.com/',
+    checkedAt:'2026-09-06'
+  }
+];
