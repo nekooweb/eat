@@ -20,12 +20,29 @@ On every click of `#generate`:
 4. playback volume is `0.55`;
 5. voice playback is capped at **2 seconds**; shorter clips end naturally;
 6. audio errors are ignored so they cannot block restaurant generation;
-7. `YahaUsagi.webp` pops out from the generate-button edge for about 1.9 seconds and then hides;
+7. `YahaUsagi.webp` appears for about 1.9 seconds and then hides;
 8. repeated clicks restart both feedback effects cleanly without stacking audio.
+
+## Mascot placement correction
+
+The first mascot implementation intentionally placed the artwork behind the button (`z-index: 1` versus the button's `z-index: 2`) to create a peek-out effect. With the actual `YahaUsagi.webp` artwork this made too much of the character appear underneath the button and looked visually incorrect.
+
+The corrected behavior is:
+
+- mascot layer is now above the button at `z-index: 4`;
+- the wrapper explicitly allows visible overflow;
+- each click chooses one of five placements: **top-left, top-center, top-right, side-left or side-right**;
+- the immediately previous placement is excluded from the next random choice, preventing obvious same-position repetition;
+- each placement has its own entrance direction, rotation and exit direction;
+- side placements use a slightly smaller mascot so they do not dominate the button;
+- mobile offsets are tightened so the character stays within the visible screen area;
+- the mascot remains `pointer-events: none`, so it can visually overlap the button without blocking clicks.
+
+This is still a presentation-only effect. Placement has no relationship to the selected restaurants or voice clip.
 
 ## Cache / release handling
 
-`index.html` now loads `effects.js?v=20260906-voice2` so GitHub Pages browsers request the new two-second-capped implementation instead of a cached `voice1` script.
+`index.html` now loads both `effects.css?v=20260906-mascot2` and `effects.js?v=20260906-mascot2`. This forces Pages clients to refresh both the randomized placement JavaScript and the corrected stacking/position CSS.
 
 ## CI / Pages integration
 
@@ -46,11 +63,16 @@ The failed pre-fix Pages run was `33975561481`; its failure was the expected old
 ## Implementation commits
 
 - `a65c2704305a079bcd3016171a0026c2c27bba3f` — cap random voice playback at two seconds;
-- `14934e0a4febe3087c0fdd0c7434aa1c003faeaa` — bump the public effect-script cache version;
+- `14934e0a4febe3087c0fdd0c7434aa1c003faeaa` — bump the first public effect-script cache version;
 - `054d0f21eff2eda05342f3d3818c607f5b15e9be` — document the media-feedback architecture in `DEVELOPMENT.md`;
 - `f07b92c3304a3927792fde27fa1d935f9edff1a0` — update the repository audit contract for the isolated effect layer;
-- `6548aa3833e96745d7598ca63aa0adb16296e582` — include effect runtime/media in Pages checks and public-site assembly.
+- `6548aa3833e96745d7598ca63aa0adb16296e582` — include effect runtime/media in Pages checks and public-site assembly;
+- `731b53e5b084e8849ad472ede29e03d75fbe0865` — move the mascot above the button and define five responsive placement styles;
+- `9f51c1d88756cc0437ba4228c519d130fd7a0d31` — choose a different random mascot placement on every click;
+- `ddcbaa732ccf01f77edf0f28d91d010e99b0a110` — refresh both effect assets with the `mascot2` cache version.
 
 ## Maintenance rule
 
 Adding a new voice requires both placing the media file under `voice/` and adding its path to the `voices` array in `effects.js`. The static browser application does not enumerate repository directories at runtime. If additional public media types are added, the Pages `_site` assembly whitelist and repository audit must be updated at the same time.
+
+New mascot positions should be implemented as a paired change: add the placement class name to `mascotPlacements` in `effects.js`, then add the matching responsive position and motion variables in `effects.css`. Keep all mascot placements around or above the generate button and retain `pointer-events: none`.
