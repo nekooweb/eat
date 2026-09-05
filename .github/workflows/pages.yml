@@ -39,7 +39,9 @@ jobs:
           test -s data/production_area1.js
           node scripts/audit_repository.mjs
       - name: Coverage report
-        run: node scripts/coverage_report.mjs
+        run: |
+          node scripts/coverage_report.mjs
+          node scripts/source_queue.mjs
       - name: Assemble public site
         run: |
           mkdir -p _site/data
