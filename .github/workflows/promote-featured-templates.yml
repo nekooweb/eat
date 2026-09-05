@@ -1,14 +1,6 @@
 name: Promote reviewed featured templates
 
 on:
-  push:
-    branches:
-      - auto-featured-template-propagation
-    paths:
-      - 'scripts/featured_template_registry.mjs'
-      - 'scripts/audit_featured_template_gaps.mjs'
-      - 'scripts/build_featured_template_propagation.mjs'
-      - '.github/workflows/promote-featured-templates.yml'
   workflow_dispatch:
 
 concurrency:
