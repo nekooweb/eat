@@ -8,6 +8,30 @@ Updated: 2026-09-06
 
 Identity discovery and the public product are already usable. The main bottleneck is now durable field coverage: branch-specific source URLs, Chinese recommendation labels, reference hours, budget, address and cuisine normalization.
 
+## Random-button voice and mascot feedback
+
+The random-result button now has a deliberately isolated presentation layer. Restaurant selection remains owned by `app.js`; click feedback is implemented separately in `effects.js` and `effects.css` so media/animation changes cannot alter recommendation behavior.
+
+Public media assets are organized as:
+
+- `voice/1.mp3`, `voice/2.mp3` — random click voices;
+- `image/YahaUsagi.webp` — button-edge mascot artwork.
+
+Runtime behavior:
+
+1. clicking `#generate` continues to execute the existing restaurant `generate()` handler;
+2. an additional `addEventListener` handler in `effects.js` selects one configured voice at random;
+3. playback volume is fixed at **0.55**;
+4. playback is capped at **2,000 ms** after playback starts; shorter files end naturally;
+5. a repeated click stops and rewinds the previous voice before starting a new one, so voices never stack;
+6. playback failure is swallowed and must never block restaurant generation;
+7. the mascot independently pops out from the button edge for about **1.9 s** and then hides again;
+8. reduced-motion users receive the simplified fade animation from `effects.css`.
+
+The browser does not scan directories, so new voice files must be added to `voice/` **and** to the explicit `voices` array in `effects.js`. `index.html` uses a versioned `effects.js` URL so Pages clients do not retain stale click behavior after a release.
+
+This layer is intentionally non-essential: recommendation output must remain fully functional if audio playback is blocked, a media asset fails to load, or the mascot effect is unavailable.
+
 ## Current production baseline
 
 Latest validated production baseline before this branch:
