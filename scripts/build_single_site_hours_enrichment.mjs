@@ -23,7 +23,7 @@ const LOCATOR_HOSTS = new Set([
   'tenpo.ichibanya.co.jp','shop.saizeriya.co.jp','shop.ufs.co.jp','maps.nakau.co.jp',
   'maps.cocos-jpn.co.jp','map.reins.co.jp','shop.butayama.com','shop.pronto.co.jp',
   'search.daisyo.co.jp','shoplist.teke-teke.com','skylark.co.jp','yomenya-goemon.com',
-  'tsukemen-tsujita.com','ginza-renoir.co.jp','stores.yoshinoya.com'
+  'tsukemen-tsujita.com','ginza-renoir.co.jp','stores.yoshinoya.com','store.yayoiken.com'
 ]);
 const PLATFORM_SUFFIXES = [
   '.owst.jp','.gorp.jp','.wixsite.com','.stores.jp','.goope.jp',
@@ -33,6 +33,8 @@ const PLATFORM_SUFFIXES = [
 const STALE = /(?:臨時|営業時間変更|営業時間を変更|時短|短縮営業|新型コロナ|コロナ|年末年始|特別営業時間|期間限定|temporary|special hours)/iu;
 const DATED = /(?:20\d{2}年\s*\d{1,2}月|20\d{2}[./-]\d{1,2}[./-]\d{1,2})/u;
 const IRREGULAR = /(?:不定休|不定期|臨時休業|カレンダー|SNS|公式.*確認|予約時のみ)/u;
+// Conditional calendars cannot be represented faithfully by the static weekly model.
+const CONDITIONAL = /(?:祝前日|祝日の場合|祝日の翌日|場合は(?:翌|次|火|水|木|金|土|日|月)|曜日により|曜日によって|変動|貸切時|イベント時)/u;
 const DAY_TOKEN = '(?:毎日|全日|平日|土日祝(?:日)?|土[・･\\s]*日[・･\\s]*祝(?:日)?|[月火水木金土日](?:曜日|曜)?(?:\\s*[-~〜～–—―−]\\s*[月火水木金土日](?:曜日|曜)?)?)';
 
 function loadWindowFile(file, key, initial) {
@@ -52,6 +54,18 @@ function loadResolutionIds() {
   vm.createContext(sandbox);
   for (const file of files) vm.runInContext(fs.readFileSync(path.join(DATA,file),'utf8'),sandbox,{filename:file});
   return new Set((sandbox.window.SOURCE_RESOLUTIONS||[]).map((row)=>row.googlePlaceId).filter(Boolean));
+}
+function loadExistingSourceIds() {
+  const ids = new Set();
+  const files = fs.readdirSync(DATA)
+    .filter((name)=>/^source_enrichment.*\.js$/i.test(name) && name !== 'source_enrichment_zzzsinglehours.js')
+    .sort();
+  for (const file of files) {
+    const text = fs.readFileSync(path.join(DATA,file),'utf8');
+    const re = /googlePlaceId\s*:\s*["']([^"']+)["']/g;
+    for (const match of text.matchAll(re)) ids.add(match[1]);
+  }
+  return ids;
 }
 function normalize(value) {
   return String(value || '').normalize('NFKC').toLowerCase()
@@ -86,7 +100,7 @@ function identityMatches(name,title) {
 }
 function normalizeDashes(value){return String(value||'').normalize('NFKC').replace(/[~〜～–—―−]/g,'-');}
 function sectionStart(line) {
-  return /^(?:営業時間(?:・定休日|\/定休日|・休業日)?|営業日時|営業日・営業時間|OPEN\s*HOURS?|HOURS?)\s*[:：]?/iu.test(line);
+  return /^(?:営業時間(?:・定休日|\/定休日|・休業日)?|営業日時|営業日・営業時間|OPEN\s*HOURS?|HOURS?)\s*(?:[|｜:：])?/iu.test(line);
 }
 function stopLine(line) {
   return /^(?:住所|所在地|アクセス|電話(?:番号)?|TEL|予約|メニュー|MENU|支払|決済|カード|席|設備|サービス|お知らせ|NEWS|INFORMATION|店舗情報|地図|MAP|お問い合わせ|CONTACT)\s*[:：]?/iu.test(line);
@@ -95,7 +109,9 @@ function extractHoursBlock(lines) {
   const start=lines.findIndex(sectionStart);
   if(start<0)return [];
   const out=[];
-  const inline=lines[start].replace(/^(?:営業時間(?:・定休日|\/定休日|・休業日)?|営業日時|営業日・営業時間|OPEN\s*HOURS?|HOURS?)\s*[:：]?\s*/iu,'').trim();
+  const inline=lines[start]
+    .replace(/^(?:営業時間(?:・定休日|\/定休日|・休業日)?|営業日時|営業日・営業時間|OPEN\s*HOURS?|HOURS?)\s*(?:[|｜:：])?\s*/iu,'')
+    .replace(/^[|｜\s]+/u,'').trim();
   if(inline)out.push(inline);
   for(let i=start+1;i<lines.length&&out.length<50;i+=1){
     if(stopLine(lines[i]))break;
@@ -108,29 +124,40 @@ function closureHints(lines,block) {
   const combined=[...block,...lines.slice(0,Math.min(lines.length,180))];
   for(let i=0;i<combined.length;i+=1){
     const line=normalizeDashes(combined[i]);
-    if(/^定休日\s*[:：]?$/u.test(line)&&combined[i+1])candidates.push(combined[i+1]);
-    const m=line.match(/^(?:定休日|休業日)\s*[:：]\s*(.+)$/u); if(m)candidates.push(m[1]);
+    if(/^定休日\s*(?:[|｜:：])?\s*$/u.test(line)&&combined[i+1])candidates.push(combined[i+1]);
+    const m=line.match(/^(?:定休日|休業日)\s*(?:[|｜:：])\s*(.+)$/u); if(m)candidates.push(m[1]);
   }
   return [...new Set(candidates.map((x)=>String(x).trim()).filter(Boolean))].slice(0,6);
 }
 function splitDaySegments(text) {
   return normalizeDashes(text)
-    .replace(new RegExp(`\\s+(?=${DAY_TOKEN}\\s*[:：]?)`,'gu'),'\n')
+    .replace(new RegExp(`\\s+(?=${DAY_TOKEN}(?:[・･、,\\s]+(?:祝|祝日))?\\s*(?:[|｜:：])?)`,'gu'),'\n')
     .split(/\n+/).map((x)=>x.trim()).filter(Boolean);
+}
+function looksLikeDayGroup(value) {
+  const s=String(value||'').replace(/^[|｜:：\s]+|[|｜:：\s]+$/g,'').trim();
+  if(!s||s.length>30)return false;
+  return /^(?:毎日|全日|平日|土日祝|[月火水木金土日祝])/.test(s) && !/営業時間|定休日/u.test(s);
+}
+function cleanDayPrefix(value) {
+  return String(value||'').replace(/^[|｜:：\s]+|[|｜:：\s]+$/g,'').trim();
 }
 function buildNormalizedRaw(block) {
   const segments=[];
-  const tokenRe=new RegExp(`^(${DAY_TOKEN})\\s*[:：]?\\s*(.*)$`,'u');
+  let pendingPrefix='';
   for(const raw of splitDaySegments(block.join('\n'))){
     const line=normalizeDashes(raw);
-    const m=line.match(tokenRe);
-    if(m){
-      const ranges=[...m[2].matchAll(/(\d{1,2}:\d{2})\s*-\s*(\d{1,2}:\d{2})/g)].map((x)=>`${x[1]}-${x[2]}`);
-      if(ranges.length)segments.push(`${m[1]} ${ranges.join(', ')}`);
+    const ranges=[...line.matchAll(/(\d{1,2}:\d{2})\s*-\s*(\d{1,2}:\d{2})/g)].map((x)=>`${x[1]}-${x[2]}`);
+    const firstTime=line.search(/\d{1,2}:\d{2}/);
+    const prefix=firstTime>=0?cleanDayPrefix(line.slice(0,firstTime)):cleanDayPrefix(line);
+    if(!ranges.length){
+      if(looksLikeDayGroup(prefix))pendingPrefix=prefix;
       continue;
     }
-    const ranges=[...line.matchAll(/(\d{1,2}:\d{2})\s*-\s*(\d{1,2}:\d{2})/g)].map((x)=>`${x[1]}-${x[2]}`);
-    if(ranges.length)segments.push(ranges.join(', '));
+    let usePrefix='';
+    if(prefix&&looksLikeDayGroup(prefix)){usePrefix=prefix;pendingPrefix=prefix;}
+    else if(pendingPrefix)usePrefix=pendingPrefix;
+    segments.push(`${usePrefix?`${usePrefix} `:''}${ranges.join(', ')}`);
   }
   return segments.join('; ');
 }
@@ -141,13 +168,20 @@ function parseSchedule(lines) {
   if(!/\d{1,2}:\d{2}/.test(text))return {schedule:null,reason:'no_clock_range',block};
   if(STALE.test(text)||DATED.test(text))return {schedule:null,reason:'temporary_or_dated',block};
   const closed=closureHints(lines,block);
-  if(IRREGULAR.test(text)||closed.some((x)=>IRREGULAR.test(x)))return {schedule:null,reason:'irregular_closure',block};
+  const semanticText=`${text}\n${closed.join('\n')}`;
+  if(IRREGULAR.test(semanticText))return {schedule:null,reason:'irregular_closure',block,closed};
+  if(CONDITIONAL.test(semanticText))return {schedule:null,reason:'conditional_calendar',block,closed};
   const raw=buildNormalizedRaw(block);
   if(!raw)return {schedule:null,reason:'no_parseable_intervals',block,closed};
   const schedule=normalizeOpeningHours(raw,closed);
   if(!schedule||!validateOpeningHours(schedule))return {schedule:null,reason:'normalization_failed',block,closed,raw};
   const knownDays=Object.keys(schedule.days||{}).length;
   if(knownDays<5)return {schedule:null,reason:'insufficient_day_coverage',block,closed,raw,knownDays};
+  // Avoid overlapping intervals, a common sign that two day groups were flattened.
+  for(const periods of Object.values(schedule.days||{})){
+    const sorted=[...periods].sort((a,b)=>a[0].localeCompare(b[0]));
+    for(let i=1;i<sorted.length;i+=1){if(sorted[i][0]<sorted[i-1][1])return {schedule:null,reason:'overlapping_intervals',block,closed,raw,knownDays};}
+  }
   return {schedule,reason:null,block,closed,raw,knownDays};
 }
 async function fetchPage(url){
@@ -177,8 +211,12 @@ const index=JSON.parse(fs.readFileSync(INDEX_PATH,'utf8'));
 const production=loadProduction();
 const byId=new Map(production.map((row)=>[row.googlePlaceId,row]));
 const resolutionIds=loadResolutionIds();
+const existingSourceIds=loadExistingSourceIds();
 const targets=(index.records||[]).filter((row)=>{
   const current=byId.get(row.googlePlaceId); if(!current||current.openingHours)return false;
+  // This pass completes fields for identities that already have independently
+  // maintained source support. New identity/source admission is a separate task.
+  if(!existingSourceIds.has(row.googlePlaceId))return false;
   if(resolutionIds.has(row.googlePlaceId))return false;
   const host=hostname(row.pageUrl); if(!host||LOCATOR_HOSTS.has(host)||isPlatformHost(host))return false;
   return true;
@@ -204,7 +242,7 @@ fs.writeFileSync(REVIEW_PATH,`${JSON.stringify(review,null,2)}\n`,'utf8');
 
 const output=[];
 output.push('// Generated from current single-business official pages with explicit weekly hours.');
-output.push('// Platform/aggregator hosts, locator chains, resolution identities and ambiguous schedules are excluded.');
+output.push('// Existing source-backed identities only; platform/locator/resolution/conditional schedules are excluded.');
 output.push(`const SINGLE_SITE_HOURS_CHECKED_AT = ${js(CHECKED_AT)};`);
 output.push(`const singleSiteHoursPatches = ${JSON.stringify(accepted,null,2)};`);
 output.push('for (const patch of singleSiteHoursPatches) {');
