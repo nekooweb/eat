@@ -16,12 +16,12 @@ window.SOURCE_RESOLUTIONS.push(
   },
   {
     name:'竜太郎',
-    googlePlaceId:'ChIJC33CRUCNGGARwlzO7J2ANeQ',
+    googlePlaceId:'ChIJwY-_huuNGGARnlDLau98mtk',
     status:'source_not_found',
     reason:'Exact-name searches with 水道橋, 神田三崎町 and 千代田区 did not locate a current Tabelog or restaurant-official page that can be safely tied to this verified Place ID. Unrelated same-name businesses are not attached.',
     checkedAt:'2026-09-05',
     refs:[
-      'https://www.google.com/maps/search/?api=1&query_place_id=ChIJC33CRUCNGGARwlzO7J2ANeQ',
+      'https://www.google.com/maps/search/?api=1&query_place_id=ChIJwY-_huuNGGARnlDLau98mtk',
       'https://www.openstreetmap.org/'
     ]
   }
