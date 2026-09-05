@@ -44,11 +44,49 @@ if (missingLabel.length) {
   process.exit(1);
 }
 
+const resolutionSandbox = { window: {} };
+vm.createContext(resolutionSandbox);
+if (fs.existsSync(path.join(DATA, 'source_resolution.js'))) {
+  vm.runInContext(read('data/source_resolution.js'), resolutionSandbox, { filename: 'source_resolution.js' });
+}
+const resolutions = resolutionSandbox.window.SOURCE_RESOLUTIONS || [];
+const allowedStatuses = new Set(['listing_hold', 'ambiguous', 'no_current_usable_source', 'source_not_found']);
+const resolutionIds = new Set();
+for (const row of resolutions) {
+  if (!row.googlePlaceId || !productionIds.has(row.googlePlaceId)) {
+    console.error(`SOURCE RESOLUTION AUDIT FAIL: resolution is not a current production identity: ${row.name}\t${row.googlePlaceId}`);
+    process.exit(1);
+  }
+  if (attachedIds.has(row.googlePlaceId)) {
+    console.error(`SOURCE RESOLUTION AUDIT FAIL: identity has both usable source and resolution: ${row.name}\t${row.googlePlaceId}`);
+    process.exit(1);
+  }
+  if (resolutionIds.has(row.googlePlaceId)) {
+    console.error(`SOURCE RESOLUTION AUDIT FAIL: duplicate resolution: ${row.googlePlaceId}`);
+    process.exit(1);
+  }
+  resolutionIds.add(row.googlePlaceId);
+  if (!allowedStatuses.has(row.status)) {
+    console.error(`SOURCE RESOLUTION AUDIT FAIL: unsupported status ${row.status}: ${row.name}`);
+    process.exit(1);
+  }
+  if (!row.reason || !row.checkedAt || !/^\d{4}-\d{2}-\d{2}$/.test(row.checkedAt)) {
+    console.error(`SOURCE RESOLUTION AUDIT FAIL: incomplete reason/date: ${row.name}`);
+    process.exit(1);
+  }
+  if (!Array.isArray(row.refs) || !row.refs.length || row.refs.some((ref) => !/^https:\/\//.test(ref))) {
+    console.error(`SOURCE RESOLUTION AUDIT FAIL: resolution lacks HTTPS evidence: ${row.name}`);
+    process.exit(1);
+  }
+}
+
 console.log(JSON.stringify({
   status: 'pass',
   productionEntities: production.length,
   enrichmentRecords: enrichment.length,
   attachedEnrichmentRecords: enrichment.length,
   sourceBackedProduction: sourceBacked.length,
+  explicitResolutions: resolutions.length,
+  unresolvedByBindingAudit: 0,
   unattached: 0
 }));
