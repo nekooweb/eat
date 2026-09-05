@@ -25,8 +25,9 @@ for (const row of rows) {
   }
 
   // Raw/prose schedule fields belong only to maintenance sources. Canonical
-  // production must expose a machine-readable schedule or omit schedule data.
-  for (const legacyField of ['hoursReference', 'openingHoursRaw', 'closedDays', 'closedNote']) {
+  // production exposes openingHours plus a derived display string, or omits
+  // schedule data entirely.
+  for (const legacyField of ['openingHoursRaw', 'closedDays', 'closedNote']) {
     if (Object.hasOwn(row, legacyField)) failures.push(`${row.name}: legacy schedule field leaked into production: ${legacyField}`);
   }
 
@@ -34,12 +35,12 @@ for (const row of rows) {
     if (!validateOpeningHours(row.openingHours)) {
       failures.push(`${row.name}: openingHours does not match normalized schema`);
     }
-    if (typeof row.hoursText !== 'string' || !row.hoursText.trim()) {
-      failures.push(`${row.name}: normalized openingHours requires hoursText`);
+    if (typeof row.hoursReference !== 'string' || !row.hoursReference.trim()) {
+      failures.push(`${row.name}: normalized openingHours requires derived hoursReference`);
     }
     openingHoursKnown += 1;
-  } else if (Object.hasOwn(row, 'hoursText')) {
-    failures.push(`${row.name}: hoursText exists without openingHours`);
+  } else if (Object.hasOwn(row, 'hoursReference')) {
+    failures.push(`${row.name}: hoursReference exists without openingHours`);
   }
 }
 
