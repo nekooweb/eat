@@ -50,6 +50,7 @@ jobs:
       - name: Coverage report
         run: |
           mkdir -p _audit
+          set -o pipefail
           node scripts/coverage_report.mjs | tee _audit/coverage.json
           node scripts/source_queue.mjs | tee _audit/source_queue.json
           node scripts/build_enrichment_queue.mjs | tee _audit/enrichment_queue.json
