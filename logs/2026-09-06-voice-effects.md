@@ -25,9 +25,10 @@ On every click of `#generate`:
 7. one mascot is chosen from the configured WebP pool;
 8. one placement is chosen from **top-left, top-center, top-right, side-left or side-right**;
 9. the immediately previous mascot **and** immediately previous placement are both excluded from the next random choice;
-10. the selected mascot appears for about 1.9 seconds and then hides.
+10. voice selection remains ordinary random and may repeat immediately;
+11. the selected mascot appears for about 1.9 seconds and then hides.
 
-With three mascot images and five placement classes, the current UI has 15 character/position combinations while still preventing obvious immediate repetition of either dimension.
+With three mascot images and five placement classes, the current UI has 15 character/position combinations while still preventing obvious immediate repetition of either mascot dimension.
 
 ## Mascot placement correction
 
@@ -46,7 +47,7 @@ This is still a presentation-only effect. Mascot choice and placement have no re
 
 ## Cache / release handling
 
-`index.html` currently loads `effects.css?v=20260906-mascot2` and `effects.js?v=20260906-voice3`. The JavaScript cache version was incremented so Pages clients immediately receive the expanded five-voice pool and the new 45% playback volume.
+`index.html` currently loads `effects.css?v=20260906-mascot2` and `effects.js?v=20260906-voice3`. The JavaScript cache version was incremented so Pages clients immediately receive the expanded five-voice pool and the 45% playback volume.
 
 ## CI / Pages integration
 
@@ -58,14 +59,18 @@ The first deployment attempt after adding the isolated effect layer exposed two 
 These were corrected and later generalized:
 
 - repository audit explicitly permits and validates `effects.js` as the third local runtime script;
-- the audit checks the 2,000 ms voice cap and verifies that every WebP currently present in `image/` is configured in the mascot pool;
+- the audit scans every `.mp3` currently present in `voice/` and requires a matching `./voice/<filename>` entry in `effects.js`;
+- the audit scans every `.webp` currently present in `image/` and requires a matching `./image/<filename>` entry in `effects.js`;
+- the audit locks the voice playback contract to `MAX_VOICE_MS = 2000` and `audio.volume = 0.45`;
 - the audit verifies that character and placement repeat-prevention state remains present;
 - Pages static checks run `node --check effects.js`;
 - public-site assembly copies `voice/*.mp3` and `image/*.webp` rather than hard-coding individual media filenames.
 
-This means newly committed MP3 and WebP files are automatically included in the deployed Pages artifact. Runtime selection is still controlled explicitly by the `voices` and `mascots` arrays in `effects.js`, because a static browser cannot enumerate repository directories at runtime.
+This means newly committed MP3 and WebP files are automatically included in the deployed Pages artifact, but deployment will intentionally fail until each new file is also added to its corresponding runtime selection array. This keeps repository contents, deployed assets and selectable assets synchronized even though a static browser cannot enumerate repository directories at runtime.
 
 The failed pre-fix Pages run was `33975561481`; its failure was the expected old audit assertion, not a data-build or JavaScript syntax failure.
+
+The expanded five-voice runtime release was validated by Pages run `33976427718` / Run #265 with conclusion `success`.
 
 ## Implementation commits
 
@@ -82,12 +87,16 @@ The failed pre-fix Pages run was `33975561481`; its failure was the expected old
 - `a19e94f71f0166dab37ad6e06c1cb9381d07f1d9` — audit every repository WebP against the configured mascot pool;
 - `9009f57e21e74989e666722f13b02abd837dcc72` — bump the multi-mascot JavaScript cache version;
 - `96dab607a972d6838796299888fac4b0b5348c6f` — expand the random voice pool to five MP3 files and lower playback volume to 45%;
-- `4a4420102209f4e1641a1b4e872745ebb1eefcd3` — bump the public effect runtime cache to `voice3`.
+- `4a4420102209f4e1641a1b4e872745ebb1eefcd3` — bump the public effect runtime cache to `voice3`;
+- `08fa004ec81070b9f393ed26a307a7ea8d13846f` — generalize repository media audits to all MP3/WebP files and enforce 45% / 2-second voice behavior;
+- `93a64067f1aad5fbcb17c6a59a6b27847f9afaa0` — update `DEVELOPMENT.md` with the current five-voice, three-mascot media-feedback contract.
 
 ## Maintenance rule
 
-Adding a new voice requires placing the media file under `voice/` and adding its path to the `voices` array in `effects.js` if it should be selectable. Pages already copies all `voice/*.mp3` files automatically.
+Adding a new voice requires placing the media file under `voice/` and adding its path to the `voices` array in `effects.js`. Pages copies all `voice/*.mp3` files automatically, while repository audit fails if any MP3 is not selectable by the runtime.
 
-Adding a new mascot requires placing the `.webp` file under `image/` and adding its path to the `mascots` array in `effects.js`. Pages will copy all WebPs automatically, while the repository audit intentionally fails if an image exists but was forgotten in the runtime pool.
+Adding a new mascot requires placing the `.webp` file under `image/` and adding its path to the `mascots` array in `effects.js`. Pages copies all WebPs automatically, while repository audit fails if any WebP is not selectable by the runtime.
+
+Voice behavior is intentionally fixed at **45% volume** with a **2-second maximum** unless the product requirement changes; any intentional change must update both `effects.js` and the audit contract together.
 
 New mascot positions should be implemented as a paired change: add the placement class name to `mascotPlacements` in `effects.js`, then add the matching responsive position and motion variables in `effects.css`. Keep all mascot placements around or above the generate button and retain `pointer-events: none`.
