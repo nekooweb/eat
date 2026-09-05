@@ -219,7 +219,7 @@ function canonicalize(placeId, sourceRows) {
   // Source shards may retain human-readable schedule strings for provenance,
   // but canonical production exposes only a normalized machine-readable
   // schedule. If no reliable time interval can be parsed, no schedule field is
-  // emitted at all.
+  // emitted at all. hoursReference is derived only from that normalized object.
   const hoursClaim = bestClaimingRow(sourceRows, 'hours');
   const openingHoursRaw = isSuppressed(sourceRows, 'hours')
     ? null
@@ -234,7 +234,7 @@ function canonicalize(placeId, sourceRows) {
       ? (Array.isArray(closureClaim.closedDays) ? closureClaim.closedDays : [])
       : firstBy(sourceRows, (row) => Array.isArray(row.closedDays) && row.closedDays.length, (row) => row.closedDays) || [];
   const openingHours = normalizeOpeningHours(openingHoursRaw, closedDays);
-  const hoursText = openingHours ? formatOpeningHoursZh(openingHours) : null;
+  const hoursReference = openingHours ? formatOpeningHoursZh(openingHours) : null;
 
   const awardClaim = bestClaimingRow(sourceRows, 'hyakumeiten');
   const awardRow = awardClaim || [...sourceRows]
@@ -263,7 +263,7 @@ function canonicalize(placeId, sourceRows) {
     dinner: dinner || null,
     recommendedDishes,
     dishes,
-    ...(openingHours ? { openingHours, hoursText } : {}),
+    ...(openingHours ? { openingHours, hoursReference } : {}),
     googlePlaceId: placeId,
     googleStatus: 'verified',
     hyakumeiten,
@@ -286,8 +286,8 @@ const invalid = production.filter((row) => !row.name || !row.googlePlaceId || !r
 const schemaInvalid = production.filter((row) =>
   !Array.isArray(row.recommendedDishes)
   || row.recommendedDishes.length > 2
-  || (row.openingHours && (!validateOpeningHours(row.openingHours) || !row.hoursText))
-  || (!row.openingHours && Object.hasOwn(row, 'hoursText')));
+  || (row.openingHours && (!validateOpeningHours(row.openingHours) || !row.hoursReference))
+  || (!row.openingHours && Object.hasOwn(row, 'hoursReference')));
 
 if (duplicatePlaceIds) throw new Error(`duplicate Place IDs: ${duplicatePlaceIds}`);
 if (outside.length) throw new Error(`outside ${MAX_DISTANCE}m: ${outside.length}`);
