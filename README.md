@@ -53,6 +53,7 @@ Used as an independent candidate/geospatial source for name/category/coordinates
 Used for durable branch-specific facts such as:
 - exact/current name;
 - cuisine;
+- address;
 - lunch/dinner budget;
 - opening hours and regular holidays;
 - representative dishes;
@@ -76,11 +77,11 @@ The food-business scope includes restaurant/cafe/bakery/bar/takeaway and related
 
 The prior gridded Nearby Search inventory contained 1,613 IDs and was only a lead set. The exact inventory adds 1,215 IDs and excludes 24 old IDs under the current operational/type/radius criteria.
 
-See `AREA1_COMPLETENESS.md` for the reproducible completeness logic and reconciliation accounting.
+See `AREA1_COMPLETENESS.md` for the reproducible completeness logic and `AREA1_COMPLETION_LOG.md` for batch progress.
 
 ## Current production baseline
 
-Latest passing 2026-09-05 build after full OSM verification and exact Area1 discovery:
+Latest passing 2026-09-05 build after full OSM verification, exact Area1 discovery and the first outer enrichment batch:
 
 - OSM source candidates: 990;
 - Google QC-v4 cache: **990 / 990 processed**;
@@ -90,19 +91,20 @@ Latest passing 2026-09-05 build after full OSM verification and exact Area1 disc
 - canonical production entities: **517**;
 - unique production Place IDs: 517;
 - production entities represented in the exact Google inventory: 515;
-- usable Tabelog/official source bindings: 237;
-  - Tabelog: 221;
-  - official: 16;
-- explicit terminal source resolutions inherited from the previous source pass: 32;
-- production source outcomes already accounted for: 269 / 517;
-- newly unresolved production source queue: **248**.
+- usable Tabelog/official source bindings: **245**;
+  - Tabelog: 228;
+  - official: 17;
+- explicit terminal source resolutions: **34**;
+- production source outcomes already accounted for: **279 / 517**;
+- unresolved production source queue: **238**;
+- current source-resolution coverage: **54%**.
 
 Current field coverage:
-- cuisine known: 425 / 517;
-- budget known: 95 / 517;
-- opening/holiday information known: 202 / 517;
-- representative dishes known: 20 / 517;
-- display address known: 95 / 517;
+- cuisine known: **426 / 517**;
+- budget known: **102 / 517**;
+- opening/holiday information known: **206 / 517**;
+- representative dishes known: **24 / 517**;
+- display address known: **102 / 517**;
 - 百名店: 22.
 
 Distance pools:
@@ -112,6 +114,8 @@ Distance pools:
 - <=1,200 m: 517.
 
 The previously empty 800–1,200 m ring now contains **222 production entities**.
+
+The first outer completion batch added eight branch-safe Tabelog/official bindings and two explicit source/status conflicts instead of guessing. That reduced the unresolved live-production queue from 248 to 238 while increasing address, budget, schedule and dish coverage.
 
 ## Remaining exact-inventory reconciliation
 
@@ -229,17 +233,18 @@ CI/research gates protect:
 - `DEVELOPMENT.md` — development review and planning history;
 - `DATA_PIPELINE.md` — source roles and record lifecycle;
 - `AREA1_COMPLETENESS.md` — authoritative current 1.2 km completeness state;
+- `AREA1_COMPLETION_LOG.md` — exact-count and per-batch completion log;
 - `DATA_RESEARCH.md` — historical/manual research notes;
 - `CHANGELOG.md` — implementation and decision history.
 
-When numerical progress statements conflict, use the newest audited result in `AREA1_COMPLETENESS.md` and current CI output.
+When numerical progress statements conflict, use the newest audited result in `AREA1_COMPLETENESS.md`, `AREA1_COMPLETION_LOG.md` and current CI output.
 
 ## Next data work
 
 The current phase is **full-information reconciliation after identity-count completion**.
 
 Ordered queue:
-1. resolve/enrich the **248 newly admitted OSM-backed production identities** first; they already have independent name/location and a verified Google identity;
+1. resolve/enrich the remaining **238 OSM-backed production identities** first; they already have independent name/location and a verified Google identity;
 2. process the **2,291 exact-inventory IDs without a verified independent-source identity**, using Google only transiently to locate an independent durable source;
 3. reconcile the 91 rejected source matches that still point to an exact-inventory identity;
 4. review the 3 verified-source IDs outside the exact inventory separately rather than weakening the radius gate;
