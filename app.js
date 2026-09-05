@@ -5,6 +5,9 @@
   const production = Array.isArray(window.PRODUCTION_RESTAURANTS)
     ? window.PRODUCTION_RESTAURANTS
     : [];
+  const embedKeyRaw = $('meta[name="google-maps-embed-key"]')?.content?.trim() || '';
+  const googleEmbedKey = embedKeyRaw && !embedKeyRaw.startsWith('__') ? embedKeyRaw : '';
+  const useGoogleStoreMaps = Boolean(googleEmbedKey);
 
   let budget = 'all';
   let distanceLimit = MAX_DISTANCE;
@@ -161,6 +164,12 @@
     return `https://www.google.com/maps/search/?api=1&query=${query}&query_place_id=${placeId}&utm_source=eat&utm_campaign=place_details_search`;
   }
 
+  function googleEmbedUrl(restaurant) {
+    const key = encodeURIComponent(googleEmbedKey);
+    const placeId = encodeURIComponent(restaurant.googlePlaceId);
+    return `https://www.google.com/maps/embed/v1/place?key=${key}&q=place_id:${placeId}&language=zh-CN&region=JP&zoom=16`;
+  }
+
   function awardBadge(restaurant) {
     if (!restaurant.hyakumeiten) return '';
     const award = [restaurant.hyakumeitenYear, restaurant.hyakumeitenCategory]
@@ -169,13 +178,25 @@
     return `<span class="pill hyakumeiten">百名店${award ? ` ${escapeHtml(award)}` : ''}</span>`;
   }
 
+  function renderStoreMap(restaurant, index) {
+    if (useGoogleStoreMaps && restaurant.googlePlaceId) {
+      return `<iframe
+        class="store-map google-store-map"
+        title="${escapeHtml(restaurant.name)} Google Maps"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        allowfullscreen
+        src="${escapeHtml(googleEmbedUrl(restaurant))}"></iframe>`;
+    }
+    if (!validCoords(restaurant)) return '';
+    return `<div class="store-map" id="store-map-${index}" aria-label="${escapeHtml(restaurant.name)} 周边地图"></div>`;
+  }
+
   function renderCard(restaurant, index) {
     const dishes = recommendationText(restaurant);
     const price = budgetText(restaurant);
     const schedule = scheduleText(restaurant);
-    const map = validCoords(restaurant)
-      ? `<div class="store-map" id="store-map-${index}" aria-label="${escapeHtml(restaurant.name)} 周边地图"></div>`
-      : '';
+    const map = renderStoreMap(restaurant, index);
     return `<article class="card result-card">
       <div class="card-main">
         <div class="result-heading">
@@ -307,6 +328,11 @@
       if (bounds.length === 1) overview.setView(bounds[0], 16);
       else overview.fitBounds(bounds, { padding: [34, 34], maxZoom: 16 });
       activeMaps.push(overview);
+    }
+
+    if (useGoogleStoreMaps) {
+      requestAnimationFrame(() => activeMaps.forEach((map) => map.invalidateSize(false)));
+      return;
     }
 
     mappable.forEach(({ restaurant, index }) => {
