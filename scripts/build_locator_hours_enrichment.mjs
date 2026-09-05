@@ -8,7 +8,7 @@ import { normalizeOpeningHours, validateOpeningHours } from './opening_hours.mjs
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, '..');
 const INPUT = process.argv[2] || path.join(ROOT, '_audit', 'official_index_field_candidates.json');
-const OUTPUT = process.argv[3] || path.join(ROOT, 'data', 'source_enrichment_locatorhours.js');
+const OUTPUT = process.argv[3] || path.join(ROOT, 'data', 'source_enrichment_zlocatorhours.js');
 const CHECKED_AT = process.env.LOCATOR_HOURS_CHECKED_AT || '2026-09-06';
 
 // These hosts are store-detail/brand locators where the visible 営業時間 block is
@@ -92,17 +92,31 @@ for (const row of payload.results || []) {
 }
 
 records.sort((a, b) => a.name.localeCompare(b.name, 'ja'));
+const rowsJs = records.map((row) => `  { googlePlaceId:${js(row.googlePlaceId)}, name:${js(row.name)}, sourceUrl:${js(row.sourceUrl)}, openingHoursRaw:${js(row.openingHoursRaw)} }`).join(',\n');
 const lines = [
-  '// Conservative current-hours claims from trusted official store locator pages.',
-  '// Free-text news/temporary-change language is rejected; every emitted value',
-  '// must already normalize to the canonical weekly openingHours contract.',
-  'window.RESTAURANTS.push(',
-  ...records.map((row, index) => {
-    const id = `src-locator-hours-${row.googlePlaceId.slice(-12).replace(/[^A-Za-z0-9_-]/g, '')}`;
-    const value = `  { id:${js(id)}, profile:'TOKYO', area:'地区1️⃣', name:${js(row.name)}, googlePlaceId:${js(row.googlePlaceId)}, source:'official', sourceOnly:true, openingHoursRaw:${js(row.openingHoursRaw)}, closedDays:[], closedNote:null, sourceRefs:[{provider:'official',url:${js(row.sourceUrl)},checkedAt:${js(CHECKED_AT)},fields:['hours']}] }`;
-    return value + (index === records.length - 1 ? '' : ',');
-  }),
-  ');',
+  '// Conservative current-hours patches from trusted official store locator pages.',
+  '// This z-shard augments an existing official enrichment row where possible,',
+  '// preserving the one-official-row-per-Place-ID source-binding invariant.',
+  '// Temporary/news language is rejected before this file is generated.',
+  `const LOCATOR_HOURS_CHECKED_AT = ${js(CHECKED_AT)};`,
+  'const locatorHourPatches = [',
+  rowsJs,
+  '];',
+  '',
+  'for (const patch of locatorHourPatches) {',
+  "  const ref = { provider:'official', url:patch.sourceUrl, checkedAt:LOCATOR_HOURS_CHECKED_AT, fields:['hours'] };",
+  "  let row = [...window.RESTAURANTS].reverse().find((item) => item && item.googlePlaceId === patch.googlePlaceId && item.source === 'official' && item.sourceOnly);",
+  '  if (row) {',
+  '    row.openingHoursRaw = patch.openingHoursRaw;',
+  '    row.closedDays = [];',
+  '    row.closedNote = null;',
+  '    row.sourceRefs = Array.isArray(row.sourceRefs) ? row.sourceRefs : [];',
+  "    row.sourceRefs = row.sourceRefs.filter((item) => !(item.provider === 'official' && (item.fields || []).includes('hours')));",
+  '    row.sourceRefs.push(ref);',
+  '  } else {',
+  "    window.RESTAURANTS.push({ id:`src-locator-hours-${patch.googlePlaceId.slice(-12).replace(/[^A-Za-z0-9_-]/g,'')}`, profile:'TOKYO', area:'地区1️⃣', name:patch.name, googlePlaceId:patch.googlePlaceId, source:'official', sourceOnly:true, openingHoursRaw:patch.openingHoursRaw, closedDays:[], closedNote:null, sourceRefs:[ref] });",
+  '  }',
+  '}',
   ''
 ];
 
