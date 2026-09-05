@@ -5,7 +5,7 @@ on:
     branches:
       - bulk-enrichment-pass2
     paths:
-      - 'data/source_enrichment_chainmenus.js'
+      - 'data/source_enrichment_zchainmenus.js'
       - 'scripts/build_locator_hours_enrichment.mjs'
       - '.github/workflows/bulk-enrichment-pass2.yml'
   workflow_dispatch:
@@ -26,9 +26,12 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Build clean baseline
+      - name: Build baseline with stable reviewed official data
         run: |
-          rm -f data/source_enrichment_autoofficial.js data/source_enrichment_locatorhours.js
+          # The existing autoofficial shard is intentionally retained. A failed
+          # website refetch is not evidence that previously reviewed data became
+          # invalid and must not cause coverage to disappear.
+          rm -f data/source_enrichment_zlocatorhours.js
           node scripts/build_production_dataset.mjs | tee /tmp/pass2-baseline.json
       - name: Refetch persisted official index without Google API
         env:
@@ -41,21 +44,13 @@ jobs:
             data/official_candidate_index.json \
             _audit/official_index_field_candidates.json \
             | tee _audit/pass2-official-extraction.json
-      - name: Rebuild conservative official fields
-        env:
-          AUTO_OFFICIAL_CHECKED_AT: '2026-09-06'
-        run: |
-          node scripts/build_auto_official_enrichment.mjs \
-            _audit/official_index_field_candidates.json \
-            data/source_enrichment_autoofficial.js \
-            | tee _audit/pass2-autoofficial.json
-      - name: Promote current locator hours
+      - name: Promote current trusted-locator hours
         env:
           LOCATOR_HOURS_CHECKED_AT: '2026-09-06'
         run: |
           node scripts/build_locator_hours_enrichment.mjs \
             _audit/official_index_field_candidates.json \
-            data/source_enrichment_locatorhours.js \
+            data/source_enrichment_zlocatorhours.js \
             | tee _audit/pass2-locator-hours.json
       - name: Rebuild and audit
         run: |
@@ -74,16 +69,16 @@ jobs:
           name: bulk-enrichment-pass2-audit
           path: _audit
           retention-days: 3
-      - name: Commit generated maintenance shards
+      - name: Commit generated locator-hours shard
         env:
           TARGET_BRANCH: ${{ github.ref_name }}
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add data/source_enrichment_autoofficial.js data/source_enrichment_locatorhours.js
+          git add data/source_enrichment_zlocatorhours.js
           if git diff --cached --quiet; then
-            echo 'No generated maintenance changes.'
+            echo 'No generated locator-hours changes.'
           else
-            git commit -m 'Refresh zero-cost official fields for pass 2'
+            git commit -m 'Add trusted official locator hours'
             git push origin HEAD:$TARGET_BRANCH
           fi
