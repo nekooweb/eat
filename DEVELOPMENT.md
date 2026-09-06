@@ -4,18 +4,18 @@ Updated: 2026-09-06
 
 ## Current state
 
-`TOKYO / 地区1️⃣` has completed the expensive candidate/identity capture stage. The confirmed historical Area1 snapshot contains **2,804** identities.
+`TOKYO / 地区1️⃣` has completed the expensive restaurant-list/identity capture stage. The frozen historical Area1 snapshot contains **2,804** identities.
 
 Current audited production baseline:
 
-- frozen historical inventory: **2,804** Place IDs;
+- historical inventory: **2,804**;
 - canonical production: **656**;
 - production inside frozen inventory: **653**;
-- current inventory-only legacy IDs: **2,151**;
+- inventory-only legacy IDs: **2,151**;
 - source-backed production: **404 / 656**;
 - source outcomes accounted for: **448 / 656**;
 - unresolved current-production source queue: **208**;
-- official-site index: **194** identities;
+- official-site index: **194**;
 - cuisine known: **579**;
 - address known: **268**;
 - normalized opening hours: **287**;
@@ -24,282 +24,225 @@ Current audited production baseline:
 - strict recommendations: **30**;
 - 百名店: **22**.
 
-The successful 2026-09-06 full-collection Actions artifact plus its retry artifact contain the transient matching inputs for the identities that were inventory-only during the sweep. The retry resolved all transient fetch failures. **Do not repeat that paid collection.**
+The successful 2026-09-06 full-collection + retry Actions artifacts contain the transient matching inputs needed for identities that were inventory-only during the sweep. The retry resolved all transient fetch failures. **Do not repeat that paid Google collection.**
 
-`DATA_ENRICHMENT_PROGRESS.md` remains the numeric production report. `ENRICHMENT_STRATEGY.md` defines the general enrichment architecture. `HOTPEPPER_ENRICHMENT.md` defines the implemented primary structured enrichment path.
+`DATA_ENRICHMENT_PROGRESS.md` is the numeric production report. `ENRICHMENT_STRATEGY.md` defines the general enrichment architecture. `HOTPEPPER_ENRICHMENT.md` is authoritative for the implemented Hot Pepper path.
 
-## Primary goal: enrich the known list
+## Primary objective
 
-Candidate discovery is no longer the bottleneck.
+Candidate discovery is no longer the main problem.
 
-The next development cycle optimizes:
+Optimize:
 
-> For the already-known Area1 restaurant list, how many useful fields can be completed per API/network request and per review minute without billable place/search APIs?
+> useful fields completed per authorized/free API request, network fetch and review minute for the already-known Area1 list.
 
 Priority:
 
-### P0 — identity and recommendation usefulness
+1. **P0** — durable source binding, current identity evidence, name, address/coordinates, cuisine;
+2. **P1** — dinner budget and official lunch-price evidence;
+3. **P2** — hours, regular closed days, phone/menu/source URLs;
+4. **P3** — featured dishes, strict recommendations and descriptive fields.
 
-- durable source binding;
-- current existence evidence;
-- name/aliases;
-- coordinates/address;
-- cuisine/type;
-- source-native IDs and provenance.
-
-### P1 — filtering value
-
-- dinner budget from authorized structured sources;
-- lunch price from official menu evidence;
-- transparent price evidence class.
-
-### P2 — display context
-
-- normalized weekly hours;
-- regular closed days;
-- phone/menu/source URLs.
-
-### P3 — optional enrichment
-
-- featured/signature dishes;
-- strict recommendation evidence;
-- descriptive fields.
-
-Do not spend substantial effort on P3 while P0/P1 gaps remain large.
+Do not return to large-scale restaurant discovery unless a later measured recall audit proves the 2,804-list is insufficient.
 
 ## Billable API prohibition
 
-Repository maintenance must not execute billable place/search/map data APIs.
+Repository maintenance must not execute billable place/search/map APIs.
 
-Hard constraints:
-
-- no live Google Places / Area Insights / Text Search / Place Details / `websiteUri` calls;
-- no paid place/search API fallback;
+- no live Google Places / Area Insights / Text Search / Place Details / `websiteUri`;
+- no paid place/search fallback;
 - no Google Maps/Places secret in maintenance workflows;
-- no API key injected into the Pages artifact;
-- existing Google Place IDs and historical QC state are frozen compatibility/alias inputs;
+- no Google API key injected into Pages;
+- existing Google Place IDs and historical QC are frozen compatibility/alias inputs;
 - retired paid scripts remain fail-closed;
 - CI runs `scripts/audit_no_paid_apis.mjs`.
 
-Free/authorized APIs are allowed when consistent with project authorization and provider requirements. API keys must stay in repository secrets and must never be committed.
+Free/authorized APIs may be used according to project authorization/provider requirements. Keys remain in GitHub Actions secrets and are never committed.
 
-## Hot Pepper is now the primary structured enrichment path
+## Primary structured enrichment: Hot Pepper
 
-Under project-owner guidance, the project is non-commercial and the intended Hot Pepper API use is treated as separately authorized/confirmed.
+Project-owner guidance states that the project is non-commercial and the intended Hot Pepper API use has been separately authorized/confirmed. The repository uses that project-specific authorization assumption.
 
-The implemented flow is:
+Implemented pipeline:
 
 ```text
-known 2,804 identity snapshot
+known 2,804 identities
  + already-paid transient matching seed
         |
         v
 Hot Pepper 2 km geographic superset
-(full structured rows, paginated at 100)
+(full rows, count=100 pagination)
         |
         v
-local exact 1.2 km crop
+exact local <=1.2 km crop
         |
         v
-spatial + multilingual name + address/postcode record linkage
+spatial + multilingual name + address/postcode matching
         |
-        +---- high/medium binding ledger for known identities
+        +--> high/medium known-list binding ledger
         |
         v
-<=20 Hot Pepper IDs per full-detail request
+<=20 Hot Pepper IDs per detail request
         |
         v
 strict automatic-use gate
         |
-        +---- inventory-only bindings remain review-only
+        +--> inventory-only matches remain review-only
         |
         v
-existing production source-enrichment candidates
+existing-production source-enrichment candidates
         |
         v
 canonical resolver/build
 ```
 
-### Why full geographic rows, not `type=lite`
+### Why full discovery rows instead of `type=lite`
 
-The first design used `type=lite`. It was replaced before production use because the reduced response is not ideal for identity reconciliation: address/kana evidence is more valuable than saving response bytes for a small Area1 batch.
-
-`scripts/collect_hotpepper_area1.py` now requests full geographic rows once, then uses 20-ID detail batches for established bindings.
+The first design used `type=lite`. It was replaced before production use because address/kana evidence is more valuable for dense Tokyo identity matching than reducing response payload size. The current collector requests the full geographic superset once.
 
 ### Matching safety
 
 `scripts/match_hotpepper_inventory.py` uses:
 
-- spatial blocking;
-- exact distance;
+- spatial blocking and precise distance;
 - normalized Japanese/Latin names;
-- Japanese romanization via `pykakasi`;
-- address similarity;
-- postal-code agreement;
+- Japanese -> Hepburn romanization via `pykakasi`;
+- address/postal evidence;
 - best-vs-second candidate margin;
-- one-to-one Hot Pepper ID collision detection.
+- one-Hot-Pepper-ID collision protection.
 
-`scripts/build_hotpepper_enrichment.py` applies a second, stricter automatic-use gate.
+`scripts/build_hotpepper_enrichment.py` applies a second stricter automatic-use gate.
 
-Important separation:
+Rules:
 
-- high/medium Hot Pepper matches can enter the binding ledger;
-- only strict-safe high matches may generate automatic source field claims;
-- only **existing production identities** may enter `source_enrichment_hotpepper.js`;
-- inventory-only identities are not automatically promoted from one Hot Pepper match.
+- medium matches are review-only;
+- collisions are review-only;
+- only strict-safe high matches can generate automatic field claims;
+- only **existing production identities** can enter the generated Hot Pepper source-enrichment shard;
+- inventory-only identities can receive a binding in the ledger but are not admitted automatically.
 
-This prevents content enrichment from silently becoming identity expansion.
+Content enrichment and identity expansion therefore remain separate operations.
 
-## Hot Pepper fields
+## Hot Pepper field rules
 
-High-value source claims:
+High-value claims:
 
 - Japanese name;
 - address;
-- Hot Pepper ID;
-- genre/sub-genre -> versioned Chinese cuisine mapping;
-- explicit two-sided dinner budget;
+- source-native Hot Pepper ID;
+- genre/sub-genre -> Chinese cuisine taxonomy;
+- dinner budget;
 - opening-hours raw text;
 - regular closing-day text;
 - source URL.
 
-Rules:
+Budget handling:
 
-- `lunch=あり` is not a lunch budget;
-- open-ended/single-number budget text does not get an invented bound;
-- irregular hours remain unresolved if the schedule normalizer cannot parse them conservatively;
-- Hot Pepper images are not ingested in the current phase.
+- `2001～3000円` -> `[2001, 3000]`;
+- provider-defined upper-cap `～2000円` -> `[0, 2000]`;
+- lower-bound-only `10000円～` -> not promoted into the finite `[min,max]` field because no upper bound is stated;
+- `lunch=あり` is not a lunch price.
 
-The public page already carries `Powered by ホットペッパーグルメ Webサービス` attribution.
+Hours remain raw evidence unless the conservative Japanese schedule normalizer can produce a valid weekly schedule.
 
-## Hot Pepper workflow status
+Hot Pepper images are not ingested in this phase. The public page already includes `Powered by ホットペッパーグルメ Webサービス` attribution.
 
-`.github/workflows/hotpepper-enrichment.yml` is implemented and manual-only.
+## Implemented workflow
 
-It performs:
+`.github/workflows/hotpepper-enrichment.yml` is manual-only and performs:
 
-1. Hot Pepper API-key preflight;
+1. API-key preflight;
 2. no-paid-Google-API audit;
 3. current production build;
-4. download of the already-paid full-list + retry private artifacts;
-5. geographic Hot Pepper collection;
-6. local identity matching;
-7. full details in <=20-ID batches;
-8. durable binding ledger generation;
-9. production-safe source-enrichment candidate generation;
-10. yield/safety report generation;
+4. download of the already-paid full-list/retry artifacts;
+5. Hot Pepper geographic collection;
+6. local known-list matching;
+7. <=20-ID detail batches;
+8. `hotpepper_bindings.json` generation;
+9. `source_enrichment_hotpepper.js` candidate generation;
+10. `hotpepper_promotion_report.json` + summary generation;
 11. strict output validation;
 12. review artifact upload.
 
-All piped commands use `set -euo pipefail` and required files are checked with `test -s` before artifact upload.
+All piped shell commands use `set -euo pipefail` and all required outputs are checked before upload.
 
-### Real execution findings
+### Real execution status
 
-Two implementation-test runs were performed while building the workflow:
+Implementation-test runs:
 
-- run `34030289095`: exposed a workflow bug where `tee` masked Python failures; the Hot Pepper secret was actually empty;
-- run `34030342882`: after fail-fast fixes, correctly stopped at the API-key preflight.
+- `34030289095` exposed a CI bug: `tee` masked Python failures and the Hot Pepper secret was empty;
+- `34030342882` correctly failed at the API-key preflight after fail-fast fixes.
 
 Therefore **no valid Hot Pepper benchmark has run yet and no Hot Pepper-derived data has been promoted**.
 
-The only current blocker is repository configuration: no supported Hot Pepper Actions secret is present. Supported names are:
+The remaining blocker is repository configuration. No supported Hot Pepper Actions secret is currently available. Accepted names:
 
 - `HOTPEPPER_API_KEY` (preferred);
 - `HOTPEPPER_API`;
 - `HOTPEPPER_KEY`;
 - `RECRUIT_API_KEY`.
 
-The GitHub connector used for development cannot create/read Actions secret values, so secret setup must be performed in GitHub repository settings by an authorized repository owner.
+The connected GitHub development tool cannot create or reveal Actions secret values, so an authorized repository owner must configure the key in GitHub repository settings.
 
-## Secondary enrichment sources
+## Secondary enrichment after Hot Pepper
 
-After the Hot Pepper structured pass, use other sources for measured gaps rather than rediscovering the whole restaurant universe.
+Use measured gaps rather than rediscovering the universe.
 
-### Official/brand pages and locators
+### Official / brand locator / AllThePlaces
 
-Highest-value uses:
+Prioritize for:
 
 - lunch prices;
 - menu/signature dishes;
 - strict recommendation evidence;
 - exact branch conflicts;
-- restaurants missing from Hot Pepper.
+- restaurants absent from Hot Pepper.
 
-Prefer host/template batching and existing AllThePlaces locator logic where available.
+Process repeated domains/brands/templates in batches rather than restaurant-by-restaurant crawling.
 
 ### OSM / Foursquare OS / Overture
 
-Use primarily for:
+Use for:
 
 - unmatched identities;
 - independent coordinates/address/category evidence;
 - currentness cross-checks;
 - conflict resolution.
 
-Do not treat Overture plus one of its upstream providers as two automatically independent votes; preserve source lineage.
-
-## Official-site processing model
-
-Use host-first processing, not restaurant-first crawling:
-
-```text
-remaining known identities
- -> source/official URLs
- -> group by brand/domain/template
- -> fetch each unique source once
- -> extract all supported fields
- -> field claims
- -> resolver
-```
-
-One source fetch should attempt name/address/phone/cuisine/hours/closed days/menu links/budget evidence/featured dishes together.
-
-## Price model
-
-Use evidence classes rather than silently weakening budget semantics:
-
-- **A** — explicit authorized structured spend range or explicit official spend range;
-- **B** — official menu with enough comparable main/set items to derive a transparent observed band;
-- **C** — sparse item/course prices, review/display only.
-
-Hot Pepper explicit dinner budget is a strong structured layer. Lunch remains an official-menu completion problem.
+Preserve source lineage: an aggregate plus its own upstream provider is not automatically two independent votes.
 
 ## Field-claim architecture
 
-Bulk collectors should not directly mutate canonical restaurant rows.
+Collectors do not directly mutate canonical restaurant rows.
 
 Each claim should retain:
 
-- compatibility/canonical entity key;
-- source provider;
-- source-native ID / URL;
+- entity/compatibility key;
+- provider and source-native ID/URL;
 - field/value;
 - checked date;
-- extraction method;
-- confidence;
+- extraction method/confidence;
 - lineage.
 
-Current `source_enrichment_*.js` files remain the compatibility layer consumed by `build_production_dataset.mjs`; the Hot Pepper workflow now produces a candidate shard in that format.
+The existing `source_enrichment_*.js` files remain the compatibility layer consumed by `build_production_dataset.mjs`. The Hot Pepper workflow produces a review-ready candidate shard in that format.
 
-## Development order
+## Next execution order
 
-1. Configure the authorized Hot Pepper Actions secret.
-2. Run **Hot Pepper Area1 enrichment benchmark**.
-3. Inspect measured Area1 counts: discovery, high/medium/review/collision matches, safe production bindings, and field yield.
-4. If the safe match precision is acceptable, commit the reviewed Hot Pepper binding ledger and production enrichment shard.
-5. Rebuild production and measure changes from the current baseline: budget 192, hours 287, address 268, cuisine 579.
-6. Use Hot Pepper-bound inventory-only rows as a separate identity-expansion review set; do not automatically add them.
-7. Use official/AllThePlaces/OSM/FSQ/Overture only for the remaining measured gaps/conflicts.
-8. Prioritize official lunch/menu/dish extraction after the structured Hot Pepper pass.
-9. Continue field-level audits and source refresh rather than re-running paid discovery.
+1. Configure the authorized `HOTPEPPER_API_KEY` Actions secret.
+2. Manually run **Hot Pepper Area1 enrichment benchmark**.
+3. Review measured discovery, high/medium/review/collision counts and strict-safe production bindings.
+4. Review address/cuisine/dinner-budget/hours yield.
+5. If precision is acceptable, commit the reviewed Hot Pepper binding ledger and production enrichment shard.
+6. Rebuild production and compare against the current baseline: budget **192**, hours **287**, address **268**, cuisine **579**.
+7. Keep Hot Pepper-bound inventory-only rows as a separate identity-expansion review queue.
+8. Use official/AllThePlaces/OSM/FSQ/Overture for remaining gaps, especially lunch/menu/dishes and conflicts.
+9. Continue source refresh/field audits; do not re-run paid discovery.
 
-## Headline progress metrics
+## Headline metrics going forward
 
-Report enrichment rather than discovery counts:
-
-- known identities with a Hot Pepper binding;
+- known identities with Hot Pepper binding;
 - strict-safe Hot Pepper bindings;
-- production entities enriched by Hot Pepper;
+- current production identities enriched by Hot Pepper;
 - inventory-only identities with reviewable Hot Pepper binding;
 - address coverage;
 - cuisine coverage;
@@ -307,11 +250,11 @@ Report enrichment rather than discovery counts:
 - lunch-price coverage;
 - normalized-hours coverage;
 - official-site coverage;
-- featured/recommended dish coverage;
-- unresolved collisions/conflicts;
-- fields completed per network request / review minute.
+- dish coverage;
+- unresolved identity collisions/conflicts;
+- fields completed per request/review minute.
 
-The **2,804** count is the known historical list size, not a target for repeated discovery.
+The **2,804** count remains the known historical list size, not a repeated-discovery target.
 
 ## Runtime contract
 
