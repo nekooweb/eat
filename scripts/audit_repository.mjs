@@ -82,11 +82,6 @@ if (!/lastMascotSource/.test(effects) || !/lastMascotPlacement/.test(effects)) {
   fail('mascot character and placement should avoid immediate repeats');
 }
 
-// Public runtime is layered deliberately. Canonical production loads first;
-// the separate public/open pool extends recommendation coverage without changing
-// canonical identity admission. Provenance/provider facts and Hot Pepper rich
-// metadata follow, then app/effects run. Maintenance source shards must never be
-// loaded directly by index.html.
 const scriptSources = [...index.matchAll(/<script[^>]+src="([^"]+)"/gi)].map((match) => match[1]);
 const localRuntimeScripts = scriptSources.filter((source) => source.startsWith('./'));
 const runtimePath = (source) => source.split('?', 1)[0];
@@ -186,6 +181,7 @@ if (publicPoolSource) {
   if (!publicStats || publicStats.publicRows !== publicRows?.length) fail('public open pool statistics do not match dataset length');
   if ((rows?.length || 0) + (publicRows?.length || 0) < 2000) fail('combined public restaurant pool must contain at least 2000 rows');
   const publicKeys = new Set();
+  let sourceBackedFeaturedPublic = 0;
   for (const row of publicRows || []) {
     if (row.identityAdmission !== 'open_public_catalog') fail(`public row has invalid admission tier: ${row.name || row.id}`);
     if (!row.identityKey) fail(`public row lacks identity key: ${row.name || row.id}`);
@@ -194,10 +190,42 @@ if (publicPoolSource) {
     if (!row.name || !Number.isFinite(row.lat) || !Number.isFinite(row.lng)) fail(`public row lacks display identity: ${row.identityKey}`);
     if (!Number.isFinite(row.distanceMeters) || row.distanceMeters < 0 || row.distanceMeters > 1200) fail(`public row outside Area1 radius: ${row.identityKey}`);
     if (!Array.isArray(row.dishHints) || !row.dishHints.length) fail(`public row lacks dish reference hint: ${row.identityKey}`);
-    if (row.featuredDishConfidence !== 'reference_hint') fail(`public dish hint is not marked as reference-only: ${row.identityKey}`);
+
+    if (row.featuredDishConfidence === 'provider_signature_text') {
+      sourceBackedFeaturedPublic += 1;
+      if (!Array.isArray(row.featuredDishes) || !row.featuredDishes.length) {
+        fail(`provider-signature public row lacks featured dishes: ${row.identityKey}`);
+      }
+      for (const dish of row.featuredDishes || []) {
+        if (!dish || typeof dish !== 'object' || !dish.nameZh || !dish.nameJa) {
+          fail(`invalid provider-signature dish object: ${row.identityKey}`);
+          continue;
+        }
+        if (dish.provider !== 'Hot Pepper' || !/^https:\/\//.test(dish.sourceUrl || '')) {
+          fail(`provider-signature dish lacks Hot Pepper provenance: ${row.identityKey}`);
+        }
+        if (dish.evidenceClass !== 'provider_signature_description' || !dish.evidenceText) {
+          fail(`provider-signature dish lacks signature evidence: ${row.identityKey}`);
+        }
+        if (!/^\d{4}-\d{2}-\d{2}$/.test(dish.checkedAt || '')) {
+          fail(`provider-signature dish lacks ISO check date: ${row.identityKey}`);
+        }
+      }
+    } else if (row.featuredDishConfidence === 'reference_hint') {
+      if (Array.isArray(row.featuredDishes) && row.featuredDishes.length) {
+        fail(`reference-only public row unexpectedly carries featured dishes: ${row.identityKey}`);
+      }
+    } else {
+      fail(`unsupported public dish confidence: ${row.identityKey} -> ${row.featuredDishConfidence}`);
+    }
+
     for (const field of forbiddenGoogleFields) {
       if (Object.hasOwn(row, field)) fail(`persisted Google content field ${field} in public pool: ${row.name}`);
     }
+  }
+  if (publicStats?.publicWithSourceBackedFeaturedDishes != null
+    && publicStats.publicWithSourceBackedFeaturedDishes !== sourceBackedFeaturedPublic) {
+    fail(`public featured-dish statistic mismatch: stats=${publicStats.publicWithSourceBackedFeaturedDishes}, actual=${sourceBackedFeaturedPublic}`);
   }
 }
 
