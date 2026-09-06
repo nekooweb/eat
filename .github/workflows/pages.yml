@@ -39,13 +39,15 @@ jobs:
           node scripts/build_production_dataset.mjs
           node scripts/build_source_provenance.mjs
           node scripts/build_source_facts.mjs
-      - name: Build 2000+ public restaurant pool
+      - name: Build 2000+ public restaurant pool and dish queue
         run: |
           mkdir -p _audit
           set -o pipefail
           node scripts/build_public_open_pool.mjs | tee _audit/public_pool.json
           test -s data/public_pool_area1.js
           node --check data/public_pool_area1.js
+          node scripts/build_public_dish_queue.mjs _audit/public_dish_queue.json | tee _audit/public_dish_queue_summary.json
+          test -s _audit/public_dish_queue.json
       - name: Static and repository checks
         run: |
           mkdir -p _audit
@@ -61,6 +63,7 @@ jobs:
             node --check scripts/audit_no_paid_apis.mjs
             node --check scripts/build_hotpepper_rich_core_fallback.mjs
             node --check scripts/build_public_open_pool.mjs
+            node --check scripts/build_public_dish_queue.mjs
             node --check scripts/price_resolver.mjs
             node --check scripts/audit_price_resolution.mjs
             node --check scripts/build_source_provenance.mjs
