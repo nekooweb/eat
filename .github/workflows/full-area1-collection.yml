@@ -1,0 +1,98 @@
+name: Full Area1 identity collection
+
+on:
+  push:
+    branches:
+      - full-area1-collection
+    paths:
+      - 'scripts/full_inventory_collection.py'
+      - '.github/workflows/full-area1-collection.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: full-area1-collection-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout selected branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify fixed complete inventory baseline
+        run: |
+          python3 - <<'PY'
+          import json
+          d=json.load(open('data/area1_google_ids.json'))
+          assert d['count']==2804
+          assert len(set(d['googlePlaceIds']))==2804
+          assert d['complete'] is True
+          assert d['coverageVerified'] is True
+          assert d['independentCountVerified'] is True
+          assert d['aggregateExactCount']==2804
+          print({'inventory':2804,'complete':True,'basis':d['completenessBasis']})
+          PY
+      - name: Collect all inventory-only identity seeds and OSM candidates
+        env:
+          GOOGLE_MAP_API: ${{ secrets.GOOGLE_MAP_API }}
+          FULL_COLLECTION_CONCURRENCY: '16'
+          FULL_COLLECTION_TIMEOUT_SECONDS: '20'
+          FULL_COLLECTION_MAX_REQUESTS: '2200'
+          FULL_COLLECTION_CHECKED_AT: '2026-09-06'
+        run: |
+          set -o pipefail
+          mkdir -p _audit
+          python3 scripts/full_inventory_collection.py | tee _audit/full-collection-console.log
+      - name: Validate durable queue privacy and completeness
+        run: |
+          python3 - <<'PY'
+          import json
+          q=json.load(open('data/area1_full_collection_queue.json'))
+          assert q['inventoryBaseline']==2804
+          assert q['inventoryOnlyProcessed']==2159
+          assert len(q['rows'])==2159
+          bad=[]
+          for r in q['rows']:
+            for k in ('displayName','formattedAddress','location','websiteUri','googleName','googleAddress'):
+              if k in r: bad.append((r.get('googlePlaceId'),k))
+          assert not bad, bad[:5]
+          assert q['policy']['googleDisplayPayloadPersisted'] is False
+          assert q['policy']['enterpriseWebsiteUriRequested'] is False
+          print(q['summary'])
+          PY
+      - name: Build current production and audits
+        run: |
+          set -o pipefail
+          node scripts/build_production_dataset.mjs | tee _audit/current-production-build.json
+          node scripts/audit_repository.mjs
+          node scripts/audit_source_bindings.mjs
+          node scripts/audit_normalized_fields.mjs
+          node scripts/source_queue.mjs | tee _audit/current-source-queue.json
+      - name: Upload private full-collection audit
+        uses: actions/upload-artifact@v4
+        with:
+          name: full-area1-collection-private-audit
+          path: _audit
+          retention-days: 3
+      - name: Commit durable full-range candidate queue
+        env:
+          TARGET_BRANCH: ${{ github.ref_name }}
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/area1_full_collection_queue.json
+          if git diff --cached --quiet; then
+            echo 'No durable queue changes.'
+          else
+            git commit -m 'Build full Area1 collection candidate queue'
+            git push origin HEAD:$TARGET_BRANCH
+          fi
