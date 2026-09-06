@@ -1,0 +1,63 @@
+name: Promote full-range high-confidence OSM matches
+
+on:
+  push:
+    branches:
+      - full-area1-collection
+    paths:
+      - 'scripts/promote_full_high_confidence_osm.py'
+      - '.github/workflows/promote-full-high-confidence-osm.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: promote-full-high-confidence-osm-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout selected branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Promote only collision-free high-confidence OSM matches
+        run: |
+          set -o pipefail
+          mkdir -p _audit
+          python3 scripts/promote_full_high_confidence_osm.py | tee _audit/high-confidence-promotion.json
+      - name: Rebuild and audit expanded production
+        run: |
+          set -o pipefail
+          node scripts/build_production_dataset.mjs | tee _audit/build-after-high-confidence.json
+          node scripts/audit_repository.mjs
+          node scripts/audit_source_bindings.mjs
+          node scripts/audit_normalized_fields.mjs
+          node scripts/coverage_report.mjs | tee _audit/coverage-after-high-confidence.json
+          node scripts/audit_area1_identity_coverage.mjs | tee _audit/identity-coverage-after-high-confidence.json
+      - name: Upload promotion audit
+        uses: actions/upload-artifact@v4
+        with:
+          name: full-range-high-confidence-promotion-audit
+          path: _audit
+          retention-days: 3
+      - name: Commit verified OSM expansion
+        env:
+          TARGET_BRANCH: ${{ github.ref_name }}
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/google_places_cache.json data/google_entities.generated.js data/production_area1.js
+          if git diff --cached --quiet; then
+            echo 'No safe high-confidence promotions.'
+          else
+            git commit -m 'Promote full-range high-confidence OSM matches'
+            git push origin HEAD:$TARGET_BRANCH
+          fi

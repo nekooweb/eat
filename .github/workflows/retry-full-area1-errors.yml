@@ -1,0 +1,72 @@
+name: Retry full Area1 identity fetch errors
+
+on:
+  push:
+    branches:
+      - full-area1-collection
+    paths:
+      - 'scripts/retry_full_inventory_errors.py'
+      - '.github/workflows/retry-full-area1-errors.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: retry-full-area1-errors-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  retry:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout selected branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Retry only current fetch errors
+        env:
+          GOOGLE_MAP_API: ${{ secrets.GOOGLE_MAP_API }}
+          FULL_RETRY_CONCURRENCY: '6'
+          FULL_RETRY_WAVES: '3'
+          FULL_COLLECTION_CHECKED_AT: '2026-09-06'
+        run: |
+          set -o pipefail
+          mkdir -p _audit
+          python3 scripts/retry_full_inventory_errors.py | tee _audit/full-retry-console.log
+      - name: Validate merged full queue
+        run: |
+          python3 - <<'PY'
+          import json
+          q=json.load(open('data/area1_full_collection_queue.json'))
+          assert len(q['rows'])==2159
+          bad=[]
+          for r in q['rows']:
+            for k in ('displayName','formattedAddress','location','websiteUri','googleName','googleAddress'):
+              if k in r: bad.append((r.get('googlePlaceId'),k))
+          assert not bad,bad[:5]
+          print(q['summary'])
+          PY
+      - name: Upload retry private audit
+        uses: actions/upload-artifact@v4
+        with:
+          name: full-area1-retry-private-audit
+          path: _audit
+          retention-days: 3
+      - name: Commit improved durable queue
+        env:
+          TARGET_BRANCH: ${{ github.ref_name }}
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/area1_full_collection_queue.json
+          if git diff --cached --quiet; then
+            echo 'No queue changes.'
+          else
+            git commit -m 'Retry full Area1 identity fetch errors'
+            git push origin HEAD:$TARGET_BRANCH
+          fi
