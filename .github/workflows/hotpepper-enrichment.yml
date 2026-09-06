@@ -1,0 +1,124 @@
+name: Hot Pepper Area1 enrichment benchmark
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: hotpepper-area1-enrichment
+  cancel-in-progress: true
+
+jobs:
+  enrich:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install matching dependency
+        run: python -m pip install --disable-pip-version-check 'pykakasi>=2.3,<3'
+
+      - name: Enforce no-paid-data-API policy
+        run: node scripts/audit_no_paid_apis.mjs
+
+      - name: Build current canonical production seed
+        run: node scripts/build_production_dataset.mjs
+
+      - name: Download successful full-list transient matching artifacts
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          rm -rf _seed _audit
+          mkdir -p _seed/full _seed/retry _audit
+          gh run download 34018919233 \
+            --repo nekooweb/eat \
+            -n full-area1-collection-private-audit \
+            -D _seed/full
+          gh run download 34019078280 \
+            --repo nekooweb/eat \
+            -n full-area1-retry-private-audit \
+            -D _seed/retry
+          test -s _seed/full/full_inventory_place_details.json
+          test -s _seed/retry/full_inventory_retry_private.json
+
+      - name: Collect Hot Pepper Area1 geographic listing
+        env:
+          HOTPEPPER_API_KEY: ${{ secrets.HOTPEPPER_API_KEY }}
+          HOTPEPPER_DISCOVERY_RANGE: '4'
+          HOTPEPPER_REQUEST_INTERVAL: '0.20'
+          HOTPEPPER_MAX_PAGES: '100'
+        run: |
+          python scripts/collect_hotpepper_area1.py \
+            discover \
+            _audit/hotpepper_area1_lite.json \
+            | tee _audit/hotpepper_discovery_console.log
+
+      - name: Match Hot Pepper IDs to the known Area1 inventory
+        run: |
+          python scripts/match_hotpepper_inventory.py \
+            _seed/full/full_inventory_place_details.json \
+            _seed/retry/full_inventory_retry_private.json \
+            _audit/hotpepper_area1_lite.json \
+            _audit/hotpepper_inventory_match.json \
+            | tee _audit/hotpepper_match_console.log
+
+      - name: Fetch full details for high/medium match candidates in 20-ID batches
+        env:
+          HOTPEPPER_API_KEY: ${{ secrets.HOTPEPPER_API_KEY }}
+          HOTPEPPER_REQUEST_INTERVAL: '0.20'
+        run: |
+          python scripts/collect_hotpepper_area1.py \
+            details \
+            _audit/hotpepper_inventory_match.json \
+            _audit/hotpepper_bound_details.json \
+            | tee _audit/hotpepper_details_console.log
+
+      - name: Summarize enrichment yield
+        run: |
+          python - <<'PY' | tee _audit/hotpepper_enrichment_summary.json
+          import json
+          match=json.load(open('_audit/hotpepper_inventory_match.json'))
+          details=json.load(open('_audit/hotpepper_bound_details.json'))
+          rows=details.get('rows',[])
+          def has(v):
+              if isinstance(v, str): return bool(v.strip())
+              if isinstance(v, dict): return any(has(x) for x in v.values())
+              if isinstance(v, list): return any(has(x) for x in v)
+              return v is not None
+          summary={
+              'match': match.get('summary',{}),
+              'detail': details.get('summary',{}),
+              'fieldYield': {
+                  'address': sum(has(r.get('address')) for r in rows),
+                  'genre': sum(has(r.get('genre')) for r in rows),
+                  'dinnerBudget': sum(has(r.get('budget')) for r in rows),
+                  'openingHoursRaw': sum(has(r.get('open')) for r in rows),
+                  'closedDaysRaw': sum(has(r.get('close')) for r in rows),
+                  'lunchAvailableSignal': sum(has(r.get('lunch')) for r in rows),
+                  'sourceUrl': sum(has(r.get('urls')) for r in rows),
+              }
+          }
+          print(json.dumps(summary,ensure_ascii=False,indent=2))
+          PY
+
+      - name: Upload review-only enrichment artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: hotpepper-area1-enrichment-review
+          path: _audit
+          retention-days: 3
