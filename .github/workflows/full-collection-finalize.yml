@@ -1,0 +1,77 @@
+name: Finalize full Area1 collection
+
+on:
+  push:
+    branches: ["full-collection-2804"]
+    paths:
+      - '.github/run-full-collection-finalize'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: finalize-full-area1-collection-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  finalize:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate checkpointed identity state
+        run: |
+          set -o pipefail
+          mkdir -p _audit
+          node scripts/build_production_dataset.mjs | tee _audit/build-before-finalize.json
+          node scripts/audit_repository.mjs
+          node scripts/audit_source_bindings.mjs
+          node scripts/audit_normalized_fields.mjs
+          node scripts/build_inventory_ledger.mjs | tee _audit/ledger-before-finalize.json
+      - name: Refresh independent official pages
+        env:
+          OFFICIAL_INDEX_CONCURRENCY: '8'
+          OFFICIAL_INDEX_TIMEOUT_MS: '12000'
+          OFFICIAL_INDEX_MENU_LIMIT: '3'
+        run: |
+          set -o pipefail
+          node scripts/extract_official_index_fields.mjs data/official_candidate_index.json _audit/full_official_field_candidates.json | tee _audit/full-official-extraction-summary.json
+          AUTO_OFFICIAL_CHECKED_AT='2026-09-06' node scripts/build_auto_official_enrichment.mjs _audit/full_official_field_candidates.json data/source_enrichment_autoofficial.js | tee _audit/full-autoofficial-summary.json
+          node scripts/filter_autoofficial_collisions.mjs | tee _audit/autoofficial-collision-filter.json
+      - name: Final canonical and full-range audits
+        run: |
+          set -o pipefail
+          node scripts/build_production_dataset.mjs | tee _audit/build-after-full-collection.json
+          node scripts/audit_repository.mjs
+          node scripts/audit_source_bindings.mjs
+          node scripts/audit_normalized_fields.mjs
+          node scripts/coverage_report.mjs | tee _audit/coverage-after-full-collection.json
+          node scripts/source_queue.mjs | tee _audit/source-queue-after-full-collection.json
+          node scripts/build_inventory_ledger.mjs | tee _audit/inventory-ledger-after-full-collection.json
+          node scripts/build_inventory_expansion_queue.mjs | tee _audit/inventory-expansion-after-full-collection.json
+          node scripts/audit_area1_identity_coverage.mjs | tee _audit/identity-coverage-after-full-collection.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: full-area1-finalize-audit
+          path: _audit
+          retention-days: 2
+      - name: Commit finalized durable enrichment
+        env:
+          TARGET_BRANCH: ${{ github.ref_name }}
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add data/source_enrichment_autoofficial.js data/source_enrichment_zzzzzzautoofficialmerge.js data/area1_inventory_ledger.json data/area1_inventory_expansion_queue.json
+          if git diff --cached --quiet; then
+            echo 'No finalizer data changes.'
+          else
+            git commit -m "Finalize full Area1 collection enrichment"
+            git push origin HEAD:"$TARGET_BRANCH"
+          fi
