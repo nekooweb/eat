@@ -29,7 +29,7 @@ for (const row of catalog.rows || []) {
     const hp = hpById.get(row.googlePlaceId);
     if (!hp) throw new Error(`reviewed admission lacks Hot Pepper facts: ${row.googlePlaceId}`);
     row.admission = {
-      status: 'reviewed_ready',
+      status: row.currentProduction ? 'admitted_production' : 'reviewed_ready',
       mode: admitted.admissionMode,
       reviewedAt: admitted.reviewedAt,
       currentnessProvider: admitted.evidence?.currentnessProvider || null,
@@ -54,10 +54,15 @@ for (const row of catalog.rows || []) {
       access: hp.facts?.access || null,
       hotpepperUrl: hp.facts?.urls?.pc || hp.facts?.urls?.mobile || null
     };
-    row.nextActions = [...new Set([
-      ...(row.nextActions || []).filter((action) => action !== 'identityAdmissionReview'),
-      'productionSchemaAdmission'
-    ])];
+    if (row.currentProduction) {
+      row.nextActions = (row.nextActions || []).filter((action) =>
+        action !== 'identityAdmissionReview' && action !== 'productionSchemaAdmission');
+    } else {
+      row.nextActions = [...new Set([
+        ...(row.nextActions || []).filter((action) => action !== 'identityAdmissionReview'),
+        'productionSchemaAdmission'
+      ])];
+    }
   } else if (rejected) {
     row.admission = {
       status: 'rejected_pair',
@@ -103,11 +108,12 @@ const hasLoadedFact = (row, field) => {
   return false;
 };
 
-catalog.schemaVersion = Math.max(Number(catalog.schemaVersion || 0), 5);
+catalog.schemaVersion = Math.max(Number(catalog.schemaVersion || 0), 6);
 catalog.summary = {
   ...(catalog.summary || {}),
-  schemaVersion: 5,
+  schemaVersion: 6,
   reviewedAdmissionReady: rows.filter((row) => row.admission?.status === 'reviewed_ready').length,
+  admittedProduction: rows.filter((row) => row.admission?.status === 'admitted_production').length,
   rejectedAdmissionPairs: rows.filter((row) => row.admission?.status === 'rejected_pair').length,
   loadedFactCoverage: {
     name: rows.filter((row) => hasLoadedFact(row, 'name')).length,
@@ -126,6 +132,7 @@ catalog.summary = {
 fs.writeFileSync(catalogPath, `${JSON.stringify(catalog, null, 2)}\n`);
 console.log(JSON.stringify({
   reviewedAdmissionReady: catalog.summary.reviewedAdmissionReady,
+  admittedProduction: catalog.summary.admittedProduction,
   rejectedAdmissionPairs: catalog.summary.rejectedAdmissionPairs,
   loadedFactCoverage: catalog.summary.loadedFactCoverage,
   candidateCoverage: catalog.summary.candidateCoverage
