@@ -5,6 +5,14 @@ import vm from 'node:vm';
 import { fileURLToPath } from 'node:url';
 import { normalizeOpeningHours, formatOpeningHoursZh, validateOpeningHours } from './opening_hours.mjs';
 import { resolveMealPrice } from './price_resolver.mjs';
+import {
+  LEGACY_IDENTITY_ADMISSION,
+  CATALOG_IDENTITY_ADMISSION,
+  AREA1_MAX_DISTANCE_M,
+  buildCatalogAdmissionRoots,
+  isLegacyIdentityRow,
+  isCatalogIdentityRow
+} from './catalog_identity.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, '..');
@@ -12,7 +20,7 @@ const DATA = path.join(ROOT, 'data');
 const OUT = path.join(DATA, 'production_area1.js');
 const PROFILE = 'TOKYO';
 const AREA = '地区1️⃣';
-const MAX_DISTANCE = 1200;
+const MAX_DISTANCE = AREA1_MAX_DISTANCE_M;
 
 const enrichmentInputs = fs.readdirSync(DATA)
   .filter((filename) => /^source_enrichment(?:_[a-z0-9-]+)?\.js$/i.test(filename))
@@ -59,23 +67,33 @@ const isPrice = (value) => Array.isArray(value)
 const unique = (values) => [...new Set(values.filter(Boolean))];
 
 const areaRows = rows.filter((row) => row.profile === PROFILE && row.area === AREA);
-const verifiedRows = areaRows.filter((row) => row.googleStatus === 'verified' && row.googlePlaceId);
+const verifiedRows = areaRows.filter((row) => isLegacyIdentityRow(row));
+const { roots: catalogAdmissionRoots } = buildCatalogAdmissionRoots(DATA, PROFILE, AREA);
+const legacyIds = new Set(verifiedRows.map((row) => row.googlePlaceId));
+for (const row of catalogAdmissionRoots) {
+  if (legacyIds.has(row.googlePlaceId)) {
+    throw new Error(`catalog admission duplicates legacy verified identity: ${row.googlePlaceId}`);
+  }
+}
+const identityRows = [...verifiedRows, ...catalogAdmissionRoots];
 
-// A verified Google Place ID creates the production identity. Source-only rows
-// can enrich an existing group but can never create one.
+// Production identities have two explicit admission paths:
+// 1) legacy independently-QC'd historical identities, and
+// 2) explicit catalog admissions reviewed against multiple independent current
+//    sources. Source-only rows never create identities by themselves.
 const groupsByPlaceId = new Map();
-for (const row of verifiedRows) {
+for (const row of identityRows) {
   if (!groupsByPlaceId.has(row.googlePlaceId)) groupsByPlaceId.set(row.googlePlaceId, []);
   groupsByPlaceId.get(row.googlePlaceId).push(row);
 }
 for (const row of areaRows) {
-  if (!row.googlePlaceId || row.googleStatus === 'verified') continue;
+  if (!row.googlePlaceId || isLegacyIdentityRow(row)) continue;
   groupsByPlaceId.get(row.googlePlaceId)?.push(row);
 }
 
 // Historical no-ID rows are allowed to enrich only a uniquely resolved name.
 const placeIdsByName = new Map();
-for (const row of verifiedRows) {
+for (const row of identityRows) {
   const key = norm(row.name);
   if (!key) continue;
   if (!placeIdsByName.has(key)) placeIdsByName.set(key, new Set());
@@ -176,6 +194,7 @@ for (const row of featuredRows) {
 }
 
 function sourceLabel(row) {
+  if (row.source === 'catalog_admission') return null;
   if (row.source === 'OpenStreetMap') return 'OpenStreetMap';
   return row.source || 'curated';
 }
@@ -234,15 +253,24 @@ function featuredFor(placeId, recommendedDishes) {
 function canonicalize(placeId, sourceRows) {
   const sorted = [...sourceRows].sort((a, b) => detailScore(b) - detailScore(a));
   const base = sorted[0];
+  const catalogIdentity = sourceRows.find((row) => isCatalogIdentityRow(row)) || null;
+  const legacyIdentity = sourceRows.find((row) => isLegacyIdentityRow(row)) || null;
+  if (!catalogIdentity && !legacyIdentity) throw new Error(`production group lacks identity root: ${placeId}`);
+  if (catalogIdentity && legacyIdentity) throw new Error(`production group has conflicting identity roots: ${placeId}`);
+  const identityAdmission = catalogIdentity
+    ? CATALOG_IDENTITY_ADMISSION
+    : LEGACY_IDENTITY_ADMISSION;
 
-  // Geospatial data remains independent of Google Places; prefer verified OSM.
+  // Geospatial data remains independent of live Google Places. Legacy verified
+  // OSM wins for legacy identities; an explicitly reviewed catalog coordinate
+  // wins before any unreviewed open-data candidate for catalog admissions.
   const geo = sourceRows.find((row) =>
     row.source === 'OpenStreetMap'
     && row.googleStatus === 'verified'
     && isFiniteNumber(row.lat)
     && isFiniteNumber(row.lng)
     && isFiniteNumber(row.distanceMeters)
-  ) || sourceRows.find((row) =>
+  ) || catalogIdentity || sourceRows.find((row) =>
     row.source === 'OpenStreetMap'
     && isFiniteNumber(row.lat)
     && isFiniteNumber(row.lng)
@@ -265,7 +293,7 @@ function canonicalize(placeId, sourceRows) {
     && row.googleStatus === 'verified'
     && row.googlePlaceId === placeId
     && row.name
-  ) || geo;
+  ) || catalogIdentity || geo;
   const canonicalName = nameClaim?.name || identityNameRow?.name || base.name;
 
   const cuisineClaim = bestClaimingRow(sourceRows, 'cuisine');
@@ -343,7 +371,9 @@ function canonicalize(placeId, sourceRows) {
     dishes,
     ...(openingHours ? { openingHours, hoursReference } : {}),
     googlePlaceId: placeId,
-    googleStatus: 'verified',
+    ...(identityAdmission === LEGACY_IDENTITY_ADMISSION ? { googleStatus: 'verified' } : {}),
+    identityAdmission,
+    ...(catalogIdentity ? { identityReviewedAt: catalogIdentity.admissionReviewedAt } : {}),
     hyakumeiten,
     hyakumeitenYear: hyakumeiten ? (awardRow?.hyakumeitenYear || null) : null,
     hyakumeitenCategory: hyakumeiten ? (awardRow?.hyakumeitenCategory || null) : null,
@@ -362,7 +392,10 @@ const duplicatePlaceIds = placeIds.length - new Set(placeIds).size;
 const outside = production.filter((row) => row.distanceMeters > MAX_DISTANCE);
 const invalid = production.filter((row) => !row.name || !row.googlePlaceId || !row.cuisine);
 const schemaInvalid = production.filter((row) =>
-  !Array.isArray(row.recommendedDishes)
+  ![LEGACY_IDENTITY_ADMISSION, CATALOG_IDENTITY_ADMISSION].includes(row.identityAdmission)
+  || (row.identityAdmission === LEGACY_IDENTITY_ADMISSION && row.googleStatus !== 'verified')
+  || (row.identityAdmission === CATALOG_IDENTITY_ADMISSION && Object.hasOwn(row, 'googleStatus'))
+  || !Array.isArray(row.recommendedDishes)
   || row.recommendedDishes.length > 2
   || !Array.isArray(row.featuredDishes)
   || row.featuredDishes.length > 2
@@ -379,6 +412,9 @@ if (production.length < 3) throw new Error(`production pool too small: ${product
 const stats = {
   sourceRows: areaRows.length,
   verifiedSourceRows: verifiedRows.length,
+  catalogAdmissionRoots: catalogAdmissionRoots.length,
+  legacyVerifiedEntities: production.filter((row) => row.identityAdmission === LEGACY_IDENTITY_ADMISSION).length,
+  catalogReviewedEntities: production.filter((row) => row.identityAdmission === CATALOG_IDENTITY_ADMISSION).length,
   productionEntities: production.length,
   uniquePlaceIds: new Set(placeIds).size,
   cuisineKnown: production.filter((row) => row.cuisine !== '餐厅').length,
