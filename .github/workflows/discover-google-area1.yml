@@ -47,20 +47,29 @@ jobs:
           assert len(set(p['googlePlaceIds'])) == p['count']
           print('exact_inventory_verified', p['count'])
           PY
+      - name: Align canonical production and ledger to today's exact inventory
+        run: |
+          set -o pipefail
+          mkdir -p _audit
+          node scripts/build_production_dataset.mjs | tee _audit/build-before-full-collection.json
+          node scripts/build_inventory_ledger.mjs | tee _audit/inventory-ledger-before-full-collection.json
       - name: Run inventory-wide identity/source reconciliation
         env:
           GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAP_API }}
-          FULL_IDENTITY_CONCURRENCY: '10'
           FULL_IDENTITY_LIMIT: '0'
+          FULL_ESSENTIAL_CONCURRENCY: '6'
+          FULL_PRO_CONCURRENCY: '5'
+          FULL_PRO_NAME_LIMIT: '1500'
+          FULL_PRO_NEARBY_RADIUS_M: '65'
+          FULL_PRO_REJECTED_RADIUS_M: '100'
           FULL_WEBSITE_CONCURRENCY: '8'
           FULL_WEBSITE_LIMIT: '0'
           FULL_REQUEST_TIMEOUT_SEC: '15'
           FULL_COLLECTION_CHECKED_AT: '2026-09-06'
         run: |
           set -o pipefail
-          mkdir -p _audit
-          python -m py_compile scripts/full_inventory_identity_pass.py
-          python scripts/full_inventory_identity_pass.py | tee _audit/full-collection-console.log
+          python -m py_compile scripts/full_inventory_identity_pass.py scripts/full_inventory_identity_pass_v2.py
+          python scripts/full_inventory_identity_pass_v2.py | tee _audit/full-collection-console.log
       - name: Regenerate compact Google verification projection
         env:
           GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAP_API }}
@@ -82,6 +91,7 @@ jobs:
           set -o pipefail
           node scripts/extract_official_index_fields.mjs data/official_candidate_index.json _audit/full_official_field_candidates.json | tee _audit/full-official-extraction-summary.json
           AUTO_OFFICIAL_CHECKED_AT='2026-09-06' node scripts/build_auto_official_enrichment.mjs _audit/full_official_field_candidates.json data/source_enrichment_autoofficial.js | tee _audit/full-autoofficial-summary.json
+          node scripts/filter_autoofficial_collisions.mjs | tee _audit/autoofficial-collision-filter.json
       - name: Rebuild full-range ledgers and reports
         run: |
           set -o pipefail
@@ -106,7 +116,7 @@ jobs:
         run: |
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-          git add data/area1_google_ids.json data/google_places_cache.json data/google_entities.generated.js data/official_candidate_index.json data/source_enrichment_autoofficial.js data/area1_inventory_ledger.json data/area1_inventory_expansion_queue.json data/area1_full_collection_status.json data/production_area1.js
+          git add data/area1_google_ids.json data/google_places_cache.json data/google_entities.generated.js data/official_candidate_index.json data/source_enrichment_autoofficial.js data/area1_inventory_ledger.json data/area1_inventory_expansion_queue.json data/area1_full_collection_status.json
           git diff --cached --quiet && exit 0
           git commit -m "Run full Area1 2804 collection pass"
           git fetch origin "$TARGET_BRANCH"
