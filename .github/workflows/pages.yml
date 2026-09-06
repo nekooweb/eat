@@ -57,6 +57,7 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p _audit
+          python3 scripts/patch_google_recovery_parser.py
           python3 scripts/recover_google_inventory_basic.py | tee _audit/google_basic_recovery_summary.json
           test -s data/google_basic_source_matches.json
           python3 - <<'PY'
@@ -122,6 +123,7 @@ jobs:
             node --check scripts/audit_source_bindings.mjs
             python3 -m py_compile \
               scripts/recover_google_inventory_basic.py \
+              scripts/patch_google_recovery_parser.py \
               scripts/verify_google_places.py \
               scripts/verify_curated_google.py \
               scripts/discover_google_area1.py \
