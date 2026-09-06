@@ -30,8 +30,8 @@ jobs:
       - name: Build reviewed rich-metadata core fallback
         run: |
           node scripts/build_hotpepper_rich_core_fallback.mjs
-          test -s data/source_enrichment_hotpepper_richcore.js
-          node --check data/source_enrichment_hotpepper_richcore.js
+          test -s data/source_enrichment_hotpepper-richcore.js
+          node --check data/source_enrichment_hotpepper-richcore.js
       - name: Build canonical production and runtime evidence overlays
         run: |
           node scripts/test_opening_hours.mjs
@@ -47,7 +47,7 @@ jobs:
             node --check app.js
             node --check effects.js
             node --check data/hotpepper_rich_metadata.js
-            node --check data/source_enrichment_hotpepper_richcore.js
+            node --check data/source_enrichment_hotpepper-richcore.js
             node --check data/source_provenance.js
             node --check data/source_facts.js
             node --check scripts/audit_no_paid_apis.mjs
