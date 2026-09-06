@@ -31,12 +31,12 @@ Actions run **`34030943605`** completed the first valid authorized benchmark:
 - collision review: **65**;
 - low: **176**;
 - none: **6**;
-- high/medium detail-eligible: **535**;
-- detail requests: **27** <=20-ID batches;
+- detail-eligible high/medium: **535**;
+- detail requests: **27** batches;
 - returned: **535 / 535**;
 - strict-safe current-production candidates: **128**.
 
-Earlier implementation-test runs `34030289095` and `34030342882` exposed/fixed the old `tee`/pipefail false-success behavior and missing-secret preflight.
+Earlier test runs `34030289095` and `34030342882` exposed/fixed the old `tee`/pipefail false-success behavior and missing-secret preflight.
 
 ## 3. Canonical Hot Pepper additive landing
 
@@ -49,8 +49,6 @@ Net-new candidate fields:
 - dinner budget: **84**;
 - opening-hours raw evidence: **73**.
 
-Strong existing price conflicts were protected rather than overwritten.
-
 Actions run **`34032406916`** produced the durable additive shard:
 
 - source rows: **94**;
@@ -61,22 +59,18 @@ Actions run **`34032406916`** produced the durable additive shard:
 - closure claims: **73**;
 - additive invariant violations: **0**.
 
-Measured canonical gains against the no-Hot-Pepper baseline:
+Measured canonical gains:
 
-- any known meal budget: **+81 restaurants**;
+- any meal budget: **+81 restaurants**;
 - dinner price: **+84**;
 - address: **+55**;
 - cuisine: **+22**;
 - normalized hours: **+72**;
-- existing lunch values overwritten: **0**.
+- existing lunch overwritten: **0**.
 
 ## 4. Independent lunch/dinner price resolver
 
-Added:
-
-- `scripts/price_resolver.mjs`;
-- `scripts/test_price_resolver.mjs`;
-- independent meal-period integration into `scripts/build_production_dataset.mjs`.
+Added `scripts/price_resolver.mjs` and `scripts/test_price_resolver.mjs` and integrated per-meal resolution into the canonical builder.
 
 New invariant:
 
@@ -84,15 +78,13 @@ New invariant:
 lunch and dinner resolve independently
 ```
 
-This allows combinations such as exact Tabelog lunch + authorized Hot Pepper dinner without deleting either meal period.
-
-Resolver tests were expanded to **13** cases.
+This allows exact Tabelog lunch + authorized Hot Pepper dinner without deleting either meal period. Resolver tests were expanded to **13** cases.
 
 ## 5. Strict price provenance and evidence classes
 
 Added `scripts/audit_price_resolution.mjs`; Pages and relevant promotion workflows use `STRICT_PRICE_PROVENANCE=1`.
 
-A source-only stored price requires explicit `budget`, `lunchBudget` or `dinnerBudget` provenance.
+A source-only price requires explicit `budget`, `lunchBudget` or `dinnerBudget` provenance.
 
 Evidence classes:
 
@@ -100,11 +92,9 @@ Evidence classes:
 - **B / `menu_derived`** — reviewed representative range from a sufficiently complete official menu;
 - **C / `sparse`** — one item/course/charge/promotion/search snippet; never enters hard canonical budget filtering.
 
-Evidence class is evaluated before provider priority.
-
 ### NARU correction
 
-`JAZZ HOUSE NARU` had an old `dinner:[3000,4999]` value without maintained budget provenance. Existing official material supported music-charge/visit information, not a restaurant dinner-spend range. The unsupported value was removed instead of inventing provenance.
+`JAZZ HOUSE NARU` had an old `dinner:[3000,4999]` without maintained budget provenance. Existing official material supported music-charge/visit information rather than a restaurant dinner-spend range. The unsupported value was removed instead of inventing provenance.
 
 Current unprovenanced stored meal-price count: **0**.
 
@@ -114,12 +104,12 @@ Current unprovenanced stored meal-price count: **0**.
 
 After Hot Pepper and before B-class official-menu additions:
 
-- lunch: **155**;
-- dinner: **253**;
-- both: **136**;
-- either: **272**.
+- lunch **155**;
+- dinner **253**;
+- both **136**;
+- either **272**.
 
-Lunch remains the dominant price deficit and receives higher queue priority.
+Lunch remains the dominant price deficit.
 
 ## 7. First B-class official-menu-derived price landing
 
@@ -127,25 +117,22 @@ Created `data/source_enrichment_zzzzpricepatches.js` with reproducible observed 
 
 ### 神田たまごけん神保町店
 
-- exact Place ID: `ChIJ81Ua8xCMGGARMrzeHYIaVbg`;
-- reviewed current official core menu;
-- observed core prices: **990 / 990 / 990 / 1,150 / 1,490 yen**;
-- seasonal/limited items excluded;
-- lunch: **[990,1490]**;
-- dinner: **[990,1490]**;
-- class: `menu_derived`.
+- Place ID `ChIJ81Ua8xCMGGARMrzeHYIaVbg`;
+- reviewed official core-menu prices: **990 / 990 / 990 / 1,150 / 1,490 yen**;
+- lunch **[990,1490]**;
+- dinner **[990,1490]**;
+- class `menu_derived`.
 
 ### シリ バラジ
 
-- exact Place ID: `ChIJe49KxxWMGGAR4qS4zBvOWr8`;
-- reviewed official Suidobashi lunch menu;
-- complete lunch sets: **800 / 900 / 1,400 yen**;
-- lunch: **[800,1400]**;
-- class: `menu_derived`.
+- Place ID `ChIJe49KxxWMGGAR4qS4zBvOWr8`;
+- official complete lunch sets: **800 / 900 / 1,400 yen**;
+- lunch **[800,1400]**;
+- class `menu_derived`.
 
-Intermediate run `34032963339` exposed an isolated-shard audit compatibility problem; canonical build itself was valid but deploy was blocked. The shard was made compatible with cumulative builder load and isolated audit load. Run `34032998440` then passed build/audits/deploy.
+Intermediate run `34032963339` exposed isolated-shard audit compatibility; canonical build itself was valid. The patch loader was made compatible with cumulative builder and isolated audit modes. Run `34032998440` then passed build/audits/deploy.
 
-Canonical price coverage after landing:
+Coverage moved:
 
 ```text
 lunch 155 -> 157
@@ -165,7 +152,7 @@ any 272 -> 274
 - normalized hours: **359**;
 - lunch: **157**;
 - dinner: **254**;
-- both meal budgets: **137**;
+- both: **137**;
 - any meal budget: **274**;
 - featured dishes: **129**;
 - strict recommendations: **30**;
@@ -175,17 +162,17 @@ any 272 -> 274
 
 Remaining price gaps:
 
-- global lunch: **499**;
-- global dinner: **402**;
-- existing-source lunch: **289**;
-- existing-source dinner: **192**;
-- Tabelog-linked lunch: **167**;
-- Hot Pepper-linked lunch: **83**;
-- Hot Pepper-linked dinner: **1**.
+- global lunch **499**;
+- global dinner **402**;
+- existing-source lunch **289**;
+- existing-source dinner **192**;
+- Tabelog-linked lunch **167**;
+- Hot Pepper-linked lunch **83**;
+- Hot Pepper-linked dinner **1**.
 
 ## 9. Rich metadata architecture
 
-To maximize field retention without weakening canonical filter rules, implemented a separate Hot Pepper runtime overlay:
+To maximize field retention without weakening canonical filters, implemented:
 
 - `scripts/collect_hotpepper_rich_details.py`;
 - `scripts/build_hotpepper_rich_metadata.py`;
@@ -193,11 +180,11 @@ To maximize field retention without weakening canonical filter rules, implemente
 - `.github/workflows/hotpepper-rich-refresh.yml`;
 - `.github/workflows/promote-hotpepper-rich-metadata.yml`.
 
-The collector does **not** rerun geographic discovery or identity matching; it fetches only reviewed current-production Hot Pepper IDs in <=20-ID batches.
+The collector never reruns geographic discovery or identity matching; it fetches only reviewed production Hot Pepper IDs in <=20-ID batches.
 
 ## 10. Manual edge-binding review
 
-There were 13 current-production Hot Pepper bindings outside the automatic rich gate. All were reviewed manually rather than promoted by coordinate proximity alone.
+There were 13 current-production bindings outside the automatic rich gate.
 
 Seven were approved for **rich metadata only**:
 
@@ -211,86 +198,67 @@ Seven were approved for **rich metadata only**:
 
 Six wrong-shop pairs were explicitly rejected, including neighboring businesses and a Starbucks versus another venue in the same hospital complex.
 
-Allow/reject decisions are stored in `data/hotpepper_manual_rich_bindings.json`. Manual rich approval never creates a canonical identity or authorizes core-field overwrite.
+Allow/reject decisions are stored in `data/hotpepper_manual_rich_bindings.json`. Manual approval cannot create identities or overwrite canonical fields.
 
 ## 11. First 135-row rich refresh
 
-Run `34034504592` fetched the reviewed set:
+Run `34034504592` fetched the reviewed set in **7** requests:
 
-- automatic strict rows: **128**;
-- manual reviewed rows: **7**;
-- total: **135**;
-- requests: **7**;
-- returned: **135 / 135**;
-- missing: **0**.
+- strict auto **128**;
+- manual exact **7**;
+- total **135**;
+- returned **135 / 135**;
+- missing **0**.
 
-It retained source name/kana, source address/coordinates, raw genre/budget, station/access, capacity, party capacity, budget memo, catch text, lunch availability, raw opening/closure text, URLs and broad service metadata.
+It retained source name/kana, address/coordinates, genre/budget, station/access, capacity, party capacity, budget memo, catch text, lunch availability, raw opening/closure text, URLs and broad service metadata.
 
 ## 12. Maximum non-image Hot Pepper refresh
 
-The collector was extended to request the API's optional `credit_card + special` response blocks and retain remaining useful **non-image** source-native fields.
+The collector was extended to request `credit_card + special` and retain the remaining useful non-image source-native fields.
 
-Final maximum refresh: Actions run **`34035124635`**.
+Final refresh: **`34035124635`**.
 
-Execution:
-
-- selected reviewed bindings: **135**;
-- strict auto: **128**;
-- manual exact: **7**;
-- requests: **7**;
-- returned: **135 / 135**;
-- missing: **0**;
-- geographic discovery repeated: **no**;
-- identity matching repeated: **no**;
-- photos/logo persisted: **no**.
+- reviewed rows **135**;
+- requests **7**;
+- returned **135 / 135**;
+- missing **0**;
+- geographic discovery repeated **no**;
+- identity matching repeated **no**;
+- photos/logo persisted **no**.
 
 Maximum field coverage:
 
-- source shop name: **135**;
-- name kana: **135**;
-- source address: **135**;
-- source coordinates: **135**;
-- five-level Hot Pepper area hierarchy: **135**;
-- raw genre/sub-genre: **135**;
-- raw budget object: **135**;
-- nearest station: **135**;
-- full access: **135**;
-- mobile access: **135**;
-- lunch availability: **135**;
-- capacity: **135**;
-- party capacity: **109**;
-- budget memo: **66**;
-- source catch: **114**;
-- raw opening/closure text: **135**;
-- Hot Pepper URL: **135**;
-- coupon URL: **135**;
-- raw service metadata: **135**;
-- accepted credit-card brands: **119 restaurants / 593 records**;
-- Hot Pepper special features: **40 restaurants / 160 records**;
-- raw Wi-Fi text: **135**;
-- unambiguous `wifiAvailable`: **107**;
-- wedding text: **58**;
-- course status: **123**;
-- other-equipment memo: **48**;
-- shop-detail memo: **52**.
-
-Status text is retained for all 135 rows for all-you-can-drink/eat, private room, horigotatsu, tatami, card, smoking, charter, parking, barrier-free, live show, karaoke, band, TV/projector, English menu, pets, children and late-night operation.
+- source name/kana/address/coordinates **135**;
+- five-level Hot Pepper area hierarchy **135**;
+- raw genre/sub-genre **135**;
+- raw budget **135**;
+- nearest station/access/mobile access **135**;
+- lunch availability/capacity **135**;
+- party capacity **109**;
+- budget memo **66**;
+- source catch **114**;
+- raw opening/closure **135**;
+- shop URL/coupon URL **135**;
+- accepted credit-card brands **119 restaurants / 593 records**;
+- special features **40 restaurants / 160 records**;
+- raw Wi-Fi **135**;
+- unambiguous `wifiAvailable` **107**;
+- wedding text **58**;
+- course status **123**;
+- other-equipment memo **48**;
+- shop-detail memo **52**.
 
 ## 13. Numeric-zero metadata correction
 
-After the maximum refresh, a generic text normalizer bug was found: provider integer/enum `0` was treated as empty because the helper used `value or ''`.
+The final refresh exposed a generic text-normalizer bug: provider enum/integer `0` was treated as empty. Hot Pepper `ktai_coupon=0` is valid data.
 
-Hot Pepper `ktai_coupon=0` is a legitimate value. The helper now checks only `None`, preserving numeric zero.
-
-The overlay was rebuilt from the already-downloaded run `34035124635` artifact in **artifact-only promotion run `34035237312`**. No Hot Pepper API request was made during this rebuild.
+The helper was changed to treat only `None` as absent. Artifact-only run **`34035237312`** rebuilt from run `34035124635` without another API request.
 
 Result:
 
-- normalized mobile-coupon coverage: **97 -> 135**;
-- raw coupon enum coverage: **97 -> 135**;
-- network work for the final maximum refresh remains only **7 API requests**.
-
-Current `data/hotpepper_rich_metadata.js` is schemaVersion **6**.
+- normalized mobile coupon **97 -> 135**;
+- raw coupon enum **97 -> 135**;
+- final maximum refresh network cost remains **7 API requests**.
 
 ## 14. Public source provenance overlay
 
@@ -302,13 +270,12 @@ Implemented:
 
 Measured result:
 
-- production rows with concrete public source evidence: **446 / 656**;
-- public HTTPS source links: **606**;
-- rows with claimed-field lists: **446**;
-- rows with source check dates: **446**;
+- rows with concrete public source evidence: **446 / 656**;
+- public HTTPS links: **606**;
+- rows with claimed fields/check dates: **446**;
 - provider reach: Tabelog **322**, Hot Pepper **94**, official **145**.
 
-Each row can expose:
+Runtime fields:
 
 ```text
 sourceLinks[]
@@ -316,72 +283,109 @@ sourceClaimedFields
 sourceLastCheckedAt
 ```
 
-Google provider refs are excluded. Provenance generation uses only maintained repository sourceRefs and makes **zero external requests**.
+Google refs are excluded. Generation makes **zero external requests**.
 
-## 15. Runtime overlay and repository audits
+## 15. Provider-level source facts preservation
 
-Added `scripts/audit_runtime_overlays.mjs` to validate canonical production + provenance + rich metadata together.
+Canonical merging intentionally chooses one final value, so useful provider-specific alternatives/conflicts were still being lost at runtime. Added:
+
+- `scripts/build_source_facts.mjs`;
+- `data/source_facts.js`;
+- `.github/workflows/promote-source-facts.yml`.
+
+One-time promotion run **`34035605238`** used only repository maintenance shards and made **zero external/API requests**.
+
+Result:
+
+- production identities with source facts: **446 / 656**;
+- provider fact records: **537**;
+- Tabelog records: **303**;
+- official records: **140**;
+- Hot Pepper records: **94**;
+- unattached maintenance rows: **0**.
+
+Retained provider-level fields:
+
+- source names **537**;
+- cuisine **274**;
+- tags **267**;
+- lunch **157**;
+- dinner **254**;
+- dishes **111**;
+- raw opening-hours text **293**;
+- closed-day arrays **202**;
+- closure notes **156**;
+- addresses **235**;
+- 百名店 flag/year/category **17 / 17 / 17**;
+- reviewed price derivations **2**;
+- Hot Pepper native ID/match confidence/match score **94 / 94 / 94**.
+
+Every record remains isolated by provider in `sourceFacts[]` and keeps its own `claimedFields` and `checkedAt`. Review text and Google response-content fields are excluded. The layer never changes canonical values.
+
+## 16. Runtime overlay and repository audits
+
+`scripts/audit_runtime_overlays.mjs` now validates canonical production plus provenance, provider facts and Hot Pepper rich metadata.
 
 It fails on:
 
 - unattached overlay rows;
-- duplicate rich/provenance IDs;
-- rich row count != 135;
-- manual-reviewed count != 7;
-- Google provider leakage into public provenance;
-- runtime attachment mismatches.
+- duplicate identity rows;
+- rich count != 135 or manual count != 7;
+- Google provider leakage into provenance;
+- Google response-content leakage into source facts;
+- summary/attachment count mismatches.
 
-A later Pages run exposed a separate old assumption in `scripts/audit_repository.mjs`: it required the public page to load only the old canonical/app/effects scripts. The audit was upgraded to enforce the new safe layered order rather than reject legitimate overlays.
-
-Required public local runtime order is now:
+`scripts/audit_repository.mjs` enforces the public runtime order:
 
 ```text
 production_area1.js
 -> source_provenance.js
+-> source_facts.js
 -> hotpepper_rich_metadata.js
 -> app.js
 -> effects.js
 ```
 
-Maintenance enrichment/resolution shards remain forbidden as direct public dependencies.
+Maintenance source shards remain forbidden as direct public dependencies.
 
-## 16. Workflow safety finalization
+## 17. Workflow safety finalization
 
-Temporary self-file push triggers were used only where the connected GitHub tool could not dispatch a workflow directly. They were removed immediately after the required one-time run.
+Temporary self-file push triggers were used only where the connected GitHub tool could not dispatch workflows directly and were removed immediately after the required run.
 
 Final state:
 
 - `hotpepper-enrichment.yml` — manual-only;
 - `promote-hotpepper-additive.yml` — manual-only;
-- `hotpepper-rich-refresh.yml` — **manual-only**, calls authorized Hot Pepper API;
-- `promote-hotpepper-rich-metadata.yml` — **manual-only**, rebuilds from run `34035124635` artifact, no API call;
-- `promote-source-provenance.yml` — manual-only, no API call.
+- `hotpepper-rich-refresh.yml` — manual-only, authorized Hot Pepper API;
+- `promote-hotpepper-rich-metadata.yml` — manual-only, artifact rebuild, no API;
+- `promote-source-provenance.yml` — manual-only, no API;
+- `promote-source-facts.yml` — manual-only, no API.
 
-Ordinary pushes therefore do not consume Hot Pepper requests and do not execute paid Google data APIs.
+Ordinary pushes do not consume Hot Pepper requests and do not execute paid Google data APIs.
 
-## 17. Runtime architecture after maximum-field pass
-
-Pages deploys:
+## 18. Runtime architecture after maximum-field pass
 
 ```text
-production_area1.js        canonical filter/recommendation truth
-source_provenance.js       evidence URLs + field lineage
-hotpepper_rich_metadata.js maximum reviewed non-image source metadata
-app.js                     product logic
+production_area1.js          canonical filter/recommendation truth
+source_provenance.js         evidence URLs + field lineage
+source_facts.js              provider-level maintained facts
+hotpepper_rich_metadata.js   maximum reviewed non-image Hot Pepper metadata
+app.js                       product logic
 ```
 
-This separation allows aggressive data retention while keeping canonical price/hours/category filtering conservative.
+This architecture preserves the maximum trustworthy field set while keeping canonical price/hours/category filtering conservative.
 
-## 18. Next implementation batch
+## 19. Next implementation batch
 
-1. Continue the **289 existing-source lunch gaps** before broad discovery.
-2. Batch repeated official brand/domain menu extraction.
-3. Extend structured rich metadata from already-bound official/Tabelog sources where stable fields exist.
-4. Use B-class `menu_derived` only with multiple comparable current official menu prices and reproducible derivation evidence.
-5. Keep one-item/charge/promotion evidence C-class and outside hard budget filters.
-6. Continue the **172** unresolved source outcomes separately.
-7. Keep medium/collision/inventory-only Hot Pepper matches review-only unless additional evidence supports production.
-8. Do not rerun paid Google discovery.
+1. Use `sourceFacts[]` to exhaust existing source evidence before fetching anything new.
+2. Continue the **289 existing-source lunch gaps**.
+3. Batch repeated official brand/domain menu extraction.
+4. Extend structured rich metadata from already-bound official/Tabelog sources where stable fields exist.
+5. Use B-class only with multiple comparable official menu prices and reproducible derivation evidence.
+6. Keep one-item/charge/promotion evidence C-class and outside hard filters.
+7. Continue the **172** unresolved source outcomes separately.
+8. Keep medium/collision/inventory-only Hot Pepper matches review-only without additional evidence.
+9. Do not rerun paid Google discovery.
 
 ## Files added/changed in the maximum-field pass
 
@@ -392,10 +396,12 @@ Rich metadata:
 - `scripts/collect_hotpepper_rich_details.py`
 - `scripts/build_hotpepper_rich_metadata.py`
 
-Provenance/audits:
+Evidence/facts/audits:
 
 - `data/source_provenance.js`
+- `data/source_facts.js`
 - `scripts/build_source_provenance.mjs`
+- `scripts/build_source_facts.mjs`
 - `scripts/audit_runtime_overlays.mjs`
 - `scripts/audit_repository.mjs`
 
@@ -404,6 +410,7 @@ Workflows/runtime:
 - `.github/workflows/hotpepper-rich-refresh.yml`
 - `.github/workflows/promote-hotpepper-rich-metadata.yml`
 - `.github/workflows/promote-source-provenance.yml`
+- `.github/workflows/promote-source-facts.yml`
 - `.github/workflows/pages.yml`
 - `index.html`
 
