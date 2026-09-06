@@ -1,0 +1,59 @@
+name: Collect public featured dishes
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/collect-public-featured-dishes.yml"
+      - "scripts/collect_public_featured_dishes.mjs"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: collect-public-featured-dishes
+  cancel-in-progress: true
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Enforce no-paid-data-API policy
+        run: node scripts/audit_no_paid_apis.mjs
+      - name: Build canonical and public source pool
+        run: |
+          set -euo pipefail
+          node scripts/build_hotpepper_rich_core_fallback.mjs
+          test -s data/source_enrichment_hotpepper-richcore.js
+          node scripts/build_production_dataset.mjs
+          node scripts/build_public_open_pool.mjs
+          test -s data/public_pool_area1.js
+          node --check data/public_pool_area1.js
+      - name: Collect official/provider featured dishes
+        env:
+          FEATURED_DISH_FETCH_TIMEOUT_MS: "7000"
+          FEATURED_DISH_HOST_WORKERS: "20"
+        run: |
+          set -euo pipefail
+          node scripts/collect_public_featured_dishes.mjs data/public_featured_dishes_auto.json | tee /tmp/public-featured-dishes-summary.json
+          test -s data/public_featured_dishes_auto.json
+          node -e "const x=require('./data/public_featured_dishes_auto.json'); if(!x.summary||!Array.isArray(x.rows)) process.exit(1); console.log(JSON.stringify(x.summary))"
+      - name: Commit collected evidence
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/public_featured_dishes_auto.json
+          if git diff --cached --quiet; then
+            echo "No featured-dish evidence changes to commit."
+            exit 0
+          fi
+          git commit -m "Collect public featured dish evidence"
+          git push
