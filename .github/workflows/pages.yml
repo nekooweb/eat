@@ -7,14 +7,13 @@ on:
   workflow_dispatch:
 
 permissions:
-  actions: read
-  contents: write
+  contents: read
   pages: write
   id-token: write
 
 concurrency:
   group: pages-${{ github.ref }}
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -22,45 +21,15 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: '22'
       - name: Enforce no-paid-data-API policy
         run: node scripts/audit_no_paid_apis.mjs
-      - name: Download retained Google sweep audits
-        uses: actions/download-artifact@v5
-        with:
-          pattern: full-area1-*-private-audit
-          path: _private_google_download
-          github-token: ${{ github.token }}
-          repository: nekooweb/eat
-          run-id: 34018919233
-        continue-on-error: true
-      - name: Download retained Google retry audit
-        uses: actions/download-artifact@v5
-        with:
-          name: full-area1-retry-private-audit
-          path: _private_google/retry
-          github-token: ${{ github.token }}
-          repository: nekooweb/eat
-          run-id: 34019078280
-      - name: Normalize retained Google audit paths
+      - name: Validate persisted Google inventory basics
         run: |
           set -euo pipefail
-          mkdir -p _private_google/initial
-          initial=$(find _private_google_download -name full_inventory_place_details.json -print -quit)
-          test -n "$initial"
-          cp "$initial" _private_google/initial/full_inventory_place_details.json
-          test -s _private_google/retry/full_inventory_retry_private.json
-      - name: Recover durable basics for frozen Google inventory
-        run: |
-          set -euo pipefail
-          mkdir -p _audit
-          python3 scripts/patch_google_recovery_parser.py
-          python3 scripts/recover_google_inventory_basic.py | tee _audit/google_basic_recovery_summary.json
           test -s data/google_basic_source_matches.json
           python3 - <<'PY'
           import json
@@ -79,17 +48,6 @@ jobs:
               assert r['distanceMeters'] <= 1200
           print(json.dumps(d['summary'],ensure_ascii=False))
           PY
-      - name: Upload recovered durable basics
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: google-basic-recovery-output
-          path: |
-            data/google_basic_source_matches.json
-            _audit/google_basic_match_private_metrics.json
-            _audit/google_basic_recovery_summary.json
-          if-no-files-found: warn
-          retention-days: 3
       - name: Build reviewed rich-metadata core fallback
         run: |
           node scripts/build_hotpepper_rich_core_fallback.mjs
@@ -105,26 +63,11 @@ jobs:
       - name: Build exact 2804 Google inventory runtime
         run: |
           set -euo pipefail
-          python3 scripts/patch_frontend_google_inventory.py
+          mkdir -p _audit
           node scripts/build_google_inventory_runtime.mjs | tee _audit/google_inventory_runtime_summary.json
           node --check data/google_inventory_runtime.js
           node scripts/audit_google_inventory_runtime.mjs | tee _audit/google_inventory_runtime_audit.json
           test -s data/google_inventory_runtime.js
-      - name: Persist recovered basics and runtime
-        if: github.event_name == 'push'
-        run: |
-          set -euo pipefail
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/google_basic_source_matches.json data/google_inventory_runtime.js app.js index.html
-          if git diff --cached --quiet; then
-            echo "Recovered basics/runtime already current."
-            exit 0
-          fi
-          git commit -m "Publish exact 2804 Google inventory runtime"
-          git fetch origin main
-          git rebase origin/main
-          git push origin HEAD:main
       - name: Static and canonical repository checks
         run: |
           mkdir -p _audit
@@ -151,8 +94,6 @@ jobs:
             node --check scripts/audit_source_bindings.mjs
             python3 -m py_compile \
               scripts/recover_google_inventory_basic.py \
-              scripts/patch_google_recovery_parser.py \
-              scripts/patch_frontend_google_inventory.py \
               scripts/verify_google_places.py \
               scripts/verify_curated_google.py \
               scripts/discover_google_area1.py \
