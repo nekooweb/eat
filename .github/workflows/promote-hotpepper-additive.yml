@@ -3,10 +3,6 @@ name: Promote additive-only Hot Pepper enrichment
 
 on:
   workflow_dispatch:
-  push:
-    branches: ["main"]
-    paths:
-      - ".github/workflows/promote-hotpepper-additive.yml"
 
 permissions:
   contents: write
