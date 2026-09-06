@@ -32,21 +32,13 @@ jobs:
           node scripts/build_hotpepper_rich_core_fallback.mjs
           test -s data/source_enrichment_hotpepper-richcore.js
           node --check data/source_enrichment_hotpepper-richcore.js
-      - name: Build canonical production and runtime evidence overlays
+      - name: Build strict Google-bound canonical production
         run: |
           node scripts/test_opening_hours.mjs
           node scripts/test_price_resolver.mjs
           node scripts/build_production_dataset.mjs
           node scripts/build_source_provenance.mjs
           node scripts/build_source_facts.mjs
-      - name: Build 2000+ public restaurant pool
-        run: |
-          mkdir -p _audit
-          set -o pipefail
-          node scripts/build_public_open_pool.mjs | tee _audit/public_pool.json
-          node scripts/apply_hotpepper_catch_featured_dishes.mjs | tee _audit/hotpepper_catch_featured_dishes.json
-          test -s data/public_pool_area1.js
-          node --check data/public_pool_area1.js
       - name: Static and canonical repository checks
         run: |
           mkdir -p _audit
@@ -58,20 +50,16 @@ jobs:
             node --check data/source_enrichment_hotpepper-richcore.js
             node --check data/source_provenance.js
             node --check data/source_facts.js
-            node --check data/public_pool_area1.js
             node --check scripts/audit_no_paid_apis.mjs
             node --check scripts/build_hotpepper_rich_core_fallback.mjs
-            node --check scripts/build_public_open_pool.mjs
-            node --check scripts/apply_hotpepper_catch_featured_dishes.mjs
-            node --check scripts/collect_public_featured_dishes.mjs
-            node --check scripts/apply_public_featured_dishes.mjs
-            node --check scripts/audit_public_featured_dishes.mjs
-            node --check scripts/build_public_dish_queue.mjs
+            node --check scripts/build_production_dataset.mjs
+            node --check scripts/build_enrichment_queue.mjs
             node --check scripts/price_resolver.mjs
             node --check scripts/audit_price_resolution.mjs
             node --check scripts/build_source_provenance.mjs
             node --check scripts/build_source_facts.mjs
             node --check scripts/audit_runtime_overlays.mjs
+            node --check scripts/audit_source_bindings.mjs
             python3 -m py_compile \
               scripts/verify_google_places.py \
               scripts/verify_curated_google.py \
@@ -89,21 +77,12 @@ jobs:
             test -s data/hotpepper_rich_metadata.js
             test -s data/source_provenance.js
             test -s data/source_facts.js
-            test -s data/public_pool_area1.js
             node scripts/audit_repository.mjs
             node scripts/audit_source_bindings.mjs
             node scripts/audit_normalized_fields.mjs
             node scripts/audit_runtime_overlays.mjs
           } 2>&1 | tee _audit/static_checks.log
-      - name: Apply website featured dishes and build completion queue
-        run: |
-          set -o pipefail
-          node scripts/apply_public_featured_dishes.mjs | tee _audit/public_featured_dishes_apply.json
-          node --check data/public_pool_area1.js
-          node scripts/audit_public_featured_dishes.mjs | tee _audit/public_featured_dishes_audit.json
-          node scripts/build_public_dish_queue.mjs _audit/public_dish_queue.json | tee _audit/public_dish_queue_summary.json
-          test -s _audit/public_dish_queue.json
-      - name: Coverage report
+      - name: Coverage and dish-first enrichment queue
         run: |
           mkdir -p _audit
           set -o pipefail
@@ -113,6 +92,19 @@ jobs:
           node scripts/build_enrichment_queue.mjs | tee _audit/enrichment_queue.json
           node scripts/dish_gap_report.mjs | tee _audit/dish_gap_report.json
           node scripts/audit_area1_identity_coverage.mjs | tee _audit/area1_identity_coverage.json
+          node - <<'NODE'
+          const fs = require('fs');
+          const q = JSON.parse(fs.readFileSync('_audit/enrichment_queue.json', 'utf8'));
+          if (q.priorityQueue?.length && q.priorityQueue[0].nextAction !== 'extract_strict_recommended_menu_item') {
+            throw new Error('dish-first enrichment priority is not active');
+          }
+          console.log(JSON.stringify({
+            productionEntities: q.productionEntities,
+            strictRecommendationCoverage: q.strictRecommendationCoverage,
+            featuredDishCoverage: q.featuredDishCoverage,
+            topActions: (q.priorityQueue || []).slice(0, 10).map((row) => row.nextAction)
+          }));
+          NODE
       - name: Upload private data audit
         if: always()
         uses: actions/upload-artifact@v4
@@ -125,7 +117,7 @@ jobs:
         run: |
           mkdir -p _site/data _site/voice _site/image
           cp index.html styles.css effects.css app.js effects.js privacy.html terms.html _site/
-          cp data/production_area1.js data/public_pool_area1.js data/source_provenance.js data/source_facts.js data/hotpepper_rich_metadata.js _site/data/
+          cp data/production_area1.js data/source_provenance.js data/source_facts.js data/hotpepper_rich_metadata.js _site/data/
           cp voice/*.mp3 _site/voice/
           cp image/*.webp _site/image/
       - name: Upload build for review
