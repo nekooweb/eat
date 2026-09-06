@@ -73,13 +73,27 @@ if (!/lastMascotSource/.test(effects) || !/lastMascotPlacement/.test(effects)) {
   fail('mascot character and placement should avoid immediate repeats');
 }
 
+// Public runtime is layered deliberately. Canonical production must load first;
+// the two reviewed overlays may only attach metadata to that canonical pool;
+// app/effects run after all data layers. Maintenance source shards must never be
+// loaded directly by index.html.
 const scriptSources = [...index.matchAll(/<script[^>]+src="([^"]+)"/gi)].map((match) => match[1]);
 const localRuntimeScripts = scriptSources.filter((source) => source.startsWith('./'));
-if (localRuntimeScripts.length !== 3
-  || !localRuntimeScripts.some((source) => source.includes('production_area1.js'))
-  || !localRuntimeScripts.some((source) => source.includes('app.js'))
-  || !localRuntimeScripts.some((source) => source.includes('effects.js'))) {
-  fail('public local runtime should load canonical production data + app.js + effects.js');
+const runtimePath = (source) => source.split('?', 1)[0];
+const runtimePaths = localRuntimeScripts.map(runtimePath);
+const expectedRuntimePaths = [
+  './data/production_area1.js',
+  './data/source_provenance.js',
+  './data/hotpepper_rich_metadata.js',
+  './app.js',
+  './effects.js'
+];
+if (runtimePaths.length !== expectedRuntimePaths.length
+  || runtimePaths.some((source, index) => source !== expectedRuntimePaths[index])) {
+  fail(`public local runtime order mismatch: expected ${expectedRuntimePaths.join(' -> ')}, got ${runtimePaths.join(' -> ')}`);
+}
+if (runtimePaths.some((source) => /source_enrichment|source_resolution|hotpepper_bindings|google_entities/i.test(source))) {
+  fail('maintenance data shard leaked into public runtime dependencies');
 }
 
 if (/data-filter-toggle|filterEnabled/.test(index + app)) fail('redundant filter enable/disable state reappeared');
@@ -188,6 +202,7 @@ if (!process.exitCode) {
     sourceBacked: stats.sourceBacked,
     enrichmentShards: enrichmentFiles.length,
     enrichmentRecords: enrichmentRows.length,
+    publicRuntimeLayers: runtimePaths,
     awards: stats.awards,
     resultViews: ['overview-map', 'google-store-maps-with-leaflet-fallback', 'comparison-table'],
     uiFeedback: [
