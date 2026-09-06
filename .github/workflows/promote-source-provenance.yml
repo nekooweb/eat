@@ -1,0 +1,49 @@
+name: Promote source provenance overlay
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/promote-source-provenance.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: promote-source-provenance
+  cancel-in-progress: true
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Enforce no-paid-data-API policy
+        run: node scripts/audit_no_paid_apis.mjs
+      - name: Build production and public provenance
+        run: |
+          set -euo pipefail
+          node scripts/build_production_dataset.mjs
+          node scripts/build_source_provenance.mjs
+          test -s data/source_provenance.js
+          node --check data/source_provenance.js
+      - name: Audit runtime overlays
+        run: node scripts/audit_runtime_overlays.mjs
+      - name: Commit provenance overlay
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/source_provenance.js
+          if git diff --cached --quiet; then
+            echo "No source provenance changes to commit."
+            exit 0
+          fi
+          git commit -m "Add public source provenance overlay"
+          git push
