@@ -2,15 +2,15 @@
 """Build a durable, non-core Hot Pepper metadata overlay.
 
 The core canonical dataset intentionally keeps a compact schema. This builder
-retains additional structured facts from already-reviewed strict-safe Hot Pepper
-bindings without creating identities or overwriting canonical core fields such
-as address/cuisine/budget/hours.
+retains additional structured facts from reviewed Hot Pepper bindings without
+creating identities or overwriting canonical core fields such as
+address/cuisine/budget/hours.
 
 Inputs:
   hotpepper_bindings.json
   hotpepper rich/detail JSON
-Output:
-  hotpepper_rich_metadata.js
+  output JS
+  optional manual rich-binding allowlist
 
 The output attaches optional metadata to window.PRODUCTION_RESTAURANTS at
 runtime when loaded after production_area1.js. No photos are stored.
@@ -34,10 +34,9 @@ def text(value):
 
 def number(value):
     try:
-        parsed = float(value)
+        return float(value)
     except (TypeError, ValueError):
         return None
-    return parsed
 
 
 def integer(value):
@@ -85,6 +84,17 @@ def compact_dict(value, keys):
     return result or None
 
 
+def manual_pairs(path: Path | None):
+    if not path or not path.exists():
+        return set()
+    payload = load_json(path)
+    return {
+        (row.get("googlePlaceId"), row.get("hotpepperId"))
+        for row in payload.get("approved", [])
+        if row.get("googlePlaceId") and row.get("hotpepperId")
+    }
+
+
 RAW_SERVICE_FIELDS = (
     ("wifi", "wifi"),
     ("wedding", "wedding"),
@@ -117,12 +127,19 @@ RAW_SERVICE_FIELDS = (
 
 
 def main():
-    if len(sys.argv) != 4:
-        raise SystemExit("usage: build_hotpepper_rich_metadata.py BINDINGS.json DETAILS.json OUTPUT.js")
+    if len(sys.argv) not in (4, 5):
+        raise SystemExit(
+            "usage: build_hotpepper_rich_metadata.py BINDINGS.json DETAILS.json OUTPUT.js [MANUAL_ALLOWLIST.json]"
+        )
 
-    bindings_path, details_path, output_path = map(Path, sys.argv[1:])
+    bindings_path = Path(sys.argv[1])
+    details_path = Path(sys.argv[2])
+    output_path = Path(sys.argv[3])
+    allowlist_path = Path(sys.argv[4]) if len(sys.argv) == 5 else None
+
     bindings_payload = load_json(bindings_path)
     details_payload = load_json(details_path)
+    reviewed = manual_pairs(allowlist_path)
     details_by_id = {
         row.get("hotpepperId"): row
         for row in details_payload.get("rows", [])
@@ -132,18 +149,29 @@ def main():
     rows = []
     seen_google_ids = set()
     checked_at = bindings_payload.get("checkedAt") or "2026-09-06"
+    automatic_rows = 0
+    manual_rows = 0
 
     for binding in bindings_payload.get("bindings", []):
-        if not binding.get("autoEligible") or not binding.get("currentProduction"):
-            continue
         google_id = binding.get("googlePlaceId")
         hotpepper_id = binding.get("hotpepperId")
+        pair = (google_id, hotpepper_id)
+        automatic = bool(binding.get("autoEligible") and binding.get("currentProduction"))
+        manual = bool(binding.get("currentProduction") and pair in reviewed)
+        if not (automatic or manual):
+            continue
         detail = details_by_id.get(hotpepper_id)
-        if not google_id or not detail:
+        if not google_id or not hotpepper_id or not detail:
             continue
         if google_id in seen_google_ids:
             raise RuntimeError(f"duplicate rich metadata production identity: {google_id}")
         seen_google_ids.add(google_id)
+        if automatic:
+            automatic_rows += 1
+            review_mode = "strict_auto"
+        else:
+            manual_rows += 1
+            review_mode = "manual_exact"
 
         urls = nonempty_dict(detail.get("urls"))
         coupon_urls = nonempty_dict(detail.get("couponUrls"))
@@ -218,6 +246,7 @@ def main():
         row = {
             "googlePlaceId": google_id,
             "hotpepperId": hotpepper_id,
+            "hotpepperReviewMode": review_mode,
             "hotpepperUrl": text(urls.get("pc") or urls.get("mobile")),
             "couponUrl": text(coupon_urls.get("pc") or coupon_urls.get("sp")),
             "hotpepperName": text(detail.get("name")),
@@ -254,6 +283,8 @@ def main():
         "amenities", "sourceServiceText", "hotpepperUrl", "couponUrl",
     ]
     summary = {key: sum(key in row for row in rows) for key in summary_keys}
+    summary["automaticRows"] = automatic_rows
+    summary["manualReviewedRows"] = manual_rows
     amenity_keys = sorted({key for row in rows for key in row.get("amenities", {})})
     summary["amenityFields"] = {
         key: sum(key in row.get("amenities", {}) for row in rows)
@@ -267,11 +298,12 @@ def main():
     summary["rows"] = len(rows)
 
     payload = {
-        "schemaVersion": 4,
+        "schemaVersion": 5,
         "checkedAt": checked_at,
         "source": "Hot Pepper Gourmet Web Service",
         "policy": {
-            "strictSafeCurrentProductionOnly": True,
+            "strictSafeAutomaticBindings": True,
+            "manualExceptionsRequireExplicitAllowlist": True,
             "createsProductionIdentity": False,
             "overwritesCanonicalCoreFields": False,
             "photosStored": False,
@@ -284,15 +316,16 @@ def main():
 
     js_payload = json.dumps(payload, ensure_ascii=False, separators=(",", ":"))
     runtime_keys = [
-        "hotpepperId", "hotpepperUrl", "couponUrl", "hotpepperName", "nameKana",
-        "hotpepperAddress", "hotpepperLocation", "hotpepperGenre", "hotpepperBudget",
-        "nearestStation", "accessText", "mobileAccessText", "budgetMemo", "sourceCatch",
-        "lunchAvailable", "capacity", "partyCapacity", "hotpepperOpeningHoursText",
+        "hotpepperId", "hotpepperReviewMode", "hotpepperUrl", "couponUrl",
+        "hotpepperName", "nameKana", "hotpepperAddress", "hotpepperLocation",
+        "hotpepperGenre", "hotpepperBudget", "nearestStation", "accessText",
+        "mobileAccessText", "budgetMemo", "sourceCatch", "lunchAvailable",
+        "capacity", "partyCapacity", "hotpepperOpeningHoursText",
         "hotpepperClosedText", "amenities", "sourceServiceText",
     ]
     runtime_keys_json = json.dumps(runtime_keys, ensure_ascii=False, separators=(",", ":"))
     output = (
-        "// Generated from reviewed strict-safe Hot Pepper bindings.\n"
+        "// Generated from reviewed Hot Pepper bindings.\n"
         "// Rich metadata only; does not create identities or overwrite canonical core fields.\n"
         f"window.HOTPEPPER_RICH_METADATA={js_payload};\n"
         "if (Array.isArray(window.PRODUCTION_RESTAURANTS)) {\n"
