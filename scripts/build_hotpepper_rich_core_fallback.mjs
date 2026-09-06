@@ -8,7 +8,7 @@ const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, '..');
 const DATA = path.join(ROOT, 'data');
 const RICH = path.join(DATA, 'hotpepper_rich_metadata.js');
-const OUT = path.join(DATA, 'source_enrichment_hotpepper_richcore.js');
+const OUT = path.join(DATA, 'source_enrichment_hotpepper-richcore.js');
 
 const existingSandbox = { window: { RESTAURANTS: [] }, console };
 vm.createContext(existingSandbox);
