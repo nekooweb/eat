@@ -51,6 +51,9 @@ function priorityFor(row) {
   return score;
 }
 
+const canonicalComplete = canonical.filter(hasSourceBackedDish).length;
+const publicComplete = publicRows.filter(hasSourceBackedDish).length;
+
 const canonicalMissing = canonical
   .filter((row) => !hasSourceBackedDish(row))
   .map((row) => ({
@@ -67,20 +70,22 @@ const canonicalMissing = canonical
     priorityScore: 200 + Math.max(0, 12 - Math.floor((row.distanceMeters || 1200) / 100))
   }));
 
-const publicMissing = publicRows.map((row) => ({
-  tier: row.dataTier || 'open_catalog',
-  identityKey: row.identityKey,
-  googlePlaceId: row.googlePlaceId || null,
-  openPlaceId: row.openPlaceId || null,
-  name: row.name,
-  cuisine: row.cuisine,
-  distanceMeters: row.distanceMeters,
-  currentReference: Array.isArray(row.dishHints) ? row.dishHints.slice(0, 2) : [],
-  sources: row.sources || [],
-  sourceUrl: text(row.sourceUrl) || null,
-  nextAction: actionFor(row),
-  priorityScore: priorityFor(row)
-}));
+const publicMissing = publicRows
+  .filter((row) => !hasSourceBackedDish(row))
+  .map((row) => ({
+    tier: row.dataTier || 'open_catalog',
+    identityKey: row.identityKey,
+    googlePlaceId: row.googlePlaceId || null,
+    openPlaceId: row.openPlaceId || null,
+    name: row.name,
+    cuisine: row.cuisine,
+    distanceMeters: row.distanceMeters,
+    currentReference: Array.isArray(row.dishHints) ? row.dishHints.slice(0, 2) : [],
+    sources: row.sources || [],
+    sourceUrl: text(row.sourceUrl) || null,
+    nextAction: actionFor(row),
+    priorityScore: priorityFor(row)
+  }));
 
 const queue = [...canonicalMissing, ...publicMissing]
   .sort((a, b) => b.priorityScore - a.priorityScore
@@ -104,12 +109,13 @@ const payload = {
   },
   summary: {
     canonicalTotal: canonical.length,
-    canonicalSourceBackedDishComplete: canonical.filter(hasSourceBackedDish).length,
+    canonicalSourceBackedDishComplete: canonicalComplete,
     canonicalDishQueue: canonicalMissing.length,
     publicTotal: publicRows.length,
     publicReferenceDishCoverage: publicRows.filter((row) => Array.isArray(row.dishHints) && row.dishHints.length).length,
-    publicSourceBackedDishComplete: 0,
+    publicSourceBackedDishComplete: publicComplete,
     publicDishQueue: publicMissing.length,
+    sourceBackedDishCompleteTotal: canonicalComplete + publicComplete,
     totalQueue: queue.length,
     tierCounts,
     actionCounts
