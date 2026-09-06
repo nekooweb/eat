@@ -3,6 +3,11 @@ import fs from 'node:fs';
 import path from 'node:path';
 import vm from 'node:vm';
 import { fileURLToPath } from 'node:url';
+import {
+  LEGACY_IDENTITY_ADMISSION,
+  CATALOG_IDENTITY_ADMISSION,
+  loadCatalogAdmissionPayload
+} from './catalog_identity.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, '..');
@@ -31,6 +36,9 @@ const index = read('index.html');
 const app = read('app.js');
 const effects = read('effects.js');
 const productionSource = read('data/production_area1.js');
+const admissionPayload = loadCatalogAdmissionPayload(DATA);
+const admittedIds = new Set((admissionPayload.rows || []).map((row) => row.googlePlaceId));
+if (admittedIds.size !== (admissionPayload.rows || []).length) fail('catalog admission ledger contains duplicate IDs');
 
 if (!/leaflet@1\.9\.4/i.test(index)) fail('Leaflet 1.9.4 is not loaded by the public page');
 if (!/overview-map/.test(app)) fail('three-result overview map is missing');
@@ -161,9 +169,23 @@ if (!Array.isArray(rows) || rows.length < 3) fail('canonical production pool has
 if (!stats || stats.productionEntities !== rows?.length) fail('production statistics do not match dataset length');
 
 const placeIds = new Set();
+let legacyAdmissionRows = 0;
+let catalogAdmissionRows = 0;
 for (const row of rows || []) {
   if (!row.googlePlaceId) fail(`missing Google Place ID: ${row.id || row.name}`);
-  if (row.googleStatus !== 'verified') fail(`non-verified production row: ${row.name}`);
+
+  if (row.identityAdmission === CATALOG_IDENTITY_ADMISSION) {
+    catalogAdmissionRows += 1;
+    if (!admittedIds.has(row.googlePlaceId)) fail(`catalog-reviewed production row is absent from admission ledger: ${row.name}`);
+    if (Object.hasOwn(row, 'googleStatus')) fail(`catalog-reviewed production row must not synthesize googleStatus: ${row.name}`);
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(row.identityReviewedAt || '')) fail(`catalog-reviewed production row lacks review date: ${row.name}`);
+  } else if (row.identityAdmission === LEGACY_IDENTITY_ADMISSION || (!row.identityAdmission && row.googleStatus === 'verified')) {
+    legacyAdmissionRows += 1;
+    if (row.googleStatus !== 'verified') fail(`legacy production identity lacks historical verified status: ${row.name}`);
+  } else {
+    fail(`unsupported production identity admission: ${row.name}`);
+  }
+
   if (!Number.isFinite(row.distanceMeters) || row.distanceMeters < 0 || row.distanceMeters > 1200) {
     fail(`invalid Area1 distance: ${row.name} -> ${row.distanceMeters}`);
   }
@@ -175,6 +197,15 @@ for (const row of rows || []) {
   if (Object.hasOwn(row, 'sourceRefs') || Object.hasOwn(row, 'sourceOnly') || Object.hasOwn(row, 'suppressFields')) {
     fail(`maintenance provenance leaked into public canonical row: ${row.name}`);
   }
+}
+
+const missingAdmittedIds = [...admittedIds].filter((id) => !placeIds.has(id));
+if (missingAdmittedIds.length) fail(`reviewed catalog admissions did not reach production: ${missingAdmittedIds.join(',')}`);
+if (stats?.legacyVerifiedEntities != null && stats.legacyVerifiedEntities !== legacyAdmissionRows) {
+  fail(`legacy identity statistic mismatch: stats=${stats.legacyVerifiedEntities}, actual=${legacyAdmissionRows}`);
+}
+if (stats?.catalogReviewedEntities != null && stats.catalogReviewedEntities !== catalogAdmissionRows) {
+  fail(`catalog identity statistic mismatch: stats=${stats.catalogReviewedEntities}, actual=${catalogAdmissionRows}`);
 }
 
 const sourceBackedRows = (rows || []).filter((row) =>
@@ -191,6 +222,8 @@ if (!process.exitCode) {
     status: 'pass',
     productionEntities: rows.length,
     uniquePlaceIds: placeIds.size,
+    legacyAdmissionRows,
+    catalogAdmissionRows,
     cuisineKnown: stats.cuisineKnown,
     budgetKnown: stats.budgetKnown,
     scheduleKnown: stats.scheduleKnown,
