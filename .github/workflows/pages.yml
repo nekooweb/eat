@@ -39,6 +39,7 @@ jobs:
           {
             node --check app.js
             node --check effects.js
+            node --check data/hotpepper_rich_metadata.js
             node --check scripts/audit_no_paid_apis.mjs
             node --check scripts/price_resolver.mjs
             node --check scripts/audit_price_resolution.mjs
@@ -52,11 +53,23 @@ jobs:
               scripts/build_open_identity_reconciliation.py \
               scripts/collect_hotpepper_area1.py \
               scripts/match_hotpepper_inventory.py \
-              scripts/build_hotpepper_enrichment.py
+              scripts/build_hotpepper_enrichment.py \
+              scripts/build_hotpepper_rich_metadata.py
             test -s data/production_area1.js
+            test -s data/hotpepper_rich_metadata.js
             node scripts/audit_repository.mjs
             node scripts/audit_source_bindings.mjs
             node scripts/audit_normalized_fields.mjs
+            node - <<'NODE'
+            const fs=require('fs'); const vm=require('vm'); const sandbox={window:{}}; vm.createContext(sandbox);
+            vm.runInContext(fs.readFileSync('data/production_area1.js','utf8'),sandbox);
+            vm.runInContext(fs.readFileSync('data/hotpepper_rich_metadata.js','utf8'),sandbox);
+            const payload=sandbox.window.HOTPEPPER_RICH_METADATA||{rows:[]};
+            const ids=new Set((sandbox.window.PRODUCTION_RESTAURANTS||[]).map(r=>r.googlePlaceId));
+            const missing=payload.rows.filter(r=>!ids.has(r.googlePlaceId));
+            if(missing.length) throw new Error(`rich metadata unattached rows: ${missing.length}`);
+            console.log(JSON.stringify({richMetadataRows:payload.rows.length,summary:payload.summary}));
+            NODE
           } 2>&1 | tee _audit/static_checks.log
       - name: Coverage report
         run: |
@@ -80,7 +93,7 @@ jobs:
         run: |
           mkdir -p _site/data _site/voice _site/image
           cp index.html styles.css effects.css app.js effects.js privacy.html terms.html _site/
-          cp data/production_area1.js _site/data/
+          cp data/production_area1.js data/hotpepper_rich_metadata.js _site/data/
           cp voice/*.mp3 _site/voice/
           cp image/*.webp _site/image/
       - name: Upload build for review
