@@ -1,0 +1,110 @@
+name: Promote additive-only Hot Pepper enrichment
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/promote-hotpepper-additive.yml"
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: promote-hotpepper-additive
+  cancel-in-progress: true
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Enforce no-paid-data-API policy
+        run: node scripts/audit_no_paid_apis.mjs
+
+      - name: Build baseline production
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p _audit _hotpepper
+          node scripts/test_opening_hours.mjs
+          node scripts/build_production_dataset.mjs | tee _audit/before_build.json
+          cp data/production_area1.js _audit/production_before.js
+
+      - name: Download successful benchmark artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh run download 34030943605 \
+            --repo nekooweb/eat \
+            -n hotpepper-area1-enrichment-review \
+            -D _hotpepper
+          test -s _hotpepper/source_enrichment_hotpepper.js
+          test -s _hotpepper/hotpepper_bindings.json
+
+      - name: Generate additive-only production shard
+        shell: bash
+        run: |
+          set -euo pipefail
+          node scripts/filter_hotpepper_additive.mjs \
+            _hotpepper/source_enrichment_hotpepper.js \
+            data/source_enrichment_hotpepper.js \
+            _audit/hotpepper_additive_filter.json \
+            | tee _audit/hotpepper_additive_filter_console.log
+          cp _hotpepper/hotpepper_bindings.json data/hotpepper_bindings.json
+          node --check data/source_enrichment_hotpepper.js
+          test -s data/hotpepper_bindings.json
+
+      - name: Rebuild and prove additive invariants
+        shell: bash
+        run: |
+          set -euo pipefail
+          node scripts/build_production_dataset.mjs | tee _audit/after_build.json
+          cp data/production_area1.js _audit/production_after.js
+          node scripts/audit_additive_production.mjs \
+            _audit/production_before.js \
+            _audit/production_after.js \
+            _audit/hotpepper_additive_production_audit.json \
+            | tee _audit/hotpepper_additive_production_audit_console.log
+
+      - name: Full repository audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          node scripts/audit_repository.mjs
+          node scripts/audit_source_bindings.mjs
+          node scripts/audit_normalized_fields.mjs
+          node scripts/coverage_report.mjs | tee _audit/coverage_after_hotpepper.json
+
+      - name: Commit durable bindings and additive shard
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/hotpepper_bindings.json data/source_enrichment_hotpepper.js
+          if git diff --cached --quiet; then
+            echo "No data changes to commit."
+            exit 0
+          fi
+          git commit -m "Promote additive Hot Pepper Area1 enrichment"
+          git push
+
+      - name: Upload promotion audit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hotpepper-additive-promotion-audit
+          path: _audit
+          if-no-files-found: warn
+          retention-days: 3
