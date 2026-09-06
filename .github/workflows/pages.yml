@@ -7,6 +7,7 @@ on:
   workflow_dispatch:
 
 permissions:
+  actions: read
   contents: read
   pages: write
   id-token: write
@@ -27,6 +28,65 @@ jobs:
           node-version: '22'
       - name: Enforce no-paid-data-API policy
         run: node scripts/audit_no_paid_apis.mjs
+      - name: Download retained Google sweep audits
+        uses: actions/download-artifact@v5
+        with:
+          pattern: full-area1-*-private-audit
+          path: _private_google_download
+          github-token: ${{ github.token }}
+          repository: nekooweb/eat
+          run-id: 34018919233
+        continue-on-error: true
+      - name: Download retained Google retry audit
+        uses: actions/download-artifact@v5
+        with:
+          name: full-area1-retry-private-audit
+          path: _private_google/retry
+          github-token: ${{ github.token }}
+          repository: nekooweb/eat
+          run-id: 34019078280
+      - name: Normalize retained Google audit paths
+        run: |
+          set -euo pipefail
+          mkdir -p _private_google/initial
+          initial=$(find _private_google_download -name full_inventory_place_details.json -print -quit)
+          test -n "$initial"
+          cp "$initial" _private_google/initial/full_inventory_place_details.json
+          test -s _private_google/retry/full_inventory_retry_private.json
+      - name: Recover durable basics for frozen Google inventory
+        run: |
+          set -euo pipefail
+          mkdir -p _audit
+          python3 scripts/recover_google_inventory_basic.py | tee _audit/google_basic_recovery_summary.json
+          test -s data/google_basic_source_matches.json
+          python3 - <<'PY'
+          import json
+          d=json.load(open('data/google_basic_source_matches.json'))
+          assert d['inventoryCount']==2804
+          assert d['policy']['paidGoogleApiCalls']==0
+          assert d['policy']['googleDisplayPayloadPersisted'] is False
+          assert d['policy']['lowConfidenceMatchesExcluded'] is True
+          ids=[r['googlePlaceId'] for r in d['rows']]
+          assert len(ids)==len(set(ids))
+          banned={'displayName','formattedAddress','googleName','googleAddress','googleLocation','location'}
+          for r in d['rows']:
+              assert not (banned & set(r))
+              assert r['provider'] in {'Hot Pepper','Overture Maps','OpenStreetMap'}
+              assert r['matchLevel']=='strong'
+              assert r['distanceMeters'] <= 1200
+          print(json.dumps(d['summary'],ensure_ascii=False))
+          PY
+      - name: Upload recovered durable basics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: google-basic-recovery-output
+          path: |
+            data/google_basic_source_matches.json
+            _audit/google_basic_match_private_metrics.json
+            _audit/google_basic_recovery_summary.json
+          if-no-files-found: warn
+          retention-days: 3
       - name: Build reviewed rich-metadata core fallback
         run: |
           node scripts/build_hotpepper_rich_core_fallback.mjs
@@ -61,6 +121,7 @@ jobs:
             node --check scripts/audit_runtime_overlays.mjs
             node --check scripts/audit_source_bindings.mjs
             python3 -m py_compile \
+              scripts/recover_google_inventory_basic.py \
               scripts/verify_google_places.py \
               scripts/verify_curated_google.py \
               scripts/discover_google_area1.py \
