@@ -63,18 +63,15 @@ jobs:
           if data['priorityQueue'] and data['priorityQueue'][0]['nextAction'] != 'extract_strict_recommended_menu_item':
               raise SystemExit('dish-first priority queue not active')
           PY
-      - name: Commit cleanup
+      - name: Commit non-workflow cleanup
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          rm -f scripts/apply_strict_google_cleanup.py scripts/patch_strict_source_binding_audit.py .github/workflows/apply-strict-google-cleanup.yml
+          rm -f scripts/apply_strict_google_cleanup.py scripts/patch_strict_source_binding_audit.py
           git add -A
+          git reset -- .github/workflows
           git commit -m "Enforce strict Google-bound 1.2km production pool"
+          git restore .github/workflows
           git pull --rebase origin main
-          rm -f data/public_featured_dishes_auto.json data/public_pool_area1.js
-          git add -A
-          if ! git diff --cached --quiet; then
-            git commit --amend --no-edit
-          fi
           git push
