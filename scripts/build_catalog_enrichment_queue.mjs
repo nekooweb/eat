@@ -111,9 +111,6 @@ function normalizeYenText(value) {
     .replaceAll('―', '-');
 }
 
-// Only accept an explicitly lunch-labelled finite interval or upper cap from
-// provider-maintained average/budget memo text. A single price, course price,
-// generic restaurant budget or lower-bound-only statement remains non-canonical.
 function parseExplicitLunchRange(facts) {
   const budget = facts.budget && typeof facts.budget === 'object' ? facts.budget : {};
   const raw = normalizeYenText([budget.average, facts.budgetMemo].filter(Boolean).join(' / '));
@@ -167,6 +164,14 @@ function openConfidence(row) {
     : 'none';
 }
 
+function openTriage(row) {
+  return row.openIdentityCandidate?.overtureSupport?.triage || null;
+}
+
+function isCrossPriority(row) {
+  return ['A_priority_review', 'B_blocker_review'].includes(openTriage(row));
+}
+
 function priorityFor(row) {
   const core = missingCore(row);
   let score = 0;
@@ -185,6 +190,8 @@ function priorityFor(row) {
 
   if (!row.currentProduction) {
     if (row.openIdentityCandidate?.historicalQcStatus === 'closed_permanently') score -= 300;
+    if (isCrossPriority(row)) score += 140;
+    if (row.sourceState.hotpepperCatalogFacts && isCrossPriority(row)) score += 80;
     const confidence = openConfidence(row);
     if (confidence === 'high') score += 90;
     else if (confidence === 'medium') score += 70;
@@ -204,7 +211,9 @@ function classify(row) {
     return 'production_source_binding';
   }
   if (row.openIdentityCandidate?.historicalQcStatus === 'closed_permanently') return 'inventory_historical_closed_hold';
+  if (row.sourceState.hotpepperCatalogFacts && isCrossPriority(row)) return 'inventory_multisource_loaded_review';
   if (row.sourceState.hotpepperCatalogFacts) return 'inventory_hotpepper_loaded_review';
+  if (isCrossPriority(row)) return 'inventory_open_cross_supported_review';
   const confidence = openConfidence(row);
   if (confidence === 'high' || confidence === 'medium') return 'inventory_open_highmedium_review';
   if (confidence === 'review') return 'inventory_open_review';
@@ -218,12 +227,13 @@ const items = (catalog.rows || []).map((row) => {
   const hp = hpById.get(row.googlePlaceId) || null;
   const candidates = availableHotpepperCandidates(row);
   const open = row.openIdentityCandidate?.candidate || null;
+  const overture = row.openIdentityCandidate?.overtureSupport || null;
   return {
     googlePlaceId: row.googlePlaceId,
     catalogStatus: row.catalogStatus,
     currentProduction: row.currentProduction,
     name: row.canonical?.name || hp?.facts?.name || null,
-    candidateName: !row.currentProduction && !hp?.facts?.name ? open?.name || null : null,
+    candidateName: !row.currentProduction && !hp?.facts?.name ? open?.name || overture?.name || null : null,
     queue: classify(row),
     priorityScore: priorityFor(row),
     coreMissing,
@@ -246,6 +256,20 @@ const items = (catalog.rows || []).map((row) => {
       historicalQcStatus: row.openIdentityCandidate?.historicalQcStatus || null,
       distanceMeters: open.historicalMatchDistanceMeters,
       nameSimilarity: open.historicalNameSimilarity
+    } : null,
+    overtureSupport: overture ? {
+      release: overture.release,
+      overtureId: overture.overtureId,
+      name: overture.name,
+      basicCategory: overture.basicCategory,
+      websites: overture.websites,
+      brand: overture.brand,
+      distanceToOsmMeters: overture.distanceToOsmMeters,
+      nameSimilarity: overture.nameSimilarity,
+      addressSimilarity: overture.addressSimilarity,
+      combinedScore: overture.combinedScore,
+      crossSourceConfidence: overture.crossSourceConfidence,
+      triage: overture.triage
     } : null,
     existingHotpepperFieldCandidates: candidates,
     explicitLunchRangeFromLoadedHotpepper: candidates.includes('lunchBudgetExplicitText')
@@ -275,14 +299,19 @@ const coreGapCounts = Object.fromEntries(CORE_FIELDS.map((field) => [
   productionItems.filter((item) => item.coreMissing.includes(field)).length
 ]));
 const inventoryOpenConfidenceCounts = {};
+const inventoryTriageCounts = {};
 for (const item of inventoryItems) {
-  if (!item.openCandidate) continue;
-  const confidence = item.openCandidate.confidence || 'none';
-  inventoryOpenConfidenceCounts[confidence] = (inventoryOpenConfidenceCounts[confidence] || 0) + 1;
+  if (item.openCandidate) {
+    const confidence = item.openCandidate.confidence || 'none';
+    inventoryOpenConfidenceCounts[confidence] = (inventoryOpenConfidenceCounts[confidence] || 0) + 1;
+  }
+  if (item.overtureSupport?.triage) {
+    inventoryTriageCounts[item.overtureSupport.triage] = (inventoryTriageCounts[item.overtureSupport.triage] || 0) + 1;
+  }
 }
 
 const summary = {
-  schemaVersion: 3,
+  schemaVersion: 4,
   checkedAt: catalog.summary?.checkedAt || new Date().toISOString().slice(0, 10),
   identityUniverse: items.length,
   production: productionItems.length,
@@ -293,8 +322,12 @@ const summary = {
   productionCoreGapCounts: coreGapCounts,
   inventoryWithHistoricalOpenCandidate: inventoryItems.filter((item) => item.openCandidate).length,
   inventoryOpenConfidenceCounts,
+  inventoryTriageCounts,
   inventoryHighMediumOpenCandidates: inventoryItems.filter((item) =>
     item.openCandidate && ['high', 'medium'].includes(item.openCandidate.confidence)).length,
+  inventoryWithOvertureSupport: inventoryItems.filter((item) => item.overtureSupport).length,
+  inventoryMultisourceLoadedPriority: inventoryItems.filter((item) => item.queue === 'inventory_multisource_loaded_review').length,
+  inventoryOpenCrossSupportedPriority: inventoryItems.filter((item) => item.queue === 'inventory_open_cross_supported_review').length,
   inventoryHotpepperLoaded: inventoryItems.filter((item) => item.hotpepperCatalogFacts).length,
   strictAutoHotpepperProductionBindings: safeAutoProduction.length,
   productionWithLoadedStrictHotpepperFieldCandidates: zeroRequestHotpepperCandidates.length,
@@ -312,12 +345,13 @@ const summary = {
     sourceExtractionBeforeBroadDiscovery: true,
     inventoryAdmissionSeparatedFromFieldLoading: true,
     historicalOpenMatchesRemainCandidatesUntilValidated: true,
+    overtureCrossSupportDoesNotAutoAdmitIdentity: true,
     lowConfidenceOpenCandidatesAreHintsOnly: true,
     strictHotpepperGateRequiredForCanonicalCandidates: true,
     explicitLunchTextRequiresFiniteLabelledRange: true,
-    noExternalRequests: true
+    noExternalPaidRequests: true
   }
 };
 
-fs.writeFileSync(OUT, `${JSON.stringify({ schemaVersion: 3, summary, items }, null, 2)}\n`, 'utf8');
+fs.writeFileSync(OUT, `${JSON.stringify({ schemaVersion: 4, summary, items }, null, 2)}\n`, 'utf8');
 console.log(JSON.stringify(summary));
