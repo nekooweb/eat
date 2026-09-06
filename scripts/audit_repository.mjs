@@ -47,6 +47,7 @@ if (!/renderComparison/.test(app)) fail('three-store comparison table is missing
 if (/area1_google(?:_places)?\.(?:js|json)/i.test(index)) fail('legacy Google discovery payload is public');
 if (/google_entities(?:\.generated)?\.js/i.test(index)) fail('maintenance overlays are public runtime dependencies');
 if (!/data\/production_area1\.js/.test(index)) fail('canonical production dataset is not loaded');
+if (!/data\/google_inventory_runtime\.js/.test(index)) fail('exact Google inventory runtime is not loaded');
 if (/data\/public_pool_area1\.js/.test(index)) fail('public open restaurant pool must not be loaded');
 
 const requiredEffectAssets = ['effects.js', 'effects.css'];
@@ -78,6 +79,7 @@ const runtimePath = (source) => source.split('?', 1)[0];
 const runtimePaths = localRuntimeScripts.map(runtimePath);
 const expectedRuntimePaths = [
   './data/production_area1.js',
+  './data/google_inventory_runtime.js',
   './data/source_provenance.js',
   './data/source_facts.js',
   './data/hotpepper_rich_metadata.js',
