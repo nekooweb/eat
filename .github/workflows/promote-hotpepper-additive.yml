@@ -1,8 +1,12 @@
-# Revalidated for independent meal resolution and idempotent shard regeneration.
+# Revalidated for independent meal resolution and idempotent catalog-first field extraction.
 name: Promote additive-only Hot Pepper enrichment
 
 on:
   workflow_dispatch:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/promote-hotpepper-additive.yml"
 
 permissions:
   contents: write
@@ -66,6 +70,20 @@ jobs:
           node --check data/source_enrichment_hotpepper.js
           test -s data/hotpepper_bindings.json
 
+      - name: Add explicit lunch ranges from loaded catalog facts
+        shell: bash
+        run: |
+          set -euo pipefail
+          node scripts/promote_loaded_hotpepper_lunch.mjs \
+            data/source_enrichment_hotpepper.js \
+            _audit/hotpepper_loaded_lunch_promotion.json \
+            | tee _audit/hotpepper_loaded_lunch_promotion_console.log
+          node --check data/source_enrichment_hotpepper.js
+          node - <<'NODE'
+          const r=require('./_audit/hotpepper_loaded_lunch_promotion.json');
+          if(r.promotedLunchBudgets!==9) throw new Error(`expected 9 explicit lunch promotions, got ${r.promotedLunchBudgets}`);
+          NODE
+
       - name: Rebuild and prove additive invariants
         shell: bash
         run: |
@@ -77,6 +95,10 @@ jobs:
             _audit/production_after.js \
             _audit/hotpepper_additive_production_audit.json \
             | tee _audit/hotpepper_additive_production_audit_console.log
+          node - <<'NODE'
+          const r=require('./_audit/hotpepper_additive_production_audit.json');
+          if(r.gains.lunch!==9) throw new Error(`expected +9 canonical lunch ranges, got ${r.gains.lunch}`);
+          NODE
 
       - name: Full repository audit
         shell: bash
@@ -100,7 +122,7 @@ jobs:
             echo "No data changes to commit."
             exit 0
           fi
-          git commit -m "Regenerate additive Hot Pepper enrichment by meal"
+          git commit -m "Promote explicit loaded Hot Pepper lunch ranges"
           git push
 
       - name: Upload promotion audit
