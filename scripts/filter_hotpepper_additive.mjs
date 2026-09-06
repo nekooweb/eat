@@ -35,7 +35,7 @@ const byId = new Map(production.map((row) => [row.googlePlaceId, row]));
 
 const output = [];
 const counts = { rows: 0, address: 0, cuisine: 0, dinnerBudget: 0, hours: 0, closure: 0 };
-const skipped = { noProductionIdentity: 0, noNetNewField: 0 };
+const skipped = { noProductionIdentity: 0, noNetNewField: 0, dinnerDeferredToIndependentMealResolver: 0 };
 
 for (const hp of candidates) {
   const current = byId.get(hp.googlePlaceId);
@@ -74,10 +74,18 @@ for (const hp of candidates) {
     counts.cuisine += 1;
   }
 
+  // The current canonical builder still resolves lunch+dinner from one budget
+  // claim row. Until meal-period resolution is split, do not add a dinner-only
+  // claim to a restaurant whose existing lunch price is already known, because
+  // doing so could erase the lunch price. Those few rows are deferred.
   if (!isPrice(current.dinner) && isPrice(hp.dinner)) {
-    row.dinner = hp.dinner;
-    fields.push('budget');
-    counts.dinnerBudget += 1;
+    if (!isPrice(current.lunch)) {
+      row.dinner = hp.dinner;
+      fields.push('budget');
+      counts.dinnerBudget += 1;
+    } else {
+      skipped.dinnerDeferredToIndependentMealResolver += 1;
+    }
   }
 
   if (!current.openingHours && hasText(hp.openingHoursRaw)) {
@@ -124,6 +132,7 @@ const report = {
     overwriteExistingDinnerBudget: false,
     overwriteExistingHours: false,
     inferLunchBudget: false,
+    preserveKnownLunchUntilIndependentMealResolver: true,
   },
   candidateRows: candidates.length,
   promoted: counts,
