@@ -1,4 +1,4 @@
-# Revalidated after source-resolution supersession handling was added.
+# Revalidated for independent meal resolution and idempotent shard regeneration.
 name: Promote additive-only Hot Pepper enrichment
 
 on:
@@ -31,12 +31,16 @@ jobs:
       - name: Enforce no-paid-data-API policy
         run: node scripts/audit_no_paid_apis.mjs
 
-      - name: Build baseline production
+      - name: Build source-independent baseline
         shell: bash
         run: |
           set -euo pipefail
           mkdir -p _audit _hotpepper
           node scripts/test_opening_hours.mjs
+          node scripts/test_price_resolver.mjs
+          if [[ -f data/source_enrichment_hotpepper.js ]]; then
+            mv data/source_enrichment_hotpepper.js _audit/source_enrichment_hotpepper.previous.js
+          fi
           node scripts/build_production_dataset.mjs | tee _audit/before_build.json
           cp data/production_area1.js _audit/production_before.js
 
@@ -53,7 +57,7 @@ jobs:
           test -s _hotpepper/source_enrichment_hotpepper.js
           test -s _hotpepper/hotpepper_bindings.json
 
-      - name: Generate additive-only production shard
+      - name: Regenerate complete additive shard
         shell: bash
         run: |
           set -euo pipefail
@@ -85,6 +89,7 @@ jobs:
           node scripts/audit_repository.mjs
           node scripts/audit_source_bindings.mjs
           node scripts/audit_normalized_fields.mjs
+          node scripts/audit_price_resolution.mjs | tee _audit/price_resolution_after_hotpepper.json
           node scripts/source_queue.mjs | tee _audit/source_queue_after_hotpepper.json
           node scripts/coverage_report.mjs | tee _audit/coverage_after_hotpepper.json
 
@@ -99,7 +104,7 @@ jobs:
             echo "No data changes to commit."
             exit 0
           fi
-          git commit -m "Promote additive Hot Pepper Area1 enrichment"
+          git commit -m "Regenerate additive Hot Pepper enrichment by meal"
           git push
 
       - name: Upload promotion audit
