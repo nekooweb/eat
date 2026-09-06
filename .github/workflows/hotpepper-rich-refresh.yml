@@ -1,0 +1,112 @@
+name: Hot Pepper rich metadata refresh
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/hotpepper-rich-refresh.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: hotpepper-rich-refresh
+  cancel-in-progress: true
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      HOTPEPPER_API_KEY: ${{ secrets.HOTPEPPER_API_KEY || secrets.HOTPEPPER_API || secrets.HOTPEPPER_KEY || secrets.RECRUIT_API_KEY }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Require Hot Pepper API key
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "${HOTPEPPER_API_KEY:-}" || { echo "HOTPEPPER_API_KEY is required" >&2; exit 2; }
+
+      - name: Enforce no-paid-data-API policy
+        run: node scripts/audit_no_paid_apis.mjs
+
+      - name: Build current production seed
+        run: node scripts/build_production_dataset.mjs
+
+      - name: Refresh full rich details for strict-safe bindings only
+        env:
+          HOTPEPPER_REQUEST_INTERVAL: '0.20'
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p _audit
+          python scripts/collect_hotpepper_rich_details.py \
+            data/hotpepper_bindings.json \
+            _audit/hotpepper_rich_details.json \
+            | tee _audit/hotpepper_rich_details_console.log
+          test -s _audit/hotpepper_rich_details.json
+
+      - name: Rebuild rich metadata overlay
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/build_hotpepper_rich_metadata.py \
+            data/hotpepper_bindings.json \
+            _audit/hotpepper_rich_details.json \
+            data/hotpepper_rich_metadata.js \
+            | tee _audit/hotpepper_rich_metadata_summary.json
+          test -s data/hotpepper_rich_metadata.js
+          node --check data/hotpepper_rich_metadata.js
+
+      - name: Validate exact production attachment
+        shell: bash
+        run: |
+          set -euo pipefail
+          node - <<'NODE' | tee _audit/hotpepper_rich_validation.json
+          const fs=require('fs'); const vm=require('vm'); const sandbox={window:{}}; vm.createContext(sandbox);
+          vm.runInContext(fs.readFileSync('data/production_area1.js','utf8'),sandbox);
+          vm.runInContext(fs.readFileSync('data/hotpepper_rich_metadata.js','utf8'),sandbox);
+          const rows=sandbox.window.PRODUCTION_RESTAURANTS||[];
+          const payload=sandbox.window.HOTPEPPER_RICH_METADATA||{rows:[]};
+          const ids=new Set(rows.map(r=>r.googlePlaceId));
+          const missing=payload.rows.filter(r=>!ids.has(r.googlePlaceId));
+          const duplicate=payload.rows.length-new Set(payload.rows.map(r=>r.googlePlaceId)).size;
+          if(missing.length||duplicate) throw new Error(JSON.stringify({missing:missing.length,duplicate}));
+          console.log(JSON.stringify({status:'pass',rows:payload.rows.length,summary:payload.summary},null,2));
+          NODE
+
+      - name: Commit refreshed rich metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/hotpepper_rich_metadata.js
+          if git diff --cached --quiet; then
+            echo "No rich metadata changes to commit."
+            exit 0
+          fi
+          git commit -m "Refresh full Hot Pepper rich metadata"
+          git push
+
+      - name: Upload refresh audit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hotpepper-rich-refresh-audit
+          path: _audit
+          if-no-files-found: warn
+          retention-days: 3
