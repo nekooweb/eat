@@ -47,10 +47,7 @@ if (/area1_google(?:_places)?\.(?:js|json)/i.test(index)) fail('legacy Google di
 if (/google_entities(?:\.generated)?\.js/i.test(index)) fail('maintenance overlays are public runtime dependencies');
 if (!/data\/production_area1\.js/.test(index)) fail('canonical production dataset is not loaded');
 
-const requiredEffectAssets = [
-  'effects.js',
-  'effects.css'
-];
+const requiredEffectAssets = ['effects.js', 'effects.css'];
 for (const relativePath of requiredEffectAssets) {
   if (!fs.existsSync(path.join(ROOT, relativePath))) fail(`missing public effect asset: ${relativePath}`);
 }
@@ -73,10 +70,10 @@ if (!/lastMascotSource/.test(effects) || !/lastMascotPlacement/.test(effects)) {
   fail('mascot character and placement should avoid immediate repeats');
 }
 
-// Public runtime is layered deliberately. Canonical production must load first;
-// the two reviewed overlays may only attach metadata to that canonical pool;
-// app/effects run after all data layers. Maintenance source shards must never be
-// loaded directly by index.html.
+// Public runtime is layered deliberately. Canonical production loads first;
+// provenance and provider facts attach evidence, Hot Pepper rich metadata adds
+// reviewed source-native fields, then app/effects run. Maintenance source shards
+// must never be loaded directly by index.html.
 const scriptSources = [...index.matchAll(/<script[^>]+src="([^"]+)"/gi)].map((match) => match[1]);
 const localRuntimeScripts = scriptSources.filter((source) => source.startsWith('./'));
 const runtimePath = (source) => source.split('?', 1)[0];
@@ -84,6 +81,7 @@ const runtimePaths = localRuntimeScripts.map(runtimePath);
 const expectedRuntimePaths = [
   './data/production_area1.js',
   './data/source_provenance.js',
+  './data/source_facts.js',
   './data/hotpepper_rich_metadata.js',
   './app.js',
   './effects.js'
@@ -179,9 +177,6 @@ for (const row of rows || []) {
   }
 }
 
-// `sourceBacked` remains the historical Tabelog/official metric for continuity.
-// Hot Pepper has its own binding/coverage metrics and is not folded into this
-// legacy statistic until the reporting schema is versioned explicitly.
 const sourceBackedRows = (rows || []).filter((row) =>
   row.sources?.includes('Tabelog') || row.sources?.includes('official'));
 if (enrichmentRows.length && !sourceBackedRows.length) {
