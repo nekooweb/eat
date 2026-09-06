@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import vm from 'node:vm';
 import { fileURLToPath } from 'node:url';
+import { isPriceRange } from './price_resolver.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, '..');
@@ -45,24 +46,68 @@ function sourceHosts(rows) {
   return [...hosts].sort();
 }
 
+function sourceProviders(rows) {
+  return [...new Set(rows.map((row) => row.source).filter(Boolean))].sort();
+}
+
 function gaps(row) {
   const missing = [];
   if (!Array.isArray(row.featuredDishes) || !row.featuredDishes.length) missing.push('featuredDishes');
   if (!row.openingHours) missing.push('openingHours');
-  if (!Array.isArray(row.lunch) && !Array.isArray(row.dinner)) missing.push('budget');
+  if (!isPriceRange(row.lunch)) missing.push('lunchBudget');
+  if (!isPriceRange(row.dinner)) missing.push('dinnerBudget');
   if (!row.address) missing.push('address');
   if (!row.cuisine || row.cuisine === '餐厅') missing.push('cuisine');
   return missing;
 }
 
+function nextAction(record) {
+  const providers = new Set(record.sourceProviders);
+  const gaps = new Set(record.gaps);
+  if (gaps.has('lunchBudget')) {
+    if (providers.has('official')) return 'extract_official_lunch_price';
+    if (providers.has('Tabelog')) return 'extract_tabelog_lunch_price';
+    return 'discover_official_or_tabelog_lunch_source';
+  }
+  if (gaps.has('dinnerBudget')) {
+    if (providers.has('official')) return 'extract_official_dinner_price';
+    if (providers.has('Tabelog')) return 'extract_tabelog_dinner_price';
+    return 'discover_official_or_tabelog_dinner_source';
+  }
+  if (gaps.has('openingHours')) return 'extract_current_hours';
+  if (gaps.has('address') || gaps.has('cuisine')) return 'extract_identity_fields';
+  if (gaps.has('featuredDishes')) return 'extract_menu_or_signature_items';
+  return 'review';
+}
+
+function priorityScore(record) {
+  let score = 0;
+  if (record.gaps.includes('lunchBudget')) score += 50;
+  if (record.gaps.includes('dinnerBudget')) score += 30;
+  if (record.gaps.includes('openingHours')) score += 20;
+  if (record.gaps.includes('address')) score += 15;
+  if (record.gaps.includes('cuisine')) score += 15;
+  if (record.gaps.includes('featuredDishes')) score += 5;
+  // Prefer already-bound sources and nearer restaurants when field value is equal.
+  if (record.sourceHosts.length) score += 10;
+  score += Math.max(0, 12 - Math.floor(record.distanceMeters / 100));
+  return score;
+}
+
 const records = production.map((row) => {
   const sourceRows = byPlaceId.get(row.googlePlaceId) || [];
-  return {
+  const record = {
     googlePlaceId: row.googlePlaceId,
     name: row.name,
     distanceMeters: row.distanceMeters,
     sourceHosts: sourceHosts(sourceRows),
+    sourceProviders: sourceProviders(sourceRows),
     gaps: gaps(row)
+  };
+  return {
+    ...record,
+    nextAction: nextAction(record),
+    priorityScore: priorityScore(record)
   };
 });
 
@@ -86,23 +131,48 @@ const sourceGroups = [...grouped.entries()]
       for (const gap of row.gaps) acc[gap] = (acc[gap] || 0) + 1;
       return acc;
     }, {}),
+    nextActionCounts: rows.reduce((acc, row) => {
+      acc[row.nextAction] = (acc[row.nextAction] || 0) + 1;
+      return acc;
+    }, {}),
     rows: rows
-      .sort((a, b) => a.distanceMeters - b.distanceMeters || a.name.localeCompare(b.name, 'ja'))
+      .sort((a, b) => b.priorityScore - a.priorityScore || a.distanceMeters - b.distanceMeters || a.name.localeCompare(b.name, 'ja'))
       .slice(0, 100)
   }))
-  .sort((a, b) => b.restaurants - a.restaurants || a.host.localeCompare(b.host));
+  .sort((a, b) =>
+    (b.gapCounts.lunchBudget || 0) - (a.gapCounts.lunchBudget || 0)
+    || b.restaurants - a.restaurants
+    || a.host.localeCompare(b.host));
+
+const gapCounts = records.reduce((acc, row) => {
+  for (const gap of row.gaps) acc[gap] = (acc[gap] || 0) + 1;
+  return acc;
+}, {});
+const usableGapCounts = needingFields.reduce((acc, row) => {
+  for (const gap of row.gaps) acc[gap] = (acc[gap] || 0) + 1;
+  return acc;
+}, {});
 
 const report = {
+  schemaVersion: 2,
   productionEntities: production.length,
   withUsableSource: withUsableSource.length,
   withoutUsableSource: withoutUsableSource.length,
   usableSourceRowsNeedingFields: needingFields.length,
   strictRecommendationCoverage: production.filter((row) => row.recommendedDishes?.length).length,
   featuredDishCoverage: production.filter((row) => row.featuredDishes?.length).length,
-  gapCounts: needingFields.reduce((acc, row) => {
-    for (const gap of row.gaps) acc[gap] = (acc[gap] || 0) + 1;
-    return acc;
-  }, {}),
+  priceCoverage: {
+    lunchKnown: production.length - (gapCounts.lunchBudget || 0),
+    dinnerKnown: production.length - (gapCounts.dinnerBudget || 0),
+    lunchMissing: gapCounts.lunchBudget || 0,
+    dinnerMissing: gapCounts.dinnerBudget || 0
+  },
+  gapCounts,
+  usableSourceGapCounts: usableGapCounts,
+  priorityQueue: records
+    .filter((row) => row.gaps.length)
+    .sort((a, b) => b.priorityScore - a.priorityScore || a.distanceMeters - b.distanceMeters || a.name.localeCompare(b.name, 'ja'))
+    .slice(0, 200),
   sourceGroups
 };
 
