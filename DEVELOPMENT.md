@@ -26,7 +26,7 @@ Current audited production baseline:
 
 The successful 2026-09-06 full-collection Actions artifact plus its retry artifact contain the transient matching inputs for the identities that were inventory-only during the sweep. The retry resolved all transient fetch failures. **Do not repeat that paid collection.**
 
-`DATA_ENRICHMENT_PROGRESS.md` remains the numeric progress report. `ENRICHMENT_STRATEGY.md` is now the authoritative design for the next data-development phase.
+`DATA_ENRICHMENT_PROGRESS.md` remains the numeric progress report. `ENRICHMENT_STRATEGY.md` defines the general enrichment architecture. `HOTPEPPER_ENRICHMENT.md` defines the primary structured enrichment path under the project's stated non-commercial/authorized Hot Pepper use.
 
 ## Primary goal: enrich the known list
 
@@ -81,7 +81,7 @@ This is a hard engineering constraint:
 - retired paid scripts remain fail-closed;
 - CI runs `scripts/audit_no_paid_apis.mjs`.
 
-Ordinary HTTPS fetching of official pages and bulk use of appropriately licensed open datasets are allowed subject to their terms, rate limits and attribution requirements.
+Free/authorized APIs are allowed when their use is consistent with the project's authorization and provider requirements. API keys must remain in secrets and must never be committed.
 
 ## Immediate high-value opportunity: consume the existing transient sweep
 
@@ -92,21 +92,56 @@ Bridge workflow:
 1. download the successful full-collection and retry artifacts;
 2. merge retry rows into the original sweep in memory;
 3. combine them with existing production identities so the complete 2,804 historical list can participate in matching;
-4. use transient name/address/coordinate/type signals only to match independent sources;
-5. persist independent IDs/URLs/fields and field-level evidence;
+4. use transient name/address/coordinate/type signals only to match independent/authorized sources;
+5. persist permitted independent/authorized IDs, URLs and field-level evidence;
 6. do not commit the transient Google display payload.
 
 This extracts maximum value from the collection that has already been paid for without making another paid request.
 
-## Enrichment source strategy
+## Primary structured enrichment: Hot Pepper
 
-Do not designate one replacement POI database as the new truth.
+Under project-owner guidance, the Area1 project is non-commercial and the intended Hot Pepper API use is treated as separately authorized/confirmed.
 
-Use the best source for each field.
+Hot Pepper therefore becomes the first structured enrichment layer for the known list.
+
+### Do not call once per restaurant
+
+Use a two-stage batch model:
+
+1. **initial Hot Pepper binding** — query the Area1 neighborhood geographically with `type=lite`, `count=100`, paginate, crop locally to 1.2 km, then match to the already-known identity seed;
+2. **detail/refresh** — once Hot Pepper IDs are bound, request full data with up to **20 shop IDs per API request**.
+
+This should reduce a potential thousands-of-request process to a small geographic pagination pass plus tens of batched detail requests.
+
+### High-value Hot Pepper fields
+
+Use the authorized API for candidate claims covering:
+
+- Japanese name and kana;
+- address and coordinates;
+- genre/sub-genre and genre catch;
+- dinner budget code/range/average;
+- budget memo;
+- opening-hours text;
+- regular closed days;
+- lunch availability;
+- Hot Pepper shop URL/source identity.
+
+`lunch=あり` proves lunch availability but does not provide a lunch budget. Lunch price remains an official-menu/source enrichment task.
+
+Hot Pepper-derived public information should carry the required `Powered by ホットペッパーグルメ Webサービス` credit. Do not ingest Hot Pepper images in the current phase.
+
+The public general Recruit terms contain stricter default cache/database rules; the repository should not claim that non-commercial use alone creates an exemption. The project's separate authorization assumption controls this design, and the persistence/refresh policy should be revisited if the actual authorization scope differs.
+
+## Secondary enrichment sources
+
+Do not designate one replacement POI database as universal truth.
+
+Use the best source for each remaining gap/conflict.
 
 ### Open bulk POI sources
 
-Benchmark and match:
+Use primarily for unmatched identities and cross-checks:
 
 - **Foursquare Open Source Places** for currentness, FSQ identity, category, website, phone, address and coordinates;
 - **Overture Maps Places** for multilingual names, taxonomy, websites/phones/brand, addresses, confidence, source lineage and GERS identity;
@@ -116,17 +151,19 @@ Overture is itself a conflated multi-provider dataset. Source lineage must be co
 
 ### Official/brand sources
 
-Promote official locators to a first-class batch source.
+Promote official locators to a first-class completion route after the Hot Pepper structured pass.
 
 - reuse relevant **AllThePlaces** Japanese spiders where they already encode official locator logic;
 - add small host adapters for high-yield restaurant groups not covered there;
 - process identities by brand/domain/template rather than one restaurant at a time.
 
-### Listing APIs/platforms
+Official/menu sources are especially important for:
 
-A free API is not automatically a suitable database source.
-
-For example, Hot Pepper exposes attractive budget/hours/address/genre fields, but its API terms impose cache/update and database-reuse restrictions. It may be useful for comparison/review under its terms, but it should not become the persistent bulk ingestion layer.
+- lunch budget;
+- menu/signature dishes;
+- strict recommendations;
+- exact branch conflicts;
+- restaurants not covered by Hot Pepper.
 
 ## Matching model
 
@@ -149,11 +186,11 @@ For Area1 scale, a DuckDB/Splink-style workflow is practical.
 
 ## Host-first batch extraction
 
-The preferred processing unit is a **host/template**, not a restaurant.
+After the Hot Pepper structured pass, the preferred website-processing unit is a **host/template**, not a restaurant.
 
 ```text
 known identities
- -> open-data/source bindings
+ -> Hot Pepper/open-data/source bindings
  -> official URLs
  -> group by host/brand/template
  -> fetch each URL once
@@ -164,7 +201,7 @@ known identities
 
 High-yield repeated hosts and chain locators should be processed before difficult independent exceptions.
 
-## Extract all useful fields in one source pass
+## Extract all useful fields in one official-source pass
 
 From each official page/locator, collect candidate evidence for:
 
@@ -191,9 +228,9 @@ Then follow only a bounded set of likely menu/detail links. Avoid repeatedly ref
 
 The old `budget` rule accepts only explicit spend ranges. That preserves precision but leaves most rows unknown.
 
-Keep explicit budget as A-confidence evidence, but add a separate transparent `priceProfile` concept:
+Hot Pepper can now provide a large structured dinner-budget layer. Keep lunch and other derived evidence explicit through a `priceProfile` concept:
 
-- **A** — explicit average/budget/spend range from an allowed exact source;
+- **A** — explicit average/budget/spend range from an authorized exact structured source or official source;
 - **B** — official lunch/dinner menu with enough comparable main/set items to derive an observed band;
 - **C** — sparse item/course prices; review/display evidence only, not hard filtering.
 
@@ -219,28 +256,32 @@ A resolver chooses canonical values afterward. Existing `source_enrichment_*.js`
 
 ## Development order
 
-1. **Consume the already-paid transient full-list artifacts before expiry** and build independent source bindings; do not rerun Google.
-2. Build/benchmark FSQ OS + Overture + local OSM matching for the known list.
-3. Produce an enrichment coverage matrix for all known identities: source bindings and missing P0/P1/P2/P3 fields.
-4. Detect repeated brands/domains and run AllThePlaces/official-locator adapters first.
-5. Upgrade generic official-page extraction to emit all field claims in one pass.
-6. Add evidence-classed `priceProfile` generation from explicit spend statements and official menus.
-7. Normalize opening hours through structured data -> host adapter -> OSM syntax -> conservative Japanese text parser.
-8. Use manual review only for high-value ambiguity/conflicts, not straightforward bulk matches.
-9. Rebuild/audit production after material batches.
+1. **Consume the already-paid transient full-list artifacts before expiry**; do not rerun Google.
+2. Run Hot Pepper geographic bulk discovery for Area1 and build Hot Pepper-ID bindings to the known list.
+3. Fetch matched Hot Pepper details in 20-ID batches and generate field claims for address, cuisine, dinner budget, hours/close, aliases and source URL.
+4. Rebuild an enrichment coverage matrix for all known identities.
+5. Use FSQ OS + Overture + local OSM primarily for unmatched identities and conflict resolution.
+6. Detect repeated brands/domains and run AllThePlaces/official-locator adapters for remaining gaps.
+7. Upgrade generic official-page extraction to emit all field claims in one pass, prioritizing lunch prices and menu/dish information.
+8. Add evidence-classed `priceProfile` generation.
+9. Normalize opening hours through structured Hot Pepper/official text -> host adapter -> OSM syntax -> conservative Japanese text parser.
+10. Use manual review only for high-value ambiguity/conflicts, not straightforward bulk matches.
+11. Rebuild/audit production after material batches.
+12. Add Hot Pepper service credit before publishing Hot Pepper-derived data publicly.
 
 ## New progress metrics
 
 Headline metrics should be enrichment-oriented:
 
-- identities with >=1 durable independent source binding;
+- known identities with a Hot Pepper binding;
+- identities with >=1 durable independent/authorized source binding;
 - identities with >=2 genuinely independent source signals;
 - P0-complete identities;
 - cuisine coverage;
-- official website/locator coverage;
-- explicit A-price coverage;
-- derived B-price coverage;
+- Hot Pepper dinner-budget coverage;
+- official lunch-price coverage;
 - normalized-hours coverage;
+- official website/locator coverage;
 - featured/recommended dish coverage;
 - unresolved high-value conflicts;
 - remaining unique hosts/templates;
