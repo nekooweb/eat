@@ -6,8 +6,10 @@ call Google or any paid place/search API.
 
 Modes:
   discover OUTPUT.json
-      Fetch a geographic superset with type=lite, paginate at 100 rows/page,
-      crop locally to the exact 1.2 km Area1 radius, and write matching input.
+      Fetch a geographic superset, paginate at 100 rows/page, crop locally to
+      the exact 1.2 km Area1 radius, and write matching input. Discovery keeps
+      the structured address/name/coordinate fields needed for reliable local
+      record linkage rather than requesting the API's reduced lite payload.
 
   details BINDINGS.json OUTPUT.json
       Read hotpepperId values from a binding candidate file and fetch full shop
@@ -96,18 +98,25 @@ def request_json(params, retries=4):
     raise last_error
 
 
-def compact_lite(shop):
+def compact_discovery(shop):
     genre = shop.get("genre") or {}
+    sub_genre = shop.get("sub_genre") or {}
     return {
         "hotpepperId": shop.get("id"),
         "name": shop.get("name"),
+        "nameKana": shop.get("name_kana"),
         "address": shop.get("address"),
+        "stationName": shop.get("station_name"),
         "lat": shop.get("lat"),
         "lng": shop.get("lng"),
         "genre": {
             "code": genre.get("code"),
             "name": genre.get("name"),
             "catch": genre.get("catch"),
+        },
+        "subGenre": {
+            "code": sub_genre.get("code"),
+            "name": sub_genre.get("name"),
         },
         "url": (shop.get("urls") or {}).get("pc"),
     }
@@ -156,7 +165,6 @@ def discover(output_path: Path):
             "order": 4,
             "start": start,
             "count": PAGE_SIZE,
-            "type": "lite",
         })
         results = payload.get("results") or {}
         available = int(results.get("results_available") or 0)
@@ -166,7 +174,7 @@ def discover(output_path: Path):
         for shop in shops:
             hotpepper_id = shop.get("id")
             if hotpepper_id:
-                rows_by_id[hotpepper_id] = compact_lite(shop)
+                rows_by_id[hotpepper_id] = compact_discovery(shop)
 
         pages += 1
         returned = int(results.get("results_returned") or len(shops))
@@ -209,9 +217,9 @@ def discover(output_path: Path):
     inside.sort(key=lambda row: (row["distanceMeters"], row.get("name") or "", row["hotpepperId"]))
     output_path.parent.mkdir(parents=True, exist_ok=True)
     payload = {
-        "schemaVersion": 1,
+        "schemaVersion": 2,
         "source": "Hot Pepper Gourmet Web Service",
-        "mode": "geographic_lite_discovery",
+        "mode": "geographic_full_discovery",
         "scope": {
             "center": {"lat": CENTER_LAT, "lng": CENTER_LNG},
             "productionRadiusMeters": AREA_RADIUS_M,
@@ -229,6 +237,8 @@ def discover(output_path: Path):
             "uniqueSupersetShopIds": len(rows_by_id),
             "insideArea1": len(inside),
             "missingCoordinates": missing_coords,
+            "withAddress": sum(bool(str(row.get("address") or "").strip()) for row in inside),
+            "withKana": sum(bool(str(row.get("nameKana") or "").strip()) for row in inside),
         },
         "rows": inside,
     }
