@@ -1,4 +1,4 @@
-# Revalidated after adding Hot Pepper as an authorized enrichment source.
+# Revalidated after source-resolution supersession handling was added.
 name: Promote additive-only Hot Pepper enrichment
 
 on:
@@ -85,6 +85,7 @@ jobs:
           node scripts/audit_repository.mjs
           node scripts/audit_source_bindings.mjs
           node scripts/audit_normalized_fields.mjs
+          node scripts/source_queue.mjs | tee _audit/source_queue_after_hotpepper.json
           node scripts/coverage_report.mjs | tee _audit/coverage_after_hotpepper.json
 
       - name: Commit durable bindings and additive shard
