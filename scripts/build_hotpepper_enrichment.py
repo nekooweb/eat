@@ -143,14 +143,25 @@ def parse_budget_band(detail):
     raw = text(budget.get("name"))
     if not raw:
         return None
-    normalized = raw.replace(",", "").replace("，", "")
+    normalized = raw.replace(",", "").replace("，", "").replace("〜", "～").replace("~", "～")
     numbers = [int(item) for item in re.findall(r"\d+", normalized)]
-    # Only two-sided explicit ranges are promoted. Open-ended / single-number
-    # text remains source evidence rather than inventing a missing bound.
+
+    # Explicit two-sided Hot Pepper tiers map directly.
     if len(numbers) >= 2:
         low, high = numbers[0], numbers[1]
         if 0 <= low <= high <= 1000000:
             return [low, high]
+
+    # The official budget master also has an explicit upper-cap tier such as
+    # "～2000円". Encoding that provider-defined interval as [0, 2000] does not
+    # invent an upper or lower commercial threshold; it preserves the stated cap.
+    if len(numbers) == 1 and re.match(r"^\s*[～≤<]", normalized):
+        high = numbers[0]
+        if 0 < high <= 1000000:
+            return [0, high]
+
+    # A lower-bound-only tier such as "10000円～" has no finite upper bound and
+    # is therefore retained only as raw source evidence rather than fabricated.
     return None
 
 
@@ -335,7 +346,8 @@ def main():
             "mediumReviewOnly": True,
             "inventoryOnlyReviewOnly": True,
             "lunchPriceInferred": False,
-            "openEndedBudgetInferred": False,
+            "lowerBoundOnlyBudgetUpperBoundInvented": False,
+            "providerUpperCapMappedFromZero": True,
         },
     }
 
