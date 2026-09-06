@@ -30,22 +30,137 @@ const OPTIONAL_FIELDS = [
   'strictRecommendations'
 ];
 
+const CUISINE_RULES = [
+  [/ラーメン|中華そば|つけ麺/i, '拉面'],
+  [/寿司|すし|鮨/i, '寿司'],
+  [/焼肉|ホルモン/i, '烤肉'],
+  [/韓国/i, '韩国菜'],
+  [/中華|中国料理|四川|広東|台湾/i, '中华'],
+  [/タイ料理|タイ・ベトナム/i, '泰国菜'],
+  [/ベトナム/i, '越南菜'],
+  [/インド.*ネパール|ネパール/i, '印度・尼泊尔'],
+  [/インド/i, '印度菜'],
+  [/アジア|エスニック/i, '亚洲・民族'],
+  [/イタリア/i, '意大利菜'],
+  [/フレンチ|フランス/i, '法国菜'],
+  [/スペイン/i, '西班牙菜'],
+  [/メキシコ/i, '墨西哥菜'],
+  [/ステーキ/i, '牛排'],
+  [/とんかつ/i, '炸猪排'],
+  [/カレー/i, '咖喱'],
+  [/そば|蕎麦/i, '荞麦面'],
+  [/うどん/i, '乌冬'],
+  [/お好み焼/i, '御好烧'],
+  [/もんじゃ/i, '文字烧'],
+  [/ハンバーガ/i, '汉堡'],
+  [/ピザ/i, '披萨'],
+  [/カフェ|喫茶|コーヒー/i, '咖啡'],
+  [/スイーツ|デザート|ケーキ|パフェ/i, '甜品'],
+  [/居酒屋/i, '居酒屋'],
+  [/バー|バル|カクテル/i, '酒吧'],
+  [/洋食/i, '洋食'],
+  [/創作料理/i, '创意料理'],
+  [/和食|日本料理/i, '日式']
+];
+
 function missingCore(row) {
   const missing = row.completeness?.missing || [];
   return CORE_FIELDS.filter((field) => missing.includes(field));
 }
 
+function sourceLabel(value) {
+  if (!value) return '';
+  if (typeof value === 'string') return value.trim();
+  if (typeof value === 'object') return [value.name, value.catch].filter(Boolean).join(' ').trim();
+  return String(value).trim();
+}
+
+function mapHotpepperCuisine(facts) {
+  for (const candidate of [sourceLabel(facts.subGenre), sourceLabel(facts.genre), String(facts.catch || '').trim()]) {
+    if (!candidate) continue;
+    for (const [pattern, cuisine] of CUISINE_RULES) if (pattern.test(candidate)) return cuisine;
+  }
+  return null;
+}
+
+function parseProviderBudgetTier(budget) {
+  if (!budget || typeof budget !== 'object') return null;
+  const raw = String(budget.name || '').trim();
+  if (!raw) return null;
+  const normalized = raw.replaceAll(',', '').replaceAll('，', '').replaceAll('〜', '～').replaceAll('~', '～');
+  const numbers = [...normalized.matchAll(/\d+/g)].map((match) => Number(match[0]));
+  if (numbers.length >= 2) {
+    const [low, high] = numbers;
+    if (Number.isFinite(low) && Number.isFinite(high) && low >= 0 && low <= high && high <= 1000000) return [low, high];
+  }
+  if (numbers.length === 1 && /^\s*[～≤<]/.test(normalized)) {
+    const high = numbers[0];
+    if (high > 0 && high <= 1000000) return [0, high];
+  }
+  return null;
+}
+
+function normalizeYenText(value) {
+  return String(value || '')
+    .replaceAll(',', '')
+    .replaceAll('，', '')
+    .replaceAll('〜', '～')
+    .replaceAll('~', '～')
+    .replaceAll('－', '-')
+    .replaceAll('–', '-')
+    .replaceAll('―', '-');
+}
+
+// Only accept an explicitly lunch-labelled finite interval or upper cap from
+// provider-maintained average/budget memo text. A single price, course price,
+// generic restaurant budget or lower-bound-only statement remains non-canonical.
+function parseExplicitLunchRange(facts) {
+  const budget = facts.budget && typeof facts.budget === 'object' ? facts.budget : {};
+  const raw = normalizeYenText([budget.average, facts.budgetMemo].filter(Boolean).join(' / '));
+  if (!raw || !/(ランチ|昼食|昼平均|昼予算)/.test(raw)) return null;
+
+  const label = '(?:ランチ|昼食|昼平均|昼予算)';
+  const twoSided = new RegExp(`${label}[^0-9]{0,18}(\\d{2,6})\\s*円?\\s*[～-]\\s*(\\d{2,6})\\s*円`, 'i');
+  const match = raw.match(twoSided);
+  if (match) {
+    const low = Number(match[1]);
+    const high = Number(match[2]);
+    if (low >= 0 && low <= high && high <= 1000000) return [low, high];
+  }
+
+  const upperCap = new RegExp(`${label}[^0-9]{0,18}(?:～|<|≤)?\\s*(\\d{2,6})\\s*円\\s*(?:以下|未満)`, 'i');
+  const capMatch = raw.match(upperCap);
+  if (capMatch) {
+    const high = Number(capMatch[1]);
+    if (high > 0 && high <= 1000000) return [0, high];
+  }
+
+  const prefixCap = new RegExp(`${label}[^0-9]{0,18}[～<≤]\\s*(\\d{2,6})\\s*円`, 'i');
+  const prefixMatch = raw.match(prefixCap);
+  if (prefixMatch) {
+    const high = Number(prefixMatch[1]);
+    if (high > 0 && high <= 1000000) return [0, high];
+  }
+
+  return null;
+}
+
 function availableHotpepperCandidates(row) {
   const hp = hpById.get(row.googlePlaceId);
-  if (!hp) return [];
+  // The durable 535-detail layer contains review data for broad high/medium
+  // bindings. Canonical zero-request candidates are restricted to the original
+  // strict automatic gate; manual rich-only exceptions and rejected neighbors
+  // are deliberately excluded here.
+  if (!hp || !row.hotpepperBinding?.autoEligible || !row.currentProduction) return [];
   const facts = hp.facts || {};
   const missing = new Set(row.completeness?.missing || []);
   const candidates = [];
-  if (missing.has('address') && facts.address) candidates.push('address');
-  if (missing.has('cuisine') && facts.genre) candidates.push('cuisine');
-  if (missing.has('dinnerBudget') && facts.budget) candidates.push('dinnerBudget');
-  if (missing.has('openingHours') && facts.openingHoursText) candidates.push('openingHours');
-  if (missing.has('featuredDishes') && facts.catch) candidates.push('featuredDishesReview');
+  if (missing.has('address') && String(facts.address || '').trim()) candidates.push('address');
+  if (missing.has('cuisine') && mapHotpepperCuisine(facts)) candidates.push('cuisine');
+  if (missing.has('lunchBudget') && parseExplicitLunchRange(facts)) candidates.push('lunchBudgetExplicitText');
+  if (missing.has('dinnerBudget') && parseProviderBudgetTier(facts.budget)) candidates.push('dinnerBudget');
+  if (missing.has('openingHours') && String(facts.openingHoursText || '').trim()) candidates.push('openingHours');
+  if (missing.has('featuredDishes') && String(facts.catch || '').trim()) candidates.push('featuredDishesReview');
   if (facts.lunchAvailabilityText) candidates.push('lunchAvailability');
   return candidates;
 }
@@ -63,7 +178,8 @@ function priorityFor(row) {
   if (core.includes('cuisine')) score += 30;
   if (row.sourceState.providerFactRecords > 0) score += 40;
   if (row.sourceState.hotpepperCatalogFacts) score += 35;
-  if (row.hotpepperBinding?.confidence === 'high') score += 20;
+  if (row.hotpepperBinding?.autoEligible) score += 25;
+  else if (row.hotpepperBinding?.confidence === 'high') score += 10;
   return score;
 }
 
@@ -84,6 +200,7 @@ const items = (catalog.rows || []).map((row) => {
   const coreMissing = missingCore(row);
   const optionalMissing = OPTIONAL_FIELDS.filter((field) => row.completeness?.missing?.includes(field));
   const hp = hpById.get(row.googlePlaceId) || null;
+  const candidates = availableHotpepperCandidates(row);
   return {
     googlePlaceId: row.googlePlaceId,
     catalogStatus: row.catalogStatus,
@@ -99,7 +216,10 @@ const items = (catalog.rows || []).map((row) => {
     hotpepperCatalogFacts: Boolean(row.sourceState.hotpepperCatalogFacts),
     hotpepperConfidence: row.hotpepperBinding?.confidence || null,
     hotpepperAutoEligible: Boolean(row.hotpepperBinding?.autoEligible),
-    existingHotpepperFieldCandidates: row.currentProduction ? availableHotpepperCandidates(row) : [],
+    existingHotpepperFieldCandidates: candidates,
+    explicitLunchRangeFromLoadedHotpepper: candidates.includes('lunchBudgetExplicitText')
+      ? parseExplicitLunchRange(hp?.facts || {})
+      : null,
     nextActions: row.nextActions || []
   };
 });
@@ -116,6 +236,7 @@ for (const item of items) counts[item.queue] = (counts[item.queue] || 0) + 1;
 const productionItems = items.filter((item) => item.currentProduction);
 const productionCoreIncomplete = productionItems.filter((item) => item.coreMissing.length);
 const zeroRequestHotpepperCandidates = productionItems.filter((item) => item.existingHotpepperFieldCandidates.length);
+const safeAutoProduction = productionItems.filter((item) => item.hotpepperAutoEligible);
 
 const coreGapCounts = Object.fromEntries(CORE_FIELDS.map((field) => [
   field,
@@ -123,7 +244,7 @@ const coreGapCounts = Object.fromEntries(CORE_FIELDS.map((field) => [
 ]));
 
 const summary = {
-  schemaVersion: 1,
+  schemaVersion: 2,
   checkedAt: catalog.summary?.checkedAt || new Date().toISOString().slice(0, 10),
   identityUniverse: items.length,
   production: productionItems.length,
@@ -131,10 +252,12 @@ const summary = {
   productionCoreComplete: productionItems.length - productionCoreIncomplete.length,
   queueCounts: counts,
   productionCoreGapCounts: coreGapCounts,
-  productionWithLoadedHotpepperFieldCandidates: zeroRequestHotpepperCandidates.length,
-  productionLoadedHotpepperCandidateFieldCounts: {
+  strictAutoHotpepperProductionBindings: safeAutoProduction.length,
+  productionWithLoadedStrictHotpepperFieldCandidates: zeroRequestHotpepperCandidates.length,
+  productionLoadedStrictHotpepperCandidateFieldCounts: {
     address: zeroRequestHotpepperCandidates.filter((item) => item.existingHotpepperFieldCandidates.includes('address')).length,
     cuisine: zeroRequestHotpepperCandidates.filter((item) => item.existingHotpepperFieldCandidates.includes('cuisine')).length,
+    lunchBudgetExplicitText: zeroRequestHotpepperCandidates.filter((item) => item.existingHotpepperFieldCandidates.includes('lunchBudgetExplicitText')).length,
     dinnerBudget: zeroRequestHotpepperCandidates.filter((item) => item.existingHotpepperFieldCandidates.includes('dinnerBudget')).length,
     openingHours: zeroRequestHotpepperCandidates.filter((item) => item.existingHotpepperFieldCandidates.includes('openingHours')).length,
     featuredDishesReview: zeroRequestHotpepperCandidates.filter((item) => item.existingHotpepperFieldCandidates.includes('featuredDishesReview')).length,
@@ -144,9 +267,11 @@ const summary = {
     catalogFirst: true,
     sourceExtractionBeforeBroadDiscovery: true,
     inventoryAdmissionSeparatedFromFieldLoading: true,
+    strictHotpepperGateRequiredForCanonicalCandidates: true,
+    explicitLunchTextRequiresFiniteLabelledRange: true,
     noExternalRequests: true
   }
 };
 
-fs.writeFileSync(OUT, `${JSON.stringify({ schemaVersion: 1, summary, items }, null, 2)}\n`, 'utf8');
+fs.writeFileSync(OUT, `${JSON.stringify({ schemaVersion: 2, summary, items }, null, 2)}\n`, 'utf8');
 console.log(JSON.stringify(summary));
