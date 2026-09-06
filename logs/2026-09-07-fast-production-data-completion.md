@@ -47,6 +47,23 @@ Updated `index.html` asset versions to `20260907-bulk1` for:
 
 This forces browsers to request the newest deployed dataset instead of retaining the previous cache.
 
+## CI verification and shard-name correction
+
+The first CI verification proved that the generator itself was producing a high-yield batch:
+
+- reviewed rich rows: 135;
+- previously represented Hot Pepper source identities: 100;
+- fallback rows generated: 41;
+- fallback field claims: address 41, cuisine 40, dinner budget 40, opening hours 41, closure 41.
+
+That verification also caught an integration bug before treating the work as complete: the first intermediate filename was `source_enrichment_hotpepper_richcore.js`, but the canonical discovery regex accepts only alphanumeric/hyphen characters after the single `source_enrichment_` separator. The second underscore caused the generated shard to be ignored even though generation succeeded.
+
+The output and both workflows were corrected to use:
+
+`data/source_enrichment_hotpepper-richcore.js`
+
+This is now discoverable by the same enrichment loader used by canonical production.
+
 ## Files changed
 
 - `scripts/build_hotpepper_rich_core_fallback.mjs` — new reviewed-rich-to-core fallback generator.
@@ -55,12 +72,6 @@ This forces browsers to request the newest deployed dataset instead of retaining
 - `index.html` — production data cache-bust version.
 - `DEVELOPMENT_FAST_COMPLETION_2026-09-07.md` — development design and maintenance rules.
 - `logs/2026-09-07-fast-production-data-completion.md` — this implementation log.
-
-## Expected effect
-
-This pass is designed to raise useful canonical completeness immediately from already-reviewed retained data, especially among the 135 rich Hot Pepper bindings, without incurring API cost or expanding the restaurant inventory.
-
-The exact gain is intentionally determined by CI after canonical conflict/priority rules are applied; no field is counted merely because it exists in a provider payload.
 
 ## Policy status
 
