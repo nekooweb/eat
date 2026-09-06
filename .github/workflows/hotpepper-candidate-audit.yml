@@ -1,0 +1,65 @@
+name: Audit Hot Pepper candidate against production
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/hotpepper-candidate-audit.yml"
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Enforce no-paid-data-API policy
+        run: node scripts/audit_no_paid_apis.mjs
+
+      - name: Build current production
+        run: |
+          node scripts/test_opening_hours.mjs
+          node scripts/build_production_dataset.mjs
+
+      - name: Download successful Hot Pepper benchmark artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p _hotpepper _audit
+          gh run download 34030943605 \
+            --repo nekooweb/eat \
+            -n hotpepper-area1-enrichment-review \
+            -D _hotpepper
+          test -s _hotpepper/source_enrichment_hotpepper.js
+          test -s _hotpepper/hotpepper_bindings.json
+          test -s _hotpepper/hotpepper_promotion_report.json
+
+      - name: Compare candidate with current production
+        shell: bash
+        run: |
+          set -euo pipefail
+          node scripts/compare_hotpepper_candidate.mjs \
+            _hotpepper/source_enrichment_hotpepper.js \
+            _audit/hotpepper_candidate_comparison.json \
+            | tee _audit/hotpepper_candidate_comparison_console.log
+          test -s _audit/hotpepper_candidate_comparison.json
+
+      - name: Upload comparison audit
+        uses: actions/upload-artifact@v4
+        with:
+          name: hotpepper-candidate-net-new-audit
+          path: _audit
+          if-no-files-found: error
+          retention-days: 3
