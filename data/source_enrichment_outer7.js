@@ -15,7 +15,7 @@ window.RESTAURANTS.push(
     id:'src-official-naru-ochanomizu', profile:'TOKYO', area:'地区1️⃣', name:'JAZZ HOUSE NARU',
     googlePlaceId:'ChIJ09Mm5xmMGGAR6drOCC8NmEA', source:'official', sourceOnly:true,
     cuisine:'酒吧', tags:['酒吧','ジャズクラブ','咖喱'], address:'東京都千代田区神田駿河台2-1 十字屋ビル B1F',
-    dinner:[3000,4999], dishes:['欧風カレー'], openingHoursRaw:'通常ライブ 18:00–22:00; 日 13:30–17:00; 月火限定カレーランチ 11:30–14:00 L.O.',
+    dishes:['欧風カレー'], openingHoursRaw:'通常ライブ 18:00–22:00; 日 13:30–17:00; 月火限定カレーランチ 11:30–14:00 L.O.',
     closedDays:[], closedNote:'公演日程により変動',
     sourceRefs:[{provider:'official',url:'https://visit-chiyoda.tokyo/app/spot/detail/1011',checkedAt:'2026-09-05',fields:['name','cuisine','address','dishes','hours']},{provider:'official',url:'https://ocha-naru.com/',checkedAt:'2026-09-05',fields:['name']}]
   },
