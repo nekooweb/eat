@@ -103,11 +103,14 @@ fs.writeFileSync(AUTO_PATH, autoLines.join('\n'), 'utf8');
 
 const mergeLines = [
   '// Generated late official-field merges for Place IDs that already own another official enrichment row.',
-  '// This file adds no provider row; it mutates the existing row after all normal enrichment shards load.',
+  '// In combined loading this mutates the existing official row. Standalone report loaders receive an equivalent synthetic row.',
   `const AUTO_OFFICIAL_MERGE_PATCHES = ${JSON.stringify(mergePatches, null, 2)};`,
   'for (const patch of AUTO_OFFICIAL_MERGE_PATCHES) {',
-  "  const row = [...window.RESTAURANTS].reverse().find((item) => item && item.googlePlaceId === patch.googlePlaceId && item.source === 'official' && item.sourceOnly);",
-  "  if (!row) throw new Error(`auto-official late merge target missing: ${patch.googlePlaceId}`);",
+  "  let row = [...window.RESTAURANTS].reverse().find((item) => item && item.googlePlaceId === patch.googlePlaceId && item.source === 'official' && item.sourceOnly);",
+  "  if (!row) {",
+  "    row = { id: `src-autoofficial-merge-${patch.googlePlaceId.slice(-12).replace(/[^A-Za-z0-9_-]/g, '')}`, profile: 'TOKYO', area: '地区1️⃣', name: patch.name, googlePlaceId: patch.googlePlaceId, source: 'official', sourceOnly: true, sourceRefs: [] };",
+  "    window.RESTAURANTS.push(row);",
+  "  }",
   "  if (patch.address) row.address = patch.address;",
   "  if (patch.openingHoursRaw) { row.openingHoursRaw = patch.openingHoursRaw; row.closedDays = []; row.closedNote = null; }",
   "  if (patch.cuisine) { row.cuisine = patch.cuisine; row.tags = Array.isArray(patch.tags) ? [...patch.tags] : [patch.cuisine]; }",
