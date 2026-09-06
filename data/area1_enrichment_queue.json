@@ -6,12 +6,12 @@
     "identityUniverse": 2807,
     "production": 662,
     "inventoryOnly": 2145,
-    "productionCoreIncomplete": 559,
-    "productionCoreComplete": 103,
+    "productionCoreIncomplete": 558,
+    "productionCoreComplete": 104,
     "queueCounts": {
-      "production_existing_source_extract": 353,
+      "production_existing_source_extract": 352,
       "production_source_binding": 206,
-      "production_core_complete": 103,
+      "production_core_complete": 104,
       "inventory_open_cross_supported_review": 32,
       "inventory_hotpepper_loaded_review": 384,
       "inventory_open_highmedium_review": 8,
@@ -24,7 +24,7 @@
     "productionCoreGapCounts": {
       "address": 333,
       "cuisine": 55,
-      "lunchBudget": 496,
+      "lunchBudget": 495,
       "dinnerBudget": 402,
       "openingHours": 296,
       "publicSourceEvidence": 210
@@ -51,7 +51,7 @@
     "productionLoadedStrictHotpepperCandidateFieldCounts": {
       "address": 0,
       "cuisine": 0,
-      "lunchBudgetExplicitText": 1,
+      "lunchBudgetExplicitText": 0,
       "dinnerBudget": 0,
       "openingHours": 0,
       "featuredDishesReview": 73,
@@ -15940,114 +15940,6 @@
       ]
     },
     {
-      "googlePlaceId": "ChIJ0yEYvTONGGARdrgMhFNR7oA",
-      "catalogStatus": "production",
-      "currentProduction": true,
-      "name": "BASE CAMP",
-      "candidateName": null,
-      "queue": "production_existing_source_extract",
-      "priorityScore": 1240,
-      "coreMissing": [
-        "lunchBudget"
-      ],
-      "optionalMissing": [
-        "featuredDishes",
-        "strictRecommendations"
-      ],
-      "sourceProviders": [
-        "Hot Pepper",
-        "official"
-      ],
-      "publicSourceLinks": 3,
-      "providerFactRecords": 1,
-      "hotpepperCatalogFacts": true,
-      "hotpepperConfidence": "high",
-      "hotpepperAutoEligible": true,
-      "openCandidate": {
-        "provider": "OpenStreetMap",
-        "sourceCandidateId": "osm-n-6187350566",
-        "name": "Base Camp",
-        "cuisine": "咖啡",
-        "address": null,
-        "lat": 35.702201,
-        "lng": 139.753988,
-        "confidence": "high",
-        "historicalQcStatus": "operational_food",
-        "distanceMeters": 6,
-        "nameSimilarity": 1
-      },
-      "overtureSupport": {
-        "release": "2026-08-19.0",
-        "overtureId": "2a1d27c8-581a-432e-954f-464bfefe77d3",
-        "name": "Base Camp",
-        "basicCategory": "cafe",
-        "websites": [
-          "http://www.cafe-basecamp.com/"
-        ],
-        "brand": {
-          "wikidata": null,
-          "names": {
-            "primary": null,
-            "common": null,
-            "rules": null
-          }
-        },
-        "distanceToOsmMeters": 6,
-        "nameSimilarity": 1,
-        "addressSimilarity": 0,
-        "combinedScore": 0.944,
-        "crossSourceConfidence": "high",
-        "triage": "B_blocker_review"
-      },
-      "existingHotpepperFieldCandidates": [
-        "lunchBudgetExplicitText",
-        "lunchAvailability"
-      ],
-      "explicitLunchRangeFromLoadedHotpepper": [
-        2001,
-        3000
-      ],
-      "nextActions": [
-        "lunchBudget",
-        "featuredDishes",
-        "hotpepperFieldNormalization",
-        "hotpepperRichReview"
-      ],
-      "reviewedAdmission": {
-        "status": "admitted_production",
-        "mode": "historical-id+multisource-reviewed",
-        "reviewedAt": "2026-09-06",
-        "currentnessProvider": "official",
-        "currentnessUrl": "https://www.cafe-basecamp.com/about/",
-        "identityEvidence": {
-          "hotpepperId": "J003465000",
-          "osmCandidateId": "osm-n-6187350566",
-          "overtureId": "2a1d27c8-581a-432e-954f-464bfefe77d3"
-        }
-      },
-      "reviewedCatalogFacts": {
-        "name": "BASE CAMP",
-        "address": "東京都千代田区神田三崎町2-22-8 梨本ビル1F",
-        "lat": 35.7022071746,
-        "lng": 139.7539458748,
-        "cuisine": "咖啡",
-        "hotpepperBudget": [
-          3001,
-          4000
-        ],
-        "hotpepperBudgetRaw": {
-          "code": "B003",
-          "name": "3001～4000円",
-          "average": "ランチ2001～3000円/ディナー3001～4000円"
-        },
-        "openingHoursText": "火: 11:30～14:30水～金、祝日、祝前日: 11:30～14:3017:00～23:30土: 17:00～23:30",
-        "closedText": "月、日",
-        "stationName": "水道橋",
-        "access": "JR水道橋駅より徒歩2分",
-        "hotpepperUrl": "https://www.hotpepper.jp/strJ003465000/?vos=nhppalsa000016"
-      }
-    },
-    {
       "googlePlaceId": "ChIJG1HzOhGMGGARbc3MsTlAYkA",
       "catalogStatus": "production",
       "currentProduction": true,
@@ -21885,6 +21777,107 @@
         "dinnerBudget",
         "featuredDishes"
       ]
+    },
+    {
+      "googlePlaceId": "ChIJ0yEYvTONGGARdrgMhFNR7oA",
+      "catalogStatus": "production",
+      "currentProduction": true,
+      "name": "BASE CAMP",
+      "candidateName": null,
+      "queue": "production_core_complete",
+      "priorityScore": 1100,
+      "coreMissing": [],
+      "optionalMissing": [
+        "featuredDishes",
+        "strictRecommendations"
+      ],
+      "sourceProviders": [
+        "Hot Pepper",
+        "official"
+      ],
+      "publicSourceLinks": 3,
+      "providerFactRecords": 1,
+      "hotpepperCatalogFacts": true,
+      "hotpepperConfidence": "high",
+      "hotpepperAutoEligible": true,
+      "openCandidate": {
+        "provider": "OpenStreetMap",
+        "sourceCandidateId": "osm-n-6187350566",
+        "name": "Base Camp",
+        "cuisine": "咖啡",
+        "address": null,
+        "lat": 35.702201,
+        "lng": 139.753988,
+        "confidence": "high",
+        "historicalQcStatus": "operational_food",
+        "distanceMeters": 6,
+        "nameSimilarity": 1
+      },
+      "overtureSupport": {
+        "release": "2026-08-19.0",
+        "overtureId": "2a1d27c8-581a-432e-954f-464bfefe77d3",
+        "name": "Base Camp",
+        "basicCategory": "cafe",
+        "websites": [
+          "http://www.cafe-basecamp.com/"
+        ],
+        "brand": {
+          "wikidata": null,
+          "names": {
+            "primary": null,
+            "common": null,
+            "rules": null
+          }
+        },
+        "distanceToOsmMeters": 6,
+        "nameSimilarity": 1,
+        "addressSimilarity": 0,
+        "combinedScore": 0.944,
+        "crossSourceConfidence": "high",
+        "triage": "B_blocker_review"
+      },
+      "existingHotpepperFieldCandidates": [
+        "lunchAvailability"
+      ],
+      "explicitLunchRangeFromLoadedHotpepper": null,
+      "nextActions": [
+        "featuredDishes",
+        "hotpepperFieldNormalization",
+        "hotpepperRichReview"
+      ],
+      "reviewedAdmission": {
+        "status": "admitted_production",
+        "mode": "historical-id+multisource-reviewed",
+        "reviewedAt": "2026-09-06",
+        "currentnessProvider": "official",
+        "currentnessUrl": "https://www.cafe-basecamp.com/about/",
+        "identityEvidence": {
+          "hotpepperId": "J003465000",
+          "osmCandidateId": "osm-n-6187350566",
+          "overtureId": "2a1d27c8-581a-432e-954f-464bfefe77d3"
+        }
+      },
+      "reviewedCatalogFacts": {
+        "name": "BASE CAMP",
+        "address": "東京都千代田区神田三崎町2-22-8 梨本ビル1F",
+        "lat": 35.7022071746,
+        "lng": 139.7539458748,
+        "cuisine": "咖啡",
+        "hotpepperBudget": [
+          3001,
+          4000
+        ],
+        "hotpepperBudgetRaw": {
+          "code": "B003",
+          "name": "3001～4000円",
+          "average": "ランチ2001～3000円/ディナー3001～4000円"
+        },
+        "openingHoursText": "火: 11:30～14:30水～金、祝日、祝前日: 11:30～14:3017:00～23:30土: 17:00～23:30",
+        "closedText": "月、日",
+        "stationName": "水道橋",
+        "access": "JR水道橋駅より徒歩2分",
+        "hotpepperUrl": "https://www.hotpepper.jp/strJ003465000/?vos=nhppalsa000016"
+      }
     },
     {
       "googlePlaceId": "ChIJzdH-Ym2NGGARNTgMz5QhTvw",

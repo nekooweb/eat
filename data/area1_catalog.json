@@ -51,7 +51,7 @@
     "productionMissing": {
       "address": 333,
       "cuisine": 55,
-      "lunchBudget": 496,
+      "lunchBudget": 495,
       "dinnerBudget": 402,
       "openingHours": 296,
       "featuredDishes": 533,
@@ -7140,7 +7140,10 @@
         "lng": 139.7539458748,
         "distanceMeters": 775,
         "cuisine": "咖啡",
-        "lunch": null,
+        "lunch": [
+          2001,
+          3000
+        ],
         "dinner": [
           3001,
           4000
@@ -7156,18 +7159,17 @@
           "address": true,
           "coordinates": true,
           "cuisine": true,
-          "lunchBudget": false,
+          "lunchBudget": true,
           "dinnerBudget": true,
           "openingHours": true,
           "featuredDishes": false,
           "strictRecommendations": false,
           "publicSourceEvidence": true
         },
-        "known": 7,
+        "known": 8,
         "total": 10,
-        "ratio": 0.7,
+        "ratio": 0.8,
         "missing": [
-          "lunchBudget",
           "featuredDishes",
           "strictRecommendations"
         ]
@@ -7186,6 +7188,7 @@
           "dinnerBudget",
           "dishes",
           "hours",
+          "lunchBudget",
           "name"
         ],
         "sourceLastCheckedAt": "2026-09-06",
@@ -7298,7 +7301,6 @@
         }
       },
       "nextActions": [
-        "lunchBudget",
         "featuredDishes",
         "hotpepperFieldNormalization",
         "hotpepperRichReview"
