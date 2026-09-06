@@ -2,10 +2,6 @@ name: Promote source provenance overlay
 
 on:
   workflow_dispatch:
-  push:
-    branches: ["main"]
-    paths:
-      - ".github/workflows/promote-source-provenance.yml"
 
 permissions:
   contents: write
@@ -45,5 +41,5 @@ jobs:
             echo "No source provenance changes to commit."
             exit 0
           fi
-          git commit -m "Add public source provenance overlay"
+          git commit -m "Refresh public source provenance overlay"
           git push
