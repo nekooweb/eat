@@ -3,10 +3,6 @@ name: Promote Hot Pepper rich metadata
 
 on:
   workflow_dispatch:
-  push:
-    branches: ["main"]
-    paths:
-      - ".github/workflows/promote-hotpepper-rich-metadata.yml"
 
 permissions:
   contents: write
@@ -47,12 +43,13 @@ jobs:
           set -euo pipefail
           rm -rf _hotpepper _audit
           mkdir -p _hotpepper _audit
-          gh run download 34034176471 \
+          gh run download 34034504592 \
             --repo nekooweb/eat \
             -n hotpepper-rich-refresh-audit \
             -D _hotpepper
           test -s _hotpepper/hotpepper_rich_details.json
           test -s data/hotpepper_bindings.json
+          test -s data/hotpepper_manual_rich_bindings.json
 
       - name: Build rich metadata overlay
         shell: bash
@@ -62,28 +59,16 @@ jobs:
             data/hotpepper_bindings.json \
             _hotpepper/hotpepper_rich_details.json \
             data/hotpepper_rich_metadata.js \
+            data/hotpepper_manual_rich_bindings.json \
             | tee _audit/hotpepper_rich_metadata_summary.json
           test -s data/hotpepper_rich_metadata.js
           node --check data/hotpepper_rich_metadata.js
 
-      - name: Validate exact production attachment
-        shell: bash
-        run: |
-          set -euo pipefail
-          node - <<'NODE' | tee _audit/hotpepper_rich_metadata_validation.json
-          const fs=require('fs'); const vm=require('vm');
-          const sandbox={window:{}}; vm.createContext(sandbox);
-          vm.runInContext(fs.readFileSync('data/production_area1.js','utf8'),sandbox);
-          vm.runInContext(fs.readFileSync('data/hotpepper_rich_metadata.js','utf8'),sandbox);
-          const production=sandbox.window.PRODUCTION_RESTAURANTS||[];
-          const payload=sandbox.window.HOTPEPPER_RICH_METADATA||{rows:[]};
-          const ids=new Set(production.map(r=>r.googlePlaceId));
-          const missing=payload.rows.filter(r=>!ids.has(r.googlePlaceId)).map(r=>r.googlePlaceId);
-          const duplicate=payload.rows.length-new Set(payload.rows.map(r=>r.googlePlaceId)).size;
-          if(missing.length||duplicate) throw new Error(JSON.stringify({missing,duplicate}));
-          const attached=production.filter(r=>r.hotpepperId).length;
-          console.log(JSON.stringify({status:'pass',rows:payload.rows.length,attached,summary:payload.summary},null,2));
-          NODE
+      - name: Build source provenance for overlay audit
+        run: node scripts/build_source_provenance.mjs
+
+      - name: Validate runtime overlays
+        run: node scripts/audit_runtime_overlays.mjs | tee _audit/runtime_overlay_validation.json
 
       - name: Commit rich metadata
         shell: bash
@@ -96,7 +81,7 @@ jobs:
             echo "No rich metadata changes to commit."
             exit 0
           fi
-          git commit -m "Preserve raw Hot Pepper source facts"
+          git commit -m "Preserve reviewed Hot Pepper rich metadata"
           git push
 
       - name: Upload audit
