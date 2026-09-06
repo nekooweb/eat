@@ -1,0 +1,30 @@
+name: Audit existing-source field candidates
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/audit-existing-source-candidates.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Enforce no-paid-data-API policy
+        run: node scripts/audit_no_paid_apis.mjs
+      - name: Rebuild current production and evidence overlays
+        run: |
+          set -euo pipefail
+          node scripts/build_production_dataset.mjs
+          node scripts/build_source_provenance.mjs
+          node scripts/build_source_facts.mjs
+      - name: Audit already-loaded field candidates
+        run: node scripts/audit_existing_source_field_candidates.mjs | tee /tmp/existing_source_candidates.json
