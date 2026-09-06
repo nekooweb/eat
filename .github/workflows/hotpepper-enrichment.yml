@@ -2,6 +2,10 @@ name: Hot Pepper Area1 enrichment benchmark
 
 on:
   workflow_dispatch:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/hotpepper-enrichment.yml"
 
 permissions:
   contents: read
