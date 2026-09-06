@@ -29,7 +29,7 @@ Canonical filtering/recommendation state remains:
 - 百名店: **22**;
 - unprovenanced stored meal-price fields: **0**.
 
-The new rich/provenance overlays expand field breadth without changing those canonical counts.
+Rich/provenance overlays expand field breadth without changing those canonical counts.
 
 ## Hot Pepper benchmark and canonical landing
 
@@ -93,13 +93,13 @@ Measured canonical gains against a true no-Hot-Pepper baseline:
 
 The additive production invariant reported **zero violations**.
 
-## Rich metadata expansion
+## Maximum non-image rich metadata expansion
 
-Canonical fields intentionally omit many useful source-native attributes. A separate runtime overlay now retains them without weakening canonical filter rules.
+Canonical fields intentionally omit many useful source-native attributes. A separate runtime overlay retains them without weakening canonical filter rules.
 
-### Reviewed set
+### Reviewed set and final refresh
 
-Focused Actions run `34034504592` refreshed only already-reviewed current-production bindings:
+The final focused refresh is Actions run `34035124635`:
 
 - strict automatic bindings: **128**;
 - manually reviewed exact exceptions: **7**;
@@ -108,11 +108,13 @@ Focused Actions run `34034504592` refreshed only already-reviewed current-produc
 - returned rows: **135 / 135**;
 - missing rows: **0**;
 - geographic discovery repeated: **no**;
-- identity matching repeated: **no**.
+- identity matching repeated: **no**;
+- optional response blocks: **credit_card + special**;
+- photos/logo persisted: **no**.
 
 The manual review inspected all 13 current-production bindings that had not passed the automatic rich gate. Seven were exact shops after review; six were neighboring/different businesses and were explicitly rejected. The allow/reject ledger is `data/hotpepper_manual_rich_bindings.json`.
 
-### Rich field coverage
+### Maximum rich field coverage
 
 For the 135 reviewed Hot Pepper rows:
 
@@ -120,6 +122,7 @@ For the 135 reviewed Hot Pepper rows:
 - name kana: **135**;
 - source address: **135**;
 - source coordinates: **135**;
+- Hot Pepper area hierarchy: **135**;
 - raw genre/sub-genre: **135**;
 - raw budget object: **135**;
 - nearest station: **135**;
@@ -134,7 +137,10 @@ For the 135 reviewed Hot Pepper rows:
 - raw closure text: **135**;
 - Hot Pepper shop URL: **135**;
 - coupon URL: **135**;
-- service/amenity metadata: **135**.
+- mobile coupon status: **135**;
+- credit-card brand list: **119 restaurants / 593 brand entries**;
+- Hot Pepper special-feature list: **40 restaurants / 160 feature entries**;
+- raw service/amenity metadata: **135**.
 
 Normalized amenity coverage includes:
 
@@ -158,13 +164,15 @@ Normalized amenity coverage includes:
 - course availability: **123 / 135**;
 - unambiguous Wi-Fi boolean: **107 / 135**.
 
-Raw provider text is retained for all source-supplied service fields. Thus ambiguous Wi-Fi/service text remains available without being forced into a false boolean.
+Raw provider text is retained for source-supplied service fields, so ambiguous Wi-Fi/service text remains available without being forced into a false boolean.
+
+The first post-refresh build exposed one normalizer bug: numeric `ktai_coupon=0` was treated as empty by a generic text helper. The helper now preserves numeric zero, and the overlay was rebuilt from the successful run artifact without additional API calls. Mobile-coupon normalization therefore increased **97 -> 135** while the final network cost remained seven requests.
 
 `data/hotpepper_rich_metadata.js` does **not** create identities or overwrite canonical name/address/cuisine/budget/hours.
 
 ## Public source provenance expansion
 
-`scripts/build_source_provenance.mjs` now materializes maintained evidence into `data/source_provenance.js`.
+`scripts/build_source_provenance.mjs` materializes maintained evidence into `data/source_provenance.js`.
 
 Current measured coverage:
 
@@ -184,7 +192,7 @@ Runtime provenance fields:
 - `sourceClaimedFields` — union of maintained field claims;
 - `sourceLastCheckedAt` — latest maintained evidence date.
 
-Historical/Google source refs are excluded. The overlay is built entirely from already-maintained repository evidence and therefore requires **zero network/API requests**.
+Historical/Google source refs are excluded. The overlay is built entirely from already-maintained repository evidence and requires **zero network/API requests**.
 
 ## Independent lunch / dinner resolver
 
@@ -295,6 +303,7 @@ Therefore the next phase remains **existing-source extraction first**, not broad
 - Historical Google Place IDs are compatibility keys, not an active paid provider.
 - No paid Google place/search data API is executed by maintenance workflows.
 - Missing or ambiguous fields remain unknown.
+- Numeric/enum provider value `0` is preserved as data and is not treated as missing.
 - Strong-source conflicts are retained; ranges are never silently averaged.
 - A source-only price requires explicit field provenance.
 - B-class official-menu-derived values must be reproducible from maintained observed prices.
