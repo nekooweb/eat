@@ -8,13 +8,13 @@ on:
 
 permissions:
   actions: read
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
 concurrency:
   group: pages-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   build:
@@ -22,6 +22,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
@@ -93,13 +95,36 @@ jobs:
           node scripts/build_hotpepper_rich_core_fallback.mjs
           test -s data/source_enrichment_hotpepper-richcore.js
           node --check data/source_enrichment_hotpepper-richcore.js
-      - name: Build strict Google-bound canonical production
+      - name: Build strict canonical core
         run: |
           node scripts/test_opening_hours.mjs
           node scripts/test_price_resolver.mjs
           node scripts/build_production_dataset.mjs
           node scripts/build_source_provenance.mjs
           node scripts/build_source_facts.mjs
+      - name: Build exact 2804 Google inventory runtime
+        run: |
+          set -euo pipefail
+          python3 scripts/patch_frontend_google_inventory.py
+          node scripts/build_google_inventory_runtime.mjs | tee _audit/google_inventory_runtime_summary.json
+          node --check data/google_inventory_runtime.js
+          node scripts/audit_google_inventory_runtime.mjs | tee _audit/google_inventory_runtime_audit.json
+          test -s data/google_inventory_runtime.js
+      - name: Persist recovered basics and runtime
+        if: github.event_name == 'push'
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/google_basic_source_matches.json data/google_inventory_runtime.js app.js index.html
+          if git diff --cached --quiet; then
+            echo "Recovered basics/runtime already current."
+            exit 0
+          fi
+          git commit -m "Publish exact 2804 Google inventory runtime"
+          git fetch origin main
+          git rebase origin/main
+          git push origin HEAD:main
       - name: Static and canonical repository checks
         run: |
           mkdir -p _audit
@@ -107,11 +132,14 @@ jobs:
           {
             node --check app.js
             node --check effects.js
+            node --check data/google_inventory_runtime.js
             node --check data/hotpepper_rich_metadata.js
             node --check data/source_enrichment_hotpepper-richcore.js
             node --check data/source_provenance.js
             node --check data/source_facts.js
             node --check scripts/audit_no_paid_apis.mjs
+            node --check scripts/audit_google_inventory_runtime.mjs
+            node --check scripts/build_google_inventory_runtime.mjs
             node --check scripts/build_hotpepper_rich_core_fallback.mjs
             node --check scripts/build_production_dataset.mjs
             node --check scripts/build_enrichment_queue.mjs
@@ -124,6 +152,7 @@ jobs:
             python3 -m py_compile \
               scripts/recover_google_inventory_basic.py \
               scripts/patch_google_recovery_parser.py \
+              scripts/patch_frontend_google_inventory.py \
               scripts/verify_google_places.py \
               scripts/verify_curated_google.py \
               scripts/discover_google_area1.py \
@@ -137,6 +166,7 @@ jobs:
               scripts/build_hotpepper_rich_metadata.py \
               scripts/collect_hotpepper_rich_details.py
             test -s data/production_area1.js
+            test -s data/google_inventory_runtime.js
             test -s data/hotpepper_rich_metadata.js
             test -s data/source_provenance.js
             test -s data/source_facts.js
@@ -144,6 +174,7 @@ jobs:
             node scripts/audit_source_bindings.mjs
             node scripts/audit_normalized_fields.mjs
             node scripts/audit_runtime_overlays.mjs
+            node scripts/audit_google_inventory_runtime.mjs
           } 2>&1 | tee _audit/static_checks.log
       - name: Coverage and dish-first enrichment queue
         run: |
@@ -176,13 +207,26 @@ jobs:
           path: _audit
           if-no-files-found: warn
           retention-days: 3
-      - name: Assemble public site without API keys
+      - name: Assemble public site with free Google Maps Embed
+        env:
+          GOOGLE_MAPS_EMBED_KEY: ${{ secrets.GOOGLE_MAP_API }}
         run: |
+          set -euo pipefail
           mkdir -p _site/data _site/voice _site/image
           cp index.html styles.css effects.css app.js effects.js privacy.html terms.html _site/
-          cp data/production_area1.js data/source_provenance.js data/source_facts.js data/hotpepper_rich_metadata.js _site/data/
+          cp data/production_area1.js data/google_inventory_runtime.js data/source_provenance.js data/source_facts.js data/hotpepper_rich_metadata.js _site/data/
           cp voice/*.mp3 _site/voice/
           cp image/*.webp _site/image/
+          python3 - <<'PY'
+          import os
+          from pathlib import Path
+          path = Path('_site/index.html')
+          text = path.read_text(encoding='utf-8')
+          key = os.environ.get('GOOGLE_MAPS_EMBED_KEY', '').strip()
+          if key:
+              text = text.replace('__GOOGLE_MAPS_EMBED_KEY__', key)
+          path.write_text(text, encoding='utf-8')
+          PY
       - name: Upload build for review
         if: github.event_name == 'pull_request'
         uses: actions/upload-artifact@v4
