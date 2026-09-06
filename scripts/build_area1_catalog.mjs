@@ -23,6 +23,9 @@ const inventory = readJson('area1_google_ids.json');
 const hotpepperBindings = exists('hotpepper_bindings.json')
   ? readJson('hotpepper_bindings.json')
   : { bindings: [], summary: {} };
+const hotpepperCatalogFacts = exists('hotpepper_catalog_facts.json')
+  ? readJson('hotpepper_catalog_facts.json')
+  : { rows: [], summary: {} };
 
 const sandbox = { window: {}, console };
 vm.createContext(sandbox);
@@ -47,6 +50,7 @@ const provenanceById = new Map((provenance.rows || []).map((row) => [row.googleP
 const factsById = new Map((sourceFacts.rows || []).map((row) => [row.googlePlaceId, row]));
 const richById = new Map((rich.rows || []).map((row) => [row.googlePlaceId, row]));
 const hpById = new Map((hotpepperBindings.bindings || []).map((row) => [row.googlePlaceId, row]));
+const hpCatalogFactsById = new Map((hotpepperCatalogFacts.rows || []).map((row) => [row.googlePlaceId, row]));
 
 const allIds = new Set([...frozenIds, ...productionById.keys()]);
 
@@ -87,7 +91,7 @@ function completenessFor(row, prov) {
   };
 }
 
-function nextActions({ isProduction, hp, prov, facts, richRow, completeness }) {
+function nextActions({ isProduction, hp, hpCatalogFact, prov, facts, richRow, completeness }) {
   const actions = [];
   if (isProduction) {
     if (!prov?.sourceLinks?.length) actions.push('sourceBinding');
@@ -98,7 +102,12 @@ function nextActions({ isProduction, hp, prov, facts, richRow, completeness }) {
     if (completeness?.missing?.includes('openingHours')) actions.push('openingHours');
     if (completeness?.missing?.includes('featuredDishes')) actions.push('featuredDishes');
     if (!facts?.sourceFacts?.length) actions.push('providerFacts');
+    if (hpCatalogFact) actions.push('hotpepperFieldNormalization');
     if (hp && !richRow) actions.push('hotpepperRichReview');
+  } else if (hpCatalogFact) {
+    actions.push('fieldNormalization');
+    actions.push('currentness');
+    actions.push('identityAdmissionReview');
   } else if (hp) {
     actions.push('sourceDetail');
     actions.push('currentness');
@@ -116,6 +125,7 @@ const rows = [...allIds].sort().map((googlePlaceId) => {
   const facts = factsById.get(googlePlaceId) || null;
   const richRow = richById.get(googlePlaceId) || null;
   const hp = hpById.get(googlePlaceId) || null;
+  const hpCatalogFact = hpCatalogFactsById.get(googlePlaceId) || null;
   const inFrozenInventory = frozenIds.has(googlePlaceId);
   const isProduction = Boolean(prod);
   const completeness = completenessFor(prod, prov);
@@ -123,7 +133,7 @@ const rows = [...allIds].sort().map((googlePlaceId) => {
   for (const source of prod?.sources || []) providerSet.add(source);
   for (const ref of prov?.sourceLinks || []) providerSet.add(ref.provider);
   for (const fact of facts?.sourceFacts || []) providerSet.add(fact.provider);
-  if (hp) providerSet.add('Hot Pepper');
+  if (hp || hpCatalogFact) providerSet.add('Hot Pepper');
 
   return {
     googlePlaceId,
@@ -152,6 +162,8 @@ const rows = [...allIds].sort().map((googlePlaceId) => {
       sourceClaimedFields: prov?.sourceClaimedFields || [],
       sourceLastCheckedAt: prov?.sourceLastCheckedAt || null,
       providerFactRecords: facts?.sourceFacts?.length || 0,
+      hotpepperCatalogFacts: Boolean(hpCatalogFact),
+      hotpepperCatalogFactFields: hpCatalogFact ? Object.keys(hpCatalogFact.facts || {}).sort() : [],
       hotpepperRichMetadata: Boolean(richRow)
     },
     hotpepperBinding: hp ? {
@@ -166,7 +178,7 @@ const rows = [...allIds].sort().map((googlePlaceId) => {
       combinedScore: hp.combinedScore ?? null,
       seedSource: hp.seedSource || null
     } : null,
-    nextActions: nextActions({ isProduction, hp, prov, facts, richRow, completeness })
+    nextActions: nextActions({ isProduction, hp, hpCatalogFact, prov, facts, richRow, completeness })
   };
 });
 
@@ -175,7 +187,7 @@ const inventoryOnlyRows = rows.filter((row) => row.catalogStatus === 'inventory_
 const missingCount = (field) => productionRows.filter((row) => row.completeness?.missing?.includes(field)).length;
 
 const summary = {
-  schemaVersion: 1,
+  schemaVersion: 2,
   scope: inventory.scope || 'TOKYO/地区1️⃣',
   checkedAt: new Date().toISOString().slice(0, 10),
   identityUniverse: rows.length,
@@ -185,8 +197,11 @@ const summary = {
   productionOutsideFrozenInventory: productionRows.filter((row) => row.productionOutsideFrozenInventory).length,
   inventoryOnly: inventoryOnlyRows.length,
   hotpepperBindings: rows.filter((row) => row.hotpepperBinding).length,
+  hotpepperCatalogFactRows: rows.filter((row) => row.sourceState.hotpepperCatalogFacts).length,
   productionHotpepperBindings: productionRows.filter((row) => row.hotpepperBinding).length,
+  productionHotpepperCatalogFacts: productionRows.filter((row) => row.sourceState.hotpepperCatalogFacts).length,
   inventoryOnlyHotpepperBindings: inventoryOnlyRows.filter((row) => row.hotpepperBinding).length,
+  inventoryOnlyHotpepperCatalogFacts: inventoryOnlyRows.filter((row) => row.sourceState.hotpepperCatalogFacts).length,
   productionWithPublicSourceEvidence: productionRows.filter((row) => row.sourceState.publicSourceLinks > 0).length,
   productionWithProviderFacts: productionRows.filter((row) => row.sourceState.providerFactRecords > 0).length,
   productionWithRichMetadata: productionRows.filter((row) => row.sourceState.hotpepperRichMetadata).length,
@@ -204,11 +219,12 @@ const summary = {
     catalogFirst: true,
     allKnownIdentitySlotsLoadedBeforeEnrichment: true,
     inventoryOnlyDoesNotEqualProductionAdmission: true,
+    sourceNativeFactsMayExistBeforeAdmission: true,
     transientGoogleDisplayPayloadPersisted: false,
     paidGoogleDataApiCalls: 0
   }
 };
 
-const payload = { schemaVersion: 1, summary, rows };
+const payload = { schemaVersion: 2, summary, rows };
 fs.writeFileSync(OUT, `${JSON.stringify(payload, null, 2)}\n`, 'utf8');
 console.log(JSON.stringify(summary));
