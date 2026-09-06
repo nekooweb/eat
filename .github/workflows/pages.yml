@@ -46,6 +46,8 @@ jobs:
           node scripts/build_public_open_pool.mjs | tee _audit/public_pool.json
           test -s data/public_pool_area1.js
           node --check data/public_pool_area1.js
+          node scripts/apply_public_featured_dishes.mjs | tee _audit/public_featured_dishes_apply.json
+          node --check data/public_pool_area1.js
           node scripts/build_public_dish_queue.mjs _audit/public_dish_queue.json | tee _audit/public_dish_queue_summary.json
           test -s _audit/public_dish_queue.json
       - name: Static and repository checks
@@ -63,6 +65,8 @@ jobs:
             node --check scripts/audit_no_paid_apis.mjs
             node --check scripts/build_hotpepper_rich_core_fallback.mjs
             node --check scripts/build_public_open_pool.mjs
+            node --check scripts/collect_public_featured_dishes.mjs
+            node --check scripts/apply_public_featured_dishes.mjs
             node --check scripts/build_public_dish_queue.mjs
             node --check scripts/price_resolver.mjs
             node --check scripts/audit_price_resolution.mjs
