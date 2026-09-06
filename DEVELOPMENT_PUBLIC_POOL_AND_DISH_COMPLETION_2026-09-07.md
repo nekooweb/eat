@@ -41,7 +41,7 @@ The builder consumes only retained/free data already present in the repository:
 
 The builder removes exact-name/near-location duplicates against the canonical core and against earlier public rows. Public/open rows use `identityAdmission: open_public_catalog` and are never counted as canonical Google-verified identities.
 
-The first CI generation produced:
+The current CI generation produces:
 
 - canonical core: 662;
 - public/open rows: 4,571;
@@ -64,11 +64,11 @@ Rows sourced only from Overture/OpenStreetMap do not receive a fake Google Place
 
 ## Featured dishes: verified vs reference
 
-Featured-dish information is now explicitly split into two states.
+Featured-dish information is explicitly split into two states.
 
 ### `特色菜`
 
-Used only when an existing restaurant/provider source supports the dish, through canonical `featuredDishes` or `recommendedDishes`.
+Used only when an existing restaurant/provider source supports the dish, through canonical `featuredDishes` / `recommendedDishes` or a provider-native signature description that passes the public-pool evidence rule.
 
 ### `参考菜品`
 
@@ -79,6 +79,33 @@ Used when source-backed store-specific signature dishes are not complete yet. It
 Examples include ramen for a ramen shop, curry for a curry shop, or chain-level product families such as beef bowls for Yoshinoya. These hints improve the immediate usefulness of the 2,000+ expansion but do **not** count as verified featured-dish completion.
 
 The UI and footer explicitly disclose this distinction.
+
+## First source-backed public featured-dish tranche
+
+The public-pool builder now reuses retained Hot Pepper source-native descriptive text to promote a subset of public records from `参考菜品` to true source-backed `特色菜`.
+
+A promotion is allowed only when the same current provider text contains both:
+
+1. explicit signature/recommendation semantics such as `自慢`, `名物`, `看板`, `おすすめ`, `人気`, `絶品`, `専門`, `イチオシ` or equivalent wording; and
+2. a recognized concrete food/dish term.
+
+Generic genre labels alone are not sufficient.
+
+Every promoted dish stores:
+
+- Chinese display name;
+- matched Japanese source term;
+- provider (`Hot Pepper`);
+- original provider URL;
+- checked date;
+- `evidenceClass: provider_signature_description`;
+- the bounded provider text that justified promotion.
+
+The first CI tranche produced:
+
+- 57 public restaurants with source-backed featured dishes;
+- 65 source-backed featured-dish items;
+- all other public restaurants remain explicitly at `reference_hint` rather than being mislabeled as verified featured dishes.
 
 ## Source-backed featured-dish completion queue
 
@@ -94,11 +121,11 @@ This produces a full work queue for upgrading reference hints into actual source
 4. Overture identities requiring official-menu discovery;
 5. OSM identities requiring official/Tabelog/menu-source discovery.
 
-Reference hints never satisfy the queue's definition of completion.
+Reference hints never satisfy the queue's definition of completion. Rows that acquire source-backed `featuredDishes` or `recommendedDishes` are removed from subsequent queue generations, so completed restaurants are not repeatedly collected.
 
 ## Runtime changes
 
-`app.js` now merges:
+`app.js` merges:
 
 `PRODUCTION_RESTAURANTS + PUBLIC_OPEN_RESTAURANTS`
 
@@ -122,7 +149,8 @@ GitHub Pages generates the public pool after canonical production and before rep
 - every public row has a unique public identity key;
 - every public row has name, coordinates and a <=1.2 km distance;
 - every public row has a reference dish hint;
-- reference hints are explicitly marked reference-only;
+- `reference_hint` rows do not carry source-backed featured dishes;
+- `provider_signature_text` rows carry valid Hot Pepper URL/date/evidence metadata;
 - forbidden Google response-content fields are not persisted.
 
 ## Data-cost policy
@@ -131,4 +159,4 @@ This expansion uses zero paid Google Places/Text Search/Place Details calls. Ove
 
 ## Next enrichment focus
 
-Restaurant identity count is no longer the bottleneck. Future development should prioritize upgrading dish state in the generated queue from `参考菜品` to source-backed `特色菜`, followed by hours, lunch/dinner budgets and addresses.
+Restaurant identity count is no longer the bottleneck. Development priority is now to upgrade the remaining dish-completion queue from `参考菜品` to source-backed `特色菜`, first exhausting retained Hot Pepper/provider/official-menu evidence, then discovering sources for the remaining Overture/OSM identities. Hours, lunch/dinner budgets and addresses remain secondary to featured-dish completion.
