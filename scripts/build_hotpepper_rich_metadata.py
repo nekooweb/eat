@@ -8,7 +8,7 @@ as address/cuisine/budget/hours.
 
 Inputs:
   hotpepper_bindings.json
-  hotpepper_bound_details.json
+  hotpepper rich/detail JSON
 Output:
   hotpepper_rich_metadata.js
 
@@ -19,7 +19,6 @@ runtime when loaded after production_area1.js. No photos are stored.
 from __future__ import annotations
 
 import json
-import re
 import sys
 from pathlib import Path
 
@@ -41,7 +40,11 @@ def integer(value):
     return parsed if parsed >= 0 else None
 
 
-def prefix_bool(value, true_prefixes=("あり", "利用可", "営業している", "可"), false_prefixes=("なし", "利用不可", "営業していない", "不可")):
+def prefix_bool(
+    value,
+    true_prefixes=("あり", "利用可", "営業している", "可"),
+    false_prefixes=("なし", "利用不可", "営業していない", "不可"),
+):
     value = text(value)
     if not value:
         return None
@@ -60,14 +63,39 @@ def add_bool(target, key, value, **kwargs):
         target[key] = parsed
 
 
-def add_text(target, key, value):
-    value = text(value)
-    if value:
-        target[key] = value
-
-
 def nonempty_dict(value):
     return value if isinstance(value, dict) else {}
+
+
+RAW_SERVICE_FIELDS = (
+    ("wifi", "wifi"),
+    ("wedding", "wedding"),
+    ("course", "course"),
+    ("freeDrink", "allYouCanDrink"),
+    ("freeFood", "allYouCanEat"),
+    ("privateRoom", "privateRoom"),
+    ("horigotatsu", "horigotatsu"),
+    ("tatami", "tatami"),
+    ("card", "card"),
+    ("nonSmoking", "smoking"),
+    ("charter", "charter"),
+    ("ktai", "mobileSignal"),
+    ("parking", "parking"),
+    ("barrierFree", "barrierFree"),
+    ("otherMemo", "otherEquipment"),
+    ("sommelier", "sommelier"),
+    ("openAir", "openAir"),
+    ("show", "liveShow"),
+    ("equipment", "entertainmentEquipment"),
+    ("karaoke", "karaoke"),
+    ("band", "bandPerformance"),
+    ("tv", "tvProjector"),
+    ("english", "englishMenu"),
+    ("pet", "pet"),
+    ("child", "children"),
+    ("midnight", "lateNight"),
+    ("shopDetailMemo", "shopDetail"),
+)
 
 
 def main():
@@ -101,6 +129,7 @@ def main():
 
         urls = nonempty_dict(detail.get("urls"))
         coupon_urls = nonempty_dict(detail.get("couponUrls"))
+
         amenities = {}
         add_bool(amenities, "courseAvailable", detail.get("course"))
         add_bool(amenities, "allYouCanDrink", detail.get("freeDrink"))
@@ -111,7 +140,13 @@ def main():
         add_bool(amenities, "wifiAvailable", detail.get("wifi"))
         add_bool(amenities, "horigotatsu", detail.get("horigotatsu"))
         add_bool(amenities, "tatami", detail.get("tatami"))
-        add_bool(amenities, "charterAvailable", detail.get("charter"))
+        add_bool(
+            amenities,
+            "charterAvailable",
+            detail.get("charter"),
+            true_prefixes=("貸切可", "あり", "利用可", "可"),
+            false_prefixes=("貸切不可", "なし", "利用不可", "不可"),
+        )
         add_bool(amenities, "barrierFree", detail.get("barrierFree"))
         add_bool(amenities, "sommelier", detail.get("sommelier"))
         add_bool(amenities, "openAir", detail.get("openAir"))
@@ -122,25 +157,25 @@ def main():
         add_bool(amenities, "englishMenu", detail.get("english"))
         add_bool(amenities, "petAllowed", detail.get("pet"))
         add_bool(amenities, "lateNightAfter23", detail.get("midnight"))
-        add_text(amenities, "smokingPolicy", detail.get("nonSmoking"))
+        add_bool(
+            amenities,
+            "childrenWelcome",
+            detail.get("child"),
+            true_prefixes=("お子様連れ歓迎", "お子様連れOK", "あり"),
+            false_prefixes=("お子様連れ不可", "なし"),
+        )
+        smoking = text(detail.get("nonSmoking"))
+        if smoking:
+            amenities["smokingPolicy"] = smoking
 
-        notes = {}
-        for source_key, output_key in (
-            ("course", "course"),
-            ("freeDrink", "allYouCanDrink"),
-            ("freeFood", "allYouCanEat"),
-            ("privateRoom", "privateRoom"),
-            ("parking", "parking"),
-            ("wedding", "wedding"),
-            ("ktai", "mobileSignal"),
-            ("otherMemo", "otherEquipment"),
-            ("equipment", "entertainmentEquipment"),
-            ("child", "children"),
-            ("shopDetailMemo", "shopDetail"),
-        ):
+        # Preserve the provider's complete service text alongside normalized
+        # booleans. This avoids losing conditions such as "course only",
+        # nearby coin parking, private-room capacity, child-seat caveats, etc.
+        source_service_text = {}
+        for source_key, output_key in RAW_SERVICE_FIELDS:
             value = text(detail.get(source_key))
-            if value and (":" in value or "：" in value or len(value) > 12):
-                notes[output_key] = value
+            if value:
+                source_service_text[output_key] = value
 
         row = {
             "googlePlaceId": google_id,
@@ -157,7 +192,7 @@ def main():
             "capacity": integer(detail.get("capacity")),
             "partyCapacity": integer(detail.get("partyCapacity")),
             "amenities": amenities or None,
-            "serviceNotes": notes or None,
+            "sourceServiceText": source_service_text or None,
             "checkedAt": checked_at,
             "source": "Hot Pepper Gourmet Web Service",
         }
@@ -169,7 +204,7 @@ def main():
     summary_keys = [
         "nameKana", "nearestStation", "accessText", "mobileAccessText",
         "budgetMemo", "sourceCatch", "lunchAvailable", "capacity",
-        "partyCapacity", "amenities", "serviceNotes", "hotpepperUrl", "couponUrl",
+        "partyCapacity", "amenities", "sourceServiceText", "hotpepperUrl", "couponUrl",
     ]
     summary = {key: sum(key in row for row in rows) for key in summary_keys}
     amenity_keys = sorted({key for row in rows for key in row.get("amenities", {})})
@@ -177,10 +212,15 @@ def main():
         key: sum(key in row.get("amenities", {}) for row in rows)
         for key in amenity_keys
     }
+    service_text_keys = sorted({key for row in rows for key in row.get("sourceServiceText", {})})
+    summary["sourceServiceTextFields"] = {
+        key: sum(key in row.get("sourceServiceText", {}) for row in rows)
+        for key in service_text_keys
+    }
     summary["rows"] = len(rows)
 
     payload = {
-        "schemaVersion": 2,
+        "schemaVersion": 3,
         "checkedAt": checked_at,
         "source": "Hot Pepper Gourmet Web Service",
         "policy": {
@@ -188,6 +228,7 @@ def main():
             "createsProductionIdentity": False,
             "overwritesCanonicalCoreFields": False,
             "photosStored": False,
+            "rawServiceTextPreserved": True,
         },
         "summary": summary,
         "rows": rows,
@@ -203,7 +244,7 @@ def main():
         "  for (const meta of window.HOTPEPPER_RICH_METADATA.rows) {\n"
         "    const row=richById.get(meta.googlePlaceId);\n"
         "    if (!row) continue;\n"
-        "    for (const key of ['hotpepperId','hotpepperUrl','couponUrl','nameKana','nearestStation','accessText','mobileAccessText','budgetMemo','sourceCatch','lunchAvailable','capacity','partyCapacity','amenities','serviceNotes']) {\n"
+        "    for (const key of ['hotpepperId','hotpepperUrl','couponUrl','nameKana','nearestStation','accessText','mobileAccessText','budgetMemo','sourceCatch','lunchAvailable','capacity','partyCapacity','amenities','sourceServiceText']) {\n"
         "      if (meta[key] != null) row[key]=meta[key];\n"
         "    }\n"
         "  }\n"
