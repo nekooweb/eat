@@ -26,8 +26,8 @@ jobs:
         run: |
           set -euo pipefail
           node scripts/build_hotpepper_rich_core_fallback.mjs
-          test -s data/source_enrichment_hotpepper_richcore.js
-          node --check data/source_enrichment_hotpepper_richcore.js
+          test -s data/source_enrichment_hotpepper-richcore.js
+          node --check data/source_enrichment_hotpepper-richcore.js
       - name: Build canonical and overlays
         run: |
           set -euo pipefail
