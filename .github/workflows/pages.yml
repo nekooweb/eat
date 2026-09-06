@@ -39,18 +39,14 @@ jobs:
           node scripts/build_production_dataset.mjs
           node scripts/build_source_provenance.mjs
           node scripts/build_source_facts.mjs
-      - name: Build 2000+ public restaurant pool and dish queue
+      - name: Build 2000+ public restaurant pool
         run: |
           mkdir -p _audit
           set -o pipefail
           node scripts/build_public_open_pool.mjs | tee _audit/public_pool.json
           test -s data/public_pool_area1.js
           node --check data/public_pool_area1.js
-          node scripts/apply_public_featured_dishes.mjs | tee _audit/public_featured_dishes_apply.json
-          node --check data/public_pool_area1.js
-          node scripts/build_public_dish_queue.mjs _audit/public_dish_queue.json | tee _audit/public_dish_queue_summary.json
-          test -s _audit/public_dish_queue.json
-      - name: Static and repository checks
+      - name: Static and canonical repository checks
         run: |
           mkdir -p _audit
           set -o pipefail
@@ -67,6 +63,7 @@ jobs:
             node --check scripts/build_public_open_pool.mjs
             node --check scripts/collect_public_featured_dishes.mjs
             node --check scripts/apply_public_featured_dishes.mjs
+            node --check scripts/audit_public_featured_dishes.mjs
             node --check scripts/build_public_dish_queue.mjs
             node --check scripts/price_resolver.mjs
             node --check scripts/audit_price_resolution.mjs
@@ -96,6 +93,14 @@ jobs:
             node scripts/audit_normalized_fields.mjs
             node scripts/audit_runtime_overlays.mjs
           } 2>&1 | tee _audit/static_checks.log
+      - name: Apply website featured dishes and build completion queue
+        run: |
+          set -o pipefail
+          node scripts/apply_public_featured_dishes.mjs | tee _audit/public_featured_dishes_apply.json
+          node --check data/public_pool_area1.js
+          node scripts/audit_public_featured_dishes.mjs | tee _audit/public_featured_dishes_audit.json
+          node scripts/build_public_dish_queue.mjs _audit/public_dish_queue.json | tee _audit/public_dish_queue_summary.json
+          test -s _audit/public_dish_queue.json
       - name: Coverage report
         run: |
           mkdir -p _audit
