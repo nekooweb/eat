@@ -2,6 +2,10 @@ name: Hot Pepper rich metadata refresh
 
 on:
   workflow_dispatch:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/hotpepper-rich-refresh.yml"
 
 permissions:
   contents: write
@@ -84,6 +88,7 @@ jobs:
           const duplicate=payload.rows.length-new Set(payload.rows.map(r=>r.googlePlaceId)).size;
           if(missing.length||duplicate) throw new Error(JSON.stringify({missing:missing.length,duplicate}));
           if(payload.summary.manualReviewedRows!==7) throw new Error(`expected 7 manual rows, got ${payload.summary.manualReviewedRows}`);
+          if(payload.rows.length!==135) throw new Error(`expected 135 rich rows, got ${payload.rows.length}`);
           console.log(JSON.stringify({status:'pass',rows:payload.rows.length,summary:payload.summary},null,2));
           NODE
 
@@ -98,7 +103,7 @@ jobs:
             echo "No rich metadata changes to commit."
             exit 0
           fi
-          git commit -m "Expand reviewed Hot Pepper rich metadata"
+          git commit -m "Complete maximum Hot Pepper rich metadata"
           git push
 
       - name: Upload refresh audit
