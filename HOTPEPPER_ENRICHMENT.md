@@ -135,7 +135,11 @@ Examples include ramen, sushi, yakiniku, Chinese, Korean, Indian/Nepalese, Thai,
 
 ### Dinner budget
 
-The builder promotes only an **explicit two-sided Hot Pepper budget range**. Open-ended/single-number text is retained as source information but is not converted into an invented bound.
+The builder promotes provider-defined finite budget intervals conservatively:
+
+- an explicit two-sided tier such as `2001～3000円` maps directly to `[2001, 3000]`;
+- an official upper-cap tier such as `～2000円` maps to `[0, 2000]` because the provider explicitly defines the maximum;
+- a lower-bound-only tier such as `10000円～` is **not** given an invented finite upper bound and therefore is not promoted to the current `[min,max]` filter field.
 
 No lunch budget is inferred from `lunch=あり`.
 
