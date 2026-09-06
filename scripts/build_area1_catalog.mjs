@@ -17,6 +17,7 @@ const isPrice = (value) => Array.isArray(value)
   && Number.isFinite(value[0])
   && Number.isFinite(value[1]);
 const textKnown = (value) => typeof value === 'string' && value.trim().length > 0;
+const cuisineKnown = (value) => textKnown(value) && value !== '餐厅';
 
 const inventory = readJson('area1_google_ids.json');
 const hotpepperBindings = exists('hotpepper_bindings.json')
@@ -68,7 +69,7 @@ function completenessFor(row, prov) {
     name: textKnown(row.name),
     address: textKnown(row.address),
     coordinates: Number.isFinite(row.lat) && Number.isFinite(row.lng),
-    cuisine: textKnown(row.cuisine),
+    cuisine: cuisineKnown(row.cuisine),
     lunchBudget: isPrice(row.lunch),
     dinnerBudget: isPrice(row.dinner),
     openingHours: Boolean(row.openingHours && row.openingHours.days),
