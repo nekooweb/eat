@@ -27,10 +27,11 @@ Current audited canonical state:
 - 百名店: **22**;
 - unprovenanced stored meal-price fields: **0**.
 
-Two additional runtime overlays preserve useful information that should not be forced into the compact canonical filtering schema:
+Three non-canonical runtime overlays now preserve useful information without weakening the compact filtering schema:
 
-- reviewed Hot Pepper maximum non-image rich metadata: **135 production identities**;
-- public source provenance: **446 production identities / 606 concrete source URLs**.
+- public source provenance: **446 production identities / 606 concrete source URLs**;
+- provider-level source facts: **446 production identities / 537 provider fact records**;
+- reviewed Hot Pepper maximum non-image rich metadata: **135 production identities**.
 
 `DATA_ENRICHMENT_PROGRESS.md` is the numeric progress report. `PRICE_ENRICHMENT.md` defines meal-price evidence and resolver policy. `HOTPEPPER_ENRICHMENT.md` documents the authorized Hot Pepper path. `DATA_SCHEMA.md` is the runtime-field contract.
 
@@ -47,7 +48,7 @@ Current priority:
 1. **P0** — identity/source binding, currentness, name, address/coordinates, cuisine;
 2. **P1** — lunch and dinner price evidence resolved independently;
 3. **P2** — normalized hours, regular closure, source URLs and practical branch metadata;
-4. **P3** — access/station, capacity, service/amenity fields, payment methods, source classifications, representative dishes and strict recommendations.
+4. **P3** — access/station, capacity, service/amenity fields, payment methods, source classifications, provider-level raw facts, representative dishes and strict recommendations.
 
 Do not return to large-scale paid restaurant discovery unless a later measured recall audit demonstrates a material gap in the frozen 2,804-ID universe.
 
@@ -100,7 +101,7 @@ The core promotion workflow is manual-only and idempotent. Ordinary pushes do no
 
 ## Maximum non-image rich metadata layer
 
-Canonical filtering fields are deliberately conservative, but Hot Pepper contains many useful source-native facts that should not be discarded. `data/hotpepper_rich_metadata.js` is therefore a non-core overlay loaded after `production_area1.js`.
+Canonical filtering fields are deliberately conservative, but Hot Pepper contains many useful source-native facts that should not be discarded. `data/hotpepper_rich_metadata.js` is therefore a non-core overlay loaded after the generic evidence overlays.
 
 The focused collector `scripts/collect_hotpepper_rich_details.py` **does not repeat geographic discovery or identity matching**. It fetches only reviewed current-production Hot Pepper IDs in batches of <=20.
 
@@ -119,7 +120,7 @@ The final maximum non-image refresh is Actions run `34035124635`:
 
 The seven manual exceptions are stored in `data/hotpepper_manual_rich_bindings.json` and are explicitly **rich-metadata-only**. Six other near-coordinate but wrong-shop pairs were reviewed and rejected, preventing neighboring businesses from contaminating data.
 
-For all 135 reviewed rows the overlay now preserves, where supplied:
+For all 135 reviewed rows the overlay preserves, where supplied:
 
 - Hot Pepper source-native ID, source shop name and kana;
 - source address and coordinates;
@@ -160,15 +161,15 @@ Measured maximum-field coverage:
 
 High-coverage service fields include all-you-can-drink/eat, private room, card, smoking policy, charter, parking, barrier-free, English menu, children, pets, late-night, karaoke, TV/projector, live show, band performance, tatami and horigotatsu. Raw source text is preserved even when a safe boolean cannot be inferred.
 
-A zero-value handling bug found after the maximum refresh was fixed without another API call: Hot Pepper `ktai_coupon=0` is a valid value, so the common text normalizer now preserves numeric zero. The overlay was rebuilt from run `34035124635`, raising normalized mobile-coupon coverage from **97 -> 135** while keeping the original 7 API requests as the only network work for this final refresh.
+A zero-value handling bug found after the maximum refresh was fixed without another API call: Hot Pepper `ktai_coupon=0` is a valid value, so the common text normalizer now preserves numeric zero. The overlay was rebuilt from run `34035124635` in artifact-only run `34035237312`, raising normalized mobile-coupon coverage from **97 -> 135** while keeping the original 7 API requests as the only network work for this final refresh.
 
-The rich overlay **never creates a production identity and never overwrites canonical name/address/cuisine/budget/hours**. It is attached only after the canonical build.
+The rich overlay **never creates a production identity and never overwrites canonical name/address/cuisine/budget/hours**.
 
-`.github/workflows/hotpepper-rich-refresh.yml` is manual-only because it calls the authorized Hot Pepper API. `.github/workflows/promote-hotpepper-rich-metadata.yml` is also manual-only and rebuilds the overlay from retained run `34035124635` without making Hot Pepper requests.
+`.github/workflows/hotpepper-rich-refresh.yml` is manual-only because it calls the authorized Hot Pepper API. `.github/workflows/promote-hotpepper-rich-metadata.yml` is also manual-only and rebuilds from retained run `34035124635` without Hot Pepper requests.
 
 ## Public source provenance layer
 
-`scripts/build_source_provenance.mjs` converts maintained `sourceRefs` into a compact public runtime evidence overlay: `data/source_provenance.js`.
+`scripts/build_source_provenance.mjs` converts maintained `sourceRefs` into `data/source_provenance.js`.
 
 Current result:
 
@@ -186,9 +187,42 @@ sourceClaimedFields  -> union of fields supported by maintained refs
 sourceLastCheckedAt  -> latest maintained evidence date
 ```
 
-Google-source references are intentionally excluded from this public overlay. Historical Google IDs remain compatibility keys, not maintained evidence.
+Google-source references are excluded. The provenance overlay is generated from maintained repository evidence and makes **zero external API calls**.
 
-The provenance overlay is generated from already-maintained repository evidence and makes **zero external API calls**. `scripts/audit_runtime_overlays.mjs` proves that all rich/provenance rows attach to exact current production identities, contain no duplicate identity rows, and do not leak Google source refs.
+## Provider-level source facts layer
+
+Canonical selection intentionally keeps one final value per field. That is correct for filtering but loses useful source-specific alternatives/conflicts. `scripts/build_source_facts.mjs` now preserves those maintained provider facts in `data/source_facts.js` without changing the canonical row.
+
+The one-time promotion run `34035605238` built the overlay with **zero external/API requests**.
+
+Current coverage:
+
+- production identities with source facts: **446 / 656**;
+- provider fact records: **537**;
+- provider records: Tabelog **303**, official **140**, Hot Pepper **94**;
+- unattached maintained source rows: **0**.
+
+Retained provider-level field counts:
+
+- source names: **537**;
+- cuisine: **274**;
+- tags: **267**;
+- lunch ranges: **157**;
+- dinner ranges: **254**;
+- dishes: **111**;
+- raw opening-hours text: **293**;
+- regular closed-day arrays: **202**;
+- closure notes: **156**;
+- addresses: **235**;
+- 百名店 facts/year/category: **17** each;
+- reviewed price derivations: **2**;
+- Hot Pepper source-native ID + match confidence + match score: **94** each.
+
+Each production restaurant may now carry `sourceFacts[]`, one record per maintained provider. A provider fact retains its own `claimedFields` and `checkedAt`, plus only already-maintained source-specific values. Review text and Google response-content fields are excluded.
+
+This layer allows later logic/UI/audits to compare provider evidence directly without re-reading maintenance shards and without silently averaging conflicts.
+
+`.github/workflows/promote-source-facts.yml` is manual-only after the initial zero-network promotion.
 
 ## Independent meal-price architecture
 
@@ -200,36 +234,28 @@ Valid example:
 Tabelog lunch + Hot Pepper dinner
 ```
 
-Price claims require explicit provenance through one of:
+Price claims require explicit provenance through `budget`, `lunchBudget` or `dinnerBudget`.
 
-- `budget`;
-- `lunchBudget`;
-- `dinnerBudget`.
-
-Pages and the Hot Pepper promotion workflow enforce `STRICT_PRICE_PROVENANCE=1`.
+Pages and Hot Pepper promotion enforce `STRICT_PRICE_PROVENANCE=1`.
 
 ### Evidence classes
 
-Price evidence is ranked before provider priority:
-
 - **A / `explicit_range`** — explicit branch budget / average-spend range; hard-filter eligible;
 - **B / `menu_derived`** — reviewed representative range derived from a sufficiently complete official menu; used only when no A-class range exists;
-- **C / `sparse`** — one item/course/charge/promotion/search snippet; review/display evidence only and never a hard restaurant budget.
+- **C / `sparse`** — one item/course/charge/promotion/search snippet; review/display only and never a hard restaurant budget.
 
-Within equal A-class evidence, provider order is current official branch > Tabelog > authorized Hot Pepper > lower-priority maintained sources. Freshness breaks ties.
-
-Strong-source conflicts are not averaged silently.
+Within equal A-class evidence, provider order is current official branch > Tabelog > authorized Hot Pepper > lower-priority maintained sources. Freshness breaks ties. Strong-source conflicts are not averaged silently.
 
 ## Official-menu-derived price rollout
 
-`data/source_enrichment_zzzzpricepatches.js` is the reviewed B-class patch layer. It augments an existing exact official binding during the canonical build and stores the derivation method/observed prices for auditability.
+`data/source_enrichment_zzzzpricepatches.js` is the reviewed B-class patch layer.
 
-First landed records:
+Landed records:
 
-1. **神田たまごけん神保町店** — official current core-menu prices produce representative `[990,1490]` for lunch and dinner; seasonal/limited items are excluded.
-2. **シリ バラジ** — official Suidobashi lunch menu lists complete lunch sets at 800 / 900 / 1400 yen, producing lunch `[800,1400]`.
+1. **神田たまごけん神保町店** — representative `[990,1490]` for lunch and dinner from reviewed current core-menu prices.
+2. **シリ バラジ** — lunch `[800,1400]` from complete official lunch sets at 800 / 900 / 1400 yen.
 
-These two reviewed additions moved strict coverage from:
+Coverage moved:
 
 ```text
 lunch 155 -> 157
@@ -238,57 +264,54 @@ both 136 -> 137
 any 272 -> 274
 ```
 
-The strict provenance audit remains **0** and material strong-price conflicts remain **0** after this rollout.
+Strict provenance remains **0** and material strong-price conflicts remain **0**.
 
 ## Current enrichment queue
-
-The queue is meal-aware and generated by `scripts/build_enrichment_queue.mjs`.
 
 Global remaining gaps:
 
 - lunch: **499**;
 - dinner: **402**.
 
-Among restaurants that already have a usable maintained source:
+Among restaurants already carrying a usable maintained source:
 
 - lunch gaps: **289**;
 - dinner gaps: **192**.
 
-High-value groups currently include:
+High-value groups:
 
 - Tabelog-linked lunch gaps: **167**;
 - Hot Pepper-linked lunch gaps: **83**;
 - Hot Pepper-linked dinner gaps: **1**;
 - repeated official domains/brands such as Doutor, Tully's, Starbucks, C-United, Ginza Renoir and others.
 
-This means the next phase must exhaust **existing-source extraction before broad new source discovery**.
+The next phase must exhaust **existing-source extraction before broad new source discovery**.
 
 ## Execution order from here
 
-1. Process existing exact official/Tabelog lunch gaps first; lunch is the largest hard-filter deficit.
-2. Batch repeated official domains/brand menu templates instead of fetching restaurants one by one.
-3. Expand rich metadata from already-bound official/Tabelog sources where stable structured fields exist, without weakening canonical rules.
-4. Promote an official menu-derived budget only when multiple comparable current prices support a representative range; mark it `menu_derived` and retain observed prices/derivation notes.
-5. Keep single-item/cover-charge/promotion-only evidence as C-class and out of hard budget filters.
-6. Review exact Tabelog bindings through permitted/reviewed workflows; do not copy review text.
-7. Use ordinary web/search only for identities still lacking a usable underlying source after the existing-source queue is exhausted.
-8. Keep OSM / Overture / Foursquare OS focused mainly on identity, address, category and currentness/conflict checks rather than restaurant prices.
-9. Continue the **172** unresolved source outcomes independently of price completion.
-10. Keep medium/collision/inventory-only Hot Pepper matches review-only unless additional evidence justifies a production decision.
-11. Add a source-native canonical identity key before expanding beyond the current compatibility-ID architecture.
+1. Process existing exact official/Tabelog lunch gaps first.
+2. Batch repeated official domains/brand menu templates.
+3. Use the new `sourceFacts[]` layer to identify already-maintained alternative values and gaps before fetching anything new.
+4. Expand structured rich metadata from already-bound official/Tabelog sources where stable fields exist.
+5. Promote B-class menu-derived budgets only when multiple comparable current prices support a representative range and retain derivation inputs.
+6. Keep single-item/cover-charge/promotion evidence C-class and out of hard filters.
+7. Use ordinary web/search only after existing-source evidence is exhausted.
+8. Keep OSM / Overture / Foursquare OS focused mainly on identity/address/category/currentness checks.
+9. Continue the **172** unresolved source outcomes separately.
+10. Keep medium/collision/inventory-only Hot Pepper matches review-only unless additional evidence supports production.
+11. Add a source-native canonical identity key before scope expansion.
 
 ## Data integrity rules
 
 - Missing or ambiguous data remains unknown.
 - A weak source never overwrites a stronger maintained exact claim.
+- Provider-level facts remain source-specific and are not silently merged into canonical fields.
 - A price array without explicit field provenance is ignored and fails strict audit when stored in a source shard.
-- B-class menu-derived values must be reproducible from a maintained official page.
+- B-class values must be reproducible from maintained evidence.
 - C-class sparse prices never become restaurant budget bands.
-- Raw schedule prose is not exposed as normalized hours unless the conservative normalizer can safely parse it.
-- Rich source metadata is preserved separately instead of being coerced into canonical core fields.
+- Raw schedule prose is not exposed as normalized hours unless safely parsed.
 - Provider integer/enum value `0` is preserved as data, not treated as missing.
-- `recommendedDishes` requires explicit recommendation/popularity/signature evidence.
-- `featuredDishes` may use broader reviewed source-backed representative items.
+- Review text and paid Google response content are excluded from public fact overlays.
 - Cross-source automatic matching generates candidates; one weak match never admits a new production identity.
 
 ## Runtime contract
@@ -297,10 +320,12 @@ The public product remains a static GitHub Pages application. Runtime data is lo
 
 ```text
 production_area1.js          canonical filter/recommendation facts
-source_provenance.js         public evidence links and field lineage
-hotpepper_rich_metadata.js   maximum reviewed non-image source metadata
+source_provenance.js         public evidence URLs and field lineage
+source_facts.js              provider-level maintained facts
+hotpepper_rich_metadata.js   maximum reviewed non-image Hot Pepper metadata
+app.js                       product logic
 ```
 
 Recommendation behavior remains: <=1,200m, current canonical production identities, cuisine/budget/distance filters, three distinct results when possible, cuisine-diversity preference, Web Crypto randomness, 百名店 weight 2.2 and no rating/review popularity ranking.
 
-Embedded maps use Leaflet/OpenStreetMap. Hot Pepper photos and logo URLs are not ingested. The required Hot Pepper service credit remains on the public page.
+Embedded maps use Leaflet/OpenStreetMap. Hot Pepper photos/logo URLs are not ingested. The required Hot Pepper service credit remains on the public page.
