@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "scope": "TOKYO/地区1️⃣",
   "radiusMeters": 1200,
   "inventoryCount": 2804,
@@ -8,18 +8,20 @@
     "googleDisplayPayloadPersisted": false,
     "googlePlaceIdsPersisted": true,
     "sourceFieldsOnly": true,
-    "lowConfidenceMatchesExcluded": true
+    "lowConfidenceMatchesExcluded": true,
+    "pass2Rule": "strict geospatial + name/address match against transient retained Google sweep; durable fields are independent-source only"
   },
   "summary": {
     "productionBacked": 651,
-    "sourceMatchedInventoryOnly": 733,
-    "basicReadyTotal": 1384,
-    "identityOnlyRemaining": 1420,
+    "sourceMatchedInventoryOnly": 760,
+    "basicReadyTotal": 1411,
+    "identityOnlyRemaining": 1393,
     "providers": {
-      "Hot Pepper": 348,
+      "Hot Pepper": 357,
       "OpenStreetMap": 11,
-      "Overture Maps": 374
-    }
+      "Overture Maps": 392
+    },
+    "pass2NewMatches": 27
   },
   "rows": [
     {
@@ -848,6 +850,21 @@
       "matchLevel": "strong"
     },
     {
+      "googlePlaceId": "ChIJ2x1tGgSMGGAR790-vdAKkPk",
+      "provider": "Overture Maps",
+      "providerId": "f77e64ee-bd23-4e56-b8cb-fef31acf1393",
+      "name": "Hamayoshi",
+      "address": "千代田区内神田2丁目10-9",
+      "lat": 35.6911566,
+      "lng": 139.7679797,
+      "distanceMeters": 1076,
+      "cuisine": "日式",
+      "websites": [],
+      "sourceCheckedAt": "2026-09-07",
+      "verification": "matched_against_transient_google_place_details_pass2",
+      "matchLevel": "strong"
+    },
+    {
       "googlePlaceId": "ChIJ30S9DL2NGGARsROyudcsGpg",
       "provider": "Hot Pepper",
       "providerId": "J001227285",
@@ -862,6 +879,23 @@
       ],
       "sourceCheckedAt": "2026-09-06",
       "verification": "existing_high_confidence_binding",
+      "matchLevel": "strong"
+    },
+    {
+      "googlePlaceId": "ChIJ35HKZ2-NGGARsPtMaaZBf9s",
+      "provider": "Overture Maps",
+      "providerId": "46706d94-3676-4487-8de6-76220eab92a3",
+      "name": "ゆで太郎淡路町店",
+      "address": "千代田区神田須田町1丁目8-16",
+      "lat": 35.6954809,
+      "lng": 139.7684007,
+      "distanceMeters": 976,
+      "cuisine": "日式",
+      "websites": [
+        "http://www.yudetarou.com"
+      ],
+      "sourceCheckedAt": "2026-09-07",
+      "verification": "matched_against_transient_google_place_details_pass2",
       "matchLevel": "strong"
     },
     {
@@ -1344,6 +1378,23 @@
       "matchLevel": "strong"
     },
     {
+      "googlePlaceId": "ChIJ59v_9NyNGGAR22VKBERmYDM",
+      "provider": "Overture Maps",
+      "providerId": "b7ba4723-16e0-4495-9773-a139cdf1ad4c",
+      "name": "Craft Beer Market",
+      "address": "千代田区神田司町2丁目9-1",
+      "lat": 35.6934967,
+      "lng": 139.7673316,
+      "distanceMeters": 919,
+      "cuisine": "餐厅",
+      "websites": [
+        "https://www.craftbeermarket.jp/store_awajicho.html"
+      ],
+      "sourceCheckedAt": "2026-09-07",
+      "verification": "matched_against_transient_google_place_details_pass2",
+      "matchLevel": "strong"
+    },
+    {
       "googlePlaceId": "ChIJ5R-mDQCNGGAR6nPJe91LLe0",
       "provider": "Overture Maps",
       "providerId": "02ebeebe-92fe-45b8-b107-293d060a6a33",
@@ -1456,6 +1507,23 @@
       ],
       "sourceCheckedAt": "2026-09-06",
       "verification": "matched_against_transient_google_place_details",
+      "matchLevel": "strong"
+    },
+    {
+      "googlePlaceId": "ChIJ5xbNmR6NGGARxdGxYV8ulBo",
+      "provider": "Hot Pepper",
+      "providerId": "J004537277",
+      "name": "誉 ほまれ 水道橋駅前店",
+      "address": "東京都千代田区神田三崎町２-２２-１８ 新水道橋ビル 5F",
+      "lat": 35.7023921047,
+      "lng": 139.7521171334,
+      "distanceMeters": 875,
+      "cuisine": "和食",
+      "websites": [
+        "https://www.hotpepper.jp/strJ004537277/?vos=nhppalsa000016"
+      ],
+      "sourceCheckedAt": "2026-09-06",
+      "verification": "matched_against_transient_google_place_details_pass2",
       "matchLevel": "strong"
     },
     {
@@ -2298,6 +2366,23 @@
       "matchLevel": "strong"
     },
     {
+      "googlePlaceId": "ChIJAQA0URyMGGARcHdnj-vbe6s",
+      "provider": "Overture Maps",
+      "providerId": "08d6280e-6251-4e25-a21d-87d3ee4e0d7e",
+      "name": "Maidreamin Akihabara Himitsukichi",
+      "address": "千代田区外神田1丁目8-4",
+      "lat": 35.6993442,
+      "lng": 139.7698278,
+      "distanceMeters": 1169,
+      "cuisine": "咖啡",
+      "websites": [
+        "https://maidreamin.com/shop/detail.html?id=2"
+      ],
+      "sourceCheckedAt": "2026-09-07",
+      "verification": "matched_against_transient_google_place_details_pass2",
+      "matchLevel": "strong"
+    },
+    {
       "googlePlaceId": "ChIJAQARIwSMGGARuyCsJqgLx6k",
       "provider": "Overture Maps",
       "providerId": "da3f4b1a-0e25-454f-b732-a649cbbd28c0",
@@ -2848,6 +2933,23 @@
       ],
       "sourceCheckedAt": "2026-09-06",
       "verification": "existing_high_confidence_binding",
+      "matchLevel": "strong"
+    },
+    {
+      "googlePlaceId": "ChIJD08xTvWNGGARi0jG3F2DL2I",
+      "provider": "Overture Maps",
+      "providerId": "a5f0a601-40a3-4471-843a-58283f2a1797",
+      "name": "神田錦町酒菜家 かずいち",
+      "address": "千代田区神田錦町3-17",
+      "lat": 35.6918808,
+      "lng": 139.7603203,
+      "distanceMeters": 510,
+      "cuisine": "酒吧",
+      "websites": [
+        "http://k-zuichi.on.omisenomikata.jp"
+      ],
+      "sourceCheckedAt": "2026-09-07",
+      "verification": "matched_against_transient_google_place_details_pass2",
       "matchLevel": "strong"
     },
     {
@@ -5702,6 +5804,23 @@
       "matchLevel": "strong"
     },
     {
+      "googlePlaceId": "ChIJRasnpgOMGGARt6bgmjKCLmM",
+      "provider": "Overture Maps",
+      "providerId": "609352e5-94a6-476d-a583-2c3864b54f77",
+      "name": "Screamin' Hop Kanda",
+      "address": "千代田区Kanda Tacho, 2 Chome−6-1 加藤ビル １Ｆ",
+      "lat": 35.694119,
+      "lng": 139.7697243,
+      "distanceMeters": 1113,
+      "cuisine": "餐厅",
+      "websites": [
+        "https://screaminhop.owst.jp/"
+      ],
+      "sourceCheckedAt": "2026-09-07",
+      "verification": "matched_against_transient_google_place_details_pass2",
+      "matchLevel": "strong"
+    },
+    {
       "googlePlaceId": "ChIJRbn_gXyNGGARdfFDUzphAIY",
       "provider": "Overture Maps",
       "providerId": "add084db-a7d6-4210-af18-cd89900bbb4a",
@@ -5748,6 +5867,23 @@
       ],
       "sourceCheckedAt": "2026-09-06",
       "verification": "existing_high_confidence_binding",
+      "matchLevel": "strong"
+    },
+    {
+      "googlePlaceId": "ChIJRepRMwKMGGARavt4FUDRD24",
+      "provider": "Overture Maps",
+      "providerId": "258150eb-0642-4b23-9024-4c3745fb4e84",
+      "name": "Walton's Dining Beer Bar",
+      "address": "千代田区Kanda Kajicho, 3 Chome−7−6 翔和鍛冶町ビル B1F",
+      "lat": 35.6930682,
+      "lng": 139.7703456,
+      "distanceMeters": 1193,
+      "cuisine": "餐厅",
+      "websites": [
+        "http://tabelog.com/tokyo/A1310/A131002/13149735/"
+      ],
+      "sourceCheckedAt": "2026-09-07",
+      "verification": "matched_against_transient_google_place_details_pass2",
       "matchLevel": "strong"
     },
     {
@@ -6685,6 +6821,23 @@
       "matchLevel": "strong"
     },
     {
+      "googlePlaceId": "ChIJVf9NMpmNGGARtjTt0XzQmPM",
+      "provider": "Overture Maps",
+      "providerId": "91046cfd-72bc-42d3-91cf-95c55aaa51ef",
+      "name": "タイ料理研究所　東京ドームシティ店",
+      "address": "文京区東京都文京区後楽１丁目３−６１",
+      "lat": 35.703382,
+      "lng": 139.75202,
+      "distanceMeters": 973,
+      "cuisine": "泰国菜",
+      "websites": [
+        "http://www.sscy.co.jp/thailab.html"
+      ],
+      "sourceCheckedAt": "2026-09-07",
+      "verification": "matched_against_transient_google_place_details_pass2",
+      "matchLevel": "strong"
+    },
+    {
       "googlePlaceId": "ChIJVx1Kz82NGGAR3NC7LkEPBOQ",
       "provider": "Overture Maps",
       "providerId": "22aa0c9e-139b-493f-bf45-654966c1901a",
@@ -7036,6 +7189,23 @@
       "matchLevel": "strong"
     },
     {
+      "googlePlaceId": "ChIJXxykg-uNGGARXPCfsLIcUDA",
+      "provider": "Hot Pepper",
+      "providerId": "J004403751",
+      "name": "酔助 水道橋店",
+      "address": "東京都千代田区神田三崎町２－20－10",
+      "lat": 35.7019466037,
+      "lng": 139.7522829707,
+      "distanceMeters": 826,
+      "cuisine": "ダイニングバー・バル",
+      "websites": [
+        "https://www.hotpepper.jp/strJ004403751/?vos=nhppalsa000016"
+      ],
+      "sourceCheckedAt": "2026-09-06",
+      "verification": "matched_against_transient_google_place_details_pass2",
+      "matchLevel": "strong"
+    },
+    {
       "googlePlaceId": "ChIJXy2A7WSNGGARSpt_OZLqh9Y",
       "provider": "Hot Pepper",
       "providerId": "J003624816",
@@ -7084,6 +7254,40 @@
       ],
       "sourceCheckedAt": "2026-09-06",
       "verification": "matched_against_transient_google_place_details",
+      "matchLevel": "strong"
+    },
+    {
+      "googlePlaceId": "ChIJYUvcMpONGGARZzwC18gkmXQ",
+      "provider": "Hot Pepper",
+      "providerId": "J003498685",
+      "name": "SHIKIBU しきぶ 水道橋店",
+      "address": "東京都千代田区神田三崎町２-22-18 西山興業新水道橋ビル7階",
+      "lat": 35.7024082151,
+      "lng": 139.7521568516,
+      "distanceMeters": 875,
+      "cuisine": "居酒屋",
+      "websites": [
+        "https://www.hotpepper.jp/strJ003498685/?vos=nhppalsa000016"
+      ],
+      "sourceCheckedAt": "2026-09-06",
+      "verification": "matched_against_transient_google_place_details_pass2",
+      "matchLevel": "strong"
+    },
+    {
+      "googlePlaceId": "ChIJYZkPP1qNGGARsUjRcyOGz1Q",
+      "provider": "Hot Pepper",
+      "providerId": "J003411636",
+      "name": "居酒屋 道らく 水道橋東京ドーム店",
+      "address": "東京都千代田区神田三崎町３-7-12 原田ビル2階",
+      "lat": 35.7016310787,
+      "lng": 139.7521018877,
+      "distanceMeters": 808,
+      "cuisine": "和食",
+      "websites": [
+        "https://www.hotpepper.jp/strJ003411636/?vos=nhppalsa000016"
+      ],
+      "sourceCheckedAt": "2026-09-06",
+      "verification": "matched_against_transient_google_place_details_pass2",
       "matchLevel": "strong"
     },
     {
@@ -7293,6 +7497,23 @@
       ],
       "sourceCheckedAt": "2026-09-06",
       "verification": "matched_against_transient_google_place_details",
+      "matchLevel": "strong"
+    },
+    {
+      "googlePlaceId": "ChIJZf1oDwCNGGARJGh85UBDwOw",
+      "provider": "Overture Maps",
+      "providerId": "ab2904cf-5f52-4f3a-baee-a01d6a42c8ab",
+      "name": "菜香苑神田小川町店",
+      "address": "千代田区神田小川町1-7",
+      "lat": 35.69398,
+      "lng": 139.7654582,
+      "distanceMeters": 741,
+      "cuisine": "中华",
+      "websites": [
+        "https://saikoen.owst.jp"
+      ],
+      "sourceCheckedAt": "2026-09-07",
+      "verification": "matched_against_transient_google_place_details_pass2",
       "matchLevel": "strong"
     },
     {
@@ -7578,6 +7799,23 @@
       ],
       "sourceCheckedAt": "2026-09-06",
       "verification": "existing_high_confidence_binding",
+      "matchLevel": "strong"
+    },
+    {
+      "googlePlaceId": "ChIJ_dlidcCNGGARaps03scrCg0",
+      "provider": "Overture Maps",
+      "providerId": "dd851ba2-856d-4bc9-bf35-283f6c825a92",
+      "name": "Tokyo, Tokyo Dome",
+      "address": "TokyoTokyo Dome Gate 22, 1-3-61, Kouraku",
+      "lat": 35.7054377,
+      "lng": 139.7528016,
+      "distanceMeters": 1146,
+      "cuisine": "餐厅",
+      "websites": [
+        "https://shakeshack.com/location/tokyo-japan-tokyo-dome"
+      ],
+      "sourceCheckedAt": "2026-09-07",
+      "verification": "matched_against_transient_google_place_details_pass2",
       "matchLevel": "strong"
     },
     {
@@ -8240,6 +8478,23 @@
       ],
       "sourceCheckedAt": "2026-09-06",
       "verification": "existing_high_confidence_binding",
+      "matchLevel": "strong"
+    },
+    {
+      "googlePlaceId": "ChIJd78MP32NGGARz_nWebWyu7k",
+      "provider": "Hot Pepper",
+      "providerId": "J001164123",
+      "name": "鳥貴族 飯田橋東口店",
+      "address": "東京都千代田区飯田橋４－７－８　第３山商ビルiタワー４Ｆ",
+      "lat": 35.7011040381,
+      "lng": 139.7463140663,
+      "distanceMeters": 1172,
+      "cuisine": "居酒屋",
+      "websites": [
+        "https://www.hotpepper.jp/strJ001164123/?vos=nhppalsa000016"
+      ],
+      "sourceCheckedAt": "2026-09-06",
+      "verification": "matched_against_transient_google_place_details_pass2",
       "matchLevel": "strong"
     },
     {
@@ -8909,6 +9164,40 @@
       "matchLevel": "strong"
     },
     {
+      "googlePlaceId": "ChIJge_Vi4qNGGARUSVRmK8P39M",
+      "provider": "Overture Maps",
+      "providerId": "fa345b29-ff32-43f2-8700-44decab9f351",
+      "name": "Hub Tokyo Dome City LaQua",
+      "address": "文京区Kasuga, 1 Chome−1−1 ラクーア １Ｆ",
+      "lat": 35.7059439,
+      "lng": 139.7540697,
+      "distanceMeters": 1161,
+      "cuisine": "酒吧",
+      "websites": [
+        "https://www.pub-hub.com/index.php/shop/detail/40"
+      ],
+      "sourceCheckedAt": "2026-09-07",
+      "verification": "matched_against_transient_google_place_details_pass2",
+      "matchLevel": "strong"
+    },
+    {
+      "googlePlaceId": "ChIJh0dxyhGNGGARZk9BsIhLQkE",
+      "provider": "Overture Maps",
+      "providerId": "7fe14647-ee3d-4b90-9b98-94fdafe7135a",
+      "name": "edge",
+      "address": "千代田区神田神保町2丁目46-9",
+      "lat": 35.698171,
+      "lng": 139.756382,
+      "distanceMeters": 275,
+      "cuisine": "餐厅",
+      "websites": [
+        "http://edge-jimbocho.com/"
+      ],
+      "sourceCheckedAt": "2026-09-07",
+      "verification": "matched_against_transient_google_place_details_pass2",
+      "matchLevel": "strong"
+    },
+    {
       "googlePlaceId": "ChIJh1WlA1yNGGAR05XNJuHUe3Y",
       "provider": "Hot Pepper",
       "providerId": "J000768890",
@@ -8923,6 +9212,21 @@
       ],
       "sourceCheckedAt": "2026-09-06",
       "verification": "existing_high_confidence_binding",
+      "matchLevel": "strong"
+    },
+    {
+      "googlePlaceId": "ChIJh2q9FVONGGARVTIemAFTdyo",
+      "provider": "Overture Maps",
+      "providerId": "8d6191c5-0825-43c9-957f-1f603b9e8430",
+      "name": "Yo-Fu-Izakaya Kitchen Jiro",
+      "address": "千代田区三崎町2丁目14-6",
+      "lat": 35.7004712,
+      "lng": 139.7531422,
+      "distanceMeters": 648,
+      "cuisine": "餐厅",
+      "websites": [],
+      "sourceCheckedAt": "2026-09-07",
+      "verification": "matched_against_transient_google_place_details_pass2",
       "matchLevel": "strong"
     },
     {
@@ -9615,6 +9919,21 @@
       "matchLevel": "strong"
     },
     {
+      "googlePlaceId": "ChIJm3d-XHGNGGARqFrriSVA_Hg",
+      "provider": "Overture Maps",
+      "providerId": "e7cf3ef8-2672-4d69-8b31-7ece8c21635f",
+      "name": "Venchi Otemachi One Store",
+      "address": "千代田区Otemachi One, 1階 103, 1 Chome-2-1 Ōtemachi",
+      "lat": 35.6876417,
+      "lng": 139.7632682,
+      "distanceMeters": 1051,
+      "cuisine": "餐厅",
+      "websites": [],
+      "sourceCheckedAt": "2026-09-07",
+      "verification": "matched_against_transient_google_place_details_pass2",
+      "matchLevel": "strong"
+    },
+    {
       "googlePlaceId": "ChIJm465MhCMGGARwiSrvbH-YVE",
       "provider": "Overture Maps",
       "providerId": "8dc37324-0f62-4197-ab42-5cda438a16bf",
@@ -10090,6 +10409,23 @@
       "matchLevel": "strong"
     },
     {
+      "googlePlaceId": "ChIJnzVHCwqNGGAR1bXAezmyOb8",
+      "provider": "Hot Pepper",
+      "providerId": "J000115901",
+      "name": "日本橋角吉 竹橋パレスサイドビル店",
+      "address": "東京都千代田区一ツ橋１-1-1 竹橋パレスサイドビルB-1",
+      "lat": 35.6909374278,
+      "lng": 139.7575660229,
+      "distanceMeters": 552,
+      "cuisine": "居酒屋",
+      "websites": [
+        "https://www.hotpepper.jp/strJ000115901/?vos=nhppalsa000016"
+      ],
+      "sourceCheckedAt": "2026-09-06",
+      "verification": "matched_against_transient_google_place_details_pass2",
+      "matchLevel": "strong"
+    },
+    {
       "googlePlaceId": "ChIJo103fRaMGGARCfnYru5qzYA",
       "provider": "Overture Maps",
       "providerId": "9187dd22-4a93-4c75-95b6-20766f5f8219",
@@ -10138,6 +10474,23 @@
       ],
       "sourceCheckedAt": "2026-09-06",
       "verification": "existing_high_confidence_binding",
+      "matchLevel": "strong"
+    },
+    {
+      "googlePlaceId": "ChIJoUFJeh-NGGARIM5p9UCgrAw",
+      "provider": "Hot Pepper",
+      "providerId": "J004559189",
+      "name": "鉄板バルとワイン NIKU九",
+      "address": "東京都千代田区大手町１-9-2 大手町フィナンシャルシティー グランキューブ B1F B110",
+      "lat": 35.6884067938,
+      "lng": 139.7647349619,
+      "distanceMeters": 1053,
+      "cuisine": "居酒屋",
+      "websites": [
+        "https://www.hotpepper.jp/strJ004559189/?vos=nhppalsa000016"
+      ],
+      "sourceCheckedAt": "2026-09-06",
+      "verification": "matched_against_transient_google_place_details_pass2",
       "matchLevel": "strong"
     },
     {
@@ -10439,6 +10792,23 @@
       "matchLevel": "strong"
     },
     {
+      "googlePlaceId": "ChIJq6qq-gKMGGARSXO2iPG_NLU",
+      "provider": "Overture Maps",
+      "providerId": "cdb51839-38ad-4b24-b62e-0e6d5088ce11",
+      "name": "竹むら",
+      "address": "千代田区1 Chome-3-7 Kanda Sudacho",
+      "lat": 35.695992,
+      "lng": 139.7696625,
+      "distanceMeters": 1089,
+      "cuisine": "甜品",
+      "websites": [
+        "http://sweetsguide.jp/sweetsguide/detail/index/id/32289"
+      ],
+      "sourceCheckedAt": "2026-09-07",
+      "verification": "matched_against_transient_google_place_details_pass2",
+      "matchLevel": "strong"
+    },
+    {
       "googlePlaceId": "ChIJq6qufj-MGGAR8NpWwFmBEjA",
       "provider": "Overture Maps",
       "providerId": "ef6f3c0a-6096-418b-a615-699401afad13",
@@ -10581,6 +10951,23 @@
       ],
       "sourceCheckedAt": "2026-09-06",
       "verification": "existing_high_confidence_binding",
+      "matchLevel": "strong"
+    },
+    {
+      "googlePlaceId": "ChIJr-OhfeiNGGARrNNvqzLyh8Q",
+      "provider": "Hot Pepper",
+      "providerId": "J003297438",
+      "name": "神保町 ホロホロシーシャ",
+      "address": "東京都千代田区神田神保町１-19",
+      "lat": 35.6952420211,
+      "lng": 139.7604419943,
+      "distanceMeters": 267,
+      "cuisine": "バー・カクテル",
+      "websites": [
+        "https://www.hotpepper.jp/strJ003297438/?vos=nhppalsa000016"
+      ],
+      "sourceCheckedAt": "2026-09-06",
+      "verification": "matched_against_transient_google_place_details_pass2",
       "matchLevel": "strong"
     },
     {
@@ -10830,6 +11217,23 @@
       ],
       "sourceCheckedAt": "2026-09-06",
       "verification": "matched_against_transient_google_place_details",
+      "matchLevel": "strong"
+    },
+    {
+      "googlePlaceId": "ChIJt8UGgsGNGGARlngHAKSwdi4",
+      "provider": "Hot Pepper",
+      "providerId": "J004049691",
+      "name": "BISTRO ZEXAL ゼアル 神田",
+      "address": "東京都千代田区神田須田町１-24-21 B1F",
+      "lat": 35.6947870711,
+      "lng": 139.7707347514,
+      "distanceMeters": 1193,
+      "cuisine": "イタリアン・フレンチ",
+      "websites": [
+        "https://www.hotpepper.jp/strJ004049691/?vos=nhppalsa000016"
+      ],
+      "sourceCheckedAt": "2026-09-06",
+      "verification": "matched_against_transient_google_place_details_pass2",
       "matchLevel": "strong"
     },
     {
@@ -11160,6 +11564,21 @@
       ],
       "sourceCheckedAt": "2026-09-06",
       "verification": "existing_high_confidence_binding",
+      "matchLevel": "strong"
+    },
+    {
+      "googlePlaceId": "ChIJv3eRrVuNGGARTVkV0xgbepI",
+      "provider": "Overture Maps",
+      "providerId": "b12a8e7d-7ee9-4a20-a8c7-a49660238df7",
+      "name": "らーめん大本郷店",
+      "address": "文京区本郷3丁目28-13",
+      "lat": 35.7058959,
+      "lng": 139.7618731,
+      "distanceMeters": 1177,
+      "cuisine": "日式",
+      "websites": [],
+      "sourceCheckedAt": "2026-09-07",
+      "verification": "matched_against_transient_google_place_details_pass2",
       "matchLevel": "strong"
     },
     {
@@ -11590,6 +12009,23 @@
       ],
       "sourceCheckedAt": "2026-09-06",
       "verification": "existing_high_confidence_binding",
+      "matchLevel": "strong"
+    },
+    {
+      "googlePlaceId": "ChIJx-Bnc5eNGGARdulQm0LmYZg",
+      "provider": "Overture Maps",
+      "providerId": "bee6a85d-2d9b-48a7-8e28-369f78b653b1",
+      "name": "とんかつ まい泉食堂 エキュートエディション御茶ノ水店",
+      "address": "千代田区2 Chome-6 Kanda Surugadai",
+      "lat": 35.6994679,
+      "lng": 139.7650961,
+      "distanceMeters": 785,
+      "cuisine": "日式",
+      "websites": [
+        "http://www.hamakatsu.jp/"
+      ],
+      "sourceCheckedAt": "2026-09-07",
+      "verification": "matched_against_transient_google_place_details_pass2",
       "matchLevel": "strong"
     },
     {
@@ -12186,6 +12622,23 @@
       ],
       "sourceCheckedAt": "2026-09-06",
       "verification": "matched_against_transient_google_place_details",
+      "matchLevel": "strong"
+    },
+    {
+      "googlePlaceId": "ChIJze_wuziMGGARg_0-2fTCrSw",
+      "provider": "Overture Maps",
+      "providerId": "3fb757d5-ede1-4dc8-ad90-0b79af19c4da",
+      "name": "Yugyoan Tankuma Kitaten",
+      "address": "文京区Koraku, 1 Chome−3−61 東京ドームホテル 4F",
+      "lat": 35.70351,
+      "lng": 139.7535079,
+      "distanceMeters": 923,
+      "cuisine": "日式",
+      "websites": [
+        "http://www.tokyodome-hotels.co.jp/"
+      ],
+      "sourceCheckedAt": "2026-09-07",
+      "verification": "matched_against_transient_google_place_details_pass2",
       "matchLevel": "strong"
     },
     {
