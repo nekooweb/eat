@@ -27,12 +27,13 @@ jobs:
           node-version: '22'
       - name: Enforce no-paid-data-API policy
         run: node scripts/audit_no_paid_apis.mjs
-      - name: Build canonical production dataset and provenance
+      - name: Build canonical production and runtime evidence overlays
         run: |
           node scripts/test_opening_hours.mjs
           node scripts/test_price_resolver.mjs
           node scripts/build_production_dataset.mjs
           node scripts/build_source_provenance.mjs
+          node scripts/build_source_facts.mjs
       - name: Static and repository checks
         run: |
           mkdir -p _audit
@@ -42,10 +43,12 @@ jobs:
             node --check effects.js
             node --check data/hotpepper_rich_metadata.js
             node --check data/source_provenance.js
+            node --check data/source_facts.js
             node --check scripts/audit_no_paid_apis.mjs
             node --check scripts/price_resolver.mjs
             node --check scripts/audit_price_resolution.mjs
             node --check scripts/build_source_provenance.mjs
+            node --check scripts/build_source_facts.mjs
             node --check scripts/audit_runtime_overlays.mjs
             python3 -m py_compile \
               scripts/verify_google_places.py \
@@ -63,6 +66,7 @@ jobs:
             test -s data/production_area1.js
             test -s data/hotpepper_rich_metadata.js
             test -s data/source_provenance.js
+            test -s data/source_facts.js
             node scripts/audit_repository.mjs
             node scripts/audit_source_bindings.mjs
             node scripts/audit_normalized_fields.mjs
@@ -90,7 +94,7 @@ jobs:
         run: |
           mkdir -p _site/data _site/voice _site/image
           cp index.html styles.css effects.css app.js effects.js privacy.html terms.html _site/
-          cp data/production_area1.js data/source_provenance.js data/hotpepper_rich_metadata.js _site/data/
+          cp data/production_area1.js data/source_provenance.js data/source_facts.js data/hotpepper_rich_metadata.js _site/data/
           cp voice/*.mp3 _site/voice/
           cp image/*.webp _site/image/
       - name: Upload build for review
