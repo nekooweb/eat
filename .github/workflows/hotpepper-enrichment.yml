@@ -2,10 +2,6 @@ name: Hot Pepper Area1 enrichment benchmark
 
 on:
   workflow_dispatch:
-  push:
-    branches: ["main"]
-    paths:
-      - ".github/workflows/hotpepper-enrichment.yml"
 
 permissions:
   contents: read
@@ -82,9 +78,9 @@ jobs:
           set -euo pipefail
           python scripts/collect_hotpepper_area1.py \
             discover \
-            _audit/hotpepper_area1_lite.json \
+            _audit/hotpepper_area1_discovery.json \
             | tee _audit/hotpepper_discovery_console.log
-          test -s _audit/hotpepper_area1_lite.json
+          test -s _audit/hotpepper_area1_discovery.json
 
       - name: Match Hot Pepper IDs to the known Area1 inventory
         shell: bash
@@ -93,12 +89,12 @@ jobs:
           python scripts/match_hotpepper_inventory.py \
             _seed/full/full_inventory_place_details.json \
             _seed/retry/full_inventory_retry_private.json \
-            _audit/hotpepper_area1_lite.json \
+            _audit/hotpepper_area1_discovery.json \
             _audit/hotpepper_inventory_match.json \
             | tee _audit/hotpepper_match_console.log
           test -s _audit/hotpepper_inventory_match.json
 
-      - name: Fetch full details for high/medium match candidates in 20-ID batches
+      - name: Fetch full details for high and medium match candidates in 20-ID batches
         env:
           HOTPEPPER_REQUEST_INTERVAL: '0.20'
         shell: bash
@@ -111,14 +107,31 @@ jobs:
             | tee _audit/hotpepper_details_console.log
           test -s _audit/hotpepper_bound_details.json
 
+      - name: Build durable bindings and production-safe enrichment candidates
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/build_hotpepper_enrichment.py \
+            _audit/hotpepper_inventory_match.json \
+            _audit/hotpepper_bound_details.json \
+            _audit/hotpepper_bindings.json \
+            _audit/source_enrichment_hotpepper.js \
+            _audit/hotpepper_promotion_report.json \
+            | tee _audit/hotpepper_promotion_console.log
+          test -s _audit/hotpepper_bindings.json
+          test -s _audit/source_enrichment_hotpepper.js
+          test -s _audit/hotpepper_promotion_report.json
+
       - name: Summarize enrichment yield
         shell: bash
         run: |
           set -euo pipefail
           python - <<'PY' | tee _audit/hotpepper_enrichment_summary.json
           import json
+          discovery=json.load(open('_audit/hotpepper_area1_discovery.json'))
           match=json.load(open('_audit/hotpepper_inventory_match.json'))
           details=json.load(open('_audit/hotpepper_bound_details.json'))
+          promotion=json.load(open('_audit/hotpepper_promotion_report.json'))
           rows=details.get('rows',[])
           def has(v):
               if isinstance(v, str): return bool(v.strip())
@@ -126,9 +139,12 @@ jobs:
               if isinstance(v, list): return any(has(x) for x in v)
               return v is not None
           summary={
+              'discovery': discovery.get('summary',{}),
               'match': match.get('summary',{}),
               'detail': details.get('summary',{}),
-              'fieldYield': {
+              'promotion': promotion.get('production',{}),
+              'promotionFieldClaims': promotion.get('fieldClaims',{}),
+              'detailFieldYield': {
                   'address': sum(has(r.get('address')) for r in rows),
                   'genre': sum(has(r.get('genre')) for r in rows),
                   'dinnerBudget': sum(has(r.get('budget')) for r in rows),
@@ -146,10 +162,14 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          test -s _audit/hotpepper_area1_lite.json
+          test -s _audit/hotpepper_area1_discovery.json
           test -s _audit/hotpepper_inventory_match.json
           test -s _audit/hotpepper_bound_details.json
+          test -s _audit/hotpepper_bindings.json
+          test -s _audit/source_enrichment_hotpepper.js
+          test -s _audit/hotpepper_promotion_report.json
           test -s _audit/hotpepper_enrichment_summary.json
+          node --check _audit/source_enrichment_hotpepper.js
 
       - name: Upload review-only enrichment artifact
         uses: actions/upload-artifact@v4
