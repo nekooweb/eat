@@ -64,6 +64,35 @@ The output and both workflows were corrected to use:
 
 This is now discoverable by the same enrichment loader used by canonical production.
 
+## Final production verification
+
+The post-fix Pages build confirmed that the fallback shard was loaded by canonical production and all repository/runtime audits passed.
+
+Production remained at 662 identities; this pass enriched existing restaurants only.
+
+Measured canonical results after the pass:
+
+- address known: 332, up from 329 (`+3`), leaving 330 missing;
+- dinner budget known: 265, up from 260 (`+5`), leaving 397 missing;
+- opening hours known: 371, up from 366 (`+5`), leaving 291 missing;
+- lunch budget known: 167, unchanged, leaving 495 missing;
+- cuisine known: 608, unchanged at canonical level because the newly generated cuisine claims mostly backed fields that already had a selected value.
+
+The evidence/provenance improvement is larger than the canonical field delta:
+
+- Hot Pepper provider facts attached to production increased to 141 identities;
+- 41 fallback rows were incorporated into enrichment discovery;
+- those rows supplied 41 address claims, 40 cuisine claims, 40 dinner-budget claims, 41 opening-hours claims and 41 closure claims;
+- canonical resolution retained stronger/pre-existing official or Tabelog values when present rather than overwriting them.
+
+Final QC observations:
+
+- paid-data-API audit: pass, 0 prohibited hits;
+- production identity count: unchanged at 662;
+- price provenance audit: 0 unprovenanced selected price fields;
+- source binding, normalized-field and runtime-overlay audits: pass;
+- generated Pages artifact: success.
+
 ## Files changed
 
 - `scripts/build_hotpepper_rich_core_fallback.mjs` — new reviewed-rich-to-core fallback generator.
