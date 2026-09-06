@@ -13,7 +13,7 @@ Inputs:
   optional manual rich-binding allowlist
 
 The output attaches optional metadata to window.PRODUCTION_RESTAURANTS at
-runtime when loaded after production_area1.js. No photos are stored.
+runtime when loaded after production_area1.js. Photos/logo URLs are not stored.
 """
 
 from __future__ import annotations
@@ -45,6 +45,14 @@ def integer(value):
     except (TypeError, ValueError):
         return None
     return parsed if parsed >= 0 else None
+
+
+def as_list(value):
+    if isinstance(value, list):
+        return value
+    if isinstance(value, dict):
+        return [value]
+    return []
 
 
 def prefix_bool(
@@ -82,6 +90,45 @@ def compact_dict(value, keys):
         if item is not None and str(item).strip():
             result[output_key] = item
     return result or None
+
+
+def compact_code_name(value):
+    return compact_dict(value, (("code", "code"), ("name", "name")))
+
+
+def compact_credit_cards(value):
+    rows = []
+    for item in as_list(value):
+        compact = compact_code_name(item)
+        if compact:
+            rows.append(compact)
+    return rows or None
+
+
+def compact_special_features(value):
+    rows = []
+    for item in as_list(value):
+        if not isinstance(item, dict):
+            continue
+        compact = compact_dict(
+            item,
+            (("code", "code"), ("name", "name"), ("title", "title")),
+        ) or {}
+        category = compact_code_name(item.get("special_category"))
+        if category:
+            compact["category"] = category
+        if compact:
+            rows.append(compact)
+    return rows or None
+
+
+def mobile_coupon_available(value):
+    raw = text(value)
+    if raw == "0":
+        return True
+    if raw == "1":
+        return False
+    return None
 
 
 def manual_pairs(path: Path | None):
@@ -243,18 +290,35 @@ def main():
             (("code", "code"), ("name", "name"), ("average", "average")),
         )
 
+        area = {}
+        for source_key, output_key in (
+            ("largeServiceArea", "largeServiceArea"),
+            ("serviceArea", "serviceArea"),
+            ("largeArea", "largeArea"),
+            ("middleArea", "middleArea"),
+            ("smallArea", "smallArea"),
+        ):
+            compact = compact_code_name(detail.get(source_key))
+            if compact:
+                area[output_key] = compact
+
         row = {
             "googlePlaceId": google_id,
             "hotpepperId": hotpepper_id,
             "hotpepperReviewMode": review_mode,
             "hotpepperUrl": text(urls.get("pc") or urls.get("mobile")),
             "couponUrl": text(coupon_urls.get("pc") or coupon_urls.get("sp")),
+            "mobileCouponAvailable": mobile_coupon_available(detail.get("ktaiCoupon")),
+            "hotpepperKtaiCouponRaw": text(detail.get("ktaiCoupon")),
             "hotpepperName": text(detail.get("name")),
             "nameKana": text(detail.get("nameKana")),
             "hotpepperAddress": text(detail.get("address")),
             "hotpepperLocation": hotpepper_location,
+            "hotpepperArea": area or None,
             "hotpepperGenre": hotpepper_genre,
             "hotpepperBudget": hotpepper_budget,
+            "acceptedCreditCards": compact_credit_cards(detail.get("creditCards")),
+            "specialFeatures": compact_special_features(detail.get("specialFeatures")),
             "nearestStation": text(detail.get("stationName")),
             "accessText": text(detail.get("access")),
             "mobileAccessText": text(detail.get("mobileAccess")),
@@ -277,14 +341,17 @@ def main():
 
     summary_keys = [
         "hotpepperName", "nameKana", "hotpepperAddress", "hotpepperLocation",
-        "hotpepperGenre", "hotpepperBudget", "nearestStation", "accessText",
-        "mobileAccessText", "budgetMemo", "sourceCatch", "lunchAvailable",
-        "capacity", "partyCapacity", "hotpepperOpeningHoursText", "hotpepperClosedText",
-        "amenities", "sourceServiceText", "hotpepperUrl", "couponUrl",
+        "hotpepperArea", "hotpepperGenre", "hotpepperBudget", "acceptedCreditCards",
+        "specialFeatures", "mobileCouponAvailable", "hotpepperKtaiCouponRaw",
+        "nearestStation", "accessText", "mobileAccessText", "budgetMemo", "sourceCatch",
+        "lunchAvailable", "capacity", "partyCapacity", "hotpepperOpeningHoursText",
+        "hotpepperClosedText", "amenities", "sourceServiceText", "hotpepperUrl", "couponUrl",
     ]
     summary = {key: sum(key in row for row in rows) for key in summary_keys}
     summary["automaticRows"] = automatic_rows
     summary["manualReviewedRows"] = manual_rows
+    summary["creditCardEntries"] = sum(len(row.get("acceptedCreditCards", [])) for row in rows)
+    summary["specialFeatureEntries"] = sum(len(row.get("specialFeatures", [])) for row in rows)
     amenity_keys = sorted({key for row in rows for key in row.get("amenities", {})})
     summary["amenityFields"] = {
         key: sum(key in row.get("amenities", {}) for row in rows)
@@ -298,7 +365,7 @@ def main():
     summary["rows"] = len(rows)
 
     payload = {
-        "schemaVersion": 5,
+        "schemaVersion": 6,
         "checkedAt": checked_at,
         "source": "Hot Pepper Gourmet Web Service",
         "policy": {
@@ -307,8 +374,10 @@ def main():
             "createsProductionIdentity": False,
             "overwritesCanonicalCoreFields": False,
             "photosStored": False,
+            "logosStored": False,
             "rawServiceTextPreserved": True,
             "rawSourceClassificationPreserved": True,
+            "maximumNonImageOptionalBlocks": ["credit_card", "special"],
         },
         "summary": summary,
         "rows": rows,
@@ -317,11 +386,12 @@ def main():
     js_payload = json.dumps(payload, ensure_ascii=False, separators=(",", ":"))
     runtime_keys = [
         "hotpepperId", "hotpepperReviewMode", "hotpepperUrl", "couponUrl",
-        "hotpepperName", "nameKana", "hotpepperAddress", "hotpepperLocation",
-        "hotpepperGenre", "hotpepperBudget", "nearestStation", "accessText",
-        "mobileAccessText", "budgetMemo", "sourceCatch", "lunchAvailable",
-        "capacity", "partyCapacity", "hotpepperOpeningHoursText",
-        "hotpepperClosedText", "amenities", "sourceServiceText",
+        "mobileCouponAvailable", "hotpepperKtaiCouponRaw", "hotpepperName", "nameKana",
+        "hotpepperAddress", "hotpepperLocation", "hotpepperArea", "hotpepperGenre",
+        "hotpepperBudget", "acceptedCreditCards", "specialFeatures", "nearestStation",
+        "accessText", "mobileAccessText", "budgetMemo", "sourceCatch", "lunchAvailable",
+        "capacity", "partyCapacity", "hotpepperOpeningHoursText", "hotpepperClosedText",
+        "amenities", "sourceServiceText",
     ]
     runtime_keys_json = json.dumps(runtime_keys, ensure_ascii=False, separators=(",", ":"))
     output = (
