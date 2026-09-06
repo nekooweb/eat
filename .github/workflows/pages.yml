@@ -48,7 +48,8 @@ jobs:
               scripts/build_overture_area1.py \
               scripts/build_open_identity_reconciliation.py \
               scripts/collect_hotpepper_area1.py \
-              scripts/match_hotpepper_inventory.py
+              scripts/match_hotpepper_inventory.py \
+              scripts/build_hotpepper_enrichment.py
             test -s data/production_area1.js
             node scripts/audit_repository.mjs
             node scripts/audit_source_bindings.mjs
