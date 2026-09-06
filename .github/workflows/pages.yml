@@ -64,7 +64,7 @@ jobs:
           set -o pipefail
           node scripts/coverage_report.mjs | tee _audit/coverage.json
           node scripts/source_queue.mjs | tee _audit/source_queue.json
-          node scripts/audit_price_resolution.mjs | tee _audit/price_resolution.json
+          STRICT_PRICE_PROVENANCE=1 node scripts/audit_price_resolution.mjs | tee _audit/price_resolution.json
           node scripts/build_enrichment_queue.mjs | tee _audit/enrichment_queue.json
           node scripts/dish_gap_report.mjs | tee _audit/dish_gap_report.json
           node scripts/audit_area1_identity_coverage.mjs | tee _audit/area1_identity_coverage.json
