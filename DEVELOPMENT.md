@@ -27,9 +27,9 @@ Current audited canonical state:
 - 百名店: **22**;
 - unprovenanced stored meal-price fields: **0**.
 
-Two additional runtime overlays now preserve information that should not be forced into the compact canonical filtering schema:
+Two additional runtime overlays preserve useful information that should not be forced into the compact canonical filtering schema:
 
-- reviewed Hot Pepper rich metadata: **135 production identities**;
+- reviewed Hot Pepper maximum non-image rich metadata: **135 production identities**;
 - public source provenance: **446 production identities / 606 concrete source URLs**.
 
 `DATA_ENRICHMENT_PROGRESS.md` is the numeric progress report. `PRICE_ENRICHMENT.md` defines meal-price evidence and resolver policy. `HOTPEPPER_ENRICHMENT.md` documents the authorized Hot Pepper path. `DATA_SCHEMA.md` is the runtime-field contract.
@@ -47,7 +47,7 @@ Current priority:
 1. **P0** — identity/source binding, currentness, name, address/coordinates, cuisine;
 2. **P1** — lunch and dinner price evidence resolved independently;
 3. **P2** — normalized hours, regular closure, source URLs and practical branch metadata;
-4. **P3** — access/station, capacity, service/amenity fields, representative dishes and strict recommendations.
+4. **P3** — access/station, capacity, service/amenity fields, payment methods, source classifications, representative dishes and strict recommendations.
 
 Do not return to large-scale paid restaurant discovery unless a later measured recall audit demonstrates a material gap in the frozen 2,804-ID universe.
 
@@ -98,27 +98,32 @@ Measured Hot Pepper canonical gains against the no-Hot-Pepper baseline:
 
 The core promotion workflow is manual-only and idempotent. Ordinary pushes do not consume Hot Pepper requests.
 
-## Rich metadata layer
+## Maximum non-image rich metadata layer
 
-Canonical filtering fields are deliberately conservative, but the source contains many useful facts that should not be discarded. The repository therefore adds `data/hotpepper_rich_metadata.js` as a non-core overlay loaded after `production_area1.js`.
+Canonical filtering fields are deliberately conservative, but Hot Pepper contains many useful source-native facts that should not be discarded. `data/hotpepper_rich_metadata.js` is therefore a non-core overlay loaded after `production_area1.js`.
 
-The focused refresh uses `scripts/collect_hotpepper_rich_details.py` and **does not repeat geographic discovery or identity matching**. It fetches reviewed source-native IDs in batches of <=20.
+The focused collector `scripts/collect_hotpepper_rich_details.py` **does not repeat geographic discovery or identity matching**. It fetches only reviewed current-production Hot Pepper IDs in batches of <=20.
 
-Actions run `34034504592` refreshed the final reviewed set in only **7 requests**:
+The final maximum non-image refresh is Actions run `34035124635`:
 
 - automatic strict-safe bindings: **128**;
-- manually reviewed exact bindings: **7**;
-- total rich rows: **135**;
-- returned Hot Pepper rows: **135 / 135**;
-- missing rows: **0**.
+- manually reviewed exact rich-only bindings: **7**;
+- total selected: **135**;
+- detail requests: **7**;
+- returned: **135 / 135**;
+- missing: **0**;
+- geographic discovery repeated: **no**;
+- identity matching repeated: **no**;
+- optional response blocks: `credit_card` + `special`;
+- photos/logo persisted: **no**.
 
 The seven manual exceptions are stored in `data/hotpepper_manual_rich_bindings.json` and are explicitly **rich-metadata-only**. Six other near-coordinate but wrong-shop pairs were reviewed and rejected, preventing neighboring businesses from contaminating data.
 
-For all 135 reviewed rows the overlay preserves, where supplied:
+For all 135 reviewed rows the overlay now preserves, where supplied:
 
-- Hot Pepper source-native ID and source shop name;
-- name kana;
-- source address and source coordinates;
+- Hot Pepper source-native ID, source shop name and kana;
+- source address and coordinates;
+- five-level Hot Pepper service/area hierarchy;
 - raw genre/sub-genre and raw budget object;
 - nearest station;
 - full and mobile access text;
@@ -127,13 +132,39 @@ For all 135 reviewed rows the overlay preserves, where supplied:
 - source catch copy and budget memo;
 - raw opening/closure text;
 - Hot Pepper shop URL and coupon URL;
+- mobile-coupon availability and raw provider value;
+- accepted credit-card brands;
+- Hot Pepper `special` feature/category labels;
 - normalized amenity flags plus original provider text.
 
-High-coverage service fields include all-you-can-drink/eat, private room, card, smoking policy, charter, parking, barrier-free, English menu, children, pets, late-night, karaoke, TV/projector, tatami and horigotatsu. Raw source text is preserved even when a safe boolean cannot be inferred; e.g. Wi-Fi raw text exists for all 135 while `wifiAvailable` is only set for **107** unambiguous rows.
+Measured maximum-field coverage:
+
+- source name / kana / address / coordinates: **135 / 135**;
+- raw genre / raw budget / Hot Pepper area hierarchy: **135 / 135**;
+- nearest station / access / mobile access: **135 / 135**;
+- lunch availability / capacity: **135 / 135**;
+- party capacity: **109 / 135**;
+- budget memo: **66 / 135**;
+- source catch: **114 / 135**;
+- raw opening / closure: **135 / 135**;
+- shop URL / coupon URL: **135 / 135**;
+- mobile coupon status: **135 / 135**;
+- credit-card brand list: **119 / 135**, **593 card-brand records**;
+- special feature list: **40 / 135**, **160 feature records**;
+- raw Wi-Fi text: **135 / 135**;
+- unambiguous `wifiAvailable`: **107 / 135**;
+- wedding text: **58 / 135**;
+- course status: **123 / 135**;
+- other-equipment memo: **48 / 135**;
+- shop-detail memo: **52 / 135**.
+
+High-coverage service fields include all-you-can-drink/eat, private room, card, smoking policy, charter, parking, barrier-free, English menu, children, pets, late-night, karaoke, TV/projector, live show, band performance, tatami and horigotatsu. Raw source text is preserved even when a safe boolean cannot be inferred.
+
+A zero-value handling bug found after the maximum refresh was fixed without another API call: Hot Pepper `ktai_coupon=0` is a valid value, so the common text normalizer now preserves numeric zero. The overlay was rebuilt from run `34035124635`, raising normalized mobile-coupon coverage from **97 -> 135** while keeping the original 7 API requests as the only network work for this final refresh.
 
 The rich overlay **never creates a production identity and never overwrites canonical name/address/cuisine/budget/hours**. It is attached only after the canonical build.
 
-`.github/workflows/hotpepper-rich-refresh.yml` is manual-only because it calls the authorized Hot Pepper API. `.github/workflows/promote-hotpepper-rich-metadata.yml` is also manual-only and can rebuild the overlay from the retained successful refresh artifact without API calls.
+`.github/workflows/hotpepper-rich-refresh.yml` is manual-only because it calls the authorized Hot Pepper API. `.github/workflows/promote-hotpepper-rich-metadata.yml` is also manual-only and rebuilds the overlay from retained run `34035124635` without making Hot Pepper requests.
 
 ## Public source provenance layer
 
@@ -255,6 +286,7 @@ This means the next phase must exhaust **existing-source extraction before broad
 - C-class sparse prices never become restaurant budget bands.
 - Raw schedule prose is not exposed as normalized hours unless the conservative normalizer can safely parse it.
 - Rich source metadata is preserved separately instead of being coerced into canonical core fields.
+- Provider integer/enum value `0` is preserved as data, not treated as missing.
 - `recommendedDishes` requires explicit recommendation/popularity/signature evidence.
 - `featuredDishes` may use broader reviewed source-backed representative items.
 - Cross-source automatic matching generates candidates; one weak match never admits a new production identity.
@@ -264,11 +296,11 @@ This means the next phase must exhaust **existing-source extraction before broad
 The public product remains a static GitHub Pages application. Runtime data is loaded in layers:
 
 ```text
-production_area1.js      canonical filter/recommendation facts
-source_provenance.js     public evidence links and field lineage
-hotpepper_rich_metadata.js practical rich source metadata
+production_area1.js          canonical filter/recommendation facts
+source_provenance.js         public evidence links and field lineage
+hotpepper_rich_metadata.js   maximum reviewed non-image source metadata
 ```
 
 Recommendation behavior remains: <=1,200m, current canonical production identities, cuisine/budget/distance filters, three distinct results when possible, cuisine-diversity preference, Web Crypto randomness, 百名店 weight 2.2 and no rating/review popularity ranking.
 
-Embedded maps use Leaflet/OpenStreetMap. Hot Pepper images are not ingested. The required Hot Pepper service credit remains on the public page.
+Embedded maps use Leaflet/OpenStreetMap. Hot Pepper photos and logo URLs are not ingested. The required Hot Pepper service credit remains on the public page.
