@@ -28,7 +28,9 @@ def load_json(path: Path):
 
 
 def text(value):
-    value = str(value or "").strip()
+    if value is None:
+        return None
+    value = str(value).strip()
     return value or None
 
 
