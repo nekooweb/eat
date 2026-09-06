@@ -3,10 +3,6 @@ name: Promote additive-only Hot Pepper enrichment
 
 on:
   workflow_dispatch:
-  push:
-    branches: ["main"]
-    paths:
-      - ".github/workflows/promote-hotpepper-additive.yml"
 
 permissions:
   contents: write
@@ -89,7 +85,7 @@ jobs:
           node scripts/audit_repository.mjs
           node scripts/audit_source_bindings.mjs
           node scripts/audit_normalized_fields.mjs
-          node scripts/audit_price_resolution.mjs | tee _audit/price_resolution_after_hotpepper.json
+          STRICT_PRICE_PROVENANCE=1 node scripts/audit_price_resolution.mjs | tee _audit/price_resolution_after_hotpepper.json
           node scripts/source_queue.mjs | tee _audit/source_queue_after_hotpepper.json
           node scripts/coverage_report.mjs | tee _audit/coverage_after_hotpepper.json
 
