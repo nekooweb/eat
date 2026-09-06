@@ -4,16 +4,14 @@ Updated: 2026-09-06
 
 ## Current state
 
-`TOKYO / 地区1️⃣` keeps the confirmed **2,804-ID** Area1 snapshot as a frozen historical identity benchmark while production enrichment continues from durable independent sources.
+`TOKYO / 地区1️⃣` has completed the expensive candidate/identity capture stage. The confirmed historical Area1 snapshot contains **2,804** identities.
 
-Current audited baseline:
+Current audited production baseline:
 
-- exact frozen inventory: **2,804 / 2,804** historical Google Place IDs;
+- frozen historical inventory: **2,804** Place IDs;
 - canonical production: **656**;
-- production inside the frozen inventory: **653**;
-- inventory-only legacy IDs: **2,151**;
-- OSM independent-source candidates: **1,273**;
-- verified historical QC rows: **666**;
+- production inside frozen inventory: **653**;
+- current inventory-only legacy IDs: **2,151**;
 - source-backed production: **404 / 656**;
 - source outcomes accounted for: **448 / 656**;
 - unresolved current-production source queue: **208**;
@@ -26,134 +24,232 @@ Current audited baseline:
 - strict recommendations: **30**;
 - 百名店: **22**.
 
-`DATA_ENRICHMENT_PROGRESS.md` is the authoritative numeric report. Detailed run history belongs under `logs/`.
+The successful 2026-09-06 full-collection Actions artifact plus its retry artifact contain the transient matching inputs for the identities that were inventory-only during the sweep. The retry resolved all transient fetch failures. **Do not repeat that paid collection.**
+
+`DATA_ENRICHMENT_PROGRESS.md` remains the numeric progress report. `ENRICHMENT_STRATEGY.md` is now the authoritative design for the next data-development phase.
+
+## Primary goal: enrich the known list
+
+Candidate discovery is no longer the main bottleneck.
+
+The next development cycle should optimize this question:
+
+> For the already-known Area1 restaurant list, how many useful, maintainable fields can be completed per network fetch and per review minute without paid data APIs?
+
+Priority order:
+
+### P0 — complete first
+
+- durable independent identity/source binding;
+- current existence evidence;
+- name/aliases;
+- coordinates/address;
+- cuisine/type;
+- official website/locator when available.
+
+### P1 — improve filtering
+
+- lunch/dinner price evidence;
+- explicit or transparently derived price band with evidence class.
+
+### P2 — useful display context
+
+- normalized opening hours;
+- regular closed days;
+- phone;
+- menu URLs.
+
+### P3 — optional enrichment
+
+- featured dishes;
+- strict recommendation evidence;
+- descriptive fields.
+
+Do not spend substantial crawling/review effort on P3 while P0/P1 coverage is still weak.
 
 ## Paid data API prohibition
 
-Effective 2026-09-06, repository maintenance must not execute billable place/search/map data APIs.
+Repository maintenance must not execute billable place/search/map data APIs.
 
-This is a hard engineering constraint, not a budget preference:
+This is a hard engineering constraint:
 
-- do not call Google Places, Places Aggregate/Area Insights, Text Search, Place Details, `websiteUri`, or equivalent billable discovery/QC endpoints;
-- do not read Google Maps/Places API secrets in maintenance workflows;
-- do not inject the former shared Google API key into the public Pages build;
-- legacy Google Place IDs and the existing identity/QC cache are frozen read-only historical inputs;
-- do not refresh opaque legacy IDs by issuing new paid requests;
-- retired paid-call scripts remain as fail-closed stubs so accidental local or Actions execution cannot incur charges;
-- CI runs `scripts/audit_no_paid_apis.mjs` to block reintroduction of known paid endpoint/secret patterns.
+- no live Google Places / Area Insights / Text Search / Place Details / `websiteUri` calls;
+- no paid place/search API as a fallback;
+- no Google Maps/Places secret in maintenance workflows;
+- no API key injected into the Pages artifact;
+- existing Google Place IDs and historical QC state are frozen compatibility/alias inputs;
+- retired paid scripts remain fail-closed;
+- CI runs `scripts/audit_no_paid_apis.mjs`.
 
-Ordinary HTTPS fetches of official restaurant pages, open data files and public static catalogs remain allowed. They must still respect provider terms, rate limits and caching requirements.
+Ordinary HTTPS fetching of official pages and bulk use of appropriately licensed open datasets are allowed subject to their terms, rate limits and attribution requirements.
 
-## Development direction
+## Immediate high-value opportunity: consume the existing transient sweep
 
-The previous plan tried to make every one of the 2,804 Google IDs a live maintenance target. That is no longer appropriate because many inventory-only IDs intentionally retain no durable Google name/address/location payload. Without paid lookups, those opaque IDs cannot be refreshed safely.
+The already-paid private Actions artifacts expire quickly and should be used once as a **transient bridge**, not as the durable database.
 
-The new design separates two concerns:
+Bridge workflow:
 
-1. **Frozen legacy identity reconciliation** — preserve the 2,804-ID snapshot and use only already-committed QC metrics/candidate links to reconcile identities.
-2. **Open independent-source coverage** — discover and analyze current food businesses from Overture Maps, OSM extracts, official sites and trusted locators without depending on live Google calls.
+1. download the successful full-collection and retry artifacts;
+2. merge retry rows into the original sweep in memory;
+3. combine them with existing production identities so the complete 2,804 historical list can participate in matching;
+4. use transient name/address/coordinate/type signals only to match independent sources;
+5. persist independent IDs/URLs/fields and field-level evidence;
+6. do not commit the transient Google display payload.
 
-The 656 current production rows remain keyed by their already-committed Place IDs for runtime compatibility. New open-data candidates do not receive invented Google IDs. Future expansion beyond the frozen identity universe should add a source-native canonical identity key before admission.
+This extracts maximum value from the collection that has already been paid for without making another paid request.
 
-## Zero-paid-API batch pipeline
+## Enrichment source strategy
 
-### Stage 1 — open candidate ingestion
+Do not designate one replacement POI database as the new truth.
 
-Use Overture Maps Places as the primary large-batch discovery layer:
+Use the best source for each field.
 
-- query the public GeoParquet release by Area1 bounding box;
-- use the current `basic_category` / `taxonomy` fields rather than removed legacy categories;
-- keep only food/drink candidates and apply the exact <=1,200 m geodesic boundary after bbox pruning;
-- preserve Overture `sources`, websites, phones, addresses, brands and confidence fields for provenance/review.
+### Open bulk POI sources
 
-Use OSM as the independent geospatial layer. The committed `area1_osm.js` remains usable now. For future large refreshes, prefer a local/cached Geofabrik Kanto PBF extract over systematic public Nominatim or high-volume public Overpass queries.
+Benchmark and match:
 
-### Stage 2 — cross-source blocking and triangulation
+- **Foursquare Open Source Places** for currentness, FSQ identity, category, website, phone, address and coordinates;
+- **Overture Maps Places** for multilingual names, taxonomy, websites/phones/brand, addresses, confidence, source lineage and GERS identity;
+- **OpenStreetMap** for independent geospatial data, cuisine, `opening_hours`, address and website/contact tags.
 
-Do not compare every source row with every other row.
+Overture is itself a conflated multi-provider dataset. Source lineage must be considered before treating two agreeing records as genuinely independent evidence.
 
-Block candidates by spatial cells plus normalized name/address signals, then score only nearby pairs. `scripts/build_open_identity_reconciliation.py` combines:
+### Official/brand sources
 
-- the persisted historical Google→OSM match class, distance and name-similarity metrics already stored in `area1_full_collection_queue.json`;
-- current OSM candidate facts;
-- a new independent Overture candidate near the same source entity.
+Promote official locators to a first-class batch source.
 
-This creates an A/B/C/D review queue. It does **not** auto-promote identities. Historical collision/terminal QC remains authoritative until explicitly reviewed.
+- reuse relevant **AllThePlaces** Japanese spiders where they already encode official locator logic;
+- add small host adapters for high-yield restaurant groups not covered there;
+- process identities by brand/domain/template rather than one restaurant at a time.
 
-### Stage 3 — official source discovery without search APIs
+### Listing APIs/platforms
 
-Discover official sources from reusable deterministic evidence:
+A free API is not automatically a suitable database source.
 
-- Overture website/brand fields;
-- existing `official_candidate_index.json`;
-- official brand store locators and sitemaps;
-- previously reviewed official/Tabelog bindings;
-- source URLs already attached to durable records.
+For example, Hot Pepper exposes attractive budget/hours/address/genre fields, but its API terms impose cache/update and database-reuse restrictions. It may be useful for comparison/review under its terms, but it should not become the persistent bulk ingestion layer.
 
-Fetch unique URLs once per run, group by host/template, cache content hashes/ETag/Last-Modified when practical, and avoid repeatedly refetching saturated pages.
+## Matching model
 
-### Stage 4 — grouped field extraction
+The completed sweep is not suitable for exact-name matching only. A large portion of Japanese identities were returned with romanized/English display names.
 
-During each source pass collect all safely supported fields together:
+Use blocked multi-signal record linkage:
+
+- spatial distance;
+- Japanese/Latin aliases;
+- address/postal/building tokens;
+- phone;
+- official domain;
+- brand + branch;
+- category compatibility;
+- historical reviewed bindings.
+
+Move from a universal hand-tuned threshold toward a calibrated probabilistic linkage model for ambiguous cases, while enforcing one-to-one/source-uniqueness constraints.
+
+For Area1 scale, a DuckDB/Splink-style workflow is practical.
+
+## Host-first batch extraction
+
+The preferred processing unit is a **host/template**, not a restaurant.
+
+```text
+known identities
+ -> open-data/source bindings
+ -> official URLs
+ -> group by host/brand/template
+ -> fetch each URL once
+ -> extract all useful fields in one pass
+ -> emit field claims
+ -> resolve/promote canonical values
+```
+
+High-yield repeated hosts and chain locators should be processed before difficult independent exceptions.
+
+## Extract all useful fields in one source pass
+
+From each official page/locator, collect candidate evidence for:
 
 - exact branch identity;
+- name/address/phone;
 - cuisine;
-- address;
-- normalized weekly opening hours;
-- explicit lunch/dinner spend range when available;
-- representative/signature dishes;
-- strict recommendation evidence when explicitly stated.
+- weekly opening hours and closed days;
+- explicit budget/average-spend statements;
+- lunch/dinner menu prices;
+- menu URLs;
+- featured/signature dishes;
+- strict recommendation signals.
 
-JSON-LD/Schema.org, stable branch locator markup and menu pages should be parsed in batches. Missing or ambiguous values remain unknown.
+Parse structured data first:
 
-### Stage 5 — incremental refresh
+- JSON-LD / Schema.org;
+- stable locator JSON/API payloads exposed by the official site;
+- embedded application state;
+- HTML semantic sections.
 
-Prefer release deltas and source changes over full rescans:
+Then follow only a bounded set of likely menu/detail links. Avoid repeatedly refetching already-saturated pages.
 
-- pin an Overture release for reproducibility, then compare a later release by Overture ID/source fields;
-- refresh OSM from a local extract periodically rather than per-entity API calls;
-- refetch official pages only when stale or changed;
-- rebuild canonical production and ledgers only after material identity/source changes.
+## Price model should be expanded, not silently weakened
 
-## Admission rules
+The old `budget` rule accepts only explicit spend ranges. That preserves precision but leaves most rows unknown.
 
-- Existing production Place IDs are retained only as frozen historical keys.
-- No new Place ID may be obtained through a live paid API.
-- Independent source facts must match an exact branch conservatively.
-- Existing terminal QC conflicts and already-bound source entities must not be overwritten automatically.
-- Overture/OSM agreement strengthens review priority but does not by itself erase a historical Google↔OSM mismatch.
-- Ambiguous, stale, closed or unsupported cases receive an explicit unresolved/terminal outcome rather than guessed data.
-- A future source-native `identityKey` is required before expanding production beyond identities that can be reconciled to the frozen current model.
+Keep explicit budget as A-confidence evidence, but add a separate transparent `priceProfile` concept:
 
-## Field rules
+- **A** — explicit average/budget/spend range from an allowed exact source;
+- **B** — official lunch/dinner menu with enough comparable main/set items to derive an observed band;
+- **C** — sparse item/course prices; review/display evidence only, not hard filtering.
 
-### Opening hours
+Do not pretend a single menu item equals restaurant budget. The new model should improve filter coverage while exposing how the band was obtained.
 
-`openingHours` is a normalized weekly schedule. Temporary, holiday-only or irregular schedules are not forced into the static weekly model.
+## Field-claim architecture
 
-### Budget
+Bulk collectors should not directly mutate canonical restaurant rows.
 
-Menu-item/course prices do not automatically define restaurant lunch/dinner budget. Only explicit spend-range evidence is accepted.
+Each extraction should produce field-level claims containing:
 
-### Dishes
+- entity/alias key;
+- field;
+- value;
+- source provider;
+- source-native record ID or URL;
+- checked date;
+- extraction method;
+- confidence;
+- lineage.
 
-- `recommendedDishes`: strict explicit recommendation/popularity/signature evidence;
-- `featuredDishes`: broader source-backed representative/signature items.
+A resolver chooses canonical values afterward. Existing `source_enrichment_*.js` shards can remain as generated compatibility output while a compact claim ledger is introduced behind them.
 
-Brand/template propagation may fill fields only after branch identity is already independently established.
+## Development order
 
-## Ordered next work
+1. **Consume the already-paid transient full-list artifacts before expiry** and build independent source bindings; do not rerun Google.
+2. Build/benchmark FSQ OS + Overture + local OSM matching for the known list.
+3. Produce an enrichment coverage matrix for all known identities: source bindings and missing P0/P1/P2/P3 fields.
+4. Detect repeated brands/domains and run AllThePlaces/official-locator adapters first.
+5. Upgrade generic official-page extraction to emit all field claims in one pass.
+6. Add evidence-classed `priceProfile` generation from explicit spend statements and official menus.
+7. Normalize opening hours through structured data -> host adapter -> OSM syntax -> conservative Japanese text parser.
+8. Use manual review only for high-value ambiguity/conflicts, not straightforward bulk matches.
+9. Rebuild/audit production after material batches.
 
-1. Run the no-paid-API policy audit on every data/workflow change.
-2. Produce an Overture Area1 staging snapshot with `zero-cost-area1-candidates.yml`.
-3. Build the Overture↔OSM↔historical-QC reconciliation queue and review A/B tiers first, especially the existing **3 medium + 49 review** legacy OSM matches.
-4. Continue the **208** unresolved production source outcomes using only existing/open official discovery paths.
-5. Expand independent-source coverage for the current Area1 independently of the opaque legacy ID count; do not force a live result for IDs that cannot be resolved without paid data.
-6. Continue grouped field completion from newly established official sources.
-7. Design a source-native identity key before any new production scope (Area2/SHIZUOKA) is admitted.
+## New progress metrics
+
+Headline metrics should be enrichment-oriented:
+
+- identities with >=1 durable independent source binding;
+- identities with >=2 genuinely independent source signals;
+- P0-complete identities;
+- cuisine coverage;
+- official website/locator coverage;
+- explicit A-price coverage;
+- derived B-price coverage;
+- normalized-hours coverage;
+- featured/recommended dish coverage;
+- unresolved high-value conflicts;
+- remaining unique hosts/templates;
+- **fields completed per network fetch / per review minute**.
+
+The 2,804 count remains the known historical list size, not a reason to keep rediscovering restaurants.
 
 ## Runtime contract
 
-The public product remains a static GitHub Pages application. Recommendation behavior is unchanged: <=1,200 m scope, current canonical production identities, cuisine/budget/distance filters, three distinct results when possible, cuisine diversity preference, Web Crypto randomness, 百名店 weight 2.2, and no rating/review popularity ranking.
+The public product remains a static GitHub Pages application. Recommendation behavior remains: <=1,200 m scope, current canonical production identities, cuisine/budget/distance filters, three distinct results when possible, cuisine-diversity preference, Web Crypto randomness, 百名店 weight 2.2, and no rating/review popularity ranking.
 
-The deployed site no longer receives a Google API key. Three-store and per-store embedded maps use the existing Leaflet/OpenStreetMap path; ordinary external Google Maps navigation links may remain because they are normal web links, not API execution.
+Embedded maps use Leaflet/OpenStreetMap. Ordinary external Google Maps navigation links may remain because they are normal web links rather than API execution.
