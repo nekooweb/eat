@@ -38,7 +38,7 @@ jobs:
       - name: Build current production seed
         run: node scripts/build_production_dataset.mjs
 
-      - name: Download reviewed Hot Pepper benchmark artifact
+      - name: Download latest focused rich-detail audit
         env:
           GH_TOKEN: ${{ github.token }}
         shell: bash
@@ -46,20 +46,20 @@ jobs:
           set -euo pipefail
           rm -rf _hotpepper _audit
           mkdir -p _hotpepper _audit
-          gh run download 34030943605 \
+          gh run download 34034176471 \
             --repo nekooweb/eat \
-            -n hotpepper-area1-enrichment-review \
+            -n hotpepper-rich-refresh-audit \
             -D _hotpepper
-          test -s _hotpepper/hotpepper_bindings.json
-          test -s _hotpepper/hotpepper_bound_details.json
+          test -s _hotpepper/hotpepper_rich_details.json
+          test -s data/hotpepper_bindings.json
 
       - name: Build rich metadata overlay
         shell: bash
         run: |
           set -euo pipefail
           python scripts/build_hotpepper_rich_metadata.py \
-            _hotpepper/hotpepper_bindings.json \
-            _hotpepper/hotpepper_bound_details.json \
+            data/hotpepper_bindings.json \
+            _hotpepper/hotpepper_rich_details.json \
             data/hotpepper_rich_metadata.js \
             | tee _audit/hotpepper_rich_metadata_summary.json
           test -s data/hotpepper_rich_metadata.js
@@ -95,7 +95,7 @@ jobs:
             echo "No rich metadata changes to commit."
             exit 0
           fi
-          git commit -m "Add reviewed Hot Pepper rich metadata"
+          git commit -m "Preserve full Hot Pepper service metadata"
           git push
 
       - name: Upload audit
