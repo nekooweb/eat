@@ -2,49 +2,29 @@
 
 Updated: 2026-09-06
 
-The browser loads three data layers in this order:
+The browser loads the data layers in this order:
 
 ```text
 production_area1.js          conservative canonical filtering/recommendation data
 source_provenance.js         public source URLs and field lineage
-hotpepper_rich_metadata.js   reviewed maximum non-image source metadata
+source_facts.js              provider-level maintained facts
+hotpepper_rich_metadata.js   reviewed maximum non-image Hot Pepper metadata
 ```
 
-The overlays attach additional fields only to exact existing production identities after `production_area1.js` loads. They do not create identities and they do not replace conservative canonical core fields.
+All overlays attach only to exact existing production identities after `production_area1.js` loads. They do not create identities and do not replace conservative canonical core fields.
 
 ## Canonical price / budget
-
-### Runtime fields
 
 ```js
 lunch: [1000, 1999],
 dinner: [3001, 4000]
 ```
 
-`lunch` and `dinner` are independent finite yen ranges. Either field may be `null`.
+`lunch` and `dinner` resolve independently in `scripts/price_resolver.mjs`.
 
-They are resolved independently by `scripts/price_resolver.mjs`; one provider no longer owns the restaurant's complete budget profile.
+A source-only price is eligible only when its `sourceRefs` claim `budget`, `lunchBudget` or `dinnerBudget`.
 
-Example:
-
-```text
-lunch  -> exact Tabelog claim
-dinner -> authorized Hot Pepper claim
-```
-
-### Price provenance
-
-A source-only row may contribute a canonical meal price only when one of its `sourceRefs` explicitly claims:
-
-- `budget` — legacy/both-meal price provenance;
-- `lunchBudget` — lunch only;
-- `dinnerBudget` — dinner only.
-
-A stored `lunch` or `dinner` array without one of those claims is ignored. Pages runs `scripts/audit_price_resolution.mjs` with `STRICT_PRICE_PROVENANCE=1`, so an unprovenanced stored meal-price field fails the build.
-
-### Evidence classes
-
-Price source refs may declare:
+Evidence classes:
 
 ```js
 priceEvidenceClass: 'explicit_range' // A
@@ -52,39 +32,18 @@ priceEvidenceClass: 'menu_derived'   // B
 priceEvidenceClass: 'sparse'         // C
 ```
 
-Semantics:
+- A: explicit branch-specific range/average-spend; hard-filter eligible.
+- B: reviewed representative range from a sufficiently complete official menu; used only when no A-class range exists.
+- C: one item/course/charge/promotion/search snippet; never used for hard filtering.
 
-- `explicit_range` — explicit branch-specific lunch/dinner budget or average-spend range. Highest evidence class and hard-filter eligible.
-- `menu_derived` — reviewed representative range derived from a sufficiently complete official menu. Hard-filter eligible only when no explicit range exists.
-- `sparse` — one item/course/charge/promotion/search snippet or similarly weak evidence. Review/display only; never enters the canonical hard budget filter.
+Selection is evidence strength -> provider priority -> freshness. Strong-source conflicts are never averaged silently.
 
-Selection order is **evidence strength first**, then provider priority, then freshness. Strong-source conflicts are never averaged silently.
+Current canonical strict coverage:
 
-### Menu-derived maintenance metadata
-
-Reviewed B-class patches may retain maintenance-only derivation data:
-
-```js
-priceDerivations: [{
-  sourceUrl: 'https://...',
-  checkedAt: '2026-09-06',
-  evidenceClass: 'menu_derived',
-  method: 'complete-lunch-set-range',
-  observedYen: [800, 900, 1400],
-  note: '...'
-}]
-```
-
-This remains in source-maintenance shards so the range can be reproduced and audited.
-
-### Current strict coverage
-
-Current 656-restaurant canonical pool:
-
-- lunch known: **157**;
-- dinner known: **254**;
-- both meals known: **137**;
-- either meal known: **274**;
+- lunch: **157**;
+- dinner: **254**;
+- both: **137**;
+- either: **274**;
 - lunch missing: **499**;
 - dinner missing: **402**;
 - unprovenanced stored meal-price fields: **0**.
@@ -96,32 +55,23 @@ openingHours: {
   timezone: 'Asia/Tokyo',
   days: {
     mon: [['11:30', '14:00'], ['17:00', '23:00']],
-    tue: [['11:30', '14:00'], ['17:00', '23:00']],
-    wed: [],
-    thu: [['11:30', '14:00'], ['17:00', '23:00']]
+    tue: [['11:30', '14:00']],
+    wed: []
   }
 }
 ```
 
-Day keys are `mon`, `tue`, `wed`, `thu`, `fri`, `sat`, `sun`, and `holiday`.
+- missing day key = unknown;
+- `[]` = explicitly closed;
+- intervals = known periods;
+- close times may extend to `29:59`;
+- Area1 timezone is `Asia/Tokyo`.
 
-Semantics:
-
-- missing day key = **unknown**;
-- `[]` = **explicitly closed**;
-- one or more `[open, close]` pairs = known opening periods;
-- close times may extend after midnight, up to `29:59`;
-- timezone is `Asia/Tokyo` for Area1.
-
-`hoursReference` is generated from `openingHours`; raw source prose is never copied directly into canonical hours.
-
-If a reliable weekly schedule cannot be normalized, canonical `openingHours`/`hoursReference` are omitted. Irregular closure, temporary schedules, bare intervals without weekday evidence and other ambiguous prose remain raw evidence only.
-
-The Hot Pepper rich overlay may retain `hotpepperOpeningHoursText` and `hotpepperClosedText`; these fields must not be used directly as canonical open/closed filters.
+Raw source prose is not copied into canonical hours. Ambiguous/irregular schedules remain raw evidence only.
 
 ## Featured dishes
 
-`recommendedDishes` is the strict subset requiring explicit recommendation/popularity/signature evidence.
+`recommendedDishes` requires explicit recommendation/popularity/signature evidence.
 
 `featuredDishes` is the broader reviewed source-backed display field:
 
@@ -135,17 +85,15 @@ featuredDishes: [{
 
 Supported `kind`: `recommended`, `signature`, `representative`.
 
-Optional dish prices require direct menu evidence. Restaurant-level budget is never converted into a dish price.
-
 ## Public source provenance overlay
 
 `data/source_provenance.js` is generated by `scripts/build_source_provenance.mjs` from maintained `sourceRefs`.
 
 Current coverage:
 
-- **446 / 656** production identities with public source evidence;
-- **606** concrete public HTTPS source URLs;
-- **446** rows with explicit field claims and source check dates.
+- **446 / 656** identities with public source evidence;
+- **606** concrete public HTTPS URLs;
+- **446** rows with claimed fields and source check dates.
 
 Optional runtime fields:
 
@@ -167,17 +115,81 @@ Rules:
 - public HTTPS refs only;
 - Google source refs excluded;
 - provider/URL duplicates merged;
-- claimed fields unioned without changing canonical field selection;
-- latest valid check date becomes `sourceLastCheckedAt`;
-- generation makes no external request.
+- latest valid check date retained;
+- generation makes zero external requests.
+
+## Provider-level source facts overlay
+
+`data/source_facts.js` is generated by `scripts/build_source_facts.mjs` from the maintained `source_enrichment*.js` shards.
+
+It preserves source-specific alternatives/conflicts that canonical resolution intentionally collapses to one final field value.
+
+Current coverage:
+
+- **446 / 656** production identities;
+- **537** provider fact records;
+- Tabelog **303**;
+- official **140**;
+- Hot Pepper **94**;
+- unattached maintained rows: **0**.
+
+Runtime field:
+
+```js
+sourceFacts: [{
+  provider: 'Tabelog',
+  claimedFields: ['name', 'cuisine', 'budget', 'hours'],
+  checkedAt: '2026-09-06',
+  sourceName: '...',
+  address: '...',
+  cuisine: '...',
+  tags: ['...'],
+  lunch: [1000, 1999],
+  dinner: [3000, 3999],
+  dishes: ['...'],
+  openingHoursRaw: '...',
+  closedDays: ['...'],
+  closedNote: '...',
+  hyakumeiten: true,
+  hyakumeitenYear: 2025,
+  hyakumeitenCategory: '...',
+  priceDerivations: [/* reviewed B-class derivation, optional */],
+  hotpepperId: 'J001...',              // Hot Pepper fact only
+  hotpepperMatchConfidence: 'high',    // Hot Pepper fact only
+  hotpepperMatchScore: 0.95            // Hot Pepper fact only
+}]
+```
+
+Measured retained provider-level field counts:
+
+- source names: **537**;
+- cuisine: **274**;
+- tags: **267**;
+- lunch: **157**;
+- dinner: **254**;
+- dishes: **111**;
+- raw opening-hours text: **293**;
+- closed-day arrays: **202**;
+- closure notes: **156**;
+- addresses: **235**;
+- 百名店 flag/year/category: **17 / 17 / 17**;
+- price derivations: **2**;
+- Hot Pepper native ID/match confidence/match score: **94 / 94 / 94**.
+
+Rules:
+
+- provider facts remain provider-specific;
+- they never overwrite canonical fields;
+- review text is excluded;
+- Google response-content fields are excluded;
+- each fact keeps its own maintained `claimedFields` and `checkedAt`;
+- generation makes zero external/API requests.
 
 ## Hot Pepper maximum non-image rich metadata overlay
 
-`data/hotpepper_rich_metadata.js` currently uses **schemaVersion 6** and contains **135 reviewed production rows**: 128 strict automatic + 7 explicit manual exact pairs.
+`data/hotpepper_rich_metadata.js` uses **schemaVersion 6** and contains **135 reviewed production rows**: 128 strict automatic + 7 manual exact rich-only pairs.
 
-Every row retains `hotpepperReviewMode` (`strict_auto` or `manual_exact`).
-
-Representative optional runtime fields:
+Representative fields:
 
 ```js
 hotpepperId: 'J001...',
@@ -194,13 +206,12 @@ hotpepperArea: {
   largeServiceArea: { code: 'SS10', name: '関東' },
   serviceArea: { code: 'SA11', name: '東京' },
   largeArea: { code: 'Z011', name: '東京' },
-  middleArea: { code: 'Y020', name: '...' },
-  smallArea: { code: 'X070', name: '神保町' }
+  middleArea: { code: '...', name: '...' },
+  smallArea: { code: '...', name: '神保町' }
 },
 hotpepperGenre: {
   code: 'G001',
   name: '居酒屋',
-  catch: '...',
   subGenre: { code: '...', name: '...' }
 },
 hotpepperBudget: {
@@ -208,14 +219,9 @@ hotpepperBudget: {
   name: '3001～4000円',
   average: '...'
 },
-acceptedCreditCards: [
-  { code: 'c01', name: 'VISA' },
-  { code: 'c07', name: 'JCB' }
-],
+acceptedCreditCards: [{ code: 'c01', name: 'VISA' }],
 specialFeatures: [{
-  code: '...',
-  name: '...',
-  title: '...',
+  code: '...', name: '...', title: '...',
   category: { code: '...', name: '...' }
 }],
 nearestStation: '神保町',
@@ -232,88 +238,48 @@ amenities: { ... },
 sourceServiceText: { ... }
 ```
 
-### Final rich coverage
+Final maximum refresh run `34035124635` returned **135 / 135** reviewed shops in **7** requests.
 
-Latest maximum refresh is Actions run `34035124635` and returned **135 / 135** reviewed shops in **7** <=20-ID requests.
+Key coverage:
 
 - source name/kana/address/coordinates: **135 / 135**;
-- five-level Hot Pepper area hierarchy: **135 / 135**;
-- raw genre/budget: **135 / 135**;
+- area hierarchy/raw genre/raw budget: **135 / 135**;
 - station/access/mobile access: **135 / 135**;
 - lunch availability/capacity: **135 / 135**;
 - party capacity: **109 / 135**;
 - mobile coupon status: **135 / 135**;
-- credit-card brand list: **119 / 135**, **593 entries**;
+- credit-card brands: **119 / 135**, **593 entries**;
 - special features: **40 / 135**, **160 entries**;
 - raw service metadata: **135 / 135**;
-- raw Wi-Fi text: **135 / 135**;
+- raw Wi-Fi: **135 / 135**;
 - unambiguous `wifiAvailable`: **107 / 135**.
 
-### Amenities
+Provider integer/enum `0` is valid data. Artifact-only run `34035237312` rebuilt the rich overlay after correcting the `ktai_coupon=0` normalizer without another Hot Pepper request.
 
-Normalized amenity keys may include:
+The rich overlay never creates identities, never overwrites canonical core fields and never stores Hot Pepper photos/logo URLs.
 
-```text
-courseAvailable
-allYouCanDrink
-allYouCanEat
-privateRoom
-cardAccepted
-parkingAvailable
-wifiAvailable
-horigotatsu
-tatami
-charterAvailable
-barrierFree
-childrenWelcome
-smokingPolicy
-liveShow
-karaoke
-bandPerformance
-tvProjector
-englishMenu
-petAllowed
-lateNightAfter23
-```
+## Runtime overlay audit
 
-`sourceServiceText` preserves the provider's original strings so capacity/conditions/caveats are not lost when normalized booleans are added.
+`scripts/audit_runtime_overlays.mjs` loads all runtime data layers and fails on:
 
-Unknown/ambiguous values stay unknown. For example, raw Wi-Fi exists for all 135 while `wifiAvailable` exists only for 107 unambiguous rows.
+- unattached overlay rows;
+- duplicate overlay identity rows;
+- rich row count != 135 or manual count != 7;
+- Google provider leakage into provenance;
+- Google response-content leakage into source facts;
+- summary/attachment count mismatches.
 
-### Provider zero values
-
-Provider integer/enum `0` is valid data and must not be treated as missing. This rule matters for Hot Pepper `ktai_coupon`: the text helper was corrected to preserve numeric zero, and artifact-only promotion run `34035237312` rebuilt the overlay without another API request. Current `mobileCouponAvailable` and raw coupon enum coverage are both **135 / 135**.
-
-### Rich-layer isolation rules
-
-The rich overlay:
-
-- never creates a production identity;
-- never overwrites canonical `name`, `address`, `cuisine`, `lunch`, `dinner` or `openingHours`;
-- never stores Hot Pepper photos or logo URLs;
-- attaches only to exact reviewed production IDs;
-- may preserve source-native variants/raw source text for display, audit and future optional filters.
-
-## Overlay audit
-
-`scripts/audit_runtime_overlays.mjs` loads all three runtime layers together and fails if:
-
-- a rich/provenance row is unattached;
-- a rich/provenance identity is duplicated;
-- the expected 135 rich rows / 7 manual rows are absent;
-- public provenance contains a Google provider ref;
-- runtime attachment counts disagree with overlay row counts.
-
-`scripts/audit_repository.mjs` additionally enforces the public local runtime order:
+`scripts/audit_repository.mjs` enforces the public local runtime order:
 
 ```text
 production_area1.js
 -> source_provenance.js
+-> source_facts.js
 -> hotpepper_rich_metadata.js
 -> app.js
 -> effects.js
 ```
 
-Maintenance enrichment/resolution shards are not allowed as direct public runtime dependencies.
+Maintenance enrichment/resolution shards are never direct public runtime dependencies.
 
-Final canonical coverage numbers still come from Pages canonical audits. Overlay counts are tracked separately so richer metadata is never confused with filterable canonical completeness.
+Canonical coverage metrics remain separate from overlay field counts: preserving more provider facts must never be confused with promoting those facts into canonical filters.
