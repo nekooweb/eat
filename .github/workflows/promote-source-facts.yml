@@ -1,0 +1,48 @@
+name: Promote provider source facts overlay
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/promote-source-facts.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: promote-source-facts
+  cancel-in-progress: true
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Enforce no-paid-data-API policy
+        run: node scripts/audit_no_paid_apis.mjs
+      - name: Build canonical production
+        run: node scripts/build_production_dataset.mjs
+      - name: Build source facts overlay
+        run: |
+          set -euo pipefail
+          node scripts/build_source_facts.mjs
+          test -s data/source_facts.js
+          node --check data/source_facts.js
+      - name: Commit source facts overlay
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/source_facts.js
+          if git diff --cached --quiet; then
+            echo "No source facts changes to commit."
+            exit 0
+          fi
+          git commit -m "Add provider source facts overlay"
+          git push
