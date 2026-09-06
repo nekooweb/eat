@@ -41,6 +41,34 @@ for (const row of enrichment) {
   byPlaceId.get(row.googlePlaceId).push(row);
 }
 
+function claimsMealPrice(row, meal) {
+  if (!row?.sourceOnly) return true;
+  return (row.sourceRefs || []).some((ref) => {
+    const fields = new Set(Array.isArray(ref?.fields) ? ref.fields : []);
+    return fields.has('budget') || fields.has(`${meal}Budget`);
+  });
+}
+
+const unprovenancedStoredFields = [];
+for (const row of enrichment) {
+  for (const meal of ['lunch', 'dinner']) {
+    if (!isPriceRange(row?.[meal]) || claimsMealPrice(row, meal)) continue;
+    unprovenancedStoredFields.push({
+      id: row.id || null,
+      googlePlaceId: row.googlePlaceId || null,
+      name: row.name || null,
+      source: row.source || null,
+      meal,
+      range: row[meal],
+      refs: (row.sourceRefs || []).map((ref) => ({
+        provider: ref?.provider || null,
+        url: ref?.url || null,
+        fields: Array.isArray(ref?.fields) ? ref.fields : []
+      }))
+    });
+  }
+}
+
 const relations = { exact: 0, strong_overlap: 0, partial_overlap: 0, disjoint: 0 };
 const conflicts = [];
 let multiStrongMealPeriods = 0;
@@ -82,7 +110,7 @@ for (const restaurant of production) {
 }
 
 const report = {
-  schemaVersion: 1,
+  schemaVersion: 2,
   productionEntities: production.length,
   priceCoverage: {
     lunchKnown: production.filter((row) => isPriceRange(row.lunch)).length,
@@ -96,6 +124,10 @@ const report = {
     provider,
     enrichment.filter((row) => row.source === provider && (isPriceRange(row.lunch) || isPriceRange(row.dinner))).length
   ])),
+  storedPriceProvenance: {
+    unprovenancedFieldCount: unprovenancedStoredFields.length,
+    unprovenancedFields: unprovenancedStoredFields
+  },
   multiStrongMealPeriods,
   relationComparisons: relations,
   materialConflictCount: conflicts.length,
@@ -103,3 +135,7 @@ const report = {
 };
 
 console.log(JSON.stringify(report));
+if (process.env.STRICT_PRICE_PROVENANCE === '1' && unprovenancedStoredFields.length) {
+  console.error(`PRICE PROVENANCE AUDIT FAIL: ${unprovenancedStoredFields.length} stored meal-price fields lack explicit provenance`);
+  process.exit(1);
+}
