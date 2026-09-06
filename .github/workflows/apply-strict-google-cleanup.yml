@@ -1,0 +1,77 @@
+name: Apply strict Google production cleanup
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/apply-strict-google-cleanup.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: strict-google-production-cleanup
+  cancel-in-progress: false
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Apply strict production cleanup
+        run: python3 scripts/apply_strict_google_cleanup.py
+      - name: Rebuild and validate strict production
+        run: |
+          set -euo pipefail
+          node scripts/audit_no_paid_apis.mjs
+          node scripts/build_hotpepper_rich_core_fallback.mjs
+          node scripts/test_opening_hours.mjs
+          node scripts/test_price_resolver.mjs
+          node scripts/build_production_dataset.mjs
+          node scripts/build_source_provenance.mjs
+          node scripts/build_source_facts.mjs
+          node --check app.js
+          node --check scripts/build_production_dataset.mjs
+          node --check scripts/build_enrichment_queue.mjs
+          node --check scripts/audit_repository.mjs
+          node scripts/audit_repository.mjs
+          node scripts/audit_source_bindings.mjs
+          node scripts/audit_normalized_fields.mjs
+          node scripts/audit_runtime_overlays.mjs
+          node scripts/build_enrichment_queue.mjs > /tmp/enrichment_queue.json
+          python3 - <<'PY'
+          import json
+          data=json.load(open('/tmp/enrichment_queue.json'))
+          print(json.dumps({
+            'productionEntities': data['productionEntities'],
+            'strictRecommendationCoverage': data['strictRecommendationCoverage'],
+            'featuredDishCoverage': data['featuredDishCoverage'],
+            'topActions': [r['nextAction'] for r in data['priorityQueue'][:10]],
+            'gapCounts': data['gapCounts'],
+          }, ensure_ascii=False))
+          if data['priorityQueue'] and data['priorityQueue'][0]['nextAction'] != 'extract_strict_recommended_menu_item':
+              raise SystemExit('dish-first priority queue not active')
+          PY
+      - name: Commit cleanup
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          rm -f scripts/apply_strict_google_cleanup.py .github/workflows/apply-strict-google-cleanup.yml
+          git add -A
+          git commit -m "Enforce strict Google-bound 1.2km production pool"
+          git pull --rebase origin main
+          rm -f data/public_featured_dishes_auto.json data/public_pool_area1.js
+          git add -A
+          if ! git diff --cached --quiet; then
+            git commit --amend --no-edit
+          fi
+          git push
