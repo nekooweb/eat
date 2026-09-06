@@ -5,10 +5,7 @@
   const canonical = Array.isArray(window.PRODUCTION_RESTAURANTS)
     ? window.PRODUCTION_RESTAURANTS
     : [];
-  const publicOpen = Array.isArray(window.PUBLIC_OPEN_RESTAURANTS)
-    ? window.PUBLIC_OPEN_RESTAURANTS
-    : [];
-  const production = [...canonical, ...publicOpen];
+  const production = canonical;
   const embedKeyRaw = $('meta[name="google-maps-embed-key"]')?.content?.trim() || '';
   const googleEmbedKey = embedKeyRaw && !embedKeyRaw.startsWith('__') ? embedKeyRaw : '';
   const useGoogleStoreMaps = Boolean(googleEmbedKey);
@@ -26,11 +23,7 @@
   const validCoords = (restaurant) => Number.isFinite(restaurant.lat) && Number.isFinite(restaurant.lng);
   const hasGooglePlaceId = (restaurant) => typeof restaurant.googlePlaceId === 'string'
     && restaurant.googlePlaceId.trim().length > 0;
-  const restaurantKey = (restaurant) => restaurant.identityKey
-    || restaurant.googlePlaceId
-    || restaurant.openPlaceId
-    || restaurant.id
-    || `${restaurant.name}|${restaurant.lat}|${restaurant.lng}`;
+  const restaurantKey = (restaurant) => restaurant.googlePlaceId || restaurant.id;
 
   const escapeHtml = (value) => String(value ?? '')
     .replaceAll('&', '&amp;')
@@ -44,37 +37,6 @@
       .map((restaurant) => restaurant.cuisine)
       .filter((cuisine) => cuisine && cuisine !== '餐厅')
   )].sort((a, b) => a.localeCompare(b, 'zh-CN'));
-
-  const GENERIC_DISH_HINTS = new Map([
-    ['拉面', '拉面'],
-    ['寿司', '寿司'],
-    ['烤肉', '烤肉'],
-    ['烤鸡串', '烤鸡串'],
-    ['韩国菜', '韩式料理'],
-    ['中华', '中式料理'],
-    ['泰国菜', '泰式料理'],
-    ['越南菜', '越南料理'],
-    ['印度・尼泊尔', '咖喱・烤饼'],
-    ['印度菜', '印度咖喱'],
-    ['意大利菜', '意大利面・披萨'],
-    ['法国菜', '法式料理'],
-    ['西班牙菜', '西班牙料理'],
-    ['墨西哥菜', '塔可'],
-    ['牛排', '牛排'],
-    ['炸猪排', '炸猪排'],
-    ['咖喱', '咖喱饭'],
-    ['荞麦面', '荞麦面'],
-    ['乌冬', '乌冬面'],
-    ['御好烧', '御好烧'],
-    ['汉堡', '汉堡'],
-    ['披萨', '披萨'],
-    ['面包・烘焙', '面包・烘焙'],
-    ['甜品', '甜品'],
-    ['咖啡', '咖啡・轻食'],
-    ['居酒屋', '居酒屋料理'],
-    ['酒吧', '酒类・下酒菜'],
-    ['日式', '日式料理']
-  ]);
 
   function rand01() {
     const bytes = new Uint32Array(1);
@@ -201,31 +163,19 @@
   }
 
   function dishInfo(restaurant) {
+    if (Array.isArray(restaurant.recommendedDishes) && restaurant.recommendedDishes.length) {
+      return {
+        label: '推荐菜',
+        text: restaurant.recommendedDishes.slice(0, 2).filter(Boolean).join(' · ')
+      };
+    }
     if (Array.isArray(restaurant.featuredDishes) && restaurant.featuredDishes.length) {
       return {
         label: '特色菜',
-        text: restaurant.featuredDishes.slice(0, 2).map(featuredDishText).filter(Boolean).join(' · '),
-        sourceBacked: true
+        text: restaurant.featuredDishes.slice(0, 2).map(featuredDishText).filter(Boolean).join(' · ')
       };
     }
-    if (Array.isArray(restaurant.recommendedDishes) && restaurant.recommendedDishes.length) {
-      return {
-        label: '特色菜',
-        text: restaurant.recommendedDishes.slice(0, 2).filter(Boolean).join(' · '),
-        sourceBacked: true
-      };
-    }
-    if (Array.isArray(restaurant.dishHints) && restaurant.dishHints.length) {
-      return {
-        label: '参考菜品',
-        text: restaurant.dishHints.slice(0, 2).filter(Boolean).join(' · '),
-        sourceBacked: false
-      };
-    }
-    const generic = GENERIC_DISH_HINTS.get(restaurant.cuisine);
-    return generic
-      ? { label: '参考菜品', text: generic, sourceBacked: false }
-      : { label: '参考菜品', text: '店内招牌料理待补全', sourceBacked: false };
+    return { label: '', text: '' };
   }
 
   function recommendationText(restaurant) {
@@ -256,11 +206,6 @@
     return `<span class="pill hyakumeiten">百名店${award ? ` ${escapeHtml(award)}` : ''}</span>`;
   }
 
-  function dataTierBadge(restaurant) {
-    if (restaurant.identityAdmission !== 'open_public_catalog') return '';
-    return `<span class="pill">${restaurant.dataTier === 'inventory_source_bound' ? '来源绑定' : '开放数据'}</span>`;
-  }
-
   function renderStoreMap(restaurant, index) {
     if (useGoogleStoreMaps && hasGooglePlaceId(restaurant)) {
       return `<iframe
@@ -288,7 +233,6 @@
         </div>
         <div class="meta">
           ${awardBadge(restaurant)}
-          ${dataTierBadge(restaurant)}
           <span class="pill">${escapeHtml(restaurant.cuisine)}</span>
           <span class="pill">${escapeHtml(distanceText(restaurant))}</span>
         </div>
@@ -310,7 +254,7 @@
       ['菜系', ...restaurants.map((restaurant) => restaurant.cuisine || '餐厅')],
       ['距离', ...restaurants.map(distanceText)],
       ['预算', ...restaurants.map((restaurant) => budgetText(restaurant) || '—')],
-      ['特色/参考菜品', ...restaurants.map((restaurant) => recommendationText(restaurant) || '—')],
+      ['推荐/特色菜', ...restaurants.map((restaurant) => recommendationText(restaurant) || '—')],
       ['营业时间', ...restaurants.map((restaurant) => scheduleText(restaurant) || '—')],
       ['百名店', ...restaurants.map((restaurant) => restaurant.hyakumeiten
         ? [restaurant.hyakumeitenYear, restaurant.hyakumeitenCategory].filter(Boolean).join(' · ') || '是'
@@ -355,10 +299,9 @@
   }
 
   function eligible(restaurant) {
-    const canonicalEligible = hasGooglePlaceId(restaurant) && restaurant.googleStatus === 'verified';
-    const publicEligible = restaurant.identityAdmission === 'open_public_catalog';
-    if (!canonicalEligible && !publicEligible) return false;
-    if (!Number.isFinite(restaurant.distanceMeters) || restaurant.distanceMeters > MAX_DISTANCE) return false;
+    if (!hasGooglePlaceId(restaurant) || restaurant.googleStatus !== 'verified') return false;
+    if (!validCoords(restaurant)) return false;
+    if (!Number.isFinite(restaurant.distanceMeters) || restaurant.distanceMeters < 0 || restaurant.distanceMeters > MAX_DISTANCE) return false;
     if (restaurant.distanceMeters > distanceLimit) return false;
     if (rejected.has(restaurant.cuisine)) return false;
     return budgetOK(restaurant);
@@ -464,15 +407,15 @@
 
   function renderStats() {
     const stats = window.PRODUCTION_STATS || {};
-    const publicStats = window.PUBLIC_POOL_STATS || {};
     const total = production.length;
     const cuisineKnown = production.filter((restaurant) =>
       restaurant.cuisine && restaurant.cuisine !== '餐厅').length;
-    const budgetKnown = production.filter((restaurant) =>
-      validPrice(restaurant.lunch) || validPrice(restaurant.dinner)).length;
-    const awards = stats.awards ?? canonical.filter((restaurant) => restaurant.hyakumeiten).length;
-    const openCount = publicStats.publicRows ?? publicOpen.length;
-    $('#stats').innerHTML = `可推荐 <b>${total.toLocaleString()}</b> 家 · 高置信核心 <b>${canonical.length.toLocaleString()}</b> · 开放扩展 <b>${openCount.toLocaleString()}</b> · 菜系 <b>${cuisineKnown.toLocaleString()}</b> · 有预算 <b>${budgetKnown.toLocaleString()}</b> · 百名店 <b>${awards.toLocaleString()}</b>`;
+    const recommendedKnown = production.filter((restaurant) =>
+      Array.isArray(restaurant.recommendedDishes) && restaurant.recommendedDishes.length).length;
+    const featuredKnown = production.filter((restaurant) =>
+      Array.isArray(restaurant.featuredDishes) && restaurant.featuredDishes.length).length;
+    const awards = stats.awards ?? production.filter((restaurant) => restaurant.hyakumeiten).length;
+    $('#stats').innerHTML = `Google Maps 已核验 <b>${total.toLocaleString()}</b> 家 · 推荐菜 <b>${recommendedKnown.toLocaleString()}</b> · 特色菜 <b>${featuredKnown.toLocaleString()}</b> · 已知菜系 <b>${cuisineKnown.toLocaleString()}</b> · 百名店 <b>${awards.toLocaleString()}</b>`;
   }
 
   function showMessage(message) {

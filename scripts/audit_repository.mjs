@@ -3,11 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import vm from 'node:vm';
 import { fileURLToPath } from 'node:url';
-import {
-  LEGACY_IDENTITY_ADMISSION,
-  CATALOG_IDENTITY_ADMISSION,
-  loadCatalogAdmissionPayload
-} from './catalog_identity.mjs';
+import { LEGACY_IDENTITY_ADMISSION } from './catalog_identity.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, '..');
@@ -36,12 +32,6 @@ const index = read('index.html');
 const app = read('app.js');
 const effects = read('effects.js');
 const productionSource = read('data/production_area1.js');
-const publicPoolSource = fs.existsSync(path.join(DATA, 'public_pool_area1.js'))
-  ? read('data/public_pool_area1.js')
-  : '';
-const admissionPayload = loadCatalogAdmissionPayload(DATA);
-const admittedIds = new Set((admissionPayload.rows || []).map((row) => row.googlePlaceId));
-if (admittedIds.size !== (admissionPayload.rows || []).length) fail('catalog admission ledger contains duplicate IDs');
 
 if (!/leaflet@1\.9\.4/i.test(index)) fail('Leaflet 1.9.4 is not loaded by the public page');
 if (!/overview-map/.test(app)) fail('three-result overview map is missing');
@@ -57,7 +47,7 @@ if (!/renderComparison/.test(app)) fail('three-store comparison table is missing
 if (/area1_google(?:_places)?\.(?:js|json)/i.test(index)) fail('legacy Google discovery payload is public');
 if (/google_entities(?:\.generated)?\.js/i.test(index)) fail('maintenance overlays are public runtime dependencies');
 if (!/data\/production_area1\.js/.test(index)) fail('canonical production dataset is not loaded');
-if (!/data\/public_pool_area1\.js/.test(index)) fail('public open restaurant pool is not loaded');
+if (/data\/public_pool_area1\.js/.test(index)) fail('public open restaurant pool must not be loaded');
 
 const requiredEffectAssets = ['effects.js', 'effects.css'];
 for (const relativePath of requiredEffectAssets) {
@@ -88,7 +78,6 @@ const runtimePath = (source) => source.split('?', 1)[0];
 const runtimePaths = localRuntimeScripts.map(runtimePath);
 const expectedRuntimePaths = [
   './data/production_area1.js',
-  './data/public_pool_area1.js',
   './data/source_provenance.js',
   './data/source_facts.js',
   './data/hotpepper_rich_metadata.js',
@@ -110,8 +99,7 @@ if (/googleBusinessStatus|googlePrimaryType|googleDisplayName|googleTypes/.test(
 }
 if (!/translate="no">Google Maps</.test(index)) fail('Google Maps text attribution is missing');
 if (!/OpenStreetMap contributors/.test(index)) fail('OpenStreetMap attribution is missing');
-if (!/Overture Maps/.test(index)) fail('Overture Maps attribution is missing');
-if (!/参考菜品/.test(index + app)) fail('public dish hints must be explicitly labeled as reference dishes');
+if (/开放扩展|参考菜品|open_public_catalog|PUBLIC_OPEN_RESTAURANTS/.test(index + app)) fail('open expansion or inferred reference-dish runtime logic remains');
 
 const forbiddenGoogleFields = [
   'googleMapsUrl',
@@ -171,80 +159,17 @@ const stats = sandbox.window.PRODUCTION_STATS;
 if (!Array.isArray(rows) || rows.length < 3) fail('canonical production pool has fewer than 3 rows');
 if (!stats || stats.productionEntities !== rows?.length) fail('production statistics do not match dataset length');
 
-if (publicPoolSource) {
-  const publicSandbox = { window: {} };
-  vm.createContext(publicSandbox);
-  vm.runInContext(publicPoolSource, publicSandbox, { filename: 'public_pool_area1.js' });
-  const publicRows = publicSandbox.window.PUBLIC_OPEN_RESTAURANTS;
-  const publicStats = publicSandbox.window.PUBLIC_POOL_STATS;
-  if (!Array.isArray(publicRows)) fail('public open restaurant pool is not an array');
-  if (!publicStats || publicStats.publicRows !== publicRows?.length) fail('public open pool statistics do not match dataset length');
-  if ((rows?.length || 0) + (publicRows?.length || 0) < 2000) fail('combined public restaurant pool must contain at least 2000 rows');
-  const publicKeys = new Set();
-  let sourceBackedFeaturedPublic = 0;
-  for (const row of publicRows || []) {
-    if (row.identityAdmission !== 'open_public_catalog') fail(`public row has invalid admission tier: ${row.name || row.id}`);
-    if (!row.identityKey) fail(`public row lacks identity key: ${row.name || row.id}`);
-    if (publicKeys.has(row.identityKey)) fail(`duplicate public identity key: ${row.identityKey}`);
-    publicKeys.add(row.identityKey);
-    if (!row.name || !Number.isFinite(row.lat) || !Number.isFinite(row.lng)) fail(`public row lacks display identity: ${row.identityKey}`);
-    if (!Number.isFinite(row.distanceMeters) || row.distanceMeters < 0 || row.distanceMeters > 1200) fail(`public row outside Area1 radius: ${row.identityKey}`);
-    if (!Array.isArray(row.dishHints) || !row.dishHints.length) fail(`public row lacks dish reference hint: ${row.identityKey}`);
-
-    if (row.featuredDishConfidence === 'provider_signature_text') {
-      sourceBackedFeaturedPublic += 1;
-      if (!Array.isArray(row.featuredDishes) || !row.featuredDishes.length) {
-        fail(`provider-signature public row lacks featured dishes: ${row.identityKey}`);
-      }
-      for (const dish of row.featuredDishes || []) {
-        if (!dish || typeof dish !== 'object' || !dish.nameZh || !dish.nameJa) {
-          fail(`invalid provider-signature dish object: ${row.identityKey}`);
-          continue;
-        }
-        if (dish.provider !== 'Hot Pepper' || !/^https:\/\//.test(dish.sourceUrl || '')) {
-          fail(`provider-signature dish lacks Hot Pepper provenance: ${row.identityKey}`);
-        }
-        if (dish.evidenceClass !== 'provider_signature_description' || !dish.evidenceText) {
-          fail(`provider-signature dish lacks signature evidence: ${row.identityKey}`);
-        }
-        if (!/^\d{4}-\d{2}-\d{2}$/.test(dish.checkedAt || '')) {
-          fail(`provider-signature dish lacks ISO check date: ${row.identityKey}`);
-        }
-      }
-    } else if (row.featuredDishConfidence === 'reference_hint') {
-      if (Array.isArray(row.featuredDishes) && row.featuredDishes.length) {
-        fail(`reference-only public row unexpectedly carries featured dishes: ${row.identityKey}`);
-      }
-    } else {
-      fail(`unsupported public dish confidence: ${row.identityKey} -> ${row.featuredDishConfidence}`);
-    }
-
-    for (const field of forbiddenGoogleFields) {
-      if (Object.hasOwn(row, field)) fail(`persisted Google content field ${field} in public pool: ${row.name}`);
-    }
-  }
-  if (publicStats?.publicWithSourceBackedFeaturedDishes != null
-    && publicStats.publicWithSourceBackedFeaturedDishes !== sourceBackedFeaturedPublic) {
-    fail(`public featured-dish statistic mismatch: stats=${publicStats.publicWithSourceBackedFeaturedDishes}, actual=${sourceBackedFeaturedPublic}`);
-  }
-}
-
 const placeIds = new Set();
 let legacyAdmissionRows = 0;
-let catalogAdmissionRows = 0;
 for (const row of rows || []) {
   if (!row.googlePlaceId) fail(`missing Google Place ID: ${row.id || row.name}`);
 
-  if (row.identityAdmission === CATALOG_IDENTITY_ADMISSION) {
-    catalogAdmissionRows += 1;
-    if (!admittedIds.has(row.googlePlaceId)) fail(`catalog-reviewed production row is absent from admission ledger: ${row.name}`);
-    if (Object.hasOwn(row, 'googleStatus')) fail(`catalog-reviewed production row must not synthesize googleStatus: ${row.name}`);
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(row.identityReviewedAt || '')) fail(`catalog-reviewed production row lacks review date: ${row.name}`);
-  } else if (row.identityAdmission === LEGACY_IDENTITY_ADMISSION || (!row.identityAdmission && row.googleStatus === 'verified')) {
-    legacyAdmissionRows += 1;
-    if (row.googleStatus !== 'verified') fail(`legacy production identity lacks historical verified status: ${row.name}`);
-  } else {
-    fail(`unsupported production identity admission: ${row.name}`);
+  if (row.identityAdmission !== LEGACY_IDENTITY_ADMISSION || row.googleStatus !== 'verified') {
+    fail(`production row is not strict Google-verified identity: ${row.name}`);
+  }
+  legacyAdmissionRows += 1;
+  if (!Number.isFinite(row.lat) || !Number.isFinite(row.lng)) {
+    fail(`verified production row lacks coordinates: ${row.name}`);
   }
 
   if (!Number.isFinite(row.distanceMeters) || row.distanceMeters < 0 || row.distanceMeters > 1200) {
@@ -260,13 +185,8 @@ for (const row of rows || []) {
   }
 }
 
-const missingAdmittedIds = [...admittedIds].filter((id) => !placeIds.has(id));
-if (missingAdmittedIds.length) fail(`reviewed catalog admissions did not reach production: ${missingAdmittedIds.join(',')}`);
 if (stats?.legacyVerifiedEntities != null && stats.legacyVerifiedEntities !== legacyAdmissionRows) {
   fail(`legacy identity statistic mismatch: stats=${stats.legacyVerifiedEntities}, actual=${legacyAdmissionRows}`);
-}
-if (stats?.catalogReviewedEntities != null && stats.catalogReviewedEntities !== catalogAdmissionRows) {
-  fail(`catalog identity statistic mismatch: stats=${stats.catalogReviewedEntities}, actual=${catalogAdmissionRows}`);
 }
 
 const sourceBackedRows = (rows || []).filter((row) =>
@@ -284,7 +204,6 @@ if (!process.exitCode) {
     productionEntities: rows.length,
     uniquePlaceIds: placeIds.size,
     legacyAdmissionRows,
-    catalogAdmissionRows,
     cuisineKnown: stats.cuisineKnown,
     budgetKnown: stats.budgetKnown,
     scheduleKnown: stats.scheduleKnown,

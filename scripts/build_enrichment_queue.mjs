@@ -52,6 +52,7 @@ function sourceProviders(rows) {
 
 function gaps(row) {
   const missing = [];
+  if (!Array.isArray(row.recommendedDishes) || !row.recommendedDishes.length) missing.push('recommendedDishes');
   if (!Array.isArray(row.featuredDishes) || !row.featuredDishes.length) missing.push('featuredDishes');
   if (!row.openingHours) missing.push('openingHours');
   if (!isPriceRange(row.lunch)) missing.push('lunchBudget');
@@ -64,6 +65,8 @@ function gaps(row) {
 function nextAction(record) {
   const providers = new Set(record.sourceProviders);
   const gaps = new Set(record.gaps);
+  if (gaps.has('recommendedDishes')) return 'extract_strict_recommended_menu_item';
+  if (gaps.has('featuredDishes')) return 'extract_menu_or_signature_items';
   if (gaps.has('lunchBudget')) {
     if (providers.has('official')) return 'extract_official_lunch_price';
     if (providers.has('Tabelog')) return 'extract_tabelog_lunch_price';
@@ -76,18 +79,18 @@ function nextAction(record) {
   }
   if (gaps.has('openingHours')) return 'extract_current_hours';
   if (gaps.has('address') || gaps.has('cuisine')) return 'extract_identity_fields';
-  if (gaps.has('featuredDishes')) return 'extract_menu_or_signature_items';
   return 'review';
 }
 
 function priorityScore(record) {
   let score = 0;
-  if (record.gaps.includes('lunchBudget')) score += 50;
-  if (record.gaps.includes('dinnerBudget')) score += 30;
-  if (record.gaps.includes('openingHours')) score += 20;
-  if (record.gaps.includes('address')) score += 15;
-  if (record.gaps.includes('cuisine')) score += 15;
-  if (record.gaps.includes('featuredDishes')) score += 5;
+  if (record.gaps.includes('recommendedDishes')) score += 120;
+  if (record.gaps.includes('featuredDishes')) score += 80;
+  if (record.gaps.includes('openingHours')) score += 25;
+  if (record.gaps.includes('lunchBudget')) score += 20;
+  if (record.gaps.includes('dinnerBudget')) score += 15;
+  if (record.gaps.includes('address')) score += 10;
+  if (record.gaps.includes('cuisine')) score += 10;
   // Prefer already-bound sources and nearer restaurants when field value is equal.
   if (record.sourceHosts.length) score += 10;
   score += Math.max(0, 12 - Math.floor(record.distanceMeters / 100));
@@ -140,7 +143,8 @@ const sourceGroups = [...grouped.entries()]
       .slice(0, 100)
   }))
   .sort((a, b) =>
-    (b.gapCounts.lunchBudget || 0) - (a.gapCounts.lunchBudget || 0)
+    (b.gapCounts.recommendedDishes || 0) - (a.gapCounts.recommendedDishes || 0)
+    || (b.gapCounts.featuredDishes || 0) - (a.gapCounts.featuredDishes || 0)
     || b.restaurants - a.restaurants
     || a.host.localeCompare(b.host));
 

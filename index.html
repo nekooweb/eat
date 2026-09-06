@@ -68,22 +68,21 @@
     </section>
 
     <footer class="footer">
-      <p>当前开放 TOKYO · 地区1️⃣，范围为内部基准点直线距离 1.2 km。高置信核心餐厅与开放数据扩展池分层保留，不把开放数据候选伪装成已完成独立身份核验的记录。</p>
-      <p>“特色菜”表示已有餐厅/来源证据支持；“参考菜品”仅依据已知菜系、品牌或连锁菜单类型提供，用于数据尚未补全时帮助选择，不等同于已核实的该店招牌菜。</p>
-      <p>三店总览和开放数据餐厅的单店地图使用 OpenStreetMap；有历史 Google Place ID 的餐厅可直接打开对应 Google Maps，其余使用店名和地址搜索。</p>
-      <p>地图与部分基础地点信息 © OpenStreetMap contributors（ODbL）；开放地点扩展同时使用 Overture Maps 公共数据。</p>
+      <p>当前开放 TOKYO · 地区1️⃣，仅保留内部基准点直线距离 1.2 km 内、且已完成 Google Place ID 独立核验的餐厅。</p>
+      <p>“推荐菜”优先展示严格来源支持的推荐条目；“特色菜”仅在有明确来源证据时展示。没有可靠菜品证据时不做菜系推断。</p>
+      <p>每家餐厅均绑定 Google Maps Place ID；页面坐标与距离来自已与该 Google 身份完成独立匹配的地理记录。</p>
+      <p>地图基础图层 © OpenStreetMap contributors（ODbL）。</p>
       <p>Powered by <a href="https://webservice.recruit.co.jp/">ホットペッパーグルメ Webサービス</a></p>
       <p><span class="google-attribution" translate="no">Google Maps</span> · <a href="./privacy.html">隐私说明</a> · <a href="./terms.html">使用条款</a></p>
     </footer>
   </main>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script src="./data/production_area1.js?v=20260907-openpool1"></script>
-  <script src="./data/public_pool_area1.js?v=20260907-openpool1"></script>
-  <script src="./data/source_provenance.js?v=20260907-openpool1"></script>
-  <script src="./data/source_facts.js?v=20260907-openpool1"></script>
-  <script src="./data/hotpepper_rich_metadata.js?v=20260907-openpool1"></script>
-  <script src="./app.js?v=20260907-openpool1"></script>
+  <script src="./data/production_area1.js?v=20260907-strictgoogle1"></script>
+  <script src="./data/source_provenance.js?v=20260907-strictgoogle1"></script>
+  <script src="./data/source_facts.js?v=20260907-strictgoogle1"></script>
+  <script src="./data/hotpepper_rich_metadata.js?v=20260907-strictgoogle1"></script>
+  <script src="./app.js?v=20260907-strictgoogle1"></script>
   <script src="./effects.js?v=20260906-voice3"></script>
 </body>
 </html>

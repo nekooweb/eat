@@ -338,3 +338,16 @@ app.js                       product logic
 Recommendation behavior remains: <=1,200m, current canonical production identities, cuisine/budget/distance filters, three distinct results when possible, cuisine-diversity preference, Web Crypto randomness, 百名店 weight 2.2 and no rating/review popularity ranking.
 
 Embedded maps use Leaflet/OpenStreetMap. Hot Pepper photos/logo URLs are not ingested. The required Hot Pepper service credit remains on the public page.
+
+
+## Strict Google-bound production policy (2026-09-07)
+
+The public recommendation pool is now intentionally narrower than the discovery inventory. A restaurant may reach production only when all of the following are true:
+
+- it has a non-empty Google Place ID;
+- the historical independent identity QC status is exactly `googleStatus=verified`;
+- its matched geographic row has finite latitude/longitude and is the exact row bound to that Google Place ID;
+- `distanceMeters` is finite and `0 <= distanceMeters <= 1200`;
+- open-catalog / Overture / OSM-only candidates never enter the public recommendation pool. Open data may remain as internal QC/source evidence only.
+
+Data-completion priority is now dish-first: **strict recommended dishes > source-backed featured/signature dishes > hours/prices/address/cuisine**. Generic cuisine-derived dish hints are not shown publicly.
