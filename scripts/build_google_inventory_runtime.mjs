@@ -6,6 +6,7 @@ const DATA = path.join(ROOT, 'data');
 const inventoryPath = path.join(DATA, 'area1_google_ids.json');
 const productionPath = path.join(DATA, 'production_area1.js');
 const basicPath = path.join(DATA, 'google_basic_source_matches.json');
+const detailEvidencePath = path.join(DATA, 'google_inventory_detail_evidence.json');
 const outputPath = path.join(DATA, 'google_inventory_runtime.js');
 
 function readJson(file) {
@@ -55,6 +56,44 @@ function baseEmpty(pid) {
   };
 }
 
+function recommendationName(item) {
+  if (typeof item === 'string') return item.trim();
+  if (!item || typeof item !== 'object') return '';
+  return String(item.nameZh || item.nameJa || '').trim();
+}
+
+function dedupeRecommendationNames(items) {
+  const seen = new Set();
+  const output = [];
+  for (const item of items || []) {
+    const value = recommendationName(item);
+    if (!value || seen.has(value)) continue;
+    seen.add(value);
+    output.push(value);
+    if (output.length >= 3) break;
+  }
+  return output;
+}
+
+function featuredKey(item) {
+  if (typeof item === 'string') return item.trim();
+  if (!item || typeof item !== 'object') return '';
+  return String(item.nameZh || item.nameJa || '').trim();
+}
+
+function dedupeFeatured(items) {
+  const seen = new Set();
+  const output = [];
+  for (const item of items || []) {
+    const key = featuredKey(item);
+    if (!key || seen.has(key)) continue;
+    seen.add(key);
+    output.push(item);
+    if (output.length >= 3) break;
+  }
+  return output;
+}
+
 const inventory = readJson(inventoryPath);
 const ids = inventory.googlePlaceIds || [];
 if (inventory.radiusMeters !== 1200 || inventory.count !== 2804 || ids.length !== 2804) {
@@ -78,54 +117,74 @@ const basicDoc = fs.existsSync(basicPath)
 if (basicDoc.inventoryCount !== 2804) throw new Error('Basic recovery file has wrong inventory count');
 const basicById = new Map((basicDoc.rows || []).map((row) => [row.googlePlaceId, row]));
 
+const detailEvidence = fs.existsSync(detailEvidencePath)
+  ? readJson(detailEvidencePath)
+  : { rows: [], summary: {} };
+const detailById = new Map((detailEvidence.rows || []).filter((row) => row.googlePlaceId).map((row) => [row.googlePlaceId, row]));
+
 const rows = ids.map((pid) => {
   const rich = canonicalById.get(pid);
+  let row;
   if (rich) {
-    return {
+    row = {
       ...rich,
       nameKnown: true,
       inventoryWithinRadius: true,
       basicInfoState: 'canonical',
       googleStatus: 'verified'
     };
+  } else {
+    const basic = basicById.get(pid);
+    if (basic) {
+      row = {
+        id: `g-${pid}`,
+        profile: 'TOKYO',
+        area: '地区1️⃣',
+        name: basic.name || 'Google Maps 餐厅',
+        nameKnown: Boolean(basic.name),
+        cuisine: basic.cuisine || '',
+        tags: basic.cuisine ? [basic.cuisine] : [],
+        address: basic.address || '',
+        lat: finite(basic.lat) ? basic.lat : null,
+        lng: finite(basic.lng) ? basic.lng : null,
+        distanceMeters: finite(basic.distanceMeters) ? basic.distanceMeters : null,
+        lunch: null,
+        dinner: null,
+        recommendedDishes: [],
+        featuredDishes: [],
+        dishes: [],
+        googlePlaceId: pid,
+        googleStatus: 'inventory',
+        inventoryWithinRadius: true,
+        basicInfoState: 'source_matched',
+        sourceProvider: basic.provider || '',
+        sourceProviderId: basic.providerId || null,
+        sourceCheckedAt: basic.sourceCheckedAt || null,
+        sourceWebsites: Array.isArray(basic.websites) ? basic.websites : [],
+        hyakumeiten: false,
+        hyakumeitenYear: null,
+        hyakumeitenCategory: null,
+        randomWeight: 1,
+        sources: basic.provider ? [basic.provider] : []
+      };
+    } else {
+      row = baseEmpty(pid);
+    }
   }
 
-  const basic = basicById.get(pid);
-  if (basic) {
-    return {
-      id: `g-${pid}`,
-      profile: 'TOKYO',
-      area: '地区1️⃣',
-      name: basic.name || 'Google Maps 餐厅',
-      nameKnown: Boolean(basic.name),
-      cuisine: basic.cuisine || '',
-      tags: basic.cuisine ? [basic.cuisine] : [],
-      address: basic.address || '',
-      lat: finite(basic.lat) ? basic.lat : null,
-      lng: finite(basic.lng) ? basic.lng : null,
-      distanceMeters: finite(basic.distanceMeters) ? basic.distanceMeters : null,
-      lunch: null,
-      dinner: null,
-      recommendedDishes: [],
-      featuredDishes: [],
-      dishes: [],
-      googlePlaceId: pid,
-      googleStatus: 'inventory',
-      inventoryWithinRadius: true,
-      basicInfoState: 'source_matched',
-      sourceProvider: basic.provider || '',
-      sourceProviderId: basic.providerId || null,
-      sourceCheckedAt: basic.sourceCheckedAt || null,
-      sourceWebsites: Array.isArray(basic.websites) ? basic.websites : [],
-      hyakumeiten: false,
-      hyakumeitenYear: null,
-      hyakumeitenCategory: null,
-      randomWeight: 1,
-      sources: basic.provider ? [basic.provider] : []
-    };
+  const evidence = detailById.get(pid);
+  if (evidence) {
+    row.recommendedDishes = dedupeRecommendationNames([
+      ...(Array.isArray(row.recommendedDishes) ? row.recommendedDishes : []),
+      ...(Array.isArray(evidence.recommendedDishes) ? evidence.recommendedDishes : [])
+    ]);
+    row.featuredDishes = dedupeFeatured([
+      ...(Array.isArray(row.featuredDishes) ? row.featuredDishes : []),
+      ...(Array.isArray(evidence.featuredDishes) ? evidence.featuredDishes : [])
+    ]);
+    row.detailEvidenceCheckedAt = detailEvidence.checkedAt || null;
   }
-
-  return baseEmpty(pid);
+  return row;
 });
 
 const counts = rows.reduce((acc, row) => {
@@ -146,7 +205,9 @@ const runtimeStats = {
   recommendedDishesKnown: rows.filter((row) => Array.isArray(row.recommendedDishes) && row.recommendedDishes.length).length,
   featuredDishesKnown: rows.filter((row) => Array.isArray(row.featuredDishes) && row.featuredDishes.length).length,
   cuisineKnown: rows.filter((row) => row.cuisine).length,
-  sourceBasicProviders: basicDoc.summary?.providers || {}
+  sourceBasicProviders: basicDoc.summary?.providers || {},
+  detailEvidenceRestaurants: detailById.size,
+  detailEvidenceSummary: detailEvidence.summary || {}
 };
 
 if (runtimeStats.inventoryTotal !== 2804 || runtimeStats.uniquePlaceIds !== 2804) {
@@ -158,7 +219,7 @@ if (rows.some((row) => finite(row.distanceMeters) && (row.distanceMeters < 0 || 
 
 fs.writeFileSync(
   outputPath,
-  `// Generated from the frozen Google Place ID inventory plus durable independent-source basics.\n` +
+  `// Generated from the frozen Google Place ID inventory plus durable independent-source basics and detail evidence.\n` +
   `window.GOOGLE_INVENTORY_RESTAURANTS=${JSON.stringify(rows)};\n` +
   `window.GOOGLE_INVENTORY_STATS=${JSON.stringify(runtimeStats)};\n`,
   'utf8'
