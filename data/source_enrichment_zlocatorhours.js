@@ -8,20 +8,39 @@ const locatorHourPatches = [
   { googlePlaceId:"ChIJCRf6uziMGGARPOpXUziKe7s", name:"タリーズコーヒー", sourceUrl:"https://shop.tullys.co.jp/detail/1710899?utm_source=google&utm_medium=gbp&utm_campaign=map", openingHoursRaw:"日曜日 09:00~21:00 月曜日 09:00~21:00 火曜日 09:00~21:00 水曜日 09:00~21:00 木曜日 09:00~21:00 金曜日 09:00~21:00 土曜日 09:00~21:00 ※全日15分前ラストオーダー Google マップで混雑状況をみる View congestion on Google Map お知らせ 2026.09.02 - 2026.09.15 \\東京都限定/ 「OIMOラテ × ほっこり大学芋」「OIMO シェイクール × ほっこり大学芋」が本日発売!濃厚な紅はるかのソースをベースに使用した、ご当地限定ドリンクです。 続きを読む お知らせ一覧をみる 電子マネー 交通系電子マネー 楽天Edy QUICPay iD クレジットカード VISAカード MasterCard QRコード決済 メルペイ メニュー デカフェ・ エスプレッソ 設備 Tully’s Wi-Fi 禁煙 Tully’s Wi-Fiの詳細はこちら その他サービス タリーズカード ドリンクチケット タリーズカードの詳細はこちら デリバリー Uber Eats 近隣" },
   { googlePlaceId:"ChIJJ8_bnU6NGGARsXyvg0mnXI0", name:"つじ田", sourceUrl:"https://tsukemen-tsujita.com/shop/?id=0010019", openingHoursRaw:"月〜日:11:00〜21:30 Googleマップで混雑状況をみる" },
   { googlePlaceId:"ChIJV3V4uRSNGGARPSLntvfs_ME", name:"ラーメン豚山 神保町店", sourceUrl:"https://shop.butayama.com/detail/112110/?utm_source=gbp?utm_medium=organic", openingHoursRaw:"月〜日 11:00〜22:30 Googleマップで混雑状況をみる" },
-  { googlePlaceId:"ChIJhXD3-AaMGGARbLVQPEtml80", name:"上島珈琲店", sourceUrl:"https://shop.ufs.co.jp/ufs/spot/detail?code=3691", openingHoursRaw:"平日 07:00~21:00" }
+  { googlePlaceId:"ChIJhXD3-AaMGGARbLVQPEtml80", name:"上島珈琲店", sourceUrl:"https://shop.ufs.co.jp/ufs/spot/detail?code=3691", openingHoursRaw:"平日 07:00~21:00" },
+  { googlePlaceId:"ChIJs1zmzD-MGGAR_TWUpga5JUs", name:"大庄水産 水道橋店", sourceUrl:"https://search.daisyo.co.jp/shop.php?shop_cd=1922", openingHoursRaw:"毎日 11:30~23:30", closedDays:["無休"], closedNote:"年中無休" }
 ];
 
 for (const patch of locatorHourPatches) {
-  const ref = { provider:'official', url:patch.sourceUrl, checkedAt:LOCATOR_HOURS_CHECKED_AT, fields:['hours'] };
+  const claimsClosure = Array.isArray(patch.closedDays) || Boolean(patch.closedNote);
+  const ref = {
+    provider:'official',
+    url:patch.sourceUrl,
+    checkedAt:LOCATOR_HOURS_CHECKED_AT,
+    fields:claimsClosure ? ['hours','closure'] : ['hours']
+  };
   let row = [...window.RESTAURANTS].reverse().find((item) => item && item.googlePlaceId === patch.googlePlaceId && item.source === 'official' && item.sourceOnly);
   if (row) {
     row.openingHoursRaw = patch.openingHoursRaw;
-    row.closedDays = [];
-    row.closedNote = null;
+    row.closedDays = Array.isArray(patch.closedDays) ? [...patch.closedDays] : [];
+    row.closedNote = patch.closedNote || null;
     row.sourceRefs = Array.isArray(row.sourceRefs) ? row.sourceRefs : [];
-    row.sourceRefs = row.sourceRefs.filter((item) => !(item.provider === 'official' && (item.fields || []).includes('hours')));
+    row.sourceRefs = row.sourceRefs.filter((item) => !(item.provider === 'official' && (item.fields || []).some((field) => field === 'hours' || field === 'closure')));
     row.sourceRefs.push(ref);
   } else {
-    window.RESTAURANTS.push({ id:`src-locator-hours-${patch.googlePlaceId.slice(-12).replace(/[^A-Za-z0-9_-]/g,'')}`, profile:'TOKYO', area:'地区1️⃣', name:patch.name, googlePlaceId:patch.googlePlaceId, source:'official', sourceOnly:true, openingHoursRaw:patch.openingHoursRaw, closedDays:[], closedNote:null, sourceRefs:[ref] });
+    window.RESTAURANTS.push({
+      id:`src-locator-hours-${patch.googlePlaceId.slice(-12).replace(/[^A-Za-z0-9_-]/g,'')}`,
+      profile:'TOKYO',
+      area:'地区1️⃣',
+      name:patch.name,
+      googlePlaceId:patch.googlePlaceId,
+      source:'official',
+      sourceOnly:true,
+      openingHoursRaw:patch.openingHoursRaw,
+      closedDays:Array.isArray(patch.closedDays) ? [...patch.closedDays] : [],
+      closedNote:patch.closedNote || null,
+      sourceRefs:[ref]
+    });
   }
 }
