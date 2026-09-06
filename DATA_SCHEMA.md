@@ -4,6 +4,71 @@ Updated: 2026-09-06
 
 This document describes the normalized fields emitted into `data/production_area1.js`. Source-maintenance shards may keep richer/raw evidence, but browser filtering and display should use only the normalized runtime fields below.
 
+## Price / budget
+
+### Runtime fields
+
+```js
+lunch: [1000, 1999],
+dinner: [3001, 4000]
+```
+
+`lunch` and `dinner` are independent finite yen ranges. Either field may be `null`.
+
+They are resolved independently by `scripts/price_resolver.mjs`; one provider no longer owns the restaurant's entire budget profile. A restaurant may therefore safely resolve, for example:
+
+```text
+lunch  -> exact Tabelog claim
+dinner -> authorized Hot Pepper claim
+```
+
+without either claim deleting the other meal period.
+
+### Price provenance
+
+A source-only row may contribute a canonical meal price only when one of its `sourceRefs` explicitly claims:
+
+- `budget` — legacy/both-meal price provenance;
+- `lunchBudget` — lunch only;
+- `dinnerBudget` — dinner only.
+
+A stored `lunch` or `dinner` array without one of those claims is ignored. Pages runs `scripts/audit_price_resolution.mjs` with `STRICT_PRICE_PROVENANCE=1`, so an unprovenanced stored meal-price field fails the build.
+
+### Evidence classes
+
+Price source refs may additionally declare:
+
+```js
+priceEvidenceClass: 'explicit_range' // A
+priceEvidenceClass: 'menu_derived'   // B
+priceEvidenceClass: 'sparse'         // C
+```
+
+Aliases `A`, `B`, and `C` are accepted by the resolver.
+
+Semantics:
+
+- `explicit_range` — explicit branch-specific lunch/dinner budget or average-spend band. This is the default for legacy maintained budget claims and is eligible for hard filtering.
+- `menu_derived` — a reviewed representative range derived from a sufficiently complete official menu. It is eligible only when no explicit range is available.
+- `sparse` — one item, one course, one promotion, or similarly weak price evidence. It is audit/display evidence only and never enters the hard canonical budget filter.
+
+Selection order is **evidence strength first**, then provider priority, then freshness. Thus an explicit exact Tabelog or authorized Hot Pepper range outranks an official-menu-derived band; an explicit official branch budget outranks other explicit providers.
+
+Strong-source conflicts are never averaged silently.
+
+### Current strict coverage
+
+The current 656-restaurant production pool has:
+
+- lunch known: **155**;
+- dinner known: **253**;
+- both meals known: **136**;
+- either meal known: **272**;
+- lunch missing: **501**;
+- dinner missing: **403**.
+
+The strict provenance audit currently reports **0** unprovenanced stored meal-price fields.
+
 ## Opening hours
 
 ### Runtime field
@@ -91,6 +156,6 @@ Do not infer a dish price from a restaurant-level budget.
 
 `data/featured_dishes.js` is exact-Place-ID keyed. Every representative entry must point to a source URL that is already registered as a `dishes` field claim for the same production Place ID. The canonical builder rejects unattached or unsupported featured-dish records.
 
-## Current audited coverage
+## Audit rule
 
-The normalized-hours/featured-dish migration is validated in PR #6. The final numbers must be taken from the latest successful Pages/PR audit because conservative schedule rules can intentionally reduce the old descriptive-hours count.
+Final coverage numbers must be taken from the latest successful Pages audit. Conservative normalization/provenance rules may intentionally reduce an older descriptive-field count when the older value cannot be supported strongly enough for canonical filtering.
