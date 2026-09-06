@@ -39,6 +39,13 @@ jobs:
           node scripts/build_production_dataset.mjs
           node scripts/build_source_provenance.mjs
           node scripts/build_source_facts.mjs
+      - name: Build 2000+ public restaurant pool
+        run: |
+          mkdir -p _audit
+          set -o pipefail
+          node scripts/build_public_open_pool.mjs | tee _audit/public_pool.json
+          test -s data/public_pool_area1.js
+          node --check data/public_pool_area1.js
       - name: Static and repository checks
         run: |
           mkdir -p _audit
@@ -50,8 +57,10 @@ jobs:
             node --check data/source_enrichment_hotpepper-richcore.js
             node --check data/source_provenance.js
             node --check data/source_facts.js
+            node --check data/public_pool_area1.js
             node --check scripts/audit_no_paid_apis.mjs
             node --check scripts/build_hotpepper_rich_core_fallback.mjs
+            node --check scripts/build_public_open_pool.mjs
             node --check scripts/price_resolver.mjs
             node --check scripts/audit_price_resolution.mjs
             node --check scripts/build_source_provenance.mjs
@@ -74,6 +83,7 @@ jobs:
             test -s data/hotpepper_rich_metadata.js
             test -s data/source_provenance.js
             test -s data/source_facts.js
+            test -s data/public_pool_area1.js
             node scripts/audit_repository.mjs
             node scripts/audit_source_bindings.mjs
             node scripts/audit_normalized_fields.mjs
@@ -101,7 +111,7 @@ jobs:
         run: |
           mkdir -p _site/data _site/voice _site/image
           cp index.html styles.css effects.css app.js effects.js privacy.html terms.html _site/
-          cp data/production_area1.js data/source_provenance.js data/source_facts.js data/hotpepper_rich_metadata.js _site/data/
+          cp data/production_area1.js data/public_pool_area1.js data/source_provenance.js data/source_facts.js data/hotpepper_rich_metadata.js _site/data/
           cp voice/*.mp3 _site/voice/
           cp image/*.webp _site/image/
       - name: Upload build for review
