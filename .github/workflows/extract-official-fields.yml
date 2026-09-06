@@ -1,12 +1,7 @@
-name: Extract official restaurant fields
+name: Extract known official restaurant fields
 
 on:
   workflow_dispatch:
-    inputs:
-      google_limit:
-        description: 'Google website discovery limit. Default 100 is a hard-cost-safe batch (~$2 worst case at current Enterprise list price if fully billable).'
-        required: false
-        default: '100'
 
 permissions:
   contents: read
@@ -21,32 +16,22 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Enforce data API policy
+        run: node scripts/audit_no_paid_apis.mjs
       - name: Build canonical production dataset
         run: node scripts/build_production_dataset.mjs
-      - name: Extract already-known official-source fields
+      - name: Extract already-known official-source fields only
         env:
           OFFICIAL_FETCH_CONCURRENCY: '4'
           OFFICIAL_FETCH_TIMEOUT_MS: '15000'
         run: |
           mkdir -p _audit
-          node scripts/extract_official_fields.mjs _audit/official_extraction_candidates.json | tee _audit/official_extraction_summary.json
-      - name: Discover and inspect additional official sites
-        env:
-          GOOGLE_MAP_API: ${{ secrets.GOOGLE_MAP_API }}
-          GOOGLE_OFFICIAL_SITE_LIMIT: ${{ inputs.google_limit }}
-          GOOGLE_OFFICIAL_SITE_CONCURRENCY: '6'
-          GOOGLE_OFFICIAL_SITE_TIMEOUT_MS: '12000'
-        run: |
-          node scripts/discover_google_official_sites.mjs _audit/google_official_site_candidates.json | tee _audit/google_official_site_summary.json
-      - name: Build high-confidence official review queue
-        run: |
-          node scripts/filter_official_site_candidates.mjs \
-            _audit/google_official_site_candidates.json \
-            _audit/google_official_site_priority.json \
-            | tee _audit/google_official_site_priority_summary.json
+          node scripts/extract_official_fields.mjs \
+            _audit/official_extraction_candidates.json \
+            | tee _audit/official_extraction_summary.json
       - name: Upload extraction review artifact
         uses: actions/upload-artifact@v4
         with:
-          name: official-extraction-review
+          name: known-official-extraction-review
           path: _audit
           retention-days: 3

@@ -25,6 +25,8 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Enforce no-paid-data-API policy
+        run: node scripts/audit_no_paid_apis.mjs
       - name: Build canonical production dataset
         run: |
           node scripts/test_opening_hours.mjs
@@ -36,12 +38,15 @@ jobs:
           {
             node --check app.js
             node --check effects.js
+            node --check scripts/audit_no_paid_apis.mjs
             python3 -m py_compile \
               scripts/verify_google_places.py \
               scripts/verify_curated_google.py \
               scripts/discover_google_area1.py \
               scripts/migrate_google_inventory.py \
-              scripts/build_area1_osm.py
+              scripts/build_area1_osm.py \
+              scripts/build_overture_area1.py \
+              scripts/build_open_identity_reconciliation.py
             test -s data/production_area1.js
             node scripts/audit_repository.mjs
             node scripts/audit_source_bindings.mjs
@@ -64,26 +69,13 @@ jobs:
           path: _audit
           if-no-files-found: warn
           retention-days: 3
-      - name: Assemble public site
-        env:
-          GOOGLE_MAPS_EMBED_KEY: ${{ secrets.GOOGLE_MAP_API }}
+      - name: Assemble public site without API keys
         run: |
           mkdir -p _site/data _site/voice _site/image
           cp index.html styles.css effects.css app.js effects.js privacy.html terms.html _site/
           cp data/production_area1.js _site/data/
           cp voice/*.mp3 _site/voice/
           cp image/*.webp _site/image/
-          python3 - <<'PY'
-          import os
-          from pathlib import Path
-
-          path = Path('_site/index.html')
-          text = path.read_text(encoding='utf-8')
-          key = os.environ.get('GOOGLE_MAPS_EMBED_KEY', '').strip()
-          if key:
-              text = text.replace('__GOOGLE_MAPS_EMBED_KEY__', key)
-          path.write_text(text, encoding='utf-8')
-          PY
       - name: Upload build for review
         if: github.event_name == 'pull_request'
         uses: actions/upload-artifact@v4

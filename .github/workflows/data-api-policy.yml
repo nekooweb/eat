@@ -1,0 +1,32 @@
+name: Enforce no paid data APIs
+
+on:
+  push:
+    paths:
+      - '.github/workflows/**'
+      - 'scripts/**'
+      - 'DEVELOPMENT.md'
+      - 'DATA_PIPELINE.md'
+      - 'REQUIREMENTS.md'
+  pull_request:
+    paths:
+      - '.github/workflows/**'
+      - 'scripts/**'
+      - 'DEVELOPMENT.md'
+      - 'DATA_PIPELINE.md'
+      - 'REQUIREMENTS.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  policy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Block paid data API execution paths
+        run: node scripts/audit_no_paid_apis.mjs

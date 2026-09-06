@@ -1,57 +1,13 @@
-name: Verify Google Places
+name: DISABLED - legacy paid place verification
 
 on:
   workflow_dispatch:
-    inputs:
-      limit:
-        description: 'Maximum candidates to process; 0 = all, -1 = half'
-        required: true
-        default: '100'
-  push:
-    branches: ["main"]
-    paths:
-      - '.github/run-half-google'
-      - '.github/run-all-google'
 
 permissions:
-  contents: write
-
-concurrency:
-  group: verify-google-places
-  cancel-in-progress: false
+  contents: read
 
 jobs:
-  verify:
+  disabled:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-      - name: Resolve verification mode
-        shell: bash
-        run: |
-          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
-            echo "GOOGLE_VERIFY_LIMIT=${{ inputs.limit }}" >> "$GITHUB_ENV"
-          elif git diff-tree --no-commit-id --name-only -r "${{ github.sha }}" | grep -Fxq '.github/run-all-google'; then
-            echo 'GOOGLE_VERIFY_LIMIT=0' >> "$GITHUB_ENV"
-          else
-            echo 'GOOGLE_VERIFY_LIMIT=-1' >> "$GITHUB_ENV"
-          fi
-      - name: Verify source candidates against Google Places
-        env:
-          GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAP_API }}
-        run: python scripts/verify_google_places.py
-      - name: Commit identity-only verification state
-        run: |
-          git config user.name github-actions[bot]
-          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-          git add data/google_places_cache.json data/google_entities.generated.js
-          git diff --cached --quiet && exit 0
-          git commit -m "Update Google Place ID verification"
-          git fetch origin main
-          git rebase origin/main
-          git push origin HEAD:main
+      - run: echo 'Disabled by repository no-paid-data-API policy. Use independent-source reconciliation.'

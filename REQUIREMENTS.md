@@ -20,16 +20,17 @@ Do not display the private anchor. Do not expose Area2/SHIZUOKA selectors before
 
 ## 3. Production identity
 
-A production restaurant requires:
+The current Area1 production set remains keyed by **already-committed historical Google Place IDs** for compatibility. Those IDs are frozen identifiers; Google is no longer an active identity/QC provider.
 
-1. a Google Place ID;
-2. verification state `verified`;
-3. transient Google QC indicating a usable food-related place;
-4. location inside the Area1 boundary;
-5. no permanent-closure rejection;
-6. a unique Place ID in canonical production.
+For an existing production restaurant:
 
-Google Places is the identity/QC/discovery layer, not the permanent display database.
+1. its historical Place ID must already be committed;
+2. durable independent source evidence must support the exact branch;
+3. durable geospatial evidence must place it inside the Area1 boundary;
+4. no current reviewed closure/identity conflict may block it;
+5. the canonical identity must remain unique.
+
+No new Place ID may be obtained through a live paid API. New Overture/OSM candidates stay in staging unless they can be conservatively reconciled to an already-committed legacy identity. Future production expansion beyond that model requires a source-native canonical identity key.
 
 ## 4. Canonical public fields
 
@@ -44,7 +45,7 @@ Every canonical restaurant must expose a consistent field shape. Important field
 - `lunch`, `dinner`;
 - `recommendedDishes`;
 - `hoursReference`;
-- `googlePlaceId`, `googleStatus`;
+- legacy `googlePlaceId`, `googleStatus` compatibility fields where already present;
 - `hyakumeiten`, year/category;
 - `randomWeight`;
 - compact source-provider labels.
@@ -55,29 +56,19 @@ Every canonical restaurant must expose a consistent field shape. Important field
 
 Missing optional information stays empty/null. Do not fabricate values.
 
-Legacy representative/menu fields may remain in maintenance data during migration, but the UI should use the normalized fields above.
-
 ## 5. Recommended-dish rule
 
-A public recommendation may be populated only when a reviewed source explicitly identifies a concrete dish as one of the following or equivalent:
-
-- recommended / おすすめ;
-- popular / 人気;
-- specialty / 名物;
-- signature / 看板;
-- house specialty / 自慢.
+A public recommendation may be populated only when a reviewed source explicitly identifies a concrete dish as recommended/popular/specialty/signature/house specialty or equivalent.
 
 Requirements:
 
 - 1-2 Chinese display names maximum;
-- exact Google Place ID binding;
+- exact canonical production-identity binding;
 - source URL and review date maintained outside the public row;
 - no inferred recommendation from cuisine type;
 - no automatic promotion of a generic menu/representative dish.
 
 If evidence is absent or vague, `recommendedDishes` must be `[]`.
-
-Price may be omitted from recommendation display even when the source contains a price.
 
 ## 6. Hours rule
 
@@ -87,24 +78,25 @@ It is a reference only. The current recommendation pool does not implement open-
 
 ## 7. Durable source roles
 
+### Overture Maps Places
+
+- primary new bulk candidate discovery source;
+- names/categories/taxonomy/geometry/confidence;
+- website/phone/brand/address/source provenance when present;
+- staging input, not automatic production truth.
+
 ### OpenStreetMap
 
 - independent candidate discovery;
 - durable geospatial coordinates/distance where available;
-- coverage comparison;
-- not sufficient by itself for production admission.
+- coverage comparison and cross-source identity evidence;
+- not sufficient by itself for automatic production admission.
 
 ### Official restaurant/organization pages
 
-Preferred durable source for branch facts such as:
+Preferred durable source for exact branch facts such as name/address, cuisine, schedule, menu/signature dishes and supported spend ranges.
 
-- exact name/address;
-- cuisine;
-- schedule reference;
-- menu/signature dishes;
-- supported price information.
-
-### Tabelog
+### Tabelog / reviewed curated evidence
 
 Reviewed factual enrichment/fallback where exact branch identity is supported.
 
@@ -112,25 +104,24 @@ External facts must be attached conservatively. Ambiguous branch matches remain 
 
 ## 8. Bulk source acquisition
 
-The maintenance process should not require manually searching every restaurant from scratch.
+The maintenance process must not require paid place/search APIs or manual restaurant-by-restaurant searching from scratch.
 
 Preferred flow:
 
 ```text
-verified production Place IDs
- -> known official URLs fetched in batch
- -> for rows without official source: transient Place Details websiteUri lookup
- -> fetch actual website
- -> extract JSON-LD/menu/recommendation/price signals
- -> high-confidence review queue
- -> reviewed source binding and fields
+Overture Area1 bulk candidates + OSM candidate facts
+ -> spatial/name/address blocking
+ -> combine with persisted historical QC metrics
+ -> A/B/C/D identity review queue
+ -> discover official URLs from open source fields / persisted index / brand locators
+ -> URL-deduplicated batch fetch
+ -> JSON-LD/menu/hours/address/price/recommendation extraction
+ -> conservative reviewed source binding and field promotion
 ```
 
-The Google-returned `websiteUri` is a transient discovery aid. Do not build a long-lived Places-response database from it.
+Paid `websiteUri`, Place Details, Text Search and Area Insights discovery are not fallback options.
 
-Bulk extraction results are staging/review candidates, not automatically trusted production facts.
-
-Prefer processing repeated hosts/templates together instead of processing restaurants strictly one-by-one.
+Prefer repeated hosts/templates together instead of restaurants one-by-one. Cache/staleness logic should avoid repeatedly fetching already saturated pages.
 
 ## 9. Filters
 
@@ -140,7 +131,7 @@ Current optional filters:
 - budget;
 - distance.
 
-Neutral states already mean no extra restriction; do not add redundant enable/disable switches.
+Neutral states mean no extra restriction.
 
 ### Budget
 
@@ -168,7 +159,7 @@ Lunch and dinner remain separate. A restaurant passes a specific budget filter i
 Hard behavior:
 
 - fewer than 3 eligible restaurants -> ask user to relax filters;
-- at least 3 eligible restaurants -> return exactly 3 distinct Place IDs.
+- at least 3 eligible restaurants -> return exactly 3 distinct current canonical identities.
 
 Preferences:
 
@@ -188,91 +179,67 @@ Each successful result contains the same three restaurants across all views.
 - fit to the three generated points;
 - do not show the private anchor.
 
-Purpose: compare the three locations spatially.
-
 ### B. Restaurant cards
 
-Each card may show:
+Each card may show name, cuisine, distance, known budget, supported dishes, hours, 百名店 badge, an embedded Leaflet/OSM store map and an ordinary external map-navigation link.
 
-- name;
-- cuisine;
-- distance;
-- known budget;
-- 1-2 Chinese `recommendedDishes` when explicitly supported;
-- `hoursReference` when known;
-- 百名店 badge;
-- per-store Google map;
-- Google Maps link.
-
-Missing optional fields are omitted rather than filled with repeated unknown placeholders.
+Missing optional fields are omitted rather than fabricated.
 
 ### C. Per-store map
 
-Preferred implementation:
+Use the existing Leaflet/OpenStreetMap implementation. The Pages artifact must not require or receive a Google Maps API key.
 
-- Google Maps Embed API `place` mode;
-- use the verified Place ID;
-- if an Embed key is unavailable, fall back to the existing Leaflet/OSM store map.
-
-Do not replace the three-store Leaflet overview with three unrelated Google map views.
+A normal outbound `https://www.google.com/maps/...` navigation URL may remain because it is a user-opened website link, not an API request made by Eat.
 
 ### D. Comparison table
 
-Compare the same numbered choices across:
+Compare cuisine, distance, budget, recommended dishes, hours reference and 百名店 status. Unknown values display as `—`.
 
-- cuisine;
-- distance;
-- budget;
-- recommended dishes;
-- hours reference;
-- 百名店 status.
+## 12. API / secret behavior
 
-Unknown values display as `—`.
+Repository policy is **no paid data API execution**.
 
-## 12. Google Maps / API key behavior
+- GitHub Actions maintenance jobs must not read the former Google Maps/Places secret.
+- Paid Places/Area Insights/Text Search/Place Details/website discovery is disabled.
+- Pages must not inject the former shared key into HTML.
+- Retired paid-call scripts fail closed.
+- CI blocks known paid endpoint/secret patterns in active maintenance code/workflows.
 
-Per current project decision, the existing `GOOGLE_MAP_API` secret is reused for both:
-
-- server-side maintenance Places requests in GitHub Actions;
-- client-side Google Maps Embed in the deployed Pages artifact.
-
-The literal key must never be committed to tracked source files. Pages injects it only when assembling `_site`.
-
-Because a browser-delivered key is inspectable, configure API restrictions and quotas deliberately. Reusing one key for both browser and server-side requests limits the application-restriction options compared with separate keys.
+The secret may still exist in repository settings until manually deleted, but active code must not reference it.
 
 ## 13. Validation
 
 Blocking checks should cover:
 
-- unique verified production Place IDs;
 - strict <=1,200 m boundary;
-- canonical normalized fields;
+- unique current canonical identities;
+- normalized fields;
 - recommendation rows max 2 items and exact identity binding;
 - source provenance;
-- no forbidden long-lived Places response-content fields in canonical rows;
-- required overview/store-map/comparison hooks;
-- Google store-map iframe restricted to the intended Maps Embed endpoint;
-- Leaflet store-map fallback remains available;
-- public artifact excludes raw maintenance datasets.
+- no reintroduction of paid data API endpoint/secret patterns;
+- required Leaflet overview/store-map/comparison hooks;
+- public artifact excludes raw maintenance datasets and API keys.
 
 ## 14. Progress accounting
 
 Always distinguish:
 
-- exact Google identity inventory;
-- independently verified source identities;
+- frozen historical ID inventory;
+- actionable historical reconciliation rows;
+- independent open-source candidates;
 - canonical production entities;
 - usable source coverage;
 - terminal source outcomes;
 - field completeness;
 - staging extraction candidates.
 
-A successful website fetch or high-confidence source candidate is not automatically a reviewed production fact.
+A successful website fetch or high-confidence cross-source candidate is not automatically a reviewed production fact.
 
 ## 15. Still TBD
 
 Not blockers for the current Area1 release:
 
+- source-native canonical identity key;
 - TOKYO Area2;
 - SHIZUOKA;
 - open-now/holiday exclusion;

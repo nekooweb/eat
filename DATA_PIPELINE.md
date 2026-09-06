@@ -4,315 +4,276 @@ Updated: 2026-09-06
 
 ## 1. Purpose
 
-This document defines the current Area1 data path from candidate discovery to the public canonical dataset.
+This document defines the Area1 maintenance path after the 2026-09-06 transition to a **no paid data API** architecture.
 
 Core rules:
 
-1. production identity requires a verified Google Place ID;
-2. durable restaurant fields come from independent/reviewed sources;
-3. Google Places response content used for QC/discovery stays transient except permitted identity state such as Place ID;
-4. source extraction may be automated, but candidate facts do not become production facts without a conservative binding/review rule;
-5. unknown values remain unknown.
+1. billable place/search/map data APIs are prohibited in repository maintenance;
+2. the existing 2,804 Google Place IDs are a frozen historical inventory, not a live upstream dataset;
+3. durable restaurant fields come from independent/reviewed sources;
+4. open-data/source extraction may be automated, but candidate facts do not become production facts without conservative identity binding/review;
+5. unknown values remain unknown;
+6. large recurring jobs must use bulk files/cached sources rather than systematic public geocoding/search endpoints.
 
 ## 2. Current scale
 
-Current production baseline:
+Current baseline:
 
-- exact Google food-business Place-ID inventory: **2,804**;
-- independent OSM candidates: **1,273**;
-- QC-v4: **658 verified / 615 rejected** source rows;
-- canonical production: **648** unique Place IDs;
-- usable Tabelog/official bindings: **356**;
-- explicit source resolutions: **44**;
-- accounted source outcomes: **400 / 648**;
-- unresolved source outcomes: **248**.
-
-Current canonical field coverage:
-
-- non-generic cuisine: **568**;
+- frozen Area1 identity snapshot: **2,804** unique historical Place IDs;
+- canonical production: **656**;
+- production inside frozen inventory: **653**;
+- legacy inventory-only IDs: **2,151**;
+- OSM independent candidates: **1,273**;
+- verified historical QC rows: **666**;
+- source-backed production: **404 / 656**;
+- source outcomes accounted for: **448 / 656**;
+- unresolved production source outcomes: **208**;
+- official-site index: **194**;
+- non-generic cuisine: **579**;
+- address: **268**;
+- normalized weekly opening hours: **287**;
 - budget: **192**;
-- address: **207**;
-- `hoursReference`: **302**;
-- legacy representative dishes: **72**;
-- reviewed explicit recommendation rows on this branch: **10**;
-- 百名店: **22**.
+- featured dishes: **129**;
+- strict recommendations: **30**.
 
 ## 3. Source roles
 
-### Google Places
+### Frozen legacy Google identity state
 
-Used for:
+Allowed use:
 
-- business identity;
-- location/status/type QC;
-- exact Area1 Place-ID coverage inventory;
-- transient official-website discovery for an already known Place ID.
+- retain already-committed Place IDs as compatibility keys;
+- retain historical verification/rejection state;
+- retain previously persisted Google→OSM candidate class, distance and name-similarity metrics;
+- generate ordinary external Google Maps navigation URLs from an existing ID.
 
-Long-lived application data must not become a dump of Places Details responses.
+Forbidden use:
+
+- live Place Details;
+- Text Search;
+- Places Aggregate / Area Insights;
+- `websiteUri` discovery;
+- any other billable lookup to refresh or expand identity state.
+
+Historical Google display payload was intentionally not persisted. Therefore some legacy IDs are opaque and must remain frozen/unresolved when durable independent evidence is insufficient.
+
+### Overture Maps Places
+
+Primary new bulk discovery source.
+
+Use the public GeoParquet release to obtain current candidate facts such as:
+
+- Overture ID;
+- names;
+- `basic_category` and `taxonomy`;
+- geometry;
+- confidence;
+- addresses;
+- websites/phones;
+- brand;
+- record-level sources/provenance.
+
+BBox filtering is only a coarse pruning step. Apply the exact <=1,200 m Area1 geodesic boundary after retrieval.
 
 ### OpenStreetMap
 
-Used for:
+Independent geospatial/source layer.
 
-- independent candidate discovery;
+Use for:
+
+- candidate discovery;
 - durable coordinates/distance where available;
-- coverage comparison.
+- cuisine/opening-hours/address evidence when tagged;
+- cross-source identity comparison.
 
-OSM does not self-admit a row into production; Google identity verification is still required.
+For routine large refreshes prefer a local/cached Geofabrik Kanto PBF extract. Public Nominatim is not a bulk POI acquisition service and should not be used to enumerate the Area1 universe.
 
-### Official pages
+### Official pages / trusted locators
 
-Preferred durable source for exact branch facts when available:
+Preferred branch-level source for:
 
-- name/address;
+- exact name/address;
 - cuisine;
-- reference opening schedule;
+- weekly opening schedule;
 - menu/signature dishes;
-- directly supported price information.
+- explicitly supported spend ranges;
+- current branch existence.
 
-### Tabelog
+### Tabelog / reviewed curated evidence
 
-Reviewed fallback/parallel factual source for exact branch metadata.
+Fallback or parallel factual source where exact branch identity is supported. Existing reviewed bindings remain usable; ambiguous matches remain unresolved.
 
-### Legacy curated data
-
-Compatibility/enrichment input only. New research should prefer Place-ID keyed source records.
-
-## 4. Production identity lifecycle
+## 4. Identity lifecycle
 
 ```text
-OSM / curated source candidate
-       |
-       v
-Google identity QC
-       |
-       v
-verified Place ID
-       |
-       +--------------------------+
-       |                          |
-       v                          v
-independent durable fields   source discovery/review
-       |                          |
-       +-------------+------------+
+frozen legacy ID + persisted historical QC metrics
                      |
                      v
-       build_production_dataset.mjs
+            persisted OSM candidate
                      |
-                     v
-          production_area1.js
-                     |
-                     v
-                  browser
+                     +----------------------+
+                                            |
+Overture Area1 bulk candidates -------------+
+                                            |
+                                            v
+                              cross-source blocking + scoring
+                                            |
+                          +-----------------+-----------------+
+                          |                 |                 |
+                          v                 v                 v
+                    priority review     normal review      unresolved
+                          |                 |
+                          +--------+--------+
+                                   |
+                                   v
+                     official/source verification
+                                   |
+                                   v
+                   conservative field/source promotion
+                                   |
+                                   v
+                    build_production_dataset.mjs
 ```
 
-A source-only row can enrich a verified identity but cannot create one.
+There is no live Google call in this lifecycle.
 
-## 5. Canonical source binding
+## 5. Overture batch acquisition
 
-Maintenance files:
+`scripts/build_overture_area1.py` performs a reproducible public-data staging pass:
 
-- `data/source_enrichment.js`;
-- `data/source_enrichment_*.js`.
+1. use a pinned Overture release, overridable through `OVERTURE_RELEASE`;
+2. query the public Places GeoParquet directly with DuckDB/httpfs/spatial;
+3. bbox-prune around Area1;
+4. retain food/drink taxonomy candidates;
+5. apply exact geodesic <=1,200 m filtering in Python;
+6. preserve source/provenance arrays and contact/website fields;
+7. emit an audit/staging JSON file, not production rows.
 
-Each source-enrichment record must:
+The default pinned release for this transition is `2026-08-19.0`. Future updates should change the pin deliberately and compare deltas rather than silently floating every run.
 
-- be keyed by exact `googlePlaceId`;
-- use `sourceOnly:true`;
-- use provider `official` or `Tabelog`;
-- include one or more `sourceRefs`;
-- use HTTPS source references;
-- include ISO `checkedAt` dates;
-- state exactly which fields each reference supports.
+## 6. Cross-source reconciliation
 
-Source fields are merged only after the corresponding identity already exists in the verified group.
+`scripts/build_open_identity_reconciliation.py` uses the new Overture staging set together with `data/area1_full_collection_queue.json`.
 
-## 6. Source-resolution ledger
+Important property: the historical queue already contains, for each prior Google→OSM candidate relationship, durable QC metrics such as match class, distance and name similarity without storing raw Google display payload. Those metrics can be reused without another Google request.
 
-Maintenance files:
+The reconciliation algorithm:
 
-- `data/source_resolution.js`;
-- `data/source_resolution_*.js`.
+- spatially blocks Overture candidates around the persisted OSM candidate;
+- normalizes names conservatively;
+- compares geodesic distance, name similarity and address similarity;
+- assigns a cross-source confidence class;
+- combines that class with the historical Google→OSM class into A/B/C/D review priority.
 
-Supported terminal research states include:
+Rules:
 
-- `ambiguous`;
-- `listing_hold`;
-- `no_current_usable_source`;
-- `source_not_found`.
+- no O(N²) global pairwise scan;
+- no automatic production promotion;
+- historical terminal/collision blockers remain blockers;
+- prior low-confidence Google→OSM relationships cannot become automatic admissions merely because Overture agrees with the OSM entity;
+- A/B are review priorities, not truth labels.
 
-These states record the outcome of a research pass. They do not automatically prove current opening/closure and are not currently runtime recommendation filters.
+## 7. Official-source acquisition without paid discovery
 
-## 7. Normalized display fields
+Preferred discovery order:
 
-The canonical builder guarantees a common public shape.
+1. persisted `official_candidate_index.json`;
+2. Overture website/brand/contact fields;
+3. reviewed OSM website/contact tags when present in future extracts;
+4. official brand locator/sitemap patterns;
+5. existing Tabelog and curated exact-branch bindings.
 
-### Recommended dishes
+Do not use paid search/place APIs as a fallback.
 
-Public field:
+### Fetch strategy
 
-- `recommendedDishes: []` or 1-2 Chinese strings.
+- deduplicate exact URLs and hosts before fetching;
+- use bounded per-host concurrency;
+- group repeated locator/templates;
+- cache content hash and HTTP validators when practical;
+- avoid refetching already saturated pages unless stale/change evidence exists;
+- retry transient failures conservatively;
+- treat fetch failure as unknown/retry, not evidence that a restaurant/source disappeared.
 
-Maintenance source:
+## 8. Grouped field extraction
 
-- `data/recommended_dishes.js`.
+Existing safe scripts remain the preferred field path, including:
 
-Each recommendation maintenance row requires:
+- `extract_official_index_fields.mjs`;
+- `build_auto_official_enrichment.mjs`;
+- `build_locator_template_fields.mjs`;
+- `build_single_site_hours_enrichment.mjs`;
+- `build_explicit_budget_address_enrichment.mjs`;
+- reviewed featured-dish template propagation.
 
-- exact production Place ID;
-- 1-2 Chinese dish labels;
-- source URL;
-- check date.
+During a source fetch, extract all supported fields together rather than revisiting a restaurant field-by-field.
 
-Promotion rule is strict: a concrete dish needs explicit source language showing recommended/popular/signature/specialty status. Generic representative `dishes` do not automatically become recommendations.
+Field promotion remains conservative:
 
-### Hours
+- opening hours must describe a stable weekly schedule;
+- menu-item prices are not restaurant spend ranges;
+- `recommendedDishes` needs explicit recommendation/popularity/signature evidence;
+- `featuredDishes` can use broader source-backed representative items;
+- source claims remain field-specific.
 
-Public field:
+## 9. Large-scale OSM strategy
 
-- `hoursReference: string | null`.
+The old `build_area1_osm.py` public-Overpass job is retained only as historical/small manual tooling. It is not the preferred recurring bulk refresh path.
 
-The builder combines supported opening-hours and regular-closure notes into this display value. It is reference-only; no open-now filtering is performed.
+For full refreshes:
 
-## 8. Batch field-acquisition strategy
+1. download/cache the Geofabrik Kanto PBF;
+2. filter local `amenity`/`shop` food POIs with osmium/pyosmium or another local parser;
+3. calculate precise Area1 distance locally;
+4. preserve OSM element IDs and tags;
+5. compare the resulting snapshot against the prior OSM snapshot.
 
-The old one-by-one source search remains available for difficult exceptions, but it is no longer the default path.
+This avoids turning shared public geocoding/query services into a batch backend.
 
-### 8.1 Existing official pages
+## 10. Cost guard
 
-`scripts/extract_official_fields.mjs` fetches all already-known official source URLs concurrently and extracts staging signals:
+`scripts/audit_no_paid_apis.mjs` scans active workflow and maintenance-script text for forbidden known endpoint/secret patterns.
 
-- JSON-LD/Schema.org fields;
-- menu links;
-- recommendation/signature snippets;
-- price snippets.
+`.github/workflows/data-api-policy.yml` runs the guard on relevant pushes and pull requests. The Pages build also runs it before deployment.
 
-First successful test run `33974331919`:
-
-- 60 URLs targeted;
-- 55 fetched;
-- 10 with structured facts;
-- 21 with recommendation signals;
-- 22 with price signals;
-- 36 with menu links.
-
-Remote sites are unstable, so a failed generic fetch means retry/review, not source rejection.
-
-### 8.2 Discover additional official pages through existing Place IDs
-
-`scripts/discover_google_official_sites.mjs` operates only on production identities without an existing official binding.
-
-For each Place ID:
-
-1. request Place Details with field mask `websiteUri`;
-2. do not persist that Google-returned value as the durable record;
-3. immediately fetch the website;
-4. follow redirects;
-5. inspect the final website page;
-6. emit the final fetched URL and independently extracted page facts into a short-lived review artifact.
-
-Full test run `33974475744`:
-
-- targets: **589**;
-- Google lookups successful: **589**;
-- websites found: **445**;
-- websites fetched: **287**;
-- canonical-name match: **195**;
-- candidate official/non-platform hosts: **265**;
-- structured-fact pages: **121**;
-- recommendation-signal pages: **160**;
-- price-signal pages: **107**;
-- menu-link pages: **223**;
-- no website: **144**;
-- website fetch failures: **158**.
-
-### 8.3 High-confidence review queue
-
-`scripts/filter_official_site_candidates.mjs` keeps only rows satisfying:
-
-- successful website fetch;
-- candidate official/non-platform host;
-- canonical restaurant name appears in page content/title;
-- final URL uses HTTPS.
-
-Current high-confidence set derived from the full run: **164** restaurants.
-
-Within that set:
-
-- 72 have structured facts;
-- 97 have recommendation signals;
-- 60 have price signals;
-- 134 have menu links.
-
-These are review candidates, not auto-approved source facts.
-
-## 9. Host/template processing
-
-Process repeated official hosts as a batch whenever possible.
-
-A host-specific adapter may safely standardize extraction of:
-
-- branch name/address;
-- opening hours;
-- menu URLs;
-- predictable menu/signature sections.
-
-Do not infer missing values simply because another branch on the same chain has them.
-
-## 10. Google request/cost control
-
-`.github/workflows/extract-official-fields.yml` is manual (`workflow_dispatch`). A normal commit must not automatically repeat the hundreds of Place Details calls used for website discovery.
-
-The workflow accepts `google_limit`:
-
-- `0`: all production rows without an official binding;
-- positive integer: only that many rows for testing/review.
-
-Keep Places field masks narrow.
+Legacy paid-call scripts are fail-closed stubs. Legacy paid workflows are manual no-op stubs or have had the paid stage removed. The deployment workflow does not inject the former Google API secret into the public artifact.
 
 ## 11. Canonical build
 
-`scripts/build_production_dataset.mjs`:
+`scripts/build_production_dataset.mjs` remains authoritative for current production compatibility.
 
-- creates groups only from verified identities;
-- attaches exact Place-ID source-only records afterward;
-- allows no-ID historical enrichment only for unique normalized-name matches;
-- prefers independent OSM geospatial data;
+For the current frozen model it:
+
+- builds from already-established identities;
+- attaches exact source-only records afterward;
+- prefers durable independent geospatial/source data;
 - applies field-level source claims/suppression;
-- applies exact reviewed recommendation rows;
-- emits one canonical row per Place ID;
+- emits one canonical row per existing production identity;
 - rejects duplicate identities, out-of-radius rows and malformed normalized data.
 
-Output:
+Do not broaden production to new open-data-only entities until a source-native canonical identity key is designed and audited.
 
-- `data/production_area1.js` generated during build/deployment.
+## 12. Progress accounting
 
-## 12. Coverage / review reports
+Always distinguish:
 
-Current automated reports include:
+- frozen historical identity inventory;
+- actionable historical reconciliation rows;
+- current independent-source candidates;
+- canonical production entities;
+- usable source coverage;
+- source outcomes;
+- field completeness;
+- staging extraction/reconciliation candidates.
 
-- `coverage_report.mjs`;
-- `source_queue.mjs`;
-- `build_enrichment_queue.mjs`;
-- `audit_area1_identity_coverage.mjs`;
-- official extraction/discovery review artifacts.
+The historical `2,804 / 2,804` count remains valuable as a snapshot benchmark, but it is no longer a requirement to perform live paid refreshes for every opaque ID.
 
-`build_enrichment_queue.mjs` groups missing fields by source host so repeated website templates can be processed together.
+## 13. Current execution order
 
-Do not confuse:
-
-- source binding;
-- source outcome;
-- field populated;
-- field source evidence;
-- high-confidence extraction candidate.
-
-They are different completion states.
-
-## 13. Next processing order
-
-1. review/promote the 164 high-confidence official candidates by host/template;
-2. retry worthwhile website-fetch failures with host-specific handling;
-3. use Tabelog/manual research for rows with no official website;
-4. continue the 248 unresolved source outcomes;
-5. after current production fields stabilize, resume independent-source reconciliation for the remaining exact Google inventory.
+1. enforce no-paid-API CI policy;
+2. generate Overture Area1 staging candidates;
+3. build cross-source reconciliation and review A/B tiers;
+4. resolve the existing 3 medium + 49 review OSM relationships without new Google calls;
+5. continue the 208 unresolved production source outcomes from open/known official sources;
+6. batch-complete fields from newly reviewed sources;
+7. add source-native identity support before expanding production scope.
