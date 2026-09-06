@@ -12,6 +12,7 @@ on:
       - "scripts/apply_queue_admission_state.mjs"
       - "scripts/audit_loaded_hotpepper_lunch_candidates.mjs"
       - "scripts/audit_multisource_admission_candidates.mjs"
+      - "scripts/audit_unparsed_source_hours.mjs"
       - "scripts/build_production_dataset.mjs"
       - "scripts/build_source_provenance.mjs"
       - "scripts/build_source_facts.mjs"
@@ -85,6 +86,8 @@ jobs:
           if(q.summary.inventoryRejectedPairHold!==4) throw new Error('unexpected rejected-pair queue count '+q.summary.inventoryRejectedPairHold);
           console.log(JSON.stringify({catalog:x.summary, queue:q.summary},null,2));
           NODE
+      - name: Audit unparsed maintained opening hours
+        run: node scripts/audit_unparsed_source_hours.mjs | tee /tmp/unparsed_source_hours.json
       - name: Audit loaded strict Hot Pepper lunch candidates
         run: node scripts/audit_loaded_hotpepper_lunch_candidates.mjs | tee /tmp/hotpepper_lunch_candidates.json
       - name: Audit multisource admission candidates
