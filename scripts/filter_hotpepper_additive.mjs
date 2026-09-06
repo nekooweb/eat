@@ -35,7 +35,7 @@ const byId = new Map(production.map((row) => [row.googlePlaceId, row]));
 
 const output = [];
 const counts = { rows: 0, address: 0, cuisine: 0, dinnerBudget: 0, hours: 0, closure: 0 };
-const skipped = { noProductionIdentity: 0, noNetNewField: 0, dinnerDeferredToIndependentMealResolver: 0 };
+const skipped = { noProductionIdentity: 0, noNetNewField: 0 };
 
 for (const hp of candidates) {
   const current = byId.get(hp.googlePlaceId);
@@ -74,18 +74,13 @@ for (const hp of candidates) {
     counts.cuisine += 1;
   }
 
-  // The current canonical builder still resolves lunch+dinner from one budget
-  // claim row. Until meal-period resolution is split, do not add a dinner-only
-  // claim to a restaurant whose existing lunch price is already known, because
-  // doing so could erase the lunch price. Those few rows are deferred.
+  // Meal-period resolution is independent in the canonical builder. A
+  // dinner-only Hot Pepper claim can therefore complement an already-known
+  // lunch price without taking ownership of or deleting the lunch value.
   if (!isPrice(current.dinner) && isPrice(hp.dinner)) {
-    if (!isPrice(current.lunch)) {
-      row.dinner = hp.dinner;
-      fields.push('budget');
-      counts.dinnerBudget += 1;
-    } else {
-      skipped.dinnerDeferredToIndependentMealResolver += 1;
-    }
+    row.dinner = hp.dinner;
+    fields.push('dinnerBudget');
+    counts.dinnerBudget += 1;
   }
 
   if (!current.openingHours && hasText(hp.openingHoursRaw)) {
@@ -123,7 +118,7 @@ counts.rows = output.length;
 const js = `// Generated from Hot Pepper benchmark 34030943605.\n// Additive-only: this shard claims only fields missing from production at promotion time.\nwindow.RESTAURANTS.push(...${JSON.stringify(output)});\n`;
 fs.writeFileSync(outputPath, js);
 const report = {
-  schemaVersion: 1,
+  schemaVersion: 2,
   benchmarkRun: 34030943605,
   policy: {
     additiveOnly: true,
@@ -132,7 +127,8 @@ const report = {
     overwriteExistingDinnerBudget: false,
     overwriteExistingHours: false,
     inferLunchBudget: false,
-    preserveKnownLunchUntilIndependentMealResolver: true,
+    independentMealResolver: true,
+    preserveKnownLunch: true,
   },
   candidateRows: candidates.length,
   promoted: counts,
