@@ -57,14 +57,16 @@ jobs:
         env:
           GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAP_API }}
           FULL_IDENTITY_LIMIT: '0'
-          FULL_ESSENTIAL_CONCURRENCY: '6'
+          FULL_ESSENTIAL_CONCURRENCY: '10'
           FULL_PRO_CONCURRENCY: '5'
-          FULL_PRO_NAME_LIMIT: '1500'
+          FULL_PRO_NAME_LIMIT: '68'
           FULL_PRO_NEARBY_RADIUS_M: '65'
           FULL_PRO_REJECTED_RADIUS_M: '100'
+          FULL_SPATIAL_ACCEPT_M: '6'
+          FULL_SPATIAL_ISOLATION_M: '25'
           FULL_WEBSITE_CONCURRENCY: '8'
           FULL_WEBSITE_LIMIT: '0'
-          FULL_REQUEST_TIMEOUT_SEC: '15'
+          FULL_REQUEST_TIMEOUT_SEC: '10'
           FULL_COLLECTION_CHECKED_AT: '2026-09-06'
         run: |
           set -o pipefail
@@ -75,13 +77,26 @@ jobs:
           GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAP_API }}
           GOOGLE_VERIFY_LIMIT: '0'
         run: python scripts/verify_google_places.py
-      - name: Rebuild and audit canonical data
+      - name: Rebuild and audit canonical identity data
         run: |
           set -o pipefail
           node scripts/build_production_dataset.mjs | tee _audit/build-after-reconciliation.json
           node scripts/audit_repository.mjs
           node scripts/audit_source_bindings.mjs
           node scripts/audit_normalized_fields.mjs
+          node scripts/build_inventory_ledger.mjs | tee _audit/inventory-ledger-after-reconciliation.json
+          node scripts/build_inventory_expansion_queue.mjs | tee _audit/inventory-expansion-after-reconciliation.json
+      - name: Checkpoint durable identity reconciliation
+        env:
+          TARGET_BRANCH: ${{ github.ref_name }}
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add data/area1_google_ids.json data/google_places_cache.json data/google_entities.generated.js data/official_candidate_index.json data/area1_inventory_ledger.json data/area1_inventory_expansion_queue.json data/area1_full_collection_status.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Checkpoint full Area1 identity reconciliation"
+            git push origin HEAD:"$TARGET_BRANCH"
+          fi
       - name: Re-extract current independent official pages
         env:
           OFFICIAL_INDEX_CONCURRENCY: '8'
@@ -116,9 +131,7 @@ jobs:
         run: |
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-          git add data/area1_google_ids.json data/google_places_cache.json data/google_entities.generated.js data/official_candidate_index.json data/source_enrichment_autoofficial.js data/area1_inventory_ledger.json data/area1_inventory_expansion_queue.json data/area1_full_collection_status.json
+          git add data/source_enrichment_autoofficial.js data/source_enrichment_zzzzzzautoofficialmerge.js data/area1_inventory_ledger.json data/area1_inventory_expansion_queue.json
           git diff --cached --quiet && exit 0
-          git commit -m "Run full Area1 2804 collection pass"
-          git fetch origin "$TARGET_BRANCH"
-          git rebase "origin/$TARGET_BRANCH"
+          git commit -m "Complete full Area1 collection enrichment pass"
           git push origin HEAD:"$TARGET_BRANCH"
