@@ -7,6 +7,7 @@ const inventoryPath = path.join(DATA, 'area1_google_ids.json');
 const productionPath = path.join(DATA, 'production_area1.js');
 const basicPath = path.join(DATA, 'google_basic_source_matches.json');
 const detailEvidencePath = path.join(DATA, 'google_inventory_detail_evidence.json');
+const hotPepperFactsPath = path.join(DATA, 'hotpepper_catalog_facts.json');
 const outputPath = path.join(DATA, 'google_inventory_runtime.js');
 
 function readJson(file) {
@@ -24,6 +25,22 @@ function readProduction() {
 
 function finite(value) {
   return Number.isFinite(value);
+}
+
+function parseBudgetRange(value) {
+  const text = String(value || '').replaceAll(',', '').replace(/円/g, '').trim();
+  if (!text) return null;
+  let match = text.match(/(\d+)\s*[～〜~\-]\s*(\d+)/);
+  if (match) {
+    const low = Number(match[1]);
+    const high = Number(match[2]);
+    return Number.isFinite(low) && Number.isFinite(high) && high >= low ? [low, high] : null;
+  }
+  match = text.match(/(\d+)\s*以下/);
+  if (match) return [0, Number(match[1])];
+  match = text.match(/(\d+)\s*以上/);
+  if (match) return [Number(match[1]), Number(match[1]) + 2000];
+  return null;
 }
 
 function baseEmpty(pid) {
@@ -122,6 +139,11 @@ const detailEvidence = fs.existsSync(detailEvidencePath)
   : { rows: [], summary: {} };
 const detailById = new Map((detailEvidence.rows || []).filter((row) => row.googlePlaceId).map((row) => [row.googlePlaceId, row]));
 
+const hotPepperDoc = fs.existsSync(hotPepperFactsPath)
+  ? readJson(hotPepperFactsPath)
+  : { rows: [] };
+const hotPepperById = new Map((hotPepperDoc.rows || []).filter((row) => row.googlePlaceId).map((row) => [row.googlePlaceId, row]));
+
 const rows = ids.map((pid) => {
   const rich = canonicalById.get(pid);
   let row;
@@ -167,6 +189,17 @@ const rows = ids.map((pid) => {
         randomWeight: 1,
         sources: basic.provider ? [basic.provider] : []
       };
+
+      const hp = hotPepperById.get(pid);
+      if (hp && basic.provider === 'Hot Pepper') {
+        const facts = hp.facts || {};
+        const dinner = parseBudgetRange(facts.budget?.name || facts.budget?.average || facts.budgetMemo);
+        if (dinner) row.dinner = dinner;
+        if (String(facts.open || '').trim()) row.hoursReference = String(facts.open).trim();
+        if (String(facts.close || '').trim()) row.closedNote = String(facts.close).trim();
+        if (!row.address && facts.address) row.address = String(facts.address).trim();
+        row.hotPepperBasicDetail = true;
+      }
     } else {
       row = baseEmpty(pid);
     }
@@ -205,6 +238,9 @@ const runtimeStats = {
   recommendedDishesKnown: rows.filter((row) => Array.isArray(row.recommendedDishes) && row.recommendedDishes.length).length,
   featuredDishesKnown: rows.filter((row) => Array.isArray(row.featuredDishes) && row.featuredDishes.length).length,
   cuisineKnown: rows.filter((row) => row.cuisine).length,
+  dinnerBudgetKnown: rows.filter((row) => Array.isArray(row.dinner) && row.dinner.length >= 2).length,
+  hoursKnown: rows.filter((row) => row.openingHours?.days || row.hoursReference).length,
+  hotPepperBasicDetailRows: rows.filter((row) => row.hotPepperBasicDetail).length,
   sourceBasicProviders: basicDoc.summary?.providers || {},
   detailEvidenceRestaurants: detailById.size,
   detailEvidenceSummary: detailEvidence.summary || {}
