@@ -192,7 +192,7 @@ if (publicPoolSource) {
     if (publicKeys.has(row.identityKey)) fail(`duplicate public identity key: ${row.identityKey}`);
     publicKeys.add(row.identityKey);
     if (!row.name || !Number.isFinite(row.lat) || !Number.isFinite(row.lng)) fail(`public row lacks display identity: ${row.identityKey}`);
-    if (!Number.isFinite(row.distanceMeters) || row.distanceMeters > 1200) fail(`public row outside Area1 radius: ${row.identityKey}`);
+    if (!Number.isFinite(row.distanceMeters) || row.distanceMeters < 0 || row.distanceMeters > 1200) fail(`public row outside Area1 radius: ${row.identityKey}`);
     if (!Array.isArray(row.dishHints) || !row.dishHints.length) fail(`public row lacks dish reference hint: ${row.identityKey}`);
     if (row.featuredDishConfidence !== 'reference_hint') fail(`public dish hint is not marked as reference-only: ${row.identityKey}`);
     for (const field of forbiddenGoogleFields) {
@@ -211,40 +211,65 @@ for (const row of rows || []) {
     catalogAdmissionRows += 1;
     if (!admittedIds.has(row.googlePlaceId)) fail(`catalog-reviewed production row is absent from admission ledger: ${row.name}`);
     if (Object.hasOwn(row, 'googleStatus')) fail(`catalog-reviewed production row must not synthesize googleStatus: ${row.name}`);
-  } else if (row.identityAdmission === LEGACY_IDENTITY_ADMISSION) {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(row.identityReviewedAt || '')) fail(`catalog-reviewed production row lacks review date: ${row.name}`);
+  } else if (row.identityAdmission === LEGACY_IDENTITY_ADMISSION || (!row.identityAdmission && row.googleStatus === 'verified')) {
     legacyAdmissionRows += 1;
-    if (row.googleStatus !== 'verified') fail(`legacy production row is not independently verified: ${row.name}`);
+    if (row.googleStatus !== 'verified') fail(`legacy production identity lacks historical verified status: ${row.name}`);
   } else {
-    fail(`unknown production identity admission path: ${row.name}`);
+    fail(`unsupported production identity admission: ${row.name}`);
   }
 
-  if (placeIds.has(row.googlePlaceId)) fail(`duplicate Place ID: ${row.googlePlaceId}`);
+  if (!Number.isFinite(row.distanceMeters) || row.distanceMeters < 0 || row.distanceMeters > 1200) {
+    fail(`invalid Area1 distance: ${row.name} -> ${row.distanceMeters}`);
+  }
+  if (placeIds.has(row.googlePlaceId)) fail(`duplicate Google Place ID: ${row.googlePlaceId}`);
   placeIds.add(row.googlePlaceId);
-  if (!Number.isFinite(row.distanceMeters) || row.distanceMeters > 1200) fail(`production row outside 1.2km boundary: ${row.name}`);
-  if (!row.name || !row.cuisine) fail(`production row lacks basic display fields: ${row.googlePlaceId}`);
   for (const field of forbiddenGoogleFields) {
-    if (Object.hasOwn(row, field)) fail(`persisted Google content field ${field} in production: ${row.name}`);
+    if (Object.hasOwn(row, field)) fail(`persisted Google content field ${field}: ${row.name}`);
+  }
+  if (Object.hasOwn(row, 'sourceRefs') || Object.hasOwn(row, 'sourceOnly') || Object.hasOwn(row, 'suppressFields')) {
+    fail(`maintenance provenance leaked into public canonical row: ${row.name}`);
   }
 }
 
-if (catalogAdmissionRows !== admittedIds.size) {
-  fail(`catalog admission count mismatch: production=${catalogAdmissionRows} ledger=${admittedIds.size}`);
+const missingAdmittedIds = [...admittedIds].filter((id) => !placeIds.has(id));
+if (missingAdmittedIds.length) fail(`reviewed catalog admissions did not reach production: ${missingAdmittedIds.join(',')}`);
+if (stats?.legacyVerifiedEntities != null && stats.legacyVerifiedEntities !== legacyAdmissionRows) {
+  fail(`legacy identity statistic mismatch: stats=${stats.legacyVerifiedEntities}, actual=${legacyAdmissionRows}`);
+}
+if (stats?.catalogReviewedEntities != null && stats.catalogReviewedEntities !== catalogAdmissionRows) {
+  fail(`catalog identity statistic mismatch: stats=${stats.catalogReviewedEntities}, actual=${catalogAdmissionRows}`);
 }
 
-console.log(JSON.stringify({
-  status: process.exitCode ? 'fail' : 'pass',
-  productionEntities: rows?.length || 0,
-  uniquePlaceIds: placeIds.size,
-  legacyAdmissionRows,
-  catalogAdmissionRows,
-  cuisineKnown: stats?.cuisineKnown || 0,
-  budgetKnown: stats?.budgetKnown || 0,
-  scheduleKnown: stats?.scheduleKnown || 0,
-  sourceBacked: stats?.sourceBacked || 0,
-  enrichmentShards: enrichmentFiles.length,
-  enrichmentRecords: enrichmentRows.length,
-  publicRuntimeLayers: runtimePaths,
-  awards: stats?.awards || 0,
-  resultViews: ['overview-map', 'google-store-maps-with-leaflet-fallback', 'comparison-table'],
-  uiFeedback: ['5-voice-random-pool-45pct-max-2s', '3-mascot-random-pool', 'nonrepeating-random-position']
-}));
+const sourceBackedRows = (rows || []).filter((row) =>
+  row.sources?.includes('Tabelog') || row.sources?.includes('official'));
+if (enrichmentRows.length && !sourceBackedRows.length) {
+  fail('source enrichment exists but no source-backed row reaches canonical production');
+}
+if (stats?.sourceBacked !== sourceBackedRows.length) {
+  fail(`source-backed statistic mismatch: stats=${stats?.sourceBacked}, actual=${sourceBackedRows.length}`);
+}
+
+if (!process.exitCode) {
+  console.log(JSON.stringify({
+    status: 'pass',
+    productionEntities: rows.length,
+    uniquePlaceIds: placeIds.size,
+    legacyAdmissionRows,
+    catalogAdmissionRows,
+    cuisineKnown: stats.cuisineKnown,
+    budgetKnown: stats.budgetKnown,
+    scheduleKnown: stats.scheduleKnown,
+    sourceBacked: stats.sourceBacked,
+    enrichmentShards: enrichmentFiles.length,
+    enrichmentRecords: enrichmentRows.length,
+    publicRuntimeLayers: runtimePaths,
+    awards: stats.awards,
+    resultViews: ['overview-map', 'google-store-maps-with-leaflet-fallback', 'comparison-table'],
+    uiFeedback: [
+      `${voiceFiles.length}-voice-random-pool-45pct-max-2s`,
+      `${mascotFiles.length}-mascot-random-pool`,
+      'nonrepeating-random-position'
+    ]
+  }));
+}
