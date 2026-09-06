@@ -5,7 +5,10 @@
   const canonical = Array.isArray(window.PRODUCTION_RESTAURANTS)
     ? window.PRODUCTION_RESTAURANTS
     : [];
-  const production = canonical;
+  const inventoryRuntime = Array.isArray(window.GOOGLE_INVENTORY_RESTAURANTS)
+    ? window.GOOGLE_INVENTORY_RESTAURANTS
+    : [];
+  const production = inventoryRuntime.length ? inventoryRuntime : canonical;
   const embedKeyRaw = $('meta[name="google-maps-embed-key"]')?.content?.trim() || '';
   const googleEmbedKey = embedKeyRaw && !embedKeyRaw.startsWith('__') ? embedKeyRaw : '';
   const useGoogleStoreMaps = Boolean(googleEmbedKey);
@@ -145,6 +148,9 @@
 
   function distanceText(restaurant) {
     const distance = restaurant.distanceMeters;
+    if (!Number.isFinite(distance)) {
+      return restaurant.inventoryWithinRadius ? '1.2km内' : '距离待补';
+    }
     return distance >= 1000
       ? `约${(distance / 1000).toFixed(1)}km`
       : `约${Math.round(distance / 10) * 10}m`;
@@ -233,9 +239,10 @@
         </div>
         <div class="meta">
           ${awardBadge(restaurant)}
-          <span class="pill">${escapeHtml(restaurant.cuisine)}</span>
+          ${restaurant.cuisine ? `<span class="pill">${escapeHtml(restaurant.cuisine)}</span>` : '<span class="pill">菜系待补</span>'}
           <span class="pill">${escapeHtml(distanceText(restaurant))}</span>
         </div>
+        ${restaurant.basicInfoState === 'google_place_id_only' ? '<p class="note"><b>基础信息：</b>Google Maps 已收录；店名、地址和详细资料补全中。</p>' : ''}
         ${price ? `<p class="budget"><b>预算：</b>${escapeHtml(price)}</p>` : ''}
         ${dish.text ? `<p class="dish"><b>${escapeHtml(dish.label)}：</b>${escapeHtml(dish.text)}</p>` : ''}
         ${schedule ? `<p class="hours"><b>营业时间：</b>${escapeHtml(schedule)}</p>` : ''}
@@ -299,11 +306,19 @@
   }
 
   function eligible(restaurant) {
-    if (!hasGooglePlaceId(restaurant) || restaurant.googleStatus !== 'verified') return false;
-    if (!validCoords(restaurant)) return false;
-    if (!Number.isFinite(restaurant.distanceMeters) || restaurant.distanceMeters < 0 || restaurant.distanceMeters > MAX_DISTANCE) return false;
-    if (restaurant.distanceMeters > distanceLimit) return false;
-    if (rejected.has(restaurant.cuisine)) return false;
+    if (!hasGooglePlaceId(restaurant)) return false;
+    const frozenInventory = restaurant.inventoryWithinRadius === true;
+    if (!frozenInventory && restaurant.googleStatus !== 'verified') return false;
+    const hasDistance = Number.isFinite(restaurant.distanceMeters);
+    if (hasDistance) {
+      if (restaurant.distanceMeters < 0 || restaurant.distanceMeters > MAX_DISTANCE) return false;
+      if (restaurant.distanceMeters > distanceLimit) return false;
+    } else {
+      // Frozen inventory membership proves <=1.2 km, but not a smaller distance bucket.
+      if (!frozenInventory || distanceLimit !== MAX_DISTANCE) return false;
+    }
+    if (!validCoords(restaurant) && !frozenInventory) return false;
+    if (restaurant.cuisine && rejected.has(restaurant.cuisine)) return false;
     return budgetOK(restaurant);
   }
 
@@ -406,7 +421,8 @@
   }
 
   function renderStats() {
-    const stats = window.PRODUCTION_STATS || {};
+    const runtimeStats = window.GOOGLE_INVENTORY_STATS || null;
+    const stats = runtimeStats || window.PRODUCTION_STATS || {};
     const total = production.length;
     const cuisineKnown = production.filter((restaurant) =>
       restaurant.cuisine && restaurant.cuisine !== '餐厅').length;
@@ -414,6 +430,10 @@
       Array.isArray(restaurant.recommendedDishes) && restaurant.recommendedDishes.length).length;
     const featuredKnown = production.filter((restaurant) =>
       Array.isArray(restaurant.featuredDishes) && restaurant.featuredDishes.length).length;
+    if (runtimeStats) {
+      $('#stats').innerHTML = `Google Maps 1.2km 库存 <b>${total.toLocaleString()}</b> 家 · 已有基础资料 <b>${runtimeStats.namedBasic.toLocaleString()}</b> · 仅 Place ID 待补 <b>${runtimeStats.placeIdOnly.toLocaleString()}</b> · 推荐菜 <b>${recommendedKnown.toLocaleString()}</b> · 特色菜 <b>${featuredKnown.toLocaleString()}</b> · 已知菜系 <b>${cuisineKnown.toLocaleString()}</b>`;
+      return;
+    }
     const awards = stats.awards ?? production.filter((restaurant) => restaurant.hyakumeiten).length;
     $('#stats').innerHTML = `Google Maps 已核验 <b>${total.toLocaleString()}</b> 家 · 推荐菜 <b>${recommendedKnown.toLocaleString()}</b> · 特色菜 <b>${featuredKnown.toLocaleString()}</b> · 已知菜系 <b>${cuisineKnown.toLocaleString()}</b> · 百名店 <b>${awards.toLocaleString()}</b>`;
   }

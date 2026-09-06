@@ -18,10 +18,12 @@ def load_json(path):
 
 def load_production():
     text = (DATA / 'production_area1.js').read_text(encoding='utf-8')
-    m = re.search(r'window\.PRODUCTION_RESTAURANTS\s*=\s*(\[.*\])\s*;?\s*$', text, re.S)
-    if not m:
+    prefix = 'window.PRODUCTION_RESTAURANTS='
+    start = text.find(prefix)
+    end = text.find(';\nwindow.PRODUCTION_STATS=', start)
+    if start < 0 or end < 0:
         raise RuntimeError('Cannot parse production_area1.js')
-    return json.loads(m.group(1))
+    return json.loads(text[start + len(prefix):end])
 
 
 def normalize_name(value):
