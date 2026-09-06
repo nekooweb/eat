@@ -3,6 +3,10 @@ name: Promote Hot Pepper rich metadata
 
 on:
   workflow_dispatch:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/promote-hotpepper-rich-metadata.yml"
 
 permissions:
   contents: write
@@ -81,7 +85,7 @@ jobs:
             echo "No rich metadata changes to commit."
             exit 0
           fi
-          git commit -m "Preserve maximum reviewed Hot Pepper rich metadata"
+          git commit -m "Fix mobile coupon metadata coverage"
           git push
 
       - name: Upload audit
