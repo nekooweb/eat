@@ -15,6 +15,8 @@ const fail = (message) => {
   process.exitCode = 1;
 };
 
+const ALLOWED_ENRICHMENT_SOURCES = new Set(['Tabelog', 'official', 'Hot Pepper']);
+
 const enrichmentFiles = fs.readdirSync(DATA)
   .filter((filename) => /^source_enrichment(?:_[a-z0-9-]+)?\.js$/i.test(filename))
   .sort();
@@ -111,7 +113,7 @@ for (const row of enrichmentRows) {
   if (!row.sourceOnly) fail(`source enrichment is not sourceOnly: ${row.id || row.name}`);
   if (!row.googlePlaceId) fail(`source enrichment lacks Place ID key: ${row.id || row.name}`);
   if (row.googleStatus === 'verified') fail(`source enrichment may not self-verify: ${row.id || row.name}`);
-  if (!['Tabelog', 'official'].includes(row.source)) fail(`unsupported enrichment source: ${row.source}`);
+  if (!ALLOWED_ENRICHMENT_SOURCES.has(row.source)) fail(`unsupported enrichment source: ${row.source}`);
   if (!Array.isArray(row.sourceRefs) || !row.sourceRefs.length) {
     fail(`source enrichment lacks provenance: ${row.id || row.name}`);
   }
@@ -163,6 +165,9 @@ for (const row of rows || []) {
   }
 }
 
+// `sourceBacked` remains the historical Tabelog/official metric for continuity.
+// Hot Pepper has its own binding/coverage metrics and is not folded into this
+// legacy statistic until the reporting schema is versioned explicitly.
 const sourceBackedRows = (rows || []).filter((row) =>
   row.sources?.includes('Tabelog') || row.sources?.includes('official'));
 if (enrichmentRows.length && !sourceBackedRows.length) {
