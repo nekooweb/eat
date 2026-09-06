@@ -20,9 +20,11 @@ Added:
 
 The generator reads the already-reviewed `data/hotpepper_rich_metadata.js` and creates an ephemeral source-enrichment shard:
 
-- `data/source_enrichment_hotpepper_richcore.js`
+- `data/source_enrichment_hotpepper-richcore.js`
 
 The shard is generated during CI and is not a new discovery source. It converts existing reviewed rich metadata into the source-row format already understood by `scripts/build_production_dataset.mjs`.
+
+The hyphenated suffix is intentional: production enrichment discovery accepts `source_enrichment_<suffix>.js` where `<suffix>` is alphanumeric/hyphen. A second underscore would cause a generated shard to be ignored.
 
 ### Fields eligible for fallback promotion
 
