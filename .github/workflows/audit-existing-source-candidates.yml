@@ -2,10 +2,6 @@ name: Audit existing-source field candidates
 
 on:
   workflow_dispatch:
-  push:
-    branches: ["main"]
-    paths:
-      - ".github/workflows/audit-existing-source-candidates.yml"
 
 permissions:
   contents: read
