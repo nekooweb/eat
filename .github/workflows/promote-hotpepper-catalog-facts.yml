@@ -1,0 +1,81 @@
+name: Promote Hot Pepper catalog facts
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/promote-hotpepper-catalog-facts.yml"
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: promote-hotpepper-catalog-facts
+  cancel-in-progress: true
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Enforce no-paid-data-API policy
+        run: node scripts/audit_no_paid_apis.mjs
+      - name: Download original 535-detail benchmark artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf _hotpepper
+          mkdir -p _hotpepper
+          gh run download 34030943605 \
+            --repo nekooweb/eat \
+            -n hotpepper-area1-enrichment-review \
+            -D _hotpepper
+          test -s _hotpepper/hotpepper_bound_details.json
+          test -s data/hotpepper_bindings.json
+      - name: Build source-native facts for every durable binding
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/build_hotpepper_catalog_facts.py \
+            data/hotpepper_bindings.json \
+            _hotpepper/hotpepper_bound_details.json \
+            data/hotpepper_catalog_facts.json \
+            | tee /tmp/hotpepper_catalog_facts_summary.json
+          test -s data/hotpepper_catalog_facts.json
+          python - <<'PY'
+          import json
+          x=json.load(open('data/hotpepper_catalog_facts.json', encoding='utf-8'))
+          s=x['summary']
+          assert s['bindingRows']==535, s
+          assert s['detailRows']==535, s
+          assert s['missingDetailRows']==0, s
+          assert s['persistedFactRows'] + s['collisionSkippedRows'] == 535, s
+          assert s['currentProductionFactRows'] + s['inventoryOnlyFactRows'] == s['persistedFactRows'], s
+          print(json.dumps(s, ensure_ascii=False, indent=2))
+          PY
+      - name: Commit catalog facts
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/hotpepper_catalog_facts.json
+          if git diff --cached --quiet; then
+            echo "No Hot Pepper catalog fact changes to commit."
+            exit 0
+          fi
+          git commit -m "Persist full Hot Pepper catalog facts"
+          git push
