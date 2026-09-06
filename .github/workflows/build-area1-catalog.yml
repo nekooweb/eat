@@ -9,6 +9,7 @@ on:
       - "scripts/build_area1_catalog.mjs"
       - "scripts/apply_catalog_admission_state.mjs"
       - "scripts/build_catalog_enrichment_queue.mjs"
+      - "scripts/apply_queue_admission_state.mjs"
       - "scripts/audit_loaded_hotpepper_lunch_candidates.mjs"
       - "scripts/audit_multisource_admission_candidates.mjs"
       - "scripts/build_production_dataset.mjs"
@@ -62,6 +63,7 @@ jobs:
           test -s data/area1_catalog.json
           node scripts/apply_catalog_admission_state.mjs | tee /tmp/area1_admission_state_summary.json
           node scripts/build_catalog_enrichment_queue.mjs | tee /tmp/area1_enrichment_queue_summary.json
+          node scripts/apply_queue_admission_state.mjs | tee /tmp/area1_queue_admission_state_summary.json
           test -s data/area1_enrichment_queue.json
           node - <<'NODE'
           const x=require('./data/area1_catalog.json');
@@ -79,6 +81,8 @@ jobs:
           if(x.summary.productionMissing.lunchBudget!==490) throw new Error('catalog lunch completeness diverges from canonical stats: '+x.summary.productionMissing.lunchBudget);
           if(x.summary.overtureCrossSupportedRows!==1997) throw new Error('unexpected Overture cross-support rows '+x.summary.overtureCrossSupportedRows);
           if(q.summary.identityUniverse!==2807 || q.summary.production!==656) throw new Error('queue/catalog universe mismatch');
+          if(q.summary.inventoryAdmissionReady!==6) throw new Error('unexpected admission-ready queue count '+q.summary.inventoryAdmissionReady);
+          if(q.summary.inventoryRejectedPairHold!==4) throw new Error('unexpected rejected-pair queue count '+q.summary.inventoryRejectedPairHold);
           console.log(JSON.stringify({catalog:x.summary, queue:q.summary},null,2));
           NODE
       - name: Audit loaded strict Hot Pepper lunch candidates
