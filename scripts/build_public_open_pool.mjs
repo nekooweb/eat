@@ -176,6 +176,124 @@ function dishHintsFor(name, cuisine) {
   return DISH_HINTS.get(cuisine) || ['店内招牌料理待补全'];
 }
 
+// Promote a dish to real `featuredDishes` only when Hot Pepper's own current
+// descriptive text pairs a food term with explicit signature wording such as
+// 自慢 / 名物 / 看板 / おすすめ / 人気 / 絶品 / 専門. Generic cuisine labels do
+// not qualify. This keeps `特色菜` materially stronger than taxonomy-only hints.
+const HOTPEPPER_SIGNATURE_MARKER = /自慢|名物|看板|おすすめ|オススメ|人気|絶品|こだわり|専門|本格|イチオシ|一押し|必食|推し|売り/i;
+const HOTPEPPER_DISH_RULES = [
+  [/ビリヤニ/i, '印度香饭'],
+  [/焼き?鳥|やきとり/i, '烤鸡串'],
+  [/串揚げ|串カツ/i, '炸串'],
+  [/唐揚げ|から揚げ|からあげ/i, '炸鸡块'],
+  [/チキン南蛮/i, '南蛮鸡'],
+  [/ラーメン|らーめん/i, '拉面'],
+  [/中華そば/i, '中华拉面'],
+  [/つけ麺/i, '蘸面'],
+  [/担々麺|担担麺/i, '担担面'],
+  [/油そば/i, '油拌面'],
+  [/蕎麦|そば/i, '荞麦面'],
+  [/うどん/i, '乌冬面'],
+  [/カレー/i, '咖喱'],
+  [/ナン/i, '烤饼'],
+  [/ステーキ/i, '牛排'],
+  [/ハンバーグ/i, '汉堡排'],
+  [/寿司|すし|鮨/i, '寿司'],
+  [/刺身|お造り/i, '刺身'],
+  [/海鮮丼/i, '海鲜丼'],
+  [/海鮮/i, '海鲜料理'],
+  [/うなぎ|鰻/i, '鳗鱼'],
+  [/天ぷら|天麩羅/i, '天妇罗'],
+  [/とんかつ|豚カツ/i, '炸猪排'],
+  [/牛カツ/i, '炸牛排'],
+  [/牛タン/i, '牛舌'],
+  [/焼肉/i, '烤肉'],
+  [/ホルモン/i, '烤内脏'],
+  [/しゃぶしゃぶ/i, '涮涮锅'],
+  [/すき焼き|すきやき/i, '寿喜烧'],
+  [/もつ鍋/i, '牛杂锅'],
+  [/鍋/i, '火锅'],
+  [/餃子/i, '饺子'],
+  [/小籠包/i, '小笼包'],
+  [/麻婆豆腐/i, '麻婆豆腐'],
+  [/炒飯|チャーハン/i, '炒饭'],
+  [/回鍋肉/i, '回锅肉'],
+  [/青椒肉絲/i, '青椒肉丝'],
+  [/酢豚/i, '糖醋猪肉'],
+  [/パスタ|スパゲッティ/i, '意大利面'],
+  [/ピザ|ピッツァ/i, '披萨'],
+  [/オムライス/i, '蛋包饭'],
+  [/ドリア/i, '焗饭'],
+  [/グラタン/i, '焗烤'],
+  [/サンドイッチ|サンド/i, '三明治'],
+  [/ハンバーガー|バーガー/i, '汉堡'],
+  [/タコス/i, '塔可'],
+  [/ケバブ/i, '烤肉卷'],
+  [/フォー/i, '越南河粉'],
+  [/ガパオ/i, '打抛饭'],
+  [/パッタイ/i, '泰式炒河粉'],
+  [/サムギョプサル/i, '韩式烤五花肉'],
+  [/チヂミ/i, '韩式煎饼'],
+  [/冷麺/i, '冷面'],
+  [/ビビンバ/i, '石锅拌饭'],
+  [/お好み焼き?|お好み焼/i, '御好烧'],
+  [/もんじゃ/i, '文字烧'],
+  [/たこ焼き?|たこ焼/i, '章鱼烧'],
+  [/おでん/i, '关东煮'],
+  [/親子丼/i, '亲子丼'],
+  [/牛丼/i, '牛肉饭'],
+  [/天丼/i, '天妇罗丼'],
+  [/カツ丼/i, '炸猪排丼'],
+  [/ローストビーフ/i, '烤牛肉'],
+  [/燻製/i, '烟熏料理'],
+  [/日替わり定食/i, '每日定食'],
+  [/定食/i, '定食'],
+  [/クロワッサン/i, '可颂'],
+  [/パン/i, '面包'],
+  [/ケーキ/i, '蛋糕'],
+  [/パフェ/i, '芭菲'],
+  [/プリン/i, '布丁'],
+  [/クレープ/i, '可丽饼'],
+  [/ジェラート|アイスクリーム/i, '冰淇淋'],
+  [/コーヒー|珈琲/i, '咖啡']
+];
+
+function hotPepperFeaturedDishes(facts, sourceUrl, checkedAt) {
+  const clauses = [
+    text(facts?.genre?.catch),
+    text(facts?.catch),
+    text(facts?.freeFood),
+    text(facts?.budgetMemo)
+  ]
+    .filter(Boolean)
+    .join('。')
+    .split(/[。\n♪！!？?]/)
+    .map((value) => value.trim())
+    .filter(Boolean);
+
+  const dishes = [];
+  const seenZh = new Set();
+  for (const clause of clauses) {
+    if (!HOTPEPPER_SIGNATURE_MARKER.test(clause)) continue;
+    for (const [pattern, nameZh] of HOTPEPPER_DISH_RULES) {
+      const match = clause.match(pattern);
+      if (!match || seenZh.has(nameZh)) continue;
+      seenZh.add(nameZh);
+      dishes.push({
+        nameZh,
+        nameJa: match[0],
+        provider: 'Hot Pepper',
+        sourceUrl: sourceUrl || null,
+        checkedAt: checkedAt || null,
+        evidenceClass: 'provider_signature_description',
+        evidenceText: clause.slice(0, 160)
+      });
+      if (dishes.length >= 2) return dishes;
+    }
+  }
+  return dishes;
+}
+
 function addressFromOverture(value) {
   const records = Array.isArray(value) ? value : value && typeof value === 'object' ? [value] : [];
   for (const record of records) {
@@ -245,6 +363,7 @@ function addPublic(row, sourceBucket) {
   if (seenKeys.has(key)) return false;
 
   const cuisine = text(row.cuisine) || '餐厅';
+  const featuredDishes = Array.isArray(row.featuredDishes) ? row.featuredDishes.slice(0, 2) : [];
   const cleaned = {
     id: text(row.id) || `public-${identityKey}`,
     identityKey,
@@ -270,10 +389,11 @@ function addPublic(row, sourceBucket) {
     dishHints: Array.isArray(row.dishHints) && row.dishHints.length
       ? row.dishHints.slice(0, 2)
       : dishHintsFor(row.name, cuisine),
-    featuredDishConfidence: 'reference_hint',
+    featuredDishConfidence: featuredDishes.length ? 'provider_signature_text' : 'reference_hint',
     randomWeight: 1,
     hyakumeiten: false
   };
+  if (featuredDishes.length) cleaned.featuredDishes = featuredDishes;
   if (row.openPlaceId) cleaned.openPlaceId = row.openPlaceId;
   if (row.openingHoursRaw) cleaned.openingHoursRaw = row.openingHoursRaw;
   seenIds.add(identityKey);
@@ -288,6 +408,8 @@ for (const row of hpFacts.rows || []) {
   const facts = row.facts || {};
   if (!text(facts.name) || !Number.isFinite(facts.lat) || !Number.isFinite(facts.lng)) continue;
   const cuisine = cuisineFor(facts.genre, facts.subGenre, facts.catch, facts.name);
+  const sourceUrl = facts.urls?.pc || facts.urls?.mobile || '';
+  const featuredDishes = hotPepperFeaturedDishes(facts, sourceUrl, hpFacts.checkedAt);
   addPublic({
     id: `public-hp-${row.hotpepperId || row.googlePlaceId}`,
     identityKey: row.googlePlaceId,
@@ -302,9 +424,10 @@ for (const row of hpFacts.rows || []) {
     hoursReference: facts.openingHoursText || null,
     source: 'Hot Pepper',
     sources: ['Hot Pepper'],
-    sourceUrl: facts.urls?.pc || facts.urls?.mobile || null,
+    sourceUrl,
     dataTier: 'inventory_source_bound',
-    dishHints: dishHintsFor(facts.name, cuisine)
+    dishHints: dishHintsFor(facts.name, cuisine),
+    featuredDishes
   }, 'hotpepperInventory');
 }
 
@@ -332,12 +455,13 @@ for (const row of overture.rows || []) {
 
 for (const row of osmRows) {
   if (!text(row?.name) || !Number.isFinite(row?.lat) || !Number.isFinite(row?.lng)) continue;
+  const cuisine = text(row.cuisine) || cuisineFor(row.name);
   addPublic({
     id: `public-${row.id}`,
     identityKey: `osm:${row.sourceId || row.id}`,
     openPlaceId: `osm:${row.sourceId || row.id}`,
     name: row.name,
-    cuisine: text(row.cuisine) || cuisineFor(row.name),
+    cuisine,
     tags: row.tags,
     address: row.address || '',
     lat: row.lat,
@@ -349,7 +473,7 @@ for (const row of osmRows) {
     hoursReference: row.openingHoursRaw || null,
     openingHoursRaw: row.openingHoursRaw || null,
     dataTier: 'open_catalog',
-    dishHints: dishHintsFor(row.name, text(row.cuisine) || cuisineFor(row.name))
+    dishHints: dishHintsFor(row.name, cuisine)
   }, 'osm');
 }
 
@@ -365,6 +489,8 @@ const stats = {
   publicWithHours: publicRows.filter((row) => row.hoursReference).length,
   publicWithBudget: publicRows.filter((row) => row.lunch || row.dinner).length,
   publicWithDishHints: publicRows.filter((row) => row.dishHints?.length).length,
+  publicWithSourceBackedFeaturedDishes: publicRows.filter((row) => row.featuredDishes?.length).length,
+  publicFeaturedDishItems: publicRows.reduce((sum, row) => sum + (row.featuredDishes?.length || 0), 0),
   overtureRelease: overture.release || null,
   generatedAt: new Date().toISOString().slice(0, 10)
 };
