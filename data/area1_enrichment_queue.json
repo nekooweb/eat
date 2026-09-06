@@ -5,19 +5,19 @@
     "checkedAt": "2026-09-06",
     "identityUniverse": 2807,
     "production": 656,
-    "productionCoreIncomplete": 562,
-    "productionCoreComplete": 94,
+    "productionCoreIncomplete": 553,
+    "productionCoreComplete": 103,
     "queueCounts": {
-      "production_existing_source_extract": 356,
+      "production_existing_source_extract": 347,
       "production_source_binding": 206,
-      "production_core_complete": 94,
+      "production_core_complete": 103,
       "inventory_hotpepper_loaded_review": 394,
       "inventory_source_binding": 1757
     },
     "productionCoreGapCounts": {
       "address": 333,
       "cuisine": 55,
-      "lunchBudget": 499,
+      "lunchBudget": 490,
       "dinnerBudget": 402,
       "openingHours": 297,
       "publicSourceEvidence": 210
@@ -27,7 +27,7 @@
     "productionLoadedStrictHotpepperCandidateFieldCounts": {
       "address": 0,
       "cuisine": 0,
-      "lunchBudgetExplicitText": 9,
+      "lunchBudgetExplicitText": 0,
       "dinnerBudget": 0,
       "openingHours": 1,
       "featuredDishesReview": 71,
@@ -1516,7 +1516,8 @@
         "dinnerBudget",
         "openingHours",
         "featuredDishes",
-        "providerFacts"
+        "providerFacts",
+        "openSourceCrossCheck"
       ]
     },
     {
@@ -14837,45 +14838,6 @@
       ]
     },
     {
-      "googlePlaceId": "ChIJjdmff6KNGGARf1NV0O_Nmug",
-      "catalogStatus": "production",
-      "currentProduction": true,
-      "name": "Osteria NORA",
-      "queue": "production_existing_source_extract",
-      "priorityScore": 1240,
-      "coreMissing": [
-        "lunchBudget"
-      ],
-      "optionalMissing": [
-        "featuredDishes",
-        "strictRecommendations"
-      ],
-      "sourceProviders": [
-        "Hot Pepper",
-        "OpenStreetMap",
-        "official"
-      ],
-      "publicSourceLinks": 2,
-      "providerFactRecords": 2,
-      "hotpepperCatalogFacts": true,
-      "hotpepperConfidence": "high",
-      "hotpepperAutoEligible": true,
-      "existingHotpepperFieldCandidates": [
-        "lunchBudgetExplicitText",
-        "featuredDishesReview",
-        "lunchAvailability"
-      ],
-      "explicitLunchRangeFromLoadedHotpepper": [
-        1001,
-        1500
-      ],
-      "nextActions": [
-        "lunchBudget",
-        "featuredDishes",
-        "hotpepperFieldNormalization"
-      ]
-    },
-    {
       "googlePlaceId": "ChIJf7KOLCOMGGARBy1kyg5NZhM",
       "catalogStatus": "production",
       "currentProduction": true,
@@ -14970,43 +14932,6 @@
         "lunchAvailability"
       ],
       "explicitLunchRangeFromLoadedHotpepper": null,
-      "nextActions": [
-        "lunchBudget",
-        "featuredDishes",
-        "hotpepperFieldNormalization"
-      ]
-    },
-    {
-      "googlePlaceId": "ChIJ-byfbkGMGGAReOVUQDAy6qM",
-      "catalogStatus": "production",
-      "currentProduction": true,
-      "name": "アパ社長カレー",
-      "queue": "production_existing_source_extract",
-      "priorityScore": 1240,
-      "coreMissing": [
-        "lunchBudget"
-      ],
-      "optionalMissing": [
-        "featuredDishes",
-        "strictRecommendations"
-      ],
-      "sourceProviders": [
-        "Hot Pepper",
-        "OpenStreetMap"
-      ],
-      "publicSourceLinks": 1,
-      "providerFactRecords": 1,
-      "hotpepperCatalogFacts": true,
-      "hotpepperConfidence": "high",
-      "hotpepperAutoEligible": true,
-      "existingHotpepperFieldCandidates": [
-        "lunchBudgetExplicitText",
-        "lunchAvailability"
-      ],
-      "explicitLunchRangeFromLoadedHotpepper": [
-        850,
-        1500
-      ],
       "nextActions": [
         "lunchBudget",
         "featuredDishes",
@@ -15711,43 +15636,6 @@
       ]
     },
     {
-      "googlePlaceId": "ChIJRUVVJamNGGARUh98f_E_y7E",
-      "catalogStatus": "production",
-      "currentProduction": true,
-      "name": "とんかつ まるや",
-      "queue": "production_existing_source_extract",
-      "priorityScore": 1240,
-      "coreMissing": [
-        "lunchBudget"
-      ],
-      "optionalMissing": [
-        "featuredDishes",
-        "strictRecommendations"
-      ],
-      "sourceProviders": [
-        "Hot Pepper",
-        "OpenStreetMap"
-      ],
-      "publicSourceLinks": 1,
-      "providerFactRecords": 1,
-      "hotpepperCatalogFacts": true,
-      "hotpepperConfidence": "high",
-      "hotpepperAutoEligible": true,
-      "existingHotpepperFieldCandidates": [
-        "lunchBudgetExplicitText",
-        "lunchAvailability"
-      ],
-      "explicitLunchRangeFromLoadedHotpepper": [
-        700,
-        1300
-      ],
-      "nextActions": [
-        "lunchBudget",
-        "featuredDishes",
-        "hotpepperFieldNormalization"
-      ]
-    },
-    {
       "googlePlaceId": "ChIJ-YkEWBeMGGARfOUCHahbddE",
       "catalogStatus": "production",
       "currentProduction": true,
@@ -15775,39 +15663,6 @@
         "lunchAvailability"
       ],
       "explicitLunchRangeFromLoadedHotpepper": null,
-      "nextActions": [
-        "lunchBudget",
-        "hotpepperFieldNormalization"
-      ]
-    },
-    {
-      "googlePlaceId": "ChIJE4dDNz2MGGARGZHEIOrFjGw",
-      "catalogStatus": "production",
-      "currentProduction": true,
-      "name": "ノダジ",
-      "queue": "production_existing_source_extract",
-      "priorityScore": 1240,
-      "coreMissing": [
-        "lunchBudget"
-      ],
-      "optionalMissing": [],
-      "sourceProviders": [
-        "Hot Pepper",
-        "OpenStreetMap"
-      ],
-      "publicSourceLinks": 1,
-      "providerFactRecords": 1,
-      "hotpepperCatalogFacts": true,
-      "hotpepperConfidence": "high",
-      "hotpepperAutoEligible": true,
-      "existingHotpepperFieldCandidates": [
-        "lunchBudgetExplicitText",
-        "lunchAvailability"
-      ],
-      "explicitLunchRangeFromLoadedHotpepper": [
-        800,
-        1000
-      ],
       "nextActions": [
         "lunchBudget",
         "hotpepperFieldNormalization"
@@ -16320,45 +16175,6 @@
       ]
     },
     {
-      "googlePlaceId": "ChIJjRXSfYKNGGARjAXt0quyFcQ",
-      "catalogStatus": "production",
-      "currentProduction": true,
-      "name": "わさび",
-      "queue": "production_existing_source_extract",
-      "priorityScore": 1240,
-      "coreMissing": [
-        "lunchBudget"
-      ],
-      "optionalMissing": [
-        "featuredDishes",
-        "strictRecommendations"
-      ],
-      "sourceProviders": [
-        "Hot Pepper",
-        "OpenStreetMap",
-        "Tabelog"
-      ],
-      "publicSourceLinks": 2,
-      "providerFactRecords": 2,
-      "hotpepperCatalogFacts": true,
-      "hotpepperConfidence": "high",
-      "hotpepperAutoEligible": true,
-      "existingHotpepperFieldCandidates": [
-        "lunchBudgetExplicitText",
-        "featuredDishesReview",
-        "lunchAvailability"
-      ],
-      "explicitLunchRangeFromLoadedHotpepper": [
-        1000,
-        1999
-      ],
-      "nextActions": [
-        "lunchBudget",
-        "featuredDishes",
-        "hotpepperFieldNormalization"
-      ]
-    },
-    {
       "googlePlaceId": "ChIJRxygEQCNGGARapvEL04ggA4",
       "catalogStatus": "production",
       "currentProduction": true,
@@ -16455,44 +16271,6 @@
         "address",
         "dinnerBudget",
         "featuredDishes"
-      ]
-    },
-    {
-      "googlePlaceId": "ChIJz9KX_wOMGGARruVg61rYoMY",
-      "catalogStatus": "production",
-      "currentProduction": true,
-      "name": "伊勢ろく",
-      "queue": "production_existing_source_extract",
-      "priorityScore": 1240,
-      "coreMissing": [
-        "lunchBudget"
-      ],
-      "optionalMissing": [
-        "featuredDishes",
-        "strictRecommendations"
-      ],
-      "sourceProviders": [
-        "Hot Pepper",
-        "OpenStreetMap"
-      ],
-      "publicSourceLinks": 1,
-      "providerFactRecords": 1,
-      "hotpepperCatalogFacts": true,
-      "hotpepperConfidence": "high",
-      "hotpepperAutoEligible": true,
-      "existingHotpepperFieldCandidates": [
-        "lunchBudgetExplicitText",
-        "featuredDishesReview",
-        "lunchAvailability"
-      ],
-      "explicitLunchRangeFromLoadedHotpepper": [
-        0,
-        1000
-      ],
-      "nextActions": [
-        "lunchBudget",
-        "featuredDishes",
-        "hotpepperFieldNormalization"
       ]
     },
     {
@@ -16697,40 +16475,6 @@
       "nextActions": [
         "lunchBudget",
         "featuredDishes",
-        "hotpepperFieldNormalization"
-      ]
-    },
-    {
-      "googlePlaceId": "ChIJiYAt_buNGGARFvMBSTCT2Lk",
-      "catalogStatus": "production",
-      "currentProduction": true,
-      "name": "四川厨房 随苑",
-      "queue": "production_existing_source_extract",
-      "priorityScore": 1240,
-      "coreMissing": [
-        "lunchBudget"
-      ],
-      "optionalMissing": [],
-      "sourceProviders": [
-        "Hot Pepper",
-        "OpenStreetMap",
-        "official"
-      ],
-      "publicSourceLinks": 2,
-      "providerFactRecords": 2,
-      "hotpepperCatalogFacts": true,
-      "hotpepperConfidence": "high",
-      "hotpepperAutoEligible": true,
-      "existingHotpepperFieldCandidates": [
-        "lunchBudgetExplicitText",
-        "lunchAvailability"
-      ],
-      "explicitLunchRangeFromLoadedHotpepper": [
-        800,
-        1000
-      ],
-      "nextActions": [
-        "lunchBudget",
         "hotpepperFieldNormalization"
       ]
     },
@@ -17570,44 +17314,6 @@
       ]
     },
     {
-      "googlePlaceId": "ChIJay-cC0SMGGARrFB7svEbbs0",
-      "catalogStatus": "production",
-      "currentProduction": true,
-      "name": "築地食堂源ちゃん",
-      "queue": "production_existing_source_extract",
-      "priorityScore": 1240,
-      "coreMissing": [
-        "lunchBudget"
-      ],
-      "optionalMissing": [
-        "featuredDishes",
-        "strictRecommendations"
-      ],
-      "sourceProviders": [
-        "Hot Pepper",
-        "OpenStreetMap"
-      ],
-      "publicSourceLinks": 1,
-      "providerFactRecords": 1,
-      "hotpepperCatalogFacts": true,
-      "hotpepperConfidence": "high",
-      "hotpepperAutoEligible": true,
-      "existingHotpepperFieldCandidates": [
-        "lunchBudgetExplicitText",
-        "featuredDishesReview",
-        "lunchAvailability"
-      ],
-      "explicitLunchRangeFromLoadedHotpepper": [
-        1000,
-        2000
-      ],
-      "nextActions": [
-        "lunchBudget",
-        "featuredDishes",
-        "hotpepperFieldNormalization"
-      ]
-    },
-    {
       "googlePlaceId": "ChIJxaRNtlGNGGARSO4KOTp96Y0",
       "catalogStatus": "production",
       "currentProduction": true,
@@ -17971,44 +17677,6 @@
         "lunchAvailability"
       ],
       "explicitLunchRangeFromLoadedHotpepper": null,
-      "nextActions": [
-        "lunchBudget",
-        "featuredDishes",
-        "hotpepperFieldNormalization"
-      ]
-    },
-    {
-      "googlePlaceId": "ChIJD6lQsUOMGGARZuQcIDrpKbw",
-      "catalogStatus": "production",
-      "currentProduction": true,
-      "name": "麻辣先生",
-      "queue": "production_existing_source_extract",
-      "priorityScore": 1240,
-      "coreMissing": [
-        "lunchBudget"
-      ],
-      "optionalMissing": [
-        "featuredDishes",
-        "strictRecommendations"
-      ],
-      "sourceProviders": [
-        "Hot Pepper",
-        "OpenStreetMap"
-      ],
-      "publicSourceLinks": 1,
-      "providerFactRecords": 1,
-      "hotpepperCatalogFacts": true,
-      "hotpepperConfidence": "high",
-      "hotpepperAutoEligible": true,
-      "existingHotpepperFieldCandidates": [
-        "lunchBudgetExplicitText",
-        "featuredDishesReview",
-        "lunchAvailability"
-      ],
-      "explicitLunchRangeFromLoadedHotpepper": [
-        900,
-        1000
-      ],
       "nextActions": [
         "lunchBudget",
         "featuredDishes",
@@ -19763,6 +19431,38 @@
       ]
     },
     {
+      "googlePlaceId": "ChIJjdmff6KNGGARf1NV0O_Nmug",
+      "catalogStatus": "production",
+      "currentProduction": true,
+      "name": "Osteria NORA",
+      "queue": "production_core_complete",
+      "priorityScore": 1100,
+      "coreMissing": [],
+      "optionalMissing": [
+        "featuredDishes",
+        "strictRecommendations"
+      ],
+      "sourceProviders": [
+        "Hot Pepper",
+        "OpenStreetMap",
+        "official"
+      ],
+      "publicSourceLinks": 2,
+      "providerFactRecords": 2,
+      "hotpepperCatalogFacts": true,
+      "hotpepperConfidence": "high",
+      "hotpepperAutoEligible": true,
+      "existingHotpepperFieldCandidates": [
+        "featuredDishesReview",
+        "lunchAvailability"
+      ],
+      "explicitLunchRangeFromLoadedHotpepper": null,
+      "nextActions": [
+        "featuredDishes",
+        "hotpepperFieldNormalization"
+      ]
+    },
+    {
       "googlePlaceId": "ChIJq69o7BCMGGARIEbWmqwEt9w",
       "catalogStatus": "production",
       "currentProduction": true,
@@ -19807,6 +19507,36 @@
         "Hot Pepper",
         "OpenStreetMap",
         "Tabelog"
+      ],
+      "publicSourceLinks": 1,
+      "providerFactRecords": 1,
+      "hotpepperCatalogFacts": true,
+      "hotpepperConfidence": "high",
+      "hotpepperAutoEligible": true,
+      "existingHotpepperFieldCandidates": [
+        "lunchAvailability"
+      ],
+      "explicitLunchRangeFromLoadedHotpepper": null,
+      "nextActions": [
+        "featuredDishes",
+        "hotpepperFieldNormalization"
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJ-byfbkGMGGAReOVUQDAy6qM",
+      "catalogStatus": "production",
+      "currentProduction": true,
+      "name": "アパ社長カレー",
+      "queue": "production_core_complete",
+      "priorityScore": 1100,
+      "coreMissing": [],
+      "optionalMissing": [
+        "featuredDishes",
+        "strictRecommendations"
+      ],
+      "sourceProviders": [
+        "Hot Pepper",
+        "OpenStreetMap"
       ],
       "publicSourceLinks": 1,
       "providerFactRecords": 1,
@@ -20005,6 +19735,62 @@
       ]
     },
     {
+      "googlePlaceId": "ChIJRUVVJamNGGARUh98f_E_y7E",
+      "catalogStatus": "production",
+      "currentProduction": true,
+      "name": "とんかつ まるや",
+      "queue": "production_core_complete",
+      "priorityScore": 1100,
+      "coreMissing": [],
+      "optionalMissing": [
+        "featuredDishes",
+        "strictRecommendations"
+      ],
+      "sourceProviders": [
+        "Hot Pepper",
+        "OpenStreetMap"
+      ],
+      "publicSourceLinks": 1,
+      "providerFactRecords": 1,
+      "hotpepperCatalogFacts": true,
+      "hotpepperConfidence": "high",
+      "hotpepperAutoEligible": true,
+      "existingHotpepperFieldCandidates": [
+        "lunchAvailability"
+      ],
+      "explicitLunchRangeFromLoadedHotpepper": null,
+      "nextActions": [
+        "featuredDishes",
+        "hotpepperFieldNormalization"
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJE4dDNz2MGGARGZHEIOrFjGw",
+      "catalogStatus": "production",
+      "currentProduction": true,
+      "name": "ノダジ",
+      "queue": "production_core_complete",
+      "priorityScore": 1100,
+      "coreMissing": [],
+      "optionalMissing": [],
+      "sourceProviders": [
+        "Hot Pepper",
+        "OpenStreetMap"
+      ],
+      "publicSourceLinks": 1,
+      "providerFactRecords": 1,
+      "hotpepperCatalogFacts": true,
+      "hotpepperConfidence": "high",
+      "hotpepperAutoEligible": true,
+      "existingHotpepperFieldCandidates": [
+        "lunchAvailability"
+      ],
+      "explicitLunchRangeFromLoadedHotpepper": null,
+      "nextActions": [
+        "hotpepperFieldNormalization"
+      ]
+    },
+    {
       "googlePlaceId": "ChIJi_Zh7BCMGGARcHWiiqKKE64",
       "catalogStatus": "production",
       "currentProduction": true,
@@ -20040,6 +19826,38 @@
       "catalogStatus": "production",
       "currentProduction": true,
       "name": "ルシ インドビリヤニ 神保町店",
+      "queue": "production_core_complete",
+      "priorityScore": 1100,
+      "coreMissing": [],
+      "optionalMissing": [
+        "featuredDishes",
+        "strictRecommendations"
+      ],
+      "sourceProviders": [
+        "Hot Pepper",
+        "OpenStreetMap",
+        "Tabelog"
+      ],
+      "publicSourceLinks": 2,
+      "providerFactRecords": 2,
+      "hotpepperCatalogFacts": true,
+      "hotpepperConfidence": "high",
+      "hotpepperAutoEligible": true,
+      "existingHotpepperFieldCandidates": [
+        "featuredDishesReview",
+        "lunchAvailability"
+      ],
+      "explicitLunchRangeFromLoadedHotpepper": null,
+      "nextActions": [
+        "featuredDishes",
+        "hotpepperFieldNormalization"
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJjRXSfYKNGGARjAXt0quyFcQ",
+      "catalogStatus": "production",
+      "currentProduction": true,
+      "name": "わさび",
       "queue": "production_core_complete",
       "priorityScore": 1100,
       "coreMissing": [],
@@ -20155,6 +19973,37 @@
       ],
       "explicitLunchRangeFromLoadedHotpepper": null,
       "nextActions": [
+        "hotpepperFieldNormalization"
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJz9KX_wOMGGARruVg61rYoMY",
+      "catalogStatus": "production",
+      "currentProduction": true,
+      "name": "伊勢ろく",
+      "queue": "production_core_complete",
+      "priorityScore": 1100,
+      "coreMissing": [],
+      "optionalMissing": [
+        "featuredDishes",
+        "strictRecommendations"
+      ],
+      "sourceProviders": [
+        "Hot Pepper",
+        "OpenStreetMap"
+      ],
+      "publicSourceLinks": 1,
+      "providerFactRecords": 1,
+      "hotpepperCatalogFacts": true,
+      "hotpepperConfidence": "high",
+      "hotpepperAutoEligible": true,
+      "existingHotpepperFieldCandidates": [
+        "featuredDishesReview",
+        "lunchAvailability"
+      ],
+      "explicitLunchRangeFromLoadedHotpepper": null,
+      "nextActions": [
+        "featuredDishes",
         "hotpepperFieldNormalization"
       ]
     },
@@ -20287,6 +20136,33 @@
         "Hot Pepper",
         "OpenStreetMap",
         "Tabelog"
+      ],
+      "publicSourceLinks": 2,
+      "providerFactRecords": 2,
+      "hotpepperCatalogFacts": true,
+      "hotpepperConfidence": "high",
+      "hotpepperAutoEligible": true,
+      "existingHotpepperFieldCandidates": [
+        "lunchAvailability"
+      ],
+      "explicitLunchRangeFromLoadedHotpepper": null,
+      "nextActions": [
+        "hotpepperFieldNormalization"
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJiYAt_buNGGARFvMBSTCT2Lk",
+      "catalogStatus": "production",
+      "currentProduction": true,
+      "name": "四川厨房 随苑",
+      "queue": "production_core_complete",
+      "priorityScore": 1100,
+      "coreMissing": [],
+      "optionalMissing": [],
+      "sourceProviders": [
+        "Hot Pepper",
+        "OpenStreetMap",
+        "official"
       ],
       "publicSourceLinks": 2,
       "providerFactRecords": 2,
@@ -20513,6 +20389,37 @@
       ]
     },
     {
+      "googlePlaceId": "ChIJay-cC0SMGGARrFB7svEbbs0",
+      "catalogStatus": "production",
+      "currentProduction": true,
+      "name": "築地食堂源ちゃん",
+      "queue": "production_core_complete",
+      "priorityScore": 1100,
+      "coreMissing": [],
+      "optionalMissing": [
+        "featuredDishes",
+        "strictRecommendations"
+      ],
+      "sourceProviders": [
+        "Hot Pepper",
+        "OpenStreetMap"
+      ],
+      "publicSourceLinks": 1,
+      "providerFactRecords": 1,
+      "hotpepperCatalogFacts": true,
+      "hotpepperConfidence": "high",
+      "hotpepperAutoEligible": true,
+      "existingHotpepperFieldCandidates": [
+        "featuredDishesReview",
+        "lunchAvailability"
+      ],
+      "explicitLunchRangeFromLoadedHotpepper": null,
+      "nextActions": [
+        "featuredDishes",
+        "hotpepperFieldNormalization"
+      ]
+    },
+    {
       "googlePlaceId": "ChIJzQVI5xqMGGARt9mInzgGLIg",
       "catalogStatus": "production",
       "currentProduction": true,
@@ -20590,6 +20497,37 @@
         "OpenStreetMap",
         "Tabelog",
         "curated"
+      ],
+      "publicSourceLinks": 1,
+      "providerFactRecords": 1,
+      "hotpepperCatalogFacts": true,
+      "hotpepperConfidence": "high",
+      "hotpepperAutoEligible": true,
+      "existingHotpepperFieldCandidates": [
+        "featuredDishesReview",
+        "lunchAvailability"
+      ],
+      "explicitLunchRangeFromLoadedHotpepper": null,
+      "nextActions": [
+        "featuredDishes",
+        "hotpepperFieldNormalization"
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJD6lQsUOMGGARZuQcIDrpKbw",
+      "catalogStatus": "production",
+      "currentProduction": true,
+      "name": "麻辣先生",
+      "queue": "production_core_complete",
+      "priorityScore": 1100,
+      "coreMissing": [],
+      "optionalMissing": [
+        "featuredDishes",
+        "strictRecommendations"
+      ],
+      "sourceProviders": [
+        "Hot Pepper",
+        "OpenStreetMap"
       ],
       "publicSourceLinks": 1,
       "providerFactRecords": 1,
@@ -32197,8 +32135,9 @@
       "existingHotpepperFieldCandidates": [],
       "explicitLunchRangeFromLoadedHotpepper": null,
       "nextActions": [
-        "sourceBinding",
-        "currentness"
+        "crossSourceValidation",
+        "currentness",
+        "identityAdmissionReview"
       ]
     },
     {
@@ -32461,7 +32400,7 @@
       "existingHotpepperFieldCandidates": [],
       "explicitLunchRangeFromLoadedHotpepper": null,
       "nextActions": [
-        "sourceBinding",
+        "crossSourceValidation",
         "currentness"
       ]
     },
@@ -32659,8 +32598,9 @@
       "existingHotpepperFieldCandidates": [],
       "explicitLunchRangeFromLoadedHotpepper": null,
       "nextActions": [
-        "sourceBinding",
-        "currentness"
+        "crossSourceValidation",
+        "currentness",
+        "identityAdmissionReview"
       ]
     },
     {
@@ -32923,8 +32863,9 @@
       "existingHotpepperFieldCandidates": [],
       "explicitLunchRangeFromLoadedHotpepper": null,
       "nextActions": [
-        "sourceBinding",
-        "currentness"
+        "crossSourceValidation",
+        "currentness",
+        "identityAdmissionReview"
       ]
     },
     {
@@ -33935,7 +33876,7 @@
       "existingHotpepperFieldCandidates": [],
       "explicitLunchRangeFromLoadedHotpepper": null,
       "nextActions": [
-        "sourceBinding",
+        "crossSourceValidation",
         "currentness"
       ]
     },
@@ -34771,7 +34712,7 @@
       "existingHotpepperFieldCandidates": [],
       "explicitLunchRangeFromLoadedHotpepper": null,
       "nextActions": [
-        "sourceBinding",
+        "crossSourceValidation",
         "currentness"
       ]
     },
@@ -34859,7 +34800,7 @@
       "existingHotpepperFieldCandidates": [],
       "explicitLunchRangeFromLoadedHotpepper": null,
       "nextActions": [
-        "sourceBinding",
+        "crossSourceValidation",
         "currentness"
       ]
     },
@@ -37719,7 +37660,7 @@
       "existingHotpepperFieldCandidates": [],
       "explicitLunchRangeFromLoadedHotpepper": null,
       "nextActions": [
-        "sourceBinding",
+        "crossSourceValidation",
         "currentness"
       ]
     },
@@ -38489,8 +38430,9 @@
       "existingHotpepperFieldCandidates": [],
       "explicitLunchRangeFromLoadedHotpepper": null,
       "nextActions": [
-        "sourceBinding",
-        "currentness"
+        "crossSourceValidation",
+        "currentness",
+        "identityAdmissionReview"
       ]
     },
     {
@@ -38511,7 +38453,7 @@
       "existingHotpepperFieldCandidates": [],
       "explicitLunchRangeFromLoadedHotpepper": null,
       "nextActions": [
-        "sourceBinding",
+        "crossSourceValidation",
         "currentness"
       ]
     },
@@ -38665,8 +38607,9 @@
       "existingHotpepperFieldCandidates": [],
       "explicitLunchRangeFromLoadedHotpepper": null,
       "nextActions": [
-        "sourceBinding",
-        "currentness"
+        "crossSourceValidation",
+        "currentness",
+        "identityAdmissionReview"
       ]
     },
     {
@@ -39523,7 +39466,7 @@
       "existingHotpepperFieldCandidates": [],
       "explicitLunchRangeFromLoadedHotpepper": null,
       "nextActions": [
-        "sourceBinding",
+        "crossSourceValidation",
         "currentness"
       ]
     },
@@ -40139,8 +40082,9 @@
       "existingHotpepperFieldCandidates": [],
       "explicitLunchRangeFromLoadedHotpepper": null,
       "nextActions": [
-        "sourceBinding",
-        "currentness"
+        "crossSourceValidation",
+        "currentness",
+        "identityAdmissionReview"
       ]
     },
     {
@@ -40205,8 +40149,9 @@
       "existingHotpepperFieldCandidates": [],
       "explicitLunchRangeFromLoadedHotpepper": null,
       "nextActions": [
-        "sourceBinding",
-        "currentness"
+        "crossSourceValidation",
+        "currentness",
+        "identityAdmissionReview"
       ]
     },
     {
@@ -40755,7 +40700,7 @@
       "existingHotpepperFieldCandidates": [],
       "explicitLunchRangeFromLoadedHotpepper": null,
       "nextActions": [
-        "sourceBinding",
+        "crossSourceValidation",
         "currentness"
       ]
     },
@@ -40799,8 +40744,9 @@
       "existingHotpepperFieldCandidates": [],
       "explicitLunchRangeFromLoadedHotpepper": null,
       "nextActions": [
-        "sourceBinding",
-        "currentness"
+        "crossSourceValidation",
+        "currentness",
+        "identityAdmissionReview"
       ]
     },
     {
@@ -40843,7 +40789,7 @@
       "existingHotpepperFieldCandidates": [],
       "explicitLunchRangeFromLoadedHotpepper": null,
       "nextActions": [
-        "sourceBinding",
+        "crossSourceValidation",
         "currentness"
       ]
     },
@@ -40975,7 +40921,7 @@
       "existingHotpepperFieldCandidates": [],
       "explicitLunchRangeFromLoadedHotpepper": null,
       "nextActions": [
-        "sourceBinding",
+        "crossSourceValidation",
         "currentness"
       ]
     },
@@ -41129,7 +41075,7 @@
       "existingHotpepperFieldCandidates": [],
       "explicitLunchRangeFromLoadedHotpepper": null,
       "nextActions": [
-        "sourceBinding",
+        "crossSourceValidation",
         "currentness"
       ]
     },
@@ -41283,8 +41229,9 @@
       "existingHotpepperFieldCandidates": [],
       "explicitLunchRangeFromLoadedHotpepper": null,
       "nextActions": [
-        "sourceBinding",
-        "currentness"
+        "crossSourceValidation",
+        "currentness",
+        "identityAdmissionReview"
       ]
     },
     {
@@ -41899,8 +41846,9 @@
       "existingHotpepperFieldCandidates": [],
       "explicitLunchRangeFromLoadedHotpepper": null,
       "nextActions": [
-        "sourceBinding",
-        "currentness"
+        "crossSourceValidation",
+        "currentness",
+        "identityAdmissionReview"
       ]
     },
     {
@@ -41943,8 +41891,9 @@
       "existingHotpepperFieldCandidates": [],
       "explicitLunchRangeFromLoadedHotpepper": null,
       "nextActions": [
-        "sourceBinding",
-        "currentness"
+        "crossSourceValidation",
+        "currentness",
+        "identityAdmissionReview"
       ]
     },
     {
@@ -42273,8 +42222,9 @@
       "existingHotpepperFieldCandidates": [],
       "explicitLunchRangeFromLoadedHotpepper": null,
       "nextActions": [
-        "sourceBinding",
-        "currentness"
+        "crossSourceValidation",
+        "currentness",
+        "identityAdmissionReview"
       ]
     },
     {
@@ -44187,7 +44137,7 @@
       "existingHotpepperFieldCandidates": [],
       "explicitLunchRangeFromLoadedHotpepper": null,
       "nextActions": [
-        "sourceBinding",
+        "crossSourceValidation",
         "currentness"
       ]
     },
@@ -45837,8 +45787,9 @@
       "existingHotpepperFieldCandidates": [],
       "explicitLunchRangeFromLoadedHotpepper": null,
       "nextActions": [
-        "sourceBinding",
-        "currentness"
+        "crossSourceValidation",
+        "currentness",
+        "identityAdmissionReview"
       ]
     },
     {
@@ -46101,7 +46052,7 @@
       "existingHotpepperFieldCandidates": [],
       "explicitLunchRangeFromLoadedHotpepper": null,
       "nextActions": [
-        "sourceBinding",
+        "crossSourceValidation",
         "currentness"
       ]
     },
@@ -46321,7 +46272,7 @@
       "existingHotpepperFieldCandidates": [],
       "explicitLunchRangeFromLoadedHotpepper": null,
       "nextActions": [
-        "sourceBinding",
+        "crossSourceValidation",
         "currentness"
       ]
     },
@@ -46431,8 +46382,9 @@
       "existingHotpepperFieldCandidates": [],
       "explicitLunchRangeFromLoadedHotpepper": null,
       "nextActions": [
-        "sourceBinding",
-        "currentness"
+        "crossSourceValidation",
+        "currentness",
+        "identityAdmissionReview"
       ]
     },
     {
@@ -46651,7 +46603,7 @@
       "existingHotpepperFieldCandidates": [],
       "explicitLunchRangeFromLoadedHotpepper": null,
       "nextActions": [
-        "sourceBinding",
+        "crossSourceValidation",
         "currentness"
       ]
     },
@@ -46959,7 +46911,7 @@
       "existingHotpepperFieldCandidates": [],
       "explicitLunchRangeFromLoadedHotpepper": null,
       "nextActions": [
-        "sourceBinding",
+        "crossSourceValidation",
         "currentness"
       ]
     },
@@ -46981,8 +46933,9 @@
       "existingHotpepperFieldCandidates": [],
       "explicitLunchRangeFromLoadedHotpepper": null,
       "nextActions": [
-        "sourceBinding",
-        "currentness"
+        "crossSourceValidation",
+        "currentness",
+        "identityAdmissionReview"
       ]
     },
     {
@@ -47399,7 +47352,7 @@
       "existingHotpepperFieldCandidates": [],
       "explicitLunchRangeFromLoadedHotpepper": null,
       "nextActions": [
-        "sourceBinding",
+        "crossSourceValidation",
         "currentness"
       ]
     },
@@ -49819,7 +49772,7 @@
       "existingHotpepperFieldCandidates": [],
       "explicitLunchRangeFromLoadedHotpepper": null,
       "nextActions": [
-        "sourceBinding",
+        "crossSourceValidation",
         "currentness"
       ]
     },
@@ -50589,8 +50542,9 @@
       "existingHotpepperFieldCandidates": [],
       "explicitLunchRangeFromLoadedHotpepper": null,
       "nextActions": [
-        "sourceBinding",
-        "currentness"
+        "crossSourceValidation",
+        "currentness",
+        "identityAdmissionReview"
       ]
     },
     {
@@ -51381,8 +51335,9 @@
       "existingHotpepperFieldCandidates": [],
       "explicitLunchRangeFromLoadedHotpepper": null,
       "nextActions": [
-        "sourceBinding",
-        "currentness"
+        "crossSourceValidation",
+        "currentness",
+        "identityAdmissionReview"
       ]
     },
     {
@@ -52063,8 +52018,9 @@
       "existingHotpepperFieldCandidates": [],
       "explicitLunchRangeFromLoadedHotpepper": null,
       "nextActions": [
-        "sourceBinding",
-        "currentness"
+        "crossSourceValidation",
+        "currentness",
+        "identityAdmissionReview"
       ]
     },
     {
@@ -52327,8 +52283,9 @@
       "existingHotpepperFieldCandidates": [],
       "explicitLunchRangeFromLoadedHotpepper": null,
       "nextActions": [
-        "sourceBinding",
-        "currentness"
+        "crossSourceValidation",
+        "currentness",
+        "identityAdmissionReview"
       ]
     },
     {
@@ -53163,8 +53120,9 @@
       "existingHotpepperFieldCandidates": [],
       "explicitLunchRangeFromLoadedHotpepper": null,
       "nextActions": [
-        "sourceBinding",
-        "currentness"
+        "crossSourceValidation",
+        "currentness",
+        "identityAdmissionReview"
       ]
     },
     {
@@ -53361,7 +53319,7 @@
       "existingHotpepperFieldCandidates": [],
       "explicitLunchRangeFromLoadedHotpepper": null,
       "nextActions": [
-        "sourceBinding",
+        "crossSourceValidation",
         "currentness"
       ]
     },
@@ -53449,8 +53407,9 @@
       "existingHotpepperFieldCandidates": [],
       "explicitLunchRangeFromLoadedHotpepper": null,
       "nextActions": [
-        "sourceBinding",
-        "currentness"
+        "crossSourceValidation",
+        "currentness",
+        "identityAdmissionReview"
       ]
     },
     {
@@ -53603,8 +53562,9 @@
       "existingHotpepperFieldCandidates": [],
       "explicitLunchRangeFromLoadedHotpepper": null,
       "nextActions": [
-        "sourceBinding",
-        "currentness"
+        "crossSourceValidation",
+        "currentness",
+        "identityAdmissionReview"
       ]
     },
     {
@@ -53823,8 +53783,9 @@
       "existingHotpepperFieldCandidates": [],
       "explicitLunchRangeFromLoadedHotpepper": null,
       "nextActions": [
-        "sourceBinding",
-        "currentness"
+        "crossSourceValidation",
+        "currentness",
+        "identityAdmissionReview"
       ]
     },
     {
@@ -53955,7 +53916,7 @@
       "existingHotpepperFieldCandidates": [],
       "explicitLunchRangeFromLoadedHotpepper": null,
       "nextActions": [
-        "sourceBinding",
+        "crossSourceValidation",
         "currentness"
       ]
     },
@@ -54637,7 +54598,7 @@
       "existingHotpepperFieldCandidates": [],
       "explicitLunchRangeFromLoadedHotpepper": null,
       "nextActions": [
-        "sourceBinding",
+        "crossSourceValidation",
         "currentness"
       ]
     },
@@ -54813,7 +54774,7 @@
       "existingHotpepperFieldCandidates": [],
       "explicitLunchRangeFromLoadedHotpepper": null,
       "nextActions": [
-        "sourceBinding",
+        "crossSourceValidation",
         "currentness"
       ]
     },
@@ -54835,7 +54796,7 @@
       "existingHotpepperFieldCandidates": [],
       "explicitLunchRangeFromLoadedHotpepper": null,
       "nextActions": [
-        "sourceBinding",
+        "crossSourceValidation",
         "currentness"
       ]
     },
@@ -54879,7 +54840,7 @@
       "existingHotpepperFieldCandidates": [],
       "explicitLunchRangeFromLoadedHotpepper": null,
       "nextActions": [
-        "sourceBinding",
+        "crossSourceValidation",
         "currentness"
       ]
     },
@@ -55319,7 +55280,7 @@
       "existingHotpepperFieldCandidates": [],
       "explicitLunchRangeFromLoadedHotpepper": null,
       "nextActions": [
-        "sourceBinding",
+        "crossSourceValidation",
         "currentness"
       ]
     },
@@ -55649,7 +55610,7 @@
       "existingHotpepperFieldCandidates": [],
       "explicitLunchRangeFromLoadedHotpepper": null,
       "nextActions": [
-        "sourceBinding",
+        "crossSourceValidation",
         "currentness"
       ]
     },
@@ -56837,7 +56798,7 @@
       "existingHotpepperFieldCandidates": [],
       "explicitLunchRangeFromLoadedHotpepper": null,
       "nextActions": [
-        "sourceBinding",
+        "crossSourceValidation",
         "currentness"
       ]
     },
@@ -58399,8 +58360,9 @@
       "existingHotpepperFieldCandidates": [],
       "explicitLunchRangeFromLoadedHotpepper": null,
       "nextActions": [
-        "sourceBinding",
-        "currentness"
+        "crossSourceValidation",
+        "currentness",
+        "identityAdmissionReview"
       ]
     },
     {
@@ -58751,7 +58713,7 @@
       "existingHotpepperFieldCandidates": [],
       "explicitLunchRangeFromLoadedHotpepper": null,
       "nextActions": [
-        "sourceBinding",
+        "crossSourceValidation",
         "currentness"
       ]
     },
@@ -60313,8 +60275,9 @@
       "existingHotpepperFieldCandidates": [],
       "explicitLunchRangeFromLoadedHotpepper": null,
       "nextActions": [
-        "sourceBinding",
-        "currentness"
+        "crossSourceValidation",
+        "currentness",
+        "identityAdmissionReview"
       ]
     },
     {
@@ -61061,7 +61024,7 @@
       "existingHotpepperFieldCandidates": [],
       "explicitLunchRangeFromLoadedHotpepper": null,
       "nextActions": [
-        "sourceBinding",
+        "crossSourceValidation",
         "currentness"
       ]
     },
@@ -61479,8 +61442,9 @@
       "existingHotpepperFieldCandidates": [],
       "explicitLunchRangeFromLoadedHotpepper": null,
       "nextActions": [
-        "sourceBinding",
-        "currentness"
+        "crossSourceValidation",
+        "currentness",
+        "identityAdmissionReview"
       ]
     },
     {
@@ -61567,7 +61531,7 @@
       "existingHotpepperFieldCandidates": [],
       "explicitLunchRangeFromLoadedHotpepper": null,
       "nextActions": [
-        "sourceBinding",
+        "crossSourceValidation",
         "currentness"
       ]
     },
@@ -61655,7 +61619,7 @@
       "existingHotpepperFieldCandidates": [],
       "explicitLunchRangeFromLoadedHotpepper": null,
       "nextActions": [
-        "sourceBinding",
+        "crossSourceValidation",
         "currentness"
       ]
     },
@@ -61919,7 +61883,7 @@
       "existingHotpepperFieldCandidates": [],
       "explicitLunchRangeFromLoadedHotpepper": null,
       "nextActions": [
-        "sourceBinding",
+        "crossSourceValidation",
         "currentness"
       ]
     },
@@ -63877,7 +63841,7 @@
       "existingHotpepperFieldCandidates": [],
       "explicitLunchRangeFromLoadedHotpepper": null,
       "nextActions": [
-        "sourceBinding",
+        "crossSourceValidation",
         "currentness"
       ]
     },
@@ -65439,8 +65403,9 @@
       "existingHotpepperFieldCandidates": [],
       "explicitLunchRangeFromLoadedHotpepper": null,
       "nextActions": [
-        "sourceBinding",
-        "currentness"
+        "crossSourceValidation",
+        "currentness",
+        "identityAdmissionReview"
       ]
     },
     {
@@ -65461,7 +65426,7 @@
       "existingHotpepperFieldCandidates": [],
       "explicitLunchRangeFromLoadedHotpepper": null,
       "nextActions": [
-        "sourceBinding",
+        "crossSourceValidation",
         "currentness"
       ]
     },
@@ -65505,8 +65470,9 @@
       "existingHotpepperFieldCandidates": [],
       "explicitLunchRangeFromLoadedHotpepper": null,
       "nextActions": [
-        "sourceBinding",
-        "currentness"
+        "crossSourceValidation",
+        "currentness",
+        "identityAdmissionReview"
       ]
     },
     {
@@ -65549,7 +65515,7 @@
       "existingHotpepperFieldCandidates": [],
       "explicitLunchRangeFromLoadedHotpepper": null,
       "nextActions": [
-        "sourceBinding",
+        "crossSourceValidation",
         "currentness"
       ]
     },
@@ -67573,7 +67539,7 @@
       "existingHotpepperFieldCandidates": [],
       "explicitLunchRangeFromLoadedHotpepper": null,
       "nextActions": [
-        "sourceBinding",
+        "crossSourceValidation",
         "currentness"
       ]
     },
@@ -67881,8 +67847,9 @@
       "existingHotpepperFieldCandidates": [],
       "explicitLunchRangeFromLoadedHotpepper": null,
       "nextActions": [
-        "sourceBinding",
-        "currentness"
+        "crossSourceValidation",
+        "currentness",
+        "identityAdmissionReview"
       ]
     },
     {
@@ -68651,7 +68618,7 @@
       "existingHotpepperFieldCandidates": [],
       "explicitLunchRangeFromLoadedHotpepper": null,
       "nextActions": [
-        "sourceBinding",
+        "crossSourceValidation",
         "currentness"
       ]
     },
@@ -69575,7 +69542,7 @@
       "existingHotpepperFieldCandidates": [],
       "explicitLunchRangeFromLoadedHotpepper": null,
       "nextActions": [
-        "sourceBinding",
+        "crossSourceValidation",
         "currentness"
       ]
     },
@@ -70147,7 +70114,7 @@
       "existingHotpepperFieldCandidates": [],
       "explicitLunchRangeFromLoadedHotpepper": null,
       "nextActions": [
-        "sourceBinding",
+        "crossSourceValidation",
         "currentness"
       ]
     },
