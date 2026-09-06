@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
-"""Refresh rich Hot Pepper details for reviewed current-production bindings.
+"""Refresh maximum non-image Hot Pepper details for reviewed production bindings.
 
 This collector is intentionally narrow: it does not repeat geographic discovery
 or identity matching. It reads the durable binding ledger and selects either:
 1) strict automatic-use current-production bindings; or
 2) explicit manually reviewed rich-metadata-only exceptions.
 
-Hot Pepper IDs are fetched in batches of at most 20. The API is free/authorized
-for this project and no Google or other paid place/search API is called.
-Photos are deliberately excluded from durable outputs.
+Hot Pepper IDs are fetched in batches of at most 20. `type=credit_card+special`
+adds the API's optional credit-card and feature/special response blocks while
+keeping the normal full response. Photos/logo URLs are deliberately excluded.
+No Google or other paid place/search API is called.
 """
 
 from __future__ import annotations
@@ -37,7 +38,7 @@ def request_json(params, retries=4):
     query["format"] = "json"
     url = API_URL + "?" + urllib.parse.urlencode(query, doseq=True)
     headers = {
-        "User-Agent": "nekooweb-eat-hotpepper-rich-refresh/1.0",
+        "User-Agent": "nekooweb-eat-hotpepper-rich-refresh/2.0",
         "Accept": "application/json",
     }
     last_error = None
@@ -65,6 +66,12 @@ def compact_detail(shop):
         "nameKana": shop.get("name_kana"),
         "address": shop.get("address"),
         "stationName": shop.get("station_name"),
+        "ktaiCoupon": shop.get("ktai_coupon"),
+        "largeServiceArea": shop.get("large_service_area"),
+        "serviceArea": shop.get("service_area"),
+        "largeArea": shop.get("large_area"),
+        "middleArea": shop.get("middle_area"),
+        "smallArea": shop.get("small_area"),
         "lat": shop.get("lat"),
         "lng": shop.get("lng"),
         "genre": shop.get("genre"),
@@ -108,6 +115,8 @@ def compact_detail(shop):
         "midnight": shop.get("midnight"),
         "shopDetailMemo": shop.get("shop_detail_memo"),
         "couponUrls": shop.get("coupon_urls"),
+        "creditCards": shop.get("credit_card"),
+        "specialFeatures": shop.get("special"),
     }
 
 
@@ -157,7 +166,11 @@ def main():
     requests = 0
     for offset in range(0, len(ids), DETAIL_BATCH_SIZE):
         batch = ids[offset: offset + DETAIL_BATCH_SIZE]
-        response = request_json({"id": ",".join(batch), "count": 100})
+        response = request_json({
+            "id": ",".join(batch),
+            "count": 100,
+            "type": "credit_card+special",
+        })
         shops = (response.get("results") or {}).get("shop") or []
         if isinstance(shops, dict):
             shops = [shops]
@@ -177,12 +190,14 @@ def main():
     missing = [hotpepper_id for hotpepper_id in ids if hotpepper_id not in shops_by_id]
     rows = [shops_by_id[hotpepper_id] for hotpepper_id in ids if hotpepper_id in shops_by_id]
     field_names = [
-        "nameKana", "stationName", "access", "mobileAccess", "capacity", "partyCapacity",
-        "budgetMemo", "catch", "lunch", "wifi", "wedding", "course", "freeDrink",
-        "freeFood", "privateRoom", "horigotatsu", "tatami", "card", "nonSmoking",
-        "charter", "ktai", "parking", "barrierFree", "otherMemo", "sommelier",
-        "openAir", "show", "equipment", "karaoke", "band", "tv", "english",
-        "pet", "child", "midnight", "shopDetailMemo", "couponUrls",
+        "nameKana", "stationName", "ktaiCoupon", "largeServiceArea", "serviceArea",
+        "largeArea", "middleArea", "smallArea", "access", "mobileAccess", "capacity",
+        "partyCapacity", "budgetMemo", "catch", "lunch", "wifi", "wedding", "course",
+        "freeDrink", "freeFood", "privateRoom", "horigotatsu", "tatami", "card",
+        "nonSmoking", "charter", "ktai", "parking", "barrierFree", "otherMemo",
+        "sommelier", "openAir", "show", "equipment", "karaoke", "band", "tv",
+        "english", "pet", "child", "midnight", "shopDetailMemo", "couponUrls",
+        "creditCards", "specialFeatures",
     ]
 
     def has(value):
@@ -195,9 +210,9 @@ def main():
         return value is not None
 
     output = {
-        "schemaVersion": 3,
+        "schemaVersion": 4,
         "source": "Hot Pepper Gourmet Web Service",
-        "mode": "reviewed_current_production_rich_refresh",
+        "mode": "reviewed_current_production_max_non_image_refresh",
         "policy": {
             "paidApiCalls": 0,
             "geographicDiscoveryRepeated": False,
@@ -205,6 +220,8 @@ def main():
             "automaticStrictSafeOnly": True,
             "manualExceptionsRequireExplicitAllowlist": True,
             "photosCollected": False,
+            "logoCollected": False,
+            "optionalResponseBlocks": ["credit_card", "special"],
         },
         "summary": {
             "selectedBindings": len(bindings),
