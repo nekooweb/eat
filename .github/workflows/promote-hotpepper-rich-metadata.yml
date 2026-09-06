@@ -1,4 +1,4 @@
-# Rebuilds from the latest focused rich-detail audit; this workflow makes no Hot Pepper API request.
+# Rebuilds from the latest maximum non-image rich-detail audit; this workflow makes no Hot Pepper API request.
 name: Promote Hot Pepper rich metadata
 
 on:
@@ -35,7 +35,7 @@ jobs:
       - name: Build current production seed
         run: node scripts/build_production_dataset.mjs
 
-      - name: Download latest focused rich-detail audit
+      - name: Download latest maximum rich-detail audit
         env:
           GH_TOKEN: ${{ github.token }}
         shell: bash
@@ -43,7 +43,7 @@ jobs:
           set -euo pipefail
           rm -rf _hotpepper _audit
           mkdir -p _hotpepper _audit
-          gh run download 34034504592 \
+          gh run download 34035124635 \
             --repo nekooweb/eat \
             -n hotpepper-rich-refresh-audit \
             -D _hotpepper
@@ -81,7 +81,7 @@ jobs:
             echo "No rich metadata changes to commit."
             exit 0
           fi
-          git commit -m "Preserve reviewed Hot Pepper rich metadata"
+          git commit -m "Preserve maximum reviewed Hot Pepper rich metadata"
           git push
 
       - name: Upload audit
