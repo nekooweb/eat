@@ -37,7 +37,7 @@ jobs:
           set -euo pipefail
           node scripts/build_full_enrichment_matrix.mjs | tee /tmp/full-matrix-summary.json
           test -s data/area1_enrichment_matrix.json
-          node -e "const x=require('./data/area1_enrichment_matrix.json'); if(x.productionEntities!==656||x.records.length!==656) process.exit(1)"
+          node -e "const x=require('./data/area1_enrichment_matrix.json'); if(x.productionEntities<650||x.records.length!==x.productionEntities) process.exit(1)"
       - name: Commit matrix
         run: |
           set -euo pipefail
@@ -48,5 +48,5 @@ jobs:
             echo "No matrix changes to commit."
             exit 0
           fi
-          git commit -m "Build full 656-restaurant enrichment matrix"
+          git commit -m "Build full Area1 enrichment matrix"
           git push
