@@ -1,0 +1,53 @@
+name: Build Area1 full catalog
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/build-area1-catalog.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-area1-catalog
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Enforce no-paid-data-API policy
+        run: node scripts/audit_no_paid_apis.mjs
+      - name: Rebuild canonical and overlays
+        run: |
+          set -euo pipefail
+          node scripts/build_production_dataset.mjs
+          node scripts/build_source_provenance.mjs
+          node scripts/build_source_facts.mjs
+          node --check data/hotpepper_rich_metadata.js
+      - name: Build full catalog
+        run: |
+          set -euo pipefail
+          node scripts/build_area1_catalog.mjs | tee /tmp/area1_catalog_summary.json
+          test -s data/area1_catalog.json
+          node -e "const x=require('./data/area1_catalog.json'); if(x.summary.identityUniverse!==2807) throw new Error('unexpected identity universe '+x.summary.identityUniverse); if(x.summary.production!==656) throw new Error('unexpected production '+x.summary.production); console.log(JSON.stringify(x.summary,null,2));"
+      - name: Commit catalog
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/area1_catalog.json
+          if git diff --cached --quiet; then
+            echo "No catalog changes to commit."
+            exit 0
+          fi
+          git commit -m "Build full Area1 identity catalog"
+          git push
