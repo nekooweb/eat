@@ -147,10 +147,6 @@ function parseExplicitLunchRange(facts) {
 
 function availableHotpepperCandidates(row) {
   const hp = hpById.get(row.googlePlaceId);
-  // The durable 535-detail layer contains review data for broad high/medium
-  // bindings. Canonical zero-request candidates are restricted to the original
-  // strict automatic gate; manual rich-only exceptions and rejected neighbors
-  // are deliberately excluded here.
   if (!hp || !row.hotpepperBinding?.autoEligible || !row.currentProduction) return [];
   const facts = hp.facts || {};
   const missing = new Set(row.completeness?.missing || []);
@@ -163,6 +159,12 @@ function availableHotpepperCandidates(row) {
   if (missing.has('featuredDishes') && String(facts.catch || '').trim()) candidates.push('featuredDishesReview');
   if (facts.lunchAvailabilityText) candidates.push('lunchAvailability');
   return candidates;
+}
+
+function openConfidence(row) {
+  return row.openIdentityCandidate?.candidate
+    ? row.openIdentityCandidate.matchConfidence || 'none'
+    : 'none';
 }
 
 function priorityFor(row) {
@@ -180,6 +182,15 @@ function priorityFor(row) {
   if (row.sourceState.hotpepperCatalogFacts) score += 35;
   if (row.hotpepperBinding?.autoEligible) score += 25;
   else if (row.hotpepperBinding?.confidence === 'high') score += 10;
+
+  if (!row.currentProduction) {
+    if (row.openIdentityCandidate?.historicalQcStatus === 'closed_permanently') score -= 300;
+    const confidence = openConfidence(row);
+    if (confidence === 'high') score += 90;
+    else if (confidence === 'medium') score += 70;
+    else if (confidence === 'review') score += 40;
+    else if (confidence === 'low') score += 10;
+  }
   return score;
 }
 
@@ -192,7 +203,12 @@ function classify(row) {
     }
     return 'production_source_binding';
   }
+  if (row.openIdentityCandidate?.historicalQcStatus === 'closed_permanently') return 'inventory_historical_closed_hold';
   if (row.sourceState.hotpepperCatalogFacts) return 'inventory_hotpepper_loaded_review';
+  const confidence = openConfidence(row);
+  if (confidence === 'high' || confidence === 'medium') return 'inventory_open_highmedium_review';
+  if (confidence === 'review') return 'inventory_open_review';
+  if (confidence === 'low') return 'inventory_open_low_hint';
   return 'inventory_source_binding';
 }
 
@@ -201,11 +217,13 @@ const items = (catalog.rows || []).map((row) => {
   const optionalMissing = OPTIONAL_FIELDS.filter((field) => row.completeness?.missing?.includes(field));
   const hp = hpById.get(row.googlePlaceId) || null;
   const candidates = availableHotpepperCandidates(row);
+  const open = row.openIdentityCandidate?.candidate || null;
   return {
     googlePlaceId: row.googlePlaceId,
     catalogStatus: row.catalogStatus,
     currentProduction: row.currentProduction,
     name: row.canonical?.name || hp?.facts?.name || null,
+    candidateName: !row.currentProduction && !hp?.facts?.name ? open?.name || null : null,
     queue: classify(row),
     priorityScore: priorityFor(row),
     coreMissing,
@@ -216,6 +234,19 @@ const items = (catalog.rows || []).map((row) => {
     hotpepperCatalogFacts: Boolean(row.sourceState.hotpepperCatalogFacts),
     hotpepperConfidence: row.hotpepperBinding?.confidence || null,
     hotpepperAutoEligible: Boolean(row.hotpepperBinding?.autoEligible),
+    openCandidate: open ? {
+      provider: open.provider,
+      sourceCandidateId: open.sourceCandidateId,
+      name: open.name,
+      cuisine: open.cuisine,
+      address: open.address,
+      lat: open.lat,
+      lng: open.lng,
+      confidence: row.openIdentityCandidate?.matchConfidence || 'none',
+      historicalQcStatus: row.openIdentityCandidate?.historicalQcStatus || null,
+      distanceMeters: open.historicalMatchDistanceMeters,
+      nameSimilarity: open.historicalNameSimilarity
+    } : null,
     existingHotpepperFieldCandidates: candidates,
     explicitLunchRangeFromLoadedHotpepper: candidates.includes('lunchBudgetExplicitText')
       ? parseExplicitLunchRange(hp?.facts || {})
@@ -227,13 +258,14 @@ const items = (catalog.rows || []).map((row) => {
 items.sort((a, b) =>
   b.priorityScore - a.priorityScore
   || a.queue.localeCompare(b.queue)
-  || (a.name || '').localeCompare(b.name || '')
+  || (a.name || a.candidateName || '').localeCompare(b.name || b.candidateName || '')
   || a.googlePlaceId.localeCompare(b.googlePlaceId)
 );
 
 const counts = {};
 for (const item of items) counts[item.queue] = (counts[item.queue] || 0) + 1;
 const productionItems = items.filter((item) => item.currentProduction);
+const inventoryItems = items.filter((item) => !item.currentProduction);
 const productionCoreIncomplete = productionItems.filter((item) => item.coreMissing.length);
 const zeroRequestHotpepperCandidates = productionItems.filter((item) => item.existingHotpepperFieldCandidates.length);
 const safeAutoProduction = productionItems.filter((item) => item.hotpepperAutoEligible);
@@ -242,16 +274,28 @@ const coreGapCounts = Object.fromEntries(CORE_FIELDS.map((field) => [
   field,
   productionItems.filter((item) => item.coreMissing.includes(field)).length
 ]));
+const inventoryOpenConfidenceCounts = {};
+for (const item of inventoryItems) {
+  if (!item.openCandidate) continue;
+  const confidence = item.openCandidate.confidence || 'none';
+  inventoryOpenConfidenceCounts[confidence] = (inventoryOpenConfidenceCounts[confidence] || 0) + 1;
+}
 
 const summary = {
-  schemaVersion: 2,
+  schemaVersion: 3,
   checkedAt: catalog.summary?.checkedAt || new Date().toISOString().slice(0, 10),
   identityUniverse: items.length,
   production: productionItems.length,
+  inventoryOnly: inventoryItems.length,
   productionCoreIncomplete: productionCoreIncomplete.length,
   productionCoreComplete: productionItems.length - productionCoreIncomplete.length,
   queueCounts: counts,
   productionCoreGapCounts: coreGapCounts,
+  inventoryWithHistoricalOpenCandidate: inventoryItems.filter((item) => item.openCandidate).length,
+  inventoryOpenConfidenceCounts,
+  inventoryHighMediumOpenCandidates: inventoryItems.filter((item) =>
+    item.openCandidate && ['high', 'medium'].includes(item.openCandidate.confidence)).length,
+  inventoryHotpepperLoaded: inventoryItems.filter((item) => item.hotpepperCatalogFacts).length,
   strictAutoHotpepperProductionBindings: safeAutoProduction.length,
   productionWithLoadedStrictHotpepperFieldCandidates: zeroRequestHotpepperCandidates.length,
   productionLoadedStrictHotpepperCandidateFieldCounts: {
@@ -267,11 +311,13 @@ const summary = {
     catalogFirst: true,
     sourceExtractionBeforeBroadDiscovery: true,
     inventoryAdmissionSeparatedFromFieldLoading: true,
+    historicalOpenMatchesRemainCandidatesUntilValidated: true,
+    lowConfidenceOpenCandidatesAreHintsOnly: true,
     strictHotpepperGateRequiredForCanonicalCandidates: true,
     explicitLunchTextRequiresFiniteLabelledRange: true,
     noExternalRequests: true
   }
 };
 
-fs.writeFileSync(OUT, `${JSON.stringify({ schemaVersion: 2, summary, items }, null, 2)}\n`, 'utf8');
+fs.writeFileSync(OUT, `${JSON.stringify({ schemaVersion: 3, summary, items }, null, 2)}\n`, 'utf8');
 console.log(JSON.stringify(summary));
