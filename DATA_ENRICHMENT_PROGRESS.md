@@ -2,44 +2,44 @@
 
 Updated: 2026-09-06
 
-## Current baseline
+## Current audited baseline
 
 `TOKYO / 地区1️⃣` keeps the confirmed **2,804-ID** Area1 snapshot as a frozen historical benchmark.
+
+Latest successful Pages audit after run `34032998440`:
 
 - frozen exact inventory: **2,804 / 2,804**;
 - canonical production: **656**;
 - production inside inventory: **653**;
-- legacy inventory-only: **2,151**;
-- verified historical QC rows: **666**;
-- legacy Tabelog/official source-backed production: **404 / 656**;
-- current usable source indexed across Tabelog / official / Hot Pepper: **446 / 656**;
+- legacy inventory-only IDs: **2,151**;
+- current usable source indexed across Tabelog / official / Hot Pepper: **446 / 656 (68.0%)**;
 - current explicit source resolutions: **38**;
 - superseded historical resolutions: **6**;
-- source outcomes currently accounted for: **484 / 656**;
+- source outcomes currently accounted for: **484 / 656 (73.8%)**;
 - unresolved production source queue: **172**;
-- official-site index: **194** identities;
 - cuisine known: **601**;
 - address known: **323**;
 - normalized opening hours: **359**;
-- any meal budget known: **272**;
-- lunch budget known: **155**;
-- dinner budget known: **253**;
-- both meal budgets known: **136**;
+- any meal budget known: **274**;
+- lunch budget known: **157**;
+- dinner budget known: **254**;
+- both meal budgets known: **137**;
 - featured dishes: **129**;
 - strict recommendations: **30**;
-- 百名店: **22**.
+- 百名店: **22**;
+- unprovenanced stored meal-price fields: **0**.
 
-## 2026-09-06 Hot Pepper benchmark
+## Hot Pepper benchmark and landing
 
-The configured `HOTPEPPER_API_KEY` was validated and the first real Area1 benchmark completed successfully in Actions run `34030943605`.
+The configured authorized Hot Pepper key was validated and the real Area1 benchmark completed successfully in Actions run `34030943605`.
 
 ### Geographic collection
 
-- 2 km Hot Pepper geographic superset: **2,743** shops;
-- exact local <=1.2 km crop: **870** shops;
+- 2 km Hot Pepper superset: **2,743** shops;
+- exact local <=1.2 km crop: **870**;
 - geographic pages: **28**.
 
-### Matching to the frozen 2,804 identity snapshot
+### Matching
 
 - matching seeds: **2,801**;
 - high: **499**;
@@ -51,91 +51,26 @@ The configured `HOTPEPPER_API_KEY` was validated and the first real Area1 benchm
 - high/medium detail-eligible bindings: **535**;
 - Hot Pepper-ID collision groups: **30**.
 
-The 535 matched Hot Pepper IDs were fetched in **27 requests** using <=20-ID batching. All 535 returned successfully.
+All **535** bound detail rows were returned in **27** <=20-ID requests.
 
-### Strict-safe current-production candidates
+The second strict automatic-use gate retained **128** existing-production candidates. Median coordinate distance was about **5.7 m** and median normalized/romanized name similarity was **0.96**.
 
-The second automatic-use gate retained **128** current-production candidates. Their matching quality was strong overall: median coordinate distance was approximately **5.7 m** and median normalized/romanized name similarity was **0.96**.
+### Net-new reconciliation
 
-Potential fields available in those 128 rows:
+Before promotion the 128 candidates were compared with existing official/Tabelog/current production fields.
 
-- address: 128;
-- cuisine: 127;
-- dinner budget: 126;
-- hours: 128;
-- closure: 128.
-
-These figures are source availability, not net-new production gain.
-
-### Net-new / conflict audit
-
-The 128 candidates were compared against production before promotion.
-
-Net-new candidate fields:
+Net-new candidates:
 
 - address: **+55**;
 - cuisine: **+22**;
 - dinner budget: **+84**;
-- opening-hours raw evidence: **+73**.
+- hours raw evidence: **+73**.
 
-Existing dinner prices were compared rather than overwritten:
+Existing dinner-price comparisons were not overwritten when stronger evidence already existed. Partial/disjoint conflicts remained on the stronger maintained source.
 
-- exact same: 1;
-- strong overlap: 19;
-- partial overlap: 14;
-- disjoint: 8;
-- current dinner missing: 84.
+### Durable additive shard
 
-All **22** partial/disjoint price conflicts already had strong current official/Tabelog evidence, so Hot Pepper was not allowed to replace them.
-
-## Independent lunch / dinner price resolver
-
-The canonical builder now resolves `lunch` and `dinner` independently through `scripts/price_resolver.mjs`.
-
-This removed the former coupling where one `budget` source row owned both meal periods. Complementary evidence can now coexist, for example:
-
-```text
-Tabelog lunch + Hot Pepper dinner
-```
-
-The three Hot Pepper dinner claims that were initially deferred because a lunch value already existed are now safely included. They increased `bothMealBudgetsKnown` from **133 -> 136** without changing the known lunch values.
-
-Current strict price coverage:
-
-- lunch known: **155 / 656 (23.6%)**;
-- dinner known: **253 / 656 (38.6%)**;
-- both known: **136 / 656 (20.7%)**;
-- either known: **272 / 656 (41.5%)**;
-- lunch missing: **501**;
-- dinner missing: **403**.
-
-### Evidence/provenance model
-
-Price claims are ranked by evidence strength before source priority:
-
-- A / `explicit_range` — explicit branch budget/average-spend range;
-- B / `menu_derived` — reviewed range derived from a sufficiently complete official menu;
-- C / `sparse` — one item/course/promotion/search-snippet style evidence; never enters the hard canonical budget filter.
-
-A source-only meal price must explicitly claim `budget`, `lunchBudget`, or `dinnerBudget` in `sourceRefs`.
-
-Pages and the Hot Pepper promotion workflow enforce `STRICT_PRICE_PROVENANCE=1`.
-
-Current unprovenanced stored meal-price fields: **0**.
-
-### NARU correction
-
-The resolver migration exposed one old unsupported value: `JAZZ HOUSE NARU` had `dinner:[3000,4999]` in a source shard but neither maintained source claimed budget.
-
-The maintained official material supports a music charge / visit information, not an explicit restaurant dinner-spend range. The old dinner array was therefore removed instead of retroactively attaching unsupported budget provenance.
-
-This explains why the old descriptive count **273** became the stricter canonical **272**. The change is intentional data-quality correction, not lost valid coverage.
-
-## Final additive Hot Pepper shard
-
-The idempotent promotion workflow rebuilds a true no-Hot-Pepper baseline first, then regenerates the complete additive shard from benchmark `34030943605`.
-
-Current durable Hot Pepper production shard:
+The idempotent manual promotion produced the current durable Hot Pepper shard:
 
 - source rows: **94**;
 - address claims: **55**;
@@ -144,104 +79,133 @@ Current durable Hot Pepper production shard:
 - hours raw claims: **73**;
 - closure claims: **73**.
 
-Measured canonical gains against the strict no-Hot-Pepper baseline:
+Measured canonical gains against a true no-Hot-Pepper baseline:
 
+- restaurants with any known budget: **+81**;
+- dinner prices: **+84**;
 - address: **+55**;
 - cuisine: **+22**;
-- dinner prices: **+84**;
-- restaurants with any known budget: **+81**;
 - normalized opening hours: **+72**;
-- lunch prices overwritten: **0**;
-- protected existing values overwritten: **0**.
+- known lunch prices overwritten: **0**;
+- protected stronger values overwritten: **0**.
 
-The production additive invariant reported **zero violations**.
+The additive production invariant reported **zero violations**.
 
-The Hot Pepper promotion workflow is now **manual-only** (`workflow_dispatch`) so ordinary code/document changes cannot accidentally make authorized API requests.
+## Independent lunch / dinner resolver
+
+`scripts/price_resolver.mjs` resolves `lunch` and `dinner` independently.
+
+This safely supports complementary evidence such as:
+
+```text
+Tabelog lunch + Hot Pepper dinner
+```
+
+without forcing one provider to own both meal periods.
+
+Price claims require explicit `budget`, `lunchBudget` or `dinnerBudget` provenance.
+
+Pages and Hot Pepper promotion run `STRICT_PRICE_PROVENANCE=1`.
+
+### Evidence classes
+
+- A / `explicit_range` — explicit branch-specific budget / average-spend range;
+- B / `menu_derived` — reviewed representative range derived from a sufficiently complete official menu;
+- C / `sparse` — one item/course/charge/promotion/search snippet; never enters hard canonical budget filtering.
+
+Evidence strength is evaluated before source priority.
+
+## First real B-class official-menu rollout
+
+Two official-menu-derived records were landed in `data/source_enrichment_zzzzpricepatches.js`.
+
+### 神田たまごけん神保町店
+
+- exact Place ID: `ChIJ81Ua8xCMGGARMrzeHYIaVbg`;
+- official current branch menu used;
+- reviewed core-menu observed prices: 990 / 990 / 990 / 1,150 / 1,490 yen;
+- seasonal/limited items excluded;
+- resulting B-class lunch: **[990,1490]**;
+- resulting B-class dinner: **[990,1490]**.
+
+### シリ バラジ
+
+- exact Place ID: `ChIJe49KxxWMGGAR4qS4zBvOWr8`;
+- official Suidobashi lunch menu used;
+- complete lunch sets: 800 / 900 / 1,400 yen;
+- resulting B-class lunch: **[800,1400]**.
+
+The first attempt exposed only an isolated-shard audit compatibility issue; no invalid deployment occurred. The compatibility path was fixed in commit `5e52ee073d53089f4a090114682361ab7f96aed9` and Pages run `34032998440` passed build, all audits and deployment.
+
+### Measured coverage change
+
+Before these two reviewed records:
+
+- lunch 155;
+- dinner 253;
+- both 136;
+- either 272.
+
+After landing:
+
+- lunch: **157 / 656**;
+- dinner: **254 / 656**;
+- both: **137 / 656**;
+- either: **274 / 656**;
+- lunch missing: **499**;
+- dinner missing: **402**.
+
+Strict provenance remains **0 unprovenanced price fields** and the price audit reports **0 material strong-source conflicts**.
+
+## NARU data-quality correction
+
+During resolver migration, `JAZZ HOUSE NARU` was found to have an old `dinner:[3000,4999]` value without any source ref claiming budget. Maintained official material supported a music charge/visit information, not a restaurant dinner-spend range.
+
+The unsupported range was removed instead of inventing provenance. This correction is intentionally preserved as an example of why strict price provenance is required.
 
 ## Meal-aware enrichment queue
 
-`scripts/build_enrichment_queue.mjs` now treats price gaps separately.
+Current global price gaps:
 
-Across all 656 production identities:
+- lunch: **499**;
+- dinner: **402**.
 
-- lunch gaps: **501**;
-- dinner gaps: **403**.
+Among identities already carrying a usable maintained source:
 
-Among identities that already have a usable maintained source:
+- lunch gaps: **289**;
+- dinner gaps: **192**.
 
-- lunch gaps: **291**;
-- dinner gaps: **193**.
+High-yield existing-source groups after the two official-menu additions:
 
-This means the next step is **not** broad web searching.
+- Tabelog-linked lunch gaps: **167**;
+- Hot Pepper-linked lunch gaps: **83**;
+- Hot Pepper-linked dinner gaps: **1**;
+- repeated official brand/domain groups: Doutor, Tully's, Starbucks, C-United, Ginza Renoir and others.
 
-High-value existing-source groups include:
+Therefore the next phase remains **existing-source extraction first**, not broad restaurant/search discovery.
 
-- Tabelog-linked rows needing lunch: **168**;
-- Hot Pepper-linked rows needing lunch: **83**;
-- Hot Pepper-linked rows needing dinner: **1**;
-- recurring official chain/domain groups such as Doutor, Tully's, Starbucks, C-United, Ginza Renoir and others.
+## Next execution order
 
-The queue emits actions such as:
-
-- `extract_official_lunch_price`;
-- `extract_tabelog_lunch_price`;
-- `extract_official_dinner_price`;
-- `extract_tabelog_dinner_price`;
-- `discover_official_or_tabelog_lunch_source`.
-
-Lunch is weighted highest because it is now the dominant price deficit.
-
-## Resolution-history model
-
-An older `source_resolution` record is not deleted when a later exact source becomes available.
-
-Instead:
-
-- the historical resolution remains as audit provenance;
-- a same-day/newer usable source supersedes it for current-state reporting;
-- if a resolution is newer than the usable source, the source-binding audit fails;
-- current source-queue metrics exclude superseded historical resolutions from the unresolved/resolution denominator.
-
-Current source status:
-
-- usable source indexed: **446 / 656 (68.0%)**;
-- current explicit resolutions: **38**;
-- superseded historical resolutions: **6**;
-- source outcomes accounted for: **484 / 656 (73.8%)**;
-- unresolved: **172**.
-
-## Billable-API transition remains in force
-
-The Hot Pepper addition does not relax the zero-paid-Google policy.
-
-- no Google Places / Area Insights / Text Search / Place Details / paid website discovery;
-- historical Google Place IDs/QC state are frozen compatibility inputs;
-- no Google API key is injected into Pages;
-- Hot Pepper API usage is authorized/free and secret-backed;
-- open POI sources and official pages remain secondary identity/content sources;
-- ordinary web/Google search is a selective source-discovery tool, not a bulk factual database;
-- search-result snippets are not canonical price evidence.
-
-## Remaining work
-
-1. Mine the **291 existing-source lunch gaps** before broad discovery.
-2. Audit exact Tabelog bindings for missing explicit meal-period budget claims through permitted/reviewed workflows.
-3. Process official domains by brand/template and classify any derived menu ranges as B-class evidence.
-4. Keep single-item prices and charges as C-class evidence rather than forcing a budget range.
-5. Use ordinary web/Google search selectively only after existing-source extraction is exhausted.
-6. Continue OSM / Overture / other open-source reconciliation primarily for identity/address/category/currentness gaps.
-7. Review the 36 medium Hot Pepper bindings, 65 collision-review identities and high-value inventory-only bindings only where they resolve a meaningful production gap.
-8. Continue the **172** current unresolved source outcomes.
-9. Add a source-native canonical identity key before future scope expansion.
+1. Continue the **289 existing-source lunch gaps**, prioritizing exact official/Tabelog evidence.
+2. Process repeated official domains/brands as templates where the same current menu structure is valid.
+3. Use B-class `menu_derived` only when multiple comparable official menu prices establish a representative range and store the derivation inputs.
+4. Keep single-item/cover-charge/promotional evidence as C-class and out of hard filtering.
+5. Use already-maintained exact Tabelog bindings through permitted/reviewed workflows.
+6. Use ordinary web/search only to discover an underlying official/permitted source after the existing-source queue is exhausted.
+7. Continue OSM / Overture / other open-source work mainly for identity/address/category/currentness.
+8. Continue the **172** unresolved source outcomes.
+9. Keep medium/collision/inventory-only Hot Pepper matches review-only unless additional evidence supports a production decision.
 
 ## Data rules
 
-- Existing Google Place IDs are frozen compatibility keys, not an active paid data provider.
-- Durable metadata requires maintainable independent/authorized evidence.
-- Missing or ambiguous data stays unknown.
-- Strong-source conflicts are retained for review; ranges are not silently averaged.
+- Historical Google Place IDs are compatibility keys, not an active paid provider.
+- No paid Google place/search data API is executed by maintenance workflows.
+- Missing or ambiguous fields remain unknown.
+- Strong-source conflicts are retained; ranges are never silently averaged.
+- A source-only price requires explicit field provenance.
+- B-class official-menu-derived values must be reproducible from maintained observed prices.
+- C-class sparse prices never enter hard budget filters.
 - `recommendedDishes` requires explicit recommendation/popularity/signature evidence.
-- `featuredDishes` may use broader source-backed representative items.
-- `openingHours` contains only reliable normalized weekly schedules.
-- hard budget filtering accepts only explicit or reviewed representative evidence with explicit field provenance.
-- cross-source automated matching creates candidates; identity expansion is never justified by one weak source alone.
+- `featuredDishes` may use broader reviewed source-backed representative items.
+- `openingHours` contains only safely normalized weekly schedules.
+- Automatic cross-source matching creates candidates; one weak source never admits a new production identity.
