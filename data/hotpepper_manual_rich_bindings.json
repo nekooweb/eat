@@ -1,0 +1,105 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-09-06",
+  "purpose": "Manual review allowlist for rich metadata only. These pairs do not authorize canonical identity creation or core-field overwrite.",
+  "rules": {
+    "richMetadataOnly": true,
+    "createsProductionIdentity": false,
+    "overwritesCanonicalCoreFields": false
+  },
+  "approved": [
+    {
+      "googlePlaceId": "ChIJ-c9WERGMGGARFQx2dyqYVWo",
+      "hotpepperId": "J001028670",
+      "productionName": "四川料理刀削麺 川府 神保町店",
+      "hotpepperName": "四川料理 川府 神保町店",
+      "reason": "Same named branch; 26.3 m match and branch address/name corroboration. The shorter Hot Pepper name omits only 刀削麺."
+    },
+    {
+      "googlePlaceId": "ChIJS9VGpBuMGGAR1hMANtBU8Ws",
+      "hotpepperId": "J001097938",
+      "productionName": "YEBISU BAR 御茶ノ水店",
+      "hotpepperName": "YEBISUBAR ヱビスバー 御茶ノ水店",
+      "reason": "Same brand and 御茶ノ水 branch; spelling/branding variation only."
+    },
+    {
+      "googlePlaceId": "ChIJraztWRuMGGARGAxXFUVABkE",
+      "hotpepperId": "J001214944",
+      "productionName": "Ottimo Kitchen",
+      "hotpepperName": "OTTIMO オッティモ KITCHEN キッチン ワテラス店",
+      "reason": "Same OTTIMO KITCHEN WATERRAS branch; 4.9 m match and exact WATERRAS branch address corroboration."
+    },
+    {
+      "googlePlaceId": "ChIJl7YRHRmMGGAReoVumUJxnjI",
+      "hotpepperId": "J000237990",
+      "productionName": "細打うどん竹や",
+      "hotpepperName": "竹や 細打うどん",
+      "reason": "Same distinctive name with token order reversed; 15.6 m match."
+    },
+    {
+      "googlePlaceId": "ChIJFSH6vS6NGGARdSH0OM-Nt_Y",
+      "hotpepperId": "J001284520",
+      "productionName": "アンテップ　ケバブ",
+      "hotpepperName": "Antep kebab 秋葉原",
+      "reason": "Japanese/Latin transliteration of the same Antep Kebab branch; 3.3 m match."
+    },
+    {
+      "googlePlaceId": "ChIJ_e5g3SCNGGAR6qW5ceaLoco",
+      "hotpepperId": "J001178242",
+      "productionName": "お茶の水 鳥どり",
+      "hotpepperName": "鳥どり お茶の水",
+      "reason": "Exact same branch name with token order reversed; 1.3 m match."
+    },
+    {
+      "googlePlaceId": "ChIJbTOaERGMGGARRbVxba8mOck",
+      "hotpepperId": "J000011982",
+      "productionName": "Bistro Liberté",
+      "hotpepperName": "リベルテ 神保町",
+      "reason": "Same LIBERTE branch; 10.0 m match and official/Hot Pepper address both identify 神田神保町1-5 島田ビル4F."
+    }
+  ],
+  "reviewedRejected": [
+    {
+      "googlePlaceId": "ChIJE4TSaa6NGGAR9OX7ziIkn6Q",
+      "hotpepperId": "J001216484",
+      "productionName": "神田 たまには、",
+      "hotpepperName": "神田 竹苑",
+      "reason": "Different neighboring restaurant despite 4.0 m coordinate proximity."
+    },
+    {
+      "googlePlaceId": "ChIJr8i9lkCMGGARIQjvEBFKvXc",
+      "hotpepperId": "J003829872",
+      "productionName": "喫茶室ルノアール 水道橋西口店",
+      "hotpepperName": "ニュー神田屋 水道橋西口店",
+      "reason": "Different restaurant."
+    },
+    {
+      "googlePlaceId": "ChIJeyhzHCqNGGAR0xIHxa7pEM0",
+      "hotpepperId": "J003297438",
+      "productionName": "神保町 Stylish Bar o",
+      "hotpepperName": "神保町 ホロホロシーシャ",
+      "reason": "Different restaurant."
+    },
+    {
+      "googlePlaceId": "ChIJ2WGN9heMGGARIpk8EbXf8b4",
+      "hotpepperId": "J003297262",
+      "productionName": "スターバックス コーヒー 順天堂医院店",
+      "hotpepperName": "レストランヒルトップ 順天堂院内",
+      "reason": "Different venue within/near the same hospital complex."
+    },
+    {
+      "googlePlaceId": "ChIJpZBYkxCMGGARrdO6BQ1yGPQ",
+      "hotpepperId": "J003872214",
+      "productionName": "サラファン",
+      "hotpepperName": "カレー屋 ばんび",
+      "reason": "Different restaurant."
+    },
+    {
+      "googlePlaceId": "ChIJCQOApBGMGGARtd0fPNBMuHc",
+      "hotpepperId": "J004025984",
+      "productionName": "ロイヤルホスト 神田神保町店",
+      "hotpepperName": "錦和 神保町本店",
+      "reason": "Different restaurant."
+    }
+  ]
+}
