@@ -11,66 +11,180 @@ Updated: 2026-09-06
 - production inside inventory: **653**;
 - legacy inventory-only: **2,151**;
 - verified historical QC rows: **666**;
-- source-backed production: **404 / 656**;
-- source outcomes accounted for: **448 / 656**;
-- unresolved production source queue: **208**;
+- legacy Tabelog/official source-backed production: **404 / 656**;
+- current usable source indexed across Tabelog / official / Hot Pepper: **446 / 656**;
+- current explicit source resolutions: **38**;
+- superseded historical resolutions: **6**;
+- source outcomes currently accounted for: **484 / 656**;
+- unresolved production source queue: **172**;
 - official-site index: **194** identities;
-- cuisine known: **579**;
-- address known: **268**;
-- normalized opening hours: **287**;
-- budget known: **192**;
+- cuisine known: **601**;
+- address known: **323**;
+- normalized opening hours: **359**;
+- budget known: **273**;
 - featured dishes: **129**;
 - strict recommendations: **30**;
 - 百名店: **22**.
 
-## Latest enrichment continuation
+## 2026-09-06 Hot Pepper benchmark and additive promotion
 
-The existing official-site index was bulk-refreshed first. It was largely saturated, so work shifted to adding new independent official sources for restaurants admitted during the full-range expansion.
+The configured `HOTPEPPER_API_KEY` was validated and the first real Area1 benchmark completed successfully in Actions run `34030943605`.
 
-Seven newly admitted production identities received maintainable official sources. Safe fields were added together in the same pass:
+### Geographic collection
 
-- source-backed production: **397 -> 404**;
-- address: **261 -> 268**;
-- normalized opening hours: **282 -> 287**;
-- cuisine: **578 -> 579**;
-- featured dishes: **125 -> 129**;
-- strict recommendations: **27 -> 30**;
-- source outcomes: **441 -> 448**;
-- unresolved production source queue: **215 -> 208**.
+- 2 km Hot Pepper geographic superset: **2,743** shops;
+- exact local <=1.2 km crop: **870** shops;
+- geographic pages: **28**.
 
-Budget remains **192** because menu-item prices are not converted into restaurant spend ranges.
+### Matching to the frozen 2,804 identity snapshot
 
-## 2026-09-06 maintenance policy transition
+- matching seeds: **2,801**;
+- high: **499**;
+- medium: **36**;
+- review: **2,019**;
+- collision review: **65**;
+- low: **176**;
+- none: **6**;
+- high/medium detail-eligible bindings: **535**;
+- Hot Pepper-ID collision groups: **30**.
 
-The prior strategy still left several billable Google maintenance paths available behind manual controls/cost caps. They are now disabled.
+The 535 matched Hot Pepper IDs were fetched in **27 requests** using <=20-ID batching. All 535 returned successfully.
 
-From this point:
+### Strict-safe current-production candidates
 
-- no paid Places/Area Insights/Text Search/Place Details/website discovery calls are permitted;
-- historical Google Place IDs/QC state are frozen inputs only;
-- the Pages build no longer injects the shared Google API key;
-- new large-batch discovery uses Overture Maps public GeoParquet plus OSM/open official sources;
-- Overture↔OSM agreement is used to prioritize review of persisted historical candidate relationships without re-querying Google;
-- official field extraction continues from existing/open URLs with URL/host deduplication and conservative field promotion.
+The second automatic-use gate retained **128** current-production candidates. Their matching quality was strong overall: median coordinate distance was approximately **5.7 m** and median normalized/romanized name similarity was **0.96**.
 
-This changes the meaning of “full collection”. The 2,804 snapshot remains the historical denominator, but an opaque legacy ID is not forcibly refreshed when doing so would require a paid API. Such identities remain frozen/unresolved until independent evidence is sufficient.
+Potential fields available in those 128 rows:
+
+- address: 128;
+- cuisine: 127;
+- dinner budget: 126;
+- hours: 128;
+- closure: 128.
+
+These figures are source availability, not net-new production gain.
+
+### Net-new / conflict audit
+
+The 128 candidates were compared against current production before promotion.
+
+Net-new candidate fields:
+
+- address: **+55**;
+- cuisine: **+22**;
+- dinner budget: **+84**;
+- opening-hours raw evidence: **+73**.
+
+Existing dinner prices were compared rather than overwritten:
+
+- exact same: 1;
+- strong overlap: 19;
+- partial overlap: 14;
+- disjoint: 8;
+- current dinner missing: 84.
+
+All **22** partial/disjoint price conflicts already had strong current official/Tabelog evidence, so Hot Pepper was not allowed to replace them.
+
+Three of the 84 missing-dinner identities already had a known lunch price. The current canonical builder still resolves both meal periods from one budget claim row, so those **3** dinner claims were deliberately deferred until lunch/dinner resolution is split. This prevents a dinner-only Hot Pepper row from accidentally deleting a known lunch value.
+
+### Additive-only promotion
+
+The durable promotion committed:
+
+- `data/hotpepper_bindings.json`;
+- `data/source_enrichment_hotpepper.js`.
+
+Promotion mode is **additive-only**. It cannot overwrite an existing address, cuisine, dinner budget or normalized schedule.
+
+Promoted source rows: **92**.
+
+Field claims in the promoted shard:
+
+- address: **55**;
+- cuisine: **22**;
+- dinner budget: **81**;
+- hours raw: **73**;
+- closure: **73**.
+
+The production invariant audit reported **zero violations**.
+
+Measured canonical gains:
+
+- address: **268 -> 323**;
+- cuisine: **579 -> 601**;
+- budget known: **192 -> 273**;
+- normalized opening hours: **287 -> 359**;
+- lunch prices changed: **0**;
+- dinner prices added: **81**;
+- existing protected values changed: **0**.
+
+Of the 73 new hours-text claims, **72** normalized safely into machine-readable weekly schedules; one remained raw evidence only.
+
+## Multi-source price policy
+
+Price completion is explicitly **not** a Hot-Pepper-only pipeline. See `PRICE_ENRICHMENT.md`.
+
+Lunch and dinner should be resolved independently from multiple permitted sources:
+
+1. current exact official branch/menu evidence;
+2. exact Tabelog budget evidence already maintained / reviewed for the identity;
+3. authorized Hot Pepper structured dinner budget;
+4. representative official-menu-derived observed ranges;
+5. weak/sparse evidence for review only.
+
+Google Places price fields are not used because repository maintenance prohibits billable Google Places execution. Ordinary web/Google search may be used to discover an underlying official/menu/booking page, but the search-result snippet itself is not canonical price evidence.
+
+The next price-resolver change should split the current restaurant-level budget winner into independent `lunch` and `dinner` claim resolution. This will allow complementary evidence such as Tabelog lunch + Hot Pepper dinner without discarding either meal period.
+
+## Resolution-history model
+
+An older `source_resolution` record is no longer deleted when a later exact source becomes available.
+
+Instead:
+
+- the historical resolution remains as audit provenance;
+- a same-day/newer usable source supersedes it for current-state reporting;
+- if a resolution is newer than the usable source, the source-binding audit fails;
+- current source-queue metrics exclude superseded historical resolutions from the unresolved/resolution denominator.
+
+After Hot Pepper promotion:
+
+- usable source indexed: **446 / 656 (68.0%)**;
+- current explicit resolutions: **38**;
+- superseded historical resolutions: **6**;
+- source outcomes accounted for: **484 / 656 (73.8%)**;
+- unresolved: **172**.
+
+## Billable-API transition remains in force
+
+The Hot Pepper addition does not relax the zero-paid-Google policy.
+
+- no Google Places / Area Insights / Text Search / Place Details / paid website discovery;
+- historical Google Place IDs/QC state are frozen compatibility inputs;
+- no Google API key is injected into Pages;
+- Hot Pepper API usage is authorized/free and secret-backed;
+- open POI sources and official pages remain secondary identity/content sources;
+- direct web search is a gap-discovery tool, not a bulk factual database.
 
 ## Remaining work
 
-1. Generate the Overture Area1 staging snapshot.
-2. Build and review the open-source reconciliation queue, starting with the existing **3 medium + 49 review** historical OSM candidates.
-3. Continue the **208** unresolved production source outcomes using existing/open official sources only.
-4. Expand current independent-source coverage without treating every opaque historical ID as a mandatory live lookup.
-5. Rebuild production/source ledgers after each material reviewed identity batch.
-6. Add a source-native canonical identity key before future scope expansion.
+1. Split price resolution into independent lunch/dinner claims.
+2. Apply existing exact Tabelog/official evidence to remaining meal-period gaps before doing new web discovery.
+3. Group remaining official-menu discovery by brand/domain/template so one fetch can enrich many identities.
+4. Use direct search selectively for unresolved independent restaurants and retain the underlying source URL as evidence.
+5. Continue OSM / Overture / other open-source reconciliation primarily for identity/address/category/currentness gaps.
+6. Review the 36 medium Hot Pepper bindings, 65 collision-review identities and high-value inventory-only bindings only where they can resolve a meaningful production gap.
+7. Continue the **172** current unresolved source outcomes.
+8. Add a source-native canonical identity key before future scope expansion.
 
 ## Data rules
 
-- Existing Google Place IDs are frozen compatibility keys, not an active data provider.
-- Durable restaurant metadata requires maintainable independent sources.
+- Existing Google Place IDs are frozen compatibility keys, not an active paid data provider.
+- Durable metadata requires maintainable independent/authorized evidence.
 - Missing or ambiguous data stays unknown.
+- Strong-source conflicts are retained for review; ranges are not silently averaged.
 - `recommendedDishes` requires explicit recommendation/popularity/signature evidence.
 - `featuredDishes` may use broader source-backed representative items.
 - `openingHours` contains only reliable normalized weekly schedules.
-- budget requires explicit restaurant spend-range evidence.
-- cross-source automated matching produces review candidates, not automatic truth.
+- budget requires explicit/authorized spend-range evidence or a separately labeled representative official-menu derivation.
+- cross-source automated matching creates candidates; identity expansion is never justified by one weak source alone.
