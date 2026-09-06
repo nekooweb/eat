@@ -30,7 +30,7 @@ Measured benchmark result:
 
 The 128 strict-safe candidates were reconciled against stronger/existing fields before durable canonical promotion. They were never treated as a blanket overwrite set.
 
-A separate rich-metadata review later retained **135** current-production Hot Pepper bindings: 128 automatic strict-safe + 7 manual exact pairs.
+A separate rich-metadata review retained **135** current-production Hot Pepper bindings: 128 automatic strict-safe + 7 manual exact pairs.
 
 ## Authorization and secrets
 
@@ -116,24 +116,28 @@ Measured canonical Hot Pepper gains:
 
 Promotion invariant violations: **0**.
 
-## Reviewed rich metadata layer
+## Maximum non-image rich metadata layer
 
-The canonical additive shard is intentionally conservative and drops many useful provider-native fields. The rich layer preserves those fields separately in `data/hotpepper_rich_metadata.js`.
+The canonical additive shard is intentionally conservative and drops many useful provider-native fields. `data/hotpepper_rich_metadata.js` preserves those fields separately without changing canonical filter/recommendation facts.
 
-### Focused refresh
+### Focused reviewed refresh
 
 `scripts/collect_hotpepper_rich_details.py` does not rediscover restaurants or rerun matching. It selects only reviewed current-production bindings and fetches source-native Hot Pepper IDs in <=20-ID batches.
 
-Actions run `34034504592` completed the expanded review set:
+The final maximum non-image refresh is Actions run **`34035124635`**:
 
 - automatic strict-safe bindings: **128**;
 - manual reviewed exact bindings: **7**;
 - total selected: **135**;
 - detail requests: **7**;
 - returned: **135 / 135**;
-- missing: **0**.
+- missing: **0**;
+- optional response blocks requested: `credit_card + special`;
+- geographic discovery repeated: **no**;
+- identity matching repeated: **no**;
+- photos/logo persisted: **no**.
 
-This is much cheaper than rerunning the 28-page geographic discovery plus 27-detail-request full benchmark.
+This is much cheaper than rerunning the 28-page geographic discovery plus the 27-detail-request full benchmark.
 
 ### Manual edge review
 
@@ -153,49 +157,66 @@ Six near-coordinate but wrong-shop pairs were explicitly rejected. Examples incl
 
 Manual approval does not authorize canonical identity creation or overwrite of core fields.
 
-### Rich fields retained
+### Maximum retained fields
 
 For all 135 reviewed rows, where supplied, the overlay retains:
 
-- Hot Pepper ID;
+- Hot Pepper ID and review mode (`strict_auto` / `manual_exact`);
 - source shop name and name kana;
 - source address and coordinates;
+- Hot Pepper area hierarchy (`large_service_area`, `service_area`, `large_area`, `middle_area`, `small_area`);
 - raw genre and sub-genre;
 - raw provider budget object;
 - nearest station;
 - access text and mobile access text;
 - lunch-availability signal;
-- capacity/seats;
-- party capacity;
-- budget memo;
-- source catch copy;
+- capacity/seats and party capacity;
+- budget memo and source catch copy;
 - raw opening-hours and closure text;
-- Hot Pepper shop URL;
-- coupon URL;
+- Hot Pepper shop URL and coupon URL;
+- mobile-coupon availability plus original enum value;
+- accepted credit-card brands;
+- Hot Pepper `special` feature/category entries;
 - normalized service/amenity flags;
 - raw provider service text for audit/detail display.
 
-Measured field coverage in run `34034504592`:
+Measured final rich coverage:
 
-- name kana: **135**;
-- station: **135**;
-- access: **135**;
-- mobile access: **135**;
-- capacity: **135**;
-- party capacity: **109**;
-- budget memo: **66**;
-- catch text: **114**;
-- lunch availability: **135**;
-- raw Wi-Fi: **135**;
-- wedding text: **58**;
-- course: **123**;
-- other equipment memo: **48**;
-- shop detail memo: **52**;
-- coupon URL: **135**.
+- source name / kana / address / coordinates: **135 / 135**;
+- Hot Pepper area hierarchy: **135 / 135**;
+- raw genre / budget: **135 / 135**;
+- station / access / mobile access: **135 / 135**;
+- lunch availability / capacity: **135 / 135**;
+- party capacity: **109 / 135**;
+- budget memo: **66 / 135**;
+- catch text: **114 / 135**;
+- raw opening / closure: **135 / 135**;
+- shop URL / coupon URL: **135 / 135**;
+- mobile-coupon status: **135 / 135**;
+- accepted credit cards: **119 restaurants**, **593 brand records**;
+- Hot Pepper special features: **40 restaurants**, **160 feature records**;
+- raw Wi-Fi text: **135 / 135**;
+- unambiguous `wifiAvailable`: **107 / 135**;
+- wedding text: **58 / 135**;
+- course status: **123 / 135**;
+- other-equipment memo: **48 / 135**;
+- shop-detail memo: **52 / 135**.
 
 The provider also returned status text for all 135 rows for all-you-can-drink/eat, private room, horigotatsu, tatami, card, smoking, charter, parking, barrier-free, live show, karaoke, band, TV/projector, English menu, pet, child and late-night operation.
 
-Normalized Wi-Fi is deliberately only **107 / 135** because ambiguous provider strings remain unknown. Raw Wi-Fi text is preserved for all 135.
+Normalized Wi-Fi remains deliberately **107 / 135** because ambiguous provider strings stay unknown. Raw Wi-Fi text is preserved for all 135.
+
+### Numeric-zero normalization correction
+
+The first build after run `34035124635` exposed a generic normalizer bug: Hot Pepper `ktai_coupon=0` is valid data, but the old text helper treated numeric `0` as empty.
+
+The common conversion now preserves numeric/enum zero. The rich overlay was then regenerated from the already-downloaded successful run artifact via **artifact-only promotion run `34035237312`**. That run made no Hot Pepper API request.
+
+Result:
+
+- `mobileCouponAvailable`: **97 -> 135**;
+- raw `ktai_coupon`: **97 -> 135**;
+- network work for the final maximum refresh remains **7 API requests total**.
 
 ### Rich-layer safety
 
@@ -203,11 +224,11 @@ Normalized Wi-Fi is deliberately only **107 / 135** because ambiguous provider s
 
 - creates no production identity;
 - overwrites no canonical name/address/cuisine/budget/hours;
-- stores no Hot Pepper photos;
+- stores no Hot Pepper photos or logo URLs;
 - preserves source-native/raw data separately;
 - attaches only to exact reviewed current-production IDs at runtime.
 
-`scripts/audit_runtime_overlays.mjs` validates the attachment count, duplicate IDs and manual-reviewed count.
+`scripts/audit_runtime_overlays.mjs` validates attachment counts, duplicate IDs, the 128+7 review split and source-provenance isolation.
 
 ## Independent meal resolver
 
@@ -262,7 +283,7 @@ The public page includes:
 
 `Powered by ホットペッパーグルメ Webサービス`
 
-Hot Pepper images are intentionally not ingested.
+Hot Pepper images/logo URLs are intentionally not ingested.
 
 ## Multi-source price interaction
 
@@ -301,14 +322,14 @@ The next canonical enrichment phase therefore prioritizes existing official/Tabe
 
 ## Workflow safety
 
-All Hot Pepper API workflows are manual-only:
+All Hot Pepper API workflows are manual-only. Temporary self-file push triggers used only to execute one-time connector-limited runs have been removed.
 
-- `.github/workflows/hotpepper-enrichment.yml`;
-- `.github/workflows/promote-hotpepper-additive.yml` for additive rebuild/promotion;
-- `.github/workflows/hotpepper-rich-refresh.yml` for the focused rich API refresh;
-- `.github/workflows/promote-hotpepper-rich-metadata.yml` for artifact-only rich rebuild.
+- `.github/workflows/hotpepper-enrichment.yml` — manual benchmark;
+- `.github/workflows/promote-hotpepper-additive.yml` — manual additive rebuild/promotion;
+- `.github/workflows/hotpepper-rich-refresh.yml` — manual focused rich API refresh;
+- `.github/workflows/promote-hotpepper-rich-metadata.yml` — manual artifact-only rich rebuild.
 
-The rich promotion workflow uses successful refresh artifact run `34034504592` and the explicit manual allowlist; it makes no Hot Pepper API request itself.
+The rich promotion workflow is pinned to successful maximum refresh artifact run `34035124635` plus the explicit manual allowlist. It makes **no Hot Pepper API request** itself.
 
 Normal repository pushes therefore do not consume Hot Pepper requests.
 
@@ -319,6 +340,8 @@ Normal repository pushes therefore do not consume Hot Pepper requests.
 - `34030943605` — first fully successful real benchmark;
 - `34032406916` — successful idempotent meal-aware promotion, producing the durable 94-row / 84-dinner-claim shard;
 - `34034176471` — first focused 128-row rich detail refresh, 7 requests / 128 returned;
-- `34034504592` — expanded reviewed rich refresh, **7 requests / 135 returned / 0 missing**.
+- `34034504592` — expanded reviewed rich refresh, 7 requests / 135 returned;
+- `34035124635` — final **maximum non-image** rich refresh with `credit_card + special`, **7 requests / 135 returned / 0 missing**;
+- `34035237312` — artifact-only rebuild after numeric-zero fix; no API request.
 
-All active pipelines use `set -euo pipefail`, validate required outputs and make no paid Google data API calls.
+All active pipelines validate required outputs and make no paid Google data API calls.
