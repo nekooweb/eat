@@ -18,11 +18,11 @@ window.RESTAURANTS.push(...[
     id:'src-catalog-hotpepper-basecamp',profile:'TOKYO',area:'地区1️⃣',name:'BASE CAMP',
     googlePlaceId:'ChIJ0yEYvTONGGARdrgMhFNR7oA',source:'Hot Pepper',sourceOnly:true,
     hotpepperId:'J003465000',cuisine:'咖啡',tags:['咖啡','洋食'],
-    dinner:[3001,4000],dishes:['自家製燻製'],
+    lunch:[2001,3000],dinner:[3001,4000],dishes:['自家製燻製'],
     address:'東京都千代田区神田三崎町2-22-8 梨本ビル1F',
     openingHoursRaw:'月 17:00–23:30; 火～木 11:30–14:00, 17:00–23:30; 金 17:00–23:30',closedDays:['土','日'],
     sourceRefs:[
-      {provider:'Hot Pepper',url:'https://www.hotpepper.jp/strJ003465000/?vos=nhppalsa000016',checkedAt:'2026-09-06',fields:['name','address','dinnerBudget'],sourceNativeId:'J003465000',priceEvidenceClass:'explicit_range'},
+      {provider:'Hot Pepper',url:'https://www.hotpepper.jp/strJ003465000/?vos=nhppalsa000016',checkedAt:'2026-09-06',fields:['name','address','lunchBudget','dinnerBudget'],sourceNativeId:'J003465000',priceEvidenceClass:'explicit_range',evidenceField:'budget.average',evidenceText:'ランチ2001～3000円/ディナー3001～4000円'},
       {provider:'official',url:'https://www.cafe-basecamp.com/about/',checkedAt:'2026-09-06',fields:['name','address','cuisine','hours','closure','currentness']},
       {provider:'official',url:'https://www.cafe-basecamp.com/menu/',checkedAt:'2026-09-06',fields:['dishes']}
     ]
