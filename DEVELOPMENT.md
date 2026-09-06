@@ -14,13 +14,16 @@ Current audited baseline:
 - inventory-only: **2,151**;
 - OSM independent-source candidates: **1,273**;
 - verified QC rows: **666**;
-- Tabelog/official source-backed production: **397**;
-- cuisine known: **578**;
-- address known: **261**;
-- normalized opening hours: **282**;
+- Tabelog/official source-backed production: **404**;
+- source outcomes accounted for: **448 / 656**;
+- unresolved current-production source queue: **208**;
+- official-site index: **194** identities;
+- cuisine known: **579**;
+- address known: **268**;
+- normalized opening hours: **287**;
 - budget known: **192**;
-- featured dishes: **125**;
-- strict recommendations: **27**;
+- featured dishes: **129**;
+- strict recommendations: **30**;
 - 百名店: **22**.
 
 `DATA_ENRICHMENT_PROGRESS.md` is the authoritative numeric report. Detailed run history belongs under `logs/`.
@@ -86,10 +89,10 @@ Routine continuation should be zero-Google-cost whenever possible by using persi
 
 ## Ordered next work
 
-1. Refresh safe fields from the existing official-site index and trusted locator/direct-site parsers.
-2. Resolve the remaining medium/review full-range OSM candidates.
-3. Work through the current production source-outcome queue, collecting fields in the same pass.
-4. Continue independent-source discovery across the remaining **2,151 inventory-only** identities, prioritizing repeated brands and official locator patterns.
+1. Resolve the remaining medium/review full-range OSM candidates.
+2. Continue the **208** current-production source outcomes, collecting fields in the same pass.
+3. Expand independent-source discovery across the remaining **2,151 inventory-only** identities, prioritizing repeated brands and official locator patterns.
+4. Continue field completion from newly discovered official sources; avoid repeatedly refetching already saturated source pages.
 5. Keep rebuilding the 2,804 ledger until every identity has an auditable maintenance outcome.
 
 ## Runtime contract
