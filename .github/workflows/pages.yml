@@ -46,6 +46,7 @@ jobs:
             node --check scripts/price_resolver.mjs
             node --check scripts/audit_price_resolution.mjs
             node --check scripts/build_source_provenance.mjs
+            node --check scripts/audit_runtime_overlays.mjs
             python3 -m py_compile \
               scripts/verify_google_places.py \
               scripts/verify_curated_google.py \
@@ -65,28 +66,7 @@ jobs:
             node scripts/audit_repository.mjs
             node scripts/audit_source_bindings.mjs
             node scripts/audit_normalized_fields.mjs
-            node - <<'NODE'
-            const fs=require('fs'); const vm=require('vm'); const sandbox={window:{}}; vm.createContext(sandbox);
-            vm.runInContext(fs.readFileSync('data/production_area1.js','utf8'),sandbox);
-            vm.runInContext(fs.readFileSync('data/source_provenance.js','utf8'),sandbox);
-            vm.runInContext(fs.readFileSync('data/hotpepper_rich_metadata.js','utf8'),sandbox);
-            const production=sandbox.window.PRODUCTION_RESTAURANTS||[];
-            const ids=new Set(production.map(r=>r.googlePlaceId));
-            const rich=sandbox.window.HOTPEPPER_RICH_METADATA||{rows:[]};
-            const provenance=sandbox.window.SOURCE_PROVENANCE||{rows:[]};
-            const missingRich=rich.rows.filter(r=>!ids.has(r.googlePlaceId));
-            const missingProvenance=provenance.rows.filter(r=>!ids.has(r.googlePlaceId));
-            if(missingRich.length) throw new Error(`rich metadata unattached rows: ${missingRich.length}`);
-            if(missingProvenance.length) throw new Error(`source provenance unattached rows: ${missingProvenance.length}`);
-            if(rich.summary.manualReviewedRows!==7) throw new Error(`expected 7 manually reviewed rich rows`);
-            console.log(JSON.stringify({
-              productionRows:production.length,
-              richMetadataRows:rich.rows.length,
-              richSummary:rich.summary,
-              provenanceRows:provenance.rows.length,
-              provenanceSummary:provenance.summary
-            }));
-            NODE
+            node scripts/audit_runtime_overlays.mjs
           } 2>&1 | tee _audit/static_checks.log
       - name: Coverage report
         run: |
