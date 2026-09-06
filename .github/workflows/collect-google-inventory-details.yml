@@ -1,0 +1,83 @@
+name: Collect Google inventory detailed recommendations
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/collect-google-inventory-details.yml"
+      - "scripts/collect_google_inventory_recommendations.mjs"
+      - "scripts/build_google_inventory_detail_queue.mjs"
+      - "scripts/audit_google_inventory_detail_evidence.mjs"
+      - "scripts/build_google_inventory_runtime.mjs"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: collect-google-inventory-details
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Enforce no-paid-data-API policy
+        run: node scripts/audit_no_paid_apis.mjs
+      - name: Build current exact inventory runtime and queue
+        run: |
+          set -euo pipefail
+          node scripts/build_hotpepper_rich_core_fallback.mjs
+          node scripts/build_production_dataset.mjs
+          node scripts/build_source_provenance.mjs
+          node scripts/build_source_facts.mjs
+          node scripts/build_google_inventory_runtime.mjs
+          node scripts/audit_google_inventory_runtime.mjs
+          node scripts/build_google_inventory_detail_queue.mjs data/google_inventory_detail_queue.json
+      - name: Collect source-backed recommendations
+        env:
+          INVENTORY_DETAIL_FETCH_TIMEOUT_MS: "7000"
+          INVENTORY_DETAIL_HOST_WORKERS: "20"
+        run: |
+          set -euo pipefail
+          node scripts/collect_google_inventory_recommendations.mjs data/google_inventory_detail_evidence.json | tee /tmp/inventory-detail-summary.json
+          test -s data/google_inventory_detail_evidence.json
+          node scripts/audit_google_inventory_detail_evidence.mjs
+      - name: Rebuild runtime and dish-first queue with evidence
+        run: |
+          set -euo pipefail
+          node scripts/build_google_inventory_runtime.mjs
+          node scripts/audit_google_inventory_runtime.mjs
+          node scripts/build_google_inventory_detail_queue.mjs data/google_inventory_detail_queue.json
+          node - <<'NODE'
+          const fs = require('fs');
+          const q = JSON.parse(fs.readFileSync('data/google_inventory_detail_queue.json', 'utf8'));
+          if (q.summary.inventoryTotal !== 2804) throw new Error('detail queue must cover 2804 identities');
+          const firstNamedGap = q.rows.find((row) => row.name && row.recommendedDishesKnown === 0);
+          if (firstNamedGap && firstNamedGap.nextAction !== 'collect_strict_recommended_dishes') {
+            throw new Error('strict recommendation collection is not first priority for named rows');
+          }
+          console.log(JSON.stringify(q.summary));
+          NODE
+      - name: Commit detailed evidence and queue
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/google_inventory_detail_evidence.json data/google_inventory_detail_queue.json data/google_inventory_runtime.js
+          if git diff --cached --quiet; then
+            echo "No inventory detail changes to commit."
+            exit 0
+          fi
+          git commit -m "Collect source-backed recommendations for Google inventory"
+          git fetch origin main
+          git rebase origin/main
+          git push origin HEAD:main
