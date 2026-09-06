@@ -27,11 +27,12 @@ jobs:
           node-version: '22'
       - name: Enforce no-paid-data-API policy
         run: node scripts/audit_no_paid_apis.mjs
-      - name: Build canonical production dataset
+      - name: Build canonical production dataset and provenance
         run: |
           node scripts/test_opening_hours.mjs
           node scripts/test_price_resolver.mjs
           node scripts/build_production_dataset.mjs
+          node scripts/build_source_provenance.mjs
       - name: Static and repository checks
         run: |
           mkdir -p _audit
@@ -40,9 +41,11 @@ jobs:
             node --check app.js
             node --check effects.js
             node --check data/hotpepper_rich_metadata.js
+            node --check data/source_provenance.js
             node --check scripts/audit_no_paid_apis.mjs
             node --check scripts/price_resolver.mjs
             node --check scripts/audit_price_resolution.mjs
+            node --check scripts/build_source_provenance.mjs
             python3 -m py_compile \
               scripts/verify_google_places.py \
               scripts/verify_curated_google.py \
@@ -54,21 +57,35 @@ jobs:
               scripts/collect_hotpepper_area1.py \
               scripts/match_hotpepper_inventory.py \
               scripts/build_hotpepper_enrichment.py \
-              scripts/build_hotpepper_rich_metadata.py
+              scripts/build_hotpepper_rich_metadata.py \
+              scripts/collect_hotpepper_rich_details.py
             test -s data/production_area1.js
             test -s data/hotpepper_rich_metadata.js
+            test -s data/source_provenance.js
             node scripts/audit_repository.mjs
             node scripts/audit_source_bindings.mjs
             node scripts/audit_normalized_fields.mjs
             node - <<'NODE'
             const fs=require('fs'); const vm=require('vm'); const sandbox={window:{}}; vm.createContext(sandbox);
             vm.runInContext(fs.readFileSync('data/production_area1.js','utf8'),sandbox);
+            vm.runInContext(fs.readFileSync('data/source_provenance.js','utf8'),sandbox);
             vm.runInContext(fs.readFileSync('data/hotpepper_rich_metadata.js','utf8'),sandbox);
-            const payload=sandbox.window.HOTPEPPER_RICH_METADATA||{rows:[]};
-            const ids=new Set((sandbox.window.PRODUCTION_RESTAURANTS||[]).map(r=>r.googlePlaceId));
-            const missing=payload.rows.filter(r=>!ids.has(r.googlePlaceId));
-            if(missing.length) throw new Error(`rich metadata unattached rows: ${missing.length}`);
-            console.log(JSON.stringify({richMetadataRows:payload.rows.length,summary:payload.summary}));
+            const production=sandbox.window.PRODUCTION_RESTAURANTS||[];
+            const ids=new Set(production.map(r=>r.googlePlaceId));
+            const rich=sandbox.window.HOTPEPPER_RICH_METADATA||{rows:[]};
+            const provenance=sandbox.window.SOURCE_PROVENANCE||{rows:[]};
+            const missingRich=rich.rows.filter(r=>!ids.has(r.googlePlaceId));
+            const missingProvenance=provenance.rows.filter(r=>!ids.has(r.googlePlaceId));
+            if(missingRich.length) throw new Error(`rich metadata unattached rows: ${missingRich.length}`);
+            if(missingProvenance.length) throw new Error(`source provenance unattached rows: ${missingProvenance.length}`);
+            if(rich.summary.manualReviewedRows!==7) throw new Error(`expected 7 manually reviewed rich rows`);
+            console.log(JSON.stringify({
+              productionRows:production.length,
+              richMetadataRows:rich.rows.length,
+              richSummary:rich.summary,
+              provenanceRows:provenance.rows.length,
+              provenanceSummary:provenance.summary
+            }));
             NODE
           } 2>&1 | tee _audit/static_checks.log
       - name: Coverage report
@@ -93,7 +110,7 @@ jobs:
         run: |
           mkdir -p _site/data _site/voice _site/image
           cp index.html styles.css effects.css app.js effects.js privacy.html terms.html _site/
-          cp data/production_area1.js data/hotpepper_rich_metadata.js _site/data/
+          cp data/production_area1.js data/source_provenance.js data/hotpepper_rich_metadata.js _site/data/
           cp voice/*.mp3 _site/voice/
           cp image/*.webp _site/image/
       - name: Upload build for review
