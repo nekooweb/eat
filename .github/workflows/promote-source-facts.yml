@@ -2,10 +2,6 @@ name: Promote provider source facts overlay
 
 on:
   workflow_dispatch:
-  push:
-    branches: ["main"]
-    paths:
-      - ".github/workflows/promote-source-facts.yml"
 
 permissions:
   contents: write
@@ -44,5 +40,5 @@ jobs:
             echo "No source facts changes to commit."
             exit 0
           fi
-          git commit -m "Add provider source facts overlay"
+          git commit -m "Refresh provider source facts overlay"
           git push
