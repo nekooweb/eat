@@ -1,0 +1,108 @@
+name: Promote Hot Pepper rich metadata
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/promote-hotpepper-rich-metadata.yml"
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: promote-hotpepper-rich-metadata
+  cancel-in-progress: true
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Enforce no-paid-data-API policy
+        run: node scripts/audit_no_paid_apis.mjs
+
+      - name: Build current production seed
+        run: node scripts/build_production_dataset.mjs
+
+      - name: Download reviewed Hot Pepper benchmark artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf _hotpepper _audit
+          mkdir -p _hotpepper _audit
+          gh run download 34030943605 \
+            --repo nekooweb/eat \
+            -n hotpepper-area1-enrichment-review \
+            -D _hotpepper
+          test -s _hotpepper/hotpepper_bindings.json
+          test -s _hotpepper/hotpepper_bound_details.json
+
+      - name: Build rich metadata overlay
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/build_hotpepper_rich_metadata.py \
+            _hotpepper/hotpepper_bindings.json \
+            _hotpepper/hotpepper_bound_details.json \
+            data/hotpepper_rich_metadata.js \
+            | tee _audit/hotpepper_rich_metadata_summary.json
+          test -s data/hotpepper_rich_metadata.js
+          node --check data/hotpepper_rich_metadata.js
+
+      - name: Validate exact production attachment
+        shell: bash
+        run: |
+          set -euo pipefail
+          node - <<'NODE' | tee _audit/hotpepper_rich_metadata_validation.json
+          const fs=require('fs'); const vm=require('vm');
+          const sandbox={window:{}}; vm.createContext(sandbox);
+          vm.runInContext(fs.readFileSync('data/production_area1.js','utf8'),sandbox);
+          vm.runInContext(fs.readFileSync('data/hotpepper_rich_metadata.js','utf8'),sandbox);
+          const production=sandbox.window.PRODUCTION_RESTAURANTS||[];
+          const payload=sandbox.window.HOTPEPPER_RICH_METADATA||{rows:[]};
+          const ids=new Set(production.map(r=>r.googlePlaceId));
+          const missing=payload.rows.filter(r=>!ids.has(r.googlePlaceId)).map(r=>r.googlePlaceId);
+          const duplicate=payload.rows.length-new Set(payload.rows.map(r=>r.googlePlaceId)).size;
+          if(missing.length||duplicate) throw new Error(JSON.stringify({missing,duplicate}));
+          const attached=production.filter(r=>r.hotpepperId).length;
+          console.log(JSON.stringify({status:'pass',rows:payload.rows.length,attached,summary:payload.summary},null,2));
+          NODE
+
+      - name: Commit rich metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/hotpepper_rich_metadata.js
+          if git diff --cached --quiet; then
+            echo "No rich metadata changes to commit."
+            exit 0
+          fi
+          git commit -m "Add reviewed Hot Pepper rich metadata"
+          git push
+
+      - name: Upload audit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hotpepper-rich-metadata-audit
+          path: _audit
+          if-no-files-found: warn
+          retention-days: 3
