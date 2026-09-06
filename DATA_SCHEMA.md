@@ -2,15 +2,15 @@
 
 Updated: 2026-09-06
 
-The browser now loads three data layers:
+The browser loads three data layers in this order:
 
 ```text
 production_area1.js          conservative canonical filtering/recommendation data
 source_provenance.js         public source URLs and field lineage
-hotpepper_rich_metadata.js   reviewed practical/source-native rich metadata
+hotpepper_rich_metadata.js   reviewed maximum non-image source metadata
 ```
 
-The overlays attach additional fields to exact existing production identities after `production_area1.js` loads. They do not create identities and they do not replace conservative canonical core fields.
+The overlays attach additional fields only to exact existing production identities after `production_area1.js` loads. They do not create identities and they do not replace conservative canonical core fields.
 
 ## Canonical price / budget
 
@@ -52,21 +52,17 @@ priceEvidenceClass: 'menu_derived'   // B
 priceEvidenceClass: 'sparse'         // C
 ```
 
-Aliases `A`, `B`, and `C` are accepted.
-
 Semantics:
 
-- `explicit_range` — explicit branch-specific lunch/dinner budget or average-spend range. Hard-filter eligible and highest evidence class.
-- `menu_derived` — reviewed representative range derived from a sufficiently complete official menu. Hard-filter eligible only when no explicit range is available.
-- `sparse` — one item, one course, one charge, one promotion, search snippet or similarly weak evidence. Review/display evidence only; never enters the canonical hard budget filter.
+- `explicit_range` — explicit branch-specific lunch/dinner budget or average-spend range. Highest evidence class and hard-filter eligible.
+- `menu_derived` — reviewed representative range derived from a sufficiently complete official menu. Hard-filter eligible only when no explicit range exists.
+- `sparse` — one item/course/charge/promotion/search snippet or similarly weak evidence. Review/display only; never enters the canonical hard budget filter.
 
-Selection order is **evidence strength first**, then provider priority, then freshness.
-
-Strong-source conflicts are never averaged silently.
+Selection order is **evidence strength first**, then provider priority, then freshness. Strong-source conflicts are never averaged silently.
 
 ### Menu-derived maintenance metadata
 
-Reviewed B-class patches may retain maintenance-only derivation data such as:
+Reviewed B-class patches may retain maintenance-only derivation data:
 
 ```js
 priceDerivations: [{
@@ -79,7 +75,7 @@ priceDerivations: [{
 }]
 ```
 
-This metadata remains in source-maintenance shards so the range can be reproduced and audited.
+This remains in source-maintenance shards so the range can be reproduced and audited.
 
 ### Current strict coverage
 
@@ -94,8 +90,6 @@ Current 656-restaurant canonical pool:
 - unprovenanced stored meal-price fields: **0**.
 
 ## Canonical opening hours
-
-### Runtime field
 
 ```js
 openingHours: {
@@ -113,58 +107,39 @@ Day keys are `mon`, `tue`, `wed`, `thu`, `fri`, `sat`, `sun`, and `holiday`.
 
 Semantics:
 
-- missing day key = **unknown for that day**;
-- `[]` = **explicitly closed on that day**;
+- missing day key = **unknown**;
+- `[]` = **explicitly closed**;
 - one or more `[open, close]` pairs = known opening periods;
 - close times may extend after midnight, up to `29:59`;
-- timezone is always `Asia/Tokyo` for Area1.
+- timezone is `Asia/Tokyo` for Area1.
 
-`hoursReference` is a browser-compatible Chinese display string generated from `openingHours`; it is never copied directly from raw source prose.
+`hoursReference` is generated from `openingHours`; raw source prose is never copied directly into canonical hours.
 
-### Omission rule
+If a reliable weekly schedule cannot be normalized, canonical `openingHours`/`hoursReference` are omitted. Irregular closure, temporary schedules, bare intervals without weekday evidence and other ambiguous prose remain raw evidence only.
 
-If a reliable weekly schedule cannot be normalized, the canonical row contains neither `openingHours` nor `hoursReference`.
-
-In particular:
-
-- prose-only notes such as reservation-only / irregular closure are not schedules;
-- a bare interval such as `11:00–20:00` is not assumed to mean seven days a week;
-- a bare interval can be expanded only when the source separately gives exact regular closed days or explicitly states no regular closure;
-- `不定休`, temporary schedules, source-calendar/SNS-dependent schedules, and otherwise ambiguous closure patterns are not promoted into filterable weekly hours.
-
-The Hot Pepper rich overlay may retain `hotpepperOpeningHoursText` and `hotpepperClosedText` as raw source evidence even when they cannot be normalized. These fields must not be used as canonical open/closed filters directly.
+The Hot Pepper rich overlay may retain `hotpepperOpeningHoursText` and `hotpepperClosedText`; these fields must not be used directly as canonical open/closed filters.
 
 ## Featured dishes
 
-### Strict recommendations
+`recommendedDishes` is the strict subset requiring explicit recommendation/popularity/signature evidence.
 
-`recommendedDishes` is the strict reviewed subset: 0–2 Chinese dish names where a maintained source explicitly identifies the item as recommended, popular, signature, famous, specialty, 看板, 名物, 自慢, or equivalent.
-
-### Broader featured/representative dishes
-
-`featuredDishes` is the public display field:
+`featuredDishes` is the broader reviewed source-backed display field:
 
 ```js
-featuredDishes: [
-  {
-    nameJa: 'マトンビリヤニ',
-    nameZh: '羊肉比尔亚尼',
-    kind: 'representative'
-  }
-]
+featuredDishes: [{
+  nameJa: 'マトンビリヤニ',
+  nameZh: '羊肉比尔亚尼',
+  kind: 'representative'
+}]
 ```
 
-Supported `kind` values:
+Supported `kind`: `recommended`, `signature`, `representative`.
 
-- `recommended` — derived from the strict recommendation set;
-- `signature` — explicitly supported as a signature/specialty;
-- `representative` — a reviewed source-backed representative dish without implying an explicit recommendation claim.
-
-Optional dish-price fields are reserved for directly supported menu prices. Do not infer a dish price from a restaurant-level budget.
+Optional dish prices require direct menu evidence. Restaurant-level budget is never converted into a dish price.
 
 ## Public source provenance overlay
 
-`data/source_provenance.js` is generated by `scripts/build_source_provenance.mjs` from existing maintained `sourceRefs`.
+`data/source_provenance.js` is generated by `scripts/build_source_provenance.mjs` from maintained `sourceRefs`.
 
 Current coverage:
 
@@ -172,7 +147,7 @@ Current coverage:
 - **606** concrete public HTTPS source URLs;
 - **446** rows with explicit field claims and source check dates.
 
-Per restaurant, optional runtime fields are:
+Optional runtime fields:
 
 ```js
 sourceLinks: [{
@@ -189,41 +164,60 @@ sourceLastCheckedAt: '2026-09-06'
 
 Rules:
 
-- only public HTTPS refs are emitted;
-- Google source refs are excluded;
-- provider/URL duplicates are merged;
-- claimed fields are unioned without changing canonical field selection;
+- public HTTPS refs only;
+- Google source refs excluded;
+- provider/URL duplicates merged;
+- claimed fields unioned without changing canonical field selection;
 - latest valid check date becomes `sourceLastCheckedAt`;
-- the overlay makes no external requests.
+- generation makes no external request.
 
-## Hot Pepper rich metadata overlay
+## Hot Pepper maximum non-image rich metadata overlay
 
-`data/hotpepper_rich_metadata.js` is generated from reviewed Hot Pepper current-production bindings. Current reviewed population is **135** rows: 128 strict automatic + 7 explicit manual exact pairs.
+`data/hotpepper_rich_metadata.js` currently uses **schemaVersion 6** and contains **135 reviewed production rows**: 128 strict automatic + 7 explicit manual exact pairs.
 
-Every rich row retains `hotpepperReviewMode` (`strict_auto` or `manual_exact`).
+Every row retains `hotpepperReviewMode` (`strict_auto` or `manual_exact`).
 
-Optional runtime fields include:
+Representative optional runtime fields:
 
 ```js
 hotpepperId: 'J001...',
 hotpepperReviewMode: 'strict_auto',
 hotpepperUrl: 'https://...',
 couponUrl: 'https://...',
+mobileCouponAvailable: true,
+hotpepperKtaiCouponRaw: '0',
 hotpepperName: '...',
 nameKana: '...',
 hotpepperAddress: '...',
 hotpepperLocation: { lat: 35.0, lng: 139.0 },
+hotpepperArea: {
+  largeServiceArea: { code: 'SS10', name: '関東' },
+  serviceArea: { code: 'SA11', name: '東京' },
+  largeArea: { code: 'Z011', name: '東京' },
+  middleArea: { code: 'Y020', name: '...' },
+  smallArea: { code: 'X070', name: '神保町' }
+},
 hotpepperGenre: {
   code: 'G001',
   name: '居酒屋',
   catch: '...',
-  subGenre: { code: 'G001', name: '...' }
+  subGenre: { code: '...', name: '...' }
 },
 hotpepperBudget: {
   code: 'B003',
   name: '3001～4000円',
   average: '...'
 },
+acceptedCreditCards: [
+  { code: 'c01', name: 'VISA' },
+  { code: 'c07', name: 'JCB' }
+],
+specialFeatures: [{
+  code: '...',
+  name: '...',
+  title: '...',
+  category: { code: '...', name: '...' }
+}],
 nearestStation: '神保町',
 accessText: '...',
 mobileAccessText: '...',
@@ -237,6 +231,23 @@ hotpepperClosedText: '...',
 amenities: { ... },
 sourceServiceText: { ... }
 ```
+
+### Final rich coverage
+
+Latest maximum refresh is Actions run `34035124635` and returned **135 / 135** reviewed shops in **7** <=20-ID requests.
+
+- source name/kana/address/coordinates: **135 / 135**;
+- five-level Hot Pepper area hierarchy: **135 / 135**;
+- raw genre/budget: **135 / 135**;
+- station/access/mobile access: **135 / 135**;
+- lunch availability/capacity: **135 / 135**;
+- party capacity: **109 / 135**;
+- mobile coupon status: **135 / 135**;
+- credit-card brand list: **119 / 135**, **593 entries**;
+- special features: **40 / 135**, **160 entries**;
+- raw service metadata: **135 / 135**;
+- raw Wi-Fi text: **135 / 135**;
+- unambiguous `wifiAvailable`: **107 / 135**.
 
 ### Amenities
 
@@ -265,9 +276,13 @@ petAllowed
 lateNightAfter23
 ```
 
-`sourceServiceText` preserves the original provider string for service fields so conditions/caveats are not lost when a boolean is normalized.
+`sourceServiceText` preserves the provider's original strings so capacity/conditions/caveats are not lost when normalized booleans are added.
 
-Unknown/ambiguous values stay unknown. For example, raw Wi-Fi text exists for all 135 reviewed rows but `wifiAvailable` is only emitted for **107** unambiguous rows.
+Unknown/ambiguous values stay unknown. For example, raw Wi-Fi exists for all 135 while `wifiAvailable` exists only for 107 unambiguous rows.
+
+### Provider zero values
+
+Provider integer/enum `0` is valid data and must not be treated as missing. This rule matters for Hot Pepper `ktai_coupon`: the text helper was corrected to preserve numeric zero, and artifact-only promotion run `34035237312` rebuilt the overlay without another API request. Current `mobileCouponAvailable` and raw coupon enum coverage are both **135 / 135**.
 
 ### Rich-layer isolation rules
 
@@ -275,9 +290,9 @@ The rich overlay:
 
 - never creates a production identity;
 - never overwrites canonical `name`, `address`, `cuisine`, `lunch`, `dinner` or `openingHours`;
-- never stores Hot Pepper photos;
+- never stores Hot Pepper photos or logo URLs;
 - attaches only to exact reviewed production IDs;
-- may preserve source-native variants and raw source text for display/audit/future filters.
+- may preserve source-native variants/raw source text for display, audit and future optional filters.
 
 ## Overlay audit
 
@@ -285,8 +300,20 @@ The rich overlay:
 
 - a rich/provenance row is unattached;
 - a rich/provenance identity is duplicated;
-- the expected 135 rich rows / 7 manual rows are not present;
+- the expected 135 rich rows / 7 manual rows are absent;
 - public provenance contains a Google provider ref;
 - runtime attachment counts disagree with overlay row counts.
 
-Final canonical coverage numbers still come from the Pages canonical audits; overlay counts are tracked separately so richer metadata is not confused with filterable canonical completeness.
+`scripts/audit_repository.mjs` additionally enforces the public local runtime order:
+
+```text
+production_area1.js
+-> source_provenance.js
+-> hotpepper_rich_metadata.js
+-> app.js
+-> effects.js
+```
+
+Maintenance enrichment/resolution shards are not allowed as direct public runtime dependencies.
+
+Final canonical coverage numbers still come from Pages canonical audits. Overlay counts are tracked separately so richer metadata is never confused with filterable canonical completeness.
