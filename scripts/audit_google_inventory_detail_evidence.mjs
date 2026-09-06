@@ -23,7 +23,7 @@ for (const row of payload.rows || []) {
   ids.add(row.googlePlaceId);
   for (const [kind, items] of [['recommended', row.recommendedDishes || []], ['featured', row.featuredDishes || []]]) {
     for (const item of items) {
-      if (!item?.nameZh || !item?.sourceUrl || !/^https:\/\//.test(item.sourceUrl)) {
+      if (!item?.nameZh || !item?.sourceUrl || !/^https?:\/\//.test(item.sourceUrl)) {
         throw new Error(`Invalid ${kind} dish evidence for ${row.googlePlaceId}`);
       }
       if (!/^\d{4}-\d{2}-\d{2}$/.test(item.checkedAt || '')) throw new Error(`Missing ISO check date for ${row.googlePlaceId}`);
