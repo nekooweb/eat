@@ -1,23 +1,23 @@
 {
-  "schemaVersion": 5,
+  "schemaVersion": 6,
   "summary": {
-    "schemaVersion": 5,
+    "schemaVersion": 6,
     "scope": "TOKYO/地区1️⃣",
     "checkedAt": "2026-09-06",
     "identityUniverse": 2807,
     "frozenInventory": 2804,
-    "production": 656,
-    "productionInFrozenInventory": 653,
+    "production": 662,
+    "productionInFrozenInventory": 659,
     "productionOutsideFrozenInventory": 3,
-    "inventoryOnly": 2151,
+    "inventoryOnly": 2145,
     "hotpepperBindings": 535,
     "hotpepperCatalogFactRows": 535,
-    "productionHotpepperBindings": 141,
-    "productionHotpepperCatalogFacts": 141,
-    "inventoryOnlyHotpepperBindings": 394,
-    "inventoryOnlyHotpepperCatalogFacts": 394,
+    "productionHotpepperBindings": 147,
+    "productionHotpepperCatalogFacts": 147,
+    "inventoryOnlyHotpepperBindings": 388,
+    "inventoryOnlyHotpepperCatalogFacts": 388,
     "historicalOpenCandidateRows": 1997,
-    "inventoryOnlyHistoricalOpenCandidateRows": 1989,
+    "inventoryOnlyHistoricalOpenCandidateRows": 1983,
     "historicalOpenCandidateConfidenceCounts": {
       "high": 41,
       "medium": 3,
@@ -26,15 +26,15 @@
       "none": 162
     },
     "inventoryOnlyHistoricalOpenCandidateConfidenceCounts": {
-      "high": 33,
+      "high": 27,
       "medium": 3,
       "review": 49,
       "low": 1904,
       "none": 162
     },
-    "inventoryOnlyHighMediumOpenCandidates": 36,
+    "inventoryOnlyHighMediumOpenCandidates": 30,
     "overtureCrossSupportedRows": 1997,
-    "inventoryOnlyOvertureCrossSupportedRows": 1989,
+    "inventoryOnlyOvertureCrossSupportedRows": 1983,
     "openReconciliationTriageCounts": {
       "D_unresolved": 1951,
       "B_blocker_review": 28,
@@ -42,20 +42,20 @@
     },
     "inventoryOnlyOpenReconciliationTriageCounts": {
       "D_unresolved": 1947,
-      "B_blocker_review": 24,
-      "A_priority_review": 18
+      "A_priority_review": 18,
+      "B_blocker_review": 18
     },
-    "productionWithPublicSourceEvidence": 446,
-    "productionWithProviderFacts": 446,
+    "productionWithPublicSourceEvidence": 452,
+    "productionWithProviderFacts": 452,
     "productionWithRichMetadata": 135,
     "productionMissing": {
       "address": 333,
       "cuisine": 55,
-      "lunchBudget": 490,
+      "lunchBudget": 496,
       "dinnerBudget": 402,
       "openingHours": 296,
-      "featuredDishes": 527,
-      "strictRecommendations": 626,
+      "featuredDishes": 533,
+      "strictRecommendations": 632,
       "publicSourceEvidence": 210
     },
     "policy": {
@@ -69,7 +69,8 @@
       "transientGoogleDisplayPayloadPersisted": false,
       "paidGoogleDataApiCalls": 0
     },
-    "reviewedAdmissionReady": 6,
+    "reviewedAdmissionReady": 0,
+    "admittedProduction": 6,
     "rejectedAdmissionPairs": 4,
     "loadedFactCoverage": {
       "name": 1050,
@@ -7128,20 +7129,67 @@
     },
     {
       "googlePlaceId": "ChIJ0yEYvTONGGARdrgMhFNR7oA",
-      "catalogStatus": "inventory_only",
+      "catalogStatus": "production",
       "inFrozenInventory": true,
       "productionOutsideFrozenInventory": false,
-      "currentProduction": false,
-      "canonical": null,
-      "completeness": null,
+      "currentProduction": true,
+      "canonical": {
+        "name": "BASE CAMP",
+        "address": "東京都千代田区神田三崎町2-22-8 梨本ビル1F",
+        "lat": 35.7022071746,
+        "lng": 139.7539458748,
+        "distanceMeters": 775,
+        "cuisine": "咖啡",
+        "lunch": null,
+        "dinner": [
+          3001,
+          4000
+        ],
+        "openingHoursKnown": true,
+        "featuredDishesCount": 0,
+        "recommendedDishesCount": 0,
+        "hyakumeiten": false
+      },
+      "completeness": {
+        "fields": {
+          "name": true,
+          "address": true,
+          "coordinates": true,
+          "cuisine": true,
+          "lunchBudget": false,
+          "dinnerBudget": true,
+          "openingHours": true,
+          "featuredDishes": false,
+          "strictRecommendations": false,
+          "publicSourceEvidence": true
+        },
+        "known": 7,
+        "total": 10,
+        "ratio": 0.7,
+        "missing": [
+          "lunchBudget",
+          "featuredDishes",
+          "strictRecommendations"
+        ]
+      },
       "sourceState": {
         "providers": [
-          "Hot Pepper"
+          "Hot Pepper",
+          "official"
         ],
-        "publicSourceLinks": 0,
-        "sourceClaimedFields": [],
-        "sourceLastCheckedAt": null,
-        "providerFactRecords": 0,
+        "publicSourceLinks": 3,
+        "sourceClaimedFields": [
+          "address",
+          "closure",
+          "cuisine",
+          "currentness",
+          "dinnerBudget",
+          "dishes",
+          "hours",
+          "name"
+        ],
+        "sourceLastCheckedAt": "2026-09-06",
+        "providerFactRecords": 1,
         "hotpepperCatalogFacts": true,
         "hotpepperCatalogFactFields": [
           "access",
@@ -7250,12 +7298,13 @@
         }
       },
       "nextActions": [
-        "fieldNormalization",
-        "currentness",
-        "productionSchemaAdmission"
+        "lunchBudget",
+        "featuredDishes",
+        "hotpepperFieldNormalization",
+        "hotpepperRichReview"
       ],
       "admission": {
-        "status": "reviewed_ready",
+        "status": "admitted_production",
         "mode": "historical-id+multisource-reviewed",
         "reviewedAt": "2026-09-06",
         "currentnessProvider": "official",
@@ -95229,20 +95278,67 @@
     },
     {
       "googlePlaceId": "ChIJLdDA4HiNGGARCcHyQmvL0OI",
-      "catalogStatus": "inventory_only",
+      "catalogStatus": "production",
       "inFrozenInventory": true,
       "productionOutsideFrozenInventory": false,
-      "currentProduction": false,
-      "canonical": null,
-      "completeness": null,
+      "currentProduction": true,
+      "canonical": {
+        "name": "701",
+        "address": "東京都千代田区外神田2-1-3 東進ビル新館1F",
+        "lat": 35.6996344709,
+        "lng": 139.7666115718,
+        "distanceMeters": 914,
+        "cuisine": "意大利菜",
+        "lunch": null,
+        "dinner": [
+          10001,
+          12000
+        ],
+        "openingHoursKnown": true,
+        "featuredDishesCount": 0,
+        "recommendedDishesCount": 0,
+        "hyakumeiten": false
+      },
+      "completeness": {
+        "fields": {
+          "name": true,
+          "address": true,
+          "coordinates": true,
+          "cuisine": true,
+          "lunchBudget": false,
+          "dinnerBudget": true,
+          "openingHours": true,
+          "featuredDishes": false,
+          "strictRecommendations": false,
+          "publicSourceEvidence": true
+        },
+        "known": 7,
+        "total": 10,
+        "ratio": 0.7,
+        "missing": [
+          "lunchBudget",
+          "featuredDishes",
+          "strictRecommendations"
+        ]
+      },
       "sourceState": {
         "providers": [
-          "Hot Pepper"
+          "Hot Pepper",
+          "OpenStreetMap",
+          "official"
         ],
-        "publicSourceLinks": 0,
-        "sourceClaimedFields": [],
-        "sourceLastCheckedAt": null,
-        "providerFactRecords": 0,
+        "publicSourceLinks": 2,
+        "sourceClaimedFields": [
+          "address",
+          "closure",
+          "cuisine",
+          "currentness",
+          "dinnerBudget",
+          "hours",
+          "name"
+        ],
+        "sourceLastCheckedAt": "2026-09-06",
+        "providerFactRecords": 1,
         "hotpepperCatalogFacts": true,
         "hotpepperCatalogFactFields": [
           "access",
@@ -95353,12 +95449,13 @@
         }
       },
       "nextActions": [
-        "fieldNormalization",
-        "currentness",
-        "productionSchemaAdmission"
+        "lunchBudget",
+        "featuredDishes",
+        "hotpepperFieldNormalization",
+        "hotpepperRichReview"
       ],
       "admission": {
-        "status": "reviewed_ready",
+        "status": "admitted_production",
         "mode": "historical-id+multisource-reviewed",
         "reviewedAt": "2026-09-06",
         "currentnessProvider": "official",
@@ -101920,20 +102017,66 @@
     },
     {
       "googlePlaceId": "ChIJN9mduz-MGGAR53bCFr3JZro",
-      "catalogStatus": "inventory_only",
+      "catalogStatus": "production",
       "inFrozenInventory": true,
       "productionOutsideFrozenInventory": false,
-      "currentProduction": false,
-      "canonical": null,
-      "completeness": null,
+      "currentProduction": true,
+      "canonical": {
+        "name": "SAPANA 水道橋西口店",
+        "address": "東京都千代田区神田三崎町2-20-8 FUNDES水道橋1F",
+        "lat": 35.7018843887,
+        "lng": 139.7522929723,
+        "distanceMeters": 820,
+        "cuisine": "亚洲・民族",
+        "lunch": null,
+        "dinner": [
+          3001,
+          4000
+        ],
+        "openingHoursKnown": true,
+        "featuredDishesCount": 0,
+        "recommendedDishesCount": 0,
+        "hyakumeiten": false
+      },
+      "completeness": {
+        "fields": {
+          "name": true,
+          "address": true,
+          "coordinates": true,
+          "cuisine": true,
+          "lunchBudget": false,
+          "dinnerBudget": true,
+          "openingHours": true,
+          "featuredDishes": false,
+          "strictRecommendations": false,
+          "publicSourceEvidence": true
+        },
+        "known": 7,
+        "total": 10,
+        "ratio": 0.7,
+        "missing": [
+          "lunchBudget",
+          "featuredDishes",
+          "strictRecommendations"
+        ]
+      },
       "sourceState": {
         "providers": [
-          "Hot Pepper"
+          "Hot Pepper",
+          "official"
         ],
-        "publicSourceLinks": 0,
-        "sourceClaimedFields": [],
-        "sourceLastCheckedAt": null,
-        "providerFactRecords": 0,
+        "publicSourceLinks": 2,
+        "sourceClaimedFields": [
+          "address",
+          "closure",
+          "cuisine",
+          "currentness",
+          "dinnerBudget",
+          "hours",
+          "name"
+        ],
+        "sourceLastCheckedAt": "2026-09-06",
+        "providerFactRecords": 1,
         "hotpepperCatalogFacts": true,
         "hotpepperCatalogFactFields": [
           "access",
@@ -102046,12 +102189,13 @@
         }
       },
       "nextActions": [
-        "fieldNormalization",
-        "currentness",
-        "productionSchemaAdmission"
+        "lunchBudget",
+        "featuredDishes",
+        "hotpepperFieldNormalization",
+        "hotpepperRichReview"
       ],
       "admission": {
-        "status": "reviewed_ready",
+        "status": "admitted_production",
         "mode": "historical-id+multisource-reviewed",
         "reviewedAt": "2026-09-06",
         "currentnessProvider": "official",
@@ -167329,20 +167473,66 @@
     },
     {
       "googlePlaceId": "ChIJc3y8okOMGGARcvEFuVzOJY8",
-      "catalogStatus": "inventory_only",
+      "catalogStatus": "production",
       "inFrozenInventory": true,
       "productionOutsideFrozenInventory": false,
-      "currentProduction": false,
-      "canonical": null,
-      "completeness": null,
+      "currentProduction": true,
+      "canonical": {
+        "name": "焼鳥ブロシェット 飯田橋",
+        "address": "東京都千代田区富士見2-2-10",
+        "lat": 35.6994422537,
+        "lng": 139.7453175512,
+        "distanceMeters": 1177,
+        "cuisine": "日式",
+        "lunch": null,
+        "dinner": [
+          3001,
+          4000
+        ],
+        "openingHoursKnown": true,
+        "featuredDishesCount": 0,
+        "recommendedDishesCount": 0,
+        "hyakumeiten": false
+      },
+      "completeness": {
+        "fields": {
+          "name": true,
+          "address": true,
+          "coordinates": true,
+          "cuisine": true,
+          "lunchBudget": false,
+          "dinnerBudget": true,
+          "openingHours": true,
+          "featuredDishes": false,
+          "strictRecommendations": false,
+          "publicSourceEvidence": true
+        },
+        "known": 7,
+        "total": 10,
+        "ratio": 0.7,
+        "missing": [
+          "lunchBudget",
+          "featuredDishes",
+          "strictRecommendations"
+        ]
+      },
       "sourceState": {
         "providers": [
-          "Hot Pepper"
+          "Hot Pepper",
+          "TableCheck"
         ],
-        "publicSourceLinks": 0,
-        "sourceClaimedFields": [],
-        "sourceLastCheckedAt": null,
-        "providerFactRecords": 0,
+        "publicSourceLinks": 2,
+        "sourceClaimedFields": [
+          "address",
+          "closure",
+          "cuisine",
+          "currentness",
+          "dinnerBudget",
+          "hours",
+          "name"
+        ],
+        "sourceLastCheckedAt": "2026-09-06",
+        "providerFactRecords": 1,
         "hotpepperCatalogFacts": true,
         "hotpepperCatalogFactFields": [
           "access",
@@ -167454,12 +167644,13 @@
         }
       },
       "nextActions": [
-        "fieldNormalization",
-        "currentness",
-        "productionSchemaAdmission"
+        "lunchBudget",
+        "featuredDishes",
+        "hotpepperFieldNormalization",
+        "hotpepperRichReview"
       ],
       "admission": {
-        "status": "reviewed_ready",
+        "status": "admitted_production",
         "mode": "historical-id+multisource-reviewed",
         "reviewedAt": "2026-09-06",
         "currentnessProvider": "current_booking_page",
@@ -174863,20 +175054,65 @@
     },
     {
       "googlePlaceId": "ChIJe-72fACNGGARqtnxQaA1-dg",
-      "catalogStatus": "inventory_only",
+      "catalogStatus": "production",
       "inFrozenInventory": true,
       "productionOutsideFrozenInventory": false,
-      "currentProduction": false,
-      "canonical": null,
-      "completeness": null,
+      "currentProduction": true,
+      "canonical": {
+        "name": "LYFE -酒と飯と-",
+        "address": "東京都千代田区神田錦町2-4-1 ダヴィンチ小川町1F",
+        "lat": 35.6938692058,
+        "lng": 139.7636365012,
+        "distanceMeters": 590,
+        "cuisine": "居酒屋",
+        "lunch": null,
+        "dinner": [
+          3001,
+          4000
+        ],
+        "openingHoursKnown": true,
+        "featuredDishesCount": 0,
+        "recommendedDishesCount": 0,
+        "hyakumeiten": false
+      },
+      "completeness": {
+        "fields": {
+          "name": true,
+          "address": true,
+          "coordinates": true,
+          "cuisine": true,
+          "lunchBudget": false,
+          "dinnerBudget": true,
+          "openingHours": true,
+          "featuredDishes": false,
+          "strictRecommendations": false,
+          "publicSourceEvidence": true
+        },
+        "known": 7,
+        "total": 10,
+        "ratio": 0.7,
+        "missing": [
+          "lunchBudget",
+          "featuredDishes",
+          "strictRecommendations"
+        ]
+      },
       "sourceState": {
         "providers": [
-          "Hot Pepper"
+          "Hot Pepper",
+          "recent_operational_listing"
         ],
-        "publicSourceLinks": 0,
-        "sourceClaimedFields": [],
-        "sourceLastCheckedAt": null,
-        "providerFactRecords": 0,
+        "publicSourceLinks": 2,
+        "sourceClaimedFields": [
+          "address",
+          "cuisine",
+          "currentness",
+          "dinnerBudget",
+          "hours",
+          "name"
+        ],
+        "sourceLastCheckedAt": "2026-09-06",
+        "providerFactRecords": 1,
         "hotpepperCatalogFacts": true,
         "hotpepperCatalogFactFields": [
           "access",
@@ -174984,12 +175220,13 @@
         }
       },
       "nextActions": [
-        "fieldNormalization",
-        "currentness",
-        "productionSchemaAdmission"
+        "lunchBudget",
+        "featuredDishes",
+        "hotpepperFieldNormalization",
+        "hotpepperRichReview"
       ],
       "admission": {
-        "status": "reviewed_ready",
+        "status": "admitted_production",
         "mode": "historical-id+multisource-reviewed",
         "reviewedAt": "2026-09-06",
         "currentnessProvider": "recent_operational_listing",
@@ -252354,20 +252591,66 @@
     },
     {
       "googlePlaceId": "ChIJy7PtkAaMGGARsKefDexKN-4",
-      "catalogStatus": "inventory_only",
+      "catalogStatus": "production",
       "inFrozenInventory": true,
       "productionOutsideFrozenInventory": false,
-      "currentProduction": false,
-      "canonical": null,
-      "completeness": null,
+      "currentProduction": true,
+      "canonical": {
+        "name": "大手町ZION",
+        "address": "東京都千代田区内神田1-5-16 アルテ大手町1F",
+        "lat": 35.690017757,
+        "lng": 139.7659725698,
+        "distanceMeters": 1000,
+        "cuisine": "意大利菜",
+        "lunch": null,
+        "dinner": [
+          3001,
+          4000
+        ],
+        "openingHoursKnown": true,
+        "featuredDishesCount": 0,
+        "recommendedDishesCount": 0,
+        "hyakumeiten": false
+      },
+      "completeness": {
+        "fields": {
+          "name": true,
+          "address": true,
+          "coordinates": true,
+          "cuisine": true,
+          "lunchBudget": false,
+          "dinnerBudget": true,
+          "openingHours": true,
+          "featuredDishes": false,
+          "strictRecommendations": false,
+          "publicSourceEvidence": true
+        },
+        "known": 7,
+        "total": 10,
+        "ratio": 0.7,
+        "missing": [
+          "lunchBudget",
+          "featuredDishes",
+          "strictRecommendations"
+        ]
+      },
       "sourceState": {
         "providers": [
-          "Hot Pepper"
+          "Hot Pepper",
+          "official"
         ],
-        "publicSourceLinks": 0,
-        "sourceClaimedFields": [],
-        "sourceLastCheckedAt": null,
-        "providerFactRecords": 0,
+        "publicSourceLinks": 2,
+        "sourceClaimedFields": [
+          "address",
+          "closure",
+          "cuisine",
+          "currentness",
+          "dinnerBudget",
+          "hours",
+          "name"
+        ],
+        "sourceLastCheckedAt": "2026-09-06",
+        "providerFactRecords": 1,
         "hotpepperCatalogFacts": true,
         "hotpepperCatalogFactFields": [
           "access",
@@ -252480,12 +252763,13 @@
         }
       },
       "nextActions": [
-        "fieldNormalization",
-        "currentness",
-        "productionSchemaAdmission"
+        "lunchBudget",
+        "featuredDishes",
+        "hotpepperFieldNormalization",
+        "hotpepperRichReview"
       ],
       "admission": {
-        "status": "reviewed_ready",
+        "status": "admitted_production",
         "mode": "historical-id+multisource-reviewed",
         "reviewedAt": "2026-09-06",
         "currentnessProvider": "official",

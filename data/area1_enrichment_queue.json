@@ -1,18 +1,17 @@
 {
-  "schemaVersion": 5,
+  "schemaVersion": 6,
   "summary": {
-    "schemaVersion": 5,
+    "schemaVersion": 6,
     "checkedAt": "2026-09-06",
     "identityUniverse": 2807,
-    "production": 656,
-    "inventoryOnly": 2151,
-    "productionCoreIncomplete": 553,
+    "production": 662,
+    "inventoryOnly": 2145,
+    "productionCoreIncomplete": 559,
     "productionCoreComplete": 103,
     "queueCounts": {
-      "production_existing_source_extract": 347,
+      "production_existing_source_extract": 353,
       "production_source_binding": 206,
       "production_core_complete": 103,
-      "inventory_admission_ready": 6,
       "inventory_open_cross_supported_review": 32,
       "inventory_hotpepper_loaded_review": 384,
       "inventory_open_highmedium_review": 8,
@@ -25,38 +24,38 @@
     "productionCoreGapCounts": {
       "address": 333,
       "cuisine": 55,
-      "lunchBudget": 490,
+      "lunchBudget": 496,
       "dinnerBudget": 402,
       "openingHours": 296,
       "publicSourceEvidence": 210
     },
-    "inventoryWithHistoricalOpenCandidate": 1989,
+    "inventoryWithHistoricalOpenCandidate": 1983,
     "inventoryOpenConfidenceCounts": {
-      "high": 33,
       "review": 49,
+      "high": 27,
       "medium": 3,
       "low": 1904
     },
     "inventoryTriageCounts": {
-      "B_blocker_review": 24,
       "A_priority_review": 18,
+      "B_blocker_review": 18,
       "D_unresolved": 1947
     },
-    "inventoryHighMediumOpenCandidates": 36,
-    "inventoryWithOvertureSupport": 1989,
-    "inventoryMultisourceLoadedPriority": 10,
+    "inventoryHighMediumOpenCandidates": 30,
+    "inventoryWithOvertureSupport": 1983,
+    "inventoryMultisourceLoadedPriority": 4,
     "inventoryOpenCrossSupportedPriority": 32,
-    "inventoryHotpepperLoaded": 394,
-    "strictAutoHotpepperProductionBindings": 128,
-    "productionWithLoadedStrictHotpepperFieldCandidates": 128,
+    "inventoryHotpepperLoaded": 388,
+    "strictAutoHotpepperProductionBindings": 132,
+    "productionWithLoadedStrictHotpepperFieldCandidates": 132,
     "productionLoadedStrictHotpepperCandidateFieldCounts": {
       "address": 0,
       "cuisine": 0,
-      "lunchBudgetExplicitText": 0,
+      "lunchBudgetExplicitText": 1,
       "dinnerBudget": 0,
       "openingHours": 0,
-      "featuredDishesReview": 71,
-      "lunchAvailability": 128
+      "featuredDishesReview": 73,
+      "lunchAvailability": 132
     },
     "policy": {
       "catalogFirst": true,
@@ -69,7 +68,8 @@
       "explicitLunchTextRequiresFiniteLabelledRange": true,
       "noExternalPaidRequests": true
     },
-    "inventoryAdmissionReady": 6,
+    "inventoryAdmissionReady": 0,
+    "admittedProduction": 6,
     "inventoryRejectedPairHold": 4
   },
   "items": [
@@ -15940,6 +15940,114 @@
       ]
     },
     {
+      "googlePlaceId": "ChIJ0yEYvTONGGARdrgMhFNR7oA",
+      "catalogStatus": "production",
+      "currentProduction": true,
+      "name": "BASE CAMP",
+      "candidateName": null,
+      "queue": "production_existing_source_extract",
+      "priorityScore": 1240,
+      "coreMissing": [
+        "lunchBudget"
+      ],
+      "optionalMissing": [
+        "featuredDishes",
+        "strictRecommendations"
+      ],
+      "sourceProviders": [
+        "Hot Pepper",
+        "official"
+      ],
+      "publicSourceLinks": 3,
+      "providerFactRecords": 1,
+      "hotpepperCatalogFacts": true,
+      "hotpepperConfidence": "high",
+      "hotpepperAutoEligible": true,
+      "openCandidate": {
+        "provider": "OpenStreetMap",
+        "sourceCandidateId": "osm-n-6187350566",
+        "name": "Base Camp",
+        "cuisine": "咖啡",
+        "address": null,
+        "lat": 35.702201,
+        "lng": 139.753988,
+        "confidence": "high",
+        "historicalQcStatus": "operational_food",
+        "distanceMeters": 6,
+        "nameSimilarity": 1
+      },
+      "overtureSupport": {
+        "release": "2026-08-19.0",
+        "overtureId": "2a1d27c8-581a-432e-954f-464bfefe77d3",
+        "name": "Base Camp",
+        "basicCategory": "cafe",
+        "websites": [
+          "http://www.cafe-basecamp.com/"
+        ],
+        "brand": {
+          "wikidata": null,
+          "names": {
+            "primary": null,
+            "common": null,
+            "rules": null
+          }
+        },
+        "distanceToOsmMeters": 6,
+        "nameSimilarity": 1,
+        "addressSimilarity": 0,
+        "combinedScore": 0.944,
+        "crossSourceConfidence": "high",
+        "triage": "B_blocker_review"
+      },
+      "existingHotpepperFieldCandidates": [
+        "lunchBudgetExplicitText",
+        "lunchAvailability"
+      ],
+      "explicitLunchRangeFromLoadedHotpepper": [
+        2001,
+        3000
+      ],
+      "nextActions": [
+        "lunchBudget",
+        "featuredDishes",
+        "hotpepperFieldNormalization",
+        "hotpepperRichReview"
+      ],
+      "reviewedAdmission": {
+        "status": "admitted_production",
+        "mode": "historical-id+multisource-reviewed",
+        "reviewedAt": "2026-09-06",
+        "currentnessProvider": "official",
+        "currentnessUrl": "https://www.cafe-basecamp.com/about/",
+        "identityEvidence": {
+          "hotpepperId": "J003465000",
+          "osmCandidateId": "osm-n-6187350566",
+          "overtureId": "2a1d27c8-581a-432e-954f-464bfefe77d3"
+        }
+      },
+      "reviewedCatalogFacts": {
+        "name": "BASE CAMP",
+        "address": "東京都千代田区神田三崎町2-22-8 梨本ビル1F",
+        "lat": 35.7022071746,
+        "lng": 139.7539458748,
+        "cuisine": "咖啡",
+        "hotpepperBudget": [
+          3001,
+          4000
+        ],
+        "hotpepperBudgetRaw": {
+          "code": "B003",
+          "name": "3001～4000円",
+          "average": "ランチ2001～3000円/ディナー3001～4000円"
+        },
+        "openingHoursText": "火: 11:30～14:30水～金、祝日、祝前日: 11:30～14:3017:00～23:30土: 17:00～23:30",
+        "closedText": "月、日",
+        "stationName": "水道橋",
+        "access": "JR水道橋駅より徒歩2分",
+        "hotpepperUrl": "https://www.hotpepper.jp/strJ003465000/?vos=nhppalsa000016"
+      }
+    },
+    {
       "googlePlaceId": "ChIJG1HzOhGMGGARbc3MsTlAYkA",
       "catalogStatus": "production",
       "currentProduction": true,
@@ -16197,6 +16305,107 @@
       ]
     },
     {
+      "googlePlaceId": "ChIJe-72fACNGGARqtnxQaA1-dg",
+      "catalogStatus": "production",
+      "currentProduction": true,
+      "name": "LYFE -酒と飯と-",
+      "candidateName": null,
+      "queue": "production_existing_source_extract",
+      "priorityScore": 1240,
+      "coreMissing": [
+        "lunchBudget"
+      ],
+      "optionalMissing": [
+        "featuredDishes",
+        "strictRecommendations"
+      ],
+      "sourceProviders": [
+        "Hot Pepper",
+        "recent_operational_listing"
+      ],
+      "publicSourceLinks": 2,
+      "providerFactRecords": 1,
+      "hotpepperCatalogFacts": true,
+      "hotpepperConfidence": "high",
+      "hotpepperAutoEligible": true,
+      "openCandidate": {
+        "provider": "OpenStreetMap",
+        "sourceCandidateId": "osm-n-12860171393",
+        "name": "LYFE",
+        "cuisine": "酒吧",
+        "address": null,
+        "lat": 35.693819,
+        "lng": 139.763793,
+        "confidence": "high",
+        "historicalQcStatus": "operational_food",
+        "distanceMeters": 14,
+        "nameSimilarity": 1
+      },
+      "overtureSupport": {
+        "release": "2026-08-19.0",
+        "overtureId": "5225735d-699c-41ca-bf5f-2cfc14cbd4ba",
+        "name": "LYFE",
+        "basicCategory": "restaurant",
+        "websites": null,
+        "brand": {
+          "wikidata": null,
+          "names": {
+            "primary": null,
+            "common": null,
+            "rules": null
+          }
+        },
+        "distanceToOsmMeters": 13,
+        "nameSimilarity": 1,
+        "addressSimilarity": 0,
+        "combinedScore": 0.937,
+        "crossSourceConfidence": "high",
+        "triage": "B_blocker_review"
+      },
+      "existingHotpepperFieldCandidates": [
+        "lunchAvailability"
+      ],
+      "explicitLunchRangeFromLoadedHotpepper": null,
+      "nextActions": [
+        "lunchBudget",
+        "featuredDishes",
+        "hotpepperFieldNormalization",
+        "hotpepperRichReview"
+      ],
+      "reviewedAdmission": {
+        "status": "admitted_production",
+        "mode": "historical-id+multisource-reviewed",
+        "reviewedAt": "2026-09-06",
+        "currentnessProvider": "recent_operational_listing",
+        "currentnessUrl": "https://job.inshokuten.com/kanto/work/detail/87899?assistLinkCode=11",
+        "identityEvidence": {
+          "hotpepperId": "J003806900",
+          "osmCandidateId": "osm-n-12860171393",
+          "overtureId": "5225735d-699c-41ca-bf5f-2cfc14cbd4ba"
+        }
+      },
+      "reviewedCatalogFacts": {
+        "name": "LYFE -酒と飯と-",
+        "address": "東京都千代田区神田錦町2-4-1 ダヴィンチ小川町1F",
+        "lat": 35.6938692058,
+        "lng": 139.7636365012,
+        "cuisine": "居酒屋",
+        "hotpepperBudget": [
+          3001,
+          4000
+        ],
+        "hotpepperBudgetRaw": {
+          "code": "B003",
+          "name": "3001～4000円"
+        },
+        "openingHoursText": "月、水～金: 11:00～15:00 （料理L.O. 14:00 ドリンクL.O. 14:00）17:00～23:00 （料理L.O. 21:30 ドリンクL.O. 22:30）火: 11:00～15:00 （料理L.O. 14:00 ドリンクL.O. 14:00）17:00～23:00 （料理L.O. 21:30 ドリンクL.O. 22:00）土: 17:00～23:00 （料理L.O. 21:30 ドリンクL.O. 22:30）",
+        "closedText": "日",
+        "stationName": "淡路町",
+        "access": "小川町駅から徒歩４分",
+        "hotpepperUrl": "https://www.hotpepper.jp/strJ003806900/?vos=nhppalsa000016"
+      }
+    },
+    {
       "googlePlaceId": "ChIJs_zQkhCMGGARCN3rJxb_w80",
       "catalogStatus": "production",
       "currentProduction": true,
@@ -16306,6 +16515,111 @@
         "featuredDishes",
         "hotpepperFieldNormalization"
       ]
+    },
+    {
+      "googlePlaceId": "ChIJN9mduz-MGGAR53bCFr3JZro",
+      "catalogStatus": "production",
+      "currentProduction": true,
+      "name": "SAPANA 水道橋西口店",
+      "candidateName": null,
+      "queue": "production_existing_source_extract",
+      "priorityScore": 1240,
+      "coreMissing": [
+        "lunchBudget"
+      ],
+      "optionalMissing": [
+        "featuredDishes",
+        "strictRecommendations"
+      ],
+      "sourceProviders": [
+        "Hot Pepper",
+        "official"
+      ],
+      "publicSourceLinks": 2,
+      "providerFactRecords": 1,
+      "hotpepperCatalogFacts": true,
+      "hotpepperConfidence": "high",
+      "hotpepperAutoEligible": true,
+      "openCandidate": {
+        "provider": "OpenStreetMap",
+        "sourceCandidateId": "osm-n-6187350569",
+        "name": "Asian dining bar Sapana",
+        "cuisine": "餐厅",
+        "address": null,
+        "lat": 35.701808,
+        "lng": 139.752493,
+        "confidence": "high",
+        "historicalQcStatus": "operational_food",
+        "distanceMeters": 19,
+        "nameSimilarity": 0.96
+      },
+      "overtureSupport": {
+        "release": "2026-08-19.0",
+        "overtureId": "454cff63-0be3-490a-ab42-ed987e16e610",
+        "name": "Sapana",
+        "basicCategory": "restaurant",
+        "websites": [
+          "http://sapana-group.com"
+        ],
+        "brand": {
+          "wikidata": null,
+          "names": {
+            "primary": "Sapana水道橋西口店（２４時間OPEN）",
+            "common": null,
+            "rules": null
+          }
+        },
+        "distanceToOsmMeters": 11,
+        "nameSimilarity": 0.96,
+        "addressSimilarity": 0,
+        "combinedScore": 0.911,
+        "crossSourceConfidence": "high",
+        "triage": "B_blocker_review"
+      },
+      "existingHotpepperFieldCandidates": [
+        "featuredDishesReview",
+        "lunchAvailability"
+      ],
+      "explicitLunchRangeFromLoadedHotpepper": null,
+      "nextActions": [
+        "lunchBudget",
+        "featuredDishes",
+        "hotpepperFieldNormalization",
+        "hotpepperRichReview"
+      ],
+      "reviewedAdmission": {
+        "status": "admitted_production",
+        "mode": "historical-id+multisource-reviewed",
+        "reviewedAt": "2026-09-06",
+        "currentnessProvider": "official",
+        "currentnessUrl": "https://www.sapana-group.com/%E6%B0%B4%E9%81%93%E6%A9%8B%E8%A5%BF%E5%8F%A3%E5%BA%97",
+        "identityEvidence": {
+          "hotpepperId": "J001126936",
+          "osmCandidateId": "osm-n-6187350569",
+          "overtureId": "454cff63-0be3-490a-ab42-ed987e16e610"
+        }
+      },
+      "reviewedCatalogFacts": {
+        "name": "SAPANA 水道橋西口店",
+        "address": "東京都千代田区神田三崎町2-20-8 FUNDES水道橋1F",
+        "lat": 35.7018843887,
+        "lng": 139.7522929723,
+        "cuisine": "印度・尼泊尔",
+        "hotpepperBudget": [
+          3001,
+          4000
+        ],
+        "hotpepperBudgetRaw": {
+          "code": "B003",
+          "name": "3001～4000円",
+          "average": "2000円（通常平均）/4000円（宴会平均）/1000円（ランチ平均）"
+        },
+        "openingHoursText": "月～日: 06:00～翌6:00 （料理L.O. 翌5:00 ドリンクL.O. 翌5:30）",
+        "closedText": "年中無休　※土日祝はランチメニューを提供していない場合がございます。念の為店舗へお問い合わせ頂ければと思います。",
+        "stationName": "水道橋",
+        "access": "水道橋駅西口を出て左手に10秒！都営三田線水道橋駅より徒歩約3分/ＪＲ飯田橋駅東口より徒歩約3分",
+        "hotpepperUrl": "https://www.hotpepper.jp/strJ001126936/?vos=nhppalsa000016"
+      }
     },
     {
       "googlePlaceId": "ChIJJZS1WhuMGGARg97yhh0fUU8",
@@ -18198,6 +18512,111 @@
       ]
     },
     {
+      "googlePlaceId": "ChIJy7PtkAaMGGARsKefDexKN-4",
+      "catalogStatus": "production",
+      "currentProduction": true,
+      "name": "大手町ZION",
+      "candidateName": null,
+      "queue": "production_existing_source_extract",
+      "priorityScore": 1240,
+      "coreMissing": [
+        "lunchBudget"
+      ],
+      "optionalMissing": [
+        "featuredDishes",
+        "strictRecommendations"
+      ],
+      "sourceProviders": [
+        "Hot Pepper",
+        "official"
+      ],
+      "publicSourceLinks": 2,
+      "providerFactRecords": 1,
+      "hotpepperCatalogFacts": true,
+      "hotpepperConfidence": "high",
+      "hotpepperAutoEligible": true,
+      "openCandidate": {
+        "provider": "OpenStreetMap",
+        "sourceCandidateId": "osm-n-12083652957",
+        "name": "ZION",
+        "cuisine": "意大利菜",
+        "address": null,
+        "lat": 35.690009,
+        "lng": 139.766056,
+        "confidence": "high",
+        "historicalQcStatus": "operational_food",
+        "distanceMeters": 6,
+        "nameSimilarity": 1
+      },
+      "overtureSupport": {
+        "release": "2026-08-19.0",
+        "overtureId": "a1d83a5a-b699-45fa-a477-4e1941d64913",
+        "name": "Zion",
+        "basicCategory": "restaurant",
+        "websites": [
+          "https://www.hotpepper.jp/strJ001116639/?vos=cphppsocface20110701001"
+        ],
+        "brand": {
+          "wikidata": null,
+          "names": {
+            "primary": null,
+            "common": null,
+            "rules": null
+          }
+        },
+        "distanceToOsmMeters": 1,
+        "nameSimilarity": 1,
+        "addressSimilarity": 0,
+        "combinedScore": 0.949,
+        "crossSourceConfidence": "high",
+        "triage": "B_blocker_review"
+      },
+      "existingHotpepperFieldCandidates": [
+        "featuredDishesReview",
+        "lunchAvailability"
+      ],
+      "explicitLunchRangeFromLoadedHotpepper": null,
+      "nextActions": [
+        "lunchBudget",
+        "featuredDishes",
+        "hotpepperFieldNormalization",
+        "hotpepperRichReview"
+      ],
+      "reviewedAdmission": {
+        "status": "admitted_production",
+        "mode": "historical-id+multisource-reviewed",
+        "reviewedAt": "2026-09-06",
+        "currentnessProvider": "official",
+        "currentnessUrl": "https://otemachizion.owst.jp/",
+        "identityEvidence": {
+          "hotpepperId": "J001116639",
+          "osmCandidateId": "osm-n-12083652957",
+          "overtureId": "a1d83a5a-b699-45fa-a477-4e1941d64913"
+        }
+      },
+      "reviewedCatalogFacts": {
+        "name": "大手町ZION",
+        "address": "東京都千代田区内神田1-5-16 アルテ大手町1F",
+        "lat": 35.690017757,
+        "lng": 139.7659725698,
+        "cuisine": "西班牙菜",
+        "hotpepperBudget": [
+          3001,
+          4000
+        ],
+        "hotpepperBudgetRaw": {
+          "code": "B003",
+          "name": "3001～4000円",
+          "average": "飲み放題付コースは4480円～/アラカルト　3800円／ランチ　850円"
+        },
+        "openingHoursText": "月～土、祝日、祝前日: 17:00～22:30 （料理L.O. 21:00 ドリンクL.O. 21:30）",
+        "closedText": "日",
+        "stationName": "大手町",
+        "access": "大手町A1出口徒歩7分/神田駅西口徒歩7分/東京駅から１駅!!出張や帰り道でもアクセス便利です！",
+        "hotpepperUrl": "https://www.hotpepper.jp/strJ001116639/?vos=nhppalsa000016"
+      }
+    },
+    {
       "googlePlaceId": "ChIJk8bIIBGMGGARU0MztWZkDEc",
       "catalogStatus": "production",
       "currentProduction": true,
@@ -19469,6 +19888,211 @@
         "openingHours",
         "featuredDishes"
       ]
+    },
+    {
+      "googlePlaceId": "ChIJc3y8okOMGGARcvEFuVzOJY8",
+      "catalogStatus": "production",
+      "currentProduction": true,
+      "name": "焼鳥ブロシェット 飯田橋",
+      "candidateName": null,
+      "queue": "production_existing_source_extract",
+      "priorityScore": 1225,
+      "coreMissing": [
+        "lunchBudget"
+      ],
+      "optionalMissing": [
+        "featuredDishes",
+        "strictRecommendations"
+      ],
+      "sourceProviders": [
+        "Hot Pepper",
+        "TableCheck"
+      ],
+      "publicSourceLinks": 2,
+      "providerFactRecords": 1,
+      "hotpepperCatalogFacts": true,
+      "hotpepperConfidence": "high",
+      "hotpepperAutoEligible": false,
+      "openCandidate": {
+        "provider": "OpenStreetMap",
+        "sourceCandidateId": "osm-n-10153290037",
+        "name": "Brochette",
+        "cuisine": "烧鸟",
+        "address": null,
+        "lat": 35.699465,
+        "lng": 139.745378,
+        "confidence": "high",
+        "historicalQcStatus": "operational_food",
+        "distanceMeters": 7,
+        "nameSimilarity": 0.96
+      },
+      "overtureSupport": {
+        "release": "2026-08-19.0",
+        "overtureId": "f001ac8b-27dd-48be-9973-b7611731c574",
+        "name": "Yakitori Brochette",
+        "basicCategory": "restaurant",
+        "websites": [
+          "https://www.tablecheck.com/shops/yakitori-brochette-kagurazaka/reserve?utm_source=facebook"
+        ],
+        "brand": {
+          "wikidata": null,
+          "names": {
+            "primary": null,
+            "common": null,
+            "rules": null
+          }
+        },
+        "distanceToOsmMeters": 10,
+        "nameSimilarity": 0.96,
+        "addressSimilarity": 0,
+        "combinedScore": 0.912,
+        "crossSourceConfidence": "high",
+        "triage": "B_blocker_review"
+      },
+      "existingHotpepperFieldCandidates": [],
+      "explicitLunchRangeFromLoadedHotpepper": null,
+      "nextActions": [
+        "lunchBudget",
+        "featuredDishes",
+        "hotpepperFieldNormalization",
+        "hotpepperRichReview"
+      ],
+      "reviewedAdmission": {
+        "status": "admitted_production",
+        "mode": "historical-id+multisource-reviewed",
+        "reviewedAt": "2026-09-06",
+        "currentnessProvider": "current_booking_page",
+        "currentnessUrl": "https://www.tablecheck.com/en/yakitori-brochette-iidabashi",
+        "identityEvidence": {
+          "hotpepperId": "J001066087",
+          "osmCandidateId": "osm-n-10153290037",
+          "overtureId": "f001ac8b-27dd-48be-9973-b7611731c574"
+        }
+      },
+      "reviewedCatalogFacts": {
+        "name": "焼鳥ブロシェット 飯田橋",
+        "address": "東京都千代田区富士見2-2-10",
+        "lat": 35.6994422537,
+        "lng": 139.7453175512,
+        "cuisine": "日式",
+        "hotpepperBudget": [
+          3001,
+          4000
+        ],
+        "hotpepperBudgetRaw": {
+          "code": "B003",
+          "name": "3001～4000円",
+          "average": "3800"
+        },
+        "openingHoursText": "月～日、祝日、祝前日: 18:00～23:00 （料理L.O. 22:30 ドリンクL.O. 22:30）",
+        "closedText": "なし",
+        "stationName": "飯田橋",
+        "access": "飯田橋駅西口/B2a/A4各出口から徒歩約5分。　※　神楽坂店とお間違いにならないようにくれぐれもご注意ください。",
+        "hotpepperUrl": "https://www.hotpepper.jp/strJ001066087/?vos=nhppalsa000016"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJLdDA4HiNGGARCcHyQmvL0OI",
+      "catalogStatus": "production",
+      "currentProduction": true,
+      "name": "701",
+      "candidateName": null,
+      "queue": "production_existing_source_extract",
+      "priorityScore": 1215,
+      "coreMissing": [
+        "lunchBudget"
+      ],
+      "optionalMissing": [
+        "featuredDishes",
+        "strictRecommendations"
+      ],
+      "sourceProviders": [
+        "Hot Pepper",
+        "OpenStreetMap",
+        "official"
+      ],
+      "publicSourceLinks": 2,
+      "providerFactRecords": 1,
+      "hotpepperCatalogFacts": true,
+      "hotpepperConfidence": "medium",
+      "hotpepperAutoEligible": false,
+      "openCandidate": {
+        "provider": "OpenStreetMap",
+        "sourceCandidateId": "osm-n-12953576363",
+        "name": "701",
+        "cuisine": "意大利菜",
+        "address": null,
+        "lat": 35.699632,
+        "lng": 139.766661,
+        "confidence": "high",
+        "historicalQcStatus": "operational_food",
+        "distanceMeters": 6,
+        "nameSimilarity": 1
+      },
+      "overtureSupport": {
+        "release": "2026-08-19.0",
+        "overtureId": "85f48e37-5924-451a-a21c-94185d7cd902",
+        "name": "701",
+        "basicCategory": "restaurant",
+        "websites": [
+          "https://701ochanomizu.jp/"
+        ],
+        "brand": {
+          "wikidata": null,
+          "names": {
+            "primary": null,
+            "common": null,
+            "rules": null
+          }
+        },
+        "distanceToOsmMeters": 7,
+        "nameSimilarity": 1,
+        "addressSimilarity": 0,
+        "combinedScore": 0.943,
+        "crossSourceConfidence": "high",
+        "triage": "B_blocker_review"
+      },
+      "existingHotpepperFieldCandidates": [],
+      "explicitLunchRangeFromLoadedHotpepper": null,
+      "nextActions": [
+        "lunchBudget",
+        "featuredDishes",
+        "hotpepperFieldNormalization",
+        "hotpepperRichReview"
+      ],
+      "reviewedAdmission": {
+        "status": "admitted_production",
+        "mode": "historical-id+multisource-reviewed",
+        "reviewedAt": "2026-09-06",
+        "currentnessProvider": "official",
+        "currentnessUrl": "https://ochanomizu-701.foodre.jp/",
+        "identityEvidence": {
+          "hotpepperId": "J003581555",
+          "osmCandidateId": "osm-n-12953576363",
+          "overtureId": "85f48e37-5924-451a-a21c-94185d7cd902"
+        }
+      },
+      "reviewedCatalogFacts": {
+        "name": "701",
+        "address": "東京都千代田区外神田2-1-3 東進ビル新館1F",
+        "lat": 35.6996344709,
+        "lng": 139.7666115718,
+        "cuisine": "意大利菜",
+        "hotpepperBudget": [
+          10001,
+          12000
+        ],
+        "hotpepperBudgetRaw": {
+          "code": "B020",
+          "name": "10001～12000円",
+          "average": "8000円"
+        },
+        "openingHoursText": "水～日、祝日: 11:30～15:00 （料理L.O. 14:00 ドリンクL.O. 14:00）18:00～22:00 （料理L.O. 20:30 ドリンクL.O. 20:30）",
+        "closedText": "月、火",
+        "stationName": "御茶ノ水",
+        "access": "東京メトロ　御茶ノ水駅　徒歩4分東京メトロ　新御茶ノ水駅　徒歩８分JR　御茶ノ水駅　徒歩５分",
+        "hotpepperUrl": "https://www.hotpepper.jp/strJ003581555/?vos=nhppalsa000016"
+      }
     },
     {
       "googlePlaceId": "ChIJtbiQrhaMGGARQdyy8bco94Y",
@@ -24439,561 +25063,6 @@
       "existingHotpepperFieldCandidates": [],
       "explicitLunchRangeFromLoadedHotpepper": null,
       "nextActions": []
-    },
-    {
-      "googlePlaceId": "ChIJLdDA4HiNGGARCcHyQmvL0OI",
-      "catalogStatus": "inventory_only",
-      "currentProduction": false,
-      "name": "701 ナナマルイチ",
-      "candidateName": null,
-      "queue": "inventory_admission_ready",
-      "priorityScore": 900,
-      "coreMissing": [],
-      "optionalMissing": [],
-      "sourceProviders": [
-        "Hot Pepper"
-      ],
-      "publicSourceLinks": 0,
-      "providerFactRecords": 0,
-      "hotpepperCatalogFacts": true,
-      "hotpepperConfidence": "medium",
-      "hotpepperAutoEligible": false,
-      "openCandidate": {
-        "provider": "OpenStreetMap",
-        "sourceCandidateId": "osm-n-12953576363",
-        "name": "701",
-        "cuisine": "意大利菜",
-        "address": null,
-        "lat": 35.699632,
-        "lng": 139.766661,
-        "confidence": "high",
-        "historicalQcStatus": "operational_food",
-        "distanceMeters": 6,
-        "nameSimilarity": 1
-      },
-      "overtureSupport": {
-        "release": "2026-08-19.0",
-        "overtureId": "85f48e37-5924-451a-a21c-94185d7cd902",
-        "name": "701",
-        "basicCategory": "restaurant",
-        "websites": [
-          "https://701ochanomizu.jp/"
-        ],
-        "brand": {
-          "wikidata": null,
-          "names": {
-            "primary": null,
-            "common": null,
-            "rules": null
-          }
-        },
-        "distanceToOsmMeters": 7,
-        "nameSimilarity": 1,
-        "addressSimilarity": 0,
-        "combinedScore": 0.943,
-        "crossSourceConfidence": "high",
-        "triage": "B_blocker_review"
-      },
-      "existingHotpepperFieldCandidates": [],
-      "explicitLunchRangeFromLoadedHotpepper": null,
-      "nextActions": [
-        "productionSchemaAdmission"
-      ],
-      "reviewedAdmission": {
-        "status": "reviewed_ready",
-        "mode": "historical-id+multisource-reviewed",
-        "reviewedAt": "2026-09-06",
-        "currentnessProvider": "official",
-        "currentnessUrl": "https://ochanomizu-701.foodre.jp/",
-        "identityEvidence": {
-          "hotpepperId": "J003581555",
-          "osmCandidateId": "osm-n-12953576363",
-          "overtureId": "85f48e37-5924-451a-a21c-94185d7cd902"
-        }
-      },
-      "reviewedCatalogFacts": {
-        "name": "701",
-        "address": "東京都千代田区外神田2-1-3 東進ビル新館1F",
-        "lat": 35.6996344709,
-        "lng": 139.7666115718,
-        "cuisine": "意大利菜",
-        "hotpepperBudget": [
-          10001,
-          12000
-        ],
-        "hotpepperBudgetRaw": {
-          "code": "B020",
-          "name": "10001～12000円",
-          "average": "8000円"
-        },
-        "openingHoursText": "水～日、祝日: 11:30～15:00 （料理L.O. 14:00 ドリンクL.O. 14:00）18:00～22:00 （料理L.O. 20:30 ドリンクL.O. 20:30）",
-        "closedText": "月、火",
-        "stationName": "御茶ノ水",
-        "access": "東京メトロ　御茶ノ水駅　徒歩4分東京メトロ　新御茶ノ水駅　徒歩８分JR　御茶ノ水駅　徒歩５分",
-        "hotpepperUrl": "https://www.hotpepper.jp/strJ003581555/?vos=nhppalsa000016"
-      }
-    },
-    {
-      "googlePlaceId": "ChIJ0yEYvTONGGARdrgMhFNR7oA",
-      "catalogStatus": "inventory_only",
-      "currentProduction": false,
-      "name": "BASE CAMP",
-      "candidateName": null,
-      "queue": "inventory_admission_ready",
-      "priorityScore": 900,
-      "coreMissing": [],
-      "optionalMissing": [],
-      "sourceProviders": [
-        "Hot Pepper"
-      ],
-      "publicSourceLinks": 0,
-      "providerFactRecords": 0,
-      "hotpepperCatalogFacts": true,
-      "hotpepperConfidence": "high",
-      "hotpepperAutoEligible": true,
-      "openCandidate": {
-        "provider": "OpenStreetMap",
-        "sourceCandidateId": "osm-n-6187350566",
-        "name": "Base Camp",
-        "cuisine": "咖啡",
-        "address": null,
-        "lat": 35.702201,
-        "lng": 139.753988,
-        "confidence": "high",
-        "historicalQcStatus": "operational_food",
-        "distanceMeters": 6,
-        "nameSimilarity": 1
-      },
-      "overtureSupport": {
-        "release": "2026-08-19.0",
-        "overtureId": "2a1d27c8-581a-432e-954f-464bfefe77d3",
-        "name": "Base Camp",
-        "basicCategory": "cafe",
-        "websites": [
-          "http://www.cafe-basecamp.com/"
-        ],
-        "brand": {
-          "wikidata": null,
-          "names": {
-            "primary": null,
-            "common": null,
-            "rules": null
-          }
-        },
-        "distanceToOsmMeters": 6,
-        "nameSimilarity": 1,
-        "addressSimilarity": 0,
-        "combinedScore": 0.944,
-        "crossSourceConfidence": "high",
-        "triage": "B_blocker_review"
-      },
-      "existingHotpepperFieldCandidates": [],
-      "explicitLunchRangeFromLoadedHotpepper": null,
-      "nextActions": [
-        "productionSchemaAdmission"
-      ],
-      "reviewedAdmission": {
-        "status": "reviewed_ready",
-        "mode": "historical-id+multisource-reviewed",
-        "reviewedAt": "2026-09-06",
-        "currentnessProvider": "official",
-        "currentnessUrl": "https://www.cafe-basecamp.com/about/",
-        "identityEvidence": {
-          "hotpepperId": "J003465000",
-          "osmCandidateId": "osm-n-6187350566",
-          "overtureId": "2a1d27c8-581a-432e-954f-464bfefe77d3"
-        }
-      },
-      "reviewedCatalogFacts": {
-        "name": "BASE CAMP",
-        "address": "東京都千代田区神田三崎町2-22-8 梨本ビル1F",
-        "lat": 35.7022071746,
-        "lng": 139.7539458748,
-        "cuisine": "咖啡",
-        "hotpepperBudget": [
-          3001,
-          4000
-        ],
-        "hotpepperBudgetRaw": {
-          "code": "B003",
-          "name": "3001～4000円",
-          "average": "ランチ2001～3000円/ディナー3001～4000円"
-        },
-        "openingHoursText": "火: 11:30～14:30水～金、祝日、祝前日: 11:30～14:3017:00～23:30土: 17:00～23:30",
-        "closedText": "月、日",
-        "stationName": "水道橋",
-        "access": "JR水道橋駅より徒歩2分",
-        "hotpepperUrl": "https://www.hotpepper.jp/strJ003465000/?vos=nhppalsa000016"
-      }
-    },
-    {
-      "googlePlaceId": "ChIJe-72fACNGGARqtnxQaA1-dg",
-      "catalogStatus": "inventory_only",
-      "currentProduction": false,
-      "name": "LYFE 酒と飯と",
-      "candidateName": null,
-      "queue": "inventory_admission_ready",
-      "priorityScore": 900,
-      "coreMissing": [],
-      "optionalMissing": [],
-      "sourceProviders": [
-        "Hot Pepper"
-      ],
-      "publicSourceLinks": 0,
-      "providerFactRecords": 0,
-      "hotpepperCatalogFacts": true,
-      "hotpepperConfidence": "high",
-      "hotpepperAutoEligible": true,
-      "openCandidate": {
-        "provider": "OpenStreetMap",
-        "sourceCandidateId": "osm-n-12860171393",
-        "name": "LYFE",
-        "cuisine": "酒吧",
-        "address": null,
-        "lat": 35.693819,
-        "lng": 139.763793,
-        "confidence": "high",
-        "historicalQcStatus": "operational_food",
-        "distanceMeters": 14,
-        "nameSimilarity": 1
-      },
-      "overtureSupport": {
-        "release": "2026-08-19.0",
-        "overtureId": "5225735d-699c-41ca-bf5f-2cfc14cbd4ba",
-        "name": "LYFE",
-        "basicCategory": "restaurant",
-        "websites": null,
-        "brand": {
-          "wikidata": null,
-          "names": {
-            "primary": null,
-            "common": null,
-            "rules": null
-          }
-        },
-        "distanceToOsmMeters": 13,
-        "nameSimilarity": 1,
-        "addressSimilarity": 0,
-        "combinedScore": 0.937,
-        "crossSourceConfidence": "high",
-        "triage": "B_blocker_review"
-      },
-      "existingHotpepperFieldCandidates": [],
-      "explicitLunchRangeFromLoadedHotpepper": null,
-      "nextActions": [
-        "productionSchemaAdmission"
-      ],
-      "reviewedAdmission": {
-        "status": "reviewed_ready",
-        "mode": "historical-id+multisource-reviewed",
-        "reviewedAt": "2026-09-06",
-        "currentnessProvider": "recent_operational_listing",
-        "currentnessUrl": "https://job.inshokuten.com/kanto/work/detail/87899?assistLinkCode=11",
-        "identityEvidence": {
-          "hotpepperId": "J003806900",
-          "osmCandidateId": "osm-n-12860171393",
-          "overtureId": "5225735d-699c-41ca-bf5f-2cfc14cbd4ba"
-        }
-      },
-      "reviewedCatalogFacts": {
-        "name": "LYFE -酒と飯と-",
-        "address": "東京都千代田区神田錦町2-4-1 ダヴィンチ小川町1F",
-        "lat": 35.6938692058,
-        "lng": 139.7636365012,
-        "cuisine": "居酒屋",
-        "hotpepperBudget": [
-          3001,
-          4000
-        ],
-        "hotpepperBudgetRaw": {
-          "code": "B003",
-          "name": "3001～4000円"
-        },
-        "openingHoursText": "月、水～金: 11:00～15:00 （料理L.O. 14:00 ドリンクL.O. 14:00）17:00～23:00 （料理L.O. 21:30 ドリンクL.O. 22:30）火: 11:00～15:00 （料理L.O. 14:00 ドリンクL.O. 14:00）17:00～23:00 （料理L.O. 21:30 ドリンクL.O. 22:00）土: 17:00～23:00 （料理L.O. 21:30 ドリンクL.O. 22:30）",
-        "closedText": "日",
-        "stationName": "淡路町",
-        "access": "小川町駅から徒歩４分",
-        "hotpepperUrl": "https://www.hotpepper.jp/strJ003806900/?vos=nhppalsa000016"
-      }
-    },
-    {
-      "googlePlaceId": "ChIJN9mduz-MGGAR53bCFr3JZro",
-      "catalogStatus": "inventory_only",
-      "currentProduction": false,
-      "name": "SAPANA サパナ 水道橋駅西口店",
-      "candidateName": null,
-      "queue": "inventory_admission_ready",
-      "priorityScore": 900,
-      "coreMissing": [],
-      "optionalMissing": [],
-      "sourceProviders": [
-        "Hot Pepper"
-      ],
-      "publicSourceLinks": 0,
-      "providerFactRecords": 0,
-      "hotpepperCatalogFacts": true,
-      "hotpepperConfidence": "high",
-      "hotpepperAutoEligible": true,
-      "openCandidate": {
-        "provider": "OpenStreetMap",
-        "sourceCandidateId": "osm-n-6187350569",
-        "name": "Asian dining bar Sapana",
-        "cuisine": "餐厅",
-        "address": null,
-        "lat": 35.701808,
-        "lng": 139.752493,
-        "confidence": "high",
-        "historicalQcStatus": "operational_food",
-        "distanceMeters": 19,
-        "nameSimilarity": 0.96
-      },
-      "overtureSupport": {
-        "release": "2026-08-19.0",
-        "overtureId": "454cff63-0be3-490a-ab42-ed987e16e610",
-        "name": "Sapana",
-        "basicCategory": "restaurant",
-        "websites": [
-          "http://sapana-group.com"
-        ],
-        "brand": {
-          "wikidata": null,
-          "names": {
-            "primary": "Sapana水道橋西口店（２４時間OPEN）",
-            "common": null,
-            "rules": null
-          }
-        },
-        "distanceToOsmMeters": 11,
-        "nameSimilarity": 0.96,
-        "addressSimilarity": 0,
-        "combinedScore": 0.911,
-        "crossSourceConfidence": "high",
-        "triage": "B_blocker_review"
-      },
-      "existingHotpepperFieldCandidates": [],
-      "explicitLunchRangeFromLoadedHotpepper": null,
-      "nextActions": [
-        "productionSchemaAdmission"
-      ],
-      "reviewedAdmission": {
-        "status": "reviewed_ready",
-        "mode": "historical-id+multisource-reviewed",
-        "reviewedAt": "2026-09-06",
-        "currentnessProvider": "official",
-        "currentnessUrl": "https://www.sapana-group.com/%E6%B0%B4%E9%81%93%E6%A9%8B%E8%A5%BF%E5%8F%A3%E5%BA%97",
-        "identityEvidence": {
-          "hotpepperId": "J001126936",
-          "osmCandidateId": "osm-n-6187350569",
-          "overtureId": "454cff63-0be3-490a-ab42-ed987e16e610"
-        }
-      },
-      "reviewedCatalogFacts": {
-        "name": "SAPANA 水道橋西口店",
-        "address": "東京都千代田区神田三崎町2-20-8 FUNDES水道橋1F",
-        "lat": 35.7018843887,
-        "lng": 139.7522929723,
-        "cuisine": "印度・尼泊尔",
-        "hotpepperBudget": [
-          3001,
-          4000
-        ],
-        "hotpepperBudgetRaw": {
-          "code": "B003",
-          "name": "3001～4000円",
-          "average": "2000円（通常平均）/4000円（宴会平均）/1000円（ランチ平均）"
-        },
-        "openingHoursText": "月～日: 06:00～翌6:00 （料理L.O. 翌5:00 ドリンクL.O. 翌5:30）",
-        "closedText": "年中無休　※土日祝はランチメニューを提供していない場合がございます。念の為店舗へお問い合わせ頂ければと思います。",
-        "stationName": "水道橋",
-        "access": "水道橋駅西口を出て左手に10秒！都営三田線水道橋駅より徒歩約3分/ＪＲ飯田橋駅東口より徒歩約3分",
-        "hotpepperUrl": "https://www.hotpepper.jp/strJ001126936/?vos=nhppalsa000016"
-      }
-    },
-    {
-      "googlePlaceId": "ChIJy7PtkAaMGGARsKefDexKN-4",
-      "catalogStatus": "inventory_only",
-      "currentProduction": false,
-      "name": "大手町ZION",
-      "candidateName": null,
-      "queue": "inventory_admission_ready",
-      "priorityScore": 900,
-      "coreMissing": [],
-      "optionalMissing": [],
-      "sourceProviders": [
-        "Hot Pepper"
-      ],
-      "publicSourceLinks": 0,
-      "providerFactRecords": 0,
-      "hotpepperCatalogFacts": true,
-      "hotpepperConfidence": "high",
-      "hotpepperAutoEligible": true,
-      "openCandidate": {
-        "provider": "OpenStreetMap",
-        "sourceCandidateId": "osm-n-12083652957",
-        "name": "ZION",
-        "cuisine": "意大利菜",
-        "address": null,
-        "lat": 35.690009,
-        "lng": 139.766056,
-        "confidence": "high",
-        "historicalQcStatus": "operational_food",
-        "distanceMeters": 6,
-        "nameSimilarity": 1
-      },
-      "overtureSupport": {
-        "release": "2026-08-19.0",
-        "overtureId": "a1d83a5a-b699-45fa-a477-4e1941d64913",
-        "name": "Zion",
-        "basicCategory": "restaurant",
-        "websites": [
-          "https://www.hotpepper.jp/strJ001116639/?vos=cphppsocface20110701001"
-        ],
-        "brand": {
-          "wikidata": null,
-          "names": {
-            "primary": null,
-            "common": null,
-            "rules": null
-          }
-        },
-        "distanceToOsmMeters": 1,
-        "nameSimilarity": 1,
-        "addressSimilarity": 0,
-        "combinedScore": 0.949,
-        "crossSourceConfidence": "high",
-        "triage": "B_blocker_review"
-      },
-      "existingHotpepperFieldCandidates": [],
-      "explicitLunchRangeFromLoadedHotpepper": null,
-      "nextActions": [
-        "productionSchemaAdmission"
-      ],
-      "reviewedAdmission": {
-        "status": "reviewed_ready",
-        "mode": "historical-id+multisource-reviewed",
-        "reviewedAt": "2026-09-06",
-        "currentnessProvider": "official",
-        "currentnessUrl": "https://otemachizion.owst.jp/",
-        "identityEvidence": {
-          "hotpepperId": "J001116639",
-          "osmCandidateId": "osm-n-12083652957",
-          "overtureId": "a1d83a5a-b699-45fa-a477-4e1941d64913"
-        }
-      },
-      "reviewedCatalogFacts": {
-        "name": "大手町ZION",
-        "address": "東京都千代田区内神田1-5-16 アルテ大手町1F",
-        "lat": 35.690017757,
-        "lng": 139.7659725698,
-        "cuisine": "西班牙菜",
-        "hotpepperBudget": [
-          3001,
-          4000
-        ],
-        "hotpepperBudgetRaw": {
-          "code": "B003",
-          "name": "3001～4000円",
-          "average": "飲み放題付コースは4480円～/アラカルト　3800円／ランチ　850円"
-        },
-        "openingHoursText": "月～土、祝日、祝前日: 17:00～22:30 （料理L.O. 21:00 ドリンクL.O. 21:30）",
-        "closedText": "日",
-        "stationName": "大手町",
-        "access": "大手町A1出口徒歩7分/神田駅西口徒歩7分/東京駅から１駅!!出張や帰り道でもアクセス便利です！",
-        "hotpepperUrl": "https://www.hotpepper.jp/strJ001116639/?vos=nhppalsa000016"
-      }
-    },
-    {
-      "googlePlaceId": "ChIJc3y8okOMGGARcvEFuVzOJY8",
-      "catalogStatus": "inventory_only",
-      "currentProduction": false,
-      "name": "焼鳥ブロシェット Yakitori Brochette",
-      "candidateName": null,
-      "queue": "inventory_admission_ready",
-      "priorityScore": 900,
-      "coreMissing": [],
-      "optionalMissing": [],
-      "sourceProviders": [
-        "Hot Pepper"
-      ],
-      "publicSourceLinks": 0,
-      "providerFactRecords": 0,
-      "hotpepperCatalogFacts": true,
-      "hotpepperConfidence": "high",
-      "hotpepperAutoEligible": false,
-      "openCandidate": {
-        "provider": "OpenStreetMap",
-        "sourceCandidateId": "osm-n-10153290037",
-        "name": "Brochette",
-        "cuisine": "烧鸟",
-        "address": null,
-        "lat": 35.699465,
-        "lng": 139.745378,
-        "confidence": "high",
-        "historicalQcStatus": "operational_food",
-        "distanceMeters": 7,
-        "nameSimilarity": 0.96
-      },
-      "overtureSupport": {
-        "release": "2026-08-19.0",
-        "overtureId": "f001ac8b-27dd-48be-9973-b7611731c574",
-        "name": "Yakitori Brochette",
-        "basicCategory": "restaurant",
-        "websites": [
-          "https://www.tablecheck.com/shops/yakitori-brochette-kagurazaka/reserve?utm_source=facebook"
-        ],
-        "brand": {
-          "wikidata": null,
-          "names": {
-            "primary": null,
-            "common": null,
-            "rules": null
-          }
-        },
-        "distanceToOsmMeters": 10,
-        "nameSimilarity": 0.96,
-        "addressSimilarity": 0,
-        "combinedScore": 0.912,
-        "crossSourceConfidence": "high",
-        "triage": "B_blocker_review"
-      },
-      "existingHotpepperFieldCandidates": [],
-      "explicitLunchRangeFromLoadedHotpepper": null,
-      "nextActions": [
-        "productionSchemaAdmission"
-      ],
-      "reviewedAdmission": {
-        "status": "reviewed_ready",
-        "mode": "historical-id+multisource-reviewed",
-        "reviewedAt": "2026-09-06",
-        "currentnessProvider": "current_booking_page",
-        "currentnessUrl": "https://www.tablecheck.com/en/yakitori-brochette-iidabashi",
-        "identityEvidence": {
-          "hotpepperId": "J001066087",
-          "osmCandidateId": "osm-n-10153290037",
-          "overtureId": "f001ac8b-27dd-48be-9973-b7611731c574"
-        }
-      },
-      "reviewedCatalogFacts": {
-        "name": "焼鳥ブロシェット 飯田橋",
-        "address": "東京都千代田区富士見2-2-10",
-        "lat": 35.6994422537,
-        "lng": 139.7453175512,
-        "cuisine": "日式",
-        "hotpepperBudget": [
-          3001,
-          4000
-        ],
-        "hotpepperBudgetRaw": {
-          "code": "B003",
-          "name": "3001～4000円",
-          "average": "3800"
-        },
-        "openingHoursText": "月～日、祝日、祝前日: 18:00～23:00 （料理L.O. 22:30 ドリンクL.O. 22:30）",
-        "closedText": "なし",
-        "stationName": "飯田橋",
-        "access": "飯田橋駅西口/B2a/A4各出口から徒歩約5分。　※　神楽坂店とお間違いにならないようにくれぐれもご注意ください。",
-        "hotpepperUrl": "https://www.hotpepper.jp/strJ001066087/?vos=nhppalsa000016"
-      }
     },
     {
       "googlePlaceId": "ChIJc7yGGRuMGGAR3QASOGBqRus",
