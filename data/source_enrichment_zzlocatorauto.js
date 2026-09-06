@@ -10,7 +10,7 @@ const locatorTemplatePatches = [
     "openingHoursRaw": "日曜日 09:00-21:00; 月曜日 09:00-21:00; 火曜日 09:00-21:00; 水曜日 09:00-21:00; 木曜日 09:00-21:00; 金曜日 09:00-21:00; 土曜日 09:00-21:00",
     "closedDays": [],
     "knownDays": 7,
-    "currentKnownDays": 1
+    "currentKnownDays": 7
   },
   {
     "googlePlaceId": "ChIJhXD3-AaMGGARbLVQPEtml80",
@@ -22,7 +22,7 @@ const locatorTemplatePatches = [
       "土日祝"
     ],
     "knownDays": 8,
-    "currentKnownDays": 5
+    "currentKnownDays": 8
   },
   {
     "googlePlaceId": "ChIJVwXD9E6NGGARkHzeYVBeacw",
