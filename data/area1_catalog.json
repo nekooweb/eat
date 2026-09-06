@@ -1,7 +1,7 @@
 {
-  "schemaVersion": 4,
+  "schemaVersion": 5,
   "summary": {
-    "schemaVersion": 4,
+    "schemaVersion": 5,
     "scope": "TOKYO/地区1️⃣",
     "checkedAt": "2026-09-06",
     "identityUniverse": 2807,
@@ -68,6 +68,20 @@
       "lowConfidenceOpenCandidatesNeverBecomeFactsAutomatically": true,
       "transientGoogleDisplayPayloadPersisted": false,
       "paidGoogleDataApiCalls": 0
+    },
+    "reviewedAdmissionReady": 6,
+    "rejectedAdmissionPairs": 4,
+    "loadedFactCoverage": {
+      "name": 1050,
+      "address": 720,
+      "coordinates": 1048,
+      "sourceClassification": 998,
+      "budgetOrProviderBudget": 677,
+      "normalizedOrRawOpeningHours": 760
+    },
+    "candidateCoverage": {
+      "historicalOpenCandidate": 1997,
+      "overtureCrossSupport": 1997
     }
   },
   "rows": [
@@ -7238,8 +7252,41 @@
       "nextActions": [
         "fieldNormalization",
         "currentness",
-        "identityAdmissionReview"
-      ]
+        "productionSchemaAdmission"
+      ],
+      "admission": {
+        "status": "reviewed_ready",
+        "mode": "historical-id+multisource-reviewed",
+        "reviewedAt": "2026-09-06",
+        "currentnessProvider": "official",
+        "currentnessUrl": "https://www.cafe-basecamp.com/about/",
+        "identityEvidence": {
+          "hotpepperId": "J003465000",
+          "osmCandidateId": "osm-n-6187350566",
+          "overtureId": "2a1d27c8-581a-432e-954f-464bfefe77d3"
+        }
+      },
+      "reviewedCatalogFacts": {
+        "name": "BASE CAMP",
+        "address": "東京都千代田区神田三崎町2-22-8 梨本ビル1F",
+        "lat": 35.7022071746,
+        "lng": 139.7539458748,
+        "cuisine": "咖啡",
+        "hotpepperBudget": [
+          3001,
+          4000
+        ],
+        "hotpepperBudgetRaw": {
+          "code": "B003",
+          "name": "3001～4000円",
+          "average": "ランチ2001～3000円/ディナー3001～4000円"
+        },
+        "openingHoursText": "火: 11:30～14:30水～金、祝日、祝前日: 11:30～14:3017:00～23:30土: 17:00～23:30",
+        "closedText": "月、日",
+        "stationName": "水道橋",
+        "access": "JR水道橋駅より徒歩2分",
+        "hotpepperUrl": "https://www.hotpepper.jp/strJ003465000/?vos=nhppalsa000016"
+      }
     },
     {
       "googlePlaceId": "ChIJ0zStnI6NGGARBSXo_ggL8EA",
@@ -12638,9 +12685,15 @@
       },
       "nextActions": [
         "fieldNormalization",
-        "currentness",
-        "identityAdmissionReview"
-      ]
+        "currentness"
+      ],
+      "admission": {
+        "status": "rejected_pair",
+        "reviewedAt": "2026-09-06",
+        "reason": "different nearby businesses",
+        "hotpepperName": "まごころ料理 近ちゃん",
+        "openCandidateName": "焼鳥 やむちゃん"
+      }
     },
     {
       "googlePlaceId": "ChIJ2QzuEhCMGGAR_GwijOC6vao",
@@ -88787,9 +88840,15 @@
       },
       "nextActions": [
         "fieldNormalization",
-        "currentness",
-        "identityAdmissionReview"
-      ]
+        "currentness"
+      ],
+      "admission": {
+        "status": "rejected_pair",
+        "reviewedAt": "2026-09-06",
+        "reason": "different nearby businesses",
+        "hotpepperName": "BAR UDAN バー ウダン",
+        "openCandidateName": "BAR ANAMI"
+      }
     },
     {
       "googlePlaceId": "ChIJK4BoGHeNGGARjhEHMtNar_8",
@@ -95296,8 +95355,41 @@
       "nextActions": [
         "fieldNormalization",
         "currentness",
-        "identityAdmissionReview"
-      ]
+        "productionSchemaAdmission"
+      ],
+      "admission": {
+        "status": "reviewed_ready",
+        "mode": "historical-id+multisource-reviewed",
+        "reviewedAt": "2026-09-06",
+        "currentnessProvider": "official",
+        "currentnessUrl": "https://ochanomizu-701.foodre.jp/",
+        "identityEvidence": {
+          "hotpepperId": "J003581555",
+          "osmCandidateId": "osm-n-12953576363",
+          "overtureId": "85f48e37-5924-451a-a21c-94185d7cd902"
+        }
+      },
+      "reviewedCatalogFacts": {
+        "name": "701",
+        "address": "東京都千代田区外神田2-1-3 東進ビル新館1F",
+        "lat": 35.6996344709,
+        "lng": 139.7666115718,
+        "cuisine": "意大利菜",
+        "hotpepperBudget": [
+          10001,
+          12000
+        ],
+        "hotpepperBudgetRaw": {
+          "code": "B020",
+          "name": "10001～12000円",
+          "average": "8000円"
+        },
+        "openingHoursText": "水～日、祝日: 11:30～15:00 （料理L.O. 14:00 ドリンクL.O. 14:00）18:00～22:00 （料理L.O. 20:30 ドリンクL.O. 20:30）",
+        "closedText": "月、火",
+        "stationName": "御茶ノ水",
+        "access": "東京メトロ　御茶ノ水駅　徒歩4分東京メトロ　新御茶ノ水駅　徒歩８分JR　御茶ノ水駅　徒歩５分",
+        "hotpepperUrl": "https://www.hotpepper.jp/strJ003581555/?vos=nhppalsa000016"
+      }
     },
     {
       "googlePlaceId": "ChIJLeDUQQCNGGAR-pzo07H8IqQ",
@@ -101956,8 +102048,41 @@
       "nextActions": [
         "fieldNormalization",
         "currentness",
-        "identityAdmissionReview"
-      ]
+        "productionSchemaAdmission"
+      ],
+      "admission": {
+        "status": "reviewed_ready",
+        "mode": "historical-id+multisource-reviewed",
+        "reviewedAt": "2026-09-06",
+        "currentnessProvider": "official",
+        "currentnessUrl": "https://www.sapana-group.com/%E6%B0%B4%E9%81%93%E6%A9%8B%E8%A5%BF%E5%8F%A3%E5%BA%97",
+        "identityEvidence": {
+          "hotpepperId": "J001126936",
+          "osmCandidateId": "osm-n-6187350569",
+          "overtureId": "454cff63-0be3-490a-ab42-ed987e16e610"
+        }
+      },
+      "reviewedCatalogFacts": {
+        "name": "SAPANA 水道橋西口店",
+        "address": "東京都千代田区神田三崎町2-20-8 FUNDES水道橋1F",
+        "lat": 35.7018843887,
+        "lng": 139.7522929723,
+        "cuisine": "印度・尼泊尔",
+        "hotpepperBudget": [
+          3001,
+          4000
+        ],
+        "hotpepperBudgetRaw": {
+          "code": "B003",
+          "name": "3001～4000円",
+          "average": "2000円（通常平均）/4000円（宴会平均）/1000円（ランチ平均）"
+        },
+        "openingHoursText": "月～日: 06:00～翌6:00 （料理L.O. 翌5:00 ドリンクL.O. 翌5:30）",
+        "closedText": "年中無休　※土日祝はランチメニューを提供していない場合がございます。念の為店舗へお問い合わせ頂ければと思います。",
+        "stationName": "水道橋",
+        "access": "水道橋駅西口を出て左手に10秒！都営三田線水道橋駅より徒歩約3分/ＪＲ飯田橋駅東口より徒歩約3分",
+        "hotpepperUrl": "https://www.hotpepper.jp/strJ001126936/?vos=nhppalsa000016"
+      }
     },
     {
       "googlePlaceId": "ChIJN9mduz-MGGARERceklzaplk",
@@ -121114,9 +121239,15 @@
       },
       "nextActions": [
         "fieldNormalization",
-        "currentness",
-        "identityAdmissionReview"
-      ]
+        "currentness"
+      ],
+      "admission": {
+        "status": "rejected_pair",
+        "reviewedAt": "2026-09-06",
+        "reason": "different nearby businesses",
+        "hotpepperName": "atacu-cafe アタクカフェ",
+        "openCandidateName": "avocafe"
+      }
     },
     {
       "googlePlaceId": "ChIJReCCnKiNGGARjPf3zvWdAAo",
@@ -156197,9 +156328,15 @@
       },
       "nextActions": [
         "fieldNormalization",
-        "currentness",
-        "identityAdmissionReview"
-      ]
+        "currentness"
+      ],
+      "admission": {
+        "status": "rejected_pair",
+        "reviewedAt": "2026-09-06",
+        "reason": "different nearby businesses",
+        "hotpepperName": "暁 本郷",
+        "openCandidateName": "Abats."
+      }
     },
     {
       "googlePlaceId": "ChIJ_ZaN5T6MGGARM8KREWUxM98",
@@ -167319,8 +167456,41 @@
       "nextActions": [
         "fieldNormalization",
         "currentness",
-        "identityAdmissionReview"
-      ]
+        "productionSchemaAdmission"
+      ],
+      "admission": {
+        "status": "reviewed_ready",
+        "mode": "historical-id+multisource-reviewed",
+        "reviewedAt": "2026-09-06",
+        "currentnessProvider": "current_booking_page",
+        "currentnessUrl": "https://www.tablecheck.com/en/yakitori-brochette-iidabashi",
+        "identityEvidence": {
+          "hotpepperId": "J001066087",
+          "osmCandidateId": "osm-n-10153290037",
+          "overtureId": "f001ac8b-27dd-48be-9973-b7611731c574"
+        }
+      },
+      "reviewedCatalogFacts": {
+        "name": "焼鳥ブロシェット 飯田橋",
+        "address": "東京都千代田区富士見2-2-10",
+        "lat": 35.6994422537,
+        "lng": 139.7453175512,
+        "cuisine": "日式",
+        "hotpepperBudget": [
+          3001,
+          4000
+        ],
+        "hotpepperBudgetRaw": {
+          "code": "B003",
+          "name": "3001～4000円",
+          "average": "3800"
+        },
+        "openingHoursText": "月～日、祝日、祝前日: 18:00～23:00 （料理L.O. 22:30 ドリンクL.O. 22:30）",
+        "closedText": "なし",
+        "stationName": "飯田橋",
+        "access": "飯田橋駅西口/B2a/A4各出口から徒歩約5分。　※　神楽坂店とお間違いにならないようにくれぐれもご注意ください。",
+        "hotpepperUrl": "https://www.hotpepper.jp/strJ001066087/?vos=nhppalsa000016"
+      }
     },
     {
       "googlePlaceId": "ChIJc5E30wOMGGARDf8ehJqbx64",
@@ -174816,8 +174986,40 @@
       "nextActions": [
         "fieldNormalization",
         "currentness",
-        "identityAdmissionReview"
-      ]
+        "productionSchemaAdmission"
+      ],
+      "admission": {
+        "status": "reviewed_ready",
+        "mode": "historical-id+multisource-reviewed",
+        "reviewedAt": "2026-09-06",
+        "currentnessProvider": "recent_operational_listing",
+        "currentnessUrl": "https://job.inshokuten.com/kanto/work/detail/87899?assistLinkCode=11",
+        "identityEvidence": {
+          "hotpepperId": "J003806900",
+          "osmCandidateId": "osm-n-12860171393",
+          "overtureId": "5225735d-699c-41ca-bf5f-2cfc14cbd4ba"
+        }
+      },
+      "reviewedCatalogFacts": {
+        "name": "LYFE -酒と飯と-",
+        "address": "東京都千代田区神田錦町2-4-1 ダヴィンチ小川町1F",
+        "lat": 35.6938692058,
+        "lng": 139.7636365012,
+        "cuisine": "居酒屋",
+        "hotpepperBudget": [
+          3001,
+          4000
+        ],
+        "hotpepperBudgetRaw": {
+          "code": "B003",
+          "name": "3001～4000円"
+        },
+        "openingHoursText": "月、水～金: 11:00～15:00 （料理L.O. 14:00 ドリンクL.O. 14:00）17:00～23:00 （料理L.O. 21:30 ドリンクL.O. 22:30）火: 11:00～15:00 （料理L.O. 14:00 ドリンクL.O. 14:00）17:00～23:00 （料理L.O. 21:30 ドリンクL.O. 22:00）土: 17:00～23:00 （料理L.O. 21:30 ドリンクL.O. 22:30）",
+        "closedText": "日",
+        "stationName": "淡路町",
+        "access": "小川町駅から徒歩４分",
+        "hotpepperUrl": "https://www.hotpepper.jp/strJ003806900/?vos=nhppalsa000016"
+      }
     },
     {
       "googlePlaceId": "ChIJe-OOg2mNGGARw1nH63o3aNw",
@@ -252285,8 +252487,41 @@
       "nextActions": [
         "fieldNormalization",
         "currentness",
-        "identityAdmissionReview"
-      ]
+        "productionSchemaAdmission"
+      ],
+      "admission": {
+        "status": "reviewed_ready",
+        "mode": "historical-id+multisource-reviewed",
+        "reviewedAt": "2026-09-06",
+        "currentnessProvider": "official",
+        "currentnessUrl": "https://otemachizion.owst.jp/",
+        "identityEvidence": {
+          "hotpepperId": "J001116639",
+          "osmCandidateId": "osm-n-12083652957",
+          "overtureId": "a1d83a5a-b699-45fa-a477-4e1941d64913"
+        }
+      },
+      "reviewedCatalogFacts": {
+        "name": "大手町ZION",
+        "address": "東京都千代田区内神田1-5-16 アルテ大手町1F",
+        "lat": 35.690017757,
+        "lng": 139.7659725698,
+        "cuisine": "西班牙菜",
+        "hotpepperBudget": [
+          3001,
+          4000
+        ],
+        "hotpepperBudgetRaw": {
+          "code": "B003",
+          "name": "3001～4000円",
+          "average": "飲み放題付コースは4480円～/アラカルト　3800円／ランチ　850円"
+        },
+        "openingHoursText": "月～土、祝日、祝前日: 17:00～22:30 （料理L.O. 21:00 ドリンクL.O. 21:30）",
+        "closedText": "日",
+        "stationName": "大手町",
+        "access": "大手町A1出口徒歩7分/神田駅西口徒歩7分/東京駅から１駅!!出張や帰り道でもアクセス便利です！",
+        "hotpepperUrl": "https://www.hotpepper.jp/strJ001116639/?vos=nhppalsa000016"
+      }
     },
     {
       "googlePlaceId": "ChIJyRI0pEGMGGARKt3mccsIhl0",
