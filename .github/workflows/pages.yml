@@ -44,6 +44,7 @@ jobs:
           mkdir -p _audit
           set -o pipefail
           node scripts/build_public_open_pool.mjs | tee _audit/public_pool.json
+          node scripts/apply_hotpepper_catch_featured_dishes.mjs | tee _audit/hotpepper_catch_featured_dishes.json
           test -s data/public_pool_area1.js
           node --check data/public_pool_area1.js
       - name: Static and canonical repository checks
@@ -61,6 +62,7 @@ jobs:
             node --check scripts/audit_no_paid_apis.mjs
             node --check scripts/build_hotpepper_rich_core_fallback.mjs
             node --check scripts/build_public_open_pool.mjs
+            node --check scripts/apply_hotpepper_catch_featured_dishes.mjs
             node --check scripts/collect_public_featured_dishes.mjs
             node --check scripts/apply_public_featured_dishes.mjs
             node --check scripts/audit_public_featured_dishes.mjs
