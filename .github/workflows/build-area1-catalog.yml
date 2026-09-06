@@ -9,6 +9,7 @@ on:
       - "scripts/build_area1_catalog.mjs"
       - "scripts/build_catalog_enrichment_queue.mjs"
       - "scripts/audit_loaded_hotpepper_lunch_candidates.mjs"
+      - "scripts/audit_multisource_admission_candidates.mjs"
       - "scripts/build_production_dataset.mjs"
       - "scripts/build_source_provenance.mjs"
       - "scripts/build_source_facts.mjs"
@@ -77,6 +78,8 @@ jobs:
           NODE
       - name: Audit loaded strict Hot Pepper lunch candidates
         run: node scripts/audit_loaded_hotpepper_lunch_candidates.mjs | tee /tmp/hotpepper_lunch_candidates.json
+      - name: Audit multisource admission candidates
+        run: node scripts/audit_multisource_admission_candidates.mjs | tee /tmp/multisource_admission_candidates.json
       - name: Commit catalog and queue
         run: |
           set -euo pipefail
