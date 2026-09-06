@@ -32,6 +32,14 @@ def text(value):
     return value or None
 
 
+def number(value):
+    try:
+        parsed = float(value)
+    except (TypeError, ValueError):
+        return None
+    return parsed
+
+
 def integer(value):
     try:
         parsed = int(value)
@@ -65,6 +73,16 @@ def add_bool(target, key, value, **kwargs):
 
 def nonempty_dict(value):
     return value if isinstance(value, dict) else {}
+
+
+def compact_dict(value, keys):
+    value = nonempty_dict(value)
+    result = {}
+    for source_key, output_key in keys:
+        item = value.get(source_key)
+        if item is not None and str(item).strip():
+            result[output_key] = item
+    return result or None
 
 
 RAW_SERVICE_FIELDS = (
@@ -168,21 +186,46 @@ def main():
         if smoking:
             amenities["smokingPolicy"] = smoking
 
-        # Preserve the provider's complete service text alongside normalized
-        # booleans. This avoids losing conditions such as "course only",
-        # nearby coin parking, private-room capacity, child-seat caveats, etc.
         source_service_text = {}
         for source_key, output_key in RAW_SERVICE_FIELDS:
             value = text(detail.get(source_key))
             if value:
                 source_service_text[output_key] = value
 
+        hotpepper_location = None
+        lat = number(detail.get("lat"))
+        lng = number(detail.get("lng"))
+        if lat is not None and lng is not None:
+            hotpepper_location = {"lat": lat, "lng": lng}
+
+        hotpepper_genre = compact_dict(
+            detail.get("genre"),
+            (("code", "code"), ("name", "name"), ("catch", "catch")),
+        ) or {}
+        sub_genre = compact_dict(
+            detail.get("subGenre"),
+            (("code", "code"), ("name", "name")),
+        )
+        if sub_genre:
+            hotpepper_genre["subGenre"] = sub_genre
+        hotpepper_genre = hotpepper_genre or None
+
+        hotpepper_budget = compact_dict(
+            detail.get("budget"),
+            (("code", "code"), ("name", "name"), ("average", "average")),
+        )
+
         row = {
             "googlePlaceId": google_id,
             "hotpepperId": hotpepper_id,
             "hotpepperUrl": text(urls.get("pc") or urls.get("mobile")),
             "couponUrl": text(coupon_urls.get("pc") or coupon_urls.get("sp")),
+            "hotpepperName": text(detail.get("name")),
             "nameKana": text(detail.get("nameKana")),
+            "hotpepperAddress": text(detail.get("address")),
+            "hotpepperLocation": hotpepper_location,
+            "hotpepperGenre": hotpepper_genre,
+            "hotpepperBudget": hotpepper_budget,
             "nearestStation": text(detail.get("stationName")),
             "accessText": text(detail.get("access")),
             "mobileAccessText": text(detail.get("mobileAccess")),
@@ -191,6 +234,8 @@ def main():
             "lunchAvailable": prefix_bool(detail.get("lunch")),
             "capacity": integer(detail.get("capacity")),
             "partyCapacity": integer(detail.get("partyCapacity")),
+            "hotpepperOpeningHoursText": text(detail.get("open")),
+            "hotpepperClosedText": text(detail.get("close")),
             "amenities": amenities or None,
             "sourceServiceText": source_service_text or None,
             "checkedAt": checked_at,
@@ -202,9 +247,11 @@ def main():
     rows.sort(key=lambda row: row["googlePlaceId"])
 
     summary_keys = [
-        "nameKana", "nearestStation", "accessText", "mobileAccessText",
-        "budgetMemo", "sourceCatch", "lunchAvailable", "capacity",
-        "partyCapacity", "amenities", "sourceServiceText", "hotpepperUrl", "couponUrl",
+        "hotpepperName", "nameKana", "hotpepperAddress", "hotpepperLocation",
+        "hotpepperGenre", "hotpepperBudget", "nearestStation", "accessText",
+        "mobileAccessText", "budgetMemo", "sourceCatch", "lunchAvailable",
+        "capacity", "partyCapacity", "hotpepperOpeningHoursText", "hotpepperClosedText",
+        "amenities", "sourceServiceText", "hotpepperUrl", "couponUrl",
     ]
     summary = {key: sum(key in row for row in rows) for key in summary_keys}
     amenity_keys = sorted({key for row in rows for key in row.get("amenities", {})})
@@ -220,7 +267,7 @@ def main():
     summary["rows"] = len(rows)
 
     payload = {
-        "schemaVersion": 3,
+        "schemaVersion": 4,
         "checkedAt": checked_at,
         "source": "Hot Pepper Gourmet Web Service",
         "policy": {
@@ -229,24 +276,32 @@ def main():
             "overwritesCanonicalCoreFields": False,
             "photosStored": False,
             "rawServiceTextPreserved": True,
+            "rawSourceClassificationPreserved": True,
         },
         "summary": summary,
         "rows": rows,
     }
 
     js_payload = json.dumps(payload, ensure_ascii=False, separators=(",", ":"))
+    runtime_keys = [
+        "hotpepperId", "hotpepperUrl", "couponUrl", "hotpepperName", "nameKana",
+        "hotpepperAddress", "hotpepperLocation", "hotpepperGenre", "hotpepperBudget",
+        "nearestStation", "accessText", "mobileAccessText", "budgetMemo", "sourceCatch",
+        "lunchAvailable", "capacity", "partyCapacity", "hotpepperOpeningHoursText",
+        "hotpepperClosedText", "amenities", "sourceServiceText",
+    ]
+    runtime_keys_json = json.dumps(runtime_keys, ensure_ascii=False, separators=(",", ":"))
     output = (
         "// Generated from reviewed strict-safe Hot Pepper bindings.\n"
         "// Rich metadata only; does not create identities or overwrite canonical core fields.\n"
         f"window.HOTPEPPER_RICH_METADATA={js_payload};\n"
         "if (Array.isArray(window.PRODUCTION_RESTAURANTS)) {\n"
         "  const richById=new Map(window.PRODUCTION_RESTAURANTS.map((row)=>[row.googlePlaceId,row]));\n"
+        f"  const richKeys={runtime_keys_json};\n"
         "  for (const meta of window.HOTPEPPER_RICH_METADATA.rows) {\n"
         "    const row=richById.get(meta.googlePlaceId);\n"
         "    if (!row) continue;\n"
-        "    for (const key of ['hotpepperId','hotpepperUrl','couponUrl','nameKana','nearestStation','accessText','mobileAccessText','budgetMemo','sourceCatch','lunchAvailable','capacity','partyCapacity','amenities','sourceServiceText']) {\n"
-        "      if (meta[key] != null) row[key]=meta[key];\n"
-        "    }\n"
+        "    for (const key of richKeys) if (meta[key] != null) row[key]=meta[key];\n"
         "  }\n"
         "}\n"
     )
