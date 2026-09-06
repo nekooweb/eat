@@ -126,11 +126,14 @@ const rows = reviewed.map((item) => {
   const prod = productionById.get(item.googlePlaceId);
   const row = {
     id: `official-fullcollection-${item.googlePlaceId}`,
+    profile: 'TOKYO',
+    area: '地区1️⃣',
     name: item.name,
     cuisine: item.cuisine,
     lat: prod.lat,
     lng: prod.lng,
     distanceMeters: prod.distanceMeters,
+    source: 'official',
     sourceOnly: true,
     googlePlaceId: item.googlePlaceId,
     address: item.address,
