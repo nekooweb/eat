@@ -34,10 +34,16 @@ for (const filename of resolutionFiles) {
   vm.runInContext(read(`data/${filename}`), resolutionSandbox, { filename });
 }
 const resolutions = resolutionSandbox.window.SOURCE_RESOLUTIONS || [];
-const resolutionIds = new Set(resolutions.map((row) => row.googlePlaceId).filter(Boolean));
+
+// Resolution rows are historical audit records. Once a current usable source is
+// attached, an older resolution is superseded and must no longer count as a
+// current explicit resolution or double-count source coverage.
+const currentResolutions = resolutions.filter((row) => !sourceIds.has(row.googlePlaceId));
+const currentResolutionIds = new Set(currentResolutions.map((row) => row.googlePlaceId).filter(Boolean));
+const supersededResolutions = resolutions.filter((row) => sourceIds.has(row.googlePlaceId));
 
 const unresolved = production
-  .filter((row) => !sourceIds.has(row.googlePlaceId) && !resolutionIds.has(row.googlePlaceId))
+  .filter((row) => !sourceIds.has(row.googlePlaceId) && !currentResolutionIds.has(row.googlePlaceId))
   .sort((a, b) => a.distanceMeters - b.distanceMeters || a.name.localeCompare(b.name, 'ja'))
   .map((row) => ({
     distanceMeters: row.distanceMeters,
@@ -48,9 +54,10 @@ const unresolved = production
   }));
 
 const usable = production.filter((row) => sourceIds.has(row.googlePlaceId)).length;
-const explicitlyResolved = production.filter((row) => resolutionIds.has(row.googlePlaceId)).length;
-const resolved = usable + explicitlyResolved;
-const byResolutionStatus = resolutions.reduce((acc, row) => {
+const explicitlyResolved = production.filter((row) => currentResolutionIds.has(row.googlePlaceId)).length;
+const resolvedIds = new Set([...sourceIds, ...currentResolutionIds]);
+const resolved = production.filter((row) => resolvedIds.has(row.googlePlaceId)).length;
+const byResolutionStatus = currentResolutions.reduce((acc, row) => {
   acc[row.status] = (acc[row.status] || 0) + 1;
   return acc;
 }, {});
@@ -62,6 +69,7 @@ const report = {
     ? Number((100 * usable / production.length).toFixed(1))
     : null,
   explicitlyResolved,
+  supersededHistoricalResolutions: supersededResolutions.length,
   resolutionStatus: byResolutionStatus,
   resolutionShards: resolutionFiles,
   sourceResolvedTotal: resolved,
