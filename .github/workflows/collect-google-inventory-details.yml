@@ -42,21 +42,16 @@ jobs:
           node scripts/build_google_inventory_runtime.mjs
           node scripts/audit_google_inventory_runtime.mjs
           node scripts/build_google_inventory_detail_queue.mjs data/google_inventory_detail_queue.json
-      - name: Collect source-backed recommendations only after basics complete
+      - name: Collect source-backed recommendations
         env:
           INVENTORY_DETAIL_FETCH_TIMEOUT_MS: "7000"
           INVENTORY_DETAIL_HOST_WORKERS: "20"
         run: |
           set -euo pipefail
-          basics_complete=$(node -e "const q=require('./data/google_inventory_detail_queue.json'); process.stdout.write(q.summary.basicsComplete ? '1' : '0')")
-          if [ "$basics_complete" = "1" ]; then
-            node scripts/collect_google_inventory_recommendations.mjs data/google_inventory_detail_evidence.json | tee /tmp/inventory-detail-summary.json
-          else
-            echo "Detailed collection held until all basic source identities are resolved."
-          fi
+          node scripts/collect_google_inventory_recommendations.mjs data/google_inventory_detail_evidence.json | tee /tmp/inventory-detail-summary.json
           test -s data/google_inventory_detail_evidence.json
           node scripts/audit_google_inventory_detail_evidence.mjs
-      - name: Rebuild runtime and gated detail queue
+      - name: Rebuild runtime and detail queue
         run: |
           set -euo pipefail
           node scripts/build_google_inventory_runtime.mjs
@@ -65,19 +60,19 @@ jobs:
           node - <<'NODE'
           const fs = require('fs');
           const q = JSON.parse(fs.readFileSync('data/google_inventory_detail_queue.json', 'utf8'));
-          if (q.summary.inventoryTotal !== 2804) throw new Error('detail queue must cover 2804 identities');
-          if (!q.summary.basicsComplete) {
-            const wrong = q.rows.find((row) => row.nextAction !== 'resolve_basic_source_identity' && row.nextAction !== 'hold_details_until_basic_identity_complete');
-            if (wrong) throw new Error(`details escaped basic-completion gate: ${wrong.googlePlaceId} ${wrong.nextAction}`);
-          } else {
-            const firstNamedGap = q.rows.find((row) => row.name && row.recommendedDishesKnown === 0);
-            if (firstNamedGap && firstNamedGap.nextAction !== 'collect_strict_recommended_dishes') {
-              throw new Error('strict recommendation collection is not first priority after basics complete');
-            }
+          if (q.summary.inventoryTotal !== 2804 || !q.summary.runtimeBaselineComplete) {
+            throw new Error('exact 2804 Place-ID runtime baseline must remain complete');
+          }
+          if (q.summary.placeIdOnly > 0 && q.rows[0]?.nextAction !== 'resolve_basic_source_identity') {
+            throw new Error('unresolved basic source identities must remain highest queue priority');
+          }
+          const namedGap = q.rows.find((row) => row.name && row.recommendedDishesKnown === 0);
+          if (namedGap && namedGap.nextAction !== 'collect_strict_recommended_dishes') {
+            throw new Error('strict recommendation collection must remain highest detailed-field priority');
           }
           console.log(JSON.stringify(q.summary));
           NODE
-      - name: Commit detail queue state
+      - name: Commit detailed evidence and queue
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"
@@ -87,7 +82,7 @@ jobs:
             echo "No inventory detail changes to commit."
             exit 0
           fi
-          git commit -m "Update Google inventory detail queue"
+          git commit -m "Update Google inventory detailed enrichment"
           git fetch origin main
           git rebase origin/main
           git push origin HEAD:main
