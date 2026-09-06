@@ -4,161 +4,182 @@ Updated: 2026-09-06
 
 ## Authoritative current state
 
-`TOKYO / 地区1️⃣` is in **production-field completion plus full 2,804-identity range accounting**.
+`TOKYO / 地区1️⃣` is now in **collection-first full-range execution**.
 
-Latest audited baseline after the official-hours, explicit-field and reviewed featured-template automation passes:
+The current fixed Area1 snapshot is confirmed at **2,804 / 2,804 unique Google food-business Place IDs**. Completeness is not inferred from production size: the Google Aggregate exact circle count and the geodesic partition inventory independently equal 2,804, with `complete`, `coverageVerified`, and `independentCountVerified` all true.
 
-- exact Area1 identity inventory: **2,804 / 2,804**;
-- canonical production: **648** unique Google Place IDs;
-- production IDs inside exact inventory: **645**;
-- usable Tabelog/official source-backed production: **397 / 648**;
-- source outcomes accounted for: **441 / 648 = 68.1%**;
-- unresolved current-production source queue: **207**;
-- non-generic cuisine: **571 / 648**;
-- budget known: **192 / 648**;
-- address known: **261 / 648**;
-- filter-ready normalized `openingHours`: **282 / 648**;
-- strict `recommendedDishes`: **27 / 648**;
-- public `featuredDishes`: **125 / 648**;
-- source-backed legacy dish rows with reviewed Chinese featured output: **105 / 105**;
+After the first full-range identity sweep and collision-safe OSM promotion:
+
+- exact inventory: **2,804**;
+- canonical production: **656**;
+- production inside exact inventory: **653**;
+- production outside this exact snapshot: **3**;
+- inventory-only: **2,151**;
+- verified independent-source identities inside inventory: **651**;
+- OSM QC rows: **1,273**;
+- verified QC rows: **666**;
+- source-backed Tabelog/official enrichment: **397**;
+- cuisine known: **578**;
+- address known: **261**;
+- normalized opening hours: **282**;
+- budget known: **192**;
+- featured dishes: **125**;
+- strict recommendations: **27**;
 - 百名店: **22**.
-
-The full-range ledger remains **645 production-in-inventory / 2,159 inventory-only / 3 production outside the exact snapshot**, with a first expansion queue of **56 identities / 64 OSM candidate links** and **2,103** untouched inventory-only identities after that queue.
 
 `DATA_ENRICHMENT_PROGRESS.md` is the authoritative numeric report. Detailed implementation history lives under `logs/`.
 
-## Development principle
+## Current development priority
 
-The browser product remains a static GitHub Pages application. Data discovery, validation and enrichment happen during maintenance/CI, not at browser runtime.
+The previous priority of incrementally increasing individual fields is suspended. The main objective is now:
 
-Google Place ID is the production identity/admission key. Durable display and recommendation metadata comes from maintainable independent sources such as OSM, official pages, Tabelog and curated evidence. Missing or ambiguous fields remain empty rather than being guessed.
+> Process the entire 2,804-identity universe, give every identity an auditable source/admission outcome, and extract all safe fields during the same source pass.
 
-## Confidence-tiered enrichment architecture
+This means identity/source collection comes before optimizing optional field coverage.
 
-Restaurant-by-restaurant research is no longer the default path.
+## Full-range collection pipeline
 
-1. **A — auto-promote:** exact Place ID + maintained identity/source agreement + deterministic field semantics.
-2. **B — fast review:** pre-extracted evidence cards for address/hours/cuisine/menu/recommendation/price signals.
-3. **C — no action:** insufficient or ambiguous evidence; field remains unknown.
+### 1. Fixed identity universe
 
-Bulk run `33980591040` established this architecture across the persisted 187-record official index: 173 incomplete targets were processed, 14 complete rows skipped, 361 unique URLs fetched, 23 duplicate requests avoided, 172/173 main pages fetched, and 120 B-review evidence cards generated.
+`data/area1_google_ids.json` is the current collection denominator. It represents the 2026-09-05 Area1 <=1,200 m snapshot under the configured food-business type universe.
 
-Original overlapping B signals were address 34, openingHours 51, cuisine 12, budget 66 and featuredDishes 79. Specialized parsers/templates now remove deterministic cases from that burden.
+A later deliberate inventory refresh may change this number as businesses open/close, but the current full collection must finish against 2,804 before changing denominator casually.
 
-## Automated opening-hours layers
-
-### Trusted locator templates
-
-`build_locator_template_fields.mjs` + `filter_locator_resolution_conflicts.mjs` + manual workflow `promote-locator-templates.yml` refresh trusted branch/store locator schedules.
-
-Run `33981430074` scanned 32 locator targets, matched 25 identities, produced 7 raw safe patches and retained 3 after blocking 4 source-resolution conflicts. It also fixed flattened weekly text that could otherwise attach several intervals to one weekday.
-
-### Existing-source direct official sites
-
-`build_single_site_hours_enrichment.mjs` + manual workflow `promote-single-site-hours.yml` fills schedules only for identities that already have independent source support.
-
-Run `33982241187`: 40 targets, 40 fetches, 28 identity matches, 4 accepted schedules. `openingHours` increased **278 -> 282**. Temporary, dated, seasonal, irregular, conditional-calendar and overlapping-interval cases are rejected.
-
-## Explicit address / budget layer
-
-`build_explicit_budget_address_enrichment.mjs` + manual workflow `promote-explicit-budget-address.yml` tests only explicitly labelled fields on current direct official pages.
-
-Run `33982592924`: 70 targets, 60 fetches, 39 identity matches, 2 accepted address patches and **0** budget patches.
-
-Accepted addresses:
-
-- ヒナタ屋 — `東京都千代田区神田小川町3-10`;
-- 焼肉京城 — `東京都千代田区神田三崎町2-10-3`.
-
-Address coverage became **259 -> 261**. Budget remains **192** because menu-item/course prices are not treated as restaurant spend ranges. Generic budget inference from menu prices is explicitly rejected as a development direction.
-
-## Reviewed featured-dish template propagation
+### 2. Full transient identity sweep
 
 Implemented by:
 
-- `scripts/featured_template_registry.mjs`;
-- `scripts/audit_featured_template_gaps.mjs`;
-- `scripts/build_featured_template_propagation.mjs`;
-- `.github/workflows/promote-featured-templates.yml`;
-- `data/source_enrichment_zzzzzfeaturedtemplates.js`.
+- `scripts/full_inventory_collection.py`;
+- `.github/workflows/full-area1-collection.yml`;
+- `data/area1_full_collection_queue.json`.
 
-The registry contains brand-menu semantics and bilingual labels that have already been reviewed in committed enrichment. A template is a **field-propagation rule, never an identity-admission rule**.
+The first full sweep processed all **2,159 identities that were inventory-only at the start of the pass**.
 
-Eligibility requires:
+Run `34018919233` initially returned 1,715 operational-food identities, 1 permanently closed identity, and 443 transient fetch failures. Run `34019078280` retried only those failures at lower concurrency and resolved all 443.
 
-- exact canonical production Place ID;
-- current `featuredDishes` missing;
-- existing independent source support (`sources` contains something other than OpenStreetMap);
-- no `source_resolution` state;
-- the generated official `dishes` sourceRef and featured-dish source URL remain consistent.
+Final seed status:
 
-Authoritative run `33983081967`:
+- operational food: **2,158**;
+- permanently closed: **1**;
+- fetch errors: **0**.
 
-- reviewed template brands: **15**;
-- matching production rows: **46**;
-- surface rows missing featured dishes: **15**;
-- source-backed missing rows: **1**;
-- promoted: **1**;
-- blocked: **14** — 13 by existing source-resolution status, 1 because it was not source-backed.
+Google display name/address/location is maintenance-only transient data and is not committed as the durable restaurant database. The committed queue stores Place ID, status class, and independent-source candidate facts only.
 
-Promoted exact identity:
+### 3. Global independent-source candidate matching
 
-- `つじ田` — Place ID `ChIJJ8_bnU6NGGARsXyvg0mnXI0`;
-- reviewed menu item `濃厚つけ麺` / `浓厚蘸面`;
-- semantic kind `signature`;
-- official menu source `https://tsukemen-tsujita.com/menu/noukoutsukemen/`.
+The 2,158 operational identities were compared against all **1,273 OSM independent-source rows**.
 
-Result: `featuredDishes` **124 -> 125**, source-backed featured gap **275 -> 274**, legacy/source-backed dish rows **111 -> 112**, while strict recommendations remain **27**.
+- high confidence: **41**;
+- medium: **3**;
+- review: **49**;
+- low: **1,904**;
+- none: **161**.
 
-The other 14 apparent same-brand gaps are generic/insufficiently sourced Starbucks, Doutor, Tully's, Royal Host, Café Veloce, Café de Crié or Tsujita identities and are intentionally not propagated.
+Confidence is only a review/admission aid. It is not permission to overwrite historical QC or reuse an OSM entity already bound to another Place ID.
 
-## Stable refresh and source-safety rules
+### 4. Collision-safe high-confidence promotion
 
-- Reviewed stable enrichment survives transient website failures.
-- Freshness generators start from a clean baseline when stale self-generated output would hide targets.
-- Generic-brand identity conflicts are not resolved by brand/menu similarity.
-- Generic free-text addresses are not auto-promoted.
-- Temporary/conditional schedules are not forced into the static weekly model.
-- Menu-item prices do not define restaurant budget.
-- `recommendedDishes` remains stricter than `featuredDishes`.
-- Field-specific pages attach through `sourceRefs`; one official enrichment row per Place ID is preserved in the combined loader.
+Implemented by:
 
-## Current production-field queue
+- `scripts/promote_full_high_confidence_osm.py`;
+- `.github/workflows/promote-full-high-confidence-osm.yml`.
 
-Among the **397 source-backed** production restaurants, current overlapping gaps are:
+Run `34019143688` examined all 41 high-confidence matches:
 
-- `featuredDishes`: **274**;
-- normalized `openingHours`: **153**;
-- budget: **205**;
-- address: **170**;
-- cuisine: **28**.
+- promoted: **8**;
+- blocked: **33**.
 
-The brand-template audit shows that already-reviewed chain menus are now nearly saturated among source-backed same-brand identities. Future featured-dish gains should therefore come mainly from **new explicit official menu evidence**, grouped by repeated host/menu pattern and reviewed once before being added to the template registry.
+Blocks include terminal historical candidate rejections and OSM rows already verified to another Place ID. These rules prevent aggressive full-range collection from creating false branch identities.
 
-## Full-range expansion architecture
+The eight safe promotions changed production **648 -> 656** and cuisine-known **571 -> 578** while all audits remained green.
 
-`data/area1_inventory_ledger.json` tracks every exact inventory Place ID without persisting full Google display payloads. `data/area1_inventory_expansion_queue.json` holds the first 56 inventory-only identities that already have 64 OSM candidate links.
+### 5. Rebuilt 2,804 ledger
 
-Public production admission still requires exact branch identity, <=1,200 m scope, independently maintainable source evidence and successful canonical/source audits.
+`data/area1_inventory_ledger.json` and `data/area1_inventory_expansion_queue.json` are rebuilt after identity promotions.
 
-## Google API cost guardrail
+Run `34019222744` produced:
 
-The locator, single-site hours, explicit address/budget and featured-template passes make **zero new Google Places requests**. Routine continuation should prefer persisted official URLs, OSM/curated candidates and reviewed templates. Paid Google recovery remains manual-only.
+- inventory total: 2,804;
+- production total: 656;
+- production in inventory: 653;
+- inventory-only: 2,151;
+- verified independent source inside inventory: 651;
+- rejected-candidate queue: **51 identities / 58 links**;
+- ledger rows without previous OSM-QC binding: 2,100.
+
+The 2,100 count no longer means “not collected”. All completed the current transient Google identity sweep; they still need independent-source discovery.
+
+## Source and field strategy
+
+For every identity under investigation, source discovery and field extraction should happen in one pass whenever possible:
+
+- exact branch/business identity;
+- cuisine;
+- address;
+- normalized weekly opening hours;
+- explicit lunch/dinner spend range if actually stated;
+- menu / representative or signature dishes;
+- strict recommendation evidence when explicitly stated;
+- maintainable independent source URLs.
+
+Do not revisit the same restaurant in separate manual passes merely to collect one field at a time.
+
+## A / B / C confidence model
+
+1. **A — auto-promote:** exact identity + deterministic independent-source evidence + no collision/terminal conflict.
+2. **B — prepared review:** evidence is extracted and grouped for rapid review; no fresh manual search should be required when possible.
+3. **C — unresolved/terminal:** evidence is insufficient, contradictory, stale, closed, or cannot safely establish branch identity. Record the reason instead of guessing.
+
+Full completion is based on auditable outcomes, not forced non-null values.
+
+## Field semantics that remain mandatory
+
+### Opening hours
+
+`openingHours` remains the filter-ready weekly contract. Missing day = unknown, `[]` = explicitly closed, missing `openingHours` = no reliable weekly schedule. Temporary/holiday-conditional schedules are not forced into the weekly model.
+
+### Budget
+
+Menu-item or course prices do not define restaurant lunch/dinner budget. Generic automatic budget inference remains prohibited.
+
+### Dishes
+
+- `recommendedDishes`: strict explicit recommendation/popularity/signature evidence only;
+- `featuredDishes`: broader source-backed representative/signature items.
+
+Brand/template propagation is a field rule, never an identity-admission rule.
+
+## Google data / cost guardrails
+
+- Google Place ID is the durable identity key.
+- Full Google display payload is not persisted as the restaurant database.
+- Full-range identity sweep uses minimum Place Details Pro QC fields transiently.
+- `websiteUri` / Enterprise discovery is not part of the automatic full sweep.
+- Enterprise official-site recovery remains separately budget-gated and manual-only.
+- The current full sweep plus its bounded retry stays below the current Place Details Pro monthly free request cap when counted with the earlier OSM QC workload, but actual Cloud billing is not observable from the repository.
 
 ## CI and audit contract
 
-Every material field/identity batch must preserve exact Place-ID/source provenance, rebuild canonical production, run repository/source-binding/normalized-field audits, run relevant coverage/dish reports, use `set -o pipefail` around piped reports, and update progress/development/log records when authoritative state changes.
+Every identity-admission batch must rebuild canonical production and pass:
 
-## Runtime/product contract
+- repository audit;
+- source-binding audit;
+- normalized-field audit;
+- identity-coverage audit;
+- relevant coverage/source reports.
 
-Recommendation behavior and frontend remain unchanged: <=1,200 m scope, verified Place IDs, cuisine/budget/distance filters, three distinct results when possible, cuisine diversity preference, Web Crypto randomness, 百名店 weight 2.2, no rating/review popularity ranking, hybrid Maps/Leaflet views, and isolated voice/mascot feedback.
+Piped reports use `set -o pipefail`. Generated durable queues must be checked to ensure Google display fields were not accidentally persisted.
 
 ## Ordered next work
 
-1. Extract **new** explicit representative/signature dishes from current official menu pages and group repeated host/menu patterns before review; current source-backed featured gap is **274**.
-2. Continue deterministic host/template extraction for the remaining **153 opening-hours** gaps.
-3. Keep budget at B-review/host-specific explicit-spend semantics; do not infer from menu prices.
-4. Continue deterministic explicit-address extraction; current source-backed gap is **170**.
-5. Resolve the remaining **207** current-production source outcomes.
-6. Apply A/B/C review to the **56-ID** prioritized inventory expansion queue, then the remaining **2,103** inventory-only identities.
-7. Enable schedule-aware runtime filtering only after a separate coverage/freshness review.
+1. Resolve the **3 medium + 49 review** full-range OSM candidates.
+2. Recalculate the source-outcome queue against all **656 production** identities, then drive it to an explicit outcome for every row.
+3. Batch independent-source discovery for the remaining **2,151 inventory-only** identities, prioritizing repeated brands/locators/official-site patterns.
+4. Extract all safe restaurant fields during the same independent-source pass.
+5. Convert ambiguous/no-source/closed cases into explicit auditable outcomes rather than leaving them as unprocessed IDs.
+6. Keep processing until **2,804 / 2,804** identities have a final maintenance outcome.
+7. Only after full identity/source collection is substantially complete, return to optional field-coverage optimization and schedule-aware runtime filtering.
+
+## Runtime/product contract
+
+The browser remains a static GitHub Pages product. Recommendation behavior is unchanged: <=1,200 m scope, verified Place IDs, cuisine/budget/distance filters, exactly three distinct results when possible, cuisine diversity preference, Web Crypto randomness, 百名店 weight 2.2, no rating/review popularity ranking, hybrid Google Maps Embed/Leaflet views, and isolated voice/mascot feedback.
