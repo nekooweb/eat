@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
-"""Refresh rich Hot Pepper details for strict-safe current production bindings.
+"""Refresh rich Hot Pepper details for reviewed current-production bindings.
 
 This collector is intentionally narrow: it does not repeat geographic discovery
-or identity matching. It reads the durable reviewed binding ledger, selects only
-`autoEligible && currentProduction`, and fetches those Hot Pepper IDs in batches
-of at most 20. The API is free/authorized for this project and no Google or other
-paid place/search API is called.
+or identity matching. It reads the durable binding ledger and selects either:
+1) strict automatic-use current-production bindings; or
+2) explicit manually reviewed rich-metadata-only exceptions.
 
+Hot Pepper IDs are fetched in batches of at most 20. The API is free/authorized
+for this project and no Google or other paid place/search API is called.
 Photos are deliberately excluded from durable outputs.
 """
 
@@ -110,15 +111,43 @@ def compact_detail(shop):
     }
 
 
+def manual_pairs(path: Path | None):
+    if not path or not path.exists():
+        return set()
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    return {
+        (row.get("googlePlaceId"), row.get("hotpepperId"))
+        for row in payload.get("approved", [])
+        if row.get("googlePlaceId") and row.get("hotpepperId")
+    }
+
+
 def main():
-    if len(sys.argv) != 3:
-        raise SystemExit("usage: collect_hotpepper_rich_details.py BINDINGS.json OUTPUT.json")
-    bindings_path, output_path = map(Path, sys.argv[1:])
+    if len(sys.argv) not in (3, 4):
+        raise SystemExit(
+            "usage: collect_hotpepper_rich_details.py BINDINGS.json OUTPUT.json [MANUAL_ALLOWLIST.json]"
+        )
+    bindings_path = Path(sys.argv[1])
+    output_path = Path(sys.argv[2])
+    allowlist_path = Path(sys.argv[3]) if len(sys.argv) == 4 else None
+
     payload = json.loads(bindings_path.read_text(encoding="utf-8"))
-    bindings = [
-        row for row in payload.get("bindings", [])
-        if row.get("autoEligible") and row.get("currentProduction") and row.get("hotpepperId")
-    ]
+    reviewed = manual_pairs(allowlist_path)
+    bindings = []
+    automatic_count = 0
+    manual_count = 0
+    for row in payload.get("bindings", []):
+        pair = (row.get("googlePlaceId"), row.get("hotpepperId"))
+        automatic = bool(row.get("autoEligible") and row.get("currentProduction") and row.get("hotpepperId"))
+        manual = bool(row.get("currentProduction") and pair in reviewed)
+        if not (automatic or manual):
+            continue
+        bindings.append(row)
+        if automatic:
+            automatic_count += 1
+        elif manual:
+            manual_count += 1
+
     ids = []
     for row in bindings:
         if row["hotpepperId"] not in ids:
@@ -155,6 +184,7 @@ def main():
         "openAir", "show", "equipment", "karaoke", "band", "tv", "english",
         "pet", "child", "midnight", "shopDetailMemo", "couponUrls",
     ]
+
     def has(value):
         if isinstance(value, str):
             return bool(value.strip())
@@ -165,18 +195,21 @@ def main():
         return value is not None
 
     output = {
-        "schemaVersion": 2,
+        "schemaVersion": 3,
         "source": "Hot Pepper Gourmet Web Service",
-        "mode": "strict_safe_current_production_rich_refresh",
+        "mode": "reviewed_current_production_rich_refresh",
         "policy": {
             "paidApiCalls": 0,
             "geographicDiscoveryRepeated": False,
             "identityMatchingRepeated": False,
-            "strictSafeCurrentProductionOnly": True,
+            "automaticStrictSafeOnly": True,
+            "manualExceptionsRequireExplicitAllowlist": True,
             "photosCollected": False,
         },
         "summary": {
             "selectedBindings": len(bindings),
+            "automaticBindings": automatic_count,
+            "manualReviewedBindings": manual_count,
             "uniqueShopIds": len(ids),
             "detailRequests": requests,
             "returnedShopIds": len(shops_by_id),
