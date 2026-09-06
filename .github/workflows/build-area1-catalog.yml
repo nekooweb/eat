@@ -8,6 +8,7 @@ on:
       - ".github/workflows/build-area1-catalog.yml"
       - "scripts/build_area1_catalog.mjs"
       - "scripts/build_catalog_enrichment_queue.mjs"
+      - "scripts/audit_loaded_hotpepper_lunch_candidates.mjs"
       - "scripts/build_production_dataset.mjs"
       - "scripts/build_source_provenance.mjs"
       - "scripts/build_source_facts.mjs"
@@ -69,6 +70,8 @@ jobs:
           if(q.summary.identityUniverse!==2807 || q.summary.production!==656) throw new Error('queue/catalog universe mismatch');
           console.log(JSON.stringify({catalog:x.summary, queue:q.summary},null,2));
           NODE
+      - name: Audit loaded strict Hot Pepper lunch candidates
+        run: node scripts/audit_loaded_hotpepper_lunch_candidates.mjs | tee /tmp/hotpepper_lunch_candidates.json
       - name: Commit catalog and queue
         run: |
           set -euo pipefail
