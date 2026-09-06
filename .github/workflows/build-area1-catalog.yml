@@ -7,12 +7,14 @@ on:
     paths:
       - ".github/workflows/build-area1-catalog.yml"
       - "scripts/build_area1_catalog.mjs"
+      - "scripts/apply_catalog_admission_state.mjs"
       - "scripts/build_catalog_enrichment_queue.mjs"
       - "scripts/audit_loaded_hotpepper_lunch_candidates.mjs"
       - "scripts/audit_multisource_admission_candidates.mjs"
       - "scripts/build_production_dataset.mjs"
       - "scripts/build_source_provenance.mjs"
       - "scripts/build_source_facts.mjs"
+      - "data/catalog_admissions.json"
       - "data/area1_google_ids.json"
       - "data/area1_full_collection_queue.json"
       - "data/hotpepper_bindings.json"
@@ -58,6 +60,7 @@ jobs:
           set -euo pipefail
           node scripts/build_area1_catalog.mjs | tee /tmp/area1_catalog_summary.json
           test -s data/area1_catalog.json
+          node scripts/apply_catalog_admission_state.mjs | tee /tmp/area1_admission_state_summary.json
           node scripts/build_catalog_enrichment_queue.mjs | tee /tmp/area1_enrichment_queue_summary.json
           test -s data/area1_enrichment_queue.json
           node - <<'NODE'
@@ -70,6 +73,8 @@ jobs:
           if(x.summary.productionOutsideFrozenInventory!==3) throw new Error('unexpected current-only production '+x.summary.productionOutsideFrozenInventory);
           if(x.summary.hotpepperCatalogFactRows!==535) throw new Error('unexpected Hot Pepper catalog fact count '+x.summary.hotpepperCatalogFactRows);
           if(x.summary.inventoryOnlyHotpepperCatalogFacts!==394) throw new Error('unexpected inventory-only Hot Pepper fact count '+x.summary.inventoryOnlyHotpepperCatalogFacts);
+          if(x.summary.reviewedAdmissionReady!==6) throw new Error('unexpected reviewed admission count '+x.summary.reviewedAdmissionReady);
+          if(x.summary.rejectedAdmissionPairs!==4) throw new Error('unexpected rejected admission count '+x.summary.rejectedAdmissionPairs);
           if(x.summary.productionMissing.cuisine!==55) throw new Error('catalog cuisine completeness diverges from canonical stats: '+x.summary.productionMissing.cuisine);
           if(x.summary.productionMissing.lunchBudget!==490) throw new Error('catalog lunch completeness diverges from canonical stats: '+x.summary.productionMissing.lunchBudget);
           if(x.summary.overtureCrossSupportedRows!==1997) throw new Error('unexpected Overture cross-support rows '+x.summary.overtureCrossSupportedRows);
