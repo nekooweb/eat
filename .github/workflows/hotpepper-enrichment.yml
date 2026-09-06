@@ -19,6 +19,8 @@ jobs:
   enrich:
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    env:
+      HOTPEPPER_API_KEY: ${{ secrets.HOTPEPPER_API_KEY || secrets.HOTPEPPER_API || secrets.HOTPEPPER_KEY || secrets.RECRUIT_API_KEY }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -36,6 +38,15 @@ jobs:
       - name: Install matching dependency
         run: python -m pip install --disable-pip-version-check 'pykakasi>=2.3,<3'
 
+      - name: Require Hot Pepper API key
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ -z "${HOTPEPPER_API_KEY:-}" ]]; then
+            echo "No Hot Pepper API key secret is configured. Supported secret names: HOTPEPPER_API_KEY, HOTPEPPER_API, HOTPEPPER_KEY, RECRUIT_API_KEY." >&2
+            exit 2
+          fi
+
       - name: Enforce no-paid-data-API policy
         run: node scripts/audit_no_paid_apis.mjs
 
@@ -45,6 +56,7 @@ jobs:
       - name: Download successful full-list transient matching artifacts
         env:
           GH_TOKEN: ${{ github.token }}
+        shell: bash
         run: |
           set -euo pipefail
           rm -rf _seed _audit
@@ -62,38 +74,47 @@ jobs:
 
       - name: Collect Hot Pepper Area1 geographic listing
         env:
-          HOTPEPPER_API_KEY: ${{ secrets.HOTPEPPER_API_KEY }}
           HOTPEPPER_DISCOVERY_RANGE: '4'
           HOTPEPPER_REQUEST_INTERVAL: '0.20'
           HOTPEPPER_MAX_PAGES: '100'
+        shell: bash
         run: |
+          set -euo pipefail
           python scripts/collect_hotpepper_area1.py \
             discover \
             _audit/hotpepper_area1_lite.json \
             | tee _audit/hotpepper_discovery_console.log
+          test -s _audit/hotpepper_area1_lite.json
 
       - name: Match Hot Pepper IDs to the known Area1 inventory
+        shell: bash
         run: |
+          set -euo pipefail
           python scripts/match_hotpepper_inventory.py \
             _seed/full/full_inventory_place_details.json \
             _seed/retry/full_inventory_retry_private.json \
             _audit/hotpepper_area1_lite.json \
             _audit/hotpepper_inventory_match.json \
             | tee _audit/hotpepper_match_console.log
+          test -s _audit/hotpepper_inventory_match.json
 
       - name: Fetch full details for high/medium match candidates in 20-ID batches
         env:
-          HOTPEPPER_API_KEY: ${{ secrets.HOTPEPPER_API_KEY }}
           HOTPEPPER_REQUEST_INTERVAL: '0.20'
+        shell: bash
         run: |
+          set -euo pipefail
           python scripts/collect_hotpepper_area1.py \
             details \
             _audit/hotpepper_inventory_match.json \
             _audit/hotpepper_bound_details.json \
             | tee _audit/hotpepper_details_console.log
+          test -s _audit/hotpepper_bound_details.json
 
       - name: Summarize enrichment yield
+        shell: bash
         run: |
+          set -euo pipefail
           python - <<'PY' | tee _audit/hotpepper_enrichment_summary.json
           import json
           match=json.load(open('_audit/hotpepper_inventory_match.json'))
@@ -119,10 +140,21 @@ jobs:
           }
           print(json.dumps(summary,ensure_ascii=False,indent=2))
           PY
+          test -s _audit/hotpepper_enrichment_summary.json
+
+      - name: Validate benchmark outputs
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s _audit/hotpepper_area1_lite.json
+          test -s _audit/hotpepper_inventory_match.json
+          test -s _audit/hotpepper_bound_details.json
+          test -s _audit/hotpepper_enrichment_summary.json
 
       - name: Upload review-only enrichment artifact
         uses: actions/upload-artifact@v4
         with:
           name: hotpepper-area1-enrichment-review
           path: _audit
+          if-no-files-found: error
           retention-days: 3
