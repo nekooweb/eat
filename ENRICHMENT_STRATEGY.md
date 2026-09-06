@@ -4,34 +4,34 @@ Updated: 2026-09-06
 
 ## Decision
 
-**Area1 candidate discovery is no longer the primary problem.**
+**Area1 candidate discovery is complete enough for the current phase. The main problem is content enrichment of the known list.**
 
-The historical 2,804-identity capture succeeded. The full-collection and retry artifacts from 2026-09-06 provide a one-time transient matching seed for the identities that were not already in production. No new paid Google request is required to reconstruct the matching inputs used in this enrichment phase.
+The historical 2,804-identity capture succeeded. The successful full-collection and retry artifacts provide a one-time matching seed for the identities that were not already in production. No new paid Google request is required.
 
-The primary engineering objective is now:
+The primary engineering objective is:
 
-> For the already-known Area1 restaurant list, bind each identity to maintainable independent sources and fill the highest-value restaurant fields in large batches at near-zero marginal cost.
+> Bind the already-known Area1 identities to high-yield structured/official sources and complete the fields that improve recommendation quality and filtering, using as few requests and review minutes as possible.
 
-Do not spend the next development cycle optimizing candidate-universe discovery unless a measured coverage audit later shows a real recall problem.
+`HOTPEPPER_ENRICHMENT.md` is the detailed design for the first structured enrichment layer.
 
-## 1. What should be optimized
+## 1. Field priorities
 
-### P0 — identity and recommendation usefulness
+### P0 — identity and basic usefulness
 
-These fields have the highest value and should be completed first:
+Complete first:
 
-- current restaurant/business existence evidence;
+- current existence/source evidence;
 - durable name and aliases;
-- independent coordinates and address;
+- coordinates and address;
 - cuisine / restaurant type;
-- independent source identifiers and provenance;
-- official website / locator when available.
+- source-native IDs and provenance;
+- official/Hot Pepper URL where permitted.
 
 ### P1 — filtering value
 
-- lunch price evidence;
-- dinner price evidence;
-- a filterable price band with an explicit evidence class.
+- dinner budget;
+- lunch budget;
+- transparent price evidence class.
 
 ### P2 — useful display context
 
@@ -44,46 +44,126 @@ These fields have the highest value and should be completed first:
 
 - featured/signature dishes;
 - strict recommendation evidence;
-- descriptive/decorative fields.
+- descriptive fields.
 
-Progress should be measured primarily by P0/P1 coverage, not by forcing every optional field non-null.
+Progress should be optimized for P0/P1 before spending large effort on P3.
 
-## 2. Use the successful Google sweep only as a transient bridge
+## 2. Existing full-list capture is a transient matching bridge
 
-The prior paid sweep already exists and must not be repeated.
+The previous paid sweep must not be repeated.
 
-Use the still-available Actions artifacts only inside a short-lived matching job to obtain transient matching features such as:
+The still-available private Actions artifacts may be used only inside a short-lived bridge job for matching features such as:
 
 - historical Place ID;
-- name returned in that completed sweep;
-- address;
-- coordinates;
+- transient name/alias;
+- transient address;
+- transient coordinates;
 - operational/type signals.
 
-Those Google display fields are **not** copied into the durable repository database.
+Do not commit those Google display fields.
 
-Instead, use them to establish durable independent bindings such as:
+Use them to create persistent bindings to allowed sources, for example:
 
 ```text
 legacy Place ID
-  -> Foursquare OS place ID
-  -> Overture GERS/place ID
-  -> OSM element ID
+  -> Hot Pepper shop ID
   -> official/brand locator URL
+  -> OSM element ID
+  -> Foursquare OS ID
+  -> Overture/GERS ID
   -> AllThePlaces/official chain ref
 ```
 
-After a binding is established, durable fields come from the independent source, not from the transient Google payload.
+After the bridge, canonical fields should be resolved from the permitted source claims rather than from transient Google display payload.
 
-This converts the value of the already-paid sweep into a zero-paid-API maintenance graph before the private artifacts expire.
+## 3. Primary structured source: Hot Pepper Gourmet API
 
-## 3. Source roles for enrichment
+Project-owner guidance states that the project is non-commercial and that the intended Hot Pepper API use has been separately authorized/confirmed. The enrichment architecture therefore treats Hot Pepper as a first-class source under that project-specific authorization assumption.
 
-No single source should be treated as the truth for every field.
+The public general Recruit API terms contain stricter default cache/database provisions. Non-commercial status alone should not be documented as automatically overriding those provisions. If the separate authorization scope is different from the current project assumption, persistence/refresh behavior must be adjusted accordingly.
+
+### Why Hot Pepper is high-yield
+
+A full Gourmet Search response can provide in one structured record:
+
+- Hot Pepper shop ID;
+- Japanese name and kana;
+- address;
+- coordinates;
+- genre/sub-genre and catch;
+- dinner budget code/range/average;
+- budget memo;
+- opening-hours text;
+- regular closed days;
+- lunch availability;
+- shop URL;
+- useful secondary restaurant attributes.
+
+This directly targets several of the project's weakest fields: address, cuisine, dinner budget and opening hours.
+
+### Batch pattern
+
+Do not query the 2,804 identities one-by-one.
+
+Initial binding:
+
+1. geographically query a safe Area1 superset with `type=lite`;
+2. request up to 100 rows per page;
+3. paginate;
+4. crop locally to the exact 1.2 km radius;
+5. match locally to the known identity seed.
+
+After Hot Pepper IDs are bound:
+
+- request full detail using up to 20 shop IDs per API request;
+- refresh only bound IDs in batches;
+- compare normalized field hashes so unchanged rows do not trigger unnecessary rebuild work.
+
+### Public credit
+
+If Hot Pepper API information is displayed publicly, include the required service credit:
+
+`Powered by ホットペッパーグルメ Webサービス`
+
+Do not use Hot Pepper images in the current phase.
+
+## 4. Secondary source roles
+
+No single source should be universal truth for every field.
+
+### Official restaurant pages / chain locators
+
+Use primarily for:
+
+- lunch price/budget;
+- exact branch conflicts;
+- menu/signature dishes;
+- strict recommendation evidence;
+- restaurants not covered by Hot Pepper;
+- higher-authority branch schedules when available.
+
+### AllThePlaces + official locator logic
+
+Use as a high-efficiency chain layer.
+
+AllThePlaces maintains Japanese store-locator spiders and releases generated data under CC0. Reuse relevant mature locator logic where possible rather than rebuilding every chain integration from scratch.
+
+### OpenStreetMap
+
+Use for:
+
+- independent coordinates;
+- cuisine/type tags;
+- `opening_hours`;
+- address;
+- website/contact tags;
+- conflict checks.
+
+For large refreshes prefer a local/cached extract rather than systematic public query traffic.
 
 ### Foursquare Open Source Places
 
-Good bulk source for:
+Use primarily for unmatched identities and currentness/cross-checking:
 
 - name;
 - coordinates;
@@ -91,250 +171,190 @@ Good bulk source for:
 - category;
 - phone;
 - website;
-- `date_refreshed` / `date_closed`;
-- source-native FSQ identity.
-
-Use the open dataset, not the paid Places API.
-
-This source is especially useful for P0 identity/currentness coverage. Direct FSQ OS should be benchmarked rather than assuming that the smaller FSQ contribution visible through another aggregate dataset is equivalent to the full open corpus.
+- refresh/closure signals;
+- FSQ identity.
 
 ### Overture Maps Places
 
-Good permissively licensed bulk source for:
+Use primarily for unmatched identities and source cross-checks:
 
 - multilingual names;
-- taxonomy / basic category;
-- address;
-- coordinates;
-- website / phone / brand;
-- existence confidence;
-- operating status where available;
+- taxonomy;
+- address/coordinates;
+- website/phone/brand;
+- confidence;
 - source lineage;
-- GERS/place identity across releases.
+- GERS identity.
 
-Use it as an enrichment source, not as the definition of the Area1 universe.
+Because Overture is itself a conflated multi-provider dataset, agreement with one of its own upstream providers is not automatically independent evidence.
 
-Important: Overture is itself a conflated multi-provider dataset. Agreement between Overture and one of its own upstream providers is not automatically two independent votes. Preserve provider/source lineage during confidence scoring.
+## 5. Matching strategy
 
-### OpenStreetMap
+The completed Google sweep frequently returned romanized/English names for Japanese restaurants. Exact Japanese-name matching is therefore insufficient.
 
-Useful for:
+Use blocked multi-signal matching:
 
-- independent coordinates;
-- cuisine/type tags;
-- `opening_hours`;
-- address;
-- website/contact tags;
-- OSM identity.
-
-For large refreshes use a local/cached extract rather than systematic public geocoding/query traffic.
-
-### AllThePlaces + official chain locators
-
-This should become a first-class enrichment route rather than an afterthought.
-
-AllThePlaces already maintains spiders for many Japanese brands and emits CC0 data. For supported restaurant groups, this can provide official-locator-derived:
-
-- branch ref;
-- brand and branch name;
-- coordinates;
-- address;
+- geodesic distance;
+- Japanese/Latin aliases;
+- address/postal/building tokens;
+- name kana when available;
 - phone;
-- opening hours;
-- cuisine/category;
-- official detail URL.
-
-The Zensho Japan spider alone covers multiple restaurant brands (for example Sukiya, Nakau, Hama-sushi, Cocos, Jolly Pasta, yakiniku and ramen brands). Reuse mature store-locator logic instead of reimplementing every chain crawler from scratch.
-
-When a relevant AllThePlaces spider does not exist, implement a small repository adapter around the restaurant group's official locator and keep the extraction logic host-specific.
-
-### Official restaurant pages
-
-Authoritative source for P1-P3 fields when an exact branch page is established.
-
-Prefer:
-
-1. branch locator/detail page;
-2. branch-specific menu page;
-3. brand menu page when the menu is demonstrably shared by that branch;
-4. restaurant-owned site.
-
-Extract all useful fields in one visit.
-
-### Hot Pepper / Yahoo local / other listing APIs
-
-These can be useful as comparison or review aids, but they must not automatically become the persistent enrichment database.
-
-In particular, Recruit's API terms require rapid cache refresh and prohibit copying API data into a third-party database. Therefore Hot Pepper API data should not be committed as long-lived canonical fields merely because the API is free.
-
-Existing individually reviewed source bindings may remain subject to their existing provenance rules, but do not build a new bulk persistent ingestion pipeline around provider data whose terms do not permit that use.
-
-## 4. Matching strategy: evidence fusion, not name-only matching
-
-The completed sweep has a practical complication: many Japanese restaurants were returned with romanized/English display names. Exact Japanese-string matching will therefore miss a large fraction of useful source bindings.
-
-Use blocked candidate matching with multiple signals:
-
-- distance;
-- normalized Japanese/Latin names and aliases;
-- address tokens / postal code / building;
-- phone;
-- official website domain;
+- official domain;
 - brand + branch;
 - category compatibility;
-- source-native IDs already linked through prior reviewed data.
+- previously reviewed source bindings.
 
-### Proposed confidence model
+### Confidence principles
 
-Use a probabilistic or calibrated weighted record-linkage model rather than one fixed threshold for every restaurant type.
+Strong evidence examples:
 
-Example evidence strength:
+- exact phone match;
+- exact official domain + compatible address/name;
+- <=20 m + strong address/building + compatible name;
+- very close unique candidate in a building;
+- strong name + strong address agreement.
 
-- exact phone match: very strong;
-- exact official domain + compatible name/address: very strong;
-- <=20 m + strong name/alias match: strong;
-- same building + generic name: weak;
-- category-only agreement: weak;
-- one aggregate source repeating an upstream provider: not independent evidence.
+Weak evidence examples:
 
-For the current data size, a DuckDB/Splink-style probabilistic linkage pass is practical and easier to calibrate than global O(N²) matching.
+- same building with generic/low-similarity names;
+- category-only agreement;
+- two aggregate records that ultimately share the same upstream source.
 
-Enforce one-to-one/source-uniqueness constraints after scoring so two historical identities do not silently claim the same independent branch record.
+Use a calibrated probabilistic/weighted record-linkage model for ambiguous cases rather than one universal threshold. Enforce one-to-one/source-uniqueness constraints after scoring.
 
-## 5. Enrichment should be host-first, not restaurant-first
+For Area1 scale, DuckDB/Splink-style linkage is practical.
 
-The old mental model was:
+## 6. Hot Pepper field mapping
 
-```text
-restaurant 1 -> search/fetch
-restaurant 2 -> search/fetch
-restaurant 3 -> search/fetch
-...
-```
+### Name/address/coordinates
 
-The scalable model is:
+Treat Hot Pepper fields as field claims, not direct canonical overwrites:
+
+- `id` -> source alias;
+- `name` / `name_kana` -> name claims/aliases;
+- `address` -> address claim;
+- `lat` / `lng` -> coordinate claim.
+
+The resolver can prefer a stronger official/geospatial source when conflicts exist.
+
+### Cuisine
+
+Use:
+
+- `genre.code` / `genre.name`;
+- `genre.catch`;
+- `sub_genre`;
+- shop catch only as supporting evidence.
+
+Map into the existing Chinese display taxonomy through a versioned mapping table while retaining source codes/names.
+
+### Dinner budget
+
+Use:
+
+- `budget.code`;
+- `budget.name`;
+- `budget.average`;
+- `budget_memo`.
+
+This is a major structured P1 source.
+
+Do not treat cover charges or isolated course prices as the restaurant spend band.
+
+### Lunch
+
+`lunch=あり` means lunch service exists. It does not provide a lunch budget.
+
+Use lunch availability to prioritize official menu/branch-page enrichment.
+
+### Hours
+
+Use:
+
+- `open` as raw opening-hours text;
+- `close` as regular closed-day text.
+
+Keep raw text, normalized schedule, parser confidence, source and checked date.
+
+## 7. Host-first official completion
+
+After the structured Hot Pepper pass, process remaining gaps by host/template, not restaurant-by-restaurant.
 
 ```text
 known identities
- -> bind open-data/official URLs
+ -> Hot Pepper/open-data bindings
+ -> official URLs
  -> group by brand/domain/template
  -> fetch each unique URL once
  -> parse each host family once
- -> apply exact branch-level evidence to many identities
+ -> emit field claims
+ -> resolve canonical values
 ```
 
-Build queues such as:
+Prioritize hosts covering many unmatched or P1-incomplete identities.
 
-- `zensho.co.jp`: N identities;
-- `c-united.co.jp`: N identities;
-- `doutor.co.jp`: N identities;
-- `owst.jp`: N identities;
-- independent WordPress sites: generic structured-data parser;
-- no official URL: open-data-only P0 completion queue.
+## 8. One official fetch should extract every useful field
 
-A host adapter should return structured candidate claims, never write directly into canonical production.
+For each verified official page, collect in the same pass:
 
-## 6. One fetch should extract every useful field
+- exact branch identity;
+- name/address/phone;
+- cuisine;
+- weekly hours and closed days;
+- explicit budget/average-spend statements;
+- lunch/dinner menu prices;
+- menu URLs;
+- featured/signature dishes;
+- strict recommendation signals.
 
-For each verified official page, extract in one pass:
+Parse in this order:
 
-### Structured markup
+1. JSON-LD / Schema.org;
+2. stable official locator JSON/API payload;
+3. embedded application state;
+4. semantic HTML sections;
+5. bounded menu/detail links;
+6. text-based PDF menus when useful.
 
-- JSON-LD `Restaurant`, `LocalBusiness`, `FoodEstablishment`;
-- `openingHours` / `openingHoursSpecification`;
-- `PostalAddress`;
-- `servesCuisine`;
-- `priceRange`;
-- menu URL;
-- telephone;
-- canonical URL.
+Image-only OCR is a lower-priority fallback.
 
-### Page structure
+## 9. Price model
 
-- branch name and address;
-- hours / closed days;
-- lunch and dinner sections;
-- menu links;
-- explicit price/budget statements;
-- `おすすめ`, `人気`, `名物`, `看板`, `自慢` signals;
-- same-origin sitemap/locator links.
+Do not weaken the meaning of budget silently.
 
-### Menu documents
+Use an evidence-classed `priceProfile`:
 
-Follow a bounded number of likely menu links and PDFs. Prefer text extraction from HTML or text-based PDF. Image-only menu OCR is a lower-priority fallback because it is expensive and error-prone.
+- **A** — explicit average/budget/spend range from an authorized structured exact source or official source;
+- **B** — official lunch/dinner menu with enough comparable main/set items to derive an observed band;
+- **C** — sparse item/course evidence; review/display only, not hard filtering.
 
-Store raw extraction in short-lived audit artifacts. Commit only resolved claims with provenance.
+Hot Pepper can provide a large A/B-quality dinner layer depending on resolver policy. Lunch remains mainly official-menu driven.
 
-## 7. Rethink price coverage instead of leaving most rows unknown
+## 10. Opening-hours normalization
 
-The existing model accepts only explicit restaurant spend ranges. That is high precision but produces poor coverage.
+Keep:
 
-Do not silently weaken that field. Instead separate **explicit budget** from **derived official menu price evidence**.
-
-Suggested schema:
-
-```json
-{
-  "priceProfile": {
-    "lunch": {
-      "band": [1000, 1999],
-      "method": "official_menu_observed",
-      "confidence": "B"
-    },
-    "dinner": {
-      "band": [2000, 3999],
-      "method": "explicit_average",
-      "confidence": "A"
-    }
-  }
-}
-```
-
-Evidence classes:
-
-- **A** — explicit average/budget/spend range from an allowed exact source;
-- **B** — official lunch/dinner menu with enough comparable main/set items to derive a transparent observed band;
-- **C** — sparse item/course evidence; display/review only, do not use for hard filtering.
-
-This lets the product improve budget filtering without pretending that a single menu item equals restaurant spend.
-
-## 8. Opening-hours normalization
-
-Keep both:
-
-- raw source text;
+- source raw text;
 - normalized weekly schedule;
 - parser confidence;
-- source URL + checked date.
+- source URL/ID;
+- checked date.
 
-Parsing stages:
+Parsing order:
 
-1. Schema.org structured hours;
+1. structured Hot Pepper or Schema.org hours;
 2. known host adapter;
 3. OSM `opening_hours` syntax;
 4. conservative Japanese free-text parser;
-5. manual review if conflicting/irregular.
+5. manual review for conflicts/irregular schedules.
 
-Do not force temporary/holiday notes into a weekly schedule.
+Temporary/holiday notes are not forced into weekly schedules.
 
-## 9. Cuisine normalization
-
-Use an evidence hierarchy:
-
-1. exact official cuisine/brand/menu evidence;
-2. consistent FSQ/Overture/OSM categories;
-3. menu-content classification;
-4. conservative name-based inference only as low-confidence staging evidence.
-
-Map source categories into the existing Chinese display taxonomy through a versioned mapping table. Keep the original source category alongside the mapped value in maintenance evidence so mappings can be changed later without re-fetching sources.
-
-## 10. Recommended/featured dishes
-
-Keep the distinction, but automate candidate extraction more intelligently.
+## 11. Recommended/featured dishes
 
 ### Strict recommendation
 
-Require DOM/text proximity between a concrete dish and explicit terms such as:
+Require a concrete dish near explicit evidence such as:
 
 - おすすめ;
 - 人気;
@@ -344,100 +364,108 @@ Require DOM/text proximity between a concrete dish and explicit terms such as:
 
 ### Featured dish
 
-Can use:
+May use broader official signals such as:
 
-- official menu heading prominence;
-- brand signature menu sections;
-- branch/brand `こだわり` sections;
+- prominent menu headings;
+- signature sections;
+- `こだわり` sections;
 - explicit specialty descriptions.
 
-The automatic parser produces candidates. Promotion remains evidence-based.
+Hot Pepper catch text can help prioritize review but should not automatically fabricate a concrete recommended dish when none is named.
 
-## 11. Data model: field claims before canonical values
+## 12. Field-claim architecture
 
-For bulk work, treat each source extraction as a set of field-level claims:
+Bulk collectors should emit field-level claims rather than mutate canonical rows directly.
+
+Each claim should contain:
 
 ```text
-entity / alias
+entity/alias key
 field
 value
 source provider
-source-native record ID or URL
+source-native ID or URL
 checked_at
 extraction method
 confidence
 lineage
 ```
 
-The resolver then chooses the canonical value for production.
+The resolver then chooses canonical values.
 
-This is safer and more scalable than letting every scraper directly mutate restaurant rows. It also makes conflicting hours, names or prices auditable.
+Existing `source_enrichment_*.js` can remain the generated compatibility layer while a compact claim ledger is introduced behind it.
 
-The current `source_enrichment_*.js` format can remain as the generated compatibility layer while a compact claim ledger is introduced behind it.
+## 13. Immediate execution order
 
-## 12. Immediate execution order
+### Phase A — bridge the existing paid sweep
 
-### Phase A — consume the already-paid transient seed now
+1. download/merge the successful full-collection and retry artifacts;
+2. combine with current production identities;
+3. keep Google display fields transient;
+4. use them only for matching source aliases.
 
-1. download the successful full-collection + retry private artifacts;
-2. merge retry rows into the original full sweep in memory;
-3. combine with current production identities to cover the frozen 2,804 list;
-4. match the transient seed against open-source snapshots;
-5. commit only independent source bindings and independent fields;
-6. discard the transient Google display payload after the bridge pass.
+### Phase B — Hot Pepper structured pass
 
-### Phase B — maximize P0 coverage
+1. geographic Hot Pepper `lite` pagination over Area1 superset;
+2. exact 1.2 km local crop;
+3. match Hot Pepper IDs to known identities;
+4. review only collisions/ambiguous cases;
+5. persist permitted bindings;
+6. full detail requests in 20-ID batches;
+7. emit address/cuisine/dinner-budget/hours/close/name field claims.
 
-1. Foursquare OS Places benchmark/match;
-2. Overture Places match;
-3. local OSM match;
-4. source-lineage-aware reconciliation;
-5. build durable website/phone/category/address bindings.
+### Phase C — measure remaining gaps
 
-### Phase C — process chains and repeated hosts
+Build a coverage matrix for every known identity:
 
-1. detect brand/domain clusters;
-2. reuse relevant AllThePlaces spiders/official locator logic;
-3. implement high-yield host adapters;
-4. extract hours/menu/address/cuisine in one pass.
+- Hot Pepper binding;
+- independent source binding;
+- cuisine;
+- dinner budget;
+- lunch budget;
+- hours;
+- official URL;
+- dishes/recommendations.
 
-### Phase D — independent restaurants
+### Phase D — targeted completion
 
-1. generic JSON-LD/microdata parser;
-2. same-origin menu/sitemap discovery;
-3. bounded HTML/PDF menu extraction;
-4. P1/P2/P3 field candidate generation.
+1. official/AllThePlaces chain adapters;
+2. official generic pages;
+3. FSQ OS / Overture / OSM for unmatched identities/conflicts;
+4. menu extraction for lunch and dishes.
 
-### Phase E — human review only where it buys information
+### Phase E — human review
 
-Manual review should target:
+Manual review only for:
 
-- high-value unresolved identities;
+- identity collisions;
+- same-building ambiguity;
 - source conflicts;
-- ambiguous same-building matches;
-- B-confidence price/hours promotion;
-- strict dish recommendation evidence.
+- price/hour promotion uncertainty;
+- strict recommendation evidence.
 
-Do not manually inspect thousands of straightforward high-confidence source bindings.
+Do not manually inspect thousands of straightforward high-confidence matches.
 
-## 13. New progress metrics
+## 14. Progress metrics
 
-Stop using candidate discovery count as the headline metric.
+Stop using candidate discovery count as the main KPI.
 
 Report:
 
 - total known Area1 identities;
-- identities with >=1 durable independent source binding;
-- identities with >=2 genuinely independent evidence sources;
+- Hot Pepper matched identities;
+- identities with >=1 permitted durable source binding;
+- identities with >=2 genuinely independent source signals;
 - P0-complete identities;
 - cuisine coverage;
-- official-site/locator coverage;
-- explicit price A coverage;
-- derived menu-price B coverage;
+- Hot Pepper dinner-budget coverage;
+- official lunch-price coverage;
 - normalized-hours coverage;
+- official-site/locator coverage;
 - featured/recommended dish coverage;
 - unresolved identity/source conflicts;
 - unique hosts/templates remaining;
-- network fetches per newly completed field.
+- network requests per newly completed field;
+- review minutes per resolved ambiguous identity.
 
-The useful optimization target is **fields completed per network fetch / per review minute**, not raw request count or raw POI count.
+The useful optimization target is **fields completed per network request / per review minute**, not raw POI count.
