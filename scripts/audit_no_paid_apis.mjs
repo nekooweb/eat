@@ -31,6 +31,17 @@ function walk(dir) {
   }
 }
 
+function allowedFreeEmbedReference(file, text, match) {
+  const relative = path.relative(ROOT, file).replaceAll('\\', '/');
+  if (relative !== '.github/workflows/pages.yml') return false;
+  if (match[0] !== 'GOOGLE_MAP_API') return false;
+  const lineStart = text.lastIndexOf('\n', match.index) + 1;
+  const lineEndRaw = text.indexOf('\n', match.index);
+  const lineEnd = lineEndRaw < 0 ? text.length : lineEndRaw;
+  const line = text.slice(lineStart, lineEnd);
+  return line.includes('GOOGLE_MAPS_EMBED_KEY:') && line.includes('secrets.GOOGLE_MAP_API');
+}
+
 function inspect(file) {
   if (path.resolve(file) === self) return;
   if (!/\.(?:ya?ml|mjs|js|py|sh)$/i.test(file)) return;
@@ -39,6 +50,7 @@ function inspect(file) {
   for (const rule of forbidden) {
     rule.pattern.lastIndex = 0;
     for (const match of text.matchAll(rule.pattern)) {
+      if (allowedFreeEmbedReference(file, text, match)) continue;
       const before = text.slice(0, match.index).split('\n');
       hits.push({
         file: path.relative(ROOT, file),
