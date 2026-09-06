@@ -6,6 +6,20 @@ const SOURCE_PRIORITY = new Map([
   ['OpenStreetMap', 0]
 ]);
 
+const EVIDENCE_PRIORITY = new Map([
+  ['explicit_range', 300],
+  ['menu_derived', 200],
+  ['sparse', 0]
+]);
+
+const EVIDENCE_ALIASES = new Map([
+  ['A', 'explicit_range'],
+  ['B', 'menu_derived'],
+  ['C', 'sparse'],
+  ['explicit', 'explicit_range'],
+  ['derived', 'menu_derived']
+]);
+
 export function isPriceRange(value) {
   return Array.isArray(value)
     && value.length >= 2
@@ -19,24 +33,45 @@ function sourceLabel(row) {
   return row?.source || 'curated';
 }
 
-function claimedFields(row) {
-  if (!row?.sourceOnly || !Array.isArray(row.sourceRefs)) return new Set();
-  return new Set(row.sourceRefs.flatMap((ref) => Array.isArray(ref?.fields) ? ref.fields : []));
+function normalizeEvidenceClass(value) {
+  const text = String(value || '').trim();
+  if (!text) return 'explicit_range';
+  const normalized = EVIDENCE_ALIASES.get(text) || text;
+  if (!EVIDENCE_PRIORITY.has(normalized)) {
+    throw new Error(`unsupported price evidence class: ${text}`);
+  }
+  return normalized;
+}
+
+function claimRefs(row, meal) {
+  if (!row?.sourceOnly || !Array.isArray(row.sourceRefs)) return [];
+  return row.sourceRefs.filter((ref) => {
+    const fields = new Set(Array.isArray(ref?.fields) ? ref.fields : []);
+    return fields.has('budget') || fields.has(`${meal}Budget`);
+  });
 }
 
 function claimsMealBudget(row, meal) {
   if (!row?.sourceOnly) return true;
-  const fields = claimedFields(row);
-  return fields.has('budget') || fields.has(`${meal}Budget`);
+  return claimRefs(row, meal).length > 0;
 }
 
-function latestClaimDate(row, meal) {
+function claimEvidence(row, meal) {
+  if (!row?.sourceOnly) {
+    return { evidenceClass: 'explicit_range', evidencePriority: EVIDENCE_PRIORITY.get('explicit_range') };
+  }
+  const refs = claimRefs(row, meal);
+  if (!refs.length) return { evidenceClass: null, evidencePriority: -1 };
+  const evidenceClasses = refs.map((ref) => normalizeEvidenceClass(ref.priceEvidenceClass));
+  const evidenceClass = evidenceClasses.sort((a, b) =>
+    EVIDENCE_PRIORITY.get(b) - EVIDENCE_PRIORITY.get(a))[0];
+  return { evidenceClass, evidencePriority: EVIDENCE_PRIORITY.get(evidenceClass) };
+}
+
+function latestClaimDate(row, meal, evidenceClass = null) {
   if (!Array.isArray(row?.sourceRefs)) return '';
-  const dates = row.sourceRefs
-    .filter((ref) => {
-      const fields = new Set(Array.isArray(ref?.fields) ? ref.fields : []);
-      return fields.has('budget') || fields.has(`${meal}Budget`);
-    })
+  const dates = claimRefs(row, meal)
+    .filter((ref) => !evidenceClass || normalizeEvidenceClass(ref.priceEvidenceClass) === evidenceClass)
     .map((ref) => String(ref?.checkedAt || ''))
     .filter((value) => /^\d{4}-\d{2}-\d{2}$/.test(value))
     .sort();
@@ -58,16 +93,25 @@ export function collectMealPriceClaims(rows, meal) {
   if (!['lunch', 'dinner'].includes(meal)) throw new Error(`unsupported meal: ${meal}`);
   return rows
     .filter((row) => isPriceRange(row?.[meal]) && claimsMealBudget(row, meal))
-    .map((row, index) => ({
-      row,
-      value: row[meal],
-      provider: sourceLabel(row),
-      checkedAt: latestClaimDate(row, meal),
-      priority: sourcePriority(row),
-      index
-    }))
+    .map((row, index) => {
+      const evidence = claimEvidence(row, meal);
+      return {
+        row,
+        value: row[meal],
+        provider: sourceLabel(row),
+        evidenceClass: evidence.evidenceClass,
+        evidencePriority: evidence.evidencePriority,
+        checkedAt: latestClaimDate(row, meal, evidence.evidenceClass),
+        priority: sourcePriority(row),
+        index
+      };
+    })
+    // Sparse/single-item evidence remains review material and is never allowed
+    // to become the hard canonical restaurant budget band.
+    .filter((claim) => claim.evidencePriority > 0)
     .sort((a, b) =>
-      b.priority - a.priority
+      b.evidencePriority - a.evidencePriority
+      || b.priority - a.priority
       || b.checkedAt.localeCompare(a.checkedAt)
       || a.index - b.index);
 }
@@ -94,4 +138,8 @@ export function classifyPriceRangeRelation(a, b) {
 
 export function providerPriority(provider) {
   return SOURCE_PRIORITY.get(provider) ?? 50;
+}
+
+export function priceEvidencePriority(evidenceClass) {
+  return EVIDENCE_PRIORITY.get(normalizeEvidenceClass(evidenceClass)) ?? -1;
 }
