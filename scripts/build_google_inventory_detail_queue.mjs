@@ -51,6 +51,8 @@ const provenance = loadProvenance();
 const provenanceById = new Map((provenance.rows || []).map((row) => [row.googlePlaceId, row]));
 const evidence = loadEvidence();
 const evidenceById = new Map((evidence.rows || []).map((row) => [row.googlePlaceId, row]));
+const unresolvedBasicCount = rows.filter((row) => row.nameKnown === false || row.basicInfoState === 'google_place_id_only' || !row.name).length;
+const basicsComplete = unresolvedBasicCount === 0;
 
 const queue = rows.map((row) => {
   const prov = provenanceById.get(row.googlePlaceId) || null;
@@ -77,12 +79,15 @@ const queue = rows.map((row) => {
 
   let nextAction;
   let priorityScore;
-  if (nameKnown && !recommendedCount) {
+  if (!nameKnown) {
+    nextAction = 'resolve_basic_source_identity';
+    priorityScore = 2000;
+  } else if (!basicsComplete) {
+    nextAction = 'hold_details_until_basic_identity_complete';
+    priorityScore = 100;
+  } else if (!recommendedCount) {
     nextAction = 'collect_strict_recommended_dishes';
     priorityScore = 1000 + Math.min(sourceUrls, 10) * 15 + (row.basicInfoState === 'canonical' ? 20 : 0);
-  } else if (!nameKnown) {
-    nextAction = 'resolve_basic_source_identity';
-    priorityScore = 900;
   } else if (!featuredCount) {
     nextAction = 'collect_source_backed_featured_dishes';
     priorityScore = 700 + Math.min(sourceUrls, 10) * 10;
@@ -120,16 +125,20 @@ const queue = rows.map((row) => {
 const actionCounts = {};
 for (const row of queue) actionCounts[row.nextAction] = (actionCounts[row.nextAction] || 0) + 1;
 const summary = {
-  schemaVersion: 1,
+  schemaVersion: 2,
   scope: stats.scope || 'TOKYO/地区1️⃣',
   radiusMeters: 1200,
   inventoryTotal: rows.length,
   namedBasic: rows.filter((row) => row.nameKnown !== false && row.basicInfoState !== 'google_place_id_only').length,
   placeIdOnly: rows.filter((row) => row.basicInfoState === 'google_place_id_only').length,
+  unresolvedBasicCount,
+  basicsComplete,
   recommendedDishesKnown: rows.filter((row) => Array.isArray(row.recommendedDishes) && row.recommendedDishes.length).length,
   featuredDishesKnown: rows.filter((row) => Array.isArray(row.featuredDishes) && row.featuredDishes.length).length,
   actionCounts,
-  priorityRule: 'named missing strict recommendations > unresolved basic identity > featured dishes > hours > budgets > address/cuisine'
+  priorityRule: basicsComplete
+    ? 'strict recommended dishes > featured dishes > hours > budgets > address/cuisine'
+    : 'resolve all remaining basic source identities first; detailed enrichment is held until basics complete'
 };
 
 fs.writeFileSync(OUTPUT, JSON.stringify({ summary, rows: queue }, null, 2) + '\n', 'utf8');
