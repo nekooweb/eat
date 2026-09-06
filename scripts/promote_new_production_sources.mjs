@@ -153,6 +153,8 @@ const rows = reviewed.map((item) => {
 const lines = [];
 lines.push('// Reviewed independent official sources for restaurants admitted during the full 2,804-ID collection pass.');
 lines.push('// Google display payload is not persisted here. Ambiguous or conflicting fields stay omitted.');
+lines.push('window.FEATURED_DISHES = window.FEATURED_DISHES || [];');
+lines.push('window.RECOMMENDED_DISHES = window.RECOMMENDED_DISHES || [];');
 lines.push('window.RESTAURANTS.push(');
 rows.forEach((row, i) => {
   const suffix = i === rows.length - 1 ? '' : ',';
