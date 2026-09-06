@@ -4,6 +4,7 @@ import path from 'node:path';
 import vm from 'node:vm';
 import { fileURLToPath } from 'node:url';
 import { normalizeOpeningHours, formatOpeningHoursZh, validateOpeningHours } from './opening_hours.mjs';
+import { resolveMealPrice } from './price_resolver.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, '..');
@@ -184,6 +185,7 @@ function detailScore(row) {
   const label = sourceLabel(row);
   if (label === 'official') score += 12;
   if (label === 'Tabelog') score += 10;
+  if (label === 'Hot Pepper') score += 8;
   if (label === 'curated') score += 4;
   if (row.cuisine && row.cuisine !== '餐厅') score += 2;
   if (isPrice(row.lunch) || isPrice(row.dinner)) score += 2;
@@ -272,18 +274,13 @@ function canonicalize(placeId, sourceRows) {
     : firstBy(sourceRows, (row) => row.cuisine && row.cuisine !== '餐厅', (row) => row.cuisine)
       || base.cuisine || '餐厅';
 
-  const budgetClaim = bestClaimingRow(sourceRows, 'budget');
-  const budgetSuppressed = isSuppressed(sourceRows, 'budget');
-  const lunch = budgetSuppressed
-    ? null
-    : budgetClaim
-      ? (isPrice(budgetClaim.lunch) ? budgetClaim.lunch : null)
-      : firstBy(sourceRows, (row) => isPrice(row.lunch), (row) => row.lunch);
-  const dinner = budgetSuppressed
-    ? null
-    : budgetClaim
-      ? (isPrice(budgetClaim.dinner) ? budgetClaim.dinner : null)
-      : firstBy(sourceRows, (row) => isPrice(row.dinner), (row) => row.dinner);
+  // Lunch and dinner are resolved independently. This allows complementary
+  // evidence such as an exact Tabelog lunch band plus an authorized Hot Pepper
+  // dinner band without forcing one provider to own the restaurant's full
+  // budget profile. Source priority and per-meal suppressions live in the
+  // dedicated resolver module.
+  const lunch = resolveMealPrice(sourceRows, 'lunch');
+  const dinner = resolveMealPrice(sourceRows, 'dinner');
 
   // Legacy Japanese dish strings remain for maintenance compatibility. Public
   // cards use featuredDishes, while recommendedDishes keeps the strict subset.
@@ -386,6 +383,9 @@ const stats = {
   uniquePlaceIds: new Set(placeIds).size,
   cuisineKnown: production.filter((row) => row.cuisine !== '餐厅').length,
   budgetKnown: production.filter((row) => isPrice(row.lunch) || isPrice(row.dinner)).length,
+  lunchBudgetKnown: production.filter((row) => isPrice(row.lunch)).length,
+  dinnerBudgetKnown: production.filter((row) => isPrice(row.dinner)).length,
+  bothMealBudgetsKnown: production.filter((row) => isPrice(row.lunch) && isPrice(row.dinner)).length,
   recommendedDishesKnown: production.filter((row) => row.recommendedDishes.length).length,
   featuredDishesKnown: production.filter((row) => row.featuredDishes.length).length,
   openingHoursKnown: production.filter((row) => Boolean(row.openingHours)).length,
@@ -393,6 +393,8 @@ const stats = {
   scheduleKnown: production.filter((row) => Boolean(row.openingHours)).length,
   sourceBacked: production.filter((row) =>
     row.sources.some((source) => source === 'Tabelog' || source === 'official')).length,
+  usableSourceBacked: production.filter((row) =>
+    row.sources.some((source) => source === 'Tabelog' || source === 'official' || source === 'Hot Pepper')).length,
   awards: production.filter((row) => row.hyakumeiten).length
 };
 
