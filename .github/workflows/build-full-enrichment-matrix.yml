@@ -22,6 +22,12 @@ jobs:
           node-version: '22'
       - name: Enforce no-paid-data-API policy
         run: node scripts/audit_no_paid_apis.mjs
+      - name: Build reviewed rich-metadata core fallback
+        run: |
+          set -euo pipefail
+          node scripts/build_hotpepper_rich_core_fallback.mjs
+          test -s data/source_enrichment_hotpepper_richcore.js
+          node --check data/source_enrichment_hotpepper_richcore.js
       - name: Build canonical and overlays
         run: |
           set -euo pipefail
