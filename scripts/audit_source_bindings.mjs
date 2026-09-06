@@ -35,6 +35,16 @@ if (unattached.length) {
 }
 
 const attachedIds = new Set(enrichment.map((row) => row.googlePlaceId));
+const latestSourceDateById = new Map();
+for (const row of enrichment) {
+  const dates = (row.sourceRefs || []).map((ref) => ref.checkedAt).filter((value) => /^\d{4}-\d{2}-\d{2}$/.test(value || ''));
+  if (!dates.length) continue;
+  const latest = dates.sort().at(-1);
+  if (!latestSourceDateById.has(row.googlePlaceId) || latest > latestSourceDateById.get(row.googlePlaceId)) {
+    latestSourceDateById.set(row.googlePlaceId, latest);
+  }
+}
+
 const sourceBacked = production.filter((row) =>
   (row.sources || []).some((source) => source === 'Tabelog' || source === 'official'));
 const missingLabel = sourceBacked.filter((row) => !attachedIds.has(row.googlePlaceId));
@@ -55,13 +65,10 @@ for (const filename of resolutionFiles) {
 const resolutions = resolutionSandbox.window.SOURCE_RESOLUTIONS || [];
 const allowedStatuses = new Set(['listing_hold', 'ambiguous', 'no_current_usable_source', 'source_not_found']);
 const resolutionIds = new Set();
+const supersededResolutionIds = new Set();
 for (const row of resolutions) {
   if (!row.googlePlaceId || !productionIds.has(row.googlePlaceId)) {
     console.error(`SOURCE RESOLUTION AUDIT FAIL: resolution is not a current production identity: ${row.name}\t${row.googlePlaceId}`);
-    process.exit(1);
-  }
-  if (attachedIds.has(row.googlePlaceId)) {
-    console.error(`SOURCE RESOLUTION AUDIT FAIL: identity has both usable source and resolution: ${row.name}\t${row.googlePlaceId}`);
     process.exit(1);
   }
   if (resolutionIds.has(row.googlePlaceId)) {
@@ -81,6 +88,17 @@ for (const row of resolutions) {
     console.error(`SOURCE RESOLUTION AUDIT FAIL: resolution lacks HTTPS evidence: ${row.name}`);
     process.exit(1);
   }
+
+  if (attachedIds.has(row.googlePlaceId)) {
+    const latestSourceDate = latestSourceDateById.get(row.googlePlaceId);
+    if (!latestSourceDate || latestSourceDate < row.checkedAt) {
+      console.error(`SOURCE RESOLUTION AUDIT FAIL: a current/newer resolution conflicts with older usable source evidence: ${row.name}\t${row.googlePlaceId}`);
+      process.exit(1);
+    }
+    // Preserve the old resolution as historical provenance. A same-day or newer
+    // exact source supersedes it for current-state reporting.
+    supersededResolutionIds.add(row.googlePlaceId);
+  }
 }
 
 console.log(JSON.stringify({
@@ -90,7 +108,9 @@ console.log(JSON.stringify({
   attachedEnrichmentRecords: enrichment.length,
   sourceBackedProduction: sourceBacked.length,
   resolutionShards: resolutionFiles.length,
-  explicitResolutions: resolutions.length,
+  explicitResolutionRecords: resolutions.length,
+  currentExplicitResolutions: resolutions.length - supersededResolutionIds.size,
+  supersededHistoricalResolutions: supersededResolutionIds.size,
   unresolvedByBindingAudit: 0,
   unattached: 0
 }));
