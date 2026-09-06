@@ -1,3 +1,4 @@
+# Rebuilds from the latest focused rich-detail audit; this workflow makes no Hot Pepper API request.
 name: Promote Hot Pepper rich metadata
 
 on:
@@ -95,7 +96,7 @@ jobs:
             echo "No rich metadata changes to commit."
             exit 0
           fi
-          git commit -m "Preserve full Hot Pepper service metadata"
+          git commit -m "Preserve raw Hot Pepper source facts"
           git push
 
       - name: Upload audit
