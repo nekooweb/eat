@@ -6,6 +6,19 @@ on:
     branches: ["main"]
     paths:
       - ".github/workflows/build-area1-catalog.yml"
+      - "scripts/build_area1_catalog.mjs"
+      - "scripts/build_production_dataset.mjs"
+      - "scripts/build_source_provenance.mjs"
+      - "scripts/build_source_facts.mjs"
+      - "data/area1_google_ids.json"
+      - "data/hotpepper_bindings.json"
+      - "data/hotpepper_rich_metadata.js"
+      - "data/source_enrichment*.js"
+      - "data/source_resolution*.js"
+      - "data/featured_dishes.js"
+      - "data/recommended_dishes.js"
+      - "data/google_entities*.js"
+      - "data/area1_*.js"
 
 permissions:
   contents: write
@@ -38,7 +51,16 @@ jobs:
           set -euo pipefail
           node scripts/build_area1_catalog.mjs | tee /tmp/area1_catalog_summary.json
           test -s data/area1_catalog.json
-          node -e "const x=require('./data/area1_catalog.json'); if(x.summary.identityUniverse!==2807) throw new Error('unexpected identity universe '+x.summary.identityUniverse); if(x.summary.production!==656) throw new Error('unexpected production '+x.summary.production); console.log(JSON.stringify(x.summary,null,2));"
+          node - <<'NODE'
+          const x=require('./data/area1_catalog.json');
+          if(x.summary.identityUniverse!==2807) throw new Error('unexpected identity universe '+x.summary.identityUniverse);
+          if(x.summary.frozenInventory!==2804) throw new Error('unexpected frozen inventory '+x.summary.frozenInventory);
+          if(x.summary.production!==656) throw new Error('unexpected production '+x.summary.production);
+          if(x.summary.productionInFrozenInventory!==653) throw new Error('unexpected production-in-inventory '+x.summary.productionInFrozenInventory);
+          if(x.summary.productionOutsideFrozenInventory!==3) throw new Error('unexpected current-only production '+x.summary.productionOutsideFrozenInventory);
+          if(x.summary.productionMissing.cuisine!==55) throw new Error('catalog cuisine completeness diverges from canonical stats: '+x.summary.productionMissing.cuisine);
+          console.log(JSON.stringify(x.summary,null,2));
+          NODE
       - name: Commit catalog
         run: |
           set -euo pipefail
