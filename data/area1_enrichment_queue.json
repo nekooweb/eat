@@ -27,7 +27,7 @@
       "cuisine": 55,
       "lunchBudget": 490,
       "dinnerBudget": 402,
-      "openingHours": 297,
+      "openingHours": 296,
       "publicSourceEvidence": 210
     },
     "inventoryWithHistoricalOpenCandidate": 1989,
@@ -54,7 +54,7 @@
       "cuisine": 0,
       "lunchBudgetExplicitText": 0,
       "dinnerBudget": 0,
-      "openingHours": 1,
+      "openingHours": 0,
       "featuredDishesReview": 71,
       "lunchAvailability": 128
     },
@@ -13455,44 +13455,6 @@
       ]
     },
     {
-      "googlePlaceId": "ChIJs1zmzD-MGGAR_TWUpga5JUs",
-      "catalogStatus": "production",
-      "currentProduction": true,
-      "name": "大庄水産 水道橋店",
-      "candidateName": null,
-      "queue": "production_existing_source_extract",
-      "priorityScore": 1340,
-      "coreMissing": [
-        "lunchBudget",
-        "openingHours"
-      ],
-      "optionalMissing": [
-        "strictRecommendations"
-      ],
-      "sourceProviders": [
-        "Hot Pepper",
-        "OpenStreetMap",
-        "official"
-      ],
-      "publicSourceLinks": 3,
-      "providerFactRecords": 2,
-      "hotpepperCatalogFacts": true,
-      "hotpepperConfidence": "high",
-      "hotpepperAutoEligible": true,
-      "openCandidate": null,
-      "overtureSupport": null,
-      "existingHotpepperFieldCandidates": [
-        "openingHours",
-        "lunchAvailability"
-      ],
-      "explicitLunchRangeFromLoadedHotpepper": null,
-      "nextActions": [
-        "lunchBudget",
-        "openingHours",
-        "hotpepperFieldNormalization"
-      ]
-    },
-    {
       "googlePlaceId": "ChIJj9JhyUGNGGARTRFW5jWoMtM",
       "catalogStatus": "production",
       "currentProduction": true,
@@ -18197,6 +18159,41 @@
       "nextActions": [
         "lunchBudget",
         "featuredDishes",
+        "hotpepperFieldNormalization"
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJs1zmzD-MGGAR_TWUpga5JUs",
+      "catalogStatus": "production",
+      "currentProduction": true,
+      "name": "大庄水産",
+      "candidateName": null,
+      "queue": "production_existing_source_extract",
+      "priorityScore": 1240,
+      "coreMissing": [
+        "lunchBudget"
+      ],
+      "optionalMissing": [
+        "strictRecommendations"
+      ],
+      "sourceProviders": [
+        "Hot Pepper",
+        "OpenStreetMap",
+        "official"
+      ],
+      "publicSourceLinks": 3,
+      "providerFactRecords": 2,
+      "hotpepperCatalogFacts": true,
+      "hotpepperConfidence": "high",
+      "hotpepperAutoEligible": true,
+      "openCandidate": null,
+      "overtureSupport": null,
+      "existingHotpepperFieldCandidates": [
+        "lunchAvailability"
+      ],
+      "explicitLunchRangeFromLoadedHotpepper": null,
+      "nextActions": [
+        "lunchBudget",
         "hotpepperFieldNormalization"
       ]
     },

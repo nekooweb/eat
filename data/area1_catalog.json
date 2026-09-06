@@ -53,7 +53,7 @@
       "cuisine": 55,
       "lunchBudget": 490,
       "dinnerBudget": 402,
-      "openingHours": 297,
+      "openingHours": 296,
       "featuredDishes": 527,
       "strictRecommendations": 626,
       "publicSourceEvidence": 210
@@ -231254,7 +231254,7 @@
       "productionOutsideFrozenInventory": false,
       "currentProduction": true,
       "canonical": {
-        "name": "大庄水産 水道橋店",
+        "name": "大庄水産",
         "address": "東京都千代田区神田三崎町2-8-7 庄や第1ビル 1F",
         "lat": 35.700632,
         "lng": 139.754895,
@@ -231265,7 +231265,7 @@
           3001,
           4000
         ],
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "featuredDishesCount": 1,
         "recommendedDishesCount": 0,
         "hyakumeiten": false
@@ -231278,17 +231278,16 @@
           "cuisine": true,
           "lunchBudget": false,
           "dinnerBudget": true,
-          "openingHours": false,
+          "openingHours": true,
           "featuredDishes": true,
           "strictRecommendations": false,
           "publicSourceEvidence": true
         },
-        "known": 7,
+        "known": 8,
         "total": 10,
-        "ratio": 0.7,
+        "ratio": 0.8,
         "missing": [
           "lunchBudget",
-          "openingHours",
           "strictRecommendations"
         ]
       },
@@ -231300,13 +231299,10 @@
         ],
         "publicSourceLinks": 3,
         "sourceClaimedFields": [
-          "address",
           "closure",
-          "cuisine",
           "dinnerBudget",
           "dishes",
-          "hours",
-          "name"
+          "hours"
         ],
         "sourceLastCheckedAt": "2026-09-06",
         "providerFactRecords": 2,
@@ -231357,7 +231353,6 @@
       "openIdentityCandidate": null,
       "nextActions": [
         "lunchBudget",
-        "openingHours",
         "hotpepperFieldNormalization"
       ]
     },
