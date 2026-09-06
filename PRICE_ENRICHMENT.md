@@ -6,30 +6,51 @@ Updated: 2026-09-06
 
 Restaurant price completion must not depend on one provider.
 
-Hot Pepper is the primary **structured batch source**, not the sole price truth. Price evidence should be resolved independently for lunch and dinner from multiple permitted sources.
+Hot Pepper is the primary **structured batch source**, not the sole price truth. Price evidence is now resolved independently for lunch and dinner from multiple permitted sources.
+
+## Current implementation state
+
+The independent meal resolver is live in `scripts/price_resolver.mjs` and is covered by unit tests in `scripts/test_price_resolver.mjs`.
+
+Current strict production coverage across **656** restaurants:
+
+- lunch known: **155 (23.6%)**;
+- dinner known: **253 (38.6%)**;
+- both lunch and dinner known: **136 (20.7%)**;
+- either meal known: **272 (41.5%)**;
+- lunch missing: **501**;
+- dinner missing: **403**.
+
+Current explicit structured provider rows with at least one stored price claim:
+
+- Tabelog: **173**;
+- Hot Pepper: **84**;
+- official: **18**.
+
+Pages runs a strict provenance gate. Current unprovenanced stored meal-price fields: **0**.
 
 ## Source roles
 
-### 1. Official restaurant / brand / menu pages — highest priority
+### 1. Official restaurant / brand / menu pages
 
 Use explicit statements such as:
 
 - lunch average / dinner average;
-- menu set prices;
-- branch-specific menus;
-- official booking/menu price bands.
+- branch-specific budget ranges;
+- explicit average-spend statements;
+- sufficiently complete branch-specific menu data.
 
-Official pages are also the preferred source for lunch prices because Hot Pepper's `lunch` field indicates availability, not a lunch budget.
+Official pages are especially important for lunch because Hot Pepper's `lunch` field indicates availability, not a lunch budget.
 
 A menu-derived price band must be marked as derived evidence. One isolated item or one expensive course must not be treated as the restaurant budget.
 
-### 2. Tabelog — strong secondary budget evidence
+### 2. Tabelog — strong explicit budget evidence
 
 Existing exact-identity Tabelog rows may provide separate lunch and dinner budget ranges and can be used as source-backed factual evidence.
 
 Do not copy reviews or review text into the database. High-volume automated extraction should not be assumed permitted merely because the project is non-commercial; use already-maintained exact bindings, normal review workflows, or explicit permission as appropriate.
 
-Where Tabelog and an official page disagree, prefer the current branch-specific official source and retain the conflict for audit.
+Where Tabelog and an explicit current official branch budget disagree, prefer the explicit official branch claim and retain the conflict for audit.
 
 ### 3. Hot Pepper Gourmet Web Service — primary structured batch layer
 
@@ -40,9 +61,11 @@ Use for:
 - lunch availability signal;
 - identity/address/cuisine/hours that help validate the same shop.
 
-Hot Pepper is especially useful because bound IDs can be refreshed in batches of up to 20 shop IDs per request.
+Bound IDs can be refreshed in batches of up to 20 shop IDs per request.
 
 Do not infer a lunch price from `lunch=あり`.
+
+The current durable additive Hot Pepper shard contains **94** production source rows and **84** dinner-budget claims. It increased `anyKnown` budget coverage by **81** restaurants because three of those dinner additions complemented restaurants that already had lunch prices.
 
 ### 4. Google
 
@@ -50,9 +73,7 @@ Do not infer a lunch price from `lunch=あり`.
 
 Do not use it in repository maintenance.
 
-The current repository policy prohibits billable place/search API execution. Google Places `priceLevel` and `priceRange` are Enterprise-tier Place fields, so using them would reintroduce the exact billing risk this transition is designed to remove.
-
-Historical Google Place IDs remain compatibility aliases only.
+The current repository policy prohibits billable place/search API execution. Historical Google Place IDs remain compatibility aliases only.
 
 #### Ordinary Google web search
 
@@ -66,98 +87,141 @@ OSM / Overture / Foursquare OS are useful mainly for identity, address, category
 
 ## Resolver model
 
-Lunch and dinner must be resolved **independently**.
+Lunch and dinner resolve **independently**.
 
 Example:
 
 ```text
 Tabelog: lunch = 1000-1999, dinner = missing
 Hot Pepper: lunch availability only, dinner = 3001-4000
-Official menu: lunch set menu 1200-1800, dinner missing
+Official menu: representative lunch items = 1200-1800
 
 Resolved:
-  lunch -> official menu derived band (with evidence class)
-  dinner -> Hot Pepper explicit structured band
+  lunch -> Tabelog explicit range
+  dinner -> Hot Pepper explicit range
 ```
 
-Do not choose one provider for the whole restaurant and discard useful evidence from the other provider.
+If there is no explicit lunch range, a reviewed sufficiently complete official-menu-derived band may be used instead.
+
+One provider no longer owns both meal periods.
 
 ## Evidence classes
 
-### A — explicit branch-specific budget / average-spend range
+Source refs may use `priceEvidenceClass`.
+
+### A — `explicit_range`
+
+Explicit branch-specific budget / average-spend evidence.
 
 Examples:
 
-- official branch page states lunch/dinner range;
-- authorized structured Hot Pepper dinner budget;
+- official branch page explicitly states lunch/dinner budget;
+- authorized Hot Pepper structured dinner budget;
 - exact Tabelog branch budget range.
 
 Suitable for hard budget filtering.
 
-### B — derived from a sufficiently complete official menu
+Existing maintained `budget`, `lunchBudget`, and `dinnerBudget` refs without an explicit class default to this class for backward compatibility.
+
+### B — `menu_derived`
+
+Reviewed range derived from a sufficiently complete official menu.
 
 Examples:
 
-- multiple comparable lunch sets / main dishes establish an observed range;
-- multiple normal dinner mains establish a useful observed range.
+- multiple comparable lunch sets establish a representative observed range;
+- multiple normal dinner mains establish a representative range.
 
-Suitable for filtering if the derivation is recorded and the menu is representative.
+Suitable for filtering only when no explicit A-class range exists. The derivation should be reproducible from the maintained official page.
 
-### C — sparse price evidence
+### C — `sparse`
+
+Weak/sparse evidence.
 
 Examples:
 
 - one menu item;
 - one course price;
+- one music/seat/cover charge;
 - one promotional price;
 - search snippet without a verified underlying page.
 
-Display/review evidence only. Do not use as the hard restaurant budget band.
+Review/display evidence only. It never becomes the hard canonical restaurant budget band.
 
-## Conflict rules
+## Selection order
 
-For each meal period independently:
+Selection is performed **per meal period** and **evidence strength first**.
 
-1. current exact official branch evidence;
-2. explicit exact-source structured range (Tabelog / Hot Pepper) according to freshness and branch confidence;
-3. official-menu-derived band;
-4. weaker/sparse evidence for review only.
+Within A-class explicit ranges:
 
-If two strong sources disagree materially:
+1. exact current official branch budget;
+2. exact Tabelog range;
+3. authorized Hot Pepper range;
+4. lower-priority maintained explicit sources.
 
-- keep both claims;
-- prefer the current official branch source when available;
-- otherwise flag a price conflict rather than silently averaging the ranges.
+Then B-class menu-derived ranges are considered.
 
-## Direct-search completion strategy
+C-class sparse evidence is excluded from canonical price filtering.
 
-Direct web search should be used selectively for rows still missing price after structured batch enrichment.
+Within an equal evidence/provider level, the fresher maintained claim wins.
 
-Recommended order:
+If two strong explicit sources disagree materially:
 
-1. run Hot Pepper batch enrichment;
-2. measure remaining lunch and dinner gaps separately;
-3. reuse existing exact Tabelog bindings/claims;
-4. group remaining restaurants by official host/brand;
-5. search/discover the official menu or locator once per host/template;
-6. fetch each official page once and extract all useful fields, not just price;
-7. reserve manual search for unresolved independent restaurants.
+- keep both claims in the maintenance/audit layer where available;
+- select using the precedence above;
+- flag the disagreement for review rather than averaging the ranges.
 
-This prevents thousands of redundant searches while still using the web to fill gaps that structured sources cannot cover.
+## Provenance rule
 
-## Metrics
+A source-only row may contribute `lunch` or `dinner` only when a source ref explicitly claims one of:
+
+- `budget`;
+- `lunchBudget`;
+- `dinnerBudget`.
+
+`STRICT_PRICE_PROVENANCE=1` is enabled in Pages and the Hot Pepper promotion workflow. Any stored meal-price field without an explicit price claim fails the pipeline.
+
+This rule intentionally removed the old `JAZZ HOUSE NARU` dinner range `[3000,4999]`: the maintained official sources supported a music charge and operating information, but no restaurant dinner-spend range. The old value therefore no longer participates in canonical filtering.
+
+## Remaining gap strategy
+
+The enrichment queue is now meal-aware.
+
+Current gaps:
+
+- lunch: **501**;
+- dinner: **403**.
+
+However, broad new searching is not the first step. Among restaurants that already have a usable maintained source, there are:
+
+- **291** lunch gaps;
+- **193** dinner gaps.
+
+The current source-group queue includes **168** Tabelog-linked lunch gaps. The Hot Pepper-linked group has **83** lunch gaps but only **1** dinner gap, confirming that Hot Pepper solved a large part of the dinner problem while lunch remains the main deficit.
+
+Recommended execution order:
+
+1. extract/verify missing meal-period prices from already-maintained exact sources;
+2. prioritize lunch because it is the largest remaining gap;
+3. process official domains by brand/template where the page actually provides representative price evidence;
+4. use existing exact Tabelog bindings through permitted/reviewed workflows;
+5. use ordinary web/Google search selectively to discover underlying official/permitted sources for still-unresolved restaurants;
+6. keep single-item/sparse prices as C-class review evidence rather than forcing them into a budget band.
+
+## Metrics to track
 
 Track separately:
 
 - lunch price known / 656;
 - dinner price known / 656;
 - both lunch+dinner known / 656;
-- official price claims;
-- Tabelog price claims;
-- Hot Pepper price claims;
-- derived official-menu bands;
-- conflicting strong price claims;
+- A-class explicit claims by provider;
+- B-class official-menu-derived bands;
+- C-class sparse evidence retained for review;
+- conflicting strong explicit claims;
+- unprovenanced stored price fields — target **0**;
 - unresolved lunch gaps;
-- unresolved dinner gaps.
+- unresolved dinner gaps;
+- trustworthy fields completed per fetch/review minute.
 
-The objective is maximum trustworthy price coverage per fetch/review minute, not maximum dependence on any single database.
+The objective is maximum trustworthy coverage, not maximum dependence on any single database.
