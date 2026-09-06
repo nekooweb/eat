@@ -28,13 +28,13 @@ Updated `app.js` to merge the canonical and public pools for random recommendati
 
 Updated `index.html` to load `public_pool_area1.js`, refresh runtime cache versions and disclose the two-tier data model.
 
-Updated `.github/workflows/pages.yml` to generate, validate and deploy the public pool.
+Updated `.github/workflows/pages.yml` to generate, validate and deploy the public pool and the featured-dish work queue.
 
 Updated `scripts/audit_repository.mjs` so the new public runtime layer is audited without relaxing the existing canonical identity, provenance and source-backed checks.
 
-## First generated result
+## Online result
 
-The first CI generation successfully built the public layer before a runtime-order audit contract was updated:
+The deployed public layer contains:
 
 - canonical rows: 662;
 - public rows: 4,571;
@@ -47,18 +47,37 @@ The first CI generation successfully built the public layer before a runtime-ord
 - public finite-budget coverage: 385;
 - public dish-reference coverage: 4,571 / 4,571.
 
-The initial failure was not a data failure. `audit_repository.mjs` still expected the previous fixed six-file runtime order and rejected the newly inserted `public_pool_area1.js`. The audit contract was then updated while preserving the previous canonical validations.
+The first integration attempt was stopped by the old fixed runtime-order audit because it did not yet know about `public_pool_area1.js`. This was corrected in the repository audit contract; the data build itself had already exceeded the requested 2,000-row minimum.
 
 ## Featured dishes
 
-The web UI now distinguishes two states:
+The web UI distinguishes two states:
 
-- `特色菜`: existing source-backed `featuredDishes` / `recommendedDishes`;
+- `特色菜`: source-backed `featuredDishes` / `recommendedDishes` or provider-native signature-dish evidence;
 - `参考菜品`: cuisine/brand/chain-based fallback information marked `featuredDishConfidence: reference_hint`.
 
 This means every newly generated public row has immediately useful dish context, but reference hints are not falsely counted as verified restaurant-specific signature dishes.
 
-Added `scripts/build_public_dish_queue.mjs` to make real signature-dish completion the next first-class enrichment workflow. It prioritizes canonical gaps, Hot Pepper-bound rows, rows with official/provider URLs, Overture identities and then OSM identities.
+### Hot Pepper source-backed promotion pass
+
+`build_public_open_pool.mjs` was extended with a conservative Hot Pepper signature-dish extractor.
+
+Promotion requires a provider-native descriptive clause to include both an explicit recommendation/signature marker (`自慢`, `名物`, `看板`, `おすすめ`, `人気`, `絶品`, `専門`, `イチオシ`, etc.) and a recognized concrete dish term. Generic genre/category text is not accepted as evidence.
+
+Each promoted item keeps the Hot Pepper URL, checked date, matched Japanese term and bounded evidence text.
+
+The first successful pass upgraded:
+
+- 57 public restaurants from reference-only to source-backed featured-dish status;
+- 65 individual featured-dish items.
+
+All remaining open rows continue to display `参考菜品`, not an unsupported `特色菜` label.
+
+## Featured-dish queue
+
+Added `scripts/build_public_dish_queue.mjs` to make source-backed signature-dish completion the primary enrichment workflow. It prioritizes canonical gaps, Hot Pepper-bound rows, rows with official/provider URLs, Overture identities and then OSM identities.
+
+The queue generator was corrected after the first promotion pass so restaurants with source-backed `featuredDishes` / `recommendedDishes` are removed from future work queues. This prevents the 57 newly completed public records from being repeatedly scheduled.
 
 ## Policy
 
@@ -66,4 +85,5 @@ Added `scripts/build_public_dish_queue.mjs` to make real signature-dish completi
 - canonical 662 identity admission: unchanged;
 - public expansion is explicitly separate from canonical identity verification;
 - Google response/display payload is not persisted;
-- reference dish hints never count as source-backed featured-dish completion.
+- reference dish hints never count as source-backed featured-dish completion;
+- provider-signature promotions retain URL/date/evidence provenance and are audited before Pages deployment.
