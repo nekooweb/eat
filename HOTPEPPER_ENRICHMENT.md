@@ -10,8 +10,8 @@ The successful real benchmark is GitHub Actions run `34030943605`.
 
 Measured result:
 
-- 2 km geographic superset: **2,743** Hot Pepper shops;
-- exact Area1 <=1.2 km crop: **870** shops;
+- 2 km geographic superset: **2,743** shops;
+- exact Area1 <=1.2 km crop: **870**;
 - frozen historical inventory: **2,804** identities;
 - usable matching seeds: **2,801**;
 - high matches: **499**;
@@ -23,107 +23,76 @@ Measured result:
 - high/medium detail-eligible bindings: **535**;
 - Hot Pepper ID collisions: **30**;
 - detail requests: **27** batches;
-- detail rows returned: **535 / 535**, zero missing;
+- detail rows returned: **535 / 535**;
 - current production identities with a Hot Pepper binding: **141**;
 - inventory-only bindings: **394**;
 - strict-safe current-production candidates: **128**.
 
-The strict-safe 128 set is still not a blanket overwrite set. It is reconciled against stronger/existing fields before durable promotion.
+The 128 strict-safe candidates were reconciled against stronger/existing fields before durable promotion. They were never treated as a blanket overwrite set.
 
 ## Authorization and secrets
 
-Project-owner guidance states that the project is non-commercial and that the intended Hot Pepper API use is separately authorized/confirmed.
+Project-owner guidance states that the project is non-commercial and the intended Hot Pepper API use is separately authorized/confirmed.
 
-The API key is stored only as a GitHub Actions secret. The workflow accepts:
-
-- `HOTPEPPER_API_KEY` (preferred);
-- `HOTPEPPER_API`;
-- `HOTPEPPER_KEY`;
-- `RECRUIT_API_KEY`.
-
-The successful run confirmed that `HOTPEPPER_API_KEY` is configured correctly.
+The API key remains in GitHub Actions secrets and is never committed or injected into Pages.
 
 ## Request architecture
 
-### 1. Geographic bulk discovery
+### Geographic discovery
 
-`scripts/collect_hotpepper_area1.py discover` requests a 2 km superset around the Area1 center with:
+`scripts/collect_hotpepper_area1.py discover` requests a 2 km superset around Area1 with `range=4`, `count=100` pagination, then deduplicates IDs and performs the exact <=1.2 km Haversine crop locally.
 
-- `range=4`;
-- `count=100`;
-- normal full rows rather than `type=lite`;
-- pagination with `start`.
+The benchmark required **28** geographic pages.
 
-The benchmark required **28 geographic pages** to collect all 2,743 shops.
+### Local record linkage
 
-The collector then deduplicates Hot Pepper shop IDs, calculates exact Haversine distance locally and retains only <=1.2 km rows.
+`scripts/match_hotpepper_inventory.py` uses the already-paid historical matching seed plus current production and Hot Pepper rows. No new Google request occurs.
 
-### 2. Local record linkage
+Matching uses:
 
-`scripts/match_hotpepper_inventory.py` combines:
+- spatial blocking and exact distance;
+- normalized Japanese/Latin names;
+- Japanese -> Hepburn romanization;
+- address/postal evidence;
+- best-vs-second candidate margin;
+- one-Hot-Pepper-ID collision protection.
 
-- the already-paid 2026-09-06 full-list/retry transient Google audit artifacts;
-- current production identities;
-- the Hot Pepper Area1 snapshot.
+### Detail batching
 
-No new Google request occurs. Google display payload is used only transiently for matching and is not copied into durable Hot Pepper outputs.
-
-Matching uses spatial blocking, distance, normalized names, Japanese->Hepburn romanization, address/postal evidence, best-vs-second margin and one-to-one Hot Pepper ID collision protection.
-
-### 3. 20-ID detail batching
-
-Bound Hot Pepper IDs are fetched in batches of at most 20 IDs.
-
-The real benchmark requested **535 IDs in 27 requests** and returned all 535.
+Bound IDs are fetched in batches of at most **20**. The real benchmark retrieved **535 IDs in 27 requests**.
 
 Do not replace this with one request per restaurant.
 
-### 4. Binding and strict-safe candidate generation
+### Automatic-use gate
 
-`scripts/build_hotpepper_enrichment.py` produces:
-
-- `hotpepper_bindings.json`;
-- a strict-safe candidate `source_enrichment_hotpepper.js`;
-- `hotpepper_promotion_report.json`;
-- summary artifacts.
+`scripts/build_hotpepper_enrichment.py` applies a second strict gate.
 
 Rules:
 
-- medium -> review only;
-- collisions -> review only;
-- inventory-only -> binding ledger only;
-- only strict-safe high matches from existing production may generate automatic source claims;
+- medium matches remain review-only;
+- collisions remain review-only;
+- inventory-only matches remain binding-ledger/review data;
+- only strict-safe high matches attached to existing production can generate automatic field claims;
 - one Hot Pepper match alone never creates a new production identity.
-
-The strict-safe 128 bindings have median coordinate distance about **5.7 m** and median normalized/romanized name similarity **0.96**.
 
 ## Net-new reconciliation
 
-Before durable promotion, the 128 strict-safe rows were compared against current official/Tabelog/current production fields.
-
-Net-new candidate fields were:
+The 128 strict-safe candidate rows produced these net-new opportunities:
 
 - address: **55**;
 - cuisine: **22**;
 - dinner budget: **84**;
-- hours raw: **73**.
+- hours raw evidence: **73**.
 
-Existing dinner-price comparisons included:
-
-- exact: 1;
-- strong overlap: 19;
-- partial overlap: 14;
-- disjoint: 8.
-
-All 22 partial/disjoint conflicts already had stronger maintained official/Tabelog evidence and were not overwritten.
+Existing dinner values were compared first. Partial/disjoint conflicts backed by stronger official/Tabelog evidence were not overwritten.
 
 ## Current durable additive shard
 
-The current durable `data/source_enrichment_hotpepper.js` is regenerated idempotently from the benchmark against a **no-Hot-Pepper baseline**.
+`data/source_enrichment_hotpepper.js` is regenerated idempotently against a true no-Hot-Pepper baseline.
 
-Current rows: **94**.
+Current durable rows: **94**.
 
-Current field claims:
+Field claims:
 
 - address: **55**;
 - cuisine: **22**;
@@ -131,66 +100,64 @@ Current field claims:
 - hours raw: **73**;
 - closure: **73**.
 
-Measured strict canonical gains from Hot Pepper:
+Measured canonical Hot Pepper gains:
 
-- restaurants with any meal budget: **+81**;
-- dinner known: **+84**;
+- any meal budget: **+81 restaurants**;
+- dinner budget: **+84**;
 - address: **+55**;
 - cuisine: **+22**;
 - normalized hours: **+72**;
-- existing lunch prices overwritten: **0**;
-- protected existing fields overwritten: **0**.
+- existing lunch overwritten: **0**;
+- protected stronger fields overwritten: **0**.
 
-The promotion invariant audit reports **zero violations**.
+Promotion invariant violations: **0**.
 
 ## Independent meal resolver
 
-The old single-row budget coupling has been removed.
-
-`scripts/price_resolver.mjs` now resolves lunch and dinner independently. This permits:
+`scripts/price_resolver.mjs` resolves lunch and dinner independently. This safely permits:
 
 ```text
 Tabelog lunch + Hot Pepper dinner
 ```
 
-without one source deleting the other meal period.
+without either provider deleting the other meal period.
 
-The three Hot Pepper dinner candidates that were initially deferred because lunch was already known are now included safely.
+Hot Pepper contributes **84 A-class explicit dinner-budget claims**.
 
-Current price coverage:
+Current global price coverage after the subsequent official-menu-derived rollout is:
 
-- lunch: **155 / 656**;
-- dinner: **253 / 656**;
-- both: **136 / 656**;
-- either: **272 / 656**.
+- lunch: **157 / 656**;
+- dinner: **254 / 656**;
+- both: **137 / 656**;
+- either: **274 / 656**.
 
-Hot Pepper currently contributes **84 explicit dinner-budget claims**.
+The difference from the earlier 155/253/136/272 state comes from reviewed official B-class menu-derived evidence, not additional Hot Pepper calls.
 
-## Hot Pepper field rules
+## Field rules
 
 ### Name / address / identity
 
-Store Hot Pepper ID as a source-native alias. Safe exact-production bindings may contribute Japanese name/address claims.
+Hot Pepper ID is retained as a source-native alias. Safe exact-production bindings may contribute name/address evidence.
 
 ### Cuisine
 
-Use the most specific Hot Pepper sub-genre/genre evidence available and map it into Eat's versioned Chinese cuisine taxonomy. Preserve raw source codes/names for auditability.
+Use the most specific available Hot Pepper sub-genre/genre and map it into Eat's Chinese cuisine taxonomy while retaining source lineage.
 
 ### Dinner budget
 
-Promote provider-defined finite intervals conservatively:
+Provider-defined finite intervals are promoted conservatively:
 
-- `2001～3000円` -> `[2001, 3000]`;
-- provider upper-cap `～2000円` -> `[0, 2000]`;
-- lower-bound-only `10000円～` -> not forced into a finite `[min,max]` band.
+- `2001～3000円` -> `[2001,3000]`;
+- `～2000円` -> `[0,2000]` when it is a provider-defined upper-cap range;
+- lower-bound-only ranges are not forced into a finite `[min,max]` value.
 
-Hot Pepper dinner-budget refs are meal-specific `dinnerBudget` claims and are A-class `explicit_range` evidence.
+Hot Pepper dinner budget is A-class `explicit_range` evidence.
 
-`lunch=あり` proves lunch availability only. It is not a lunch price.
+`lunch=あり` proves only lunch availability and is never converted into a lunch price.
 
 ### Hours / closure
 
-Store `open` as raw source text and `close` as closure evidence. Canonical weekly hours are generated only when the conservative normalizer can parse the source safely.
+Hot Pepper `open`/`close` strings remain source evidence. Canonical weekly hours are emitted only when the conservative normalizer can safely parse them.
 
 ### Attribution
 
@@ -200,61 +167,62 @@ The public page includes:
 
 Hot Pepper images are intentionally not ingested.
 
-## Price is explicitly multi-source
+## Multi-source price interaction
 
 See `PRICE_ENRICHMENT.md`.
 
-Hot Pepper is the scalable structured first pass, **not** the only price method.
+Price evidence classes:
 
-Price evidence is ranked by class before provider:
+- A `explicit_range` — explicit official/Tabelog/Hot Pepper budget;
+- B `menu_derived` — reviewed representative official-menu range;
+- C `sparse` — one item/course/charge/search snippet, review only.
 
-- A `explicit_range` — explicit official/Tabelog/Hot Pepper branch budget;
-- B `menu_derived` — reviewed range derived from a sufficiently complete official menu;
-- C `sparse` — single-item/course/charge/search-snippet evidence, review only.
+Evidence class outranks provider. Therefore an A-class Tabelog/Hot Pepper range beats a B-class official menu derivation even though official is otherwise the higher-priority provider.
 
-This prevents one menu price or charge from becoming a restaurant spend range.
-
-Google Places price fields remain prohibited because repository maintenance forbids billable Google Places calls. Ordinary Google/web search may only discover the underlying official/permitted source; the search snippet itself is not canonical evidence.
+Google Places price fields remain prohibited because repository maintenance forbids billable Google Places calls.
 
 ## Current gap interpretation
 
-Hot Pepper has largely improved **dinner**, not lunch.
+Hot Pepper has largely solved a portion of the **dinner** problem, not lunch.
 
-Current remaining gaps:
+Current global gaps:
 
-- lunch missing: **501**;
-- dinner missing: **403**.
+- lunch missing: **499**;
+- dinner missing: **402**.
 
-Among the 94 Hot Pepper production rows, the meal-aware queue reports:
+Among Hot Pepper-linked production rows:
 
 - lunch gaps: **83**;
 - dinner gaps: **1**.
 
-Therefore the next enrichment work should prioritize existing official/Tabelog lunch evidence rather than making more Hot Pepper calls.
+Across all production rows already carrying a usable maintained source:
 
-Across all production rows that already have a usable source there are **291 lunch gaps** and **193 dinner gaps**. Those existing bindings should be exhausted before broad new discovery.
+- lunch gaps: **289**;
+- dinner gaps: **192**.
+
+The next enrichment phase therefore prioritizes existing official/Tabelog lunch evidence rather than additional Hot Pepper collection.
 
 ## Workflow safety
 
 `.github/workflows/hotpepper-enrichment.yml` and `.github/workflows/promote-hotpepper-additive.yml` are manual-only.
 
-The promotion workflow is idempotent:
+The promotion workflow:
 
-1. temporarily remove the previous durable Hot Pepper shard;
-2. build the true no-Hot-Pepper baseline;
-3. regenerate the complete additive shard from benchmark evidence;
-4. rebuild canonical production;
-5. prove additive invariants;
-6. run strict price provenance, source-binding and repository audits;
-7. commit only if the generated durable data changes.
+1. removes the previous Hot Pepper shard from the temporary build;
+2. builds the no-Hot-Pepper baseline;
+3. regenerates the complete additive shard;
+4. rebuilds canonical production;
+5. proves additive invariants;
+6. runs strict price/source/repository audits;
+7. commits only when durable data changes.
 
-Normal repository pushes therefore do not consume Hot Pepper requests.
+Normal pushes therefore do not consume Hot Pepper requests.
 
-## Historical implementation notes
+## Historical runs
 
-- `34030289095`: exposed the old `tee`/pipefail false-success bug and empty secret;
-- `34030342882`: correctly failed at API-key preflight after fail-fast fixes;
-- `34030943605`: first fully successful benchmark with configured key;
-- `34032406916`: successful idempotent meal-aware promotion, producing the 94-row / 84-dinner-claim shard.
+- `34030289095` — exposed the earlier `tee`/pipefail masking issue and empty secret;
+- `34030342882` — correctly failed API-key preflight after fail-fast fixes;
+- `34030943605` — first fully successful real benchmark;
+- `34032406916` — successful idempotent meal-aware promotion, producing the durable 94-row / 84-dinner-claim shard.
 
-All benchmark/promotion pipelines use `set -euo pipefail`, validate required outputs and make no paid Google data API calls.
+All active pipelines use `set -euo pipefail`, validate required outputs and make no paid Google data API calls.
