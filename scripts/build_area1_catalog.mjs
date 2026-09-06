@@ -29,6 +29,9 @@ const hotpepperCatalogFacts = exists('hotpepper_catalog_facts.json')
 const historicalOpenQueue = exists('area1_full_collection_queue.json')
   ? readJson('area1_full_collection_queue.json')
   : { rows: [], summary: {} };
+const openReconciliation = exists('open_identity_reconciliation.json')
+  ? readJson('open_identity_reconciliation.json')
+  : { rows: [], summary: {} };
 
 const sandbox = { window: {}, console };
 vm.createContext(sandbox);
@@ -57,6 +60,9 @@ const hpCatalogFactsById = new Map((hotpepperCatalogFacts.rows || []).map((row) 
 const openQueueById = new Map((historicalOpenQueue.rows || [])
   .filter((row) => row?.googlePlaceId)
   .map((row) => [row.googlePlaceId, row]));
+const reconciliationById = new Map((openReconciliation.rows || [])
+  .filter((row) => row?.legacyGooglePlaceId)
+  .map((row) => [row.legacyGooglePlaceId, row]));
 
 const allIds = new Set([...frozenIds, ...productionById.keys()]);
 
@@ -97,31 +103,53 @@ function completenessFor(row, prov) {
   };
 }
 
-function compactOpenCandidate(openRow) {
-  if (!openRow) return null;
-  const candidate = openRow.candidate && typeof openRow.candidate === 'object'
+function compactOpenCandidate(openRow, reconciliationRow) {
+  if (!openRow && !reconciliationRow) return null;
+  const candidate = openRow?.candidate && typeof openRow.candidate === 'object'
     ? openRow.candidate
-    : null;
+    : reconciliationRow?.osmCandidate || null;
+  const overture = reconciliationRow?.overtureSupport || null;
   return {
-    checkedAt: openRow.checkedAt || null,
-    historicalQcStatus: openRow.googleStatus || null,
-    matchConfidence: openRow.matchConfidence || 'none',
+    checkedAt: openRow?.checkedAt || null,
+    historicalQcStatus: openRow?.googleStatus || null,
+    matchConfidence: openRow?.matchConfidence || reconciliationRow?.historicalGoogleOsmConfidence || 'none',
     candidate: candidate ? {
       provider: 'OpenStreetMap',
       sourceCandidateId: candidate.sourceCandidateId || null,
-      name: candidate.sourceName || null,
+      name: candidate.sourceName || candidate.name || null,
       cuisine: candidate.cuisine || null,
       address: candidate.address || null,
       lat: Number.isFinite(candidate.lat) ? candidate.lat : null,
       lng: Number.isFinite(candidate.lng) ? candidate.lng : null,
-      historicalMatchDistanceMeters: Number.isFinite(candidate.distanceMeters) ? candidate.distanceMeters : null,
-      historicalNameSimilarity: Number.isFinite(candidate.nameSimilarity) ? candidate.nameSimilarity : null
+      historicalMatchDistanceMeters: Number.isFinite(candidate.distanceMeters)
+        ? candidate.distanceMeters
+        : reconciliationRow?.historicalGoogleOsmDistanceMeters ?? null,
+      historicalNameSimilarity: Number.isFinite(candidate.nameSimilarity)
+        ? candidate.nameSimilarity
+        : reconciliationRow?.historicalGoogleOsmNameSimilarity ?? null
+    } : null,
+    overtureSupport: overture ? {
+      provider: 'Overture Maps',
+      release: openReconciliation.sources?.overtureRelease || null,
+      overtureId: overture.overtureId || null,
+      name: overture.name || null,
+      distanceToOsmMeters: overture.distanceToOsmMeters ?? null,
+      nameSimilarity: overture.nameSimilarity ?? null,
+      addressSimilarity: overture.addressSimilarity ?? null,
+      combinedScore: overture.combinedScore ?? null,
+      basicCategory: overture.basicCategory || null,
+      websites: overture.websites || null,
+      brand: overture.brand || null,
+      sources: overture.sources || null,
+      crossSourceConfidence: reconciliationRow?.crossSourceConfidence || 'none',
+      triage: reconciliationRow?.triage || 'D_unresolved'
     } : null
   };
 }
 
 function nextActions({ isProduction, hp, hpCatalogFact, openCandidate, prov, facts, richRow, completeness }) {
   const actions = [];
+  const triage = openCandidate?.overtureSupport?.triage;
   if (isProduction) {
     if (!prov?.sourceLinks?.length) actions.push('sourceBinding');
     if (completeness?.missing?.includes('address')) actions.push('address');
@@ -136,6 +164,10 @@ function nextActions({ isProduction, hp, hpCatalogFact, openCandidate, prov, fac
     if (openCandidate?.candidate && !prov?.sourceLinks?.length) actions.push('openSourceCrossCheck');
   } else if (hpCatalogFact) {
     actions.push('fieldNormalization');
+    actions.push('currentness');
+    actions.push('identityAdmissionReview');
+  } else if (['A_priority_review', 'B_blocker_review'].includes(triage)) {
+    actions.push('crossSourceSupportedReview');
     actions.push('currentness');
     actions.push('identityAdmissionReview');
   } else if (openCandidate?.candidate && ['high', 'medium'].includes(openCandidate.matchConfidence)) {
@@ -163,7 +195,10 @@ const rows = [...allIds].sort().map((googlePlaceId) => {
   const richRow = richById.get(googlePlaceId) || null;
   const hp = hpById.get(googlePlaceId) || null;
   const hpCatalogFact = hpCatalogFactsById.get(googlePlaceId) || null;
-  const openCandidate = compactOpenCandidate(openQueueById.get(googlePlaceId) || null);
+  const openCandidate = compactOpenCandidate(
+    openQueueById.get(googlePlaceId) || null,
+    reconciliationById.get(googlePlaceId) || null
+  );
   const inFrozenInventory = frozenIds.has(googlePlaceId);
   const isProduction = Boolean(prod);
   const completeness = completenessFor(prod, prov);
@@ -204,7 +239,10 @@ const rows = [...allIds].sort().map((googlePlaceId) => {
       hotpepperCatalogFactFields: hpCatalogFact ? Object.keys(hpCatalogFact.facts || {}).sort() : [],
       hotpepperRichMetadata: Boolean(richRow),
       historicalOpenCandidate: Boolean(openCandidate?.candidate),
-      historicalOpenCandidateConfidence: openCandidate?.matchConfidence || null
+      historicalOpenCandidateConfidence: openCandidate?.matchConfidence || null,
+      overtureCrossSupport: Boolean(openCandidate?.overtureSupport),
+      overtureCrossConfidence: openCandidate?.overtureSupport?.crossSourceConfidence || null,
+      openReconciliationTriage: openCandidate?.overtureSupport?.triage || null
     },
     hotpepperBinding: hp ? {
       hotpepperId: hp.hotpepperId,
@@ -236,9 +274,18 @@ const confidenceCounts = (inputRows) => {
   }
   return counts;
 };
+const triageCounts = (inputRows) => {
+  const counts = {};
+  for (const row of inputRows) {
+    const value = row.openIdentityCandidate?.overtureSupport?.triage;
+    if (!value) continue;
+    counts[value] = (counts[value] || 0) + 1;
+  }
+  return counts;
+};
 
 const summary = {
-  schemaVersion: 3,
+  schemaVersion: 4,
   scope: inventory.scope || 'TOKYO/地区1️⃣',
   checkedAt: new Date().toISOString().slice(0, 10),
   identityUniverse: rows.length,
@@ -260,6 +307,10 @@ const summary = {
   inventoryOnlyHighMediumOpenCandidates: inventoryOnlyRows.filter((row) =>
     row.openIdentityCandidate?.candidate
     && ['high', 'medium'].includes(row.openIdentityCandidate.matchConfidence)).length,
+  overtureCrossSupportedRows: rows.filter((row) => row.sourceState.overtureCrossSupport).length,
+  inventoryOnlyOvertureCrossSupportedRows: inventoryOnlyRows.filter((row) => row.sourceState.overtureCrossSupport).length,
+  openReconciliationTriageCounts: triageCounts(rows),
+  inventoryOnlyOpenReconciliationTriageCounts: triageCounts(inventoryOnlyRows),
   productionWithPublicSourceEvidence: productionRows.filter((row) => row.sourceState.publicSourceLinks > 0).length,
   productionWithProviderFacts: productionRows.filter((row) => row.sourceState.providerFactRecords > 0).length,
   productionWithRichMetadata: productionRows.filter((row) => row.sourceState.hotpepperRichMetadata).length,
@@ -279,12 +330,13 @@ const summary = {
     inventoryOnlyDoesNotEqualProductionAdmission: true,
     sourceNativeFactsMayExistBeforeAdmission: true,
     openSourceMatchesRemainCandidatesUntilValidated: true,
+    overtureCrossSupportDoesNotAutoAdmitIdentity: true,
     lowConfidenceOpenCandidatesNeverBecomeFactsAutomatically: true,
     transientGoogleDisplayPayloadPersisted: false,
     paidGoogleDataApiCalls: 0
   }
 };
 
-const payload = { schemaVersion: 3, summary, rows };
+const payload = { schemaVersion: 4, summary, rows };
 fs.writeFileSync(OUT, `${JSON.stringify(payload, null, 2)}\n`, 'utf8');
 console.log(JSON.stringify(summary));
