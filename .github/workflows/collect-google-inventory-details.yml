@@ -6,6 +6,7 @@ on:
     paths:
       - ".github/workflows/collect-google-inventory-details.yml"
       - "scripts/collect_google_inventory_recommendations.mjs"
+      - "scripts/merge_google_inventory_detail_evidence.mjs"
       - "scripts/build_google_inventory_detail_queue.mjs"
       - "scripts/audit_google_inventory_detail_evidence.mjs"
       - "scripts/build_google_inventory_runtime.mjs"
@@ -42,6 +43,14 @@ jobs:
           node scripts/build_google_inventory_runtime.mjs
           node scripts/audit_google_inventory_runtime.mjs
           node scripts/build_google_inventory_detail_queue.mjs data/google_inventory_detail_queue.json
+      - name: Snapshot existing verified detail evidence
+        run: |
+          set -euo pipefail
+          if [ -s data/google_inventory_detail_evidence.json ]; then
+            cp data/google_inventory_detail_evidence.json /tmp/google_inventory_detail_evidence.previous.json
+          else
+            printf '{"schemaVersion":1,"rows":[],"summary":{}}\n' > /tmp/google_inventory_detail_evidence.previous.json
+          fi
       - name: Collect source-backed recommendations
         env:
           INVENTORY_DETAIL_FETCH_TIMEOUT_MS: "7000"
@@ -50,6 +59,10 @@ jobs:
           set -euo pipefail
           node scripts/collect_google_inventory_recommendations.mjs data/google_inventory_detail_evidence.json | tee /tmp/inventory-detail-summary.json
           test -s data/google_inventory_detail_evidence.json
+          node scripts/merge_google_inventory_detail_evidence.mjs \
+            /tmp/google_inventory_detail_evidence.previous.json \
+            data/google_inventory_detail_evidence.json \
+            data/google_inventory_detail_evidence.json | tee /tmp/inventory-detail-merge-summary.json
           node scripts/audit_google_inventory_detail_evidence.mjs
       - name: Rebuild runtime and detail queue
         run: |
