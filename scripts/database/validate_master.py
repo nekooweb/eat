@@ -53,20 +53,38 @@ def main():
     expect(exceptions == 3, f"legacy outside-catalog exceptions={exceptions}")
 
     collision_rows = list(db.execute("""
-      SELECT sr.provider,sr.provider_id,count(DISTINCT sb.place_id) AS places
+      SELECT sr.provider,sr.provider_id,count(DISTINCT sb.place_id) AS places,
+             sum(CASE WHEN sb.binding_state <> 'conflict' THEN 1 ELSE 0 END) AS non_conflict_bindings
       FROM source_records sr
       JOIN source_bindings sb ON sb.source_record_id=sr.source_record_id
       GROUP BY sr.provider,sr.provider_id
       HAVING count(DISTINCT sb.place_id) > 1
       ORDER BY sr.provider,sr.provider_id
     """))
-    expect(len(collision_rows) == 5, f"provider ID collision groups={len(collision_rows)}")
-    expect(sum(row[2] for row in collision_rows) == 10, f"provider ID collision places={sum(row[2] for row in collision_rows)}")
+    expect(len(collision_rows) >= 5, f"provider ID collision groups unexpectedly low={len(collision_rows)}")
+    expect(all(row[3] == 0 for row in collision_rows), f"collision keys with non-conflict bindings={[row for row in collision_rows if row[3] != 0]}")
 
-    conflict_places = db.execute(
+    collision_place_count = db.execute("""
+      WITH collision_keys AS (
+        SELECT sr.provider,sr.provider_id
+        FROM source_records sr
+        JOIN source_bindings sb ON sb.source_record_id=sr.source_record_id
+        GROUP BY sr.provider,sr.provider_id
+        HAVING count(DISTINCT sb.place_id) > 1
+      )
+      SELECT count(DISTINCT sb.place_id)
+      FROM collision_keys ck
+      JOIN source_records sr ON sr.provider=ck.provider AND sr.provider_id=ck.provider_id
+      JOIN source_bindings sb ON sb.source_record_id=sr.source_record_id
+    """).fetchone()[0]
+    conflict_binding_places = db.execute(
         "SELECT count(DISTINCT place_id) FROM source_bindings WHERE binding_state='conflict'"
     ).fetchone()[0]
-    expect(conflict_places == 10, f"places with conflict bindings={conflict_places}")
+    expect(
+        conflict_binding_places == collision_place_count,
+        f"conflict binding places={conflict_binding_places}, collision-derived places={collision_place_count}",
+    )
+
     selected_from_conflict = db.execute("""
       SELECT count(*)
       FROM field_resolutions r
@@ -136,7 +154,9 @@ def main():
         "resolvedNames": named,
         "legacyCanonicalRecords": legacy_records,
         "retainedExceptions": exceptions,
-        "conflictBindingPlaces": conflict_places,
+        "collisionGroups": len(collision_rows),
+        "collisionPlaces": collision_place_count,
+        "conflictBindingPlaces": conflict_binding_places,
         "hotPepperRecords": hp_records,
         "hoursRaw": hp_hours,
         "closuresRaw": hp_closure,

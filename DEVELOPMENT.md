@@ -18,7 +18,7 @@
 
 `EAT_REFACTOR_MODE=1` 继续启用。旧 canonical/overlay/完整度/queue 等架构耦合审查为 warning；以下仍为 blocking：付费数据 API 禁令、语法、2,804 catalog 完整性、明显越界/敏感字段泄漏、公开 runtime 不得含 unnamed ID-only、Pages 可部署性。
 
-新架构自身的 SQLite smoke tests 将重新设为 blocking，即使处于 refactor mode 也不能跳过。
+新架构自身的 SQLite smoke tests 为 blocking，即使处于 refactor mode 也不能跳过或改成 warning。
 
 ## Phase 0 — 线上保护
 
@@ -31,11 +31,12 @@
 
 ## Phase 1 — persistent SQLite v1
 
-状态：代码已实现，正在进入 GitHub Actions 实盘 smoke test。
+状态：代码已实现；第一次真实 SQLite smoke 成功建立数据库，但严格 validator 发现跨 retained layer 的新增身份冲突，正在按冲突结果修正后重跑。
 
 新增正式数据库工具：
 
 - `database/migrations/001_initial.sql`
+- `scripts/database/master_import_core.py`
 - `scripts/database/build_master.py`
 - `scripts/database/validate_master.py`
 
@@ -44,21 +45,31 @@
 1. 2,804 个 frozen catalog entries。
 2. 651 条目录内 legacy canonical resolved snapshot；它只作为迁移基线，不伪装成新的外部来源。
 3. 旧 canonical 中 3 条目录外记录进入 `retained_exceptions`，不自动扩展 catalog。
-4. 760 条 retained basic source bindings；5 组 reused provider ID / 10 个 Place ID 保留为 conflict binding，不能被 resolver 直接采用。
+4. 760 条 retained basic source bindings。basic 层原先已知 5 组 / 10 Place ID 来源 ID 复用。
 5. 535 条 Hot Pepper retained source records，保存名称、地址、坐标、分类、预算、营业/休息日原文、交通和设施等字段。
 6. Hot Pepper budget band 生成显式结构化 observation；开放上界使用 `upper=null`。
+
+### 第一次 persistent smoke 的新发现
+
+真实数据库已经成功构建并得到：2,804 catalog、651 legacy snapshot、3 exceptions、760 basic bindings、535 Hot Pepper full records、535 hours raw 和 535 closure raw observations。
+
+严格 validator 将 basic 与 Hot Pepper full records 联合后发现：来源 ID collision 不止 basic 层原先的 5 组 / 10 Place ID，而是 **8 组 / 16 Place ID**。这不是 schema build 失败，而是旧分层检查未暴露的跨层 identity conflict。
+
+处理原则：不降低测试、不忽略新增冲突。`build_master.py` 现在先跨全部 retained source layer 建 provider/source-ID → Place-ID 索引；任何同一来源 ID 指向多个 Place ID 的 key 都统一进入 conflict。原始 evidence 保留，但 resolver 不允许从 conflict binding 选择 known field。
 
 数据库文件本身为本地/临时产物，`*.sqlite`、`_local/`、`_tmp/` 已加入 `.gitignore`，不会被提交到 Pages。
 
 ### SQLite smoke test
 
-新 database workflow 会执行：
+新 database workflow 执行：
 
 1. 建立真实临时 SQLite 文件；
 2. 校验 `integrity_check` / `foreign_key_check`；
 3. 校验 2,804 catalog、651 legacy snapshot、3 exceptions、535 Hot Pepper records、535 hours/closure raw observations；
-4. 再运行一次 importer，要求核心表计数完全不增长；
-5. 用 SQLite backup API 创建恢复副本并再次完整验证。
+4. 动态识别全部跨层 collision，并要求所有相关 source binding 都是 conflict；
+5. 要求任何 known resolution 都不能选自 conflict binding；
+6. 再运行一次 importer，要求核心表计数完全不增长；
+7. 用 SQLite backup API 创建恢复副本并再次完整验证。
 
 这些检查是新架构的 blocking gate，不跟随旧审查一起降级。
 

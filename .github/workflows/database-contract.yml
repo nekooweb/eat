@@ -12,6 +12,7 @@ on:
       - "data/area1_google_ids.json"
       - "data/google_basic_source_matches.json"
       - "data/hotpepper_catalog_facts.json"
+      - "data/production_area1.js"
   pull_request:
     paths:
       - "database/**"
@@ -22,6 +23,7 @@ on:
       - "data/area1_google_ids.json"
       - "data/google_basic_source_matches.json"
       - "data/hotpepper_catalog_facts.json"
+      - "data/production_area1.js"
   workflow_dispatch:
 
 env:
@@ -45,6 +47,7 @@ jobs:
         run: |
           python -m py_compile \
             docs/database/validate_schema.py \
+            scripts/database/master_import_core.py \
             scripts/database/build_master.py \
             scripts/database/validate_master.py
 
@@ -57,8 +60,6 @@ jobs:
             exit ${code}
           }
 
-      # New master-database smoke tests are blocking even in refactor mode.
-      # They validate the architecture being migrated toward, not legacy shape compatibility.
       - name: Build persistent SQLite master from retained inputs
         run: |
           set -euo pipefail
@@ -73,7 +74,7 @@ jobs:
           before="$(python - <<'PY'
           import json, sqlite3
           db=sqlite3.connect('_tmp/eat-master.sqlite')
-          tables=['catalog_entries','source_records','source_bindings','field_observations','field_resolutions']
+          tables=['catalog_entries','source_records','source_bindings','field_observations','field_resolutions','retained_exceptions']
           print(json.dumps({t:db.execute('select count(*) from '+t).fetchone()[0] for t in tables},sort_keys=True))
           PY
           )"
@@ -81,7 +82,7 @@ jobs:
           after="$(python - <<'PY'
           import json, sqlite3
           db=sqlite3.connect('_tmp/eat-master.sqlite')
-          tables=['catalog_entries','source_records','source_bindings','field_observations','field_resolutions']
+          tables=['catalog_entries','source_records','source_bindings','field_observations','field_resolutions','retained_exceptions']
           print(json.dumps({t:db.execute('select count(*) from '+t).fetchone()[0] for t in tables},sort_keys=True))
           PY
           )"
