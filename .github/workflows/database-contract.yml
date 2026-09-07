@@ -18,6 +18,7 @@ on:
       - "data/hotpepper_rich_metadata.js"
       - "data/google_inventory_detail_evidence.json"
       - "data/source_basic_web_field_evidence.json"
+      - "data/official_meal_budget_web_evidence.json"
       - "data/official_candidate_index.json"
       - "data/google_entities.generated.js"
       - "data/area1_osm.js"
@@ -39,6 +40,7 @@ on:
       - "data/hotpepper_rich_metadata.js"
       - "data/google_inventory_detail_evidence.json"
       - "data/source_basic_web_field_evidence.json"
+      - "data/official_meal_budget_web_evidence.json"
       - "data/official_candidate_index.json"
       - "data/google_entities.generated.js"
       - "data/area1_osm.js"
@@ -77,7 +79,12 @@ jobs:
             scripts/database/retained_official_identity.py \
             scripts/database/retained_osm_identity.py \
             scripts/database/import_bound_open_data_fields.py \
+            scripts/database/import_hotpepper_rich_metadata.py \
+            scripts/database/resolve_hotpepper_source_fact_budgets.py \
             scripts/database/import_source_basic_web_evidence.py \
+            scripts/database/import_official_meal_budget_web_evidence.py \
+            scripts/database/collect_official_meal_budgets.py \
+            scripts/database/merge_official_meal_budget_evidence.py \
             scripts/database/resolve_retained_fields.py \
             scripts/database/review_hotpepper_candidate_fields.py \
             scripts/database/derive_hotpepper_practical.py \

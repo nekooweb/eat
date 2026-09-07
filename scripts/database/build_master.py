@@ -10,6 +10,7 @@ from pathlib import Path
 import derive_hotpepper_practical as derived
 import import_bound_open_data_fields as bound_open_data
 import import_hotpepper_rich_metadata as hotpepper_rich
+import import_official_meal_budget_web_evidence as official_meal_budget
 import import_source_basic_web_evidence as source_basic_web
 import master_import_core as core
 import plan_ingestion_tasks as planner
@@ -158,6 +159,9 @@ def build(output: Path, reset: bool = False):
         source_basic_web_counts = source_basic_web.import_evidence(
             db, id_set, conflict_places, stamp
         )
+        official_meal_budget_counts = official_meal_budget.import_evidence(
+            db, id_set, conflict_places, stamp
+        )
 
         retained_field_counts = retained_field_resolver.resolve_missing_retained_fields(db, stamp)
         candidate_hp_counts = hotpepper_candidate_review.resolve_candidate_fields(db, stamp)
@@ -186,6 +190,7 @@ def build(output: Path, reset: bool = False):
             "osmIdentityRecovery": osm_counts,
             "boundOpenDataFields": bound_open_data_counts,
             "sourceBasicWebEvidence": source_basic_web_counts,
+            "officialMealBudgetWebEvidence": official_meal_budget_counts,
             "retainedFieldResolverV2": retained_field_counts,
             "hotPepperCandidateFieldReview": candidate_hp_counts,
             "hotPepperSourceFactBudgetResolver": source_fact_budget_counts,

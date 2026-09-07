@@ -1,0 +1,211 @@
+name: Enrich explicit meal budgets from retained official pages
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/official-meal-budget-enrichment.yml"
+      - "scripts/database/collect_official_meal_budgets.py"
+      - "scripts/database/import_official_meal_budget_web_evidence.py"
+      - "scripts/database/merge_official_meal_budget_evidence.py"
+      - "scripts/database/import_source_basic_web_evidence.py"
+      - "scripts/database/reconcile_private_official_web_consensus_v4.py"
+      - "scripts/database/collect_official_index_web_fields.py"
+      - "data/official_candidate_index.json"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: public-web-field-evidence
+  cancel-in-progress: false
+
+jobs:
+  enrich:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Enforce policy and syntax
+        run: |
+          set -euo pipefail
+          node scripts/audit_no_paid_apis.mjs
+          python -m py_compile \
+            scripts/database/collect_official_meal_budgets.py \
+            scripts/database/import_official_meal_budget_web_evidence.py \
+            scripts/database/merge_official_meal_budget_evidence.py \
+            scripts/database/import_source_basic_web_evidence.py \
+            scripts/database/collect_official_index_web_fields.py \
+            scripts/database/reconcile_private_official_web_consensus_v4.py
+
+      - name: Build baseline master
+        run: |
+          set -euo pipefail
+          mkdir -p _tmp
+          python scripts/database/build_master.py --output _tmp/eat-master-before.sqlite --reset | tee _tmp/master-before.json
+          python scripts/database/validate_master.py _tmp/eat-master-before.sqlite | tee _tmp/master-before-validate.json
+          python - <<'PY'
+          import json
+          m=json.load(open('_tmp/master-before.json'))
+          p=m['ingestionPlan']
+          s={
+            'identityStates':m['identityStates'],
+            'fieldTasks':p['taskTypeCounts']['field_completion'],
+            'missing':p['fieldCompletionMissingCounts'],
+          }
+          json.dump(s,open('_tmp/budget-before.json','w'),sort_keys=True)
+          print(json.dumps(s,sort_keys=True))
+          PY
+
+      - name: Collect explicit official meal budgets
+        run: |
+          set -euo pipefail
+          python scripts/database/collect_official_meal_budgets.py \
+            --database _tmp/eat-master-before.sqlite \
+            --output _tmp/official-meal-budget-incoming.json \
+            --workers 6 \
+            --max-pages 250 \
+            | tee _tmp/official-meal-budget-collection.json
+
+      - name: Validate incoming evidence
+        run: |
+          python - <<'PY'
+          import json,re
+          d=json.load(open('_tmp/official-meal-budget-incoming.json'))
+          assert d['ruleVersion']=='official-meal-budget-web-evidence-v1'
+          assert d['parserVersion']=='official-meal-budget-web-v1'
+          p=d['policy']
+          assert p['paidDataApiCalls']==0
+          assert p['googleDisplayPayloadPersisted'] is False
+          assert p['reviewedOfficialIdentityRequired'] is True
+          assert p['explicitMealLabelRequired'] is True
+          assert p['explicitBudgetCueRequired'] is True
+          assert p['finiteRangeOnly'] is True
+          assert p['genericPriceRangePromoted'] is False
+          assert p['rawHtmlPersisted'] is False
+          assert p['robotsRespected'] is True
+          assert p['restrictedAccessBypass'] is False
+          ids=[]
+          for row in d['rows']:
+            ids.append(row['googlePlaceId'])
+            assert row['sourceProvider']=='official'
+            check=row['identityCheck']
+            assert check['accepted'] is True
+            assert check['identityRule']=='retained_verified_official_page'
+            assert check['retainedOfficialBindingReviewed'] is True
+            assert check['pageNameMatchMethod'] in {'jsonld_business_name','strong_page_title'}
+            ev=row['webEvidence']
+            assert str(ev['sourceUrl']).startswith('https://')
+            assert str(ev['finalUrl']).startswith('https://')
+            assert re.fullmatch(r'[0-9a-f]{64}',str(ev['contentHash']))
+            assert ev['parserVersion']=='official-meal-budget-web-v1'
+            assert ev['rawHtmlPersisted'] is False
+            claims=row['budgetClaims']
+            assert claims and set(claims).issubset({'lunch','dinner'})
+            for meal,claim in claims.items():
+              assert claim['currency']=='JPY'
+              assert claim['meal']==meal
+              assert claim['evidenceType']=='explicit_official_meal_budget_range'
+              assert isinstance(claim['lower'],int) and isinstance(claim['upper'],int)
+              assert 100 <= claim['lower'] <= claim['upper'] <= 200000
+              assert 0 < len(claim['rawText']) <= 180
+              assert 0 < len(row['evidenceSnippets'][meal]) <= 180
+          assert len(ids)==len(set(ids))
+          print(json.dumps({'rows':len(ids),'fieldCounts':d['summary']['fieldCounts'],'fetchCounts':d['summary']['fetchCounts']},ensure_ascii=False,sort_keys=True))
+          PY
+
+      - name: Merge and validate master effect
+        run: |
+          set -euo pipefail
+          cp data/official_meal_budget_web_evidence.json _tmp/official-meal-budget-before.json
+          python scripts/database/merge_official_meal_budget_evidence.py \
+            data/official_meal_budget_web_evidence.json \
+            _tmp/official-meal-budget-incoming.json \
+            data/official_meal_budget_web_evidence.json \
+            | tee _tmp/official-meal-budget-working-merge.json
+          python scripts/database/build_master.py --output _tmp/eat-master-after.sqlite --reset | tee _tmp/master-after.json
+          python scripts/database/validate_master.py _tmp/eat-master-after.sqlite | tee _tmp/master-after-validate.json
+          python scripts/database/validate_ingestion_plan.py _tmp/eat-master-after.sqlite | tee _tmp/ingestion-plan-after.json
+          python - <<'PY'
+          import json
+          before=json.load(open('_tmp/budget-before.json'))
+          m=json.load(open('_tmp/master-after.json'))
+          p=m['ingestionPlan']
+          after={
+            'identityStates':m['identityStates'],
+            'fieldTasks':p['taskTypeCounts']['field_completion'],
+            'missing':p['fieldCompletionMissingCounts'],
+            'import':m['officialMealBudgetWebEvidence'],
+          }
+          assert after['identityStates']==before['identityStates'], (before,after)
+          assert after['fieldTasks'] <= before['fieldTasks'], (before,after)
+          for key,value in before['missing'].items():
+            assert after['missing'].get(key,0) <= value, (key,before,after)
+          assert after['import']['networkRequests']==0
+          assert after['import']['identityChanges']==0
+          assert after['import']['importTimeMissingOnly'] is True
+          json.dump(after,open('_tmp/budget-after.json','w'),sort_keys=True)
+          print(json.dumps({'before':before,'after':after},sort_keys=True))
+          PY
+
+      - name: Commit evidence on latest main
+        run: |
+          set -euo pipefail
+          git restore -- data/official_meal_budget_web_evidence.json 2>/dev/null || true
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          for attempt in 1 2 3; do
+            git fetch origin main
+            git checkout -B official-meal-budget origin/main
+            python scripts/database/merge_official_meal_budget_evidence.py \
+              data/official_meal_budget_web_evidence.json \
+              _tmp/official-meal-budget-incoming.json \
+              data/official_meal_budget_web_evidence.json \
+              | tee _tmp/official-meal-budget-latest-merge.json
+            git add data/official_meal_budget_web_evidence.json
+            if git diff --cached --quiet; then
+              echo "No new explicit official meal-budget evidence on latest main."
+              exit 0
+            fi
+            git commit -m "Add explicit official meal-budget evidence"
+            if git push origin HEAD:main; then
+              exit 0
+            fi
+            echo "main moved during evidence commit; replaying on latest main (attempt ${attempt})."
+            git reset --hard HEAD~1
+            sleep 2
+          done
+          echo "Unable to fast-forward official meal-budget evidence after three attempts." >&2
+          exit 1
+
+      - name: Upload budget audit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: official-meal-budget-enrichment
+          path: |
+            _tmp/official-meal-budget-incoming.json
+            _tmp/official-meal-budget-collection.json
+            _tmp/official-meal-budget-working-merge.json
+            _tmp/official-meal-budget-latest-merge.json
+            _tmp/budget-before.json
+            _tmp/budget-after.json
+            _tmp/master-before.json
+            _tmp/master-before-validate.json
+            _tmp/master-after.json
+            _tmp/master-after-validate.json
+            _tmp/ingestion-plan-after.json
+          if-no-files-found: warn
+          retention-days: 2

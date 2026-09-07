@@ -7,6 +7,10 @@ official-page identity whose current page still matches that retained official n
 This importer performs no network requests. It never upgrades an ID-only identity; it
 only adds field observations to an identity that is already publishable and non-conflict
 in the SQLite master.
+
+Canonical fields are checked again at import time. This is intentionally stricter than
+trusting collection-time `missingBefore`: parallel workers may fill a field after a page
+was collected, and late public-web evidence must never replace that newer resolution.
 """
 from __future__ import annotations
 
@@ -28,6 +32,12 @@ ALLOWED_IDENTITY_RULES = {
     "official_name_plus_phone",
     "official_name_plus_geo",
     "retained_verified_official_page",
+}
+CANONICAL_EQUIVALENTS = {
+    "address": ("address",),
+    "hours.raw": ("hours.raw", "hours.reference.legacy", "hours.normalized.legacy"),
+    "cuisine": ("cuisine",),
+    "coordinates": ("coordinates",),
 }
 
 
@@ -63,6 +73,19 @@ def normalized_geo(value):
     return {"lat": float(lat), "lng": float(lng)}
 
 
+def known_resolution_index(db) -> set[tuple[str, str]]:
+    return {
+        (pid, field_key)
+        for pid, field_key in db.execute(
+            "SELECT place_id,field_key FROM field_resolutions WHERE resolution_state='known'"
+        )
+    }
+
+
+def canonical_missing(known: set[tuple[str, str]], pid: str, field_key: str) -> bool:
+    return not any((pid, key) in known for key in CANONICAL_EQUIVALENTS[field_key])
+
+
 def import_evidence(db, id_set: set[str], conflict_places: set[str], stamp: str):
     if not EVIDENCE_PATH.exists():
         return {"inputRows": 0, "acceptedRows": 0, "resolvedFields": 0, "fieldCounts": {}}
@@ -82,6 +105,7 @@ def import_evidence(db, id_set: set[str], conflict_places: set[str], stamp: str)
     counts = Counter()
     accepted = 0
     seen = set()
+    known = known_resolution_index(db)
     for row in doc.get("rows") or []:
         pid = str(row.get("googlePlaceId") or "").strip()
         if not pid or pid in seen:
@@ -177,6 +201,7 @@ def import_evidence(db, id_set: set[str], conflict_places: set[str], stamp: str)
         fields.append(("provenance.public_web_content_hash", content_hash, False))
 
         for field_key, value, canonical in fields:
+            resolve_now = canonical and canonical_missing(known, pid, field_key)
             oid = core.add_field(
                 db,
                 pid,
@@ -187,24 +212,31 @@ def import_evidence(db, id_set: set[str], conflict_places: set[str], stamp: str)
                 "official" if canonical else "official-web",
                 retrieved_at,
                 stamp,
-                resolve_field=canonical,
+                resolve_field=resolve_now,
             )
-            if canonical and oid is not None:
+            if not canonical:
+                continue
+            if resolve_now and oid is not None:
                 counts[field_key] += 1
+                known.add((pid, field_key))
+            else:
+                counts[f"already_known_at_import:{field_key}"] += 1
         accepted += 1
 
+    canonical_keys = tuple(CANONICAL_EQUIVALENTS)
     return {
         "inputRows": len(doc.get("rows") or []),
         "acceptedRows": accepted,
-        "resolvedFields": sum(counts[key] for key in ("address", "hours.raw", "cuisine", "coordinates")),
+        "resolvedFields": sum(counts[key] for key in canonical_keys),
         "fieldCounts": {
             key: counts[key]
-            for key in ("address", "hours.raw", "cuisine", "coordinates")
+            for key in canonical_keys
             if counts[key]
         },
         "skipped": {
             key: value for key, value in sorted(counts.items())
-            if key not in {"address", "hours.raw", "cuisine", "coordinates"}
+            if key not in canonical_keys
         },
         "ruleVersion": RULE_VERSION,
+        "importTimeMissingOnly": True,
     }
