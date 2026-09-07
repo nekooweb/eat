@@ -2,6 +2,12 @@
   const $ = (selector) => document.querySelector(selector);
   const $$ = (selector) => [...document.querySelectorAll(selector)];
   const MAX_DISTANCE = 1200;
+  const NII_REFERENCE = Object.freeze({
+    name: '国立情報学研究所（学術総合センター）',
+    address: '東京都千代田区一ツ橋2-1-2',
+    lat: 35.6924611,
+    lng: 139.7581028
+  });
   const canonical = Array.isArray(window.PRODUCTION_RESTAURANTS)
     ? window.PRODUCTION_RESTAURANTS
     : [];
@@ -9,9 +15,6 @@
     ? window.GOOGLE_INVENTORY_RESTAURANTS
     : [];
   const production = inventoryRuntime.length ? inventoryRuntime : canonical;
-  const embedKeyRaw = $('meta[name="google-maps-embed-key"]')?.content?.trim() || '';
-  const googleEmbedKey = embedKeyRaw && !embedKeyRaw.startsWith('__') ? embedKeyRaw : '';
-  const useGoogleStoreMaps = Boolean(googleEmbedKey);
 
   let budget = 'all';
   let distanceLimit = MAX_DISTANCE;
@@ -198,10 +201,9 @@
     return `${common}&query_place_id=${placeId}`;
   }
 
-  function googleEmbedUrl(restaurant) {
-    const key = encodeURIComponent(googleEmbedKey);
-    const placeId = encodeURIComponent(restaurant.googlePlaceId);
-    return `https://www.google.com/maps/embed/v1/place?key=${key}&q=place_id:${placeId}&language=zh-CN&region=JP&zoom=16`;
+  function niiMapsUrl() {
+    const query = encodeURIComponent(`${NII_REFERENCE.name}, ${NII_REFERENCE.address}`);
+    return `https://www.google.com/maps/search/?api=1&query=${query}&utm_source=eat&utm_campaign=nii_reference`;
   }
 
   function awardBadge(restaurant) {
@@ -213,15 +215,6 @@
   }
 
   function renderStoreMap(restaurant, index) {
-    if (useGoogleStoreMaps && hasGooglePlaceId(restaurant)) {
-      return `<iframe
-        class="store-map google-store-map"
-        title="${escapeHtml(restaurant.name)} Google Maps"
-        loading="lazy"
-        referrerpolicy="no-referrer-when-downgrade"
-        allowfullscreen
-        src="${escapeHtml(googleEmbedUrl(restaurant))}"></iframe>`;
-    }
     if (!validCoords(restaurant)) return '';
     return `<div class="store-map" id="store-map-${index}" aria-label="${escapeHtml(restaurant.name)} 周边地图"></div>`;
   }
@@ -299,7 +292,7 @@
           <div class="eyebrow">OVERVIEW</div>
           <h2>三家位置总览</h2>
         </div>
-        <span class="map-note">1–3 对应下方餐厅</span>
+        <span class="map-note">点 1–3 可跳转 Google Maps · 红点为 NII</span>
       </div>
       <div id="overview-map" class="overview-map" aria-label="三家餐厅位置总览地图"></div>
     </section>`;
@@ -361,21 +354,31 @@
     if (overviewNode && mappable.length) {
       const overview = L.map(overviewNode, { scrollWheelZoom: false });
       addTiles(overview);
-      const bounds = [];
+      const bounds = [[NII_REFERENCE.lat, NII_REFERENCE.lng]];
       mappable.forEach(({ restaurant, index }) => {
         const point = [restaurant.lat, restaurant.lng];
         bounds.push(point);
+        const popup = `<b>${escapeHtml(restaurant.name)}</b><br>${escapeHtml(restaurant.cuisine || '菜系待补')} · ${escapeHtml(distanceText(restaurant))}<br><a href="${escapeHtml(mapsUrl(restaurant))}" target="_blank" rel="noopener">在 Google Maps 查看 ↗</a>`;
         L.marker(point, { icon: numberIcon(index + 1) })
           .addTo(overview)
-          .bindPopup(`<b>${escapeHtml(restaurant.name)}</b><br>${escapeHtml(restaurant.cuisine)} · ${escapeHtml(distanceText(restaurant))}`);
+          .bindPopup(popup);
       });
-      if (bounds.length === 1) overview.setView(bounds[0], 16);
-      else overview.fitBounds(bounds, { padding: [34, 34], maxZoom: 16 });
+
+      L.circleMarker([NII_REFERENCE.lat, NII_REFERENCE.lng], {
+        radius: 8,
+        color: '#a61b1b',
+        weight: 2,
+        fillColor: '#e53935',
+        fillOpacity: 0.95
+      })
+        .addTo(overview)
+        .bindPopup(`<b>${escapeHtml(NII_REFERENCE.name)}</b><br>${escapeHtml(NII_REFERENCE.address)}<br><a href="${escapeHtml(niiMapsUrl())}" target="_blank" rel="noopener">在 Google Maps 查看 ↗</a>`);
+
+      overview.fitBounds(bounds, { padding: [34, 34], maxZoom: 16 });
       activeMaps.push(overview);
     }
 
     mappable.forEach(({ restaurant, index }) => {
-      if (useGoogleStoreMaps && hasGooglePlaceId(restaurant)) return;
       const node = $(`#store-map-${index}`);
       if (!node) return;
       const map = L.map(node, {
