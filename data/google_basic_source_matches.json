@@ -9,19 +9,23 @@
     "googlePlaceIdsPersisted": true,
     "sourceFieldsOnly": true,
     "lowConfidenceMatchesExcluded": true,
-    "pass2Rule": "strict geospatial + name/address match against transient retained Google sweep; durable fields are independent-source only"
+    "pass2Rule": "strict geospatial + name/address match against transient retained Google sweep; durable fields are independent-source only",
+    "structuredAddressConsensusV2Overlay": true,
+    "structuredAddressConsensusV2Rule": "private-address-consensus-v2"
   },
   "summary": {
     "productionBacked": 651,
-    "sourceMatchedInventoryOnly": 760,
-    "basicReadyTotal": 1411,
-    "identityOnlyRemaining": 1393,
+    "sourceMatchedInventoryOnly": 761,
+    "basicReadyTotal": 1412,
+    "identityOnlyRemaining": 1392,
     "providers": {
       "Hot Pepper": 357,
       "OpenStreetMap": 11,
-      "Overture Maps": 392
+      "Overture Maps": 393
     },
-    "pass2NewMatches": 27
+    "pass2NewMatches": 27,
+    "structuredAddressConsensusV2Rows": 1,
+    "structuredAddressConsensusV2AddedThisMerge": 1
   },
   "rows": [
     {
@@ -11184,6 +11188,21 @@
       "sourceCheckedAt": "2026-09-06",
       "verification": "existing_high_confidence_binding",
       "matchLevel": "strong"
+    },
+    {
+      "googlePlaceId": "ChIJswfCsA-MGGARIz1Zn1TprVs",
+      "provider": "Overture Maps",
+      "providerId": "4ac1e72b-be43-4856-b732-2488312fe8ec",
+      "name": "Tully's Coffee",
+      "address": "千代田区 101-0054 Kanda Nishikicho, 3 Chome−19 Hirose 2nd Bldg., 1F",
+      "lat": 35.6915669,
+      "lng": 139.7605241,
+      "distanceMeters": 549,
+      "cuisine": "咖啡",
+      "websites": [],
+      "sourceCheckedAt": "2026-09-07",
+      "verification": "reviewed_independent_source_match_using_expiring_private_address_hint",
+      "matchLevel": "private-address-consensus-v2"
     },
     {
       "googlePlaceId": "ChIJt-Lhz3GNGGARbwbcBV35nsw",
