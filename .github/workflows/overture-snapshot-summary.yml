@@ -1,0 +1,55 @@
+name: Summarize retained Overture snapshot
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/overture-snapshot-summary.yml"
+      - "scripts/database/summarize_overture_snapshot.py"
+      - "data/overture_area1_candidates.json"
+
+permissions:
+  contents: read
+
+jobs:
+  summarize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Validate and summarize
+        run: |
+          set -euo pipefail
+          mkdir -p _tmp
+          python -m py_compile scripts/database/summarize_overture_snapshot.py
+          python scripts/database/summarize_overture_snapshot.py \
+            --output _tmp/overture-snapshot-summary.json \
+            | tee _tmp/overture-snapshot-summary.stdout.json
+          python - <<'PY'
+          import json
+          d=json.load(open('_tmp/overture-snapshot-summary.json'))
+          assert d['ruleVersion']=='retained-overture-snapshot-summary-v1'
+          assert d['policy']['networkRequests']==0
+          assert d['policy']['restaurantDisplayPayloadCopied'] is False
+          s=d['summary']
+          assert s['rows'] > 0
+          assert s['providerIdsPresent'] == s['uniqueProviderIds']
+          e=s['extent']
+          assert 138 < e['west'] < e['east'] < 141
+          assert 34 < e['south'] < e['north'] < 37
+          print(json.dumps(s,sort_keys=True))
+          PY
+      - name: Upload summary
+        uses: actions/upload-artifact@v4
+        with:
+          name: overture-retained-snapshot-summary
+          path: |
+            _tmp/overture-snapshot-summary.json
+            _tmp/overture-snapshot-summary.stdout.json
+          if-no-files-found: error
+          retention-days: 3
