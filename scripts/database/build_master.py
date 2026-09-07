@@ -14,6 +14,7 @@ import retained_official_identity as official_identity
 import retained_osm_identity as osm_identity
 import retained_phase2 as phase2
 import resolve_master as resolver
+import resolve_retained_fields as retained_field_resolver
 
 ROOT = Path(__file__).resolve().parents[2]
 DATA = ROOT / "data"
@@ -103,10 +104,6 @@ def build(output: Path, reset: bool = False):
     if len(ids) != 2804 or len(id_set) != 2804 or inventory.get("count") != 2804:
         raise RuntimeError("frozen catalog must contain exactly 2,804 unique Place IDs")
 
-    # Historical verified OSM source IDs are native provider identity keys. Include
-    # them in collision discovery before any binding import so an old reviewed basic
-    # binding cannot survive if retained QC proves the same OSM object was attached
-    # to more than one Place ID.
     osm_native_rows = osm_identity.native_identity_rows(id_set)
     basic_conflicts, conflict_keys, all_sources = retained_conflict_index(
         basics, hotpepper, phase2_inputs, osm_native_rows
@@ -153,6 +150,11 @@ def build(output: Path, reset: bool = False):
             db, id_set, conflict_keys, conflict_places, stamp
         )
 
+        # Batch C is field-only and missing-only. It runs after identity recovery so
+        # it can reuse retained provider facts only for currently publishable,
+        # non-conflict identities, and before task planning so completed gaps vanish
+        # from the unified queue in the same transaction.
+        retained_field_counts = retained_field_resolver.resolve_missing_retained_fields(db, stamp)
         derived_counts = derived.resolve_hotpepper_basic_practical(db, stamp)
         rich = resolver.resolve_safe_practical(db, stamp)
         taskplan = planner.plan_tasks(db, stamp)
@@ -172,6 +174,7 @@ def build(output: Path, reset: bool = False):
             "phase2": phase,
             "officialIdentityRecovery": official_counts,
             "osmIdentityRecovery": osm_counts,
+            "retainedFieldResolverV2": retained_field_counts,
             "hotPepperBasicPractical": derived_counts,
             "safePracticalResolver": rich,
             "ingestionPlan": taskplan,
