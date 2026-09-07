@@ -18,6 +18,7 @@ on:
       - "data/hotpepper_rich_metadata.js"
       - "data/google_inventory_detail_evidence.json"
       - "data/google_inventory_runtime.js"
+      - "scripts/build_google_inventory_runtime.mjs"
   pull_request:
     paths:
       - "database/**"
@@ -34,6 +35,7 @@ on:
       - "data/hotpepper_rich_metadata.js"
       - "data/google_inventory_detail_evidence.json"
       - "data/google_inventory_runtime.js"
+      - "scripts/build_google_inventory_runtime.mjs"
   workflow_dispatch:
 
 env:
@@ -52,6 +54,10 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
 
       - name: Check database tooling syntax
         run: |
@@ -69,6 +75,7 @@ jobs:
             scripts/database/export_master.py \
             scripts/database/validate_export.py \
             scripts/database/compare_runtime_shadow.py
+          node --check scripts/build_google_inventory_runtime.mjs
 
       - name: Legacy in-memory prototype contract (warning only)
         continue-on-error: true
@@ -138,6 +145,11 @@ jobs:
             _tmp/eat-master.sqlite \
             _tmp/export/catalog.shadow.json \
             _tmp/export/recommendation.shadow.json | tee _tmp/shadow-export-validate.json
+
+          # The tracked runtime file is only a generated snapshot and may lag behind
+          # the current builder. Rebuild it inside the runner so the comparison uses
+          # the same 1,411-row publication logic as Pages without committing the file.
+          node scripts/build_google_inventory_runtime.mjs | tee _tmp/current-runtime-build.json
           python scripts/database/compare_runtime_shadow.py \
             _tmp/eat-master.sqlite \
             _tmp/export/recommendation.shadow.json | tee _tmp/runtime-shadow-compare.json
