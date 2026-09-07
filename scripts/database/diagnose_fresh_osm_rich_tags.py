@@ -3,8 +3,12 @@
 
 One bounded Overpass request is made for the frozen TOKYO/地区1️⃣ scope. To keep the
 public query cheap in dense central Tokyo, Overpass receives a bounding box and the
-exact 1,200 m circular scope is restored locally with Haversine filtering. This
-diagnostic never writes the master and never calls a paid data API.
+exact 1,200 m circular scope is restored locally with Haversine filtering.
+
+The optional rows output is a parsed public-source snapshot for downstream diagnostics.
+It contains only OSM-published restaurant fields, not the raw Overpass response and not
+any Google data. Downstream workers should reuse this snapshot instead of making the
+same network request again.
 """
 from __future__ import annotations
 
@@ -25,11 +29,11 @@ import retained_osm_identity as retained
 CENTER_LAT = 35.6959
 CENTER_LNG = 139.7576
 RADIUS_M = 1200
-# Bounding square enclosing the 1,200 m circle; exact radius is re-applied locally.
 BBOX = (35.68512, 139.74433, 35.70668, 139.77087)  # south, west, north, east
 OVERPASS_URL = "https://overpass-api.de/api/interpreter"
 USER_AGENT = "nekooweb-eat-osm-rich-diagnostic/1.0 (+https://github.com/nekooweb/eat)"
 RULE_VERSION = "fresh-osm-rich-tag-diagnostic-v1"
+SNAPSHOT_RULE_VERSION = "fresh-osm-rich-public-snapshot-v1"
 AMENITIES = "restaurant|cafe|fast_food|bar|pub|food_court|ice_cream|biergarten"
 
 
@@ -94,12 +98,27 @@ def structured_address(tags: dict) -> dict:
     return {k: v for k, v in keys.items() if v}
 
 
+def address_text(parts: dict) -> str:
+    if parts.get("full"):
+        return str(parts["full"])
+    ordered = [
+        parts.get("prefecture"), parts.get("city"), parts.get("district"),
+        parts.get("street"), parts.get("housenumber"), parts.get("postcode"),
+    ]
+    return " ".join(str(v).strip() for v in ordered if str(v or "").strip())
+
+
 def source_id(element: dict) -> str:
     kind = str(element.get("type") or "").lower()
     ident = element.get("id")
     if kind not in {"node", "way", "relation"} or not isinstance(ident, int):
         return ""
     return f"{kind}/{ident}"
+
+
+def source_url(sid: str) -> str:
+    kind, ident = sid.split("/", 1)
+    return f"https://www.openstreetmap.org/{kind}/{ident}"
 
 
 def coordinates(element: dict):
@@ -151,9 +170,52 @@ def fetch_overpass():
     return doc, round(time.time() - started, 3), hashlib.sha256(payload).hexdigest()
 
 
+def public_rows_from_doc(doc: dict) -> tuple[list[dict], int, int]:
+    rows = []
+    bbox_elements = 0
+    radius_filtered = 0
+    seen = set()
+    for element in doc.get("elements") or []:
+        bbox_elements += 1
+        sid = source_id(element)
+        tags = element.get("tags") if isinstance(element.get("tags"), dict) else {}
+        coord = coordinates(element)
+        name = str(tags.get("name") or "").strip()
+        if not sid or sid in seen or not coord or not name:
+            continue
+        distance = haversine_m(CENTER_LAT, CENTER_LNG, coord[0], coord[1])
+        if distance > RADIUS_M:
+            radius_filtered += 1
+            continue
+        seen.add(sid)
+        phone = normalize_phone(first_tag(tags, "contact:phone", "phone", "contact:mobile", "mobile"))
+        website = normalize_url(first_tag(tags, "contact:website", "website", "url"))
+        address_parts = structured_address(tags)
+        rows.append({
+            "provider": "OpenStreetMap",
+            "providerId": sid,
+            "sourceUrl": source_url(sid),
+            "name": name,
+            "address": address_text(address_parts),
+            "addressParts": address_parts,
+            "lat": coord[0],
+            "lng": coord[1],
+            "distanceMeters": round(distance, 2),
+            "phone": phone or None,
+            "website": website or None,
+            "websiteDomain": website_domain(website),
+            "openingHoursRaw": first_tag(tags, "opening_hours") or None,
+            "cuisine": first_tag(tags, "cuisine") or None,
+            "amenity": first_tag(tags, "amenity") or None,
+        })
+    rows.sort(key=lambda row: row["providerId"])
+    return rows, bbox_elements, radius_filtered
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--output", type=Path, required=True)
+    ap.add_argument("--rows-output", type=Path)
     args = ap.parse_args()
 
     old_rows = retained.parse_osm_rows()
@@ -162,43 +224,33 @@ def main():
         for row in old_rows if str(row.get("sourceId") or "").strip()
     }
     doc, elapsed, response_hash = fetch_overpass()
+    public_rows, bbox_elements, radius_filtered = public_rows_from_doc(doc)
 
     fresh = {}
     coverage = Counter()
-    bbox_elements = 0
-    radius_filtered = 0
-    for element in doc.get("elements") or []:
-        bbox_elements += 1
-        sid = source_id(element)
-        tags = element.get("tags") if isinstance(element.get("tags"), dict) else {}
-        coord = coordinates(element)
-        if not sid or not coord or not str(tags.get("name") or "").strip():
-            continue
-        distance = haversine_m(CENTER_LAT, CENTER_LNG, coord[0], coord[1])
-        if distance > RADIUS_M:
-            radius_filtered += 1
-            continue
-        phone = normalize_phone(first_tag(tags, "contact:phone", "phone", "contact:mobile", "mobile"))
-        website = normalize_url(first_tag(tags, "contact:website", "website", "url"))
-        address = structured_address(tags)
-        row = {
+    for row in public_rows:
+        sid = row["providerId"]
+        phone = str(row.get("phone") or "")
+        website = str(row.get("website") or "")
+        address_parts = row.get("addressParts") or {}
+        summary_row = {
             "sourceId": sid,
-            "nameHash": hashlib.sha256(str(tags.get("name") or "").strip().encode("utf-8")).hexdigest()[:16],
-            "lat": coord[0],
-            "lng": coord[1],
-            "distanceMeters": round(distance, 2),
+            "nameHash": hashlib.sha256(str(row.get("name") or "").encode("utf-8")).hexdigest()[:16],
+            "lat": row["lat"],
+            "lng": row["lng"],
+            "distanceMeters": row["distanceMeters"],
             "hasPhone": bool(phone),
             "phoneHash": hashlib.sha256(phone.encode()).hexdigest()[:16] if phone else "",
             "hasWebsite": bool(website),
-            "websiteDomain": website_domain(website),
-            "hasStructuredAddress": bool(address),
-            "addressKeys": sorted(address),
-            "hasOpeningHours": bool(first_tag(tags, "opening_hours")),
-            "hasCuisine": bool(first_tag(tags, "cuisine")),
+            "websiteDomain": row.get("websiteDomain") or "",
+            "hasStructuredAddress": bool(address_parts),
+            "addressKeys": sorted(address_parts),
+            "hasOpeningHours": bool(row.get("openingHoursRaw")),
+            "hasCuisine": bool(row.get("cuisine")),
         }
-        fresh[sid] = row
+        fresh[sid] = summary_row
         for key in ("hasPhone", "hasWebsite", "hasStructuredAddress", "hasOpeningHours", "hasCuisine"):
-            if row[key]:
+            if summary_row[key]:
                 coverage[key] += 1
 
     old_ids = set(old_by_native)
@@ -245,6 +297,35 @@ def main():
                     "addressKeys": cur["addressKeys"],
                 })
 
+    osm3s = doc.get("osm3s") or {}
+    query_meta = {
+        "center": {"lat": CENTER_LAT, "lng": CENTER_LNG},
+        "radiusMeters": RADIUS_M,
+        "overpassBoundingBox": {"south": BBOX[0], "west": BBOX[1], "north": BBOX[2], "east": BBOX[3]},
+        "exactRadiusAppliedLocally": True,
+        "amenities": AMENITIES.split("|"),
+    }
+    if args.rows_output:
+        snapshot = {
+            "schemaVersion": 1,
+            "ruleVersion": SNAPSHOT_RULE_VERSION,
+            "source": "OpenStreetMap public Overpass",
+            "retrievedAt": osm3s.get("timestamp_osm_base"),
+            "query": query_meta,
+            "policy": {
+                "paidDataApiCalls": 0,
+                "googleDataIncluded": False,
+                "rawOverpassResponsePersisted": False,
+                "parsedPublicOsmRowsOnly": True,
+                "masterWrites": 0,
+                "promotionPerformed": False,
+            },
+            "responseHash": response_hash,
+            "rows": public_rows,
+        }
+        args.rows_output.parent.mkdir(parents=True, exist_ok=True)
+        args.rows_output.write_text(json.dumps(snapshot, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
     output = {
         "schemaVersion": 1,
         "ruleVersion": RULE_VERSION,
@@ -258,19 +339,13 @@ def main():
             "promotionPerformed": False,
             "rawOverpassResponsePersisted": False,
         },
-        "query": {
-            "center": {"lat": CENTER_LAT, "lng": CENTER_LNG},
-            "radiusMeters": RADIUS_M,
-            "overpassBoundingBox": {"south": BBOX[0], "west": BBOX[1], "north": BBOX[2], "east": BBOX[3]},
-            "exactRadiusAppliedLocally": True,
-            "amenities": AMENITIES.split("|"),
-        },
+        "query": query_meta,
         "response": {
             "elapsedSeconds": elapsed,
             "contentHash": response_hash,
             "bboxElements": bbox_elements,
             "outsideRadiusFiltered": radius_filtered,
-            "osm3s": doc.get("osm3s") or {},
+            "osm3s": osm3s,
         },
         "summary": {
             "retainedRows": len(old_rows),
