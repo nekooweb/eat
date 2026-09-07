@@ -2,55 +2,66 @@
 
 更新日期：2026-09-07。
 
-## 已验证的 persistent baseline
+## 已验证 master baseline
 
-`2fdf8a44f238c0b096fae558ea2e128f7eb83031` 的 master database workflow 已完整通过：真实 SQLite build、strict validator、二次幂等导入、SQLite backup/restore 全部成功。
+当前 SQLite master 已通过真实文件 build、严格 FK/integrity、二次幂等导入、resolver 重跑、SQLite backup/restore 和 shadow export validation。
 
-通过时的基线：2,804 catalog、1,946 source records/bindings、28,992 observations、25,162 resolutions、651 verified、747 source-matched、13 conflict-state、1,393 id-only、1,398 resolved names、535 Hot Pepper full records、535 raw hours/closures。
+当前主库：
 
-统一 retained layer 后实际 source-ID collision 为 8 组 / 16 Place ID；所有相关 binding 均为 conflict，known resolution 不允许直接选择 conflict source。
+- catalog 2,804
+- source records / bindings 3,583 / 3,583
+- field observations 40,008
+- field resolutions 29,501
+- verified 651
+- source-matched 747
+- conflict identity state 13
+- id-only 1,393
+- resolved names 1,398
+- source-ID collision 8 组 / 16 Place ID
 
-## 当前 Phase 2
+## Retained evidence 与 practical resolution
 
-新增 `scripts/database/retained_phase2.py`，把旧 overlay 数据迁进 source/observation 层：
+已迁移：575 provider facts、644 provenance links、135 Hot Pepper rich metadata、283 dish evidence items。
 
-- `source_facts.js`：575 provider fact records；
-- `source_provenance.js`：644 source links；
-- `hotpepper_rich_metadata.js`：135 rich metadata rows；
-- `google_inventory_detail_evidence.json`：283 dish evidence items。
+已安全采用：
 
-这批数据在首次导入阶段只增加 evidence/provenance，不改变当前 resolver 结果。CI 会动态读取这些输入计算 expected count，并要求所有 Phase 2 acquisition methods 的 record count 与输入一致，同时要求 `phase2SelectedResolutions=0`。
+- reviewed rich practical `(Place ID, field)`：1,194
+- reviewed Hot Pepper full practical derived observations：3,271
 
-## Identity handling
+Derived practical 只接受明确 `あり/なし`、`利用可/利用不可` 等可机械解释文本，并保留 raw observation FK 与 rule version。Candidate/conflict binding 不参加派生。
 
-Native identity key 与 evidence link 分离：
+## Shadow export
 
-- Hot Pepper `hotpepperId` 是 native provider ID，参加 collision discovery；
-- Tabelog/official URL 不是默认 branch primary key，一个品牌/菜单页可服务多个分店；
-- 非 native provider fact/provenance 使用 content-addressed synthetic retained ID；URL 保存在 `source_url`；
-- URL 共享不会自动导致 Place ID merge；
-- candidate evidence 可以保存 known value observation，但在 review/resolver 升级前不进入 field resolution。
+Shadow catalog 必须 exact 2,804 / frozen order。Shadow recommendation eligibility：
 
-## Phase 2 fields
+`verified or source_matched` + `known real name` + `no conflict binding`。
 
-Source facts 保存名称、地址、菜系、tags、lunch/dinner range、dishes、hours raw、closure days/note、百名店及已有 price derivation 等 provider-specific facts。
+最终已验证：当前 runtime 1,411、shadow recommendation 1,395；差异 16 条全部是 conflict-binding Place ID，shadow-only=0，移除 conflict 后顺序一致。
 
-Provenance 保存 exact source URL、claimed fields、checkedAt 和 price evidence class。
+Shadow 当前仍只在 CI artifact 中生成，不接 Pages。
 
-Hot Pepper rich 保存名称/假名、地址/坐标、area/genre/budget、信用卡、special features、车站/交通、capacity/party capacity、营业/休息日原文、amenities、service text、coupon URL、review mode 等 practical metadata。
+## 字段级 diff
 
-Dish evidence 分开保存：
+新增 `scripts/database/diff_runtime_shadow_fields.py`，比较共同 1,395 个推荐 Place ID 的 name/address/coordinates/cuisine/budget/hours/dishes/practical。
 
-- `dish.recommendation.evidence`
-- `dish.featured.evidence`
+报告类别：
 
-每个 item 保留 provider、source URL、checkedAt、evidenceClass 和 snippet；本阶段不直接把 evidence 当最终推荐菜 resolution。
+- `equal`
+- `changed`
+- `shadowAdded`
+- `shadowMissing`
+- `absentBoth`
+
+字段差异当前是诊断报告，不用来强迫新模型兼容旧 overlay；membership、order、identity conflict、raw/private data leakage 等仍是 blocking contract。
+
+下一步根据该报告选择 resolver v2，而不是凭直觉批量 promotion。
 
 ## 本地运行
 
 ```bash
 python scripts/database/build_master.py --output _local/eat-main.sqlite --reset
 python scripts/database/validate_master.py _local/eat-main.sqlite
+python scripts/database/export_master.py _local/eat-main.sqlite --outdir _local/export
 ```
 
-SQLite/WAL/SHM 不进入 GitHub Pages。Actions 只生成 `_tmp` smoke database，并做重复 import 与 backup/restore。
+SQLite/WAL/SHM 和 raw master 不进入 Pages。

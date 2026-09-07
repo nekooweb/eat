@@ -4,83 +4,81 @@
 
 ## 当前线上
 
-- 2,804 Place ID 全部保留为 frozen catalog。
-- Pages 当前发布逻辑为 1,411 条已有真实名称记录；1,393 条 ID-only 已下架，不使用“Google Maps 餐厅”伪名称。
-- Hot Pepper runtime 已修正 `openingHoursText` / `closedText`，hours coverage 363 → 716。
+- frozen catalog：2,804 Place ID 全部保留。
+- 当前 Pages 发布逻辑：1,411 条已有真实名称记录；1,393 条 ID-only 已下架，不使用“Google Maps 餐厅”伪名称。
+- Hot Pepper runtime 已修复 `openingHoursText` / `closedText` 映射，hours coverage 363 → 716。
 - `N以上 -> N+2000` 伪预算上界已移除。
-- no-paid-data-API、语法、catalog 完整性、Pages 可部署性继续 blocking。
+- Pages build/deploy 与 no-paid-data-API policy 继续通过。
+
+## Refactor mode
+
+旧 canonical/overlay/coverage/queue 等架构耦合检查继续 warning-only；成本、安全、语法、2,804 catalog、公开 unnamed-ID-only 禁止、Pages 可部署性以及新的 SQLite/export contract 始终 blocking。
 
 ## Phase 1 — persistent SQLite
 
 状态：完成并通过 blocking smoke。
 
-统一主库已验证真实 SQLite build、二次幂等 import、8 组 / 16 Place ID cross-layer identity collision 隔离、known-value monotonic retention 以及 SQLite backup/restore。
+真实 SQLite、二次幂等导入、cross-layer source-ID collision、known-value monotonic retention 与 backup/restore 均已验证。统一主库识别 8 collision groups / 16 Place ID；collision evidence 保留但 known resolution 不允许直接选择 conflict binding。
 
 ## Phase 2 — retained evidence
 
 状态：完成并通过 blocking smoke。
 
-已纳入 SQLite：575 provider facts、644 provenance links、135 Hot Pepper rich rows、283 dish evidence items。Phase 2 首轮不直接改变 field resolution；主库达到 3,583 source records/bindings 与 36,737 observations。
+已迁移：575 provider facts、644 provenance links、135 Hot Pepper rich rows、283 dish evidence items。旧 JS wrapper 使用 `JSONDecoder.raw_decode()` 安全解析，不执行 JS。
 
-## Phase 3 — safe practical resolver + shadow export
+## Phase 3 — safe resolver / shadow export
 
 状态：完成并通过 blocking smoke。
 
-Reviewed、非 conflict Hot Pepper rich metadata 已安全采用 1,194 个 practical `(Place ID, field)` resolutions，覆盖 133 家店。Shadow export 已验证：catalog exact 2,804；SQLite recommendation 1,395；id-only 保持 name=null / ineligible；16 个 conflict-binding Place ID 不进入 recommendation。
+- reviewed Hot Pepper rich practical resolutions：1,194；
+- Hot Pepper full conservative derived practical observations：3,271；
+- master：3,583 source records/bindings、40,008 observations、29,501 resolutions；
+- repeat import/resolver count-stable；
+- SQLite backup/restore 后 validator 再通过。
 
-## Phase 3B — Hot Pepper full practical derivation
+### Shadow eligibility 已验证
 
-状态：**数据派生、主库验证、幂等与 backup/restore 已通过；runtime-shadow diff 测试输入已修正，等待最终重跑。**
+CI 内临时重建当前 runtime 后：
 
-从 473 个 reviewed `retained_hotpepper_artifact` source 中保守派生：
+- current public runtime：1,411
+- SQLite shadow recommendation：1,395
+- current-only：16
+- shadow-only：0
+- 16 条 current-only 恰好全部是 identity-conflict Place ID
+- 移除这 16 条后顺序完全一致
 
-- `practical.lunch_available`: 473
-- `practical.course_available`: 433
-- `practical.free_drink_available`: 473
-- `practical.free_food_available`: 473
-- `practical.private_room_available`: 473
-- `practical.card_available`: 473
-- `practical.parking_available`: 473
+因此 Phase 3B 已正式完成。Shadow 仍只作为 CI artifact，不接 Pages。
 
-合计 **3,271 条 derived observations / 3,271 distinct place-fields**。每条都保留 `derived_from_observation_id` 和 `hotpepper-basic-practical-v1` rule version；candidate/conflict binding 不参加派生。
+## Phase 3C — 字段级 runtime / shadow diff
 
-Phase 3B 后主库实测：
+状态：已实现，等待诊断报告。
 
-- source records / bindings: 3,583 / 3,583
-- field observations: 40,008
-- field resolutions: 29,501
-- rich practical resolutions: 1,194
-- cross-layer collision groups / places: 8 / 16
-- second import count-stable
-- backup/restore validator pass
+新增 `scripts/database/diff_runtime_shadow_fields.py`。在同一 CI runner 中先重建当前 1,411-row runtime，再对 SQLite shadow 的共同 1,395 个 Place ID 比较：
 
-### 当前唯一失败：runtime-shadow compare 输入使用了旧生成文件
+- name
+- address
+- coordinates
+- cuisine
+- lunch budget
+- dinner budget
+- hours
+- recommended dishes
+- featured dishes
+- practical fields
 
-Database workflow 的最终 compare 第一次失败，因为仓库跟踪的 `data/google_inventory_runtime.js` 仍是旧的 2,804-row generated snapshot；真正 Pages build 会先运行当前 builder，把它重建为 1,411-row named runtime。因此 compare 实际拿了错误的 stale input，报告 `currentPublicRows=2804`，而不是当前发布逻辑的 1,411。
+每个字段只分类为：`equal / changed / shadowAdded / shadowMissing / absentBoth`，并输出少量样例。该报告在 refactor 阶段是诊断项，不因为旧/新字段值存在差异而阻断；membership/order/identity conflict 等结构性规则仍由 strict validator 阻断。
 
-修复：database workflow 现在增加 Node 22，并在 compare 前临时运行 `node scripts/build_google_inventory_runtime.mjs`。该文件只在 CI runner 工作区重建，不提交仓库。随后再执行 `compare_runtime_shadow.py`，要求：
-
-- current runtime 1,411；
-- shadow recommendation 1,395；
-- current-only 必须恰好是 16 个 conflict-binding Place ID；
-- shadow-only 必须为 0；
-- 移除 conflict 后顺序必须完全一致。
-
-Phase 3B 在该最终 diff gate 通过前仍不标记全部完成。
+这个 diff 的目的不是强迫新 SQLite 完全复制旧 overlay，而是判断：哪些字段可安全由 direct source/resolver 升级，哪些字段仍依赖 legacy snapshot 或需要人工/语义规则。
 
 ## 下一步
 
-Phase 3B 最终通过后：
+字段级 diff 通过生成后，按实际差异选择 resolver v2：
 
-1. 生成旧 runtime vs SQLite shadow **字段级 diff**，不是只比较 ID：name/address/coordinates/cuisine/budget/hours/dishes/practical；
-2. 根据 diff 选择 resolver v2 的安全升级项；优先明确 budget/hour 规则，dish recommendation 继续保持高门槛；
-3. shadow export 保持不接 Pages，直到字段差异和浏览器回归明确；
-4. 主库和 resolver 稳定后继续处理 1,393 个 id-only 的真实名称/身份补全；不得仅凭 Overture/OSM 空间邻近自动绑定。
-
-## Refactor mode
-
-旧 canonical/overlay/coverage/queue 检查继续 warning-only；成本、安全、语法、2,804 catalog、公开 unnamed-ID-only 禁止、Pages 可部署性与新 SQLite/export contract 始终 blocking。
+1. 优先确定性 budget 规则和低风险 hours raw/normalized 规则；
+2. dish recommendation/featured evidence 继续保持高门槛，不自动全部 promotion；
+3. shadow export 不切 Pages，直到字段差异、浏览器回归和 fallback 方案明确；
+4. 主库稳定后开始 1,393 个 id-only 的真实名称/身份补全；不能只靠 Overture/OSM 空间邻近自动绑定。
 
 ## 开发纪律
 
-每批实际开发同步更新本文件、数据库/架构文档和 `logs/`；测试未通过只标记“已实现/待验证”，通过后再标记完成。
+每批实际开发同步更新本文件、数据库/架构文档和 `logs/`；失败和修复也记录。未通过测试只写“已实现/待验证”，通过后再标记完成。

@@ -74,7 +74,8 @@ jobs:
             scripts/database/export_master_core.py \
             scripts/database/export_master.py \
             scripts/database/validate_export.py \
-            scripts/database/compare_runtime_shadow.py
+            scripts/database/compare_runtime_shadow.py \
+            scripts/database/diff_runtime_shadow_fields.py
           node --check scripts/build_google_inventory_runtime.mjs
 
       - name: Legacy in-memory prototype contract (warning only)
@@ -146,13 +147,19 @@ jobs:
             _tmp/export/catalog.shadow.json \
             _tmp/export/recommendation.shadow.json | tee _tmp/shadow-export-validate.json
 
-          # The tracked runtime file is only a generated snapshot and may lag behind
-          # the current builder. Rebuild it inside the runner so the comparison uses
-          # the same 1,411-row publication logic as Pages without committing the file.
+          # Rebuild the current publication snapshot in the runner. The tracked
+          # generated file may lag behind the builder and is not the comparison truth.
           node scripts/build_google_inventory_runtime.mjs | tee _tmp/current-runtime-build.json
           python scripts/database/compare_runtime_shadow.py \
             _tmp/eat-master.sqlite \
             _tmp/export/recommendation.shadow.json | tee _tmp/runtime-shadow-compare.json
+
+          # Field differences are diagnostic during refactor. The script exits only
+          # on parsing/tooling errors; changed/missing/added field counts are reported,
+          # not used as a legacy compatibility gate.
+          python scripts/database/diff_runtime_shadow_fields.py \
+            _tmp/export/recommendation.shadow.json \
+            --output _tmp/runtime-shadow-field-diff-full.json | tee _tmp/runtime-shadow-field-diff-summary.json
 
       - name: Upload database smoke-test reports
         if: always()
