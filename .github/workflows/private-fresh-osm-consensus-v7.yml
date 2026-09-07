@@ -1,0 +1,150 @@
+name: Diagnose fresh OSM strong identity consensus v7
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/private-fresh-osm-consensus-v7.yml"
+      - "scripts/database/diagnose_private_fresh_osm_consensus_v7.py"
+      - "scripts/database/diagnose_fresh_osm_rich_tags.py"
+      - "scripts/database/diagnose_private_strong_consensus_v5.py"
+      - "scripts/database/reconcile_private_google_hints.py"
+      - "scripts/database/reconcile_private_address_consensus_v2.py"
+      - "scripts/database/reconcile_private_multisource_consensus_v3.py"
+      - "scripts/database/reconcile_private_official_web_consensus_v4.py"
+      - "scripts/database/build_master.py"
+      - "data/hotpepper_catalog_facts.json"
+      - "data/overture_area1_candidates.json"
+      - "data/area1_osm.js"
+
+permissions:
+  actions: read
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Enforce no-paid policy and syntax
+        run: |
+          set -euo pipefail
+          node scripts/audit_no_paid_apis.mjs
+          python -m py_compile \
+            scripts/database/diagnose_private_fresh_osm_consensus_v7.py \
+            scripts/database/diagnose_fresh_osm_rich_tags.py \
+            scripts/database/diagnose_private_strong_consensus_v5.py \
+            scripts/database/reconcile_private_google_hints.py \
+            scripts/database/reconcile_private_address_consensus_v2.py \
+            scripts/database/reconcile_private_multisource_consensus_v3.py \
+            scripts/database/reconcile_private_official_web_consensus_v4.py \
+            scripts/database/build_master.py
+
+      - name: Download original private sweep
+        uses: actions/download-artifact@v5
+        with:
+          name: full-area1-collection-private-audit
+          path: _private_google/initial
+          github-token: ${{ github.token }}
+          repository: nekooweb/eat
+          run-id: 34018919233
+
+      - name: Download retry private sweep
+        uses: actions/download-artifact@v5
+        with:
+          name: full-area1-retry-private-audit
+          path: _private_google/retry
+          github-token: ${{ github.token }}
+          repository: nekooweb/eat
+          run-id: 34019078280
+
+      - name: Build current master
+        run: |
+          set -euo pipefail
+          mkdir -p _tmp
+          python scripts/database/build_master.py --output _tmp/eat-master.sqlite --reset | tee _tmp/master.json
+          python scripts/database/validate_master.py _tmp/eat-master.sqlite | tee _tmp/master-validate.json
+
+      - name: Run fresh OSM strong-consensus diagnostic
+        run: |
+          set -euo pipefail
+          python scripts/database/diagnose_private_fresh_osm_consensus_v7.py \
+            --database _tmp/eat-master.sqlite \
+            --initial _private_google/initial/full_inventory_place_details.json \
+            --retry _private_google/retry/full_inventory_retry_private.json \
+            --output _tmp/private-fresh-osm-consensus-v7.json \
+            | tee _tmp/private-fresh-osm-consensus-v7-summary.json
+
+      - name: Enforce private diagnostic boundary
+        run: |
+          python - <<'PY'
+          import json
+          d=json.load(open('_tmp/private-fresh-osm-consensus-v7.json'))
+          assert d['ruleVersion']=='private-fresh-osm-strong-consensus-v7'
+          p=d['policy']
+          assert p['newGoogleApiCalls']==0
+          assert p['googleDisplayPayloadPersisted'] is False
+          assert p['newPublicNetworkRequests']==1
+          assert p['publicNetworkSource']=='OpenStreetMap Overpass'
+          assert p['promotionPerformed'] is False
+          assert p['proximityOnlyBindingAllowed'] is False
+          assert p['privateHistoricalHintsDurable'] is False
+          assert p['rawOverpassResponsePersisted'] is False
+          assert p['aggregatorDomainConsensusAllowed'] is False
+          assert p['nativeSourceReuseAllowed'] is False
+          assert p['strongSignalReuseAcrossPlaceIdsAllowed'] is False
+          banned={
+            'displayName','formattedAddress','businessStatus','primaryType','types',
+            'googleName','googleAddress','googleLocation','location',
+            'nationalPhoneNumber','internationalPhoneNumber','websiteUri','currentOpeningHours'
+          }
+          def walk(v):
+            if isinstance(v,dict):
+              for k,x in v.items():
+                assert k not in banned, k
+                walk(x)
+            elif isinstance(v,list):
+              for x in v: walk(x)
+          walk(d)
+          ids=[r['googlePlaceId'] for r in d['candidates']]
+          assert len(ids)==len(set(ids))
+          native=[]
+          signals=[]
+          for r in d['candidates']:
+            assert r['rule'] in {
+              'exact_cross_provider_phone','exact_cross_provider_official_url','domain_plus_structured_address'
+            }
+            assert r['providerCount'] >= 2
+            assert 'OpenStreetMap' in r['providers']
+            for s in r['independentSourceKeys']:
+              native.append((s['provider'],s['providerId']))
+            for fp in r['signalFingerprints']:
+              signals.append((r['rule'],fp))
+          assert len(native)==len(set(native))
+          assert len(signals)==len(set(signals))
+          print(json.dumps(d['summary'],sort_keys=True))
+          PY
+
+      - name: Upload short-lived diagnostic
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: private-fresh-osm-consensus-v7
+          path: |
+            _tmp/private-fresh-osm-consensus-v7.json
+            _tmp/private-fresh-osm-consensus-v7-summary.json
+            _tmp/master.json
+            _tmp/master-validate.json
+          if-no-files-found: warn
+          retention-days: 3
