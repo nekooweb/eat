@@ -163,9 +163,6 @@ def build(output: Path, reset: bool = False):
         official_meal_budget_counts = official_meal_budget.import_evidence(
             db, id_set, conflict_places, stamp
         )
-        official_practical_counts = official_practical.import_evidence(
-            db, id_set, conflict_places, stamp
-        )
 
         retained_field_counts = retained_field_resolver.resolve_missing_retained_fields(db, stamp)
         candidate_hp_counts = hotpepper_candidate_review.resolve_candidate_fields(db, stamp)
@@ -173,6 +170,11 @@ def build(output: Path, reset: bool = False):
         derived_counts = derived.resolve_hotpepper_basic_practical(db, stamp)
         rich = resolver.resolve_safe_practical(db, stamp)
         hotpepper_rich_counts = hotpepper_rich.resolve_rich_metadata(
+            db, id_set, conflict_places, stamp
+        )
+        # Official web practical evidence is deliberately last among field resolvers:
+        # it fills only residual gaps after retained/structured provider facts.
+        official_practical_counts = official_practical.import_evidence(
             db, id_set, conflict_places, stamp
         )
         taskplan = planner.plan_tasks(db, stamp)
