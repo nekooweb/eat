@@ -16,6 +16,7 @@ import plan_ingestion_tasks as planner
 import retained_official_identity as official_identity
 import retained_osm_identity as osm_identity
 import retained_phase2 as phase2
+import resolve_hotpepper_source_fact_budgets as hotpepper_source_fact_budget
 import resolve_master as resolver
 import resolve_retained_fields as retained_field_resolver
 import review_hotpepper_candidate_fields as hotpepper_candidate_review
@@ -160,6 +161,7 @@ def build(output: Path, reset: bool = False):
 
         retained_field_counts = retained_field_resolver.resolve_missing_retained_fields(db, stamp)
         candidate_hp_counts = hotpepper_candidate_review.resolve_candidate_fields(db, stamp)
+        source_fact_budget_counts = hotpepper_source_fact_budget.resolve_budgets(db, stamp)
         derived_counts = derived.resolve_hotpepper_basic_practical(db, stamp)
         rich = resolver.resolve_safe_practical(db, stamp)
         hotpepper_rich_counts = hotpepper_rich.resolve_rich_metadata(
@@ -186,6 +188,7 @@ def build(output: Path, reset: bool = False):
             "sourceBasicWebEvidence": source_basic_web_counts,
             "retainedFieldResolverV2": retained_field_counts,
             "hotPepperCandidateFieldReview": candidate_hp_counts,
+            "hotPepperSourceFactBudgetResolver": source_fact_budget_counts,
             "hotPepperBasicPractical": derived_counts,
             "safePracticalResolver": rich,
             "hotPepperRichFieldResolver": hotpepper_rich_counts,
