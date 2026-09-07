@@ -12,24 +12,28 @@
     "pass2Rule": "strict geospatial + name/address match against transient retained Google sweep; durable fields are independent-source only",
     "structuredAddressConsensusV2Overlay": true,
     "structuredAddressConsensusV2Rule": "private-address-consensus-v2",
-    "lastIdentityRecoveryOverlayRule": "private-address-consensus-v2"
+    "lastIdentityRecoveryOverlayRule": "private-multisource-consensus-v3",
+    "multiSourceConsensusV3Overlay": true,
+    "multiSourceConsensusV3Rule": "private-multisource-consensus-v3"
   },
   "summary": {
     "productionBacked": 651,
-    "sourceMatchedInventoryOnly": 761,
-    "basicReadyTotal": 1412,
-    "identityOnlyRemaining": 1392,
+    "sourceMatchedInventoryOnly": 762,
+    "basicReadyTotal": 1413,
+    "identityOnlyRemaining": 1391,
     "providers": {
-      "Hot Pepper": 357,
+      "Hot Pepper": 358,
       "OpenStreetMap": 11,
       "Overture Maps": 393
     },
     "pass2NewMatches": 27,
     "structuredAddressConsensusV2Rows": 1,
     "structuredAddressConsensusV2AddedThisMerge": 0,
-    "lastIdentityRecoveryOverlayRule": "private-address-consensus-v2",
+    "lastIdentityRecoveryOverlayRule": "private-multisource-consensus-v3",
     "lastIdentityRecoveryOverlayRows": 1,
-    "lastIdentityRecoveryOverlayAddedThisMerge": 0
+    "lastIdentityRecoveryOverlayAddedThisMerge": 1,
+    "multiSourceConsensusV3Rows": 1,
+    "multiSourceConsensusV3AddedThisMerge": 1
   },
   "rows": [
     {
@@ -10864,6 +10868,53 @@
       "sourceCheckedAt": "2026-09-06",
       "verification": "matched_against_transient_google_place_details",
       "matchLevel": "strong"
+    },
+    {
+      "googlePlaceId": "ChIJq9lWshaMGGARk5S-OqNwPUU",
+      "provider": "Hot Pepper",
+      "providerId": "J001208797",
+      "name": "和Dining三十",
+      "address": "東京都千代田区神田神保町１-14-16",
+      "lat": 35.6968237286,
+      "lng": 139.7582390616,
+      "distanceMeters": 118,
+      "cuisine": "和食",
+      "websites": [
+        "https://www.hotpepper.jp/strJ001208797/?vos=nhppalsa000016"
+      ],
+      "sourceUrl": "https://www.hotpepper.jp/strJ001208797/?vos=nhppalsa000016",
+      "verification": "reviewed_independent_multisource_consensus_using_expiring_private_hint",
+      "matchLevel": "private-multisource-consensus-v3",
+      "independentConsensus": {
+        "providerCount": 2,
+        "providers": [
+          "Hot Pepper",
+          "Overture Maps"
+        ],
+        "averageMutualNameSimilarity": 1.0,
+        "maximumMutualDistanceMeters": 7.117,
+        "sourceAddressSupportingPairs": 1,
+        "sharedDomains": [],
+        "supportingSources": [
+          {
+            "provider": "Hot Pepper",
+            "providerId": "J001208797",
+            "name": "和Dining三十",
+            "address": "東京都千代田区神田神保町１-14-16",
+            "lat": 35.6968237286,
+            "lng": 139.7582390616
+          },
+          {
+            "provider": "Overture Maps",
+            "providerId": "2bb2e9d2-5f9d-456b-bd2c-16a43f66a54d",
+            "name": "和Dining三十",
+            "address": "千代田区 101-0051 Kanda Jinbocho, 1 Chome−１４−16 根木英光ビル 1F",
+            "lat": 35.6968417,
+            "lng": 139.7583147
+          }
+        ]
+      },
+      "sourceCheckedAt": "2026-09-07"
     },
     {
       "googlePlaceId": "ChIJqSiOxDCNGGARWOU0to8PZ8k",
