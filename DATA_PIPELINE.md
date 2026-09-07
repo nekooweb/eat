@@ -18,9 +18,33 @@
 
 现有私有 sweep 几乎覆盖当前 id-only，但 durable proposal 必须重新由 Hot Pepper / OpenStreetMap / Overture 等独立来源证明。Private match hint 不能直接成为 source record。
 
-第一版 ultra-strict probe 得到 0 durable proposal，因此新增 E2 诊断层：不改变 acceptance rule，只统计最佳独立 candidate 的 name similarity、distance、postcode/address signal、provider coverage 和 cross-provider mutual consensus。
+E1 ultra-strict probe：1,392 个 id-only 中 1,391 有历史 hint，但 durable proposal 为 0。
 
-E2 private output 只保存 Place ID、独立 provider/source ID 和 match metrics，2 天后过期；不保存 Google 名称/地址/坐标。根据统计决定是否存在可解释的 strict matching cluster。若 independent coverage 本身不足，则不继续放宽 threshold，而转免费公开来源/官网 collector。
+E2 near-match diagnostics 仍不改变 acceptance rule。结果：
+
+- 1,390 / 1,392 在 120m 内存在独立 candidate；
+- exact name 或 name similarity >=0.90 的近距离 candidate 实际都只有 1 条；
+- postcode match 801；
+- provider spatial coverage：1 provider 17、2 providers 65、3 providers 1,308。
+
+这说明 independent candidate coverage 足够广，但东京核心区候选密度高，距离/postcode 不能充当 identity truth。后续不再继续放宽 proximity threshold，而转向能提供名称、地址、电话、官网等可判别证据的免费公开来源 collector。
+
+Private diagnostic artifact 只保留 Place ID、独立 provider/source ID 和 match metrics，短期过期；不保存 Google 名称/地址/坐标。
+
+## Batch F — free public-source collector
+
+Retained evidence 用尽后的正式 identity-recovery 路径：
+
+1. planner 读取当前 `identity_recovery` task；
+2. 历史 Google hint 如仍可用，只允许在 private job 中作为导航/搜索提示；
+3. collector 访问许可允许的官网/公开商店页/独立目录；
+4. raw response 或解析后的 source record 必须记录 stable URL、retrieved_at、content hash、parser/rule version；
+5. identity matcher 使用名称 + 地址/postcode/电话/坐标/官网域名等证据；禁止仅凭距离或同建筑绑定；
+6. 模糊结果写 `candidate`，明确结果写 `reviewed`；collision 继续 quarantine；
+7. reviewed identity 才允许 resolver 补字段并进入 recommendation eligibility；
+8. 一次已确认来源访问尽量提取 name/address/coordinates/cuisine/hours/budget/practical/menu 全部可支持字段；
+9. 每批 100–250 task，可中断、可重跑、可统计失败原因；
+10. 不绕过登录/CAPTCHA/robots/access restriction，不调用付费 Google Places/Text/Nearby API。
 
 ## Field completion
 
@@ -32,6 +56,25 @@ Hot Pepper candidate field-only review：原 candidate 永不升级；只有现�
 
 priority：identity conflict review > identity recovery > field completion > dish semantic review。每次 recovery/resolver 后重新 planner。Identity recovery 成功会从 identity task 转成 field task，因此以 task 类型和字段缺口变化衡量实际进度。
 
+当前基线：2,972 active tasks = 20 identity conflict review + 1,392 identity recovery + 1,349 field completion + 211 dish semantic review。
+
+## Map/display path
+
+页面内地图与数据 pipeline 分离：
+
+`resolved coordinates -> static JS/runtime export -> Leaflet -> OpenStreetMap tiles`
+
+规则：
+
+- 不向浏览器注入 Google Maps API key；
+- 不使用 Google Maps Embed iframe；
+- 地图渲染只读取已经存在于本地 runtime 的坐标，不向 Google 请求地点数据；
+- Google Place ID 仅用于普通外部导航兼容链接；
+- `audit_no_paid_apis.mjs` 和 Pages assemble 都阻止 Google key/embed 配置重新进入公开页面；
+- 页面必须保留 OpenStreetMap attribution。
+
+因此“地图显示”和“Google 数据采集”不再共享任何 API key 或运行时依赖。
+
 ## Network-second
 
 Retained evidence 用尽后才进入网络免费公开来源。不得恢复付费 Google Places/Text/Nearby API，不做 proximity-only binding，不绕过登录/CAPTCHA/访问限制。一次已确认来源访问尽量提取全部支持字段。
@@ -39,5 +82,7 @@ Retained evidence 用尽后才进入网络免费公开来源。不得恢复付�
 ## Export / cutover
 
 Catalog 始终 2,804；recommendation 只包含 eligibility 通过项。Shadow-only 新增必须追溯到 approved reviewed independent source。Pages 切换前继续要求幂等、collision quarantine、Google payload leakage check、backup/restore、field diff 和浏览器回归。
+
+当前 Pages 仍使用 legacy 1,411 named runtime；SQLite recommendation export 在完成足够回归比较前继续 shadow-only。
 
 每批实际开发同步更新 `DEVELOPMENT.md`、本文件和当天 `logs/`。
