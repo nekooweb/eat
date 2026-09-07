@@ -2,7 +2,7 @@
 """Summarize the retained Overture candidate snapshot without network access.
 
 The output is diagnostic metadata only: row count, spatial extent, field coverage and
-provider-ID uniqueness. It does not copy restaurant names/addresses into the report.
+Overture-ID uniqueness. It does not copy restaurant names/addresses into the report.
 """
 from __future__ import annotations
 
@@ -25,6 +25,17 @@ def nonempty(value) -> bool:
     return True
 
 
+def safe_metadata(value):
+    """Keep only small non-row source metadata needed to reproduce the snapshot scope."""
+    if value is None or isinstance(value, (str, int, float, bool)):
+        return value
+    if isinstance(value, list):
+        return [safe_metadata(x) for x in value[:20]]
+    if isinstance(value, dict):
+        return {str(k): safe_metadata(v) for k, v in list(value.items())[:40]}
+    return str(value)[:500]
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--input", type=Path, default=DEFAULT_INPUT)
@@ -45,15 +56,15 @@ def main():
         if not isinstance(row, dict):
             continue
         top_keys.update(row.keys())
-        pid = str(row.get("providerId") or row.get("id") or "").strip()
-        if pid:
-            ids.append(pid)
+        oid = str(row.get("overtureId") or row.get("providerId") or row.get("id") or "").strip()
+        if oid:
+            ids.append(oid)
         lat, lng = row.get("lat"), row.get("lng")
         if isinstance(lat, (int, float)) and isinstance(lng, (int, float)):
             lats.append(float(lat)); lngs.append(float(lng))
         for key in (
-            "name", "address", "lat", "lng", "websites", "website", "phones", "phone",
-            "categories", "basic_category", "taxonomy", "sources", "confidence"
+            "name", "address", "addresses", "lat", "lng", "websites", "website", "phones", "phone",
+            "categories", "basicCategory", "basic_category", "taxonomy", "sources", "confidence"
         ):
             if nonempty(row.get(key)):
                 coverage[key] += 1
@@ -69,11 +80,16 @@ def main():
         "schemaVersion": 1,
         "ruleVersion": "retained-overture-snapshot-summary-v1",
         "policy": {"networkRequests": 0, "restaurantDisplayPayloadCopied": False},
+        "snapshotMetadata": {
+            "release": safe_metadata(doc.get("release")),
+            "scope": safe_metadata(doc.get("scope")),
+            "source": safe_metadata(doc.get("source")),
+        },
         "summary": {
             "rows": len(rows),
-            "providerIdsPresent": len(ids),
-            "uniqueProviderIds": len(set(ids)),
-            "duplicateProviderIds": len(ids) - len(set(ids)),
+            "overtureIdsPresent": len(ids),
+            "uniqueOvertureIds": len(set(ids)),
+            "duplicateOvertureIds": len(ids) - len(set(ids)),
             "extent": {
                 "west": min(lngs), "south": min(lats),
                 "east": max(lngs), "north": max(lats),
