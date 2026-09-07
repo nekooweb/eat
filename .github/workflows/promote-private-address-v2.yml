@@ -1,0 +1,117 @@
+name: Promote structured-address identity recoveries
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/promote-private-address-v2.yml"
+      - "scripts/merge_basic_recovery_overlays.py"
+      - "data/private_address_consensus_bindings.json"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: promote-private-address-v2
+  cancel-in-progress: false
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Enforce no-paid-data-API policy
+        run: node scripts/audit_no_paid_apis.mjs
+      - name: Merge reviewed durable identity overlay
+        run: |
+          set -euo pipefail
+          mkdir -p _tmp
+          python -m py_compile scripts/merge_basic_recovery_overlays.py
+          python scripts/merge_basic_recovery_overlays.py \
+            data/google_basic_source_matches.json \
+            data/private_address_consensus_bindings.json \
+            data/google_basic_source_matches.json \
+            | tee _tmp/overlay-merge.json
+          python - <<'PY'
+          import json
+          d=json.load(open('data/google_basic_source_matches.json'))
+          s=d['summary']
+          assert d['inventoryCount']==2804
+          assert d['policy']['paidGoogleApiCalls']==0
+          assert d['policy']['googleDisplayPayloadPersisted'] is False
+          assert d['policy']['structuredAddressConsensusV2Overlay'] is True
+          assert s['basicReadyTotal'] >= 1412
+          assert s['identityOnlyRemaining'] <= 1392
+          ids=[r['googlePlaceId'] for r in d['rows']]
+          native=[(r['provider'],str(r['providerId'])) for r in d['rows']]
+          assert len(ids)==len(set(ids))
+          assert len(native)==len(set(native))
+          assert any(r['googlePlaceId']=='ChIJswfCsA-MGGARIz1Zn1TprVs' for r in d['rows'])
+          print(json.dumps(s,ensure_ascii=False,sort_keys=True))
+          PY
+      - name: Validate current runtime
+        run: |
+          set -euo pipefail
+          node scripts/build_google_inventory_runtime.mjs | tee _tmp/runtime-build.json
+          node scripts/audit_google_inventory_runtime.mjs | tee _tmp/runtime-audit.json
+          node - <<'NODE'
+          const fs=require('fs');
+          const vm=require('vm');
+          const sandbox={window:{}};
+          vm.createContext(sandbox);
+          vm.runInContext(fs.readFileSync('data/google_inventory_runtime.js','utf8'),sandbox);
+          const stats=sandbox.window.GOOGLE_INVENTORY_STATS;
+          if (stats.inventoryTotal < 1412) throw new Error(`expected >=1412 published rows, got ${stats.inventoryTotal}`);
+          if (!sandbox.window.GOOGLE_INVENTORY_RESTAURANTS.some(r=>r.googlePlaceId==='ChIJswfCsA-MGGARIz1Zn1TprVs' && r.name)) {
+            throw new Error('new structured-address recovery is not publishable in runtime');
+          }
+          console.log(JSON.stringify(stats));
+          NODE
+      - name: Validate SQLite master consumption
+        run: |
+          set -euo pipefail
+          python scripts/database/build_master.py --output _tmp/eat-master.sqlite --reset | tee _tmp/master-build.json
+          python scripts/database/validate_master.py _tmp/eat-master.sqlite | tee _tmp/master-validate.json
+          python - <<'PY'
+          import json,sqlite3
+          db=sqlite3.connect('_tmp/eat-master.sqlite')
+          states=dict(db.execute('select identity_state,count(*) from catalog_entries group by identity_state'))
+          row=db.execute("select identity_state from catalog_entries where place_id='ChIJswfCsA-MGGARIz1Zn1TprVs'").fetchone()
+          assert row and row[0]=='source_matched', row
+          assert states.get('id_only',9999) <= 1391, states
+          print(json.dumps(states,ensure_ascii=False,sort_keys=True))
+          PY
+      - name: Commit promoted basic source data
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/google_basic_source_matches.json
+          if git diff --cached --quiet; then
+            echo "No promoted basic source changes to commit."
+            exit 0
+          fi
+          git commit -m "Promote structured-address identity recovery"
+          git fetch origin main
+          git rebase origin/main
+          git push origin HEAD:main
+      - name: Upload promotion audit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: structured-address-v2-promotion-audit
+          path: _tmp/*.json
+          if-no-files-found: warn
+          retention-days: 3
