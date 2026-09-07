@@ -7,10 +7,13 @@ on:
     paths:
       - ".github/workflows/official-practical-enrichment.yml"
       - "scripts/database/collect_official_practical_fields.py"
+      - "scripts/database/collect_official_detail_practical_fields.py"
       - "scripts/database/import_official_practical_web_evidence.py"
+      - "scripts/database/import_official_practical_detail_web_evidence.py"
       - "scripts/database/build_master.py"
       - "data/official_candidate_index.json"
       - "data/official_practical_web_evidence.json"
+      - "data/official_practical_detail_web_evidence.json"
 
 permissions:
   contents: write
@@ -41,7 +44,9 @@ jobs:
           set -euo pipefail
           python -m py_compile \
             scripts/database/collect_official_practical_fields.py \
+            scripts/database/collect_official_detail_practical_fields.py \
             scripts/database/import_official_practical_web_evidence.py \
+            scripts/database/import_official_practical_detail_web_evidence.py \
             scripts/database/build_master.py
           node scripts/audit_no_paid_apis.mjs
 
@@ -53,22 +58,26 @@ jobs:
           python scripts/database/validate_master.py _tmp/eat-master-before.sqlite | tee _tmp/master-before-validate.json
           python - <<'PY'
           import json
-          m=json.load(open('_tmp/master-before.json'))
-          p=m['ingestionPlan']
+          m=json.load(open('_tmp/master-before.json')); p=m['ingestionPlan']
           s={'identityStates':m['identityStates'],'fieldTasks':p['taskTypeCounts']['field_completion'],'missing':p['fieldCompletionMissingCounts']}
-          json.dump(s,open('_tmp/practical-before.json','w'),sort_keys=True)
-          print(json.dumps(s,sort_keys=True))
+          json.dump(s,open('_tmp/practical-before.json','w'),sort_keys=True); print(json.dumps(s,sort_keys=True))
           PY
 
-      - name: Collect explicit practical labels
+      - name: Collect official landing practical labels
         run: |
           set -euo pipefail
           python scripts/database/collect_official_practical_fields.py \
             --database _tmp/eat-master-before.sqlite \
-            --output _tmp/official-practical-incoming.json \
-            --workers 6 \
-            --max-pages 250 \
+            --output _tmp/official-practical-incoming.json --workers 6 --max-pages 250 \
             | tee _tmp/official-practical-collection.json
+
+      - name: Collect same-origin detail practical labels
+        run: |
+          set -euo pipefail
+          python scripts/database/collect_official_detail_practical_fields.py \
+            --database _tmp/eat-master-before.sqlite \
+            --output _tmp/official-practical-detail-incoming.json --workers 6 --max-restaurants 250 \
+            | tee _tmp/official-practical-detail-collection.json
 
       - name: Merge incoming evidence
         run: |
@@ -76,21 +85,22 @@ jobs:
           python - <<'PY'
           import json
           from pathlib import Path
-          base=json.load(open('data/official_practical_web_evidence.json'))
-          inc=json.load(open('_tmp/official-practical-incoming.json'))
-          assert base['ruleVersion']==inc['ruleVersion']=='official-practical-web-evidence-v1'
-          rows={r['googlePlaceId']:r for r in base.get('rows',[])}
-          for r in inc.get('rows',[]): rows[r['googlePlaceId']]=r
-          out=dict(base)
-          out['checkedAt']=inc.get('checkedAt') or base.get('checkedAt')
-          out['rows']=[rows[k] for k in sorted(rows)]
-          counts={}
-          for r in out['rows']:
-            for key in (r.get('practicalClaims') or {}): counts[key]=counts.get(key,0)+1
-          out['summary']={'rows':len(out['rows']),'fieldCounts':dict(sorted(counts.items()))}
-          Path('data/official_practical_web_evidence.json').write_text(json.dumps(out,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
-          json.dump({'beforeRows':len(base.get('rows',[])),'incomingRows':len(inc.get('rows',[])),'afterRows':len(out['rows']),'fieldCounts':out['summary']['fieldCounts']},open('_tmp/official-practical-merge.json','w'),sort_keys=True)
-          print(json.dumps(out['summary'],sort_keys=True))
+          def merge(path, incoming, detail=False):
+              base=json.load(open(path)); inc=json.load(open(incoming)); assert base['ruleVersion']==inc['ruleVersion']=='official-practical-web-evidence-v1'
+              def key(r):
+                  if not detail: return r['googlePlaceId']
+                  e=r.get('webEvidence') or {}; return (r['googlePlaceId'],e.get('finalUrl') or e.get('sourceUrl'),e.get('contentHash'))
+              rows={key(r):r for r in base.get('rows',[])}
+              for r in inc.get('rows',[]): rows[key(r)]=r
+              out=dict(base); out['checkedAt']=inc.get('checkedAt') or base.get('checkedAt'); out['rows']=[rows[k] for k in sorted(rows,key=str)]
+              counts={}
+              for r in out['rows']:
+                  for f in (r.get('practicalClaims') or {}): counts[f]=counts.get(f,0)+1
+              out['summary']={'rows':len(out['rows']),'fieldCounts':dict(sorted(counts.items()))}
+              Path(path).write_text(json.dumps(out,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+              return {'beforeRows':len(base.get('rows',[])),'incomingRows':len(inc.get('rows',[])),'afterRows':len(out['rows']),'fieldCounts':out['summary']['fieldCounts']}
+          result={'landing':merge('data/official_practical_web_evidence.json','_tmp/official-practical-incoming.json'), 'detail':merge('data/official_practical_detail_web_evidence.json','_tmp/official-practical-detail-incoming.json',True)}
+          json.dump(result,open('_tmp/official-practical-merge.json','w'),sort_keys=True); print(json.dumps(result,sort_keys=True))
           PY
 
       - name: Validate master effect
@@ -101,56 +111,49 @@ jobs:
           python scripts/database/validate_ingestion_plan.py _tmp/eat-master-after.sqlite | tee _tmp/ingestion-plan-after.json
           python - <<'PY'
           import json
-          before=json.load(open('_tmp/practical-before.json'))
-          m=json.load(open('_tmp/master-after.json'))
-          p=m['ingestionPlan']
-          after={'identityStates':m['identityStates'],'fieldTasks':p['taskTypeCounts']['field_completion'],'missing':p['fieldCompletionMissingCounts'],'import':m['officialPracticalWebEvidence']}
-          assert after['identityStates']==before['identityStates'],(before,after)
-          assert after['fieldTasks']<=before['fieldTasks'],(before,after)
-          for key,value in before['missing'].items(): assert after['missing'].get(key,0)<=value,(key,before,after)
-          assert after['import']['networkRequests']==0
-          assert after['import']['identityChanges']==0
-          assert after['import']['importTimeMissingOnly'] is True
-          json.dump(after,open('_tmp/practical-after.json','w'),sort_keys=True)
-          print(json.dumps({'before':before,'after':after},sort_keys=True))
+          before=json.load(open('_tmp/practical-before.json')); m=json.load(open('_tmp/master-after.json')); p=m['ingestionPlan']
+          after={'identityStates':m['identityStates'],'fieldTasks':p['taskTypeCounts']['field_completion'],'missing':p['fieldCompletionMissingCounts'],'landingImport':m['officialPracticalWebEvidence'],'detailImport':m['officialPracticalDetailWebEvidence']}
+          assert after['identityStates']==before['identityStates']; assert after['fieldTasks']<=before['fieldTasks']
+          for k,v in before['missing'].items(): assert after['missing'].get(k,0)<=v,(k,before,after)
+          for name in ('landingImport','detailImport'):
+              assert after[name]['networkRequests']==0 and after[name]['identityChanges']==0 and after[name]['importTimeMissingOnly'] is True
+          json.dump(after,open('_tmp/practical-after.json','w'),sort_keys=True); print(json.dumps({'before':before,'after':after},sort_keys=True))
           PY
 
       - name: Commit evidence on latest main
         run: |
           set -euo pipefail
-          cp data/official_practical_web_evidence.json _tmp/official-practical-working.json
-          git restore -- data/official_practical_web_evidence.json
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          cp data/official_practical_web_evidence.json _tmp/landing-working.json
+          cp data/official_practical_detail_web_evidence.json _tmp/detail-working.json
+          git restore -- data/official_practical_web_evidence.json data/official_practical_detail_web_evidence.json
+          git config user.name "github-actions[bot]"; git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           for attempt in 1 2 3; do
-            git fetch origin main
-            git checkout -B official-practical origin/main
+            git fetch origin main; git checkout -B official-practical origin/main
             python - <<'PY'
           import json
           from pathlib import Path
-          base=json.load(open('data/official_practical_web_evidence.json'))
-          inc=json.load(open('_tmp/official-practical-incoming.json'))
-          rows={r['googlePlaceId']:r for r in base.get('rows',[])}
-          for r in inc.get('rows',[]): rows[r['googlePlaceId']]=r
-          out=dict(base); out['checkedAt']=inc.get('checkedAt') or base.get('checkedAt'); out['rows']=[rows[k] for k in sorted(rows)]
-          counts={}
-          for r in out['rows']:
-            for key in (r.get('practicalClaims') or {}): counts[key]=counts.get(key,0)+1
-          out['summary']={'rows':len(out['rows']),'fieldCounts':dict(sorted(counts.items()))}
-          Path('data/official_practical_web_evidence.json').write_text(json.dumps(out,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          def merge(path,incoming,detail=False):
+              base=json.load(open(path)); inc=json.load(open(incoming))
+              def key(r):
+                  if not detail: return r['googlePlaceId']
+                  e=r.get('webEvidence') or {}; return (r['googlePlaceId'],e.get('finalUrl') or e.get('sourceUrl'),e.get('contentHash'))
+              rows={key(r):r for r in base.get('rows',[])}
+              for r in inc.get('rows',[]): rows[key(r)]=r
+              out=dict(base); out['checkedAt']=inc.get('checkedAt') or base.get('checkedAt'); out['rows']=[rows[k] for k in sorted(rows,key=str)]
+              counts={}
+              for r in out['rows']:
+                  for f in (r.get('practicalClaims') or {}): counts[f]=counts.get(f,0)+1
+              out['summary']={'rows':len(out['rows']),'fieldCounts':dict(sorted(counts.items()))}; Path(path).write_text(json.dumps(out,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          merge('data/official_practical_web_evidence.json','_tmp/official-practical-incoming.json')
+          merge('data/official_practical_detail_web_evidence.json','_tmp/official-practical-detail-incoming.json',True)
           PY
-            git add data/official_practical_web_evidence.json
-            if git diff --cached --quiet; then
-              echo "No new explicit official practical evidence."
-              exit 0
-            fi
-            git commit -m "Add explicit official practical evidence"
+            git add data/official_practical_web_evidence.json data/official_practical_detail_web_evidence.json
+            if git diff --cached --quiet; then echo "No new explicit official practical evidence."; exit 0; fi
+            git commit -m "Add official practical landing and detail evidence"
             if git push origin HEAD:main; then exit 0; fi
-            git reset --hard HEAD~1
-            sleep 2
+            git reset --hard HEAD~1; sleep 2
           done
-          echo "Unable to fast-forward practical evidence after three attempts." >&2
-          exit 1
+          echo "Unable to fast-forward practical evidence after three attempts." >&2; exit 1
 
       - name: Upload practical audit
         if: always()
@@ -159,7 +162,9 @@ jobs:
           name: official-practical-enrichment
           path: |
             _tmp/official-practical-incoming.json
+            _tmp/official-practical-detail-incoming.json
             _tmp/official-practical-collection.json
+            _tmp/official-practical-detail-collection.json
             _tmp/official-practical-merge.json
             _tmp/practical-before.json
             _tmp/practical-after.json
