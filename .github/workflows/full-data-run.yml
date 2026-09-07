@@ -1,0 +1,90 @@
+name: Full catalog baseline and backup
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["codex/luna-full-data-run-20260907"]
+    paths:
+      - ".github/workflows/full-data-run.yml"
+      - "scripts/database/**"
+      - "database/**"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: full-catalog-data-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  full:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Cost and source boundary
+        run: node scripts/audit_no_paid_apis.mjs
+      - name: Build every catalog entry and retained source
+        run: |
+          set -euo pipefail
+          mkdir -p _tmp/full-data-run
+          python scripts/database/build_master.py --output _tmp/full-data-run/eat-master.sqlite --reset | tee _tmp/full-data-run/build.json
+          python scripts/database/validate_master.py _tmp/full-data-run/eat-master.sqlite | tee _tmp/full-data-run/validate.json
+          python scripts/database/validate_derived_practical.py _tmp/full-data-run/eat-master.sqlite
+          python scripts/database/validate_source_semantics.py _tmp/full-data-run/eat-master.sqlite
+          python scripts/database/validate_official_identity.py _tmp/full-data-run/eat-master.sqlite
+          python scripts/database/validate_osm_identity.py _tmp/full-data-run/eat-master.sqlite
+          python scripts/database/validate_retained_field_resolver.py _tmp/full-data-run/eat-master.sqlite
+          python scripts/database/validate_hotpepper_candidate_fields.py _tmp/full-data-run/eat-master.sqlite
+          python scripts/database/validate_ingestion_plan.py _tmp/full-data-run/eat-master.sqlite
+      - name: Generate all task shards without a top-N limit
+        run: |
+          set -euo pipefail
+          python scripts/database/build_agent_workplan.py _tmp/full-data-run/eat-master.sqlite --outdir _tmp/full-data-run/workplan | tee _tmp/full-data-run/workplan-summary.json
+          python scripts/database/export_master.py _tmp/full-data-run/eat-master.sqlite --outdir _tmp/full-data-run/export | tee _tmp/full-data-run/export-summary.json
+          python scripts/database/validate_export.py _tmp/full-data-run/eat-master.sqlite _tmp/full-data-run/export/catalog.shadow.json _tmp/full-data-run/export/recommendation.shadow.json
+      - name: Preserve source inputs and consistent database backup
+        run: |
+          python - <<'PY'
+          import hashlib,json,os,shutil,sqlite3
+          from pathlib import Path
+          root=Path('_tmp/full-data-run')
+          dst=root/'source-inputs'
+          dst.mkdir(exist_ok=True)
+          files=[]
+          for p in sorted(Path('data').rglob('*')):
+              if not p.is_file(): continue
+              out=dst/p.relative_to('data')
+              out.parent.mkdir(parents=True,exist_ok=True)
+              shutil.copy2(p,out)
+              raw=out.read_bytes()
+              files.append({'path':str(out.relative_to(root)),'sizeBytes':len(raw),'sha256':hashlib.sha256(raw).hexdigest()})
+          db=sqlite3.connect(root/'eat-master.sqlite')
+          backup=sqlite3.connect(root/'eat-master-backup.sqlite')
+          db.backup(backup)
+          assert backup.execute('pragma integrity_check').fetchone()[0]=='ok'
+          assert list(backup.execute('pragma foreign_key_check'))==[]
+          count=backup.execute('select count(*) from catalog_entries').fetchone()[0]
+          assert count==2804,count
+          db.execute('pragma wal_checkpoint(truncate)')
+          db.close();backup.close()
+          for p in (root/'eat-master.sqlite',root/'eat-master-backup.sqlite'):
+              raw=p.read_bytes()
+              files.append({'path':p.name,'sizeBytes':len(raw),'sha256':hashlib.sha256(raw).hexdigest()})
+          manifest={'schemaVersion':1,'runId':os.environ['GITHUB_RUN_ID'],'sourceCommit':os.environ['GITHUB_SHA'],'catalogCount':count,'runMode':'full_retained_baseline_and_backup','externalCollectionExecuted':False,'files':files}
+          (root/'backup-manifest.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          print(json.dumps({k:manifest[k] for k in ('sourceCommit','catalogCount','runMode','externalCollectionExecuted')},sort_keys=True))
+          PY
+      - name: Upload full data and database backup
+        uses: actions/upload-artifact@v4
+        with:
+          name: eat-full-data-run-${{ github.run_id }}
+          path: _tmp/full-data-run
+          if-no-files-found: error
+          retention-days: 30
