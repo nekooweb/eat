@@ -1,12 +1,10 @@
 #!/usr/bin/env python3
-"""Find new independent-source identity proposals using expiring private Google hints.
+"""Private diagnostic/reconciliation of historical Google hints to independent sources.
 
-Google Places content is read only from the already-existing private Actions artifacts.
-It is never written to the durable proposal rows. The output proposal contains only the
-Google Place ID (which is cacheable) plus independent Hot Pepper / OSM / Overture facts.
-Private match metrics remain in a separate private report for review.
-
-This script makes no network requests and no Google API calls.
+Google Places content is consumed only from expiring private Actions artifacts. It is
+never emitted into the durable proposal. Private output may retain only match metrics and
+Place IDs for short-lived review; durable rows contain independent Hot Pepper / OSM /
+Overture fields only. No network request or Google API call is made here.
 """
 from __future__ import annotations
 
@@ -91,8 +89,7 @@ def area_distance(lat, lng) -> float:
 
 
 def finite_coord(row):
-    lat, lng = row.get("lat"), row.get("lng")
-    return isinstance(lat, (int, float)) and isinstance(lng, (int, float))
+    return isinstance(row.get("lat"), (int, float)) and isinstance(row.get("lng"), (int, float))
 
 
 def source_address(row):
@@ -234,6 +231,49 @@ def strong_single(ev, name):
     return False, None
 
 
+def diagnostic_bins(candidates, counts):
+    if not candidates:
+        counts["diag_no_independent_candidate_within_120m"] += 1
+        return
+    counts["diag_any_independent_candidate_within_120m"] += 1
+    best = sorted(candidates, key=lambda item: (-item[1]["nameSimilarity"], item[1]["distanceMeters"]))[0][1]
+    if best["nameSimilarity"] == 1.0:
+        for limit in (10, 20, 30, 50, 80, 120):
+            if best["distanceMeters"] <= limit:
+                counts[f"diag_best_exact_name_le_{limit}m"] += 1
+    for sim_label, threshold in (("0995", 0.995), ("099", 0.99), ("098", 0.98), ("095", 0.95), ("090", 0.90)):
+        if best["nameSimilarity"] >= threshold:
+            for limit in (10, 20, 30, 50, 80, 120):
+                if best["distanceMeters"] <= limit:
+                    counts[f"diag_best_sim_{sim_label}_le_{limit}m"] += 1
+    if best["postcodeMatch"]:
+        counts["diag_best_postcode_match"] += 1
+        if best["nameSimilarity"] >= 0.95 and best["distanceMeters"] <= 60:
+            counts["diag_postcode_sim095_le_60m"] += 1
+    if best["addressExact"]:
+        counts["diag_best_address_exact"] += 1
+
+    provider_best = {}
+    for row, ev in candidates:
+        prev = provider_best.get(row["provider"])
+        if prev is None or (-ev["nameSimilarity"], ev["distanceMeters"]) < (-prev[1]["nameSimilarity"], prev[1]["distanceMeters"]):
+            provider_best[row["provider"]] = (row, ev)
+    counts[f"diag_provider_coverage_{len(provider_best)}"] += 1
+    strong_provider_rows = [
+        (row, ev) for row, ev in provider_best.values()
+        if ev["nameSimilarity"] >= 0.90 and ev["distanceMeters"] <= 80
+    ]
+    if len(strong_provider_rows) >= 2:
+        counts["diag_two_provider_hint_support"] += 1
+        compatible = True
+        for i, (row, _ev) in enumerate(strong_provider_rows):
+            for other, _oev in strong_provider_rows[i + 1:]:
+                if haversine(row["lat"], row["lng"], other["lat"], other["lng"]) > 60 or similarity(row["name"], other["name"]) < 0.85:
+                    compatible = False
+        if compatible:
+            counts["diag_two_provider_mutual_consensus"] += 1
+
+
 def independent_row(row):
     out = {
         "provider": row["provider"],
@@ -281,6 +321,7 @@ def main():
 
     private_proposals = []
     durable_rows = []
+    near_miss_rows = []
     counts = Counter()
 
     for pid in sorted(id_only):
@@ -300,6 +341,28 @@ def main():
                     local.append((row, ev))
             local.sort(key=lambda item: (-item[1]["nameSimilarity"], item[1]["distanceMeters"], str(item[0]["providerId"])))
             candidates.extend(local[:5])
+
+        diagnostic_bins(candidates, counts)
+        if candidates:
+            best_by_provider = {}
+            for row, ev in candidates:
+                prev = best_by_provider.get(row["provider"])
+                if prev is None or (-ev["nameSimilarity"], ev["distanceMeters"]) < (-prev[1]["nameSimilarity"], prev[1]["distanceMeters"]):
+                    best_by_provider[row["provider"]] = (row, ev)
+            near_miss_rows.append({
+                "googlePlaceId": pid,
+                "bestIndependent": [
+                    {
+                        "provider": row["provider"],
+                        "providerId": row["providerId"],
+                        "distanceMeters": ev["distanceMeters"],
+                        "nameSimilarity": ev["nameSimilarity"],
+                        "postcodeMatch": ev["postcodeMatch"],
+                        "addressExact": ev["addressExact"],
+                    }
+                    for row, ev in sorted(best_by_provider.values(), key=lambda item: item[0]["provider"])
+                ],
+            })
 
         accepted = []
         for row, ev in candidates:
@@ -389,7 +452,7 @@ def main():
         "rows": durable_rows,
     }
     private_doc = {
-        "schemaVersion": 1,
+        "schemaVersion": 2,
         "checkedAt": "2026-09-07",
         "summary": {
             "currentIdOnly": len(id_only),
@@ -398,6 +461,7 @@ def main():
             **dict(sorted(counts.items())),
         },
         "rows": private_proposals,
+        "nearMisses": near_miss_rows,
     }
     args.durable_output.parent.mkdir(parents=True, exist_ok=True)
     args.private_output.parent.mkdir(parents=True, exist_ok=True)

@@ -5,119 +5,79 @@
 ## 当前线上
 
 - frozen catalog：2,804 Place ID 全部保留。
-- Pages 仍发布 1,411 条已有真实名称记录；原 1,393 条 ID-only 已下架，不使用“Google Maps 餐厅”占位名。
-- Bulk completion 目前只更新 SQLite / shadow；未直接切换 Pages。
-- no-paid-data-API、2,804 catalog、语法、数据库契约和 Pages 可部署性继续 blocking。
+- Pages 仍发布旧 runtime 的 1,411 条已有真实名称记录；未命名 Place-ID-only 不展示。
+- Bulk completion 继续只更新 SQLite / shadow，未切 Pages。
+- no-paid-data-API、catalog 完整性、Google payload 泄漏、数据库契约和 Pages 可部署性保持 blocking。
 
-## 当前已验证 master（Batch D 后）
+## 当前已验证 master（Batch D）
 
-- catalog：2,804；
-- source records / bindings：4,686；
-- observations：46,260；
-- resolutions：30,913；
+- 2,804 catalog；
+- 4,686 source records / bindings；
+- 46,260 observations；
+- 30,913 resolutions；
 - identity：651 verified / 746 source_matched / 1,392 id_only / 15 conflict；
 - collision：10 source-ID groups / 20 Place ID；
-- active tasks：2,972。
-
-任务组成：identity conflict review 20、identity recovery 1,392、field completion 1,349、dish semantic review 211。
+- active tasks：2,972 = 20 conflict review + 1,392 identity recovery + 1,349 field completion + 211 dish review。
 
 主要字段缺口：address 337、coordinates 1、cuisine 1、dinner budget 789、hours 666、lunch budget 1,228、practical 906。
 
-## Batch A — retained official identity recovery
+## 已完成批次
 
-状态：完成 / blocking CI pass。Commit `f43cffb`。
+### Batch A — retained official identity recovery
 
-194 条 retained official identity 中 193 reviewed、1 conflict-deferred；新恢复 1 个 id-only：`ChIJ2yzmKgCNGGARujgyaVuRhy8`。Shadow safe-added 1、unsafe-added 0。
+完成 / blocking CI pass。194 retained official records 中 193 reviewed、1 conflict-deferred；恢复 1 个 id-only：`ChIJ2yzmKgCNGGARujgyaVuRhy8`。
 
-## Batch B — retained verified OSM identity QC
+### Batch B — retained verified OSM identity QC
 
-状态：完成 / blocking CI pass。Commit `6aa04eb`。
+完成 / blocking CI pass。662 verified mappings 中 657 reviewed / 3 candidate / 2 conflict；没有新增 id-only recovery，但发现 2 个新 collision groups，使 conflict Places 16 -> 20，并补入 OSM retained fields。
 
-历史 verified OSM mapping 662：657 reviewed / 3 candidate / 2 conflict；新恢复 id-only 0。新增发现 2 组跨层 source-ID collision，使总 conflict Places 16 -> 20；OSM retained 字段进入主库并降低部分 address/hours/budget/practical 缺口。
+### Batch C — deterministic retained-field resolver v2
 
-## Batch C — deterministic retained-field resolver v2
+完成 / blocking CI pass。只处理 publishable/no-conflict identity，provider 仅 official/Tabelog，missing-only。安全 derived 188：closure.days.raw 123、closure.raw 58、hours.raw 7；repeat build 新增 0。
 
-状态：完成 / blocking CI pass。Commit `d948d45`。
+### Batch D — Hot Pepper candidate field-only review
 
-只处理 publishable + no-conflict identity，只接受 retained official/Tabelog facts，HTTPS provenance + claimedFields 必须成立，missing-only、不覆盖 known、不改 identity。
+完成 / blocking CI pass。58 candidate 中 6 家通过严格 existing-identity consistency，补 59 fields；原 candidate identity 不升级。Dinner gap 795 -> 789、hours 672 -> 666、practical 912 -> 906。
 
-实际 derived resolutions 188：Tabelog 156 / official 32；closure.days.raw 123、closure.raw 58、hours.raw 7。Hours 缺口 679 -> 672。Repeat build 新增 0，证明幂等。
+## Batch E — historical private hint reconciliation
 
-## Batch D — Hot Pepper candidate field-only review
+第一版 private probe **完成 / CI pass**。2026-09-06 已付费取得的两个私有 Actions artifact 只在短期 CI 中作为 identity match hint，不把 Google display content 写入仓库、SQLite 或公开导出。
 
-状态：**完成 / blocking CI pass**。Commit `a33fc72`。
+实际结果：
 
-58 条 retained Hot Pepper candidate 中：
+- current id-only：1,392；
+- 有历史成功 hint：1,391；
+- historical non-operational：1；
+- 没有历史 hint：1；
+- 在现有 Hot Pepper / OSM / Overture 中满足第一版 ultra-strict independent reconciliation：**0**；
+- durable proposal：0；
+- Google display payload leakage：0；
+- new Google API calls：0。
 
-- 6 条通过现有 identity 的严格 name/location consistency；
-- 22 条 identity consistency rejected；
-- 30 条当前 identity 不可发布；
-- 原 candidate binding 全部保持 candidate，不升级身份。
+结论：剩余 id-only 几乎全部有历史身份线索，但现有 independent candidate layers 与这些长尾 Place 的重合度不足；不能通过简单放宽距离门槛解决。
 
-通过的 6 家共补 **59 个字段**：
+### Batch E2 — private near-match diagnostics
 
-- dinner budget 6；
-- hours.raw 6；
-- closure.raw 6；
-- practical.card 6；course 5；free drink 6；free food 6；lunch 6；parking 6；private room 6。
+状态：**已实现，等待 private CI 统计**。
 
-效果：dinner gap 795 -> **789**，hours 672 -> **666**，practical 912 -> **906**。Identity 数完全不变；repeat build 再新增 0；first/repeat/backup/export 全部通过。
+`reconcile_private_google_hints.py` 增加聚合诊断，但仍不增加任何 durable proposal 门槛。对每个 id-only 的最佳 independent candidate 统计：
 
-## Batch E — expiring historical Google sweep → independent-source reconciliation
+- 是否存在 120m 内 candidate；
+- exact normalized name 在 10/20/30/50/80/120m 的数量；
+- name similarity ≥0.995/0.99/0.98/0.95/0.90 的距离分布；
+- postcode/address 一致性；
+- independent provider 覆盖数；
+- 两个 provider 是否同时支持、且是否相互 name/location 一致。
 
-状态：**已实现 private probe，等待 CI 实际结果**。
+Near-miss 明细只放 2-day private artifact，记录 Place ID + independent provider/source ID + similarity/distance，不保存 Google 名称、地址、坐标等 display content。
 
-发现 2026-09-06 两个历史私有 Actions artifact 仍未过期：
+目的不是降低门槛，而是判断下一步应走：
 
-- run `34018919233` / `full-area1-collection-private-audit`；
-- run `34019078280` / `full-area1-retry-private-audit`。
+1. 如果存在明显的 exact-name/postcode 或 multi-provider 安全簇，新增一个可解释的 strict reconciliation rule；
+2. 如果 independent coverage 本身很低，则停止继续调 matching threshold，直接进入免费公开来源 collector/官网取证。
 
-初始 artifact 含 2,159 条请求，其中 1,716 条成功、443 条失败；retry 对 443 条失败全部取得成功详情。因此这些历史结果覆盖了当时整批非核心 inventory，但当前不会重新发起 API 调用。
+## 下一步
 
-### 合规/持久化边界
+E2 结果出来后直接选路径，不重复扫描已证明低收益的 retained 层。任何新 identity recovery 都必须来自可持久化独立来源；禁止 proximity-only、禁止重新调用付费 Google Places/Text/Nearby API、禁止绕过登录/CAPTCHA。
 
-Google 当前 Places policy 对 Places API content 的缓存/存储有限制，Place ID 是明确长期存储例外。因此 Batch E **不把历史 Google displayName / formattedAddress / location / businessStatus 等内容写入仓库或 durable master**。
-
-历史 Google 内容仅在私有 CI job 中作为短期 match hint；durable proposal 只能包含：
-
-- Google Place ID；
-- 独立 Hot Pepper / OpenStreetMap / Overture source ID；
-- 独立来源的 name/address/coordinates/cuisine/websites/hours；
-- 不含任何 Google display payload。
-
-### Probe 匹配门槛
-
-仅针对当前 1,392 个 id-only：
-
-1. 私有历史 hint 必须有成功 name + coordinates；
-2. 独立 candidate 必须在 120m 内；
-3. 单来源自动 proposal 只允许极严格匹配：exact normalized name ≤6m，或 similarity ≥0.995 且 ≤4m；
-4. 更宽条件只能在至少两个 independent providers 相互一致时形成 multi-provider consensus；
-5. provider ID 已绑定其他 Place ID 时拒绝；
-6. 同 provider 存在近似竞争候选时拒绝；
-7. proximity-only 永远不接受。
-
-新增：
-
-- `scripts/database/reconcile_private_google_hints.py`；
-- `.github/workflows/private-historical-reconciliation.yml`。
-
-Workflow 下载旧私有 artifact，构建当前 SQLite master，生成：
-
-- private reconciliation report（含短期 match metrics）；
-- durable independent proposal（只含独立来源字段）；
-- Google display payload leakage blocking check。
-
-本 probe **不会自动 commit proposal**。先看真实 proposal 数与来源分布；只有严格 proposal 足够且检查通过，下一批才把独立来源结果正式导入 master。
-
-## 后续
-
-1. Batch E probe 通过后，若存在严格新 proposal：导入独立 source records/bindings，重新计算 id-only 和 shadow eligibility。
-2. 若 proposal 很少：不降低门槛，转入免费公开来源 collector；历史 Google hint 只用于私有发现，不持久化。
-3. 一次确认来源访问尽量提取 name/address/coordinates/cuisine/hours/budget/practical/menu 全部支持字段。
-4. dish recommendation 保持最后处理和高语义门槛。
-5. Shadow 继续不切 Pages，直到 provenance、backup/restore、field diff 和浏览器回归全部完成。
-
-## 开发纪律
-
-每批实际开发同步更新 `DEVELOPMENT.md`、`DATA_PIPELINE.md` 和 `logs/`。未过 CI 只标记“已实现/待验证”；通过后才写入真实数量。
+每批开发完成同步更新 `DEVELOPMENT.md`、`DATA_PIPELINE.md` 和 `logs/`；未通过 CI 只标记“已实现/待验证”。
