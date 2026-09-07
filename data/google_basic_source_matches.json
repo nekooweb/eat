@@ -12,28 +12,32 @@
     "pass2Rule": "strict geospatial + name/address match against transient retained Google sweep; durable fields are independent-source only",
     "structuredAddressConsensusV2Overlay": true,
     "structuredAddressConsensusV2Rule": "private-address-consensus-v2",
-    "lastIdentityRecoveryOverlayRule": "private-multisource-consensus-v3",
+    "lastIdentityRecoveryOverlayRule": "private-official-web-consensus-v4",
     "multiSourceConsensusV3Overlay": true,
-    "multiSourceConsensusV3Rule": "private-multisource-consensus-v3"
+    "multiSourceConsensusV3Rule": "private-multisource-consensus-v3",
+    "privateOfficialWebConsensusV4Overlay": true,
+    "privateOfficialWebConsensusV4Rule": "private-official-web-consensus-v4"
   },
   "summary": {
     "productionBacked": 651,
-    "sourceMatchedInventoryOnly": 762,
-    "basicReadyTotal": 1413,
-    "identityOnlyRemaining": 1391,
+    "sourceMatchedInventoryOnly": 764,
+    "basicReadyTotal": 1415,
+    "identityOnlyRemaining": 1389,
     "providers": {
       "Hot Pepper": 358,
       "OpenStreetMap": 11,
-      "Overture Maps": 393
+      "Overture Maps": 395
     },
     "pass2NewMatches": 27,
     "structuredAddressConsensusV2Rows": 1,
     "structuredAddressConsensusV2AddedThisMerge": 0,
-    "lastIdentityRecoveryOverlayRule": "private-multisource-consensus-v3",
-    "lastIdentityRecoveryOverlayRows": 0,
+    "lastIdentityRecoveryOverlayRule": "private-official-web-consensus-v4",
+    "lastIdentityRecoveryOverlayRows": 2,
     "lastIdentityRecoveryOverlayAddedThisMerge": 0,
     "multiSourceConsensusV3Rows": 0,
-    "multiSourceConsensusV3AddedThisMerge": 0
+    "multiSourceConsensusV3AddedThisMerge": 0,
+    "privateOfficialWebConsensusV4Rows": 2,
+    "privateOfficialWebConsensusV4AddedThisMerge": 0
   },
   "rows": [
     {
@@ -133,6 +137,71 @@
       "sourceCheckedAt": "2026-09-06",
       "verification": "existing_high_confidence_binding",
       "matchLevel": "strong"
+    },
+    {
+      "googlePlaceId": "ChIJ-TwSLQCNGGARhVZRTHQcoO0",
+      "provider": "Overture Maps",
+      "providerId": "326b4ee0-5d12-40df-9b91-ee9d50b78299",
+      "name": "炭火焼肉 さんこう苑",
+      "address": "千代田区 101-0041 神田須田町1丁目24-21",
+      "lat": 35.6947445,
+      "lng": 139.7706666,
+      "distanceMeters": 1187,
+      "cuisine": "restaurant",
+      "websites": [
+        "https://sankouen.owst.jp"
+      ],
+      "sourceUrl": "https://sankouen.owst.jp",
+      "verification": "reviewed_independent_multisource_plus_public_official_page",
+      "matchLevel": "private-official-web-consensus-v4",
+      "officialEvidence": {
+        "sourceUrl": "https://sankouen.owst.jp",
+        "finalUrl": "https://sankouen.owst.jp",
+        "retrievedAt": "2026-09-07T10:37:00Z",
+        "contentHash": "cfc1767791695ba6df03b29635b74ae59a1e14f592e5b2b2bfe74a3e1fe42dfa",
+        "parserVersion": "official-web-jsonld-v1",
+        "identityRule": "official_name_plus_structured_address",
+        "name": "炭火焼肉 さんこう苑【公式】",
+        "address": "東京都千代田区神田須田町１-24-21 クレセント神田1階",
+        "openingHoursRaw": [
+          "営業時間 月～日、祝日、祝前日: 17:00～23:30 （料理L.O. 23:00 ドリンクL.O. 23:00） コース予約の場合はご予約時の人数分のキャンセル料を請求いたします。席のみ予約の場合、無断キャンセルやお席ご案内後の人数の変更等、悪質な場合は補償料を請求させて頂きます。※キャッシュレスでのお会計は5％、paypay決済であれば10％でお会計可能"
+        ],
+        "cuisine": "韩国菜",
+        "priceRange": "",
+        "telephone": "",
+        "geo": null
+      },
+      "independentConsensus": {
+        "providerCount": 2,
+        "providers": [
+          "Hot Pepper",
+          "Overture Maps"
+        ],
+        "supportingSources": [
+          {
+            "provider": "Hot Pepper",
+            "providerId": "J001145410",
+            "name": "炭火焼肉 さんこう苑",
+            "address": "東京都千代田区神田須田町１-24-21 クレセント神田1階",
+            "lat": 35.6947792937,
+            "lng": 139.7707150312
+          },
+          {
+            "provider": "Overture Maps",
+            "providerId": "326b4ee0-5d12-40df-9b91-ee9d50b78299",
+            "name": "炭火焼肉 さんこう苑",
+            "address": "千代田区 101-0041 神田須田町1丁目24-21",
+            "lat": 35.6947445,
+            "lng": 139.7706666
+          }
+        ],
+        "officialPageScore": 0.684,
+        "officialPageComponentMargin": 0.684
+      },
+      "sourceCheckedAt": "2026-09-07",
+      "openingHoursRaw": [
+        "営業時間 月～日、祝日、祝前日: 17:00～23:30 （料理L.O. 23:00 ドリンクL.O. 23:00） コース予約の場合はご予約時の人数分のキャンセル料を請求いたします。席のみ予約の場合、無断キャンセルやお席ご案内後の人数の変更等、悪質な場合は補償料を請求させて頂きます。※キャッシュレスでのお会計は5％、paypay決済であれば10％でお会計可能"
+      ]
     },
     {
       "googlePlaceId": "ChIJ-V1S6ryNGGARJWNpK7soyq8",
@@ -639,6 +708,71 @@
       "sourceCheckedAt": "2026-09-06",
       "verification": "existing_high_confidence_binding",
       "matchLevel": "strong"
+    },
+    {
+      "googlePlaceId": "ChIJ1WlifwiMGGAR6JeSKWTwPnU",
+      "provider": "Overture Maps",
+      "providerId": "d26a689c-5c86-4664-b0b1-3c7cb6a13169",
+      "name": "さかなさま 大手町店",
+      "address": "千代田区 100-0004 大手町1丁目1-1",
+      "lat": 35.6868098,
+      "lng": 139.762781,
+      "distanceMeters": 1114,
+      "cuisine": "restaurant",
+      "websites": [
+        "https://sakanasama-otemachi.com"
+      ],
+      "sourceUrl": "https://sakanasama-otemachi.com",
+      "verification": "reviewed_independent_multisource_plus_public_official_page",
+      "matchLevel": "private-official-web-consensus-v4",
+      "officialEvidence": {
+        "sourceUrl": "https://sakanasama-otemachi.com",
+        "finalUrl": "https://sakanasama-otemachi.com",
+        "retrievedAt": "2026-09-07T10:37:02Z",
+        "contentHash": "952ea724480908fdec60884d83e4955fb72bad6e98c658a6737f70cd3eb5d8eb",
+        "parserVersion": "official-web-jsonld-v1",
+        "identityRule": "official_name_plus_structured_address",
+        "name": "【公式】さかなさま 大手町店 | 大手町で新鮮な魚と日本酒をお楽しみください",
+        "address": "〒100-0004 東京都千代田区大手町1-1-1",
+        "openingHoursRaw": [
+          "営業時間】 月～金 ランチ 11:00～14:00(L.O.13:30) ※ランチのご予約は受付しておりません。 ディナー 17:00～22:30 (フードL.O.21:30 ドリンクL.O.22:00) 【"
+        ],
+        "cuisine": null,
+        "priceRange": "",
+        "telephone": "",
+        "geo": null
+      },
+      "independentConsensus": {
+        "providerCount": 2,
+        "providers": [
+          "Hot Pepper",
+          "Overture Maps"
+        ],
+        "supportingSources": [
+          {
+            "provider": "Hot Pepper",
+            "providerId": "J003942684",
+            "name": "さかなさま 大手町店",
+            "address": "東京都千代田区大手町１-1-1 大手町パークビルディング B1F",
+            "lat": 35.6869430136,
+            "lng": 139.7626585303
+          },
+          {
+            "provider": "Overture Maps",
+            "providerId": "d26a689c-5c86-4664-b0b1-3c7cb6a13169",
+            "name": "さかなさま 大手町店",
+            "address": "千代田区 100-0004 大手町1丁目1-1",
+            "lat": 35.6868098,
+            "lng": 139.762781
+          }
+        ],
+        "officialPageScore": 0.684,
+        "officialPageComponentMargin": 0.684
+      },
+      "sourceCheckedAt": "2026-09-07",
+      "openingHoursRaw": [
+        "営業時間】 月～金 ランチ 11:00～14:00(L.O.13:30) ※ランチのご予約は受付しておりません。 ディナー 17:00～22:30 (フードL.O.21:30 ドリンクL.O.22:00) 【"
+      ]
     },
     {
       "googlePlaceId": "ChIJ1YYWBweMGGARIY5pvEdxPto",
