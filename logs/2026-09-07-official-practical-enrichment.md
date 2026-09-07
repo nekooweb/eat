@@ -71,4 +71,41 @@ Latest validated master before this stage had approximately:
 - 15 conflict
 - practical missing: 909
 
-The first official-practical Actions run is `34122726395`. Syntax validation and the no-paid-API audit passed, and the baseline master build passed before network collection began. Final field-yield numbers should be recorded from the workflow artifact rather than inferred from page counts.
+## First batch result
+
+Actions run `34122726395` completed successfully end-to-end.
+
+Collection:
+
+- 144 target official pages
+- 118 pages fetched successfully
+- 23 restaurants produced strict practical evidence
+- 57 identity-confirmed pages contained no still-missing explicit practical claim
+- 38 readable pages were rejected because the current page name was not specific enough
+- 5 shared page URLs were deferred
+- access-policy skips included one non-HTML response, one robots 503 and 24 unavailable robots checks
+
+Durable canonical field additions:
+
+- `practical.private_room_available`: 11
+- `practical.wifi_available`: 8
+- `practical.parking_available`: 7
+- `practical.children_welcome`: 5
+- `practical.card_available`: 4
+- total resolved practical fields: 35
+
+No first-batch automatic claim was emitted for `practical.barrier_free` or `practical.english_menu`; those remain valid supported fields but require a page with an explicit unambiguous label/value pair.
+
+Master effect:
+
+- identity states unchanged: 651 verified / 750 source-matched / 1,388 ID-only / 15 conflict
+- practical-missing restaurant count: 909 -> 888
+- importer network requests: 0
+- importer identity changes: 0
+- import-time missing-only: true
+
+Thirty-five field resolutions reduce the restaurant-level practical-missing count by 21 because a single restaurant can receive several practical fields while the planner still represents that restaurant with one field-completion task containing multiple missing fields.
+
+## Next stage
+
+The next high-yield practical pass should stay on the same reviewed official identities but inspect a very small number of same-origin detail pages whose links are explicitly related to store information, facilities, access or FAQ. This can recover practical labels that are absent from the landing page without broad crawling. The same robots/access restrictions, current-identity confirmation, explicit-label rule and no-raw-HTML rule must remain in force.
