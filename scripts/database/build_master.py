@@ -8,6 +8,7 @@ from collections import defaultdict
 from pathlib import Path
 
 import derive_hotpepper_practical as derived
+import import_bound_open_data_fields as bound_open_data
 import import_source_basic_web_evidence as source_basic_web
 import master_import_core as core
 import plan_ingestion_tasks as planner
@@ -151,6 +152,7 @@ def build(output: Path, reset: bool = False):
         osm_counts = osm_identity.import_verified_osm(
             db, id_set, conflict_keys, conflict_places, stamp
         )
+        bound_open_data_counts = bound_open_data.import_bound_open_data_fields(db, stamp)
         source_basic_web_counts = source_basic_web.import_evidence(
             db, id_set, conflict_places, stamp
         )
@@ -176,6 +178,7 @@ def build(output: Path, reset: bool = False):
             "phase2": phase,
             "officialIdentityRecovery": official_counts,
             "osmIdentityRecovery": osm_counts,
+            "boundOpenDataFields": bound_open_data_counts,
             "sourceBasicWebEvidence": source_basic_web_counts,
             "retainedFieldResolverV2": retained_field_counts,
             "hotPepperCandidateFieldReview": candidate_hp_counts,
