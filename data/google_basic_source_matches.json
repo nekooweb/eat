@@ -11,7 +11,8 @@
     "lowConfidenceMatchesExcluded": true,
     "pass2Rule": "strict geospatial + name/address match against transient retained Google sweep; durable fields are independent-source only",
     "structuredAddressConsensusV2Overlay": true,
-    "structuredAddressConsensusV2Rule": "private-address-consensus-v2"
+    "structuredAddressConsensusV2Rule": "private-address-consensus-v2",
+    "lastIdentityRecoveryOverlayRule": "private-address-consensus-v2"
   },
   "summary": {
     "productionBacked": 651,
@@ -25,7 +26,10 @@
     },
     "pass2NewMatches": 27,
     "structuredAddressConsensusV2Rows": 1,
-    "structuredAddressConsensusV2AddedThisMerge": 1
+    "structuredAddressConsensusV2AddedThisMerge": 0,
+    "lastIdentityRecoveryOverlayRule": "private-address-consensus-v2",
+    "lastIdentityRecoveryOverlayRows": 1,
+    "lastIdentityRecoveryOverlayAddedThisMerge": 0
   },
   "rows": [
     {
