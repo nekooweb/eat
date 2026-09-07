@@ -75,6 +75,7 @@ jobs:
             scripts/database/retained_official_identity.py \
             scripts/database/retained_osm_identity.py \
             scripts/database/resolve_retained_fields.py \
+            scripts/database/review_hotpepper_candidate_fields.py \
             scripts/database/derive_hotpepper_practical.py \
             scripts/database/resolve_master.py \
             scripts/database/plan_ingestion_tasks.py \
@@ -85,6 +86,7 @@ jobs:
             scripts/database/validate_official_identity.py \
             scripts/database/validate_osm_identity.py \
             scripts/database/validate_retained_field_resolver.py \
+            scripts/database/validate_hotpepper_candidate_fields.py \
             scripts/database/validate_ingestion_plan.py \
             scripts/database/export_master_core.py \
             scripts/database/export_master.py \
@@ -108,6 +110,7 @@ jobs:
           python scripts/database/validate_official_identity.py _tmp/eat-master.sqlite | tee _tmp/official-identity-validate-1.json
           python scripts/database/validate_osm_identity.py _tmp/eat-master.sqlite | tee _tmp/osm-identity-validate-1.json
           python scripts/database/validate_retained_field_resolver.py _tmp/eat-master.sqlite | tee _tmp/retained-field-resolver-validate-1.json
+          python scripts/database/validate_hotpepper_candidate_fields.py _tmp/eat-master.sqlite | tee _tmp/hotpepper-candidate-field-validate-1.json
           python scripts/database/validate_ingestion_plan.py _tmp/eat-master.sqlite | tee _tmp/ingestion-plan-validate-1.json
 
       - name: Verify idempotent repeat import resolver and plan
@@ -137,6 +140,7 @@ jobs:
           python scripts/database/validate_official_identity.py _tmp/eat-master.sqlite | tee _tmp/official-identity-validate-2.json
           python scripts/database/validate_osm_identity.py _tmp/eat-master.sqlite | tee _tmp/osm-identity-validate-2.json
           python scripts/database/validate_retained_field_resolver.py _tmp/eat-master.sqlite | tee _tmp/retained-field-resolver-validate-2.json
+          python scripts/database/validate_hotpepper_candidate_fields.py _tmp/eat-master.sqlite | tee _tmp/hotpepper-candidate-field-validate-2.json
           python scripts/database/validate_ingestion_plan.py _tmp/eat-master.sqlite | tee _tmp/ingestion-plan-validate-2.json
 
       - name: Verify backup and restore
@@ -157,6 +161,7 @@ jobs:
           python scripts/database/validate_official_identity.py _tmp/eat-master-backup.sqlite | tee _tmp/official-identity-backup-validate.json
           python scripts/database/validate_osm_identity.py _tmp/eat-master-backup.sqlite | tee _tmp/osm-identity-backup-validate.json
           python scripts/database/validate_retained_field_resolver.py _tmp/eat-master-backup.sqlite | tee _tmp/retained-field-resolver-backup-validate.json
+          python scripts/database/validate_hotpepper_candidate_fields.py _tmp/eat-master-backup.sqlite | tee _tmp/hotpepper-candidate-field-backup-validate.json
           python scripts/database/validate_ingestion_plan.py _tmp/eat-master-backup.sqlite | tee _tmp/ingestion-plan-backup-validate.json
 
       - name: Generate and validate shadow exports

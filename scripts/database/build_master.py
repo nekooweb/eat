@@ -15,6 +15,7 @@ import retained_osm_identity as osm_identity
 import retained_phase2 as phase2
 import resolve_master as resolver
 import resolve_retained_fields as retained_field_resolver
+import review_hotpepper_candidate_fields as hotpepper_candidate_review
 
 ROOT = Path(__file__).resolve().parents[2]
 DATA = ROOT / "data"
@@ -150,11 +151,8 @@ def build(output: Path, reset: bool = False):
             db, id_set, conflict_keys, conflict_places, stamp
         )
 
-        # Batch C is field-only and missing-only. It runs after identity recovery so
-        # it can reuse retained provider facts only for currently publishable,
-        # non-conflict identities, and before task planning so completed gaps vanish
-        # from the unified queue in the same transaction.
         retained_field_counts = retained_field_resolver.resolve_missing_retained_fields(db, stamp)
+        candidate_hp_counts = hotpepper_candidate_review.resolve_candidate_fields(db, stamp)
         derived_counts = derived.resolve_hotpepper_basic_practical(db, stamp)
         rich = resolver.resolve_safe_practical(db, stamp)
         taskplan = planner.plan_tasks(db, stamp)
@@ -175,6 +173,7 @@ def build(output: Path, reset: bool = False):
             "officialIdentityRecovery": official_counts,
             "osmIdentityRecovery": osm_counts,
             "retainedFieldResolverV2": retained_field_counts,
+            "hotPepperCandidateFieldReview": candidate_hp_counts,
             "hotPepperBasicPractical": derived_counts,
             "safePracticalResolver": rich,
             "ingestionPlan": taskplan,
