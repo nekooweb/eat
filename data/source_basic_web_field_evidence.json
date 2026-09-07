@@ -12,15 +12,15 @@
     "restrictedAccessBypass": false
   },
   "summary": {
-    "rows": 12,
+    "rows": 15,
     "fieldCounts": {
-      "budget.web_price_range_raw": 2,
-      "contact.telephone": 6,
-      "hours.raw": 10
+      "budget.web_price_range_raw": 1,
+      "contact.telephone": 1,
+      "hours.raw": 3
     },
     "fetchCounts": {
-      "new_evidence_rows": 12,
-      "no_verified_page": 89,
+      "new_evidence_rows": 3,
+      "no_verified_page": 87,
       "page_skip_TimeoutError": 1,
       "page_skip_http_403": 1,
       "page_skip_http_404": 11,
@@ -29,14 +29,84 @@
       "page_skip_robots_http_400": 2,
       "page_skip_robots_http_403": 2,
       "page_skip_robots_http_429": 3,
-      "page_skip_robots_unavailable:URLError": 15,
-      "pages_ok": 69,
-      "target_rows": 107,
-      "unique_pages": 106,
-      "verified_page_without_missing_field_claim": 6
+      "page_skip_robots_http_500": 1,
+      "page_skip_robots_unavailable:URLError": 9,
+      "pages_ok": 64,
+      "reused_existing_evidence": 12,
+      "target_rows": 97,
+      "unique_pages": 96,
+      "verified_page_without_missing_field_claim": 7
     }
   },
   "rows": [
+    {
+      "googlePlaceId": "ChIJ-TwSLQCNGGARhVZRTHQcoO0",
+      "sourceProvider": "Overture Maps",
+      "sourceProviderId": "326b4ee0-5d12-40df-9b91-ee9d50b78299",
+      "missingBefore": [
+        "dinner_budget",
+        "hours",
+        "lunch_budget"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "official_name_plus_structured_address",
+        "score": 0.584,
+        "maxSourceNameSimilarity": 0.88,
+        "addressSupportingMembers": 1,
+        "phoneSupportingMembers": 0,
+        "minimumGeoDistanceMeters": null,
+        "pageAddress": "東京都千代田区神田須田町１-24-21 クレセント神田1階"
+      },
+      "webEvidence": {
+        "sourceUrl": "https://sankouen.owst.jp",
+        "finalUrl": "https://sankouen.owst.jp",
+        "retrievedAt": "2026-09-07T10:42:33Z",
+        "contentHash": "03a416d83233a14f695c1a7c47f91eb61f2d86d63e18ff57a8ea64e621aba15e",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false
+      },
+      "fieldClaims": {
+        "openingHoursRaw": [
+          "営業時間 月～日、祝日、祝前日: 17:00～23:30 （料理L.O. 23:00 ドリンクL.O. 23:00） コース予約の場合はご予約時の人数分のキャンセル料を請求いたします。席のみ予約の場合、無断キャンセルやお席ご案内後の人数の変更等、悪質な場合は補償料を請求させて頂きます。※キャッシュレスでのお会計は5％、paypay決済であれば10％でお会計可能"
+        ]
+      },
+      "checkedAt": "2026-09-07"
+    },
+    {
+      "googlePlaceId": "ChIJ1WlifwiMGGAR6JeSKWTwPnU",
+      "sourceProvider": "Overture Maps",
+      "sourceProviderId": "d26a689c-5c86-4664-b0b1-3c7cb6a13169",
+      "missingBefore": [
+        "dinner_budget",
+        "hours",
+        "lunch_budget"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "official_name_plus_structured_address",
+        "score": 0.584,
+        "maxSourceNameSimilarity": 0.88,
+        "addressSupportingMembers": 1,
+        "phoneSupportingMembers": 0,
+        "minimumGeoDistanceMeters": null,
+        "pageAddress": "〒100-0004 東京都千代田区大手町1-1-1"
+      },
+      "webEvidence": {
+        "sourceUrl": "https://sakanasama-otemachi.com",
+        "finalUrl": "https://sakanasama-otemachi.com",
+        "retrievedAt": "2026-09-07T10:42:36Z",
+        "contentHash": "952ea724480908fdec60884d83e4955fb72bad6e98c658a6737f70cd3eb5d8eb",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false
+      },
+      "fieldClaims": {
+        "openingHoursRaw": [
+          "営業時間】 月～金 ランチ 11:00～14:00(L.O.13:30) ※ランチのご予約は受付しておりません。 ディナー 17:00～22:30 (フードL.O.21:30 ドリンクL.O.22:00) 【"
+        ]
+      },
+      "checkedAt": "2026-09-07"
+    },
     {
       "googlePlaceId": "ChIJ5ZzWHQ6MGGARs0xILkJsbdI",
       "sourceProvider": "Overture Maps",
@@ -68,6 +138,42 @@
         "openingHoursRaw": [
           "営業時間 【こちら】 からご確認ください＞-->11:00 ～ 22:00 (21:00 L.O.) （但し、平日ランチタイム 11:30～14:00） 【こちら】 をご覧ください＞--> 年中無休（年末年始を除く） ※平日のランチタイムを除きご予約を承っております。 カード 可（VISA、MASTER、JCB、AMEX、Diners） サービス料 無し 席数 76席 禁煙・喫煙 完全禁煙 ドレスコード 無し 駐車場 有り ＊駐車料金は発生しませんが台数に限りがございます。 Group 丸の内本舘 03-3215-2111 (代) 東京都千代田区丸の内3-2-1 RESTAURANT BANQUET WEDDING WEDDING --> 浜松町東京會舘 03-3435-2611 (代) 港区浜松町2-4-1 世界貿易センタービル38・39階 RESTAURANT SHOP BANQUET WEDDING --> 如水会館 03-3261-1101 (代) 千代田区一ツ橋2-1-1 RESTAURANT SHOP BANQUET WEDDING 大手町 LEVEL XXⅠ 東京會舘 03-5255-1515 (代) 千代田区大手町2-2-2 アーバンネット 大手町ビル RESTAURANT SHOP BANQUET 銀座スカイラウンジ 050-3187-8713 千代田区有楽町2-"
         ]
+      },
+      "checkedAt": "2026-09-07"
+    },
+    {
+      "googlePlaceId": "ChIJC-fH9HuNGGARVlh7vQw84LU",
+      "sourceProvider": "Overture Maps",
+      "sourceProviderId": "4a771e22-5db5-4f70-95f8-72c7467d38ab",
+      "missingBefore": [
+        "dinner_budget",
+        "hours",
+        "lunch_budget"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "official_name_plus_structured_address",
+        "score": 0.8,
+        "maxSourceNameSimilarity": 1.0,
+        "addressSupportingMembers": 1,
+        "phoneSupportingMembers": 1,
+        "minimumGeoDistanceMeters": 199.124,
+        "pageAddress": "101-0054 東京都 千代田区 神田錦町2-1-1"
+      },
+      "webEvidence": {
+        "sourceUrl": "https://naotok.tokyo/",
+        "finalUrl": "https://naotok.tokyo/",
+        "retrievedAt": "2026-09-07T10:42:38Z",
+        "contentHash": "27964155ef9683cc8fe59e5cd51f5685aeff1dfb34759b2a5936ccdf53c33394",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false
+      },
+      "fieldClaims": {
+        "openingHoursRaw": [
+          "営業時間 Lunch 12:00 – / Dinner 18:30 – 各回 一斉スタート・一日一回転 closed"
+        ],
+        "priceRange": "¥¥¥¥",
+        "telephone": "080-7960-9445"
       },
       "checkedAt": "2026-09-07"
     },
