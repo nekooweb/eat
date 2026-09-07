@@ -1,0 +1,105 @@
+name: Probe structured-address identity reconciliation v2
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/private-address-reconciliation-v2.yml"
+      - "scripts/database/reconcile_private_address_consensus_v2.py"
+      - "scripts/database/reconcile_private_google_hints.py"
+      - "scripts/database/**"
+      - "data/overture_area1_candidates.json"
+      - "data/area1_osm.js"
+      - "data/hotpepper_catalog_facts.json"
+  workflow_dispatch:
+
+permissions:
+  actions: read
+  contents: read
+
+concurrency:
+  group: private-address-reconciliation-v2
+  cancel-in-progress: true
+
+jobs:
+  reconcile:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Download original private sweep
+        uses: actions/download-artifact@v5
+        with:
+          name: full-area1-collection-private-audit
+          path: _private_google/initial
+          github-token: ${{ github.token }}
+          repository: nekooweb/eat
+          run-id: 34018919233
+      - name: Download retry private sweep
+        uses: actions/download-artifact@v5
+        with:
+          name: full-area1-retry-private-audit
+          path: _private_google/retry
+          github-token: ${{ github.token }}
+          repository: nekooweb/eat
+          run-id: 34019078280
+      - name: Build current master
+        run: |
+          set -euo pipefail
+          mkdir -p _tmp
+          python -m py_compile scripts/database/reconcile_private_google_hints.py scripts/database/reconcile_private_address_consensus_v2.py
+          python scripts/database/build_master.py --output _tmp/eat-master.sqlite --reset | tee _tmp/master-build.json
+          python scripts/database/validate_master.py _tmp/eat-master.sqlite | tee _tmp/master-validate.json
+      - name: Run structured-address v2 proposal probe
+        run: |
+          set -euo pipefail
+          python scripts/database/reconcile_private_address_consensus_v2.py \
+            --database _tmp/eat-master.sqlite \
+            --initial _private_google/initial/full_inventory_place_details.json \
+            --retry _private_google/retry/full_inventory_retry_private.json \
+            --private-output _tmp/private-address-v2.json \
+            --durable-output _tmp/durable-address-v2.json \
+            | tee _tmp/address-v2-summary.json
+      - name: Enforce durable boundary
+        run: |
+          python - <<'PY'
+          import json
+          d=json.load(open('_tmp/durable-address-v2.json'))
+          assert d['ruleVersion']=='private-address-consensus-v2'
+          assert d['policy']['newGoogleApiCalls']==0
+          assert d['policy']['googleDisplayPayloadPersisted'] is False
+          assert d['policy']['durableFieldsIndependentSourceOnly'] is True
+          assert d['policy']['proximityOnlyBindingAllowed'] is False
+          banned={'displayName','formattedAddress','businessStatus','primaryType','types','googleName','googleAddress','googleLocation','nationalPhoneNumber','internationalPhoneNumber','websiteUri'}
+          def walk(v):
+            if isinstance(v,dict):
+              for k,x in v.items():
+                assert k not in banned, k
+                walk(x)
+            elif isinstance(v,list):
+              for x in v: walk(x)
+          walk(d)
+          ids=[r['googlePlaceId'] for r in d['rows']]
+          native=[(r['provider'],str(r['providerId'])) for r in d['rows']]
+          assert len(ids)==len(set(ids))
+          assert len(native)==len(set(native))
+          assert all(r['provider'] in {'Hot Pepper','OpenStreetMap','Overture Maps'} for r in d['rows'])
+          assert all(r['matchLevel']=='private-address-consensus-v2' for r in d['rows'])
+          print(json.dumps({'durableRows':len(ids),'providers':d['summary']['providers']},ensure_ascii=False))
+          PY
+      - name: Upload v2 probe reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: private-address-reconciliation-v2
+          path: |
+            _tmp/address-v2-summary.json
+            _tmp/private-address-v2.json
+            _tmp/durable-address-v2.json
+            _tmp/master-build.json
+            _tmp/master-validate.json
+          if-no-files-found: error
+          retention-days: 2
