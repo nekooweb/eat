@@ -7,6 +7,7 @@ on:
       - ".github/workflows/source-basic-web-field-enrichment.yml"
       - "scripts/database/collect_source_basic_web_fields.py"
       - "scripts/database/import_source_basic_web_evidence.py"
+      - "scripts/database/merge_public_web_field_evidence.py"
       - "scripts/database/reconcile_private_official_web_consensus_v4.py"
       - "scripts/build_google_inventory_runtime.mjs"
       - "data/google_basic_source_matches.json"
@@ -17,7 +18,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: source-basic-web-field-enrichment
+  group: public-web-field-evidence
   cancel-in-progress: false
 
 jobs:
@@ -45,6 +46,7 @@ jobs:
           python -m py_compile \
             scripts/database/collect_source_basic_web_fields.py \
             scripts/database/import_source_basic_web_evidence.py \
+            scripts/database/merge_public_web_field_evidence.py \
             scripts/database/reconcile_private_official_web_consensus_v4.py
           python scripts/database/build_master.py --output _tmp/eat-master-before.sqlite --reset | tee _tmp/master-before.json
           python scripts/database/validate_master.py _tmp/eat-master-before.sqlite | tee _tmp/master-before-validate.json
@@ -65,10 +67,11 @@ jobs:
           python scripts/database/collect_source_basic_web_fields.py \
             --database _tmp/eat-master-before.sqlite \
             --existing data/source_basic_web_field_evidence.json \
-            --output data/source_basic_web_field_evidence.json \
+            --output _tmp/source-basic-web-field-incoming.json \
             --workers 8 \
             --max-pages 800 \
             | tee _tmp/web-field-collection.json
+          cp _tmp/source-basic-web-field-incoming.json data/source_basic_web_field_evidence.json
       - name: Validate durable web field evidence
         run: |
           python - <<'PY'
@@ -82,11 +85,12 @@ jobs:
           assert p['httpsExistingSourceUrlsOnly'] is True
           assert p['rawHtmlPersisted'] is False
           assert p['robotsRespected'] is True
+          allowed={'official_name_plus_structured_address','official_name_plus_phone','official_name_plus_geo','retained_verified_official_page'}
           ids=[]
           for row in d['rows']:
             ids.append(row['googlePlaceId'])
             check=row['identityCheck']; assert check['accepted'] is True
-            assert check['identityRule'] in {'official_name_plus_structured_address','official_name_plus_phone','official_name_plus_geo'}
+            assert check['identityRule'] in allowed
             ev=row['webEvidence']
             assert str(ev['sourceUrl']).startswith('https://')
             assert str(ev['finalUrl']).startswith('https://')
@@ -112,28 +116,29 @@ jobs:
             'fieldTasks': plan['taskTypeCounts']['field_completion'],
             'missing': plan['fieldCompletionMissingCounts'],
           }
-          # Adding verified public facts must never create a field-completion task for an
-          # already-publishable identity. Newly promoted identities can increase the
-          # global count in another workflow, but this single checkout compares one
-          # fixed identity baseline before/after the field evidence mutation.
           assert after['fieldTasks'] <= before['fieldTasks'], (before,after)
           json.dump(after,open('_tmp/field-after.json','w'),sort_keys=True)
           print(json.dumps({'before':before,'after':after},sort_keys=True))
           PY
-      - name: Commit durable field evidence
+      - name: Commit durable field evidence on latest main
         run: |
           set -euo pipefail
-          git restore -- data/google_inventory_runtime.js 2>/dev/null || true
+          git restore -- data/google_inventory_runtime.js data/source_basic_web_field_evidence.json 2>/dev/null || true
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin main
+          git checkout -B public-web-fields origin/main
+          python scripts/database/merge_public_web_field_evidence.py \
+            data/source_basic_web_field_evidence.json \
+            _tmp/source-basic-web-field-incoming.json \
+            data/source_basic_web_field_evidence.json \
+            | tee _tmp/source-basic-latest-merge.json
           git add data/source_basic_web_field_evidence.json
           if git diff --cached --quiet; then
-            echo "No new public web field evidence."
+            echo "No new public web field evidence on latest main."
             exit 0
           fi
           git commit -m "Add source-basic public web field evidence"
-          git fetch origin main
-          git rebase --autostash origin/main
           git push origin HEAD:main
       - name: Upload field enrichment audit
         if: always()
@@ -142,6 +147,8 @@ jobs:
           name: source-basic-web-field-enrichment
           path: |
             _tmp/web-field-collection.json
+            _tmp/source-basic-web-field-incoming.json
+            _tmp/source-basic-latest-merge.json
             _tmp/field-before.json
             _tmp/field-after.json
             _tmp/master-before.json
