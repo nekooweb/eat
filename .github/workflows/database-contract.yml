@@ -58,8 +58,11 @@ jobs:
             scripts/database/master_import_core.py \
             scripts/database/retained_phase2_core.py \
             scripts/database/retained_phase2.py \
+            scripts/database/resolve_master.py \
             scripts/database/build_master.py \
-            scripts/database/validate_master.py
+            scripts/database/validate_master.py \
+            scripts/database/export_master.py \
+            scripts/database/validate_export.py
 
       - name: Legacy in-memory prototype contract (warning only)
         continue-on-error: true
@@ -78,7 +81,7 @@ jobs:
           test -s _tmp/eat-master.sqlite
           python scripts/database/validate_master.py _tmp/eat-master.sqlite | tee _tmp/master-validate-1.json
 
-      - name: Verify idempotent repeat import
+      - name: Verify idempotent repeat import and resolver
         run: |
           set -euo pipefail
           before="$(python - <<'PY'
@@ -117,12 +120,23 @@ jobs:
           PY
           python scripts/database/validate_master.py _tmp/eat-master-backup.sqlite | tee _tmp/master-backup-validate.json
 
+      - name: Generate and validate shadow exports
+        run: |
+          set -euo pipefail
+          mkdir -p _tmp/export
+          python scripts/database/export_master.py _tmp/eat-master.sqlite --outdir _tmp/export | tee _tmp/shadow-export-summary.json
+          python scripts/database/validate_export.py \
+            _tmp/eat-master.sqlite \
+            _tmp/export/catalog.shadow.json \
+            _tmp/export/recommendation.shadow.json | tee _tmp/shadow-export-validate.json
+
       - name: Upload database smoke-test reports
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: eat-master-database-smoke
           path: |
+            _tmp/**/*.json
             _tmp/*.json
           if-no-files-found: warn
           retention-days: 3

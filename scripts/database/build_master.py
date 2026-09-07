@@ -10,6 +10,7 @@ from pathlib import Path
 
 import master_import_core as core
 import retained_phase2 as phase2
+import resolve_master as resolver
 
 ROOT = Path(__file__).resolve().parents[2]
 DATA = ROOT / "data"
@@ -115,6 +116,7 @@ def build(output: Path, reset: bool = False):
         basic_counts = core.import_basic(db, basics, conflict_keys, stamp)
         hp_counts = core.import_hotpepper(db, hotpepper, conflict_keys, stamp)
         phase2_counts = phase2.import_all(db, phase2_inputs, conflict_keys, stamp)
+        practical_counts = resolver.resolve_safe_practical(db, stamp)
 
         summary = {
             "catalog": db.execute("SELECT count(*) FROM catalog_entries").fetchone()[0],
@@ -127,6 +129,7 @@ def build(output: Path, reset: bool = False):
             "basicBindings": dict(basic_counts),
             "hotPepperBindings": dict(hp_counts),
             "phase2": phase2_counts,
+            "safePracticalResolver": practical_counts,
             "basicConflictSourceKeys": len(basic_conflicts),
             "allRetainedConflictSourceKeys": len(conflict_keys),
             "allRetainedConflictPlaces": len(conflict_place_ids),

@@ -4,90 +4,97 @@
 
 ## 当前线上状态
 
-- frozen catalog：2,804 Place ID，内部全部保留。
-- 当前公开 runtime：1,411 条已有真实名称记录。
-- 1,393 条 `google_place_id_only` 已下架，不显示“Google Maps 餐厅”伪名称；补到真实名称和基础身份后再上架。
-- Hot Pepper runtime 已改用 `openingHoursText` / `closedText`，hours coverage 由 363 增至 716。
+- frozen catalog：2,804 Place ID 全部内部保留。
+- 公开 runtime：1,411 条已有真实名称记录。
+- 1,393 条 ID-only 已下架，不显示“Google Maps 餐厅”伪名称；补齐真实名称和基础身份后再上架。
+- Hot Pepper runtime 已修正 `openingHoursText` / `closedText`，hours coverage 363 → 716。
 - `N以上 -> N+2000` 伪预算上界已移除。
-- Pages build/deploy 与 no-paid-data-API policy 均保持通过。
-
-## Refactor mode
-
-`EAT_REFACTOR_MODE=1`：旧 canonical/overlay/coverage/queue 等架构耦合检查为 warning；成本、安全、语法、2,804 catalog 完整性、公开 unnamed-ID-only 禁止、Pages 可部署性仍 blocking。新 SQLite smoke 始终 blocking。
+- Pages 与 no-paid-data-API policy 保持 blocking。
 
 ## Phase 1 — persistent SQLite v1
 
-状态：**完成并通过真实数据库、幂等导入和 backup/restore**。
+状态：完成并通过 blocking smoke。
 
-通过基线：
+基线：2,804 catalog、651 legacy migration snapshots、3 retained exceptions、1,946 source records/bindings、28,992 observations、25,162 resolutions；8 source-ID collision groups / 16 Place ID 全部隔离；二次导入幂等，SQLite backup/restore 再验证通过。
 
-- catalog 2,804
-- legacy canonical snapshots 651
-- retained exceptions 3
-- source records / bindings 1,946 / 1,946
-- field observations 28,992
-- field resolutions 25,162
-- verified 651
-- source-matched 747
-- conflict identity state 13
-- id-only 1,393
-- resolved names 1,398
-- Hot Pepper full retained records 535
-- raw hours / closures 535 / 535
-- normalized Hot Pepper budget observations 530
+## Phase 2 — retained evidence
 
-统一 retained layer 后实际发现 8 source-ID collision groups / 16 Place ID；所有 collision binding 隔离为 conflict，known resolution 不选择 conflict source。Conflict evidence 不能擦除另一 non-conflict binding 已建立的 known value。
+状态：**完成并通过 blocking smoke**。
 
-## Phase 2 — retained evidence 扩展
+已进入 master：
 
-状态：**实现中，第一次 smoke 暴露旧 JS wrapper 解析问题，已修复 parser，等待重跑。**
+- 575 provider source facts
+- 644 provenance links
+- 135 Hot Pepper rich metadata rows
+- 283 dish recommendation/featured evidence items
 
-目标输入：
+Phase 2 后 master：
 
-- `source_facts.js`：575 provider fact records
-- `source_provenance.js`：644 public source links
-- `hotpepper_rich_metadata.js`：135 rich metadata rows
-- `google_inventory_detail_evidence.json`：283 dish evidence items
+- source records / bindings：3,583 / 3,583
+- field observations：36,737
+- field resolutions：仍为 25,162
+- Phase 2 evidence selected resolutions：0
+- collision groups / places：仍为 8 / 16
+- 二次导入核心表计数完全不增长
+- backup/restore validator 再通过
 
-### 数据原则
+历史 JS wrapper 现使用 `JSONDecoder.raw_decode()` 安全解析，不执行 JS，也不会被字符串内部的分号截断。
 
-- Hot Pepper native `hotpepperId` 继续参与 collision discovery。
-- Tabelog/official URL 只作为 provenance，不默认作为 branch identity key。
-- Source facts/provenance 使用 content-addressed synthetic retained IDs，避免共享 URL 导致错误合并。
-- Phase 2 只增加 source/evidence observations；首次导入阶段 `phase2SelectedResolutions` 必须为 0，不改变当前已验证 field resolutions。
+## Phase 3 — safe resolver + shadow export
 
-### 第一次 Phase 2 smoke 发现
+状态：**已实现，等待 blocking smoke。**
 
-失败不是数据库约束或数据冲突，而是历史 JS assignment parser 使用“找到赋值后第一个 `;`”截断 JSON。`source_facts.js` 的字符串内容本身含分号，因此产生 `JSONDecodeError`。
+### 3A. reviewed Hot Pepper practical fields
 
-修复：
+新增 `scripts/database/resolve_master.py`。第一批只允许 reviewed、非 conflict 的 Hot Pepper rich observations 进入 resolution，字段白名单：
 
-- 保留 importer 逻辑到 `scripts/database/retained_phase2_core.py`；
-- `scripts/database/retained_phase2.py` 使用 `json.JSONDecoder().raw_decode()` 从 `window.X=` 右侧直接解析完整 JSON value；
-- 不执行历史 JS；字符串内部的分号/其他文本不会再被当作结构分隔符；
-- workflow 同时 py_compile wrapper/core 后再跑 persistent smoke。
+- accepted credit cards
+- special features
+- mobile coupon availability
+- nearest station
+- access / mobile access
+- lunch availability
+- capacity / party capacity
+- amenities
 
-Phase 2 通过后才进入 resolver v2。
+不在白名单内的 rich/core 字段不允许因此进入 resolution；source facts、provenance、dish evidence 继续保持 evidence-only。
 
-## Phase 3 — resolver v2
+### 3B. shadow catalog / recommendation export
 
-后续统一处理 direct source vs legacy snapshot、时间/correction/retraction、hours raw→normalized、meal budget、dish recommendation/featured/signature semantics，以及 identity conflict 与 field conflict 分离。
+新增：
 
-## Phase 4 — 双导出
+- `scripts/database/export_master.py`
+- `scripts/database/validate_export.py`
 
-- `catalog`：全部 2,804，允许 name missing/conflict。
-- `recommendation`：仅满足 eligibility 的记录，并记录 exclusion reason。
+Shadow export 目前只用于 CI/比较，不接 Pages：
 
-SQLite export 完成后再替换当前 `google_inventory_runtime.js` 过渡 builder。
+- `catalog.shadow.json`：必须保留全部 2,804，按 frozen catalog 原顺序。
+- `recommendation.shadow.json`：只允许 `verified/source_matched + known name + 无 conflict binding`。
+- id-only 必须 `name=null` 且不可 eligible。
+- conflict binding Place ID 不得进入 recommendation。
+- raw source payload / permission metadata 不进入 public shadow rows。
 
-## Phase 5 — Pages cutover
+Export 同时带 `exclusionReasons`、`missingFields`、evidence count、database SHA-256 和 eligibility version，为后续旧/新 runtime diff 做准备。
 
-必须通过 ID diff、field provenance、浏览器回归、旧/新推荐结果差异、backup restore 后切换。切换批次才停用/归档旧 builders/workflows。
+### Phase 3 blocking checks
 
-## Phase 6 — 新增数据
+- safe practical resolution 数必须等于当前 reviewed rich observation 中白名单的 distinct `(Place ID, field)` 数。
+- source facts / provenance / dish evidence 仍不得被选入 resolution。
+- Hot Pepper rich 非 practical 字段不得被选入 resolution。
+- importer + resolver 二次运行核心表计数不得增长。
+- backup/restore 后 resolver 状态仍一致。
+- shadow catalog 必须 exact 2,804；recommendation IDs 必须与 SQLite eligibility 计算完全一致。
 
-主库和 resolver 稳定后再继续网络补全。最高优先级仍是 1,393 个 id-only 的名称/身份恢复，其次地址/坐标/菜系、营业时间、预算、菜单/推荐语义、实用字段。
+通过后再考虑 resolver v2 的 hours/budget/dish semantic promotion，并做旧 runtime vs shadow export 差异报告。
+
+## Refactor mode
+
+旧 canonical/overlay/coverage/queue 检查继续 warning-only；成本、安全、语法、2,804 catalog、公开 unnamed-ID-only 禁止、Pages 可部署性与新 SQLite/export contract 始终 blocking。
+
+## 后续数据补全
+
+主库和 shadow export 稳定后，继续处理 id-only。第一优先是恢复真实名称/身份，其次地址/坐标/菜系、hours、budget、dish semantics 与 practical fields。不能仅凭空间邻近把 Overture/OSM 候选自动绑定到未知 Place ID。
 
 ## 开发纪律
 
-每完成一批实际开发，同步更新本文件、相关数据库/架构文档和 `logs/`。失败原因和修复也写入日志；未通过 smoke 的功能不标记为完成。
+每批实际开发同步更新本文件、数据库/架构文档和 `logs/`；测试未通过前只写“已实现/待验证”，通过后再标记完成。
