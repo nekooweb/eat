@@ -9,6 +9,7 @@ from pathlib import Path
 
 import derive_hotpepper_practical as derived
 import import_bound_open_data_fields as bound_open_data
+import import_hotpepper_rich_metadata as hotpepper_rich
 import import_source_basic_web_evidence as source_basic_web
 import master_import_core as core
 import plan_ingestion_tasks as planner
@@ -161,6 +162,9 @@ def build(output: Path, reset: bool = False):
         candidate_hp_counts = hotpepper_candidate_review.resolve_candidate_fields(db, stamp)
         derived_counts = derived.resolve_hotpepper_basic_practical(db, stamp)
         rich = resolver.resolve_safe_practical(db, stamp)
+        hotpepper_rich_counts = hotpepper_rich.resolve_rich_metadata(
+            db, id_set, conflict_places, stamp
+        )
         taskplan = planner.plan_tasks(db, stamp)
 
         summary = {
@@ -184,6 +188,7 @@ def build(output: Path, reset: bool = False):
             "hotPepperCandidateFieldReview": candidate_hp_counts,
             "hotPepperBasicPractical": derived_counts,
             "safePracticalResolver": rich,
+            "hotPepperRichFieldResolver": hotpepper_rich_counts,
             "ingestionPlan": taskplan,
             "basicConflictSourceKeys": len(basic_conflicts),
             "allRetainedConflictSourceKeys": len(conflict_keys),
