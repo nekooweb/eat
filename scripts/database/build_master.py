@@ -9,6 +9,7 @@ from pathlib import Path
 
 import derive_hotpepper_practical as derived
 import import_bound_open_data_fields as bound_open_data
+import import_fresh_osm_bound_field_evidence as fresh_osm_bound
 import import_hotpepper_rich_metadata as hotpepper_rich
 import import_official_meal_budget_web_evidence as official_meal_budget
 import import_official_practical_detail_web_evidence as official_practical_detail
@@ -126,6 +127,7 @@ def build(output: Path, reset: bool = False):
         official_counts = official_identity.import_index(db, id_set, conflict_places, stamp)
         osm_counts = osm_identity.import_verified_osm(db, id_set, conflict_keys, conflict_places, stamp)
         bound_open_data_counts = bound_open_data.import_bound_open_data_fields(db, stamp)
+        fresh_osm_bound_counts = fresh_osm_bound.import_evidence(db, id_set, conflict_places, stamp)
         source_basic_web_counts = source_basic_web.import_evidence(db, id_set, conflict_places, stamp)
         official_meal_budget_counts = official_meal_budget.import_evidence(db, id_set, conflict_places, stamp)
 
@@ -148,6 +150,7 @@ def build(output: Path, reset: bool = False):
             "resolutions": db.execute("SELECT count(*) FROM field_resolutions").fetchone()[0],
             "legacyCanonical": dict(legacy), "basicBindings": dict(basic), "hotPepperBindings": dict(hotpepper_counts), "phase2": phase,
             "officialIdentityRecovery": official_counts, "osmIdentityRecovery": osm_counts, "boundOpenDataFields": bound_open_data_counts,
+            "freshOsmBoundFieldEvidence": fresh_osm_bound_counts,
             "sourceBasicWebEvidence": source_basic_web_counts, "officialMealBudgetWebEvidence": official_meal_budget_counts,
             "officialPracticalWebEvidence": official_practical_counts, "officialPracticalDetailWebEvidence": official_practical_detail_counts,
             "retainedFieldResolverV2": retained_field_counts, "hotPepperCandidateFieldReview": candidate_hp_counts,
