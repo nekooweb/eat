@@ -1,0 +1,92 @@
+name: Build parallel agent workplan
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+    paths:
+      - "database/**"
+      - "scripts/database/**"
+      - ".github/workflows/parallel-agent-workplan.yml"
+      - "data/area1_google_ids.json"
+      - "data/google_basic_source_matches.json"
+      - "data/hotpepper_catalog_facts.json"
+      - "data/production_area1.js"
+      - "data/source_facts.js"
+      - "data/source_provenance.js"
+      - "data/hotpepper_rich_metadata.js"
+      - "data/google_inventory_detail_evidence.json"
+      - "data/official_candidate_index.json"
+      - "data/google_entities.generated.js"
+      - "data/area1_osm.js"
+
+permissions:
+  contents: read
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Check planner syntax and paid-API policy
+        run: |
+          python -m py_compile scripts/database/build_agent_workplan.py
+          node scripts/audit_no_paid_apis.mjs
+      - name: Build current SQLite master
+        run: |
+          set -euo pipefail
+          mkdir -p _tmp
+          python scripts/database/build_master.py --output _tmp/eat-master.sqlite --reset | tee _tmp/master-build.json
+          python scripts/database/validate_master.py _tmp/eat-master.sqlite | tee _tmp/master-validate.json
+          python scripts/database/validate_ingestion_plan.py _tmp/eat-master.sqlite | tee _tmp/ingestion-plan-validate.json
+      - name: Build proposal-only agent shards
+        run: |
+          set -euo pipefail
+          python scripts/database/build_agent_workplan.py _tmp/eat-master.sqlite \
+            --outdir _tmp/agent-workplan \
+            --identity-shards 8 \
+            --field-shards 6 \
+            --dish-shards 2 \
+            | tee _tmp/agent-workplan-summary.json
+          test -s _tmp/agent-workplan/manifest.json
+          python - <<'PY'
+          import json, pathlib
+          root=pathlib.Path('_tmp/agent-workplan')
+          m=json.load(open(root/'manifest.json'))
+          assert m['proposalOnly'] is True
+          assert m['policy']['paidGoogleDataApiCalls'] == 0
+          assert m['policy']['subagentsMayWriteMasterDirectly'] is False
+          assert m['taskCount'] > 0
+          assert m['maxShardSize'] <= 250
+          total=0
+          ids=[]
+          for spec in m['shards']:
+              p=root/spec['file']
+              d=json.load(open(p))
+              assert d['proposalOnly'] is True
+              assert d['policy']['directMasterWritesAllowed'] is False
+              assert d['policy']['proximityOnlyIdentityBindingAllowed'] is False
+              assert d['taskCount'] == len(d['tasks'])
+              total += d['taskCount']
+              ids.extend(t['taskId'] for t in d['tasks'])
+          assert total == m['taskCount']
+          assert len(ids) == len(set(ids))
+          print(json.dumps({'tasks':total,'shards':len(m['shards']),'maxShardSize':m['maxShardSize']},sort_keys=True))
+          PY
+      - name: Upload workplan artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: eat-parallel-agent-workplan
+          path: |
+            _tmp/agent-workplan/*.json
+            _tmp/agent-workplan-summary.json
+            _tmp/master-build.json
+            _tmp/master-validate.json
+            _tmp/ingestion-plan-validate.json
+          if-no-files-found: error
+          retention-days: 3
