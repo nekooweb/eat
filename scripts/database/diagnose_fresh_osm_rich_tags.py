@@ -1,16 +1,17 @@
 #!/usr/bin/env python3
 """Compare a fresh public OSM rich-tag query with the retained flattened OSM snapshot.
 
-One bounded Overpass request is made for the frozen TOKYO/地区1️⃣ scope. This diagnostic
-never writes the master and never calls a paid data API. It reports identity-relevant
-field coverage (phone, official website/domain, structured address) that was lost from
-the historical flattened `area1_osm.js`, plus new/removed native OSM IDs.
+One bounded Overpass request is made for the frozen TOKYO/地区1️⃣ scope. To keep the
+public query cheap in dense central Tokyo, Overpass receives a bounding box and the
+exact 1,200 m circular scope is restored locally with Haversine filtering. This
+diagnostic never writes the master and never calls a paid data API.
 """
 from __future__ import annotations
 
 import argparse
 import hashlib
 import json
+import math
 import re
 import time
 from collections import Counter
@@ -24,11 +25,21 @@ import retained_osm_identity as retained
 CENTER_LAT = 35.6959
 CENTER_LNG = 139.7576
 RADIUS_M = 1200
+# Bounding square enclosing the 1,200 m circle; exact radius is re-applied locally.
+BBOX = (35.68512, 139.74433, 35.70668, 139.77087)  # south, west, north, east
 OVERPASS_URL = "https://overpass-api.de/api/interpreter"
 USER_AGENT = "nekooweb-eat-osm-rich-diagnostic/1.0 (+https://github.com/nekooweb/eat)"
 RULE_VERSION = "fresh-osm-rich-tag-diagnostic-v1"
-
 AMENITIES = "restaurant|cafe|fast_food|bar|pub|food_court|ice_cream|biergarten"
+
+
+def haversine_m(lat1, lon1, lat2, lon2) -> float:
+    r = 6371008.8
+    p1, p2 = math.radians(lat1), math.radians(lat2)
+    dp = math.radians(lat2 - lat1)
+    dl = math.radians(lon2 - lon1)
+    a = math.sin(dp / 2) ** 2 + math.cos(p1) * math.cos(p2) * math.sin(dl / 2) ** 2
+    return 2 * r * math.asin(min(1.0, math.sqrt(a)))
 
 
 def normalize_phone(value) -> str:
@@ -51,9 +62,7 @@ def normalize_url(value) -> str:
     except Exception:
         return ""
     host = (p.hostname or "").lower().removeprefix("www.")
-    if not host or "." not in host:
-        return ""
-    if p.scheme.lower() not in {"http", "https"}:
+    if not host or "." not in host or p.scheme.lower() not in {"http", "https"}:
         return ""
     path = p.path.rstrip("/") or "/"
     return p._replace(scheme="https", netloc=host, path=path, params="", query="", fragment="").geturl()
@@ -103,14 +112,15 @@ def coordinates(element: dict):
 
 
 def query_text() -> str:
-    return f'''[out:json][timeout:35];
+    south, west, north, east = BBOX
+    return f'''[out:json][timeout:25];
 (
-  nwr(around:{RADIUS_M},{CENTER_LAT},{CENTER_LNG})["amenity"~"^({AMENITIES})$"]["name"];
+  nwr["amenity"~"^({AMENITIES})$"]["name"]({south},{west},{north},{east});
 );
 out center tags;'''
 
 
-def fetch_overpass() -> dict:
+def fetch_overpass():
     body = urlencode({"data": query_text()}).encode("utf-8")
     req = Request(
         OVERPASS_URL,
@@ -120,7 +130,7 @@ def fetch_overpass() -> dict:
     )
     started = time.time()
     try:
-        with urlopen(req, timeout=55) as response:
+        with urlopen(req, timeout=45) as response:
             status = int(getattr(response, "status", 200) or 200)
             if status in (401, 403, 429):
                 raise RuntimeError(f"Overpass access restriction HTTP {status}; not bypassed")
@@ -155,11 +165,18 @@ def main():
 
     fresh = {}
     coverage = Counter()
+    bbox_elements = 0
+    radius_filtered = 0
     for element in doc.get("elements") or []:
+        bbox_elements += 1
         sid = source_id(element)
         tags = element.get("tags") if isinstance(element.get("tags"), dict) else {}
         coord = coordinates(element)
         if not sid or not coord or not str(tags.get("name") or "").strip():
+            continue
+        distance = haversine_m(CENTER_LAT, CENTER_LNG, coord[0], coord[1])
+        if distance > RADIUS_M:
+            radius_filtered += 1
             continue
         phone = normalize_phone(first_tag(tags, "contact:phone", "phone", "contact:mobile", "mobile"))
         website = normalize_url(first_tag(tags, "contact:website", "website", "url"))
@@ -169,6 +186,7 @@ def main():
             "nameHash": hashlib.sha256(str(tags.get("name") or "").strip().encode("utf-8")).hexdigest()[:16],
             "lat": coord[0],
             "lng": coord[1],
+            "distanceMeters": round(distance, 2),
             "hasPhone": bool(phone),
             "phoneHash": hashlib.sha256(phone.encode()).hexdigest()[:16] if phone else "",
             "hasWebsite": bool(website),
@@ -243,11 +261,15 @@ def main():
         "query": {
             "center": {"lat": CENTER_LAT, "lng": CENTER_LNG},
             "radiusMeters": RADIUS_M,
+            "overpassBoundingBox": {"south": BBOX[0], "west": BBOX[1], "north": BBOX[2], "east": BBOX[3]},
+            "exactRadiusAppliedLocally": True,
             "amenities": AMENITIES.split("|"),
         },
         "response": {
             "elapsedSeconds": elapsed,
             "contentHash": response_hash,
+            "bboxElements": bbox_elements,
+            "outsideRadiusFiltered": radius_filtered,
             "osm3s": doc.get("osm3s") or {},
         },
         "summary": {
