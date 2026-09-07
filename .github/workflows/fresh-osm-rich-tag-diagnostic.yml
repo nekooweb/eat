@@ -6,8 +6,11 @@ on:
     branches: ["main"]
     paths:
       - ".github/workflows/fresh-osm-rich-tag-diagnostic.yml"
+      - ".github/workflows/fresh-osm-bound-field-enrichment.yml"
       - "scripts/database/diagnose_fresh_osm_rich_tags.py"
       - "scripts/database/retained_osm_identity.py"
+      - "scripts/database/build_fresh_osm_bound_field_evidence.py"
+      - "scripts/database/import_fresh_osm_bound_field_evidence.py"
       - "data/area1_osm.js"
 
 permissions:
@@ -32,7 +35,9 @@ jobs:
           set -euo pipefail
           python -m py_compile \
             scripts/database/diagnose_fresh_osm_rich_tags.py \
-            scripts/database/retained_osm_identity.py
+            scripts/database/retained_osm_identity.py \
+            scripts/database/build_fresh_osm_bound_field_evidence.py \
+            scripts/database/import_fresh_osm_bound_field_evidence.py
           node scripts/audit_no_paid_apis.mjs
       - name: Query one bounded public Overpass scope
         run: |
