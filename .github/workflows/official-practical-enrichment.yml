@@ -1,0 +1,172 @@
+name: Enrich explicit practical fields from retained official pages
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/official-practical-enrichment.yml"
+      - "scripts/database/collect_official_practical_fields.py"
+      - "scripts/database/import_official_practical_web_evidence.py"
+      - "scripts/database/build_master.py"
+      - "data/official_candidate_index.json"
+      - "data/official_practical_web_evidence.json"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: public-web-field-evidence
+  cancel-in-progress: false
+
+jobs:
+  enrich:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Validate syntax and no-paid policy
+        run: |
+          set -euo pipefail
+          python -m py_compile \
+            scripts/database/collect_official_practical_fields.py \
+            scripts/database/import_official_practical_web_evidence.py \
+            scripts/database/build_master.py
+          node scripts/audit_no_paid_apis.mjs
+
+      - name: Build baseline master
+        run: |
+          set -euo pipefail
+          mkdir -p _tmp
+          python scripts/database/build_master.py --output _tmp/eat-master-before.sqlite --reset | tee _tmp/master-before.json
+          python scripts/database/validate_master.py _tmp/eat-master-before.sqlite | tee _tmp/master-before-validate.json
+          python - <<'PY'
+          import json
+          m=json.load(open('_tmp/master-before.json'))
+          p=m['ingestionPlan']
+          s={'identityStates':m['identityStates'],'fieldTasks':p['taskTypeCounts']['field_completion'],'missing':p['fieldCompletionMissingCounts']}
+          json.dump(s,open('_tmp/practical-before.json','w'),sort_keys=True)
+          print(json.dumps(s,sort_keys=True))
+          PY
+
+      - name: Collect explicit practical labels
+        run: |
+          set -euo pipefail
+          python scripts/database/collect_official_practical_fields.py \
+            --database _tmp/eat-master-before.sqlite \
+            --output _tmp/official-practical-incoming.json \
+            --workers 6 \
+            --max-pages 250 \
+            | tee _tmp/official-practical-collection.json
+
+      - name: Merge incoming evidence
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          base=json.load(open('data/official_practical_web_evidence.json'))
+          inc=json.load(open('_tmp/official-practical-incoming.json'))
+          assert base['ruleVersion']==inc['ruleVersion']=='official-practical-web-evidence-v1'
+          rows={r['googlePlaceId']:r for r in base.get('rows',[])}
+          for r in inc.get('rows',[]): rows[r['googlePlaceId']]=r
+          out=dict(base)
+          out['checkedAt']=inc.get('checkedAt') or base.get('checkedAt')
+          out['rows']=[rows[k] for k in sorted(rows)]
+          counts={}
+          for r in out['rows']:
+            for key in (r.get('practicalClaims') or {}): counts[key]=counts.get(key,0)+1
+          out['summary']={'rows':len(out['rows']),'fieldCounts':dict(sorted(counts.items()))}
+          Path('data/official_practical_web_evidence.json').write_text(json.dumps(out,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          json.dump({'beforeRows':len(base.get('rows',[])),'incomingRows':len(inc.get('rows',[])),'afterRows':len(out['rows']),'fieldCounts':out['summary']['fieldCounts']},open('_tmp/official-practical-merge.json','w'),sort_keys=True)
+          print(json.dumps(out['summary'],sort_keys=True))
+          PY
+
+      - name: Validate master effect
+        run: |
+          set -euo pipefail
+          python scripts/database/build_master.py --output _tmp/eat-master-after.sqlite --reset | tee _tmp/master-after.json
+          python scripts/database/validate_master.py _tmp/eat-master-after.sqlite | tee _tmp/master-after-validate.json
+          python scripts/database/validate_ingestion_plan.py _tmp/eat-master-after.sqlite | tee _tmp/ingestion-plan-after.json
+          python - <<'PY'
+          import json
+          before=json.load(open('_tmp/practical-before.json'))
+          m=json.load(open('_tmp/master-after.json'))
+          p=m['ingestionPlan']
+          after={'identityStates':m['identityStates'],'fieldTasks':p['taskTypeCounts']['field_completion'],'missing':p['fieldCompletionMissingCounts'],'import':m['officialPracticalWebEvidence']}
+          assert after['identityStates']==before['identityStates'],(before,after)
+          assert after['fieldTasks']<=before['fieldTasks'],(before,after)
+          for key,value in before['missing'].items(): assert after['missing'].get(key,0)<=value,(key,before,after)
+          assert after['import']['networkRequests']==0
+          assert after['import']['identityChanges']==0
+          assert after['import']['importTimeMissingOnly'] is True
+          json.dump(after,open('_tmp/practical-after.json','w'),sort_keys=True)
+          print(json.dumps({'before':before,'after':after},sort_keys=True))
+          PY
+
+      - name: Commit evidence on latest main
+        run: |
+          set -euo pipefail
+          cp data/official_practical_web_evidence.json _tmp/official-practical-working.json
+          git restore -- data/official_practical_web_evidence.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          for attempt in 1 2 3; do
+            git fetch origin main
+            git checkout -B official-practical origin/main
+            python - <<'PY'
+          import json
+          from pathlib import Path
+          base=json.load(open('data/official_practical_web_evidence.json'))
+          inc=json.load(open('_tmp/official-practical-incoming.json'))
+          rows={r['googlePlaceId']:r for r in base.get('rows',[])}
+          for r in inc.get('rows',[]): rows[r['googlePlaceId']]=r
+          out=dict(base); out['checkedAt']=inc.get('checkedAt') or base.get('checkedAt'); out['rows']=[rows[k] for k in sorted(rows)]
+          counts={}
+          for r in out['rows']:
+            for key in (r.get('practicalClaims') or {}): counts[key]=counts.get(key,0)+1
+          out['summary']={'rows':len(out['rows']),'fieldCounts':dict(sorted(counts.items()))}
+          Path('data/official_practical_web_evidence.json').write_text(json.dumps(out,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          PY
+            git add data/official_practical_web_evidence.json
+            if git diff --cached --quiet; then
+              echo "No new explicit official practical evidence."
+              exit 0
+            fi
+            git commit -m "Add explicit official practical evidence"
+            if git push origin HEAD:main; then exit 0; fi
+            git reset --hard HEAD~1
+            sleep 2
+          done
+          echo "Unable to fast-forward practical evidence after three attempts." >&2
+          exit 1
+
+      - name: Upload practical audit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: official-practical-enrichment
+          path: |
+            _tmp/official-practical-incoming.json
+            _tmp/official-practical-collection.json
+            _tmp/official-practical-merge.json
+            _tmp/practical-before.json
+            _tmp/practical-after.json
+            _tmp/master-before.json
+            _tmp/master-before-validate.json
+            _tmp/master-after.json
+            _tmp/master-after-validate.json
+            _tmp/ingestion-plan-after.json
+          if-no-files-found: warn
+          retention-days: 2
