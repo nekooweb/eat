@@ -8,17 +8,17 @@
     "namedBasic": 1411,
     "placeIdOnly": 1393,
     "unresolvedBasicCount": 1393,
-    "recommendedDishesKnown": 60,
+    "recommendedDishesKnown": 186,
     "featuredDishesKnown": 181,
     "actionCounts": {
       "resolve_basic_source_identity": 1393,
-      "collect_strict_recommended_dishes": 1352,
-      "collect_source_backed_featured_dishes": 27,
-      "collect_opening_hours": 5,
-      "collect_dinner_budget": 3,
-      "collect_lunch_budget": 8,
+      "collect_strict_recommended_dishes": 1226,
+      "collect_source_backed_featured_dishes": 113,
+      "collect_opening_hours": 13,
+      "collect_dinner_budget": 17,
+      "collect_lunch_budget": 17,
       "collect_identity_detail_fields": 1,
-      "complete": 15
+      "complete": 24
     },
     "priorityRule": "unresolved source identity > strict recommended dishes > featured dishes > hours > budgets > address/cuisine; exact 2804 Place-ID runtime is the launch-complete baseline"
   },
@@ -29273,35 +29273,6 @@
       "priorityScore": 1200
     },
     {
-      "googlePlaceId": "ChIJVyqVQxGMGGARAMwOpJAO12U",
-      "name": "はなまるうどん 神保町店",
-      "basicInfoState": "canonical",
-      "distanceMeters": 74,
-      "sourceUrlCount": 3,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 1,
-      "gaps": [
-        "recommendedDishes"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1065
-    },
-    {
-      "googlePlaceId": "ChIJ2-3vOBGMGGARfV2l_yc58W0",
-      "name": "鳥貴族 神保町店",
-      "basicInfoState": "canonical",
-      "distanceMeters": 126,
-      "sourceUrlCount": 3,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 2,
-      "gaps": [
-        "recommendedDishes",
-        "lunchBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1065
-    },
-    {
       "googlePlaceId": "ChIJTTQAOBGMGGARXRYbp0wUyAM",
       "name": "カフェ・ベローチェ 神保町店",
       "basicInfoState": "canonical",
@@ -29311,36 +29282,6 @@
       "featuredDishesKnown": 1,
       "gaps": [
         "recommendedDishes"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1065
-    },
-    {
-      "googlePlaceId": "ChIJbTOaERGMGGARRbVxba8mOck",
-      "name": "Bistro Liberté",
-      "basicInfoState": "canonical",
-      "distanceMeters": 150,
-      "sourceUrlCount": 3,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1065
-    },
-    {
-      "googlePlaceId": "ChIJR3odlBOMGGARX9J4ZOk7jB0",
-      "name": "森のブッチャーズ",
-      "basicInfoState": "canonical",
-      "distanceMeters": 173,
-      "sourceUrlCount": 3,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 1,
-      "gaps": [
-        "recommendedDishes",
-        "lunchBudget"
       ],
       "nextAction": "collect_strict_recommended_dishes",
       "priorityScore": 1065
@@ -29362,20 +29303,6 @@
       "priorityScore": 1065
     },
     {
-      "googlePlaceId": "ChIJCQOApBGMGGARtd0fPNBMuHc",
-      "name": "ロイヤルホスト 神田神保町店",
-      "basicInfoState": "canonical",
-      "distanceMeters": 233,
-      "sourceUrlCount": 3,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 1,
-      "gaps": [
-        "recommendedDishes"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1065
-    },
-    {
       "googlePlaceId": "ChIJBduY0RaMGGAR3fbXTTSTyHg",
       "name": "つけそば 神田 勝本",
       "basicInfoState": "canonical",
@@ -29387,56 +29314,6 @@
         "recommendedDishes",
         "lunchBudget",
         "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1065
-    },
-    {
-      "googlePlaceId": "ChIJV3V4uRSNGGARPSLntvfs_ME",
-      "name": "ラーメン豚山 神保町店",
-      "basicInfoState": "canonical",
-      "distanceMeters": 327,
-      "sourceUrlCount": 3,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 1,
-      "gaps": [
-        "recommendedDishes",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1065
-    },
-    {
-      "googlePlaceId": "ChIJDUGL7RCMGGARErPxhJ7bXgc",
-      "name": "ヒナタ屋",
-      "basicInfoState": "canonical",
-      "distanceMeters": 352,
-      "sourceUrlCount": 3,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 1,
-      "gaps": [
-        "recommendedDishes",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1065
-    },
-    {
-      "googlePlaceId": "ChIJe49KxxWMGGAR4qS4zBvOWr8",
-      "name": "シリ バラジ",
-      "basicInfoState": "canonical",
-      "distanceMeters": 365,
-      "sourceUrlCount": 3,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
-        "dinnerBudget",
-        "address"
       ],
       "nextAction": "collect_strict_recommended_dishes",
       "priorityScore": 1065
@@ -29457,36 +29334,6 @@
       "priorityScore": 1065
     },
     {
-      "googlePlaceId": "ChIJ-YkEWBeMGGARfOUCHahbddE",
-      "name": "ナポリの下町食堂",
-      "basicInfoState": "canonical",
-      "distanceMeters": 564,
-      "sourceUrlCount": 3,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 2,
-      "gaps": [
-        "recommendedDishes",
-        "lunchBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1065
-    },
-    {
-      "googlePlaceId": "ChIJs1zmzD-MGGAR_TWUpga5JUs",
-      "name": "大庄水産",
-      "basicInfoState": "canonical",
-      "distanceMeters": 580,
-      "sourceUrlCount": 3,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 2,
-      "gaps": [
-        "recommendedDishes",
-        "lunchBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1065
-    },
-    {
       "googlePlaceId": "ChIJVSfB8NCNGGARrfeHyHk0p94",
       "name": "鉄板ダイニング ロドリゲス 九段下店",
       "basicInfoState": "canonical",
@@ -29497,93 +29344,6 @@
       "gaps": [
         "recommendedDishes",
         "lunchBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1065
-    },
-    {
-      "googlePlaceId": "ChIJMSFgyZGNGGARh283HSyqqJc",
-      "name": "釣宿酒場 マヅメ 御茶ノ水店",
-      "basicInfoState": "canonical",
-      "distanceMeters": 659,
-      "sourceUrlCount": 3,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 2,
-      "gaps": [
-        "recommendedDishes"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1065
-    },
-    {
-      "googlePlaceId": "ChIJY-3aoj-MGGARb4QOongT588",
-      "name": "串だおれ 水道橋店",
-      "basicInfoState": "canonical",
-      "distanceMeters": 681,
-      "sourceUrlCount": 3,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 2,
-      "gaps": [
-        "recommendedDishes"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1065
-    },
-    {
-      "googlePlaceId": "ChIJe4ebpD-MGGARksrpQ0_0cLs",
-      "name": "焼肉京城",
-      "basicInfoState": "canonical",
-      "distanceMeters": 684,
-      "sourceUrlCount": 3,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "lunchBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1065
-    },
-    {
-      "googlePlaceId": "ChIJ5YT9g0CMGGARiXS-Am4vk1M",
-      "name": "はなまるうどん 水道橋西口店",
-      "basicInfoState": "canonical",
-      "distanceMeters": 774,
-      "sourceUrlCount": 3,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 1,
-      "gaps": [
-        "recommendedDishes"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1065
-    },
-    {
-      "googlePlaceId": "ChIJq6qfygSMGGARJgbpmoWLoUg",
-      "name": "つじ田 神田御茶ノ水店",
-      "basicInfoState": "canonical",
-      "distanceMeters": 807,
-      "sourceUrlCount": 3,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 1,
-      "gaps": [
-        "recommendedDishes"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1065
-    },
-    {
-      "googlePlaceId": "ChIJtRVuPxuMGGARS3pDVvNhcGk",
-      "name": "季の庭 神田店",
-      "basicInfoState": "canonical",
-      "distanceMeters": 810,
-      "sourceUrlCount": 3,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes"
       ],
       "nextAction": "collect_strict_recommended_dishes",
       "priorityScore": 1065
@@ -29618,51 +29378,6 @@
       "priorityScore": 1065
     },
     {
-      "googlePlaceId": "ChIJy5iG5ECMGGARnUtzLDHlU3o",
-      "name": "スターバックス コーヒー 飯田橋アイガーデンテラス店",
-      "basicInfoState": "canonical",
-      "distanceMeters": 897,
-      "sourceUrlCount": 3,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 1,
-      "gaps": [
-        "recommendedDishes",
-        "lunchBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1065
-    },
-    {
-      "googlePlaceId": "ChIJE0-B9UOMGGARWVhWjJKsoq4",
-      "name": "鳥貴族",
-      "basicInfoState": "canonical",
-      "distanceMeters": 1171,
-      "sourceUrlCount": 3,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 2,
-      "gaps": [
-        "recommendedDishes",
-        "lunchBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1065
-    },
-    {
-      "googlePlaceId": "ChIJi5u1tneNGGARfvILlFasCqI",
-      "name": "横浜家系ラーメン 麺家 福増",
-      "basicInfoState": "canonical",
-      "distanceMeters": 73,
-      "sourceUrlCount": 2,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1050
-    },
-    {
       "googlePlaceId": "ChIJBc2yYRGMGGARNcv-48_fEuw",
       "name": "神保町 加賀廣",
       "basicInfoState": "canonical",
@@ -29674,20 +29389,6 @@
         "recommendedDishes",
         "featuredDishes",
         "lunchBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1050
-    },
-    {
-      "googlePlaceId": "ChIJq-tfOBGMGGARFR9OxPRRFrc",
-      "name": "ドトールコーヒーショップ 神保町駅前店",
-      "basicInfoState": "canonical",
-      "distanceMeters": 85,
-      "sourceUrlCount": 2,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 1,
-      "gaps": [
-        "recommendedDishes"
       ],
       "nextAction": "collect_strict_recommended_dishes",
       "priorityScore": 1050
@@ -29716,22 +29417,6 @@
       "featuredDishesKnown": 2,
       "gaps": [
         "recommendedDishes"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1050
-    },
-    {
-      "googlePlaceId": "ChIJb1NJHRSMGGARQHQ71gBl4Dg",
-      "name": "ドトールコーヒーショップ 神保町白山通り店",
-      "basicInfoState": "canonical",
-      "distanceMeters": 114,
-      "sourceUrlCount": 2,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 1,
-      "gaps": [
-        "recommendedDishes",
-        "lunchBudget",
-        "dinnerBudget"
       ],
       "nextAction": "collect_strict_recommended_dishes",
       "priorityScore": 1050
@@ -29813,21 +29498,6 @@
       "priorityScore": 1050
     },
     {
-      "googlePlaceId": "ChIJc5NiOxGMGGARL8jOKrnIR5c",
-      "name": "スマトラカレー 共栄堂",
-      "basicInfoState": "canonical",
-      "distanceMeters": 163,
-      "sourceUrlCount": 2,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1050
-    },
-    {
       "googlePlaceId": "ChIJH8GYiROMGGARAjxscGAOoIA",
       "name": "タリーズコーヒー 神保町店",
       "basicInfoState": "canonical",
@@ -29867,21 +29537,6 @@
       "featuredDishesKnown": 2,
       "gaps": [
         "recommendedDishes"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1050
-    },
-    {
-      "googlePlaceId": "ChIJbTtuHuiNGGARBrcnzLyb6kg",
-      "name": "喫茶トお酒 襤褸",
-      "basicInfoState": "canonical",
-      "distanceMeters": 207,
-      "sourceUrlCount": 2,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes"
       ],
       "nextAction": "collect_strict_recommended_dishes",
       "priorityScore": 1050
@@ -29933,22 +29588,6 @@
       "priorityScore": 1050
     },
     {
-      "googlePlaceId": "ChIJpevAiRSMGGARJ3j_AniCivM",
-      "name": "ドトールコーヒーショップ 神保町三丁目店",
-      "basicInfoState": "canonical",
-      "distanceMeters": 242,
-      "sourceUrlCount": 2,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 1,
-      "gaps": [
-        "recommendedDishes",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1050
-    },
-    {
       "googlePlaceId": "ChIJyZAT2BCMGGARLI6GGHovI0c",
       "name": "ブラッセルズ神田神保町",
       "basicInfoState": "canonical",
@@ -29969,20 +29608,6 @@
       "name": "ライスカレー まんてん",
       "basicInfoState": "canonical",
       "distanceMeters": 267,
-      "sourceUrlCount": 2,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 2,
-      "gaps": [
-        "recommendedDishes"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1050
-    },
-    {
-      "googlePlaceId": "ChIJh3wLk6SNGGARTMTGIUTky3E",
-      "name": "神保町餃子小籠包",
-      "basicInfoState": "canonical",
-      "distanceMeters": 291,
       "sourceUrlCount": 2,
       "recommendedDishesKnown": 0,
       "featuredDishesKnown": 2,
@@ -30099,23 +29724,6 @@
       "priorityScore": 1050
     },
     {
-      "googlePlaceId": "ChIJ81Ua8xCMGGARMrzeHYIaVbg",
-      "name": "神田たまごけん神保町店",
-      "basicInfoState": "canonical",
-      "distanceMeters": 330,
-      "sourceUrlCount": 2,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
-        "address"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1050
-    },
-    {
       "googlePlaceId": "ChIJAyFF7RCMGGARs2NclD5HYHI",
       "name": "麺ダイニング ととこ",
       "basicInfoState": "canonical",
@@ -30177,24 +29785,6 @@
       "priorityScore": 1050
     },
     {
-      "googlePlaceId": "ChIJ70UfMRCMGGARvCAQcEhynic",
-      "name": "HASSO CAFFE with PRONTO",
-      "basicInfoState": "canonical",
-      "distanceMeters": 387,
-      "sourceUrlCount": 2,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 1,
-      "gaps": [
-        "recommendedDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget",
-        "address"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1050
-    },
-    {
       "googlePlaceId": "ChIJOSGdOhCMGGARPL4uA3Xt4b0",
       "name": "GOOD MORNING CAFE 錦町",
       "basicInfoState": "canonical",
@@ -30244,24 +29834,6 @@
       "priorityScore": 1050
     },
     {
-      "googlePlaceId": "ChIJHdflUQCNGGAR1yV32-VceT0",
-      "name": "お茶の水、大勝軒",
-      "basicInfoState": "canonical",
-      "distanceMeters": 428,
-      "sourceUrlCount": 2,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1050
-    },
-    {
       "googlePlaceId": "ChIJvyDKWN7hGGARrFkY0C5a9Kw",
       "name": "和食日和 おさけと 神保町",
       "basicInfoState": "canonical",
@@ -30271,24 +29843,6 @@
       "featuredDishesKnown": 2,
       "gaps": [
         "recommendedDishes"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1050
-    },
-    {
-      "googlePlaceId": "ChIJNRfophqMGGARU_M1YQ8LZPo",
-      "name": "成都正宗担々麺 つじ田",
-      "basicInfoState": "canonical",
-      "distanceMeters": 497,
-      "sourceUrlCount": 2,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 1,
-      "gaps": [
-        "recommendedDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget",
-        "address"
       ],
       "nextAction": "collect_strict_recommended_dishes",
       "priorityScore": 1050
@@ -30335,25 +29889,6 @@
         "recommendedDishes",
         "featuredDishes",
         "lunchBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1050
-    },
-    {
-      "googlePlaceId": "ChIJmXw7jBqMGGARZUMVX_vrOE8",
-      "name": "ビストロクルル",
-      "basicInfoState": "canonical",
-      "distanceMeters": 546,
-      "sourceUrlCount": 2,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget",
-        "address"
       ],
       "nextAction": "collect_strict_recommended_dishes",
       "priorityScore": 1050
@@ -30474,22 +30009,6 @@
       "priorityScore": 1050
     },
     {
-      "googlePlaceId": "ChIJ09Mm5xmMGGAR6drOCC8NmEA",
-      "name": "JAZZ HOUSE NARU",
-      "basicInfoState": "canonical",
-      "distanceMeters": 635,
-      "sourceUrlCount": 2,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 1,
-      "gaps": [
-        "recommendedDishes",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1050
-    },
-    {
       "googlePlaceId": "ChIJ2VjLuz-MGGARGC3YKL-wO0Q",
       "name": "焼肉ホルモンがく 水道橋本店",
       "basicInfoState": "canonical",
@@ -30530,20 +30049,6 @@
       "gaps": [
         "recommendedDishes",
         "featuredDishes"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1050
-    },
-    {
-      "googlePlaceId": "ChIJ70HROtqNGGARLeoqNcrVbq8",
-      "name": "なごみ 駆々",
-      "basicInfoState": "canonical",
-      "distanceMeters": 654,
-      "sourceUrlCount": 2,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 1,
-      "gaps": [
-        "recommendedDishes"
       ],
       "nextAction": "collect_strict_recommended_dishes",
       "priorityScore": 1050
@@ -30659,21 +30164,6 @@
       "priorityScore": 1050
     },
     {
-      "googlePlaceId": "ChIJ38OBKhqMGGARv2PCpjtd6uI",
-      "name": "新潟発祥 なおじ 御茶ノ水店",
-      "basicInfoState": "canonical",
-      "distanceMeters": 777,
-      "sourceUrlCount": 2,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 1,
-      "gaps": [
-        "recommendedDishes",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1050
-    },
-    {
       "googlePlaceId": "ChIJeSvAydGNGGARI3MmVMxkkKg",
       "name": "麻辣四川",
       "basicInfoState": "canonical",
@@ -30700,21 +30190,6 @@
         "recommendedDishes",
         "lunchBudget",
         "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1050
-    },
-    {
-      "googlePlaceId": "ChIJAQAAZBuMGGARiAS9STYZnRk",
-      "name": "小料理 小鈴",
-      "basicInfoState": "canonical",
-      "distanceMeters": 788,
-      "sourceUrlCount": 2,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes"
       ],
       "nextAction": "collect_strict_recommended_dishes",
       "priorityScore": 1050
@@ -30800,23 +30275,6 @@
       "priorityScore": 1050
     },
     {
-      "googlePlaceId": "ChIJOWqVHj-MGGARZd0fgS_r3tI",
-      "name": "スターバックス コーヒー 東京ドームシティ ミーツポート店",
-      "basicInfoState": "canonical",
-      "distanceMeters": 819,
-      "sourceUrlCount": 2,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 1,
-      "gaps": [
-        "recommendedDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1050
-    },
-    {
       "googlePlaceId": "ChIJ5aGwSBuMGGARULgI61LmWyI",
       "name": "京おばんざい はんなり",
       "basicInfoState": "canonical",
@@ -30832,71 +30290,10 @@
       "priorityScore": 1050
     },
     {
-      "googlePlaceId": "ChIJ2WGN9heMGGARIpk8EbXf8b4",
-      "name": "スターバックス コーヒー 順天堂医院店",
-      "basicInfoState": "canonical",
-      "distanceMeters": 840,
-      "sourceUrlCount": 2,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 1,
-      "gaps": [
-        "recommendedDishes",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1050
-    },
-    {
-      "googlePlaceId": "ChIJZxoEOfeNGGARBnqCJhamags",
-      "name": "CAFÉ 33",
-      "basicInfoState": "canonical",
-      "distanceMeters": 841,
-      "sourceUrlCount": 2,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1050
-    },
-    {
-      "googlePlaceId": "ChIJS9VGpBuMGGAR1hMANtBU8Ws",
-      "name": "YEBISU BAR 御茶ノ水店",
-      "basicInfoState": "canonical",
-      "distanceMeters": 853,
-      "sourceUrlCount": 2,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 2,
-      "gaps": [
-        "recommendedDishes",
-        "lunchBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1050
-    },
-    {
       "googlePlaceId": "ChIJA3cvTRuMGGARs_9D7PJIUgg",
       "name": "やなか珈琲店 神田店",
       "basicInfoState": "canonical",
       "distanceMeters": 854,
-      "sourceUrlCount": 2,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1050
-    },
-    {
-      "googlePlaceId": "ChIJG4bwugSMGGARuz8X6hPQM8Y",
-      "name": "ルノアール 神田淡路町店",
-      "basicInfoState": "canonical",
-      "distanceMeters": 855,
       "sourceUrlCount": 2,
       "recommendedDishesKnown": 0,
       "featuredDishesKnown": 0,
@@ -30999,22 +30396,6 @@
       "priorityScore": 1050
     },
     {
-      "googlePlaceId": "ChIJj2u4pwSMGGARkTHj4PP1MEA",
-      "name": "ドトールコーヒーショップ",
-      "basicInfoState": "canonical",
-      "distanceMeters": 909,
-      "sourceUrlCount": 2,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 1,
-      "gaps": [
-        "recommendedDishes",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1050
-    },
-    {
       "googlePlaceId": "ChIJA4cmnRyMGGARWf4uYcSUjNI",
       "name": "越後屋三十郎",
       "basicInfoState": "canonical",
@@ -31026,69 +30407,6 @@
         "recommendedDishes",
         "featuredDishes",
         "lunchBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1050
-    },
-    {
-      "googlePlaceId": "ChIJDVdSfmmMGGARn19s9XYBdOY",
-      "name": "ドトールコーヒーショップ",
-      "basicInfoState": "canonical",
-      "distanceMeters": 954,
-      "sourceUrlCount": 2,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 1,
-      "gaps": [
-        "recommendedDishes",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1050
-    },
-    {
-      "googlePlaceId": "ChIJJ3jKf2mMGGARTHOMYS5IRB8",
-      "name": "ムンバイ",
-      "basicInfoState": "canonical",
-      "distanceMeters": 960,
-      "sourceUrlCount": 2,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 1,
-      "gaps": [
-        "recommendedDishes",
-        "lunchBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1050
-    },
-    {
-      "googlePlaceId": "ChIJF37yb0GMGGAR0xtmmas5qQI",
-      "name": "なか卯",
-      "basicInfoState": "canonical",
-      "distanceMeters": 977,
-      "sourceUrlCount": 2,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 1,
-      "gaps": [
-        "recommendedDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1050
-    },
-    {
-      "googlePlaceId": "ChIJjdmff6KNGGARf1NV0O_Nmug",
-      "name": "Osteria NORA",
-      "basicInfoState": "canonical",
-      "distanceMeters": 982,
-      "sourceUrlCount": 2,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes"
       ],
       "nextAction": "collect_strict_recommended_dishes",
       "priorityScore": 1050
@@ -31158,73 +30476,6 @@
       "priorityScore": 1050
     },
     {
-      "googlePlaceId": "ChIJSdEMKDmMGGARyiy9F60mMLk",
-      "name": "ジョナサン",
-      "basicInfoState": "canonical",
-      "distanceMeters": 1053,
-      "sourceUrlCount": 2,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 1,
-      "gaps": [
-        "recommendedDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget",
-        "address"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1050
-    },
-    {
-      "googlePlaceId": "ChIJNfqy4EaMGGAR51sW_7PltDQ",
-      "name": "スターバックス",
-      "basicInfoState": "canonical",
-      "distanceMeters": 1105,
-      "sourceUrlCount": 2,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 1,
-      "gaps": [
-        "recommendedDishes",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1050
-    },
-    {
-      "googlePlaceId": "ChIJq30xaxyMGGARHPVzI5YnVow",
-      "name": "ココス",
-      "basicInfoState": "canonical",
-      "distanceMeters": 1106,
-      "sourceUrlCount": 2,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 1,
-      "gaps": [
-        "recommendedDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1050
-    },
-    {
-      "googlePlaceId": "ChIJhXD3-AaMGGARbLVQPEtml80",
-      "name": "上島珈琲店",
-      "basicInfoState": "canonical",
-      "distanceMeters": 1113,
-      "sourceUrlCount": 2,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 1,
-      "gaps": [
-        "recommendedDishes",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1050
-    },
-    {
       "googlePlaceId": "ChIJAZYgBA2NGGARHdsXwqthY1E",
       "name": "日本酒原価酒蔵",
       "basicInfoState": "canonical",
@@ -31273,53 +30524,6 @@
       "priorityScore": 1050
     },
     {
-      "googlePlaceId": "ChIJd50aRRyMGGARvomrfrvV6ZY",
-      "name": "ドトールコーヒーショップ",
-      "basicInfoState": "canonical",
-      "distanceMeters": 1153,
-      "sourceUrlCount": 2,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 1,
-      "gaps": [
-        "recommendedDishes",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1050
-    },
-    {
-      "googlePlaceId": "ChIJB2nh4jiMGGARJuDAY_TVfJA",
-      "name": "サイゼリヤ",
-      "basicInfoState": "canonical",
-      "distanceMeters": 1160,
-      "sourceUrlCount": 2,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 1,
-      "gaps": [
-        "recommendedDishes",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1050
-    },
-    {
-      "googlePlaceId": "ChIJAyADpR6MGGARWHp8EC3s12E",
-      "name": "明神下みやび",
-      "basicInfoState": "canonical",
-      "distanceMeters": 1162,
-      "sourceUrlCount": 2,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 1,
-      "gaps": [
-        "recommendedDishes",
-        "lunchBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1050
-    },
-    {
       "googlePlaceId": "ChIJqctn6o6NGGAR6ePlEjHoyrs",
       "name": "こんぺいとう",
       "basicInfoState": "canonical",
@@ -31331,56 +30535,6 @@
         "recommendedDishes",
         "featuredDishes",
         "lunchBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1050
-    },
-    {
-      "googlePlaceId": "ChIJgf3tagGMGGARkEwmHXAshfQ",
-      "name": "かぶき本店",
-      "basicInfoState": "canonical",
-      "distanceMeters": 1182,
-      "sourceUrlCount": 2,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "lunchBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1050
-    },
-    {
-      "googlePlaceId": "ChIJAQC0dESMGGAR0VQTphLwmdw",
-      "name": "てけてけ",
-      "basicInfoState": "canonical",
-      "distanceMeters": 1183,
-      "sourceUrlCount": 2,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 1,
-      "gaps": [
-        "recommendedDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1050
-    },
-    {
-      "googlePlaceId": "ChIJJ8_bnU6NGGARsXyvg0mnXI0",
-      "name": "つじ田",
-      "basicInfoState": "canonical",
-      "distanceMeters": 1183,
-      "sourceUrlCount": 2,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 1,
-      "gaps": [
-        "recommendedDishes",
-        "lunchBudget",
-        "dinnerBudget",
-        "address"
       ],
       "nextAction": "collect_strict_recommended_dishes",
       "priorityScore": 1050
@@ -33922,23 +33076,6 @@
       "priorityScore": 1035
     },
     {
-      "googlePlaceId": "ChIJoUfFe9KNGGARFzs_SomCDXE",
-      "name": "Indian Street Food & Bar GOND",
-      "basicInfoState": "canonical",
-      "distanceMeters": 572,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1035
-    },
-    {
       "googlePlaceId": "ChIJ6bngWwCNGGARsN6Dr2NL36E",
       "name": "Dill Coffee Parlor",
       "basicInfoState": "canonical",
@@ -34467,25 +33604,6 @@
     {
       "googlePlaceId": "ChIJ-8shJgWMGGAR0yDXWS4lg84",
       "name": "達磨神田",
-      "basicInfoState": "canonical",
-      "distanceMeters": 696,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget",
-        "address"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1035
-    },
-    {
-      "googlePlaceId": "ChIJKV27XcWNGGARUMPjYkQlDlQ",
-      "name": "Think Coffee",
       "basicInfoState": "canonical",
       "distanceMeters": 696,
       "sourceUrlCount": 1,
@@ -35045,23 +34163,6 @@
       "priorityScore": 1035
     },
     {
-      "googlePlaceId": "ChIJEbKEk8KNGGARQFvc7RGAZg0",
-      "name": "洋麺屋五右衛門 水道橋店",
-      "basicInfoState": "canonical",
-      "distanceMeters": 812,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 1,
-      "gaps": [
-        "recommendedDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1035
-    },
-    {
       "googlePlaceId": "ChIJB_WeKhqMGGAR9DCL2lv0LEE",
       "name": "エチオピア カリーキッチン 御茶ノ水ソラシティ店",
       "basicInfoState": "canonical",
@@ -35454,24 +34555,6 @@
       "priorityScore": 1035
     },
     {
-      "googlePlaceId": "ChIJt0tydgOMGGAR5W7Uvbg--OE",
-      "name": "五ノ神水産",
-      "basicInfoState": "canonical",
-      "distanceMeters": 1032,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1035
-    },
-    {
       "googlePlaceId": "ChIJQXG-SgOMGGARUM-2-MxSm4o",
       "name": "テスタドゥーラ",
       "basicInfoState": "canonical",
@@ -35594,24 +34677,6 @@
       "gaps": [
         "recommendedDishes",
         "featuredDishes",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1035
-    },
-    {
-      "googlePlaceId": "ChIJ6eEHmziMGGARZb0rRUApRm0",
-      "name": "Shake Shack",
-      "basicInfoState": "canonical",
-      "distanceMeters": 1114,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
         "lunchBudget",
         "dinnerBudget"
       ],
@@ -35745,24 +34810,6 @@
       "priorityScore": 1035
     },
     {
-      "googlePlaceId": "ChIJ4Qh_76yNGGARjBaMH-fu1E0",
-      "name": "BLUE EGG",
-      "basicInfoState": "canonical",
-      "distanceMeters": 1160,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1035
-    },
-    {
       "googlePlaceId": "ChIJPZPNgpiNGGARgF1jBcT9ocQ",
       "name": "Melty Charm",
       "basicInfoState": "canonical",
@@ -35807,41 +34854,6 @@
         "recommendedDishes",
         "featuredDishes",
         "lunchBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1035
-    },
-    {
-      "googlePlaceId": "ChIJ3YYa0BiMGGARyr30I7B41yE",
-      "name": "Porco Piatto",
-      "basicInfoState": "canonical",
-      "distanceMeters": 1170,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1035
-    },
-    {
-      "googlePlaceId": "ChIJ4SygCUSMGGAR5k9kG84PJi8",
-      "name": "しゃぶしゃぶ温野菜",
-      "basicInfoState": "canonical",
-      "distanceMeters": 1170,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "lunchBudget",
-        "dinnerBudget"
       ],
       "nextAction": "collect_strict_recommended_dishes",
       "priorityScore": 1035
@@ -35905,24 +34917,6 @@
       "gaps": [
         "recommendedDishes",
         "featuredDishes",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1035
-    },
-    {
-      "googlePlaceId": "ChIJxY7gPgGMGGARb9tWwbUOOxg",
-      "name": "Lamp Light",
-      "basicInfoState": "canonical",
-      "distanceMeters": 1177,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
         "lunchBudget",
         "dinnerBudget"
       ],
@@ -39805,64 +38799,10 @@
       "priorityScore": 1020
     },
     {
-      "googlePlaceId": "ChIJ3woP4BCMGGAR_rK6Rw0LqWA",
-      "name": "Starbucks",
-      "basicInfoState": "source_matched",
-      "distanceMeters": 32,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1015
-    },
-    {
-      "googlePlaceId": "ChIJbwAATwCNGGARQwDbKm46DFQ",
-      "name": "メナムのほとり",
-      "basicInfoState": "source_matched",
-      "distanceMeters": 41,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1015
-    },
-    {
       "googlePlaceId": "ChIJM32v_xOMGGARTKGZx9b1XDQ",
       "name": "Shinsekai Restaurant",
       "basicInfoState": "source_matched",
       "distanceMeters": 48,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1015
-    },
-    {
-      "googlePlaceId": "ChIJDeuuVZ2NGGARTWXdulgEqs8",
-      "name": "FLO PRESTIGE",
-      "basicInfoState": "source_matched",
-      "distanceMeters": 53,
       "sourceUrlCount": 1,
       "recommendedDishesKnown": 0,
       "featuredDishesKnown": 0,
@@ -39916,24 +38856,6 @@
       "name": "Trois Bagues",
       "basicInfoState": "source_matched",
       "distanceMeters": 73,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1015
-    },
-    {
-      "googlePlaceId": "ChIJ84dsN4GNGGARA0ZhQbDjBV0",
-      "name": "Beer Bar & Cafe Terrace ALE",
-      "basicInfoState": "source_matched",
-      "distanceMeters": 83,
       "sourceUrlCount": 1,
       "recommendedDishesKnown": 0,
       "featuredDishesKnown": 0,
@@ -40030,24 +38952,6 @@
         "featuredDishes",
         "openingHours",
         "lunchBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1015
-    },
-    {
-      "googlePlaceId": "ChIJASnkQRGMGGARVQygd0w2WRI",
-      "name": "Tam Tam",
-      "basicInfoState": "source_matched",
-      "distanceMeters": 105,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
       ],
       "nextAction": "collect_strict_recommended_dishes",
       "priorityScore": 1015
@@ -40288,24 +39192,6 @@
         "featuredDishes",
         "openingHours",
         "lunchBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1015
-    },
-    {
-      "googlePlaceId": "ChIJbZhZ3RiNGGARoHd7nfzoBuc",
-      "name": "ゆにおん食堂",
-      "basicInfoState": "source_matched",
-      "distanceMeters": 148,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
       ],
       "nextAction": "collect_strict_recommended_dishes",
       "priorityScore": 1015
@@ -41089,24 +39975,6 @@
       "priorityScore": 1015
     },
     {
-      "googlePlaceId": "ChIJu78sNRSMGGAR3ajbXKR3f08",
-      "name": "edge",
-      "basicInfoState": "source_matched",
-      "distanceMeters": 275,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1015
-    },
-    {
       "googlePlaceId": "ChIJ2336NQCNGGARMhx9jwZ4BI4",
       "name": "ワイルドレッドパスタ神保町店",
       "basicInfoState": "source_matched",
@@ -41136,24 +40004,6 @@
         "featuredDishes",
         "openingHours",
         "lunchBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1015
-    },
-    {
-      "googlePlaceId": "ChIJicJ6DTyNGGARee3lt0LagIU",
-      "name": "上島珈琲店神保町店",
-      "basicInfoState": "source_matched",
-      "distanceMeters": 283,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
       ],
       "nextAction": "collect_strict_recommended_dishes",
       "priorityScore": 1015
@@ -41487,24 +40337,6 @@
       "priorityScore": 1015
     },
     {
-      "googlePlaceId": "ChIJ4y_vMRCMGGARaKV_ayhOMzE",
-      "name": "メナムのほとり 神保町テラススクエア店",
-      "basicInfoState": "source_matched",
-      "distanceMeters": 333,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1015
-    },
-    {
       "googlePlaceId": "ChIJ51IcBBWMGGARbOYE-W7z7Lg",
       "name": "JB's BAR",
       "basicInfoState": "source_matched",
@@ -41562,24 +40394,6 @@
       "name": "麻婆礼賛",
       "basicInfoState": "source_matched",
       "distanceMeters": 334,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1015
-    },
-    {
-      "googlePlaceId": "ChIJm465MhCMGGARwiSrvbH-YVE",
-      "name": "GARB pintino",
-      "basicInfoState": "source_matched",
-      "distanceMeters": 335,
       "sourceUrlCount": 1,
       "recommendedDishesKnown": 0,
       "featuredDishesKnown": 0,
@@ -41928,24 +40742,6 @@
       "name": "Dixans",
       "basicInfoState": "source_matched",
       "distanceMeters": 446,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1015
-    },
-    {
-      "googlePlaceId": "ChIJ5ZzWHQ6MGGARs0xILkJsbdI",
-      "name": "マーキュリー",
-      "basicInfoState": "source_matched",
-      "distanceMeters": 456,
       "sourceUrlCount": 1,
       "recommendedDishesKnown": 0,
       "featuredDishesKnown": 0,
@@ -42516,24 +41312,6 @@
       "priorityScore": 1015
     },
     {
-      "googlePlaceId": "ChIJU-bJQwCNGGARG2tj8zrf1F0",
-      "name": "讃岐うどん",
-      "basicInfoState": "source_matched",
-      "distanceMeters": 545,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1015
-    },
-    {
       "googlePlaceId": "ChIJeQ2QJGuMGGAR-jNkFUsX7sk",
       "name": "串八珍 靖国店",
       "basicInfoState": "source_matched",
@@ -42735,24 +41513,6 @@
         "featuredDishes",
         "openingHours",
         "lunchBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1015
-    },
-    {
-      "googlePlaceId": "ChIJ3yvx5j-MGGAR8s53mqFXTZM",
-      "name": "天鴻餃子房 水道橋店",
-      "basicInfoState": "source_matched",
-      "distanceMeters": 569,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
       ],
       "nextAction": "collect_strict_recommended_dishes",
       "priorityScore": 1015
@@ -43725,24 +42485,6 @@
       "priorityScore": 1015
     },
     {
-      "googlePlaceId": "ChIJ6ZXq3RqMGGARJ2QQ0TvtC4o",
-      "name": "興隆",
-      "basicInfoState": "source_matched",
-      "distanceMeters": 657,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1015
-    },
-    {
       "googlePlaceId": "ChIJOXYv3aqNGGAR9AiqI56sdIw",
       "name": "The Diner ザ ダイナー",
       "basicInfoState": "source_matched",
@@ -43754,24 +42496,6 @@
         "recommendedDishes",
         "openingHours",
         "lunchBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1015
-    },
-    {
-      "googlePlaceId": "ChIJN9mduz-MGGARWs6kNg-Hmq0",
-      "name": "Ebrietas",
-      "basicInfoState": "source_matched",
-      "distanceMeters": 662,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
       ],
       "nextAction": "collect_strict_recommended_dishes",
       "priorityScore": 1015
@@ -44015,24 +42739,6 @@
         "recommendedDishes",
         "openingHours",
         "lunchBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1015
-    },
-    {
-      "googlePlaceId": "ChIJt8WVrz-MGGAR4pzfwL13RbA",
-      "name": "Tomy Grill",
-      "basicInfoState": "source_matched",
-      "distanceMeters": 684,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
       ],
       "nextAction": "collect_strict_recommended_dishes",
       "priorityScore": 1015
@@ -44436,24 +43142,6 @@
       "priorityScore": 1015
     },
     {
-      "googlePlaceId": "ChIJOa1e2gSMGGARjiOW4NjirmE",
-      "name": "EXCELSIOR CAFFÉ",
-      "basicInfoState": "source_matched",
-      "distanceMeters": 740,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1015
-    },
-    {
       "googlePlaceId": "ChIJ6btBsNKNGGARVG3CqJ0QsA4",
       "name": "Molo di Iidabashi モロ ディ イイダバシ",
       "basicInfoState": "source_matched",
@@ -44731,24 +43419,6 @@
       "priorityScore": 1015
     },
     {
-      "googlePlaceId": "ChIJfYV20zqNGGARrB2wp5fqEPo",
-      "name": "晴れ舞亭 水道橋駅前店",
-      "basicInfoState": "source_matched",
-      "distanceMeters": 765,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1015
-    },
-    {
       "googlePlaceId": "ChIJa5swh0CMGGARoz6cmRPR6Iw",
       "name": "大衆馬肉酒場 冨士山 水道橋",
       "basicInfoState": "source_matched",
@@ -44766,46 +43436,10 @@
       "priorityScore": 1015
     },
     {
-      "googlePlaceId": "ChIJq6qufj-MGGAR8NpWwFmBEjA",
-      "name": "銀月 水道橋店",
-      "basicInfoState": "source_matched",
-      "distanceMeters": 767,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1015
-    },
-    {
       "googlePlaceId": "ChIJ2-RzBT-MGGARQRlhPs95JJs",
       "name": "おっこん",
       "basicInfoState": "source_matched",
       "distanceMeters": 769,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1015
-    },
-    {
-      "googlePlaceId": "ChIJzdGFLRqMGGAR3t3hMZeXnQ8",
-      "name": "Starbucks",
-      "basicInfoState": "source_matched",
-      "distanceMeters": 772,
       "sourceUrlCount": 1,
       "recommendedDishesKnown": 0,
       "featuredDishesKnown": 0,
@@ -44900,24 +43534,6 @@
         "featuredDishes",
         "openingHours",
         "lunchBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1015
-    },
-    {
-      "googlePlaceId": "ChIJt4wzYwCNGGARPhkY7e5jstg",
-      "name": "とんかつ まい泉食堂 エキュートエディション御茶ノ水店",
-      "basicInfoState": "source_matched",
-      "distanceMeters": 785,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
       ],
       "nextAction": "collect_strict_recommended_dishes",
       "priorityScore": 1015
@@ -45076,24 +43692,6 @@
       "priorityScore": 1015
     },
     {
-      "googlePlaceId": "ChIJNcCsZD-MGGAR4lPFJuomPoc",
-      "name": "Torikizoku",
-      "basicInfoState": "source_matched",
-      "distanceMeters": 804,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1015
-    },
-    {
       "googlePlaceId": "ChIJQf62hECMGGARQCe1nVhSPZM",
       "name": "浦島たろう",
       "basicInfoState": "source_matched",
@@ -45198,24 +43796,6 @@
       "priorityScore": 1015
     },
     {
-      "googlePlaceId": "ChIJFzuCSRuMGGAR_YI1oNrtOBk",
-      "name": "Iwakura",
-      "basicInfoState": "source_matched",
-      "distanceMeters": 816,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1015
-    },
-    {
       "googlePlaceId": "ChIJN9mduz-MGGAR53bCFr3JZro",
       "name": "SAPANA サパナ 水道橋駅西口店",
       "basicInfoState": "source_matched",
@@ -45228,24 +43808,6 @@
         "featuredDishes",
         "openingHours",
         "lunchBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1015
-    },
-    {
-      "googlePlaceId": "ChIJzbh-BgCNGGARYOcIF_C_Og8",
-      "name": "Livevillageアポロ",
-      "basicInfoState": "source_matched",
-      "distanceMeters": 821,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
       ],
       "nextAction": "collect_strict_recommended_dishes",
       "priorityScore": 1015
@@ -45372,24 +43934,6 @@
       "priorityScore": 1015
     },
     {
-      "googlePlaceId": "ChIJPWPIH8uNGGARfXYRFT88yI4",
-      "name": "BOUL'ANGE",
-      "basicInfoState": "source_matched",
-      "distanceMeters": 827,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1015
-    },
-    {
       "googlePlaceId": "ChIJeQvERXyNGGARbLBGmh3OONw",
       "name": "Hifumi",
       "basicInfoState": "source_matched",
@@ -45412,24 +43956,6 @@
       "name": "Restaurant Mari",
       "basicInfoState": "source_matched",
       "distanceMeters": 828,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1015
-    },
-    {
-      "googlePlaceId": "ChIJnYWupOGNGGARbJXrXzGrfL4",
-      "name": "STORIARE",
-      "basicInfoState": "source_matched",
-      "distanceMeters": 829,
       "sourceUrlCount": 1,
       "recommendedDishesKnown": 0,
       "featuredDishesKnown": 0,
@@ -45524,24 +44050,6 @@
         "featuredDishes",
         "openingHours",
         "lunchBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1015
-    },
-    {
-      "googlePlaceId": "ChIJ6yYj7UCMGGARU3KFs2Xt7oA",
-      "name": "Sunday",
-      "basicInfoState": "source_matched",
-      "distanceMeters": 845,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
       ],
       "nextAction": "collect_strict_recommended_dishes",
       "priorityScore": 1015
@@ -45860,24 +44368,6 @@
       "priorityScore": 1015
     },
     {
-      "googlePlaceId": "ChIJa8kQmgSMGGARv-J7qr2iU6Y",
-      "name": "Ottotto BREWERY Awajicho",
-      "basicInfoState": "source_matched",
-      "distanceMeters": 884,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1015
-    },
-    {
       "googlePlaceId": "ChIJK3qS1eyNGGAR485YnepztfQ",
       "name": "BAR UDAN バー ウダン",
       "basicInfoState": "source_matched",
@@ -46015,64 +44505,10 @@
       "priorityScore": 1015
     },
     {
-      "googlePlaceId": "ChIJJ6tEexuMGGARDEcrWig0q68",
-      "name": "WIZ CRAFT BEER and FOOD",
-      "basicInfoState": "source_matched",
-      "distanceMeters": 900,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1015
-    },
-    {
       "googlePlaceId": "ChIJp5DhBQ2NGGARIzyIvtbL5o0",
       "name": "Grand Pyramid",
       "basicInfoState": "source_matched",
       "distanceMeters": 901,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1015
-    },
-    {
-      "googlePlaceId": "ChIJeVvqqgSMGGARKrc6kVNUBh4",
-      "name": "Starbucks",
-      "basicInfoState": "source_matched",
-      "distanceMeters": 902,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1015
-    },
-    {
-      "googlePlaceId": "ChIJAR7nSz-MGGARJYw4ZhU5ACM",
-      "name": "Sizzler",
-      "basicInfoState": "source_matched",
-      "distanceMeters": 905,
       "sourceUrlCount": 1,
       "recommendedDishesKnown": 0,
       "featuredDishesKnown": 0,
@@ -46312,24 +44748,6 @@
       "priorityScore": 1015
     },
     {
-      "googlePlaceId": "ChIJLdDA4HiNGGARCcHyQmvL0OI",
-      "name": "701",
-      "basicInfoState": "source_matched",
-      "distanceMeters": 922,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1015
-    },
-    {
       "googlePlaceId": "ChIJq34Y2j6MGGARKs_ajkmmtrc",
       "name": "菩提樹",
       "basicInfoState": "source_matched",
@@ -46347,42 +44765,6 @@
       "priorityScore": 1015
     },
     {
-      "googlePlaceId": "ChIJze_wuziMGGARs8AF2bTE844",
-      "name": "Dining Deux Mil",
-      "basicInfoState": "source_matched",
-      "distanceMeters": 925,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1015
-    },
-    {
-      "googlePlaceId": "ChIJze_wuziMGGARXf982hMOZgc",
-      "name": "Rilassa",
-      "basicInfoState": "source_matched",
-      "distanceMeters": 927,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1015
-    },
-    {
       "googlePlaceId": "ChIJ-Tl-7xuMGGARoFHeidLo0ns",
       "name": "Bar野澤",
       "basicInfoState": "source_matched",
@@ -46395,24 +44777,6 @@
         "featuredDishes",
         "openingHours",
         "lunchBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1015
-    },
-    {
-      "googlePlaceId": "ChIJkbshpxyMGGAR8ZbEJnuVf5o",
-      "name": "Orchard Knight",
-      "basicInfoState": "source_matched",
-      "distanceMeters": 932,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
       ],
       "nextAction": "collect_strict_recommended_dishes",
       "priorityScore": 1015
@@ -46574,24 +44938,6 @@
       "priorityScore": 1015
     },
     {
-      "googlePlaceId": "ChIJWasr3beNGGARKiqrzJ4rEJU",
-      "name": "伝統火鍋 佳樹園",
-      "basicInfoState": "source_matched",
-      "distanceMeters": 945,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1015
-    },
-    {
       "googlePlaceId": "ChIJXYK4EEGMGGARUFNXeUzrLDg",
       "name": "カルーザル",
       "basicInfoState": "source_matched",
@@ -46611,24 +44957,6 @@
     {
       "googlePlaceId": "ChIJQyg2WQOMGGARWGwc25WSAQE",
       "name": "Sushi Aoi",
-      "basicInfoState": "source_matched",
-      "distanceMeters": 947,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1015
-    },
-    {
-      "googlePlaceId": "ChIJR4S21j6MGGARgaW6uQAhVDM",
-      "name": "たかの家水道橋店",
       "basicInfoState": "source_matched",
       "distanceMeters": 947,
       "sourceUrlCount": 1,
@@ -46797,24 +45125,6 @@
       "priorityScore": 1015
     },
     {
-      "googlePlaceId": "ChIJOYjSZgOMGGARgpKN-7Nxyog",
-      "name": "AKL Curry and Bar",
-      "basicInfoState": "source_matched",
-      "distanceMeters": 957,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1015
-    },
-    {
       "googlePlaceId": "ChIJJS9BPgCNGGAR90vpFuQ1ONU",
       "name": "集い処Key",
       "basicInfoState": "source_matched",
@@ -46884,24 +45194,6 @@
       "priorityScore": 1015
     },
     {
-      "googlePlaceId": "ChIJjaoSjDmNGGAR3iFPzRFPy0E",
-      "name": "佳樹園",
-      "basicInfoState": "source_matched",
-      "distanceMeters": 968,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1015
-    },
-    {
       "googlePlaceId": "ChIJHSuxoNqNGGARSz9EYrZT3Ss",
       "name": "レストラン ケイダンレン",
       "basicInfoState": "source_matched",
@@ -46960,24 +45252,6 @@
       "name": "Baskin-Robbins",
       "basicInfoState": "source_matched",
       "distanceMeters": 977,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1015
-    },
-    {
-      "googlePlaceId": "ChIJtyF-UgCNGGARttipJb5Vc-k",
-      "name": "デニーズ 東京ドームシティ店",
-      "basicInfoState": "source_matched",
-      "distanceMeters": 979,
       "sourceUrlCount": 1,
       "recommendedDishesKnown": 0,
       "featuredDishesKnown": 0,
@@ -47130,42 +45404,6 @@
       "priorityScore": 1015
     },
     {
-      "googlePlaceId": "ChIJN43AC9KNGGARqhKvBwkG2qM",
-      "name": "酒処 魚肴",
-      "basicInfoState": "source_matched",
-      "distanceMeters": 991,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1015
-    },
-    {
-      "googlePlaceId": "ChIJGQNQ2EWNGGARabtsJ9yxNyY",
-      "name": "DANNY CHURROS TOKYO",
-      "basicInfoState": "source_matched",
-      "distanceMeters": 992,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1015
-    },
-    {
       "googlePlaceId": "ChIJ6yIkdqmNGGARnQbZMLDoNX8",
       "name": "東依（とうい） / 都市の茶室",
       "basicInfoState": "source_matched",
@@ -47272,46 +45510,10 @@
       "priorityScore": 1015
     },
     {
-      "googlePlaceId": "ChIJv9PQxOSNGGARaAHELx3znPo",
-      "name": "The 3rd Burger Otemachi One",
-      "basicInfoState": "source_matched",
-      "distanceMeters": 998,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1015
-    },
-    {
       "googlePlaceId": "ChIJKQd-go2NGGAR3P4QE_MC5ow",
       "name": "グリルやまだ 大手町店",
       "basicInfoState": "source_matched",
       "distanceMeters": 999,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1015
-    },
-    {
-      "googlePlaceId": "ChIJ0-GKX3qNGGARCuvbAbAU9B0",
-      "name": "THE LOUNGE",
-      "basicInfoState": "source_matched",
-      "distanceMeters": 1000,
       "sourceUrlCount": 1,
       "recommendedDishesKnown": 0,
       "featuredDishesKnown": 0,
@@ -47464,62 +45666,8 @@
       "priorityScore": 1015
     },
     {
-      "googlePlaceId": "ChIJaWTGbgCNGGARtQOwZEga_oM",
-      "name": "台湾点心とビール 恒久飯店",
-      "basicInfoState": "source_matched",
-      "distanceMeters": 1016,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1015
-    },
-    {
-      "googlePlaceId": "ChIJZbhA1kOMGGARfQGWonpVMPM",
-      "name": "Cafe Plat",
-      "basicInfoState": "source_matched",
-      "distanceMeters": 1017,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1015
-    },
-    {
       "googlePlaceId": "ChIJ9TsbQzyMGGARGNkQ4gvzxy8",
       "name": "Bar de Piratas",
-      "basicInfoState": "source_matched",
-      "distanceMeters": 1018,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1015
-    },
-    {
-      "googlePlaceId": "ChIJyUmbMxaNGGARhbdoEnprY8w",
-      "name": "Pigneto",
       "basicInfoState": "source_matched",
       "distanceMeters": 1018,
       "sourceUrlCount": 1,
@@ -47653,42 +45801,6 @@
         "featuredDishes",
         "openingHours",
         "lunchBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1015
-    },
-    {
-      "googlePlaceId": "ChIJVx1Kz82NGGAR3NC7LkEPBOQ",
-      "name": "人形町田酔 大手庵",
-      "basicInfoState": "source_matched",
-      "distanceMeters": 1027,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1015
-    },
-    {
-      "googlePlaceId": "ChIJRbn_gXyNGGARdfFDUzphAIY",
-      "name": "AMATERRACE",
-      "basicInfoState": "source_matched",
-      "distanceMeters": 1028,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
       ],
       "nextAction": "collect_strict_recommended_dishes",
       "priorityScore": 1015
@@ -47849,24 +45961,6 @@
       "priorityScore": 1015
     },
     {
-      "googlePlaceId": "ChIJg7gu28iNGGAR_gLo8HhMMXc",
-      "name": "CRISP SALAD WORKS",
-      "basicInfoState": "source_matched",
-      "distanceMeters": 1041,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1015
-    },
-    {
       "googlePlaceId": "ChIJTfH86l-NGGARZ6su3jr-CHs",
       "name": "canade",
       "basicInfoState": "source_matched",
@@ -47966,24 +46060,6 @@
         "featuredDishes",
         "openingHours",
         "lunchBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1015
-    },
-    {
-      "googlePlaceId": "ChIJbR57HVCNGGARzVRZXQjjbGM",
-      "name": "Plus1 coffee",
-      "basicInfoState": "source_matched",
-      "distanceMeters": 1051,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
       ],
       "nextAction": "collect_strict_recommended_dishes",
       "priorityScore": 1015
@@ -48292,42 +46368,6 @@
         "featuredDishes",
         "openingHours",
         "lunchBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1015
-    },
-    {
-      "googlePlaceId": "ChIJTSMMw0eMGGARUh1lFCWlDbg",
-      "name": "TGI Fridays Tokyo Dome City",
-      "basicInfoState": "source_matched",
-      "distanceMeters": 1074,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1015
-    },
-    {
-      "googlePlaceId": "ChIJZychXwCNGGARKqLV99CEQik",
-      "name": "京風親子丼 木曜日",
-      "basicInfoState": "source_matched",
-      "distanceMeters": 1074,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
       ],
       "nextAction": "collect_strict_recommended_dishes",
       "priorityScore": 1015
@@ -48683,24 +46723,6 @@
       "priorityScore": 1015
     },
     {
-      "googlePlaceId": "ChIJC5nF0AeMGGARePD5dsnR-Cw",
-      "name": "Triple One",
-      "basicInfoState": "source_matched",
-      "distanceMeters": 1118,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1015
-    },
-    {
       "googlePlaceId": "ChIJ39SK5fqNGGARTwXVGqFR-rM",
       "name": "Sta. Kanda",
       "basicInfoState": "source_matched",
@@ -48822,24 +46844,6 @@
       "priorityScore": 1015
     },
     {
-      "googlePlaceId": "ChIJKWOCLaONGGARk-woguOOhfU",
-      "name": "Panda",
-      "basicInfoState": "source_matched",
-      "distanceMeters": 1134,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1015
-    },
-    {
       "googlePlaceId": "ChIJL_jA9QGNGGAR2D2A1e8uMFc",
       "name": "カラオケbar LALA",
       "basicInfoState": "source_matched",
@@ -48874,46 +46878,10 @@
       "priorityScore": 1015
     },
     {
-      "googlePlaceId": "ChIJr7NvRByMGGARXB7b_r7cwNY",
-      "name": "HERO'S Akihabara",
-      "basicInfoState": "source_matched",
-      "distanceMeters": 1137,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1015
-    },
-    {
       "googlePlaceId": "ChIJq6pOQwGMGGARMqj1X1TiE4w",
       "name": "ワインバル パルプンテ",
       "basicInfoState": "source_matched",
       "distanceMeters": 1141,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1015
-    },
-    {
-      "googlePlaceId": "ChIJoeT3YD-NGGAR3eHpfh3C_Jw",
-      "name": "GARB Cheers OTEMACHI",
-      "basicInfoState": "source_matched",
-      "distanceMeters": 1142,
       "sourceUrlCount": 1,
       "recommendedDishesKnown": 0,
       "featuredDishesKnown": 0,
@@ -49083,24 +47051,6 @@
       "priorityScore": 1015
     },
     {
-      "googlePlaceId": "ChIJ_9kEMwGMGGARW5CQDNNjDZA",
-      "name": "Colazione Vario",
-      "basicInfoState": "source_matched",
-      "distanceMeters": 1151,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1015
-    },
-    {
       "googlePlaceId": "ChIJb2QFkiKMGGARJ_eRQQ6BYSk",
       "name": "MALIKA マリカ 湯島店",
       "basicInfoState": "source_matched",
@@ -49199,24 +47149,6 @@
         "featuredDishes",
         "openingHours",
         "lunchBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1015
-    },
-    {
-      "googlePlaceId": "ChIJcQRLAH6NGGARjkv1QFBxBWA",
-      "name": "鳥貴族飯田橋東口店",
-      "basicInfoState": "source_matched",
-      "distanceMeters": 1158,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
       ],
       "nextAction": "collect_strict_recommended_dishes",
       "priorityScore": 1015
@@ -49644,24 +47576,6 @@
       "priorityScore": 1015
     },
     {
-      "googlePlaceId": "ChIJpfBVfQCNGGARX3UP4wURDQI",
-      "name": "焼き鳥 軒 Ken",
-      "basicInfoState": "source_matched",
-      "distanceMeters": 1174,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1015
-    },
-    {
       "googlePlaceId": "ChIJrWUwl0KNGGARdtOGZ3R6cs4",
       "name": "居酒屋 だしのや 飯田橋本店",
       "basicInfoState": "source_matched",
@@ -49851,24 +47765,6 @@
       "priorityScore": 1015
     },
     {
-      "googlePlaceId": "ChIJHVRonXSNGGARQdhl6ZewNaI",
-      "name": "木花はなれ",
-      "basicInfoState": "source_matched",
-      "distanceMeters": 1181,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1015
-    },
-    {
       "googlePlaceId": "ChIJhXD3-AaMGGAR6zi8VRcYmLs",
       "name": "やきとり宮川 大手町",
       "basicInfoState": "source_matched",
@@ -49937,24 +47833,6 @@
       "priorityScore": 1015
     },
     {
-      "googlePlaceId": "ChIJQfrauD6NGGARfDcOJANiPEY",
-      "name": "Hanoi Kanda",
-      "basicInfoState": "source_matched",
-      "distanceMeters": 1186,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1015
-    },
-    {
       "googlePlaceId": "ChIJHRDZbgGMGGAR1KSEWVZFgDw",
       "name": "うなぎ処 おお葉",
       "basicInfoState": "source_matched",
@@ -50008,24 +47886,6 @@
       "name": "9INETY4OUR Sports and Music Bar",
       "basicInfoState": "source_matched",
       "distanceMeters": 1189,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1015
-    },
-    {
-      "googlePlaceId": "ChIJiz6kV1GNGGARtjSxujomqZA",
-      "name": "神田 タンだけ",
-      "basicInfoState": "source_matched",
-      "distanceMeters": 1190,
       "sourceUrlCount": 1,
       "recommendedDishesKnown": 0,
       "featuredDishesKnown": 0,
@@ -52763,6 +50623,20 @@
       "priorityScore": 1000
     },
     {
+      "googlePlaceId": "ChIJbTOaERGMGGARRbVxba8mOck",
+      "name": "Bistro Liberté",
+      "basicInfoState": "canonical",
+      "distanceMeters": 150,
+      "sourceUrlCount": 3,
+      "recommendedDishesKnown": 2,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 730
+    },
+    {
       "googlePlaceId": "ChIJhYC5NhGMGGARYMx7p3ySob8",
       "name": "こんごう庵 神保町店",
       "basicInfoState": "canonical",
@@ -52777,12 +50651,29 @@
       "priorityScore": 730
     },
     {
+      "googlePlaceId": "ChIJe49KxxWMGGAR4qS4zBvOWr8",
+      "name": "シリ バラジ",
+      "basicInfoState": "canonical",
+      "distanceMeters": 365,
+      "sourceUrlCount": 3,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "openingHours",
+        "dinnerBudget",
+        "address"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 730
+    },
+    {
       "googlePlaceId": "ChIJ_e5g3SCNGGAR6qW5ceaLoco",
       "name": "お茶の水 鳥どり",
       "basicInfoState": "canonical",
       "distanceMeters": 673,
       "sourceUrlCount": 3,
-      "recommendedDishesKnown": 1,
+      "recommendedDishesKnown": 3,
       "featuredDishesKnown": 0,
       "gaps": [
         "featuredDishes",
@@ -52790,6 +50681,77 @@
       ],
       "nextAction": "collect_source_backed_featured_dishes",
       "priorityScore": 730
+    },
+    {
+      "googlePlaceId": "ChIJe4ebpD-MGGARksrpQ0_0cLs",
+      "name": "焼肉京城",
+      "basicInfoState": "canonical",
+      "distanceMeters": 684,
+      "sourceUrlCount": 3,
+      "recommendedDishesKnown": 2,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "lunchBudget"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 730
+    },
+    {
+      "googlePlaceId": "ChIJtRVuPxuMGGARS3pDVvNhcGk",
+      "name": "季の庭 神田店",
+      "basicInfoState": "canonical",
+      "distanceMeters": 810,
+      "sourceUrlCount": 3,
+      "recommendedDishesKnown": 2,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 730
+    },
+    {
+      "googlePlaceId": "ChIJi5u1tneNGGARfvILlFasCqI",
+      "name": "横浜家系ラーメン 麺家 福増",
+      "basicInfoState": "canonical",
+      "distanceMeters": 73,
+      "sourceUrlCount": 2,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 720
+    },
+    {
+      "googlePlaceId": "ChIJc5NiOxGMGGARL8jOKrnIR5c",
+      "name": "スマトラカレー 共栄堂",
+      "basicInfoState": "canonical",
+      "distanceMeters": 163,
+      "sourceUrlCount": 2,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 720
+    },
+    {
+      "googlePlaceId": "ChIJbTtuHuiNGGARBrcnzLyb6kg",
+      "name": "喫茶トお酒 襤褸",
+      "basicInfoState": "canonical",
+      "distanceMeters": 207,
+      "sourceUrlCount": 2,
+      "recommendedDishesKnown": 2,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 720
     },
     {
       "googlePlaceId": "ChIJk8bIIBGMGGARU0MztWZkDEc",
@@ -52807,6 +50769,213 @@
       "priorityScore": 720
     },
     {
+      "googlePlaceId": "ChIJ81Ua8xCMGGARMrzeHYIaVbg",
+      "name": "神田たまごけん神保町店",
+      "basicInfoState": "canonical",
+      "distanceMeters": 330,
+      "sourceUrlCount": 2,
+      "recommendedDishesKnown": 2,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "openingHours",
+        "address"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 720
+    },
+    {
+      "googlePlaceId": "ChIJHdflUQCNGGAR1yV32-VceT0",
+      "name": "お茶の水、大勝軒",
+      "basicInfoState": "canonical",
+      "distanceMeters": 428,
+      "sourceUrlCount": 2,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 720
+    },
+    {
+      "googlePlaceId": "ChIJmXw7jBqMGGARZUMVX_vrOE8",
+      "name": "ビストロクルル",
+      "basicInfoState": "canonical",
+      "distanceMeters": 546,
+      "sourceUrlCount": 2,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget",
+        "address"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 720
+    },
+    {
+      "googlePlaceId": "ChIJAQAAZBuMGGARiAS9STYZnRk",
+      "name": "小料理 小鈴",
+      "basicInfoState": "canonical",
+      "distanceMeters": 788,
+      "sourceUrlCount": 2,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 720
+    },
+    {
+      "googlePlaceId": "ChIJZxoEOfeNGGARBnqCJhamags",
+      "name": "CAFÉ 33",
+      "basicInfoState": "canonical",
+      "distanceMeters": 841,
+      "sourceUrlCount": 2,
+      "recommendedDishesKnown": 2,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 720
+    },
+    {
+      "googlePlaceId": "ChIJG4bwugSMGGARuz8X6hPQM8Y",
+      "name": "ルノアール 神田淡路町店",
+      "basicInfoState": "canonical",
+      "distanceMeters": 855,
+      "sourceUrlCount": 2,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 720
+    },
+    {
+      "googlePlaceId": "ChIJjdmff6KNGGARf1NV0O_Nmug",
+      "name": "Osteria NORA",
+      "basicInfoState": "canonical",
+      "distanceMeters": 982,
+      "sourceUrlCount": 2,
+      "recommendedDishesKnown": 2,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 720
+    },
+    {
+      "googlePlaceId": "ChIJgf3tagGMGGARkEwmHXAshfQ",
+      "name": "かぶき本店",
+      "basicInfoState": "canonical",
+      "distanceMeters": 1182,
+      "sourceUrlCount": 2,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "lunchBudget"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 720
+    },
+    {
+      "googlePlaceId": "ChIJ3woP4BCMGGAR_rK6Rw0LqWA",
+      "name": "Starbucks",
+      "basicInfoState": "source_matched",
+      "distanceMeters": 32,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
+      "googlePlaceId": "ChIJbwAATwCNGGARQwDbKm46DFQ",
+      "name": "メナムのほとり",
+      "basicInfoState": "source_matched",
+      "distanceMeters": 41,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
+      "googlePlaceId": "ChIJDeuuVZ2NGGARTWXdulgEqs8",
+      "name": "FLO PRESTIGE",
+      "basicInfoState": "source_matched",
+      "distanceMeters": 53,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 2,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
+      "googlePlaceId": "ChIJ84dsN4GNGGARA0ZhQbDjBV0",
+      "name": "Beer Bar & Cafe Terrace ALE",
+      "basicInfoState": "source_matched",
+      "distanceMeters": 83,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 2,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
+      "googlePlaceId": "ChIJASnkQRGMGGARVQygd0w2WRI",
+      "name": "Tam Tam",
+      "basicInfoState": "source_matched",
+      "distanceMeters": 105,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 2,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
       "googlePlaceId": "ChIJnc1e6BOMGGARyZleZlJnxOY",
       "name": "手打蕎麦 たかせ",
       "basicInfoState": "source_matched",
@@ -52818,6 +50987,23 @@
         "featuredDishes",
         "openingHours",
         "lunchBudget"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
+      "googlePlaceId": "ChIJbZhZ3RiNGGARoHd7nfzoBuc",
+      "name": "ゆにおん食堂",
+      "basicInfoState": "source_matched",
+      "distanceMeters": 148,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 2,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
       ],
       "nextAction": "collect_source_backed_featured_dishes",
       "priorityScore": 710
@@ -52849,6 +51035,141 @@
       "gaps": [
         "featuredDishes",
         "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
+      "googlePlaceId": "ChIJu78sNRSMGGAR3ajbXKR3f08",
+      "name": "edge",
+      "basicInfoState": "source_matched",
+      "distanceMeters": 275,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
+      "googlePlaceId": "ChIJicJ6DTyNGGARee3lt0LagIU",
+      "name": "上島珈琲店神保町店",
+      "basicInfoState": "source_matched",
+      "distanceMeters": 283,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
+      "googlePlaceId": "ChIJ4y_vMRCMGGARaKV_ayhOMzE",
+      "name": "メナムのほとり 神保町テラススクエア店",
+      "basicInfoState": "source_matched",
+      "distanceMeters": 333,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
+      "googlePlaceId": "ChIJm465MhCMGGARwiSrvbH-YVE",
+      "name": "GARB pintino",
+      "basicInfoState": "source_matched",
+      "distanceMeters": 335,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 2,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
+      "googlePlaceId": "ChIJ5ZzWHQ6MGGARs0xILkJsbdI",
+      "name": "マーキュリー",
+      "basicInfoState": "source_matched",
+      "distanceMeters": 456,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 2,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
+      "googlePlaceId": "ChIJU-bJQwCNGGARG2tj8zrf1F0",
+      "name": "讃岐うどん",
+      "basicInfoState": "source_matched",
+      "distanceMeters": 545,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
+      "googlePlaceId": "ChIJ3yvx5j-MGGAR8s53mqFXTZM",
+      "name": "天鴻餃子房 水道橋店",
+      "basicInfoState": "source_matched",
+      "distanceMeters": 569,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
+      "googlePlaceId": "ChIJoUfFe9KNGGARFzs_SomCDXE",
+      "name": "Indian Street Food & Bar GOND",
+      "basicInfoState": "canonical",
+      "distanceMeters": 572,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
         "lunchBudget",
         "dinnerBudget"
       ],
@@ -52904,6 +51225,75 @@
       "priorityScore": 710
     },
     {
+      "googlePlaceId": "ChIJ6ZXq3RqMGGARJ2QQ0TvtC4o",
+      "name": "興隆",
+      "basicInfoState": "source_matched",
+      "distanceMeters": 657,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 2,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
+      "googlePlaceId": "ChIJN9mduz-MGGARWs6kNg-Hmq0",
+      "name": "Ebrietas",
+      "basicInfoState": "source_matched",
+      "distanceMeters": 662,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
+      "googlePlaceId": "ChIJt8WVrz-MGGAR4pzfwL13RbA",
+      "name": "Tomy Grill",
+      "basicInfoState": "source_matched",
+      "distanceMeters": 684,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
+      "googlePlaceId": "ChIJKV27XcWNGGARUMPjYkQlDlQ",
+      "name": "Think Coffee",
+      "basicInfoState": "canonical",
+      "distanceMeters": 696,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget",
+        "address"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
       "googlePlaceId": "ChIJ__1DDgWMGGARZLq0mJwBbuk",
       "name": "神田錦町 すしわさび 離れ",
       "basicInfoState": "source_matched",
@@ -52936,12 +51326,114 @@
       "priorityScore": 710
     },
     {
+      "googlePlaceId": "ChIJOa1e2gSMGGARjiOW4NjirmE",
+      "name": "EXCELSIOR CAFFÉ",
+      "basicInfoState": "source_matched",
+      "distanceMeters": 740,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 2,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
+      "googlePlaceId": "ChIJfYV20zqNGGARrB2wp5fqEPo",
+      "name": "晴れ舞亭 水道橋駅前店",
+      "basicInfoState": "source_matched",
+      "distanceMeters": 765,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 2,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
+      "googlePlaceId": "ChIJq6qufj-MGGAR8NpWwFmBEjA",
+      "name": "銀月 水道橋店",
+      "basicInfoState": "source_matched",
+      "distanceMeters": 767,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
+      "googlePlaceId": "ChIJzdGFLRqMGGAR3t3hMZeXnQ8",
+      "name": "Starbucks",
+      "basicInfoState": "source_matched",
+      "distanceMeters": 772,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
+      "googlePlaceId": "ChIJt4wzYwCNGGARPhkY7e5jstg",
+      "name": "とんかつ まい泉食堂 エキュートエディション御茶ノ水店",
+      "basicInfoState": "source_matched",
+      "distanceMeters": 785,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 2,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
       "googlePlaceId": "ChIJx-Bnc5eNGGARdulQm0LmYZg",
       "name": "とんかつ まい泉食堂 エキュートエディション御茶ノ水店",
       "basicInfoState": "source_matched",
       "distanceMeters": 785,
       "sourceUrlCount": 1,
       "recommendedDishesKnown": 2,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
+      "googlePlaceId": "ChIJNcCsZD-MGGAR4lPFJuomPoc",
+      "name": "Torikizoku",
+      "basicInfoState": "source_matched",
+      "distanceMeters": 804,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 1,
       "featuredDishesKnown": 0,
       "gaps": [
         "featuredDishes",
@@ -52969,6 +51461,40 @@
       "priorityScore": 710
     },
     {
+      "googlePlaceId": "ChIJFzuCSRuMGGAR_YI1oNrtOBk",
+      "name": "Iwakura",
+      "basicInfoState": "source_matched",
+      "distanceMeters": 816,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 2,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
+      "googlePlaceId": "ChIJzbh-BgCNGGARYOcIF_C_Og8",
+      "name": "Livevillageアポロ",
+      "basicInfoState": "source_matched",
+      "distanceMeters": 821,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
       "googlePlaceId": "ChIJd1bHHj-MGGARvtgBj7SGCUQ",
       "name": "TOKYO MERCATO 東京 メルカート 東京ドームシティ店",
       "basicInfoState": "source_matched",
@@ -52980,6 +51506,57 @@
         "featuredDishes",
         "openingHours",
         "lunchBudget"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
+      "googlePlaceId": "ChIJPWPIH8uNGGARfXYRFT88yI4",
+      "name": "BOUL'ANGE",
+      "basicInfoState": "source_matched",
+      "distanceMeters": 827,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
+      "googlePlaceId": "ChIJnYWupOGNGGARbJXrXzGrfL4",
+      "name": "STORIARE",
+      "basicInfoState": "source_matched",
+      "distanceMeters": 829,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 2,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
+      "googlePlaceId": "ChIJ6yYj7UCMGGARU3KFs2Xt7oA",
+      "name": "Sunday",
+      "basicInfoState": "source_matched",
+      "distanceMeters": 845,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
       ],
       "nextAction": "collect_source_backed_featured_dishes",
       "priorityScore": 710
@@ -53001,6 +51578,40 @@
       "priorityScore": 710
     },
     {
+      "googlePlaceId": "ChIJa8kQmgSMGGARv-J7qr2iU6Y",
+      "name": "Ottotto BREWERY Awajicho",
+      "basicInfoState": "source_matched",
+      "distanceMeters": 884,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 2,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
+      "googlePlaceId": "ChIJJ6tEexuMGGARDEcrWig0q68",
+      "name": "WIZ CRAFT BEER and FOOD",
+      "basicInfoState": "source_matched",
+      "distanceMeters": 900,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 2,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
       "googlePlaceId": "ChIJT2ArXBuMGGAR1klJs6yNOZU",
       "name": "多福楼",
       "basicInfoState": "canonical",
@@ -53016,12 +51627,165 @@
       "priorityScore": 710
     },
     {
+      "googlePlaceId": "ChIJeVvqqgSMGGARKrc6kVNUBh4",
+      "name": "Starbucks",
+      "basicInfoState": "source_matched",
+      "distanceMeters": 902,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
+      "googlePlaceId": "ChIJAR7nSz-MGGARJYw4ZhU5ACM",
+      "name": "Sizzler",
+      "basicInfoState": "source_matched",
+      "distanceMeters": 905,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 2,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
+      "googlePlaceId": "ChIJLdDA4HiNGGARCcHyQmvL0OI",
+      "name": "701",
+      "basicInfoState": "source_matched",
+      "distanceMeters": 922,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
       "googlePlaceId": "ChIJze_wuziMGGARg_0-2fTCrSw",
       "name": "Yugyoan Tankuma Kitaten",
       "basicInfoState": "source_matched",
       "distanceMeters": 923,
       "sourceUrlCount": 1,
       "recommendedDishesKnown": 2,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
+      "googlePlaceId": "ChIJze_wuziMGGARs8AF2bTE844",
+      "name": "Dining Deux Mil",
+      "basicInfoState": "source_matched",
+      "distanceMeters": 925,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 2,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
+      "googlePlaceId": "ChIJze_wuziMGGARXf982hMOZgc",
+      "name": "Rilassa",
+      "basicInfoState": "source_matched",
+      "distanceMeters": 927,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 2,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
+      "googlePlaceId": "ChIJkbshpxyMGGAR8ZbEJnuVf5o",
+      "name": "Orchard Knight",
+      "basicInfoState": "source_matched",
+      "distanceMeters": 932,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 2,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
+      "googlePlaceId": "ChIJWasr3beNGGARKiqrzJ4rEJU",
+      "name": "伝統火鍋 佳樹園",
+      "basicInfoState": "source_matched",
+      "distanceMeters": 945,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 2,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
+      "googlePlaceId": "ChIJR4S21j6MGGARgaW6uQAhVDM",
+      "name": "たかの家水道橋店",
+      "basicInfoState": "source_matched",
+      "distanceMeters": 947,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 2,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
+      "googlePlaceId": "ChIJOYjSZgOMGGARgpKN-7Nxyog",
+      "name": "AKL Curry and Bar",
+      "basicInfoState": "source_matched",
+      "distanceMeters": 957,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 1,
       "featuredDishesKnown": 0,
       "gaps": [
         "featuredDishes",
@@ -53049,6 +51813,159 @@
       "priorityScore": 710
     },
     {
+      "googlePlaceId": "ChIJjaoSjDmNGGAR3iFPzRFPy0E",
+      "name": "佳樹園",
+      "basicInfoState": "source_matched",
+      "distanceMeters": 968,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 2,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
+      "googlePlaceId": "ChIJtyF-UgCNGGARttipJb5Vc-k",
+      "name": "デニーズ 東京ドームシティ店",
+      "basicInfoState": "source_matched",
+      "distanceMeters": 979,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 2,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
+      "googlePlaceId": "ChIJN43AC9KNGGARqhKvBwkG2qM",
+      "name": "酒処 魚肴",
+      "basicInfoState": "source_matched",
+      "distanceMeters": 991,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
+      "googlePlaceId": "ChIJGQNQ2EWNGGARabtsJ9yxNyY",
+      "name": "DANNY CHURROS TOKYO",
+      "basicInfoState": "source_matched",
+      "distanceMeters": 992,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
+      "googlePlaceId": "ChIJv9PQxOSNGGARaAHELx3znPo",
+      "name": "The 3rd Burger Otemachi One",
+      "basicInfoState": "source_matched",
+      "distanceMeters": 998,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
+      "googlePlaceId": "ChIJ0-GKX3qNGGARCuvbAbAU9B0",
+      "name": "THE LOUNGE",
+      "basicInfoState": "source_matched",
+      "distanceMeters": 1000,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
+      "googlePlaceId": "ChIJaWTGbgCNGGARtQOwZEga_oM",
+      "name": "台湾点心とビール 恒久飯店",
+      "basicInfoState": "source_matched",
+      "distanceMeters": 1016,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
+      "googlePlaceId": "ChIJZbhA1kOMGGARfQGWonpVMPM",
+      "name": "Cafe Plat",
+      "basicInfoState": "source_matched",
+      "distanceMeters": 1017,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
+      "googlePlaceId": "ChIJyUmbMxaNGGARhbdoEnprY8w",
+      "name": "Pigneto",
+      "basicInfoState": "source_matched",
+      "distanceMeters": 1018,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
       "googlePlaceId": "ChIJ9-ov_yKNGGARm9u7lkasJbY",
       "name": "東京餃子あかり はなれ",
       "basicInfoState": "source_matched",
@@ -53060,6 +51977,74 @@
         "featuredDishes",
         "openingHours",
         "lunchBudget"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
+      "googlePlaceId": "ChIJVx1Kz82NGGAR3NC7LkEPBOQ",
+      "name": "人形町田酔 大手庵",
+      "basicInfoState": "source_matched",
+      "distanceMeters": 1027,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
+      "googlePlaceId": "ChIJRbn_gXyNGGARdfFDUzphAIY",
+      "name": "AMATERRACE",
+      "basicInfoState": "source_matched",
+      "distanceMeters": 1028,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 2,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
+      "googlePlaceId": "ChIJt0tydgOMGGAR5W7Uvbg--OE",
+      "name": "五ノ神水産",
+      "basicInfoState": "canonical",
+      "distanceMeters": 1032,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
+      "googlePlaceId": "ChIJg7gu28iNGGAR_gLo8HhMMXc",
+      "name": "CRISP SALAD WORKS",
+      "basicInfoState": "source_matched",
+      "distanceMeters": 1041,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
       ],
       "nextAction": "collect_source_backed_featured_dishes",
       "priorityScore": 710
@@ -53080,6 +52065,23 @@
       "priorityScore": 710
     },
     {
+      "googlePlaceId": "ChIJbR57HVCNGGARzVRZXQjjbGM",
+      "name": "Plus1 coffee",
+      "basicInfoState": "source_matched",
+      "distanceMeters": 1051,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
       "googlePlaceId": "ChIJz9KX_wOMGGARruVg61rYoMY",
       "name": "伊勢ろく",
       "basicInfoState": "canonical",
@@ -53089,6 +52091,40 @@
       "featuredDishesKnown": 0,
       "gaps": [
         "featuredDishes"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
+      "googlePlaceId": "ChIJTSMMw0eMGGARUh1lFCWlDbg",
+      "name": "TGI Fridays Tokyo Dome City",
+      "basicInfoState": "source_matched",
+      "distanceMeters": 1074,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
+      "googlePlaceId": "ChIJZychXwCNGGARKqLV99CEQik",
+      "name": "京風親子丼 木曜日",
+      "basicInfoState": "source_matched",
+      "distanceMeters": 1074,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 2,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
       ],
       "nextAction": "collect_source_backed_featured_dishes",
       "priorityScore": 710
@@ -53125,6 +52161,40 @@
       "priorityScore": 710
     },
     {
+      "googlePlaceId": "ChIJ6eEHmziMGGARZb0rRUApRm0",
+      "name": "Shake Shack",
+      "basicInfoState": "canonical",
+      "distanceMeters": 1114,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 2,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
+      "googlePlaceId": "ChIJC5nF0AeMGGARePD5dsnR-Cw",
+      "name": "Triple One",
+      "basicInfoState": "source_matched",
+      "distanceMeters": 1118,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 2,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
       "googlePlaceId": "ChIJA22OwAKNGGAR3Fv65C8wWME",
       "name": "魚匠屋 神田須田町店",
       "basicInfoState": "source_matched",
@@ -53136,6 +52206,108 @@
         "featuredDishes",
         "openingHours",
         "lunchBudget"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
+      "googlePlaceId": "ChIJKWOCLaONGGARk-woguOOhfU",
+      "name": "Panda",
+      "basicInfoState": "source_matched",
+      "distanceMeters": 1134,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
+      "googlePlaceId": "ChIJr7NvRByMGGARXB7b_r7cwNY",
+      "name": "HERO'S Akihabara",
+      "basicInfoState": "source_matched",
+      "distanceMeters": 1137,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 2,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
+      "googlePlaceId": "ChIJoeT3YD-NGGAR3eHpfh3C_Jw",
+      "name": "GARB Cheers OTEMACHI",
+      "basicInfoState": "source_matched",
+      "distanceMeters": 1142,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 2,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
+      "googlePlaceId": "ChIJ_9kEMwGMGGARW5CQDNNjDZA",
+      "name": "Colazione Vario",
+      "basicInfoState": "source_matched",
+      "distanceMeters": 1151,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
+      "googlePlaceId": "ChIJcQRLAH6NGGARjkv1QFBxBWA",
+      "name": "鳥貴族飯田橋東口店",
+      "basicInfoState": "source_matched",
+      "distanceMeters": 1158,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
+      "googlePlaceId": "ChIJ4Qh_76yNGGARjBaMH-fu1E0",
+      "name": "BLUE EGG",
+      "basicInfoState": "canonical",
+      "distanceMeters": 1160,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 2,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
       ],
       "nextAction": "collect_source_backed_featured_dishes",
       "priorityScore": 710
@@ -53174,6 +52346,107 @@
       "priorityScore": 710
     },
     {
+      "googlePlaceId": "ChIJ3YYa0BiMGGARyr30I7B41yE",
+      "name": "Porco Piatto",
+      "basicInfoState": "canonical",
+      "distanceMeters": 1170,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
+      "googlePlaceId": "ChIJ4SygCUSMGGAR5k9kG84PJi8",
+      "name": "しゃぶしゃぶ温野菜",
+      "basicInfoState": "canonical",
+      "distanceMeters": 1170,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
+      "googlePlaceId": "ChIJpfBVfQCNGGARX3UP4wURDQI",
+      "name": "焼き鳥 軒 Ken",
+      "basicInfoState": "source_matched",
+      "distanceMeters": 1174,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 2,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
+      "googlePlaceId": "ChIJxY7gPgGMGGARb9tWwbUOOxg",
+      "name": "Lamp Light",
+      "basicInfoState": "canonical",
+      "distanceMeters": 1177,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 2,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
+      "googlePlaceId": "ChIJHVRonXSNGGARQdhl6ZewNaI",
+      "name": "木花はなれ",
+      "basicInfoState": "source_matched",
+      "distanceMeters": 1181,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
+      "googlePlaceId": "ChIJQfrauD6NGGARfDcOJANiPEY",
+      "name": "Hanoi Kanda",
+      "basicInfoState": "source_matched",
+      "distanceMeters": 1186,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
       "googlePlaceId": "ChIJryNhokOMGGARRZPnE_RjgjI",
       "name": "東京餃子 あかり",
       "basicInfoState": "source_matched",
@@ -53185,6 +52458,23 @@
         "featuredDishes",
         "openingHours",
         "lunchBudget"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
+      "googlePlaceId": "ChIJiz6kV1GNGGARtjSxujomqZA",
+      "name": "神田 タンだけ",
+      "basicInfoState": "source_matched",
+      "distanceMeters": 1190,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 2,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
       ],
       "nextAction": "collect_source_backed_featured_dishes",
       "priorityScore": 710
@@ -53204,6 +52494,40 @@
       "priorityScore": 410
     },
     {
+      "googlePlaceId": "ChIJ70UfMRCMGGARvCAQcEhynic",
+      "name": "HASSO CAFFE with PRONTO",
+      "basicInfoState": "canonical",
+      "distanceMeters": 387,
+      "sourceUrlCount": 2,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 1,
+      "gaps": [
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget",
+        "address"
+      ],
+      "nextAction": "collect_opening_hours",
+      "priorityScore": 410
+    },
+    {
+      "googlePlaceId": "ChIJNRfophqMGGARU_M1YQ8LZPo",
+      "name": "成都正宗担々麺 つじ田",
+      "basicInfoState": "canonical",
+      "distanceMeters": 497,
+      "sourceUrlCount": 2,
+      "recommendedDishesKnown": 2,
+      "featuredDishesKnown": 1,
+      "gaps": [
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget",
+        "address"
+      ],
+      "nextAction": "collect_opening_hours",
+      "priorityScore": 410
+    },
+    {
       "googlePlaceId": "ChIJy0Fe3GqMGGARO8F_a1xFGfI",
       "name": "由〇",
       "basicInfoState": "canonical",
@@ -53216,6 +52540,87 @@
         "lunchBudget",
         "dinnerBudget",
         "address"
+      ],
+      "nextAction": "collect_opening_hours",
+      "priorityScore": 410
+    },
+    {
+      "googlePlaceId": "ChIJOWqVHj-MGGARZd0fgS_r3tI",
+      "name": "スターバックス コーヒー 東京ドームシティ ミーツポート店",
+      "basicInfoState": "canonical",
+      "distanceMeters": 819,
+      "sourceUrlCount": 2,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 1,
+      "gaps": [
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_opening_hours",
+      "priorityScore": 410
+    },
+    {
+      "googlePlaceId": "ChIJF37yb0GMGGAR0xtmmas5qQI",
+      "name": "なか卯",
+      "basicInfoState": "canonical",
+      "distanceMeters": 977,
+      "sourceUrlCount": 2,
+      "recommendedDishesKnown": 3,
+      "featuredDishesKnown": 1,
+      "gaps": [
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_opening_hours",
+      "priorityScore": 410
+    },
+    {
+      "googlePlaceId": "ChIJSdEMKDmMGGARyiy9F60mMLk",
+      "name": "ジョナサン",
+      "basicInfoState": "canonical",
+      "distanceMeters": 1053,
+      "sourceUrlCount": 2,
+      "recommendedDishesKnown": 2,
+      "featuredDishesKnown": 1,
+      "gaps": [
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget",
+        "address"
+      ],
+      "nextAction": "collect_opening_hours",
+      "priorityScore": 410
+    },
+    {
+      "googlePlaceId": "ChIJq30xaxyMGGARHPVzI5YnVow",
+      "name": "ココス",
+      "basicInfoState": "canonical",
+      "distanceMeters": 1106,
+      "sourceUrlCount": 2,
+      "recommendedDishesKnown": 3,
+      "featuredDishesKnown": 1,
+      "gaps": [
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_opening_hours",
+      "priorityScore": 410
+    },
+    {
+      "googlePlaceId": "ChIJAQC0dESMGGAR0VQTphLwmdw",
+      "name": "てけてけ",
+      "basicInfoState": "canonical",
+      "distanceMeters": 1183,
+      "sourceUrlCount": 2,
+      "recommendedDishesKnown": 2,
+      "featuredDishesKnown": 1,
+      "gaps": [
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
       ],
       "nextAction": "collect_opening_hours",
       "priorityScore": 410
@@ -53254,6 +52659,22 @@
       "priorityScore": 405
     },
     {
+      "googlePlaceId": "ChIJEbKEk8KNGGARQFvc7RGAZg0",
+      "name": "洋麺屋五右衛門 水道橋店",
+      "basicInfoState": "canonical",
+      "distanceMeters": 812,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 1,
+      "gaps": [
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_opening_hours",
+      "priorityScore": 405
+    },
+    {
       "googlePlaceId": "ChIJH45U0y2NGGARFO8F9X8I1nA",
       "name": "海上菜館",
       "basicInfoState": "canonical",
@@ -53269,6 +52690,216 @@
       ],
       "nextAction": "collect_opening_hours",
       "priorityScore": 400
+    },
+    {
+      "googlePlaceId": "ChIJV3V4uRSNGGARPSLntvfs_ME",
+      "name": "ラーメン豚山 神保町店",
+      "basicInfoState": "canonical",
+      "distanceMeters": 327,
+      "sourceUrlCount": 3,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 1,
+      "gaps": [
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_dinner_budget",
+      "priorityScore": 312
+    },
+    {
+      "googlePlaceId": "ChIJDUGL7RCMGGARErPxhJ7bXgc",
+      "name": "ヒナタ屋",
+      "basicInfoState": "canonical",
+      "distanceMeters": 352,
+      "sourceUrlCount": 3,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 1,
+      "gaps": [
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_dinner_budget",
+      "priorityScore": 312
+    },
+    {
+      "googlePlaceId": "ChIJb1NJHRSMGGARQHQ71gBl4Dg",
+      "name": "ドトールコーヒーショップ 神保町白山通り店",
+      "basicInfoState": "canonical",
+      "distanceMeters": 114,
+      "sourceUrlCount": 2,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 1,
+      "gaps": [
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_dinner_budget",
+      "priorityScore": 308
+    },
+    {
+      "googlePlaceId": "ChIJpevAiRSMGGARJ3j_AniCivM",
+      "name": "ドトールコーヒーショップ 神保町三丁目店",
+      "basicInfoState": "canonical",
+      "distanceMeters": 242,
+      "sourceUrlCount": 2,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 1,
+      "gaps": [
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_dinner_budget",
+      "priorityScore": 308
+    },
+    {
+      "googlePlaceId": "ChIJ09Mm5xmMGGAR6drOCC8NmEA",
+      "name": "JAZZ HOUSE NARU",
+      "basicInfoState": "canonical",
+      "distanceMeters": 635,
+      "sourceUrlCount": 2,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 1,
+      "gaps": [
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_dinner_budget",
+      "priorityScore": 308
+    },
+    {
+      "googlePlaceId": "ChIJ38OBKhqMGGARv2PCpjtd6uI",
+      "name": "新潟発祥 なおじ 御茶ノ水店",
+      "basicInfoState": "canonical",
+      "distanceMeters": 777,
+      "sourceUrlCount": 2,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 1,
+      "gaps": [
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_dinner_budget",
+      "priorityScore": 308
+    },
+    {
+      "googlePlaceId": "ChIJ2WGN9heMGGARIpk8EbXf8b4",
+      "name": "スターバックス コーヒー 順天堂医院店",
+      "basicInfoState": "canonical",
+      "distanceMeters": 840,
+      "sourceUrlCount": 2,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 1,
+      "gaps": [
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_dinner_budget",
+      "priorityScore": 308
+    },
+    {
+      "googlePlaceId": "ChIJj2u4pwSMGGARkTHj4PP1MEA",
+      "name": "ドトールコーヒーショップ",
+      "basicInfoState": "canonical",
+      "distanceMeters": 909,
+      "sourceUrlCount": 2,
+      "recommendedDishesKnown": 2,
+      "featuredDishesKnown": 1,
+      "gaps": [
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_dinner_budget",
+      "priorityScore": 308
+    },
+    {
+      "googlePlaceId": "ChIJDVdSfmmMGGARn19s9XYBdOY",
+      "name": "ドトールコーヒーショップ",
+      "basicInfoState": "canonical",
+      "distanceMeters": 954,
+      "sourceUrlCount": 2,
+      "recommendedDishesKnown": 2,
+      "featuredDishesKnown": 1,
+      "gaps": [
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_dinner_budget",
+      "priorityScore": 308
+    },
+    {
+      "googlePlaceId": "ChIJNfqy4EaMGGAR51sW_7PltDQ",
+      "name": "スターバックス",
+      "basicInfoState": "canonical",
+      "distanceMeters": 1105,
+      "sourceUrlCount": 2,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 1,
+      "gaps": [
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_dinner_budget",
+      "priorityScore": 308
+    },
+    {
+      "googlePlaceId": "ChIJhXD3-AaMGGARbLVQPEtml80",
+      "name": "上島珈琲店",
+      "basicInfoState": "canonical",
+      "distanceMeters": 1113,
+      "sourceUrlCount": 2,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 1,
+      "gaps": [
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_dinner_budget",
+      "priorityScore": 308
+    },
+    {
+      "googlePlaceId": "ChIJd50aRRyMGGARvomrfrvV6ZY",
+      "name": "ドトールコーヒーショップ",
+      "basicInfoState": "canonical",
+      "distanceMeters": 1153,
+      "sourceUrlCount": 2,
+      "recommendedDishesKnown": 2,
+      "featuredDishesKnown": 1,
+      "gaps": [
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_dinner_budget",
+      "priorityScore": 308
+    },
+    {
+      "googlePlaceId": "ChIJB2nh4jiMGGARJuDAY_TVfJA",
+      "name": "サイゼリヤ",
+      "basicInfoState": "canonical",
+      "distanceMeters": 1160,
+      "sourceUrlCount": 2,
+      "recommendedDishesKnown": 2,
+      "featuredDishesKnown": 1,
+      "gaps": [
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_dinner_budget",
+      "priorityScore": 308
+    },
+    {
+      "googlePlaceId": "ChIJJ8_bnU6NGGARsXyvg0mnXI0",
+      "name": "つじ田",
+      "basicInfoState": "canonical",
+      "distanceMeters": 1183,
+      "sourceUrlCount": 2,
+      "recommendedDishesKnown": 2,
+      "featuredDishesKnown": 1,
+      "gaps": [
+        "lunchBudget",
+        "dinnerBudget",
+        "address"
+      ],
+      "nextAction": "collect_dinner_budget",
+      "priorityScore": 308
     },
     {
       "googlePlaceId": "ChIJ8YrMy7qNGGARLO2JDbagXNo",
@@ -53314,6 +52945,90 @@
       ],
       "nextAction": "collect_dinner_budget",
       "priorityScore": 304
+    },
+    {
+      "googlePlaceId": "ChIJ2-3vOBGMGGARfV2l_yc58W0",
+      "name": "鳥貴族 神保町店",
+      "basicInfoState": "canonical",
+      "distanceMeters": 126,
+      "sourceUrlCount": 3,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 2,
+      "gaps": [
+        "lunchBudget"
+      ],
+      "nextAction": "collect_lunch_budget",
+      "priorityScore": 292
+    },
+    {
+      "googlePlaceId": "ChIJR3odlBOMGGARX9J4ZOk7jB0",
+      "name": "森のブッチャーズ",
+      "basicInfoState": "canonical",
+      "distanceMeters": 173,
+      "sourceUrlCount": 3,
+      "recommendedDishesKnown": 2,
+      "featuredDishesKnown": 1,
+      "gaps": [
+        "lunchBudget"
+      ],
+      "nextAction": "collect_lunch_budget",
+      "priorityScore": 292
+    },
+    {
+      "googlePlaceId": "ChIJ-YkEWBeMGGARfOUCHahbddE",
+      "name": "ナポリの下町食堂",
+      "basicInfoState": "canonical",
+      "distanceMeters": 564,
+      "sourceUrlCount": 3,
+      "recommendedDishesKnown": 2,
+      "featuredDishesKnown": 2,
+      "gaps": [
+        "lunchBudget"
+      ],
+      "nextAction": "collect_lunch_budget",
+      "priorityScore": 292
+    },
+    {
+      "googlePlaceId": "ChIJs1zmzD-MGGAR_TWUpga5JUs",
+      "name": "大庄水産",
+      "basicInfoState": "canonical",
+      "distanceMeters": 580,
+      "sourceUrlCount": 3,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 2,
+      "gaps": [
+        "lunchBudget"
+      ],
+      "nextAction": "collect_lunch_budget",
+      "priorityScore": 292
+    },
+    {
+      "googlePlaceId": "ChIJy5iG5ECMGGARnUtzLDHlU3o",
+      "name": "スターバックス コーヒー 飯田橋アイガーデンテラス店",
+      "basicInfoState": "canonical",
+      "distanceMeters": 897,
+      "sourceUrlCount": 3,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 1,
+      "gaps": [
+        "lunchBudget"
+      ],
+      "nextAction": "collect_lunch_budget",
+      "priorityScore": 292
+    },
+    {
+      "googlePlaceId": "ChIJE0-B9UOMGGARWVhWjJKsoq4",
+      "name": "鳥貴族",
+      "basicInfoState": "canonical",
+      "distanceMeters": 1171,
+      "sourceUrlCount": 3,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 2,
+      "gaps": [
+        "lunchBudget"
+      ],
+      "nextAction": "collect_lunch_budget",
+      "priorityScore": 292
     },
     {
       "googlePlaceId": "ChIJS4nF7xOMGGARFzUis-fRspU",
@@ -53365,6 +53080,34 @@
       "sourceUrlCount": 2,
       "recommendedDishesKnown": 1,
       "featuredDishesKnown": 2,
+      "gaps": [
+        "lunchBudget"
+      ],
+      "nextAction": "collect_lunch_budget",
+      "priorityScore": 288
+    },
+    {
+      "googlePlaceId": "ChIJS9VGpBuMGGAR1hMANtBU8Ws",
+      "name": "YEBISU BAR 御茶ノ水店",
+      "basicInfoState": "canonical",
+      "distanceMeters": 853,
+      "sourceUrlCount": 2,
+      "recommendedDishesKnown": 2,
+      "featuredDishesKnown": 2,
+      "gaps": [
+        "lunchBudget"
+      ],
+      "nextAction": "collect_lunch_budget",
+      "priorityScore": 288
+    },
+    {
+      "googlePlaceId": "ChIJJ3jKf2mMGGARTHOMYS5IRB8",
+      "name": "ムンバイ",
+      "basicInfoState": "canonical",
+      "distanceMeters": 960,
+      "sourceUrlCount": 2,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 1,
       "gaps": [
         "lunchBudget"
       ],
@@ -53428,6 +53171,20 @@
       "priorityScore": 288
     },
     {
+      "googlePlaceId": "ChIJAyADpR6MGGARWHp8EC3s12E",
+      "name": "明神下みやび",
+      "basicInfoState": "canonical",
+      "distanceMeters": 1162,
+      "sourceUrlCount": 2,
+      "recommendedDishesKnown": 2,
+      "featuredDishesKnown": 1,
+      "gaps": [
+        "lunchBudget"
+      ],
+      "nextAction": "collect_lunch_budget",
+      "priorityScore": 288
+    },
+    {
       "googlePlaceId": "ChIJm-7w4ROMGGARYgjpD4sSnmg",
       "name": "Muang Thai",
       "basicInfoState": "canonical",
@@ -53446,6 +53203,30 @@
       "name": "欧風カレー ボンディ 神保町本店",
       "basicInfoState": "canonical",
       "distanceMeters": 43,
+      "sourceUrlCount": 2,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 1,
+      "gaps": [],
+      "nextAction": "complete",
+      "priorityScore": 0
+    },
+    {
+      "googlePlaceId": "ChIJVyqVQxGMGGARAMwOpJAO12U",
+      "name": "はなまるうどん 神保町店",
+      "basicInfoState": "canonical",
+      "distanceMeters": 74,
+      "sourceUrlCount": 3,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 1,
+      "gaps": [],
+      "nextAction": "complete",
+      "priorityScore": 0
+    },
+    {
+      "googlePlaceId": "ChIJq-tfOBGMGGARFR9OxPRRFrc",
+      "name": "ドトールコーヒーショップ 神保町駅前店",
+      "basicInfoState": "canonical",
+      "distanceMeters": 85,
       "sourceUrlCount": 2,
       "recommendedDishesKnown": 1,
       "featuredDishesKnown": 1,
@@ -53514,6 +53295,30 @@
       "priorityScore": 0
     },
     {
+      "googlePlaceId": "ChIJCQOApBGMGGARtd0fPNBMuHc",
+      "name": "ロイヤルホスト 神田神保町店",
+      "basicInfoState": "canonical",
+      "distanceMeters": 233,
+      "sourceUrlCount": 3,
+      "recommendedDishesKnown": 2,
+      "featuredDishesKnown": 1,
+      "gaps": [],
+      "nextAction": "complete",
+      "priorityScore": 0
+    },
+    {
+      "googlePlaceId": "ChIJh3wLk6SNGGARTMTGIUTky3E",
+      "name": "神保町餃子小籠包",
+      "basicInfoState": "canonical",
+      "distanceMeters": 291,
+      "sourceUrlCount": 2,
+      "recommendedDishesKnown": 2,
+      "featuredDishesKnown": 2,
+      "gaps": [],
+      "nextAction": "complete",
+      "priorityScore": 0
+    },
+    {
       "googlePlaceId": "ChIJpVal6RCMGGARhEt46_ytuDs",
       "name": "漢陽楼",
       "basicInfoState": "canonical",
@@ -53538,6 +53343,18 @@
       "priorityScore": 0
     },
     {
+      "googlePlaceId": "ChIJ70HROtqNGGARLeoqNcrVbq8",
+      "name": "なごみ 駆々",
+      "basicInfoState": "canonical",
+      "distanceMeters": 654,
+      "sourceUrlCount": 2,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 1,
+      "gaps": [],
+      "nextAction": "complete",
+      "priorityScore": 0
+    },
+    {
       "googlePlaceId": "ChIJIagAawCNGGARvwW9Z6rmvS0",
       "name": "博多野菜巻き串 九州うまいもん よかよか 小川町店",
       "basicInfoState": "canonical",
@@ -53545,6 +53362,42 @@
       "sourceUrlCount": 2,
       "recommendedDishesKnown": 2,
       "featuredDishesKnown": 2,
+      "gaps": [],
+      "nextAction": "complete",
+      "priorityScore": 0
+    },
+    {
+      "googlePlaceId": "ChIJMSFgyZGNGGARh283HSyqqJc",
+      "name": "釣宿酒場 マヅメ 御茶ノ水店",
+      "basicInfoState": "canonical",
+      "distanceMeters": 659,
+      "sourceUrlCount": 3,
+      "recommendedDishesKnown": 2,
+      "featuredDishesKnown": 2,
+      "gaps": [],
+      "nextAction": "complete",
+      "priorityScore": 0
+    },
+    {
+      "googlePlaceId": "ChIJY-3aoj-MGGARb4QOongT588",
+      "name": "串だおれ 水道橋店",
+      "basicInfoState": "canonical",
+      "distanceMeters": 681,
+      "sourceUrlCount": 3,
+      "recommendedDishesKnown": 2,
+      "featuredDishesKnown": 2,
+      "gaps": [],
+      "nextAction": "complete",
+      "priorityScore": 0
+    },
+    {
+      "googlePlaceId": "ChIJ5YT9g0CMGGARiXS-Am4vk1M",
+      "name": "はなまるうどん 水道橋西口店",
+      "basicInfoState": "canonical",
+      "distanceMeters": 774,
+      "sourceUrlCount": 3,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 1,
       "gaps": [],
       "nextAction": "complete",
       "priorityScore": 0
@@ -53567,6 +53420,18 @@
       "basicInfoState": "canonical",
       "distanceMeters": 798,
       "sourceUrlCount": 2,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 1,
+      "gaps": [],
+      "nextAction": "complete",
+      "priorityScore": 0
+    },
+    {
+      "googlePlaceId": "ChIJq6qfygSMGGARJgbpmoWLoUg",
+      "name": "つじ田 神田御茶ノ水店",
+      "basicInfoState": "canonical",
+      "distanceMeters": 807,
+      "sourceUrlCount": 3,
       "recommendedDishesKnown": 1,
       "featuredDishesKnown": 1,
       "gaps": [],
