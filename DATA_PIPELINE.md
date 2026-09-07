@@ -26,7 +26,7 @@ GitHub 保存代码、schema、文档、输入快照和发布 export；本地 SQ
 
 正式迁移必须固定 source commit，并记录每个输入文件的 Git blob SHA、字节数和 SHA-256。旧文件保留原貌，不直接覆盖。
 
-第一批迁移输入：
+当前已接入主库的 retained 输入包括：
 
 - `data/area1_google_ids.json`
 - `data/google_basic_source_matches.json`
@@ -35,9 +35,12 @@ GitHub 保存代码、schema、文档、输入快照和发布 export；本地 SQ
 - `data/source_facts.js`
 - `data/source_provenance.js`
 - `data/google_inventory_detail_evidence.json`
+- `data/official_candidate_index.json`
 - 旧 canonical / historical exception 数据
 
-现有 82 个数据文件继续作为审计输入清单保存；新主库建立后再逐步判断哪些可以归档。
+`official_candidate_index.json` 只作为此前**独立抓取并完成官网候选/name-match 筛选**后的 retained identity evidence；不会重新请求 Google 数据 API，也不会把 discovery distance 当成官网事实。
+
+现有旧数据文件继续作为审计输入保存；新主库建立后再逐步判断哪些可以归档。
 
 ## 3. Catalog 导入
 
@@ -68,16 +71,26 @@ GitHub 保存代码、schema、文档、输入快照和发布 export；本地 SQ
 
 ## 5. Identity bindings
 
-Binding 与 source record 分离。状态至少包含：
+Binding 与 source record 分离。状态至少包含 candidate、reviewed、conflict、retracted。
 
-- candidate；
-- reviewed；
-- conflict；
-- retracted。
-
-首批导入 760 retained bindings。5 组 reused provider ID / 10 bindings 直接进入 conflict queue，不允许因为旧记录写着 `strong` 就自动选择 canonical identity。
+Retained provider/source-ID 复用必须先形成 cross-layer collision index；同一 native provider ID 对应多个 Place ID 时全部进入 conflict，不能因为旧记录写着 `strong` 就自动选择 canonical identity。
 
 空间距离只能作为约束，不单独证明同一店。多分店、同楼层、同品牌、重复 listing 必须保留审查状态。
+
+### 5.1 Retained official identity recovery
+
+Bulk completion 首先消费已经留存的官网验证索引。自动 `id_only -> source_matched` 必须同时满足：
+
+1. Place ID 属于冻结 catalog；
+2. retained name 非空；
+3. retained page URL 是 HTTPS；
+4. host 不属于 Google / 聚合站 / 社交媒体；
+5. 该索引来源此前已完成独立页面抓取、candidate-official 分类和 name-match；
+6. 当前 Place ID 没有任何 identity conflict。
+
+导入时建立 `retained_verified_official_identity_index` source record 和 reviewed binding。存在 conflict 时只以 candidate 保存证据，不自动清除 conflict。索引中的 discovery distance 不写入 `distance_m`，防止把来源发现过程误写成官网字段。
+
+Shadow 可以因这一 approved recovery method 新增推荐候选，但 regression validator 必须验证：新增条目的 selected name 确实来自 reviewed approved source；否则 blocking fail。
 
 ## 6. Field observations
 
@@ -94,7 +107,7 @@ Binding 与 source record 分离。状态至少包含：
 - weekly normalized schedule 独立生成；
 - 临时休业、节假日、活动通知独立存储。
 
-353 条 Hot Pepper retained hours/closure 是第一批回归迁移样本。
+Hot Pepper retained hours/closure 已作为回归迁移输入；原文可入库，不预设全部可转换成每周时段。
 
 ### 预算
 
@@ -110,48 +123,44 @@ Binding 与 source record 分离。状态至少包含：
 
 Resolver 是新架构的核心。最终值不得由文件导入顺序决定。
 
-输入：
+输入包括 binding state、observation state、source/provider、observed_at、parser/resolver rule version、correction/retraction、conflict state。
 
-- binding state；
-- observation state；
-- source/provider；
-- observed_at；
-- parser/resolver rule version；
-- correction/retraction；
-- conflict state。
+输出包括 selected observation、resolution state、rule version、reason/conflict note。
 
-输出：
-
-- selected observation；
-- resolution state；
-- rule version；
-- reason / conflict note。
-
-新空值、网络失败、页面无法访问不得清除旧 known resolution。
+新空值、网络失败、页面无法访问不得清除旧 known resolution。Identity conflict 的 observation 不得成为 known selected value。
 
 ## 8. Derived fields
 
-规范化 cuisine、distance、translated display name 等必须记录 derived provenance：
-
-- source observation(s)；
-- transformation rule；
-- rule version；
-- generated_at。
+规范化 cuisine、distance、translated display name 等必须记录 derived provenance：source observation(s)、transformation rule、rule version、generated_at。
 
 Derived 值不能伪装成 source raw field。
 
-## 9. Incremental collection
+## 9. Unified ingestion tasks 与批量补齐
 
-新主库稳定前不扩张大规模采集。恢复采集后按以下顺序：
+所有补全工作由 SQLite task plan 统一表达，不再按字段建立互相覆盖的旧 queue。
 
-1. id-only identity/name；
-2. address/coordinates/cuisine；
-3. hours；
-4. budget；
-5. menu/recommendation；
-6. practical metadata。
+执行优先级：
 
-一次来源访问尽量抽取所有可支持字段，避免按字段重复请求。访问被限制、需要登录、验证码或不可用时停止，不绕过限制，也不回退付费 Google Data API。
+1. `identity_conflict_review`；
+2. `identity_recovery`；
+3. `field_completion`；
+4. `dish_semantic_review`。
+
+批量执行采用“两阶段”原则：
+
+- **retained-first**：先重新利用仓库中已经取得、可追溯且通过身份规则的官网/OSM/Hot Pepper/Tabelog 等证据；
+- **network-second**：只有 retained evidence 无法完成任务时才访问验证过的免费公开来源。
+
+一次已确认来源访问尽量抽取所有可支持字段，避免按 address/hours/budget 分别请求。访问被限制、需要登录、验证码或不可用时停止，不绕过限制，也不回退付费 Google Data API。
+
+### 批次设计
+
+- Batch A：independently verified official identity index；
+- Batch B：历史 verified OSM sourceId ↔ Place ID QC，与 retained OSM candidate 结合；不得 proximity-only promotion；
+- Batch C：对无 conflict 的已确认身份执行 deterministic field resolver v2，优先补 address/hours/budget/practical；
+- Batch D：消费仍 active 的网络补全 task。
+
+每批结束后重新运行 planner，以 task 数下降量作为补全效果指标，而不是只看新增 source record 数量。
 
 ## 10. Export
 
@@ -163,18 +172,11 @@ Derived 值不能伪装成 source raw field。
 
 ### Recommendation export
 
-只包含满足 eligibility 的条目。必须输出 exclusion reason，例如：
-
-- id_only；
-- identity_conflict；
-- closed/moved；
-- insufficient_identity；
-- outside_scope；
-- blocked_by_policy。
+只包含满足 eligibility 的条目。必须输出 exclusion reason，例如 id_only、identity_conflict、closed/moved、insufficient_identity、outside_scope、blocked_by_policy。
 
 `id_only` 不再因为 frozen membership 自动获得 recommendation eligibility。
 
-Export metadata 包含：schema version、resolver version、source snapshot/hash、row count、generated_at、content hash。
+Export metadata 包含 schema version、resolver version、source snapshot/hash、row count、generated_at、content hash。
 
 ## 11. GitHub/Pages handoff
 
@@ -195,13 +197,14 @@ Pages 切换前至少满足：
 
 1. 2,804 catalog ID 集合一致；
 2. 导入幂等；
-3. 5 组 reused provider-ID conflict 不自动 canonicalize；
-4. 353 Hot Pepper hours/closure raw fields 正确迁移；
+3. 所有 discovered provider-ID collision 不自动 canonicalize；
+4. retained Hot Pepper hours/closure raw fields 正确迁移；
 5. open-ended budget 不再伪造上界；
 6. known 值不被失败请求覆盖；
 7. catalog/recommendation export 可从同一 snapshot 重现；
-8. 新旧前端结果完成 regression diff；
-9. backup/restore 通过；
-10. 新架构 strict gates 已取代 refactor warning。
+8. 所有 shadow-only 新增都能追溯到 approved reviewed recovery source；
+9. 新旧前端结果完成 regression diff；
+10. backup/restore 通过；
+11. 新架构 strict gates 已取代 refactor warning。
 
 完成实际开发后必须同步更新 `DEVELOPMENT.md`、相关架构/数据文档和当日 `logs/`。
