@@ -19,6 +19,8 @@ on:
       - "data/google_inventory_detail_evidence.json"
       - "data/source_basic_web_field_evidence.json"
       - "data/official_meal_budget_web_evidence.json"
+      - "data/official_practical_web_evidence.json"
+      - "data/official_practical_detail_web_evidence.json"
       - "data/official_candidate_index.json"
       - "data/google_entities.generated.js"
       - "data/area1_osm.js"
@@ -41,6 +43,8 @@ on:
       - "data/google_inventory_detail_evidence.json"
       - "data/source_basic_web_field_evidence.json"
       - "data/official_meal_budget_web_evidence.json"
+      - "data/official_practical_web_evidence.json"
+      - "data/official_practical_detail_web_evidence.json"
       - "data/official_candidate_index.json"
       - "data/google_entities.generated.js"
       - "data/area1_osm.js"
@@ -84,7 +88,12 @@ jobs:
             scripts/database/import_source_basic_web_evidence.py \
             scripts/database/import_official_meal_budget_web_evidence.py \
             scripts/database/collect_official_meal_budgets.py \
+            scripts/database/collect_official_detail_meal_budgets.py \
             scripts/database/merge_official_meal_budget_evidence.py \
+            scripts/database/collect_official_practical_fields.py \
+            scripts/database/collect_official_detail_practical_fields.py \
+            scripts/database/import_official_practical_web_evidence.py \
+            scripts/database/import_official_practical_detail_web_evidence.py \
             scripts/database/resolve_retained_fields.py \
             scripts/database/review_hotpepper_candidate_fields.py \
             scripts/database/derive_hotpepper_practical.py \
