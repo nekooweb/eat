@@ -99,6 +99,9 @@ jobs:
       - name: Commit promoted basic source data
         run: |
           set -euo pipefail
+          # Runtime/master validation intentionally generates local artifacts. Only the
+          # durable basic-source file belongs in this promotion commit.
+          git restore data/google_inventory_runtime.js || true
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data/google_basic_source_matches.json
@@ -107,6 +110,7 @@ jobs:
             exit 0
           fi
           git commit -m "Promote structured-address identity recovery"
+          git status --porcelain
           git fetch origin main
           git rebase origin/main
           git push origin HEAD:main
