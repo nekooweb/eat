@@ -163,20 +163,28 @@ jobs:
             assert state and state[0]=='source_matched',(row['googlePlaceId'],state)
           print(json.dumps({'before':before,'after':after,'added':added,'durableRows':len(durable['rows'])},ensure_ascii=False,sort_keys=True))
           PY
-      - name: Commit promoted v4 source data
+      - name: Commit promoted v4 source data on latest main
         run: |
           set -euo pipefail
           git restore -- data/google_inventory_runtime.js 2>/dev/null || true
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # Multiple enrichment workers may advance main while the public-page probe runs.
+          # Switch to the newest main and re-apply the validated durable overlay instead
+          # of rebasing a generated monolithic JSON file from an old baseline.
+          git fetch origin main
+          git checkout -B promote-v4 origin/main
+          python scripts/merge_basic_recovery_overlays.py \
+            data/google_basic_source_matches.json \
+            _tmp/durable-official-web-v4.json \
+            data/google_basic_source_matches.json \
+            | tee _tmp/v4-overlay-latest-merge.json
           git add data/google_basic_source_matches.json
           if git diff --cached --quiet; then
-            echo "No new v4 identity recoveries to commit."
+            echo "No new v4 identity recoveries to commit on latest main."
             exit 0
           fi
           git commit -m "Promote official-web identity recoveries v4"
-          git fetch origin main
-          git rebase --autostash origin/main
           git push origin HEAD:main
       - name: Upload v4 audit artifacts
         if: always()
@@ -188,6 +196,7 @@ jobs:
             _tmp/private-official-web-v4.json
             _tmp/durable-official-web-v4.json
             _tmp/v4-overlay-merge.json
+            _tmp/v4-overlay-latest-merge.json
             _tmp/baseline-states.json
             _tmp/master-before.json
             _tmp/master-before-validate.json
