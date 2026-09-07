@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 from collections import Counter, defaultdict
 from pathlib import Path
 
@@ -40,6 +41,20 @@ def row_key(row):
     return row.get("provider"), str(row.get("providerId") or "")
 
 
+def overlay_metric_prefix(rule_version: str) -> str:
+    aliases = {
+        "private-address-consensus-v2": "structuredAddressConsensusV2",
+        "private-multisource-consensus-v3": "multiSourceConsensusV3",
+    }
+    if rule_version in aliases:
+        return aliases[rule_version]
+    tokens = [token for token in re.split(r"[^A-Za-z0-9]+", rule_version) if token]
+    if not tokens:
+        return "identityRecoveryOverlay"
+    head, *tail = tokens
+    return head + "".join(token[:1].upper() + token[1:] for token in tail)
+
+
 def validate_overlay(doc: dict, inventory_count: int) -> list[dict]:
     policy = doc.get("policy") or {}
     if policy.get("newGoogleApiCalls") != 0:
@@ -50,6 +65,9 @@ def validate_overlay(doc: dict, inventory_count: int) -> list[dict]:
         raise RuntimeError("overlay must contain independent-source durable fields only")
     if policy.get("proximityOnlyBindingAllowed") is not False:
         raise RuntimeError("proximity-only identity binding is forbidden")
+    rule_version = str(doc.get("ruleVersion") or "").strip()
+    if not rule_version:
+        raise RuntimeError("overlay ruleVersion is required")
     walk_no_banned(doc)
 
     rows = doc.get("rows") or []
@@ -70,7 +88,7 @@ def validate_overlay(doc: dict, inventory_count: int) -> list[dict]:
             raise RuntimeError(f"duplicate overlay native source ID: {native}")
         if not isinstance(distance, (int, float)) or distance < 0 or distance > 1200:
             raise RuntimeError(f"overlay distance outside frozen radius: {pid}")
-        if row.get("matchLevel") != doc.get("ruleVersion"):
+        if row.get("matchLevel") != rule_version:
             raise RuntimeError(f"overlay rule-version mismatch: {pid}")
         seen_places.add(pid)
         seen_native.add(native)
@@ -88,6 +106,8 @@ def merge(base_doc: dict, overlay_doc: dict) -> tuple[dict, dict]:
         raise RuntimeError("base source-match policy is not zero-paid/no-Google-display")
     walk_no_banned(base_doc)
     overlay_rows = validate_overlay(overlay_doc, inventory_count)
+    rule_version = str(overlay_doc.get("ruleVersion") or "").strip()
+    metric_prefix = overlay_metric_prefix(rule_version)
 
     rows = list(base_doc.get("rows") or [])
     by_pid = {str(row.get("googlePlaceId")): row for row in rows}
@@ -127,8 +147,11 @@ def merge(base_doc: dict, overlay_doc: dict) -> tuple[dict, dict]:
         "basicReadyTotal": production_backed + len(rows),
         "identityOnlyRemaining": inventory_count - production_backed - len(rows),
         "providers": dict(sorted(providers.items())),
-        "structuredAddressConsensusV2Rows": len(overlay_rows),
-        "structuredAddressConsensusV2AddedThisMerge": added,
+        f"{metric_prefix}Rows": len(overlay_rows),
+        f"{metric_prefix}AddedThisMerge": added,
+        "lastIdentityRecoveryOverlayRule": rule_version,
+        "lastIdentityRecoveryOverlayRows": len(overlay_rows),
+        "lastIdentityRecoveryOverlayAddedThisMerge": added,
     })
     if summary["identityOnlyRemaining"] < 0:
         raise RuntimeError("merged basic rows exceed frozen inventory")
@@ -137,12 +160,14 @@ def merge(base_doc: dict, overlay_doc: dict) -> tuple[dict, dict]:
     output["rows"] = rows
     output["summary"] = summary
     policy = dict(output.get("policy") or {})
-    policy["structuredAddressConsensusV2Overlay"] = True
-    policy["structuredAddressConsensusV2Rule"] = overlay_doc.get("ruleVersion")
+    policy[f"{metric_prefix}Overlay"] = True
+    policy[f"{metric_prefix}Rule"] = rule_version
+    policy["lastIdentityRecoveryOverlayRule"] = rule_version
     output["policy"] = policy
     walk_no_banned(output)
     metrics = {
         "status": "pass",
+        "ruleVersion": rule_version,
         "baseRows": len(base_doc.get("rows") or []),
         "overlayRows": len(overlay_rows),
         "added": added,
