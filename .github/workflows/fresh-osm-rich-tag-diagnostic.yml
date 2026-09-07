@@ -1,0 +1,76 @@
+name: Diagnose fresh OSM rich identity tags
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/fresh-osm-rich-tag-diagnostic.yml"
+      - "scripts/database/diagnose_fresh_osm_rich_tags.py"
+      - "scripts/database/retained_osm_identity.py"
+      - "data/area1_osm.js"
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Validate syntax and no-paid policy
+        run: |
+          set -euo pipefail
+          python -m py_compile \
+            scripts/database/diagnose_fresh_osm_rich_tags.py \
+            scripts/database/retained_osm_identity.py
+          node scripts/audit_no_paid_apis.mjs
+      - name: Query one bounded public Overpass scope
+        run: |
+          set -euo pipefail
+          mkdir -p _tmp
+          python scripts/database/diagnose_fresh_osm_rich_tags.py \
+            --output _tmp/fresh-osm-rich-tag-diagnostic.json \
+            | tee _tmp/fresh-osm-rich-tag-summary.json
+      - name: Enforce diagnostic boundary
+        run: |
+          python - <<'PY'
+          import json
+          d=json.load(open('_tmp/fresh-osm-rich-tag-diagnostic.json'))
+          assert d['ruleVersion']=='fresh-osm-rich-tag-diagnostic-v1'
+          p=d['policy']
+          assert p['paidDataApiCalls']==0
+          assert p['googleDataApiCalls']==0
+          assert p['networkRequests']==1
+          assert p['retryOnRestrictedAccess'] is False
+          assert p['masterWrites']==0
+          assert p['promotionPerformed'] is False
+          assert p['rawOverpassResponsePersisted'] is False
+          q=d['query']
+          assert q['radiusMeters']==1200
+          assert abs(q['center']['lat']-35.6959)<1e-9
+          assert abs(q['center']['lng']-139.7576)<1e-9
+          s=d['summary']
+          assert s['retainedRows'] > 0
+          assert s['freshRows'] > 0
+          print(json.dumps(s,sort_keys=True))
+          PY
+      - name: Upload short-lived diagnostic
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fresh-osm-rich-tag-diagnostic
+          path: |
+            _tmp/fresh-osm-rich-tag-diagnostic.json
+            _tmp/fresh-osm-rich-tag-summary.json
+          if-no-files-found: warn
+          retention-days: 3
