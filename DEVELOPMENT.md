@@ -4,114 +4,117 @@
 
 ## 当前状态
 
-项目处于整体数据流程重构阶段。长期主线保持为：公开/留存来源 → 原始记录 → Place ID binding → field observation/resolution → 本地 SQLite 主库 → catalog/recommendation 导出 → GitHub Pages。
+项目处于整体数据流程重构阶段。长期主线：公开/留存来源 → versioned source record → Place ID binding → field observation/resolution → 本地 SQLite master → catalog/recommendation export → GitHub Pages。
 
-当前线上已经完成第一轮过渡修复并通过 Pages build/deploy：
+线上过渡层已完成并验证：
 
-- 2,804 个 Place ID 继续全部保留为 frozen catalog。
-- 公开 recommendation runtime 当前发布 1,411 条有真实名称记录。
-- 1,393 条 `google_place_id_only` 已下架，不再显示“Google Maps 餐厅”伪名称；补到真实名称和基础身份后才重新发布。
-- Hot Pepper 旧错误营业字段映射已修正，公开 runtime 的营业时间覆盖从 363 增至 716（恢复 353 条 retained 原文）。
+- frozen catalog 继续保留全部 2,804 Place ID；
+- 公开 runtime 只发布 1,411 条已有真实名称记录；
+- 1,393 条 `google_place_id_only` 已下架，不再显示“Google Maps 餐厅”伪名称；
+- Hot Pepper 营业字段使用真实 `openingHoursText` / `closedText`，公开 hours coverage 从 363 增至 716；
 - 旧 `N以上 -> N+2000` 伪预算上界已移除。
 
 ## Refactor mode
 
-`EAT_REFACTOR_MODE=1` 继续启用。旧 canonical/overlay/完整度/queue 等架构耦合审查为 warning；以下仍为 blocking：付费数据 API 禁令、语法、2,804 catalog 完整性、明显越界/敏感字段泄漏、公开 runtime 不得含 unnamed ID-only、Pages 可部署性。
+`EAT_REFACTOR_MODE=1` 继续启用。旧 canonical/overlay/coverage/queue 等架构耦合检查为 warning；付费 API 禁令、语法、2,804 catalog 完整性、公开 runtime 不得包含 unnamed ID-only、明显越界/敏感字段泄漏、Pages 可部署性仍为 blocking。
 
-新架构自身的 SQLite smoke tests 为 blocking，即使处于 refactor mode 也不能跳过或改成 warning。
+新 SQLite 架构自身的 smoke tests 始终 blocking，不随 refactor mode 降级。
 
 ## Phase 0 — 线上保护
 
-状态：已完成当前阶段并通过 CI。
+状态：完成并通过 CI/Pages deploy。
 
-- 旧 Pages 仍作为 fallback。
-- Catalog membership 与 publication/recommendation eligibility 已分离。
-- ID-only 仅留内部 catalog，不进入公开随机推荐。
-- Hot Pepper 营业原文映射与开放预算过渡逻辑已修复。
+Catalog membership 与 publication eligibility 已分离；ID-only 保留内部身份但不上架。旧 Pages 继续作为 fallback，直到 SQLite export 完成 cutover。
 
 ## Phase 1 — persistent SQLite v1
 
-状态：代码已实现，真实 SQLite 已连续暴露并修复两类旧分层模型没有发现的问题；当前等待第三次完整 smoke。
+状态：**已完成并通过真实 persistent smoke、幂等导入与 backup/restore**。
 
-正式数据库工具：
+正式工具：
 
 - `database/migrations/001_initial.sql`
 - `scripts/database/master_import_core.py`
 - `scripts/database/build_master.py`
 - `scripts/database/validate_master.py`
 
-Importer 不联网，迁移：
+当前通过的主库基线：
 
-1. 2,804 frozen catalog entries。
-2. 651 条目录内 legacy canonical resolved snapshot；3 条目录外进入 `retained_exceptions`。
-3. 760 retained basic source bindings。
-4. 535 Hot Pepper retained full source records及其名称、地址、坐标、分类、预算、营业/休息日、交通和设施字段。
-5. Hot Pepper budget band 结构化保存，开放上界为 `upper=null`。
+- catalog: 2,804
+- legacy canonical migration snapshots: 651
+- outside-catalog retained exceptions: 3
+- source records / bindings: 1,946 / 1,946
+- field observations: 28,992
+- field resolutions: 25,162
+- verified identities: 651
+- source-matched identities: 747
+- conflict identity state: 13
+- id-only: 1,393
+- resolved names: 1,398
+- Hot Pepper full retained records: 535
+- Hot Pepper raw hours / closures: 535 / 535
+- normalized Hot Pepper budget observations: 530
 
-### Persistent smoke 发现 1：跨层 source-ID collision
+统一主库发现旧 basic-only QC 没看到的跨层冲突：basic 层原先 5 组 / 10 Place ID，合并 retained layers 后为 8 组 / 16 Place ID。所有 collision source binding 均隔离为 conflict，且 validator 要求任何 known resolution 都不能直接选择 conflict binding。
 
-Basic-only 层原先记录 5 组 / 10 Place ID collision；把 basic 与 Hot Pepper full retained records 放进同一 SQLite 后实际发现 **8 组 / 16 Place ID**。
+另外已经确认 resolver 的 monotonic rule：新 conflict evidence 保留，但不能擦除另一 non-conflict binding 已建立的 known field value。
 
-因此 importer 现在先跨全部本轮 retained source layer 建立 `provider + source_id -> Place IDs` 索引；所有碰撞 key 在全部 layer 中统一标为 conflict。Raw evidence 保留，但 known resolution 不能选择 conflict binding。
+Smoke test 已验证：第一次 build、第二次重复 import 核心表计数完全不增长、SQLite backup API 副本 integrity/FK/全部主库 validator 再通过。
 
-### Persistent smoke 发现 2：conflict 不能擦除其他来源的 known
+## Phase 2 — retained evidence 扩展
 
-8 组 collision 中有 3 个 Place ID 同时属于 651 条 legacy verified catalog。第二次 smoke 发现旧 resolver 会让较高优先级的 conflict observation 覆盖已有 non-conflict known name，从而出现 `resolvedNames < verified + sourceMatched`。
+状态：**代码已实现，正在进入 blocking smoke；在验证通过前不改变当前 field resolutions。**
 
-当前修复规则：
+新增 `scripts/database/retained_phase2.py`，将旧 JS/JSON overlay 迁移为真正 source record / observation：
 
-- conflict evidence / binding / observation 全部保留；
-- identity/recommendation eligibility 仍可被 conflict 阻断；
-- 但如果某字段已经从另一非 conflict binding 得到 `known` resolution，新 conflict observation 不擦除该 known value；
-- validator 继续严格禁止 known resolution 指向 conflict binding。
+1. `source_facts.js`：当前 575 条 provider fact records。
+2. `source_provenance.js`：当前 644 条公开 source links。
+3. `hotpepper_rich_metadata.js`：当前 135 条 reviewed rich metadata。
+4. `google_inventory_detail_evidence.json`：当前 283 个 recommendation/featured evidence items。
 
-固定“名称至少 1401”不再作为 blocking gate，因为更严格 collision 隔离可能合理降低可采用名称数量。Blocking invariant 改为 `resolved known names == verified + source_matched identities`；覆盖率继续报告但不冒充结构正确性。
+### Phase 2 的身份原则
 
-### SQLite smoke test
+- Hot Pepper native `hotpepperId` 继续参加跨 layer collision discovery。
+- Tabelog/official URL 只作为 provenance/evidence，不当作 branch identity primary key，因为一个菜单/品牌页可能支持多个分店。
+- Source facts 与 provenance 使用 synthetic retained record IDs，保持 evidence 可追踪但不制造错误 identity merge。
+- Hot Pepper rich metadata 保留真实 shop ID 和 reviewed binding；若 native ID collision 则仍是 conflict。
 
-Database workflow 必须完成：
+### Phase 2 的采用原则
 
-1. 建立真实临时 SQLite；
-2. `integrity_check` / `foreign_key_check`；
-3. 2,804 catalog、651 legacy snapshot、3 exceptions、535 Hot Pepper records、535 hours/closure raw；
-4. 动态识别全部 cross-layer collision，并要求所有相关 binding 为 conflict；
-5. 要求 known resolution 不得选择 conflict binding；
-6. 二次运行 importer，核心表计数完全不增长；
-7. SQLite backup API 创建副本并再次完整验证。
+这批数据先进入 evidence layer，不直接修改现有 field resolutions：
 
-这些都是 blocking gate。
+- source facts → candidate observations；
+- provenance links → candidate provenance observations；
+- rich metadata → reviewed binding + rich/practical observations，但 core resolution 暂不改变；
+- dish evidence → candidate recommendation/featured evidence observations，严格推荐语义留给后续 resolver。
 
-## Phase 2 — retained source 扩展
+Validator 会从当前输入动态计算应导入数量，并要求：Phase 2 source record 数与输入完全一致，且这些新 evidence 在这一阶段 **0 条直接进入 field resolution**。
 
-SQLite v1 smoke 通过后继续导入：
+## Phase 3 — resolver v2
 
-- `source_facts.js`
-- `source_provenance.js`
-- `hotpepper_rich_metadata.js`
-- `google_inventory_detail_evidence.json`
-- 已绑定官网/公共来源 retained evidence
+Phase 2 smoke 通过后开始字段级 resolver，而不是继续靠 overlay 顺序。重点：
 
-所有数据先成为 source record / observation，再由 resolver 选择，不再直接靠 JS overlay 顺序覆盖。
+- direct source 与 legacy migration snapshot 的字段级优先规则；
+- source recency / correction / retraction；
+- hours raw → normalized hours 的可验证 parser；
+- budget meal/bounds/evidence semantics；
+- recommendation / featured / signature / representative dish semantic separation；
+- identity conflict 与 field conflict 分开。
 
-## Phase 3 — identity + field resolver
+## Phase 4 — catalog / recommendation 双导出
 
-统一 resolver 根据 binding 状态、来源类型、时间、规则版本、冲突及 correction/retraction 选择 field resolution。`known / unknown / reviewed_none / not_applicable / conflict / retracted` 使用统一状态模型；derived field 保存来源 observation 和 transformation rule version。
+- catalog export：全部 2,804，允许 name missing / conflict，并显示 exclusion/missing state；
+- recommendation export：仅发布满足 eligibility 的记录。
 
-## Phase 4 — 同版本双导出
-
-- `catalog`：全部 2,804，允许名称待补/冲突。
-- `recommendation`：只发布满足 eligibility 的记录，并记录 exclusion reason。
-
-当前 1,411 条公开 runtime 是过渡实现；最终由 SQLite export 取代旧 builder。
+最终由 SQLite export 替换当前 `google_inventory_runtime.js` 过渡 builder。
 
 ## Phase 5 — Pages cutover
 
-新 export 通过 ID 集合 diff、字段 provenance、浏览器行为、备份恢复后才切 Pages；同一批切换时再停用/归档旧 workflow 和 enrichment builders。
+新 export 必须通过：ID set diff、field provenance、浏览器行为、旧/新推荐结果差异、backup restore，再切 Pages。切换批次才停用/归档旧 enrichment builders/workflows。
 
-## Phase 6 — 恢复增量补全
+## Phase 6 — 新增/补全数据
 
-新主库稳定后再批量补数据。最高优先级仍是 id-only 的名称/身份恢复，其次地址/坐标/菜系、营业时间、预算、菜单/推荐语义和实用字段。
+主库与 resolver 稳定后再恢复网络增量补全。第一优先仍是 1,393 个 id-only 的名称/身份恢复；其次地址/坐标/菜系、营业时间、预算、菜单/推荐语义和实用字段。一个已确认来源尽量一次提取所有可支持字段。
 
 ## 开发纪律
 
-每完成一批实际开发，同步更新 `DEVELOPMENT.md`、相关架构/数据文档和 `logs/`。文档只记录实际完成状态；测试未通过前不写成“已验证成功”。
+每完成一批实际开发，同步更新 `DEVELOPMENT.md`、相关数据库/架构文档和 `logs/`。测试未通过的功能只写“已实现/待验证”，通过后再改为“已验证”。

@@ -8,7 +8,15 @@ import json
 import sqlite3
 from pathlib import Path
 
+import retained_phase2 as phase2
+
 BUILDER = Path(__file__).with_name("build_master.py")
+PHASE2_METHODS = (
+    "retained_source_fact_overlay",
+    "retained_source_provenance_link",
+    "retained_hotpepper_rich_metadata",
+    "retained_dish_evidence",
+)
 
 
 def load_builder():
@@ -100,10 +108,10 @@ def main():
     ).fetchone()[0]
     expect(hp_records == 535, f"retained Hot Pepper records={hp_records}")
     hp_hours = db.execute(
-        "SELECT count(*) FROM field_observations WHERE field_key='hours.raw' AND value_json IS NOT NULL"
+        "SELECT count(*) FROM field_observations WHERE field_key='hours.raw' AND value_json IS NOT NULL AND source_record_id IN (SELECT source_record_id FROM source_records WHERE acquisition_method='retained_hotpepper_artifact')"
     ).fetchone()[0]
     hp_closure = db.execute(
-        "SELECT count(*) FROM field_observations WHERE field_key='closure.raw' AND value_json IS NOT NULL"
+        "SELECT count(*) FROM field_observations WHERE field_key='closure.raw' AND value_json IS NOT NULL AND source_record_id IN (SELECT source_record_id FROM source_records WHERE acquisition_method='retained_hotpepper_artifact')"
     ).fetchone()[0]
     expect(hp_hours == 535, f"Hot Pepper hours observations={hp_hours}")
     expect(hp_closure == 535, f"Hot Pepper closure observations={hp_closure}")
@@ -112,7 +120,7 @@ def main():
     sample = builder.parse_budget_range("5000円以上")
     expect(sample is not None and sample["lower"] == 5000 and sample["upper"] is None, f"open budget parse={sample}")
     ranges = list(db.execute(
-        "SELECT value_json FROM field_observations WHERE field_key='budget.dinner.range' AND value_json IS NOT NULL"
+        "SELECT value_json FROM field_observations WHERE field_key='budget.dinner.range' AND value_json IS NOT NULL AND source_record_id IN (SELECT source_record_id FROM source_records WHERE acquisition_method='retained_hotpepper_artifact')"
     ))
     malformed = 0
     for (raw,) in ranges:
@@ -120,6 +128,39 @@ def main():
         if value.get("upper") is not None and value.get("upper") < value.get("lower", 0):
             malformed += 1
     expect(malformed == 0, f"malformed normalized budget ranges={malformed}")
+
+    # Phase 2 retained overlays are imported as evidence only. Their expected counts
+    # are derived from the current retained inputs rather than frozen historical totals.
+    inputs = phase2.load_inputs()
+    expected_source_facts = sum(len(row.get("sourceFacts", [])) for row in inputs["source_facts"].get("rows", []))
+    expected_provenance = sum(len(row.get("sourceLinks", [])) for row in inputs["source_provenance"].get("rows", []))
+    expected_rich = len(inputs["hotpepper_rich"].get("rows", []))
+    expected_dish_items = sum(
+        len(row.get("recommendedDishes", []) or []) + len(row.get("featuredDishes", []) or [])
+        for row in inputs["detail_evidence"].get("rows", [])
+    )
+    actual_phase2 = {
+        method: db.execute("SELECT count(*) FROM source_records WHERE acquisition_method=?", (method,)).fetchone()[0]
+        for method in PHASE2_METHODS
+    }
+    expect(actual_phase2["retained_source_fact_overlay"] == expected_source_facts,
+           f"source fact records={actual_phase2['retained_source_fact_overlay']}, expected={expected_source_facts}")
+    expect(actual_phase2["retained_source_provenance_link"] == expected_provenance,
+           f"provenance records={actual_phase2['retained_source_provenance_link']}, expected={expected_provenance}")
+    expect(actual_phase2["retained_hotpepper_rich_metadata"] == expected_rich,
+           f"rich metadata records={actual_phase2['retained_hotpepper_rich_metadata']}, expected={expected_rich}")
+    expect(actual_phase2["retained_dish_evidence"] == expected_dish_items,
+           f"dish evidence records={actual_phase2['retained_dish_evidence']}, expected={expected_dish_items}")
+
+    phase2_selected = db.execute(
+        f"""SELECT count(*)
+        FROM field_resolutions r
+        JOIN field_observations o ON o.observation_id=r.observation_id
+        JOIN source_records sr ON sr.source_record_id=o.source_record_id
+        WHERE sr.acquisition_method IN ({','.join('?' for _ in PHASE2_METHODS)})""",
+        PHASE2_METHODS,
+    ).fetchone()[0]
+    expect(phase2_selected == 0, f"phase-2 evidence unexpectedly changed field resolutions={phase2_selected}")
 
     named = db.execute(
         "SELECT count(*) FROM field_resolutions WHERE field_key='name' AND resolution_state='known'"
@@ -137,8 +178,6 @@ def main():
         "SELECT count(*) FROM catalog_entries WHERE identity_state='conflict'"
     ).fetchone()[0]
     expect(verified == 651, f"verified legacy catalog entries={verified}")
-    # Coverage is a report during refactor; the hard invariant is that every identity
-    # currently publishable by name has exactly one known name resolution.
     expect(named == verified + source_matched, f"resolved names={named}, verified+source_matched={verified + source_matched}")
     expect(verified + source_matched + id_only + conflict_state == 2804, "identity-state totals do not reconcile")
 
@@ -162,6 +201,11 @@ def main():
         "hoursRaw": hp_hours,
         "closuresRaw": hp_closure,
         "normalizedBudgetObservations": len(ranges),
+        "phase2SourceFacts": actual_phase2["retained_source_fact_overlay"],
+        "phase2ProvenanceLinks": actual_phase2["retained_source_provenance_link"],
+        "phase2HotPepperRich": actual_phase2["retained_hotpepper_rich_metadata"],
+        "phase2DishEvidenceItems": actual_phase2["retained_dish_evidence"],
+        "phase2SelectedResolutions": phase2_selected,
         "sourceRecords": db.execute("SELECT count(*) FROM source_records").fetchone()[0],
         "sourceBindings": db.execute("SELECT count(*) FROM source_bindings").fetchone()[0],
         "fieldObservations": db.execute("SELECT count(*) FROM field_observations").fetchone()[0],

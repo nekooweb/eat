@@ -13,6 +13,10 @@ on:
       - "data/google_basic_source_matches.json"
       - "data/hotpepper_catalog_facts.json"
       - "data/production_area1.js"
+      - "data/source_facts.js"
+      - "data/source_provenance.js"
+      - "data/hotpepper_rich_metadata.js"
+      - "data/google_inventory_detail_evidence.json"
   pull_request:
     paths:
       - "database/**"
@@ -24,6 +28,10 @@ on:
       - "data/google_basic_source_matches.json"
       - "data/hotpepper_catalog_facts.json"
       - "data/production_area1.js"
+      - "data/source_facts.js"
+      - "data/source_provenance.js"
+      - "data/hotpepper_rich_metadata.js"
+      - "data/google_inventory_detail_evidence.json"
   workflow_dispatch:
 
 env:
@@ -48,6 +56,7 @@ jobs:
           python -m py_compile \
             docs/database/validate_schema.py \
             scripts/database/master_import_core.py \
+            scripts/database/retained_phase2.py \
             scripts/database/build_master.py \
             scripts/database/validate_master.py
 

@@ -1,11 +1,5 @@
 #!/usr/bin/env python3
-"""Persistent Eat master-database entrypoint.
-
-The reusable import primitives live in master_import_core.py. This entrypoint builds a
-cross-layer conflict index before admission and applies the current resolver safety
-rule: conflict evidence is retained but may not erase an already-known value selected
-from another binding.
-"""
+"""Persistent Eat master-database entrypoint."""
 from __future__ import annotations
 
 import argparse
@@ -15,6 +9,7 @@ from collections import defaultdict
 from pathlib import Path
 
 import master_import_core as core
+import retained_phase2 as phase2
 
 ROOT = Path(__file__).resolve().parents[2]
 DATA = ROOT / "data"
@@ -35,12 +30,10 @@ def _resolve_preserving_known_on_conflict(db, place_id, field_key, observation_i
     return _ORIGINAL_RESOLVE(db, place_id, field_key, observation_id, state, provider, stamp)
 
 
-# Import helpers resolve fields through the core module global. Override it once here
-# so the production entrypoint has monotonic known-value retention across conflicts.
 core.resolve = _resolve_preserving_known_on_conflict
 
 
-def retained_conflict_index(basics, hotpepper):
+def retained_conflict_index(basics, hotpepper, phase2_inputs):
     basic_places = defaultdict(set)
     all_places = defaultdict(set)
 
@@ -53,6 +46,9 @@ def retained_conflict_index(basics, hotpepper):
     for row in hotpepper.get("rows", []):
         key = f"Hot Pepper|{row['hotpepperId']}"
         all_places[key].add(row["googlePlaceId"])
+
+    for key, pid in phase2.native_identity_rows(phase2_inputs):
+        all_places[key].add(pid)
 
     basic_conflicts = {key for key, places in basic_places.items() if len(places) > 1}
     all_conflicts = {key for key, places in all_places.items() if len(places) > 1}
@@ -78,12 +74,15 @@ def build(output: Path, reset: bool = False):
     basics = core.read_json(DATA / "google_basic_source_matches.json")
     hotpepper = core.read_json(DATA / "hotpepper_catalog_facts.json")
     production = core.read_production()
+    phase2_inputs = phase2.load_inputs()
     ids = inventory.get("googlePlaceIds") or []
     id_set = set(ids)
     if len(ids) != 2804 or len(id_set) != 2804 or inventory.get("count") != 2804:
         raise RuntimeError("frozen catalog must contain exactly 2,804 unique Place IDs")
 
-    basic_conflicts, conflict_keys, all_places = retained_conflict_index(basics, hotpepper)
+    basic_conflicts, conflict_keys, all_places = retained_conflict_index(
+        basics, hotpepper, phase2_inputs
+    )
     conflict_place_ids = set().union(*(all_places[key] for key in conflict_keys)) if conflict_keys else set()
 
     stamp = core.now_iso()
@@ -115,6 +114,7 @@ def build(output: Path, reset: bool = False):
         legacy_counts = core.import_legacy_canonical(db, production, id_set, stamp)
         basic_counts = core.import_basic(db, basics, conflict_keys, stamp)
         hp_counts = core.import_hotpepper(db, hotpepper, conflict_keys, stamp)
+        phase2_counts = phase2.import_all(db, phase2_inputs, conflict_keys, stamp)
 
         summary = {
             "catalog": db.execute("SELECT count(*) FROM catalog_entries").fetchone()[0],
@@ -126,6 +126,7 @@ def build(output: Path, reset: bool = False):
             "legacyCanonical": dict(legacy_counts),
             "basicBindings": dict(basic_counts),
             "hotPepperBindings": dict(hp_counts),
+            "phase2": phase2_counts,
             "basicConflictSourceKeys": len(basic_conflicts),
             "allRetainedConflictSourceKeys": len(conflict_keys),
             "allRetainedConflictPlaces": len(conflict_place_ids),
