@@ -8,6 +8,7 @@ import json
 import sqlite3
 from pathlib import Path
 
+import import_hotpepper_rich_metadata as hotpepper_rich
 import retained_phase2 as phase2
 import resolve_master as resolver
 
@@ -17,6 +18,16 @@ NONRESOLVING_PHASE2_METHODS = (
     "retained_source_provenance_link",
     "retained_dish_evidence",
 )
+RICH_CANONICAL_FIELDS = (
+    "hours.raw",
+    "closure.raw",
+    "budget.lunch.range",
+    "budget.dinner.range",
+)
+RICH_FINE_PRACTICAL_FIELDS = tuple(sorted(
+    set(hotpepper_rich.AMENITY_FIELDS.values()) | {"practical.smoking_policy"}
+))
+RICH_FINE_FIELDS = tuple(sorted(set(RICH_CANONICAL_FIELDS) | set(RICH_FINE_PRACTICAL_FIELDS)))
 
 
 def load_builder():
@@ -159,16 +170,84 @@ def main():
         NONRESOLVING_PHASE2_METHODS,
     ).fetchone()[0]
     expect(unexpected_nonresolving == 0, f"non-resolving Phase-2 evidence selected={unexpected_nonresolving}")
+
+    fine_placeholders = ",".join("?" for _ in RICH_FINE_FIELDS)
     unexpected_rich = db.execute(
         f"""SELECT count(*)
         FROM field_resolutions r
         JOIN field_observations o ON o.observation_id=r.observation_id
         JOIN source_records sr ON sr.source_record_id=o.source_record_id
         WHERE sr.acquisition_method='retained_hotpepper_rich_metadata'
-          AND o.field_key NOT IN ({placeholders})""",
-        resolver.SAFE_HOTPEPPER_PRACTICAL_FIELDS,
+          AND NOT (
+            (r.rule_version=? AND o.field_key IN ({placeholders}))
+            OR
+            (r.rule_version=? AND o.field_key IN ({fine_placeholders}))
+          )""",
+        (
+            resolver.RULE_VERSION,
+            *resolver.SAFE_HOTPEPPER_PRACTICAL_FIELDS,
+            hotpepper_rich.RULE_VERSION,
+            *RICH_FINE_FIELDS,
+        ),
     ).fetchone()[0]
-    expect(unexpected_rich == 0, f"non-practical rich field selected={unexpected_rich}")
+    expect(unexpected_rich == 0, f"unapproved rich resolution selected={unexpected_rich}")
+
+    fine_rich_resolutions = db.execute(
+        """SELECT count(*)
+        FROM field_resolutions r
+        JOIN field_observations o ON o.observation_id=r.observation_id
+        JOIN source_records sr ON sr.source_record_id=o.source_record_id
+        WHERE sr.acquisition_method='retained_hotpepper_rich_metadata'
+          AND r.rule_version=?""",
+        (hotpepper_rich.RULE_VERSION,),
+    ).fetchone()[0]
+    fine_without_reviewed_base = db.execute(
+        """SELECT count(*)
+        FROM field_resolutions r
+        JOIN field_observations o ON o.observation_id=r.observation_id
+        JOIN source_records rich ON rich.source_record_id=o.source_record_id
+        WHERE rich.acquisition_method='retained_hotpepper_rich_metadata'
+          AND r.rule_version=?
+          AND NOT EXISTS (
+            SELECT 1
+            FROM source_records base
+            JOIN source_bindings bb ON bb.source_record_id=base.source_record_id
+            WHERE base.provider='Hot Pepper'
+              AND base.provider_id=rich.provider_id
+              AND base.acquisition_method='retained_hotpepper_artifact'
+              AND bb.place_id=o.place_id
+              AND bb.binding_state='reviewed'
+          )""",
+        (hotpepper_rich.RULE_VERSION,),
+    ).fetchone()[0]
+    expect(fine_without_reviewed_base == 0,
+           f"fine rich resolutions without reviewed base binding={fine_without_reviewed_base}")
+
+    rich_budget_rows = list(db.execute(
+        """SELECT o.value_json
+        FROM field_resolutions r
+        JOIN field_observations o ON o.observation_id=r.observation_id
+        JOIN source_records sr ON sr.source_record_id=o.source_record_id
+        WHERE sr.acquisition_method='retained_hotpepper_rich_metadata'
+          AND r.rule_version=?
+          AND o.field_key IN ('budget.lunch.range','budget.dinner.range')""",
+        (hotpepper_rich.RULE_VERSION,),
+    ))
+    malformed_rich_budget = 0
+    for (raw,) in rich_budget_rows:
+        try:
+            value = json.loads(raw)
+            if (
+                value.get("currency") != "JPY"
+                or not isinstance(value.get("lower"), int)
+                or not isinstance(value.get("upper"), int)
+                or value["upper"] < value["lower"]
+                or value.get("evidenceType") != "explicit_labeled_hotpepper_average_range"
+            ):
+                malformed_rich_budget += 1
+        except Exception:
+            malformed_rich_budget += 1
+    expect(malformed_rich_budget == 0, f"malformed rich budgets={malformed_rich_budget}")
 
     named = db.execute("SELECT count(*) FROM field_resolutions WHERE field_key='name' AND resolution_state='known'").fetchone()[0]
     states = dict(db.execute("SELECT identity_state,count(*) FROM catalog_entries GROUP BY identity_state"))
@@ -198,6 +277,8 @@ def main():
         "phase2HotPepperRich": acquisition_counts.get("retained_hotpepper_rich_metadata", 0),
         "phase2DishEvidenceItems": acquisition_counts.get("retained_dish_evidence", 0),
         "safePracticalResolutions": actual_practical,
+        "fineRichResolutions": fine_rich_resolutions,
+        "fineRichBudgetResolutions": len(rich_budget_rows),
         "sourceRecords": db.execute("SELECT count(*) FROM source_records").fetchone()[0],
         "sourceBindings": db.execute("SELECT count(*) FROM source_bindings").fetchone()[0],
         "fieldObservations": db.execute("SELECT count(*) FROM field_observations").fetchone()[0],
