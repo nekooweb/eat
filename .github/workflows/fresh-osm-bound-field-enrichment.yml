@@ -1,0 +1,174 @@
+name: Enrich fields from reviewed fresh OSM bindings
+
+on:
+  workflow_run:
+    workflows: ["Diagnose fresh OSM rich identity tags"]
+    types: [completed]
+  workflow_dispatch:
+    inputs:
+      fresh_run_id:
+        description: "Successful fresh OSM acquisition run ID"
+        required: true
+        type: string
+
+permissions:
+  actions: read
+  contents: write
+
+concurrency:
+  group: public-open-data-field-evidence
+  cancel-in-progress: false
+
+jobs:
+  enrich:
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    env:
+      FRESH_RUN_ID: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.id || inputs.fresh_run_id }}
+    steps:
+      - name: Checkout latest main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Validate syntax and no-paid policy
+        run: |
+          set -euo pipefail
+          python -m py_compile \
+            scripts/database/build_fresh_osm_bound_field_evidence.py \
+            scripts/database/import_fresh_osm_bound_field_evidence.py \
+            scripts/database/build_master.py
+          node scripts/audit_no_paid_apis.mjs
+      - name: Download reusable fresh OSM public snapshot
+        uses: actions/download-artifact@v5
+        with:
+          name: fresh-osm-rich-tag-diagnostic
+          path: _fresh_osm
+          github-token: ${{ github.token }}
+          repository: nekooweb/eat
+          run-id: ${{ env.FRESH_RUN_ID }}
+      - name: Validate acquisition boundary
+        run: |
+          python - <<'PY'
+          import json
+          d=json.load(open('_fresh_osm/fresh-osm-rich-public-rows.json'))
+          assert d['ruleVersion']=='fresh-osm-rich-public-snapshot-v1'
+          p=d['policy']; assert p['paidDataApiCalls']==0 and p['googleDataIncluded'] is False
+          assert p['rawOverpassResponsePersisted'] is False and p['parsedPublicOsmRowsOnly'] is True
+          assert len(d['rows'])>0
+          print(json.dumps({'freshRunId':'${{ env.FRESH_RUN_ID }}','rows':len(d['rows']),'retrievedAt':d.get('retrievedAt')},sort_keys=True))
+          PY
+      - name: Build baseline master
+        run: |
+          set -euo pipefail
+          mkdir -p _tmp
+          python scripts/database/build_master.py --output _tmp/eat-master-before.sqlite --reset | tee _tmp/master-before.json
+          python scripts/database/validate_master.py _tmp/eat-master-before.sqlite | tee _tmp/master-before-validate.json
+      - name: Build exact-reviewed missing-only evidence
+        run: |
+          set -euo pipefail
+          python scripts/database/build_fresh_osm_bound_field_evidence.py \
+            --database _tmp/eat-master-before.sqlite \
+            --snapshot _fresh_osm/fresh-osm-rich-public-rows.json \
+            --output _tmp/fresh-osm-bound-field-incoming.json \
+            | tee _tmp/fresh-osm-bound-field-build.json
+      - name: Merge bounded evidence
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          base=json.load(open('data/fresh_osm_bound_field_evidence.json'))
+          inc=json.load(open('_tmp/fresh-osm-bound-field-incoming.json'))
+          assert base['ruleVersion']==inc['ruleVersion']=='fresh-osm-bound-field-evidence-v1'
+          rows={(r['googlePlaceId'],r['providerId']):r for r in base.get('rows',[])}
+          for r in inc.get('rows',[]):
+              key=(r['googlePlaceId'],r['providerId'])
+              if key in rows:
+                  merged=dict(rows[key]); merged['fields']={**(merged.get('fields') or {}),**(r.get('fields') or {})}
+                  for k in ('sourceUrl','retrievedAt','acquisitionContentHash','evidenceContentHash','provenance'): merged[k]=r.get(k)
+                  rows[key]=merged
+              else: rows[key]=r
+          out=dict(inc); out['rows']=[rows[k] for k in sorted(rows)]
+          fc={}
+          for r in out['rows']:
+              for f in (r.get('fields') or {}): fc[f]=fc.get(f,0)+1
+          out['summary']={**inc.get('summary',{}),'rows':len(out['rows']),'fieldCounts':dict(sorted(fc.items()))}
+          Path('data/fresh_osm_bound_field_evidence.json').write_text(json.dumps(out,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          print(json.dumps({'beforeRows':len(base.get('rows',[])),'incomingRows':len(inc.get('rows',[])),'afterRows':len(out['rows']),'fieldCounts':out['summary']['fieldCounts']},sort_keys=True))
+          PY
+      - name: Validate master effect
+        run: |
+          set -euo pipefail
+          python scripts/database/build_master.py --output _tmp/eat-master-after.sqlite --reset | tee _tmp/master-after.json
+          python scripts/database/validate_master.py _tmp/eat-master-after.sqlite | tee _tmp/master-after-validate.json
+          python scripts/database/validate_ingestion_plan.py _tmp/eat-master-after.sqlite | tee _tmp/ingestion-plan-after.json
+          python - <<'PY'
+          import json
+          b=json.load(open('_tmp/master-before.json')); a=json.load(open('_tmp/master-after.json'))
+          assert a['identityStates']==b['identityStates']
+          ib=a['freshOsmBoundFieldEvidence']
+          assert ib['networkRequests']==0 and ib['identityChanges']==0
+          assert ib['importTimeMissingOnly'] is True and ib['exactReviewedBindingOnly'] is True
+          bp=b['ingestionPlan']; ap=a['ingestionPlan']
+          assert ap['taskTypeCounts']['field_completion']<=bp['taskTypeCounts']['field_completion']
+          for k,v in bp['fieldCompletionMissingCounts'].items(): assert ap['fieldCompletionMissingCounts'].get(k,0)<=v,(k,bp,ap)
+          print(json.dumps({'before':{'identity':b['identityStates'],'fieldTasks':bp['taskTypeCounts']['field_completion'],'missing':bp['fieldCompletionMissingCounts']},'after':{'identity':a['identityStates'],'fieldTasks':ap['taskTypeCounts']['field_completion'],'missing':ap['fieldCompletionMissingCounts'],'import':ib}},sort_keys=True))
+          PY
+      - name: Commit bounded evidence on latest main
+        run: |
+          set -euo pipefail
+          cp _tmp/fresh-osm-bound-field-incoming.json _tmp/incoming-working.json
+          git restore -- data/fresh_osm_bound_field_evidence.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          for attempt in 1 2 3; do
+            git fetch origin main
+            git checkout -B fresh-osm-fields origin/main
+            python - <<'PY'
+          import json
+          from pathlib import Path
+          base=json.load(open('data/fresh_osm_bound_field_evidence.json')); inc=json.load(open('_tmp/incoming-working.json'))
+          rows={(r['googlePlaceId'],r['providerId']):r for r in base.get('rows',[])}
+          for r in inc.get('rows',[]):
+              key=(r['googlePlaceId'],r['providerId'])
+              if key in rows:
+                  m=dict(rows[key]); m['fields']={**(m.get('fields') or {}),**(r.get('fields') or {})}
+                  for k in ('sourceUrl','retrievedAt','acquisitionContentHash','evidenceContentHash','provenance'): m[k]=r.get(k)
+                  rows[key]=m
+              else: rows[key]=r
+          out=dict(inc); out['rows']=[rows[k] for k in sorted(rows)]; fc={}
+          for r in out['rows']:
+              for f in (r.get('fields') or {}): fc[f]=fc.get(f,0)+1
+          out['summary']={**inc.get('summary',{}),'rows':len(out['rows']),'fieldCounts':dict(sorted(fc.items()))}
+          Path('data/fresh_osm_bound_field_evidence.json').write_text(json.dumps(out,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          PY
+            git add data/fresh_osm_bound_field_evidence.json
+            if git diff --cached --quiet; then echo "No new reviewed fresh OSM field evidence."; exit 0; fi
+            git commit -m "Add reviewed fresh OSM field evidence"
+            if git push origin HEAD:main; then exit 0; fi
+            git reset --hard HEAD~1; sleep 2
+          done
+          echo "Unable to fast-forward fresh OSM field evidence after three attempts." >&2; exit 1
+      - name: Upload field-enrichment audit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fresh-osm-bound-field-enrichment
+          path: |
+            _tmp/fresh-osm-bound-field-incoming.json
+            _tmp/fresh-osm-bound-field-build.json
+            _tmp/master-before.json
+            _tmp/master-before-validate.json
+            _tmp/master-after.json
+            _tmp/master-after-validate.json
+            _tmp/ingestion-plan-after.json
+          if-no-files-found: warn
+          retention-days: 3
