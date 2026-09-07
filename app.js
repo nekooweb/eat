@@ -3,8 +3,6 @@
   const $$ = (selector) => [...document.querySelectorAll(selector)];
   const MAX_DISTANCE = 1200;
   const NII_REFERENCE = Object.freeze({
-    name: '国立情報学研究所（学術総合センター）',
-    address: '東京都千代田区一ツ橋2-1-2',
     lat: 35.6924611,
     lng: 139.7581028
   });
@@ -201,11 +199,6 @@
     return `${common}&query_place_id=${placeId}`;
   }
 
-  function niiMapsUrl() {
-    const query = encodeURIComponent(`${NII_REFERENCE.name}, ${NII_REFERENCE.address}`);
-    return `https://www.google.com/maps/search/?api=1&query=${query}&utm_source=eat&utm_campaign=nii_reference`;
-  }
-
   function awardBadge(restaurant) {
     if (!restaurant.hyakumeiten) return '';
     const award = [restaurant.hyakumeitenYear, restaurant.hyakumeitenCategory]
@@ -292,7 +285,6 @@
           <div class="eyebrow">OVERVIEW</div>
           <h2>三家位置总览</h2>
         </div>
-        <span class="map-note">点 1–3 可跳转 Google Maps · 红点为 NII</span>
       </div>
       <div id="overview-map" class="overview-map" aria-label="三家餐厅位置总览地图"></div>
     </section>`;
@@ -369,10 +361,10 @@
         color: '#a61b1b',
         weight: 2,
         fillColor: '#e53935',
-        fillOpacity: 0.95
-      })
-        .addTo(overview)
-        .bindPopup(`<b>${escapeHtml(NII_REFERENCE.name)}</b><br>${escapeHtml(NII_REFERENCE.address)}<br><a href="${escapeHtml(niiMapsUrl())}" target="_blank" rel="noopener">在 Google Maps 查看 ↗</a>`);
+        fillOpacity: 0.95,
+        interactive: false,
+        bubblingMouseEvents: false
+      }).addTo(overview);
 
       overview.fitBounds(bounds, { padding: [34, 34], maxZoom: 16 });
       activeMaps.push(overview);
