@@ -17,7 +17,7 @@ from build_fresh_osm_bound_field_evidence import canonical_osm_id
 ROOT = Path(__file__).resolve().parents[2]
 DATA = ROOT / "data"
 DEFAULT_EVIDENCE = DATA / "fresh_osm_bound_field_evidence.json"
-RULE_VERSION = "fresh-osm-bound-field-evidence-v1"
+RULE_VERSION = "fresh-osm-bound-field-evidence-v2"
 ACQUISITION_METHOD = "fresh_osm_reviewed_bound_field_evidence"
 BINDING_METHOD = "field_only_existing_reviewed_native_osm_binding"
 EQUIVALENTS = {
