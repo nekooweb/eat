@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Use fresh OSM rich tags to re-run strict cross-provider identity consensus.
+"""Use one acquired fresh OSM public snapshot for strict cross-provider identity consensus.
 
-Historical Google rows remain private linkage hints only. The only new public request is
-one bounded OSM Overpass query. Fresh OSM phone/website/address tags are combined in
-memory with retained Hot Pepper and current Overture rows. No identity is promoted and
-no raw Google/Overpass payload is persisted.
+Historical Google rows remain private linkage hints only. This diagnostic makes zero
+network requests: fresh OSM phone/website/address fields must come from the short-lived
+`fresh-osm-rich-public-snapshot-v1` artifact produced by the dedicated acquisition job.
+No identity is promoted and no Google display payload is persisted.
 """
 from __future__ import annotations
 
@@ -15,7 +15,6 @@ import sqlite3
 from collections import Counter, defaultdict
 from pathlib import Path
 
-import diagnose_fresh_osm_rich_tags as fresh_osm
 import diagnose_private_strong_consensus_v5 as v5
 import reconcile_private_google_hints as base
 import reconcile_private_address_consensus_v2 as v2
@@ -23,58 +22,56 @@ import reconcile_private_multisource_consensus_v3 as v3
 import reconcile_private_official_web_consensus_v4 as v4
 
 RULE_VERSION = "private-fresh-osm-strong-consensus-v7"
+SNAPSHOT_RULE_VERSION = "fresh-osm-rich-public-snapshot-v1"
 
 
-def address_text(tags: dict) -> str:
-    parts = []
-    for key in (
-        "addr:province", "addr:state", "addr:city", "addr:district", "addr:suburb",
-        "addr:quarter", "addr:street", "addr:place", "addr:housenumber", "addr:postcode"
-    ):
-        value = str(tags.get(key) or "").strip()
-        if value and value not in parts:
-            parts.append(value)
-    full = str(tags.get("addr:full") or "").strip()
-    return full or " ".join(parts)
+def load_fresh_osm_provider_rows(path: Path) -> tuple[list[dict], dict]:
+    doc = json.loads(path.read_text(encoding="utf-8"))
+    if doc.get("ruleVersion") != SNAPSHOT_RULE_VERSION:
+        raise RuntimeError(f"unexpected fresh OSM snapshot ruleVersion: {doc.get('ruleVersion')}")
+    policy = doc.get("policy") or {}
+    expected = {
+        "paidDataApiCalls": 0,
+        "googleDataIncluded": False,
+        "rawOverpassResponsePersisted": False,
+        "parsedPublicOsmRowsOnly": True,
+        "masterWrites": 0,
+        "promotionPerformed": False,
+    }
+    for key, value in expected.items():
+        if policy.get(key) != value:
+            raise RuntimeError(f"fresh OSM snapshot policy mismatch: {key}")
 
-
-def fresh_osm_provider_rows(doc: dict) -> list[dict]:
     rows = []
     seen = set()
-    for element in doc.get("elements") or []:
-        sid = fresh_osm.source_id(element)
-        tags = element.get("tags") if isinstance(element.get("tags"), dict) else {}
-        coord = fresh_osm.coordinates(element)
-        name = str(tags.get("name") or "").strip()
-        if not sid or sid in seen or not coord or not name:
-            continue
-        distance = fresh_osm.haversine_m(
-            fresh_osm.CENTER_LAT, fresh_osm.CENTER_LNG, coord[0], coord[1]
-        )
-        if distance > fresh_osm.RADIUS_M:
-            continue
+    for source in doc.get("rows") or []:
+        sid = str(source.get("providerId") or "").strip()
+        name = str(source.get("name") or "").strip()
+        lat, lng = source.get("lat"), source.get("lng")
+        if not sid or sid in seen or not name:
+            raise RuntimeError(f"invalid/duplicate OSM row: {sid or '<missing>'}")
+        if not isinstance(lat, (int, float)) or not isinstance(lng, (int, float)):
+            raise RuntimeError(f"OSM row lacks coordinates: {sid}")
         seen.add(sid)
-        phone_raw = fresh_osm.first_tag(tags, "contact:phone", "phone", "contact:mobile", "mobile")
-        website_raw = fresh_osm.first_tag(tags, "contact:website", "website", "url")
-        phone = fresh_osm.normalize_phone(phone_raw)
-        website = fresh_osm.normalize_url(website_raw)
+        phone = str(source.get("phone") or "").strip()
+        website = str(source.get("website") or "").strip()
         rows.append({
             "provider": "OpenStreetMap",
             "providerId": sid,
             "name": name,
-            "address": address_text(tags),
-            "lat": coord[0],
-            "lng": coord[1],
+            "address": str(source.get("address") or "").strip(),
+            "lat": float(lat),
+            "lng": float(lng),
             "websites": [website] if website else [],
             "raw": {
                 "phones": [phone] if phone else [],
                 "website": website or None,
-                "opening_hours": tags.get("opening_hours"),
-                "cuisine": tags.get("cuisine"),
+                "opening_hours": source.get("openingHoursRaw"),
+                "cuisine": source.get("cuisine"),
             },
             "freshPublicOsm": True,
         })
-    return rows
+    return rows, doc
 
 
 def signal_fingerprint(rule: str, phones: list[str], urls: list[str], domains: list[str]) -> list[str]:
@@ -87,6 +84,7 @@ def main():
     ap.add_argument("--database", type=Path, required=True)
     ap.add_argument("--initial", type=Path, required=True)
     ap.add_argument("--retry", type=Path, required=True)
+    ap.add_argument("--fresh-osm-snapshot", type=Path, required=True)
     ap.add_argument("--output", type=Path, required=True)
     args = ap.parse_args()
 
@@ -106,8 +104,7 @@ def main():
         bound[(provider, str(provider_id))].add(pid)
     db.close()
 
-    osm_doc, osm_elapsed, osm_hash = fresh_osm.fetch_overpass()
-    osm_rows = fresh_osm_provider_rows(osm_doc)
+    osm_rows, osm_snapshot = load_fresh_osm_provider_rows(args.fresh_osm_snapshot)
     counts = Counter()
     counts["fresh_osm_rows"] = len(osm_rows)
     counts["fresh_osm_rows_with_phone"] = sum(bool(v4.source_phones(r)) for r in osm_rows)
@@ -230,8 +227,8 @@ def main():
         "policy": {
             "newGoogleApiCalls": 0,
             "googleDisplayPayloadPersisted": False,
-            "newPublicNetworkRequests": 1,
-            "publicNetworkSource": "OpenStreetMap Overpass",
+            "newPublicNetworkRequests": 0,
+            "freshOsmInputIsReusableArtifact": True,
             "promotionPerformed": False,
             "proximityOnlyBindingAllowed": False,
             "privateHistoricalHintsDurable": False,
@@ -242,9 +239,9 @@ def main():
         },
         "freshOsm": {
             "rows": len(osm_rows),
-            "elapsedSeconds": osm_elapsed,
-            "responseHash": osm_hash,
-            "timestampOsmBase": (osm_doc.get("osm3s") or {}).get("timestamp_osm_base"),
+            "retrievedAt": osm_snapshot.get("retrievedAt"),
+            "responseHash": osm_snapshot.get("responseHash"),
+            "snapshotRuleVersion": osm_snapshot.get("ruleVersion"),
         },
         "summary": {
             "idOnly": len(id_only),
