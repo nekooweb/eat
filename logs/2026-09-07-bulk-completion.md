@@ -28,44 +28,81 @@ Master：4,686 source records/bindings、46,260 observations、30,913 resolution
 
 ## Batch E — historical private Google hint reconciliation
 
-状态：代码/私有 workflow 已实现，等待 CI probe。
+### E1 — strict probe
 
-### 发现
+完成，CI pass。相关实现 commit `cc4570a`。
 
-旧 workflow `recover-google-inventory-basic.yml` 明确引用两次 2026-09-06 私有 Google sweep：
+历史来源：
 
 - run `34018919233` / artifact `full-area1-collection-private-audit`；
 - run `34019078280` / artifact `full-area1-retry-private-audit`。
 
-两个 artifact 当前仍有效至 2026-09-09。下载审计确认：
+本轮没有产生新的 Google API request / cost。历史 Google display content 仅在 private workflow 中作为短期 hint，不写入 durable master/repository/public export。
 
-- initial `full_inventory_place_details.json`：2,159 rows，其中 1,716 success + 443 error；
-- retry `full_inventory_retry_private.json`：443 rows，全部取得 name/address/coordinates/status；
-- 合并后当时 2,159 条非核心 inventory 具备历史成功 detail hint；
-- 本轮不产生任何新 Google API request / cost。
+结果：
 
-### 持久化边界
+- current id-only：1,392；
+- historical hints available：1,391；
+- historical non-operational：1；
+- id-only without historical hint：1；
+- strict independent proposals：0；
+- durable rows：0；
+- Google display payload leakage：0。
 
-历史 Google display content 只作为 private ephemeral hint，不写入 durable master/repository/public export。Durable proposal 只允许 Google Place ID + independent Hot Pepper/OSM/Overture facts。
+说明剩余 id-only 并不是没有历史身份线索，而是当前 Hot Pepper / OSM / Overture retained layer 无法按严格 identity rule 对这些长尾店建立新的 durable binding。
 
-### 新增实现
+### E2 — private near-match diagnostics
 
-- `scripts/database/reconcile_private_google_hints.py`
-  - 构建当前 1,392 id-only set；
-  - 合并 initial + retry private hint；
-  - 对 Hot Pepper / OSM / Overture 建 spatial candidate index；
-  - provider ID 已被其他 PID 使用时拒绝；
-  - 同 provider 有近似竞争候选时拒绝；
-  - single-source 只允许 ultra-tight exact/super-exact match；
-  - 较宽条件要求 multi-provider consensus；
-  - 输出 private metrics 与 independent-only durable proposal 两份文件。
+完成，CI pass。Commit `0579017`。
 
-- `.github/workflows/private-historical-reconciliation.yml`
-  - `actions: read` 下载两个历史 artifact；
-  - 构建/验证当前 SQLite master；
-  - 执行 reconciliation；
-  - blocking 检查 durable proposal 不含 Google display payload；
-  - 上传 2-day private reconciliation artifact；
-  - 不自动 commit proposal。
+保持 durable acceptance 不变，只增加 private aggregation / near-match diagnostics。
 
-Probe 通过后先记录 strict proposal 实际数量和 provider/rule 分布，再决定是否正式导入。若数量很少，不降低门槛，转向免费公开来源 collector。
+统计：
+
+- 1,390 / 1,392 在 120m 内存在至少一个 independent candidate；
+- exact normalized name 在 <=10/20/30/50/80/120m 均只有 1；
+- similarity >=0.90 / 0.95 / 0.98 / 0.99 / 0.995 在上述距离桶内也均只有 1；
+- postcode match：801；
+- provider coverage：1 provider 17、2 providers 65、3 providers 1,308；
+- strictIndependentProposals：0。
+
+结论：独立候选空间覆盖很高，但东京核心区记录密度过高，distance/postcode 不是足够的 identity evidence。不能通过放宽 6m/20m/50m 阈值批量上架，否则会引入大量错绑。下一阶段改为免费公开来源/官网取证，要求名称、地址、电话、官网等更可判别的信号。
+
+Near-match 明细仍仅保存在短期 private artifact，不持久化 Google 名称、地址或坐标。
+
+## Map display fix — Leaflet/OpenStreetMap only
+
+用户反馈当前地图显示有问题，并要求不通过 API 读取地图数据。
+
+发现旧 Pages 仍会读取 secret `GOOGLE_MAP_API`，把它注入 `google-maps-embed-key`，因此生产环境优先走 Google Maps Embed iframe；Leaflet/OpenStreetMap 只是 fallback。这与 `privacy.html` 当前声明不一致，也让页面地图继续依赖 key / Embed 可用性。
+
+本轮修复：
+
+1. `index.html` 删除 Google Maps embed key meta；
+2. `.github/workflows/pages.yml` 删除 `GOOGLE_MAP_API` / `GOOGLE_MAPS_EMBED_KEY` secret 注入；
+3. Pages assemble 改为 Leaflet + OpenStreetMap 模式；
+4. 页面内三店总览和单店地图统一由现有 Leaflet 读取本地 runtime 坐标，再加载 OpenStreetMap tiles；
+5. Google Maps 只保留外部普通导航链接，Place ID 作为导航兼容键，不通过 Google API 读取地点字段；
+6. `scripts/audit_no_paid_apis.mjs` 删除旧 free-embed exception，并将 `app.js` / `index.html` 纳入扫描；
+7. 新增对 `GOOGLE_MAPS_EMBED_KEY`、Google map key secret、公开 index embed meta/placeholder 的 blocking 检查；
+8. Pages assemble 再次检查公开页面不含 embed key/endpoint 配置，并确认 Leaflet/OpenStreetMap 标记存在。
+
+目标：地图渲染和餐厅数据采集完全解耦。即使 Google API key 不存在或被删除，页面地图仍可正常显示。
+
+## 下一阶段
+
+### Batch F — free public-source identity collector
+
+针对剩余 1,392 id-only：
+
+- historical Google hint 仅可在 private job 作为导航提示；
+- durable identity 必须由官网/公开店铺页/Hot Pepper/OSM/Overture 等独立来源重新证明；
+- 至少保存真实名称 + stable source URL，并组合 address/postcode/phone/coordinates/domain 等证据；
+- proximity-only 禁止自动绑定；
+- ambiguous 结果保留 candidate；
+- confirmed source 一次访问提取所有可支持字段；
+- 每批 100–250 task，可中断、可重试、可统计；
+- 不绕过登录/CAPTCHA/access restriction；
+- 不恢复付费 Google Places/Text/Nearby API。
+
+每批完成继续同步 `DEVELOPMENT.md`、`DATA_PIPELINE.md` 和本日志。
