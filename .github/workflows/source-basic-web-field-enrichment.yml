@@ -49,14 +49,15 @@ jobs:
           python scripts/database/build_master.py --output _tmp/eat-master-before.sqlite --reset | tee _tmp/master-before.json
           python scripts/database/validate_master.py _tmp/eat-master-before.sqlite | tee _tmp/master-before-validate.json
           python - <<'PY'
-          import json,sqlite3
-          db=sqlite3.connect('_tmp/eat-master-before.sqlite')
-          active=db.execute("select count(*) from ingestion_tasks where active=1 and task_type='field_completion'").fetchone()[0]
-          missing={}
-          for payload, in db.execute("select payload_json from ingestion_tasks where active=1 and task_type='field_completion'"):
-            for field in json.loads(payload).get('missingFields',[]): missing[field]=missing.get(field,0)+1
-          json.dump({'fieldTasks':active,'missing':missing},open('_tmp/field-before.json','w'),sort_keys=True)
-          print(json.dumps({'fieldTasks':active,'missing':missing},sort_keys=True))
+          import json
+          master=json.load(open('_tmp/master-before.json'))
+          plan=master['ingestionPlan']
+          snapshot={
+            'fieldTasks': plan['taskTypeCounts']['field_completion'],
+            'missing': plan['fieldCompletionMissingCounts'],
+          }
+          json.dump(snapshot,open('_tmp/field-before.json','w'),sort_keys=True)
+          print(json.dumps(snapshot,sort_keys=True))
           PY
       - name: Collect verified public web fields
         run: |
@@ -103,16 +104,21 @@ jobs:
           node scripts/build_google_inventory_runtime.mjs | tee _tmp/runtime-after-web-fields.json
           node scripts/audit_google_inventory_runtime.mjs | tee _tmp/runtime-after-web-fields-audit.json
           python - <<'PY'
-          import json,sqlite3
+          import json
           before=json.load(open('_tmp/field-before.json'))
-          db=sqlite3.connect('_tmp/eat-master-after.sqlite')
-          active=db.execute("select count(*) from ingestion_tasks where active=1 and task_type='field_completion'").fetchone()[0]
-          missing={}
-          for payload, in db.execute("select payload_json from ingestion_tasks where active=1 and task_type='field_completion'"):
-            for field in json.loads(payload).get('missingFields',[]): missing[field]=missing.get(field,0)+1
-          assert active <= before['fieldTasks'], (before['fieldTasks'],active)
-          json.dump({'fieldTasks':active,'missing':missing},open('_tmp/field-after.json','w'),sort_keys=True)
-          print(json.dumps({'before':before,'after':{'fieldTasks':active,'missing':missing}},sort_keys=True))
+          master=json.load(open('_tmp/master-after.json'))
+          plan=master['ingestionPlan']
+          after={
+            'fieldTasks': plan['taskTypeCounts']['field_completion'],
+            'missing': plan['fieldCompletionMissingCounts'],
+          }
+          # Adding verified public facts must never create a field-completion task for an
+          # already-publishable identity. Newly promoted identities can increase the
+          # global count in another workflow, but this single checkout compares one
+          # fixed identity baseline before/after the field evidence mutation.
+          assert after['fieldTasks'] <= before['fieldTasks'], (before,after)
+          json.dump(after,open('_tmp/field-after.json','w'),sort_keys=True)
+          print(json.dumps({'before':before,'after':after},sort_keys=True))
           PY
       - name: Commit durable field evidence
         run: |
