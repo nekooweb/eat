@@ -2,6 +2,18 @@
 
 This file records product/architecture decisions and meaningful implementation milestones. It is not a replacement for Git history.
 
+## 2026-09-07 — 主数据库来源及导入契约验证
+
+- 确认目标为全量 Place ID 目录、本地 SQLite 主库及单一网页导出。
+- 固定源提交 `bb503c159f8908af8b6c9c6c3a16a371e46b56e5`，重算 2,804 个目录 ID 及关键资料覆盖，不再使用 648/662 作为当前网页分母。
+- 确认 353 条 Hot Pepper 营业/休息日原文未被旧映射采用；记录 5 组来源 ID 复用，涉及 10 条绑定。
+- 核验 Hot Pepper 留存格式与 API 文档，抽样读取 Bondy、ベト屋公开分店页面；Google 免 Key 批量详情入口仍未验证成功。
+- SQLite 内存契约 12 项检查通过；新增只读 GitHub Actions 契约检查。
+- 重写当前主文档，将替换前版本原样归档；没有删除数据、修改餐厅记录、重启旧采集器或创建永久主库。
+- [详细验证及限制](docs/database/VALIDATION_2026-09-07.md)，[输入/处理/输出](DATA_PIPELINE.md)。
+
+以下记录为历史开发过程，不作为当前状态或数量来源。
+
 ## 2026-09-06 — Zero-cost Pass 2 enrichment and full 2,804-ID maintenance ledger
 
 ### Pass 2 result

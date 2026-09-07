@@ -1,0 +1,35 @@
+name: Validate proposed database contract
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "docs/database/**"
+      - ".github/workflows/database-contract.yml"
+      - "data/area1_google_ids.json"
+      - "data/google_basic_source_matches.json"
+  pull_request:
+    paths:
+      - "docs/database/**"
+      - ".github/workflows/database-contract.yml"
+      - "data/area1_google_ids.json"
+      - "data/google_basic_source_matches.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Check prototype syntax
+        run: python -m py_compile docs/database/validate_schema.py
+      - name: Validate pinned source inputs and in-memory SQLite contract
+        run: python docs/database/validate_schema.py

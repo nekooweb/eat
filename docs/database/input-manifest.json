@@ -1,0 +1,501 @@
+{
+  "schemaVersion": 1,
+  "sourceRepository": "nekooweb/eat",
+  "sourceCommit": "bb503c159f8908af8b6c9c6c3a16a371e46b56e5",
+  "purpose": "Migration input inventory; not a completed local backup",
+  "verification": "Tree metadata for all files; content parsed for files marked contentParsed; actual backup must also verify bytes and SHA-256.",
+  "files": [
+    {
+      "path": "data/area1_bulk.js",
+      "gitBlobSha": "e2be3b09a0e28df6c1337cc26fe100180358db08",
+      "sizeBytes": 14222,
+      "contentParsed": false
+    },
+    {
+      "path": "data/area1_catalog.json",
+      "gitBlobSha": "341fdeae89dab469c81932829a592613b55d4df6",
+      "sizeBytes": 8219889,
+      "contentParsed": false
+    },
+    {
+      "path": "data/area1_enrichment_matrix.json",
+      "gitBlobSha": "8cca0dec298540e731ba6eb91dc78f61ff7028e0",
+      "sizeBytes": 1259512,
+      "contentParsed": false
+    },
+    {
+      "path": "data/area1_enrichment_queue.json",
+      "gitBlobSha": "dbb854ef5ea39c94a8e1276ec423d4aacc1e6f2d",
+      "sizeBytes": 4328487,
+      "contentParsed": false
+    },
+    {
+      "path": "data/area1_full_collection_queue.json",
+      "gitBlobSha": "c8a52eceebf078c0f14ccf94a586f457bfe42dd0",
+      "sizeBytes": 961063,
+      "contentParsed": false
+    },
+    {
+      "path": "data/area1_google_ids.json",
+      "gitBlobSha": "40706873dbf0d2580a026c2d6ef02e288b97b282",
+      "sizeBytes": 85328,
+      "contentParsed": true
+    },
+    {
+      "path": "data/area1_inventory_expansion_queue.json",
+      "gitBlobSha": "c0dd074bc723e5e2da5c775f373a5ce6f816a315",
+      "sizeBytes": 28647,
+      "contentParsed": false
+    },
+    {
+      "path": "data/area1_inventory_ledger.json",
+      "gitBlobSha": "54e16626e361021ee69962d1308330aa61e38d55",
+      "sizeBytes": 359945,
+      "contentParsed": false
+    },
+    {
+      "path": "data/area1_more.js",
+      "gitBlobSha": "03289ab48a3b6a940887a1fa1d6e8a1908d4a3c2",
+      "sizeBytes": 6900,
+      "contentParsed": false
+    },
+    {
+      "path": "data/area1_osm.js",
+      "gitBlobSha": "98343cce00f6c1995c099258a94576ed3d2f9b68",
+      "sizeBytes": 588332,
+      "contentParsed": true
+    },
+    {
+      "path": "data/catalog_admissions.json",
+      "gitBlobSha": "2bb53f16dfd8b492455692ff464c4faa98849321",
+      "sizeBytes": 6271,
+      "contentParsed": false
+    },
+    {
+      "path": "data/featured_dishes.js",
+      "gitBlobSha": "df4f07e451f0bfeb25cd53b3293c82509669b9b8",
+      "sizeBytes": 14801,
+      "contentParsed": false
+    },
+    {
+      "path": "data/google_basic_source_matches.json",
+      "gitBlobSha": "32d0c41ad77d17c2dd5a4c4068ca8e3853d3717d",
+      "sizeBytes": 447019,
+      "contentParsed": true
+    },
+    {
+      "path": "data/google_entities.generated.js",
+      "gitBlobSha": "43a2a22b17e4a31c2cc3884b12e05387573b382f",
+      "sizeBytes": 159122,
+      "contentParsed": false
+    },
+    {
+      "path": "data/google_entities.js",
+      "gitBlobSha": "e02c97061bbba5a0d6827340c34a362894e456be",
+      "sizeBytes": 1349,
+      "contentParsed": false
+    },
+    {
+      "path": "data/google_inventory_detail_evidence.json",
+      "gitBlobSha": "e115d0a9edf66a5b804ef856ab894eac2d21c3cd",
+      "sizeBytes": 178154,
+      "contentParsed": true
+    },
+    {
+      "path": "data/google_inventory_detail_queue.json",
+      "gitBlobSha": "78dde695f75ddc8eb59ddc9ef310a485340ac301",
+      "sizeBytes": 1451695,
+      "contentParsed": true
+    },
+    {
+      "path": "data/google_inventory_runtime.js",
+      "gitBlobSha": "693b213cdbfd594adfecfa40be82011d3c891302",
+      "sizeBytes": 1993209,
+      "contentParsed": true
+    },
+    {
+      "path": "data/google_places_cache.json",
+      "gitBlobSha": "1d97189ca7774cfb4cb6f49ec56c9954577af07c",
+      "sizeBytes": 183128,
+      "contentParsed": false
+    },
+    {
+      "path": "data/hotpepper_bindings.json",
+      "gitBlobSha": "63bcda90caa26ca687d1d0d14489f61ca7664e1e",
+      "sizeBytes": 206801,
+      "contentParsed": false
+    },
+    {
+      "path": "data/hotpepper_catalog_facts.json",
+      "gitBlobSha": "e59f93f8ed5a00b5d64761cb2d35a9caebc81e2f",
+      "sizeBytes": 1066558,
+      "contentParsed": true
+    },
+    {
+      "path": "data/hotpepper_manual_rich_bindings.json",
+      "gitBlobSha": "5e649369dff75a6b318087879a506879c0777676",
+      "sizeBytes": 4227,
+      "contentParsed": false
+    },
+    {
+      "path": "data/hotpepper_rich_metadata.js",
+      "gitBlobSha": "060934387c69014cb694dcfcfc8830c3f73802cd",
+      "sizeBytes": 466195,
+      "contentParsed": true
+    },
+    {
+      "path": "data/hyakumeiten.js",
+      "gitBlobSha": "06f6e05808afbf6d51201d75723663aebdd13058",
+      "sizeBytes": 1849,
+      "contentParsed": false
+    },
+    {
+      "path": "data/official_candidate_index.json",
+      "gitBlobSha": "0dd078101096987e0a149ee61526728dc963c862",
+      "sizeBytes": 72253,
+      "contentParsed": true
+    },
+    {
+      "path": "data/open_identity_reconciliation.json",
+      "gitBlobSha": "a5b34da25db0cfbb0d09232bafb772421d022c32",
+      "sizeBytes": 3729672,
+      "contentParsed": false
+    },
+    {
+      "path": "data/overture_area1_candidates.json",
+      "gitBlobSha": "034984ac6fe952ce5bebe20a9f72a980c6207242",
+      "sizeBytes": 6993614,
+      "contentParsed": true
+    },
+    {
+      "path": "data/production_area1.js",
+      "gitBlobSha": "55ac6c88347879b10dd14131537c13fd473c6c3b",
+      "sizeBytes": 533153,
+      "contentParsed": true
+    },
+    {
+      "path": "data/recommended_dishes.js",
+      "gitBlobSha": "0f59f5c6b7379e91fede4858391f6e860068390e",
+      "sizeBytes": 5042,
+      "contentParsed": false
+    },
+    {
+      "path": "data/restaurants.js",
+      "gitBlobSha": "3d50d67773ccaf23299bdfc1b6ba89927fcd0915",
+      "sizeBytes": 9029,
+      "contentParsed": false
+    },
+    {
+      "path": "data/source_enrichment.js",
+      "gitBlobSha": "b62c9a76a5e400708ce5e7094a76f505be88872e",
+      "sizeBytes": 12305,
+      "contentParsed": false
+    },
+    {
+      "path": "data/source_enrichment_autoofficial.js",
+      "gitBlobSha": "831443a2dc2903ac6814d5b0cf6c918cff61a11f",
+      "sizeBytes": 33647,
+      "contentParsed": false
+    },
+    {
+      "path": "data/source_enrichment_catalog-admissions.js",
+      "gitBlobSha": "8200d4748c05c00742845522b1b21be09c41ae6e",
+      "sizeBytes": 5942,
+      "contentParsed": false
+    },
+    {
+      "path": "data/source_enrichment_fullcollection.js",
+      "gitBlobSha": "51e6d9aa940a1644d0fff0706ac5a70539112f70",
+      "sizeBytes": 6867,
+      "contentParsed": false
+    },
+    {
+      "path": "data/source_enrichment_hotpepper-richcore.js",
+      "gitBlobSha": "e9e7916a93064ba2cd42f22269a4c5468fb3aac7",
+      "sizeBytes": 41199,
+      "contentParsed": false
+    },
+    {
+      "path": "data/source_enrichment_hotpepper.js",
+      "gitBlobSha": "d50a9bc2429434e8ff73de4ed63b77eb4ea33a80",
+      "sizeBytes": 83307,
+      "contentParsed": false
+    },
+    {
+      "path": "data/source_enrichment_near1.js",
+      "gitBlobSha": "c948bb4f44b1dce85bf96fe1f29ac0261102497f",
+      "sizeBytes": 8539,
+      "contentParsed": false
+    },
+    {
+      "path": "data/source_enrichment_near10.js",
+      "gitBlobSha": "3677455a9706d506c005f90d5cd6db80e996f3a2",
+      "sizeBytes": 3879,
+      "contentParsed": false
+    },
+    {
+      "path": "data/source_enrichment_near11.js",
+      "gitBlobSha": "8cff44415702d5220c90d7a598e03b1418a28513",
+      "sizeBytes": 3958,
+      "contentParsed": false
+    },
+    {
+      "path": "data/source_enrichment_near12.js",
+      "gitBlobSha": "263eb4e30b4e72c38edad6ba42582863d76cb370",
+      "sizeBytes": 5145,
+      "contentParsed": false
+    },
+    {
+      "path": "data/source_enrichment_near13.js",
+      "gitBlobSha": "81242543a09e42b633180e4b9c799d829eaf426f",
+      "sizeBytes": 2634,
+      "contentParsed": false
+    },
+    {
+      "path": "data/source_enrichment_near14.js",
+      "gitBlobSha": "133b0340b7aaef97e7962929163d8861f55227d7",
+      "sizeBytes": 3618,
+      "contentParsed": false
+    },
+    {
+      "path": "data/source_enrichment_near15.js",
+      "gitBlobSha": "f966f1dcb661a2ed732745726968c9624209028d",
+      "sizeBytes": 7492,
+      "contentParsed": false
+    },
+    {
+      "path": "data/source_enrichment_near16.js",
+      "gitBlobSha": "5de6b4e1e562c22b8ed071a2e2793255412f1624",
+      "sizeBytes": 1995,
+      "contentParsed": false
+    },
+    {
+      "path": "data/source_enrichment_near2.js",
+      "gitBlobSha": "3915545b7a8f6358eb7bae64b3e9510d0dc681d9",
+      "sizeBytes": 8581,
+      "contentParsed": false
+    },
+    {
+      "path": "data/source_enrichment_near3.js",
+      "gitBlobSha": "2aa4136a0588466af0d961940d4907f35590c2c1",
+      "sizeBytes": 10708,
+      "contentParsed": false
+    },
+    {
+      "path": "data/source_enrichment_near4.js",
+      "gitBlobSha": "754cb3915a3b916c3e8bf58de5e5bfcf531dd9f7",
+      "sizeBytes": 5554,
+      "contentParsed": false
+    },
+    {
+      "path": "data/source_enrichment_near5.js",
+      "gitBlobSha": "1f4b04c3dc2bdee2ec23d348ac74a9ef5e9d6625",
+      "sizeBytes": 9723,
+      "contentParsed": false
+    },
+    {
+      "path": "data/source_enrichment_near6.js",
+      "gitBlobSha": "26b5b1ac3179d4306021e28cfb0eadd27e6b2603",
+      "sizeBytes": 5021,
+      "contentParsed": false
+    },
+    {
+      "path": "data/source_enrichment_near7.js",
+      "gitBlobSha": "548912d30d0161e9d6b9fbed40e5b5b40cf8e82f",
+      "sizeBytes": 7874,
+      "contentParsed": false
+    },
+    {
+      "path": "data/source_enrichment_near8.js",
+      "gitBlobSha": "2a99dfe57fe68ca579c3906bf1d5093caead8ade",
+      "sizeBytes": 8098,
+      "contentParsed": false
+    },
+    {
+      "path": "data/source_enrichment_near9.js",
+      "gitBlobSha": "5d9e172244b1f29e74c48a0a629ed9613f4cfa03",
+      "sizeBytes": 8268,
+      "contentParsed": false
+    },
+    {
+      "path": "data/source_enrichment_outer1.js",
+      "gitBlobSha": "a5a135b67570ca85cf7073fcba88164c4e46c896",
+      "sizeBytes": 6042,
+      "contentParsed": false
+    },
+    {
+      "path": "data/source_enrichment_outer10.js",
+      "gitBlobSha": "251cdf377e5048079944cd5b27a4cf25cb2693d7",
+      "sizeBytes": 13612,
+      "contentParsed": false
+    },
+    {
+      "path": "data/source_enrichment_outer2.js",
+      "gitBlobSha": "c2e69381390f391323c12d4813aec213ba79e680",
+      "sizeBytes": 7683,
+      "contentParsed": false
+    },
+    {
+      "path": "data/source_enrichment_outer3.js",
+      "gitBlobSha": "0f27ca90b922397e4d3f14033c55893135980024",
+      "sizeBytes": 7752,
+      "contentParsed": false
+    },
+    {
+      "path": "data/source_enrichment_outer4.js",
+      "gitBlobSha": "2df5e73dd84461d8839c4d46042ebcc1fd0c4dd0",
+      "sizeBytes": 7232,
+      "contentParsed": false
+    },
+    {
+      "path": "data/source_enrichment_outer5.js",
+      "gitBlobSha": "fe76073e867b18990500d43dfcc42a69adff3c88",
+      "sizeBytes": 7266,
+      "contentParsed": false
+    },
+    {
+      "path": "data/source_enrichment_outer6.js",
+      "gitBlobSha": "de772cb00b9d55d14ce3b449fa8ae094abbeb6b4",
+      "sizeBytes": 12196,
+      "contentParsed": false
+    },
+    {
+      "path": "data/source_enrichment_outer7.js",
+      "gitBlobSha": "7071c2a57a77c28719a3ac3fc146a79361fd3564",
+      "sizeBytes": 7649,
+      "contentParsed": false
+    },
+    {
+      "path": "data/source_enrichment_outer8.js",
+      "gitBlobSha": "25f92cd49e3ed4e6322d3fac33f134f3399f137d",
+      "sizeBytes": 5958,
+      "contentParsed": false
+    },
+    {
+      "path": "data/source_enrichment_outer9.js",
+      "gitBlobSha": "39492b2ca4b988be32be1adac8bb7d948eb6efb8",
+      "sizeBytes": 12413,
+      "contentParsed": false
+    },
+    {
+      "path": "data/source_enrichment_zchainmenus.js",
+      "gitBlobSha": "924a3a11f66f13a1596a5a0f1c8f01b51319f18f",
+      "sizeBytes": 11258,
+      "contentParsed": false
+    },
+    {
+      "path": "data/source_enrichment_zlocatorhours.js",
+      "gitBlobSha": "5b045b7be2bf40d156c64ab7dd5a1f8e58e403aa",
+      "sizeBytes": 5084,
+      "contentParsed": false
+    },
+    {
+      "path": "data/source_enrichment_zzfeaturedpass3.js",
+      "gitBlobSha": "e4ad6ac4e9d2cfc1bafcdac0009e43f38d6c868b",
+      "sizeBytes": 3162,
+      "contentParsed": false
+    },
+    {
+      "path": "data/source_enrichment_zzlocatorauto.js",
+      "gitBlobSha": "2ebd52da76532428e12e663bf28a5444a44c0655",
+      "sizeBytes": 2832,
+      "contentParsed": false
+    },
+    {
+      "path": "data/source_enrichment_zzzsinglehours.js",
+      "gitBlobSha": "ef8fe80805f6af98a413524056bc412dd2f78d0a",
+      "sizeBytes": 2703,
+      "contentParsed": false
+    },
+    {
+      "path": "data/source_enrichment_zzzzexplicitfields.js",
+      "gitBlobSha": "c780362914cec9ed8425820d815928c2159e173a",
+      "sizeBytes": 2019,
+      "contentParsed": false
+    },
+    {
+      "path": "data/source_enrichment_zzzzpricepatches.js",
+      "gitBlobSha": "2017de09b05608ad5f80025d0a251e1555b51c0e",
+      "sizeBytes": 3275,
+      "contentParsed": false
+    },
+    {
+      "path": "data/source_enrichment_zzzzzfeaturedtemplates.js",
+      "gitBlobSha": "1aef21181d097f281818e00ac164fc6949902254",
+      "sizeBytes": 1918,
+      "contentParsed": false
+    },
+    {
+      "path": "data/source_facts.js",
+      "gitBlobSha": "7654a4cf15f3c24787a5f4428ce141b89287efc8",
+      "sizeBytes": 226864,
+      "contentParsed": true
+    },
+    {
+      "path": "data/source_provenance.js",
+      "gitBlobSha": "a147231f196cffe63cf54803d2ff75c0d98de563",
+      "sizeBytes": 172005,
+      "contentParsed": true
+    },
+    {
+      "path": "data/source_resolution.js",
+      "gitBlobSha": "fd6560401f060f9ff8bcbd4581364018dce0bb27",
+      "sizeBytes": 849,
+      "contentParsed": false
+    },
+    {
+      "path": "data/source_resolution_near12.js",
+      "gitBlobSha": "66476197dca26db9becbe3b1c4e5eb1340d67fd6",
+      "sizeBytes": 6861,
+      "contentParsed": false
+    },
+    {
+      "path": "data/source_resolution_near14.js",
+      "gitBlobSha": "d3d29d5deec2d69aedcfbad86b44aa4f2bfe66d9",
+      "sizeBytes": 4715,
+      "contentParsed": false
+    },
+    {
+      "path": "data/source_resolution_near16.js",
+      "gitBlobSha": "fb85235298aad3e9d84062d587be25b592d9f8de",
+      "sizeBytes": 1522,
+      "contentParsed": false
+    },
+    {
+      "path": "data/source_resolution_outer1.js",
+      "gitBlobSha": "e292740fa34c2718c8ed6bf8f8d497a7bdee8956",
+      "sizeBytes": 1849,
+      "contentParsed": false
+    },
+    {
+      "path": "data/source_resolution_outer10.js",
+      "gitBlobSha": "50e062a2d65905e8391264ed2d1938df4782f3ab",
+      "sizeBytes": 1645,
+      "contentParsed": false
+    },
+    {
+      "path": "data/source_resolution_outer5.js",
+      "gitBlobSha": "a0f2f461afbdc2f9328fb455c710d2d25da17645",
+      "sizeBytes": 798,
+      "contentParsed": false
+    },
+    {
+      "path": "data/source_resolution_outer6.js",
+      "gitBlobSha": "951bfc1eb18954e2d390e7698142819bc7b2b2c3",
+      "sizeBytes": 2398,
+      "contentParsed": false
+    },
+    {
+      "path": "data/source_resolution_outer8.js",
+      "gitBlobSha": "70a6c29e4a4c5e7f006be7d81084beb3aea6650b",
+      "sizeBytes": 1535,
+      "contentParsed": false
+    },
+    {
+      "path": "data/source_resolution_outer9.js",
+      "gitBlobSha": "fe677045b968a1921d3f12848129bc61851a12ef",
+      "sizeBytes": 1354,
+      "contentParsed": false
+    }
+  ]
+}

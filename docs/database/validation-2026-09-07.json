@@ -1,0 +1,310 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-09-07",
+  "repository": "nekooweb/eat",
+  "sourceCommit": "bb503c159f8908af8b6c9c6c3a16a371e46b56e5",
+  "method": "Read pinned GitHub blobs with connector; parse JSON assignments without executing repository scripts; recompute counts/joins in memory. No local repository, production write, paid API, or bulk source collection.",
+  "inventory": {
+    "count": 2804,
+    "unique": 2804
+  },
+  "runtime": {
+    "count": 2804,
+    "unique": 2804,
+    "exactSetAndOrder": true,
+    "states": {
+      "canonical": 651,
+      "google_place_id_only": 1393,
+      "source_matched": 760
+    },
+    "named": 1411,
+    "address": 1073,
+    "cuisineNonGeneric": 1249,
+    "coordinates": 1411,
+    "lunch": 165,
+    "dinner": 607,
+    "normalizedHours": 363,
+    "anyHours": 363,
+    "recommendations": 186,
+    "featured": 181,
+    "eitherDish": 295,
+    "outsideKnownDistance": 0
+  },
+  "legacyCanonical": {
+    "count": 654,
+    "insideInventory": 651,
+    "outsideInventory": [
+      {
+        "placeId": "ChIJWeA_ZAOMGGARfiBoA50IWJk",
+        "name": "家庭料理みずむら"
+      },
+      {
+        "placeId": "ChIJcWvjgzyMGGARBoRR8P-q4RU",
+        "name": "もつ焼きじんちゃん"
+      },
+      {
+        "placeId": "ChIJW5GAgzyMGGARmW6HmXQ7SGY",
+        "name": "I Fratellini"
+      }
+    ]
+  },
+  "basics": {
+    "rows": 760,
+    "duplicates": 0,
+    "allInInventory": true,
+    "providers": {
+      "OpenStreetMap": 11,
+      "Overture Maps": 392,
+      "Hot Pepper": 357
+    },
+    "uniqueProviderIds": 755,
+    "providerIdCollisionGroups": [
+      {
+        "sourceKey": "Overture Maps|e7cf3ef8-2672-4d69-8b31-7ece8c21635f",
+        "rows": [
+          {
+            "placeId": "ChIJDf7UKdyNGGARwZ2bedwHGts",
+            "name": "Venchi Otemachi One Store",
+            "lat": 35.6876417,
+            "lng": 139.7632682
+          },
+          {
+            "placeId": "ChIJm3d-XHGNGGARqFrriSVA_Hg",
+            "name": "Venchi Otemachi One Store",
+            "lat": 35.6876417,
+            "lng": 139.7632682
+          }
+        ]
+      },
+      {
+        "sourceKey": "Hot Pepper|J004403751",
+        "rows": [
+          {
+            "placeId": "ChIJL-9QJQCNGGAR1xSZ9_oI5tc",
+            "name": "酔助 水道橋店",
+            "lat": 35.7019466037,
+            "lng": 139.7522829707
+          },
+          {
+            "placeId": "ChIJXxykg-uNGGARXPCfsLIcUDA",
+            "name": "酔助 水道橋店",
+            "lat": 35.7019466037,
+            "lng": 139.7522829707
+          }
+        ]
+      },
+      {
+        "sourceKey": "Overture Maps|fa345b29-ff32-43f2-8700-44decab9f351",
+        "rows": [
+          {
+            "placeId": "ChIJge_Vi4qNGGARUSVRmK8P39M",
+            "name": "Hub Tokyo Dome City LaQua",
+            "lat": 35.7059439,
+            "lng": 139.7540697
+          },
+          {
+            "placeId": "ChIJqVA2DTiMGGAROKkt-YJgYfk",
+            "name": "Hub Tokyo Dome City LaQua",
+            "lat": 35.7059439,
+            "lng": 139.7540697
+          }
+        ]
+      },
+      {
+        "sourceKey": "Overture Maps|7fe14647-ee3d-4b90-9b98-94fdafe7135a",
+        "rows": [
+          {
+            "placeId": "ChIJh0dxyhGNGGARZk9BsIhLQkE",
+            "name": "edge",
+            "lat": 35.698171,
+            "lng": 139.756382
+          },
+          {
+            "placeId": "ChIJu78sNRSMGGAR3ajbXKR3f08",
+            "name": "edge",
+            "lat": 35.698171,
+            "lng": 139.756382
+          }
+        ]
+      },
+      {
+        "sourceKey": "Overture Maps|bee6a85d-2d9b-48a7-8e28-369f78b653b1",
+        "rows": [
+          {
+            "placeId": "ChIJt4wzYwCNGGARPhkY7e5jstg",
+            "name": "とんかつ まい泉食堂 エキュートエディション御茶ノ水店",
+            "lat": 35.6994679,
+            "lng": 139.7650961
+          },
+          {
+            "placeId": "ChIJx-Bnc5eNGGARdulQm0LmYZg",
+            "name": "とんかつ まい泉食堂 エキュートエディション御茶ノ水店",
+            "lat": 35.6994679,
+            "lng": 139.7650961
+          }
+        ]
+      }
+    ]
+  },
+  "hotPepper": {
+    "catalogRows": 535,
+    "uniqueShopIds": 535,
+    "insideInventory": 535,
+    "richRows": 135,
+    "richInsideInventory": 135,
+    "sourceMatchedInRuntime": 353,
+    "hoursAvailableButAbsent": 353,
+    "closureAvailableButAbsent": 353,
+    "rawFieldNames": [
+      "name",
+      "nameKana",
+      "address",
+      "stationName",
+      "lat",
+      "lng",
+      "genre",
+      "budget",
+      "openingHoursText",
+      "closedText",
+      "lunchAvailabilityText",
+      "urls",
+      "access",
+      "course",
+      "freeDrink",
+      "freeFood",
+      "privateRoom",
+      "card",
+      "nonSmoking",
+      "parking"
+    ],
+    "openEndedBudgetRows": []
+  },
+  "evidence": {
+    "rows": 211,
+    "unique": 211,
+    "insideInventory": 211,
+    "recommendationRows": 158,
+    "featuredRows": 60,
+    "recommendationItems": 222,
+    "featuredItems": 61,
+    "invalidUrlOrDate": 0,
+    "withoutSnippet": 0,
+    "description": "Existing source-backed extraction outputs, not a fresh restaurant-by-restaurant semantic review; import evidence before deciding recommendation eligibility."
+  },
+  "providerFacts": {
+    "rows": 447,
+    "insideInventory": 447,
+    "records": 575
+  },
+  "provenance": {
+    "rows": 447,
+    "insideInventory": 447,
+    "links": 644
+  },
+  "overture": {
+    "candidateRows": 3908,
+    "uniqueIds": 3908,
+    "withSources": 3908,
+    "sourceDatasets": [
+      "AllThePlaces",
+      "Foursquare",
+      "Microsoft",
+      "Overture",
+      "meta"
+    ],
+    "release": "2026-08-19.0"
+  },
+  "validationScope": {
+    "sourceReachability": "sample checks separate; not whole-catalog currentness proof",
+    "databaseMigration": "not executed",
+    "publicGoogleDetails": "not validated as no-key structured API"
+  },
+  "osm": {
+    "candidates": 1273,
+    "uniqueSourceIds": 1273,
+    "withName": 1273,
+    "withAddress": 138
+  },
+  "prototype": {
+    "status": "pass",
+    "sqliteVersion": "3.53.3",
+    "tests": [
+      "2804 exact inventory IDs imported",
+      "760 retained bindings imported twice without duplicate growth",
+      "5 reused source IDs / 10 bindings quarantined as conflicts without selected canonical name",
+      "unknown new observation does not erase the selected known name",
+      "duplicate directory key rejected",
+      "unknown Place ID source binding rejected",
+      "cross-place/cross-field resolution rejected by composite foreign key",
+      "known field without value rejected",
+      "malformed JSON rejected",
+      "failed batch rollback preserves original rows",
+      "SQLite backup/restore in memory preserves 2804 IDs and referential integrity",
+      "final foreign-key audit clean"
+    ],
+    "counts": {
+      "catalog_entries": 2804,
+      "source_records": 755,
+      "source_bindings": 760,
+      "field_observations": 761,
+      "field_resolutions": 760
+    },
+    "scope": "in-memory relational prototype only; no persistent database, no end-to-end collector or publisher; source ID reuse is preserved and routed to review rather than silently merged"
+  },
+  "sourceChecks": [
+    {
+      "source": "Bondy official branch listing",
+      "url": "https://bondy.co.jp/web/contents/shoplist.html",
+      "result": "readable",
+      "fields": [
+        "branch name",
+        "branch-scoped address",
+        "phone",
+        "weekday/weekend hours"
+      ],
+      "caveat": "Multiple branches on one page; scope extraction to the named branch section."
+    },
+    {
+      "source": "Bondy official menu",
+      "url": "https://bondy.co.jp/web/contents/menu.html",
+      "result": "readable",
+      "fields": [
+        "menu item names",
+        "item prices"
+      ],
+      "caveat": "Item prices are not restaurant spend ranges; menu applicability must be branch-reviewed."
+    },
+    {
+      "source": "Betoya official Jimbocho branch",
+      "url": "https://betoya.jp/store/jimbocho/",
+      "result": "readable",
+      "fields": [
+        "branch name",
+        "address",
+        "phone",
+        "weekly hours",
+        "seats",
+        "payment",
+        "access",
+        "source-supported signature dish"
+      ],
+      "caveat": "Dated holiday block is inconsistent; quarantine that block and do not infer current closure."
+    },
+    {
+      "source": "Google Maps URL sample",
+      "url": "https://www.google.com/maps/search/?api=1&query=restaurant&query_place_id=ChIJBefQ4hOMGGARIkZIs01cRlQ",
+      "result": "web_tool_access_failure",
+      "caveat": "No parsed details obtained. Not proof the place is unavailable and not evidence of a working no-key data endpoint."
+    },
+    {
+      "source": "Royal Host locator sample",
+      "result": "web_tool_access_failure",
+      "caveat": "No data extracted; do not treat as closed."
+    },
+    {
+      "source": "Butayama locator sample",
+      "result": "web_tool_access_failure",
+      "caveat": "No data extracted; do not treat as closed."
+    }
+  ]
+}

@@ -1,279 +1,100 @@
-# Eat Data Pipeline
+# 主数据库输入、处理与输出流程
 
-Updated: 2026-09-06
+更新日期：2026-09-07。以下为已确认的目标流程；当前网页仍运行旧构建器。本次只完成数据审计、来源样本检查及内存模型验证，完整迁移尚未执行。
 
-## 1. Purpose
+## 1. 唯一数据方向
 
-This document defines the Area1 maintenance path after the 2026-09-06 transition to a **no paid data API** architecture.
+公开来源 / 已有留存资料 → 原始记录 → 身份绑定 → 字段观察与冲突处理 → 本地 SQLite 主库 → 校验后的导出 → GitHub Pages。
 
-Core rules:
+GitHub 保存代码、文档和发布快照；本地 SQLite 是目标主数据库，不把 Actions 临时目录或 Pages JS 当作主库。备份是主库副本，不是另一套独立可写主库。
 
-1. billable place/search/map data APIs are prohibited in repository maintenance;
-2. the existing 2,804 Google Place IDs are a frozen historical inventory, not a live upstream dataset;
-3. durable restaurant fields come from independent/reviewed sources;
-4. open-data/source extraction may be automated, but candidate facts do not become production facts without conservative identity binding/review;
-5. unknown values remain unknown;
-6. large recurring jobs must use bulk files/cached sources rather than systematic public geocoding/search endpoints.
+## 2. 迁移前备份
 
-## 2. Current scale
+前置条件：取得 [输入清单](docs/database/input-manifest.json)所指提交的资料。不得用不同提交的文件拼成一个无版本快照。
 
-Current baseline:
+1. 将清单中全部数据文件保存到本地版本化原始目录；记录仓库提交、Git blob SHA、实际文件字节数和 SHA-256。
+2. 核对清单完整性与每个文件的校验值；缺件时不切换主库。
+3. 保留旧资料原貌，不直接执行未知 JS。迁移适配器应解析已确认的 JSON 包装；必须运行旧 JS 时仅可在受限的无网络、无文件写权限环境中，设置执行限制。
+4. 将 source、binding、field 和历史状态转换为中间 JSONL；转换错误单独记录，不丢弃原文件。
 
-- frozen Area1 identity snapshot: **2,804** unique historical Place IDs;
-- canonical production: **656**;
-- production inside frozen inventory: **653**;
-- legacy inventory-only IDs: **2,151**;
-- OSM independent candidates: **1,273**;
-- verified historical QC rows: **666**;
-- source-backed production: **404 / 656**;
-- source outcomes accounted for: **448 / 656**;
-- unresolved production source outcomes: **208**;
-- official-site index: **194**;
-- non-generic cuisine: **579**;
-- address: **268**;
-- normalized weekly opening hours: **287**;
-- budget: **192**;
-- featured dishes: **129**;
-- strict recommendations: **30**.
-
-## 3. Source roles
-
-### Frozen legacy Google identity state
-
-Allowed use:
+目前只生成清单并读取核验了关键输入，尚未完成这一步的本地文件备份。
 
-- retain already-committed Place IDs as compatibility keys;
-- retain historical verification/rejection state;
-- retain previously persisted Google→OSM candidate class, distance and name-similarity metrics;
-- generate ordinary external Google Maps navigation URLs from an existing ID.
-
-Forbidden use:
-
-- live Place Details;
-- Text Search;
-- Places Aggregate / Area Insights;
-- `websiteUri` discovery;
-- any other billable lookup to refresh or expand identity state.
+## 3. 全量目录与历史例外
 
-Historical Google display payload was intentionally not persisted. Therefore some legacy IDs are opaque and must remain frozen/unresolved when durable independent evidence is insufficient.
+以 `area1_google_ids.json` 的 2,804 个 ID 建立目录。保留来源快照的原检查时间；历史圈内收录不等于今天仍营业。
 
-### Overture Maps Places
+无名称条目保存 `name=null` 和 `identity_state=id_only`，不把「Google Maps 餐厅」写成真实名称。全部条目可在目录视图展示状态和地图链接。
 
-Primary new bulk discovery source.
+旧核心库中不属于冻结目录的 3 条记录进入保留区，不静默删除，也不自动扩展本次范围。未来增减范围需单独版本化。
 
-Use the public GeoParquet release to obtain current candidate facts such as:
+## 4. 原始记录与身份绑定
 
-- Overture ID;
-- names;
-- `basic_category` and `taxonomy`;
-- geometry;
-- confidence;
-- addresses;
-- websites/phones;
-- brand;
-- record-level sources/provenance.
+为每条来源记录保存提供方、来源 ID、URL、原始内容、原来源时间、入库时间、内容校验值、取得方式、解析器版本和授权依据。相同来源 ID 的不同内容作为不同版本保存。
 
-BBox filtering is only a coarse pruning step. Apply the exact <=1,200 m Area1 geodesic boundary after retrieval.
+对 760 条已留存基础绑定，先保留原来的方法和可信度，再检查来源 ID 复用。已发现的 5 组 / 10 条复用绑定进入冲突队列；不能因为旧字段写着 `strong` 就再次自动确认。
 
-### OpenStreetMap
+新绑定按以下顺序取得证据：
 
-Independent geospatial/source layer.
+1. 明确的同一 Place ID 页面身份或已审查的来源别名。
+2. 精确电话、分店标识、地址和名称等联合证据。
+3. 空间距离作为限制条件，不单独作为同店证明。
+4. 多个候选、同楼层同品牌或来源冲突时进入人工核对。
 
-Use for:
+保留全部 Place ID；重复 Google listing 的合并/别名关系需单独核对，不在首次导入中自动删 ID。
 
-- candidate discovery;
-- durable coordinates/distance where available;
-- cuisine/opening-hours/address evidence when tagged;
-- cross-source identity comparison.
+## 5. 字段整理与采用
 
-For routine large refreshes prefer a local/cached Geofabrik Kanto PBF extract. Public Nominatim is not a bulk POI acquisition service and should not be used to enumerate the Area1 universe.
+- 保存来源原值，规范化值单独记录。
+- 名称、地址、坐标来自与该 ID 明确关联的具体记录；不能把另一提供方的名字标成 Google 页面取得。
+- 新记录的空值、超时或无匹配不能清除已知资料；明确闭店、搬迁或纠错证据可以撤销旧观察，并保留历史。
+- 预算按餐段保存币种、下界、上界、包含关系和证据类型。开放上界保持为空，禁止人为加 2,000 日元补上界。
+- 菜单单价与人均预算分开；午餐供应不等于存在午餐预算。
+- 营业原文与规范化时段分开；休息日宣传文案不转为固定休息日；节假日和限时通知不硬塞进每周时段。
+- 推荐菜需要具体菜名、推荐语义与证据位置。旧自动抽取结果先作为证据保存，不等于逐店人工复核。
+- 字段采用由规则版本和证据决定，不由文件名、导入顺序或字段数量决定。
 
-### Official pages / trusted locators
+353 条 Hot Pepper 营业原文及休息日原文是第一批字段映射回归样本。它们可补充原文展示，但不能预先承诺全部能转换为机器可读每周时间。
 
-Preferred branch-level source for:
+## 6. 增量采集与失败处理
 
-- exact name/address;
-- cuisine;
-- weekly opening schedule;
-- menu/signature dishes;
-- explicitly supported spend ranges;
-- current branch existence.
+这是目标行为，不是已经运行的采集服务。
 
-### Tabelog / reviewed curated evidence
-
-Fallback or parallel factual source where exact branch identity is supported. Existing reviewed bindings remain usable; ambiguous matches remain unresolved.
-
-## 4. Identity lifecycle
-
-```text
-frozen legacy ID + persisted historical QC metrics
-                     |
-                     v
-            persisted OSM candidate
-                     |
-                     +----------------------+
-                                            |
-Overture Area1 bulk candidates -------------+
-                                            |
-                                            v
-                              cross-source blocking + scoring
-                                            |
-                          +-----------------+-----------------+
-                          |                 |                 |
-                          v                 v                 v
-                    priority review     normal review      unresolved
-                          |                 |
-                          +--------+--------+
-                                   |
-                                   v
-                     official/source verification
-                                   |
-                                   v
-                   conservative field/source promotion
-                                   |
-                                   v
-                    build_production_dataset.mjs
-```
+- 初始导入覆盖全部目录；后续按缺失、冲突、来源变更与过期状态建任务。
+- 公开页面先做小样本验证，再按域名限并发；复用内容校验值、缓存验证信息和已取得页面。
+- 访问被限制、验证码或需要登录时停止该来源任务，不绕过限制，不自动回退到旧付费 Google 数据 API。
+- 可重试错误记录尝试次数和下次重试时间；不存在、闭店与网络失败使用不同状态。
+- 一个来源访问尽量提取所有有证据的字段，避免按地址、时间、预算分别重复访问。
+- 所有写操作按批次事务提交；失败批次回滚，不影响上一有效版本。
 
-There is no live Google call in this lifecycle.
+## 7. 本地主库与备份
 
-## 5. Overture batch acquisition
+建议使用独立数据目录中的 `main.sqlite`，不要放入前端公开目录。具体本地目录在持久化实施时记录为部署配置，不写死在代码。
 
-`scripts/build_overture_area1.py` performs a reproducible public-data staging pass:
+每次正式迁移前、成功批次后及发布前创建有版本的备份。使用 SQLite backup API 或其他能得到一致性快照的方法，不能在写入期间直接复制单个 WAL 模式数据库文件。[SQLite 备份说明](https://www.sqlite.org/backup.html)
 
-1. use a pinned Overture release, overridable through `OVERTURE_RELEASE`;
-2. query the public Places GeoParquet directly with DuckDB/httpfs/spatial;
-3. bbox-prune around Area1;
-4. retain food/drink taxonomy candidates;
-5. apply exact geodesic <=1,200 m filtering in Python;
-6. preserve source/provenance arrays and contact/website fields;
-7. emit an audit/staging JSON file, not production rows.
+备份验证包括 `PRAGMA integrity_check`、`PRAGMA foreign_key_check`、目录 ID 集合、关键表计数、SHA-256 和一次恢复演练。原始记录侧文件及清单也必须备份，不能只备份 SQLite 后丢失外部证据文件。
 
-The default pinned release for this transition is `2026-08-19.0`. Future updates should change the pin deliberately and compare deltas rather than silently floating every run.
+## 8. 导出与网页展示
 
-## 6. Cross-source reconciliation
+主库导出两个逻辑视图，但它们共享同一数据版本：
 
-`scripts/build_open_identity_reconciliation.py` uses the new Overture staging set together with `data/area1_full_collection_queue.json`.
+- 全量目录：全部 2,804 条，显示缺失、冲突、来源时间和地图链接，不能仅展示资料齐全的子集。
+- 推荐视图：明确记录 eligibility 规则和排除原因；资料不完整不等于从目录删除。不得在重构时无说明地更改现行推荐范围。
 
-Important property: the historical queue already contains, for each prior Google→OSM candidate relationship, durable QC metrics such as match class, distance and name similarity without storing raw Google display payload. Those metrics can be reused without another Google request.
+统一导出 JSON/CSV 和兼容前端快照，并带版本、生成时间、主库快照校验值与统计。公开输出仅包含允许公开的字段和来源链接，不包含原始响应、私密授权文件、凭据或整个主库。
 
-The reconciliation algorithm:
+GitHub Actions 不能直接访问个人电脑上的 SQLite。实施时应提供显式导出交接：本地校验快照 → GitHub 插件提交发布文件 → Actions 检查 ID、schema、字段状态和清单 → Pages 发布。电脑离线时保留上次发布，不声称数据已刷新。
 
-- spatially blocks Overture candidates around the persisted OSM candidate;
-- normalizes names conservatively;
-- compares geodesic distance, name similarity and address similarity;
-- assigns a cross-source confidence class;
-- combines that class with the historical Google→OSM class into A/B/C/D review priority.
+网页只消费导出，不重新跑身份匹配、不在浏览器拼接多套来源库。
 
-Rules:
+## 9. 切换前验收
 
-- no O(N²) global pairwise scan;
-- no automatic production promotion;
-- historical terminal/collision blockers remain blockers;
-- prior low-confidence Google→OSM relationships cannot become automatic admissions merely because Overture agrees with the OSM entity;
-- A/B are review priorities, not truth labels.
+1. 全部目录 ID 集合与顺序一致；重复导入计数不增长。
+2. 每个采用字段可追溯到同一 ID 的具体来源记录；冲突不能越过审批进入已知值。
+3. 空值、解析失败和网络失败不覆盖已知值；明确撤销可追踪。
+4. 候选记录不会越过绑定步骤进入全量目录的已验证字段。
+5. 营业字段映射、开放预算、午餐供应、推荐语义分别有回归样例。
+6. 导出能从同一主库快照重现，恢复后的 ID、字段状态和内容一致。
+7. 新管线与旧网页做差异比较后，才切换 Pages；旧采集 workflow 停用和旧脚本归档在切换提交执行。
 
-## 7. Official-source acquisition without paid discovery
-
-Preferred discovery order:
-
-1. persisted `official_candidate_index.json`;
-2. Overture website/brand/contact fields;
-3. reviewed OSM website/contact tags when present in future extracts;
-4. official brand locator/sitemap patterns;
-5. existing Tabelog and curated exact-branch bindings.
-
-Do not use paid search/place APIs as a fallback.
-
-### Fetch strategy
-
-- deduplicate exact URLs and hosts before fetching;
-- use bounded per-host concurrency;
-- group repeated locator/templates;
-- cache content hash and HTTP validators when practical;
-- avoid refetching already saturated pages unless stale/change evidence exists;
-- retry transient failures conservatively;
-- treat fetch failure as unknown/retry, not evidence that a restaurant/source disappeared.
-
-## 8. Grouped field extraction
-
-Existing safe scripts remain the preferred field path, including:
-
-- `extract_official_index_fields.mjs`;
-- `build_auto_official_enrichment.mjs`;
-- `build_locator_template_fields.mjs`;
-- `build_single_site_hours_enrichment.mjs`;
-- `build_explicit_budget_address_enrichment.mjs`;
-- reviewed featured-dish template propagation.
-
-During a source fetch, extract all supported fields together rather than revisiting a restaurant field-by-field.
-
-Field promotion remains conservative:
-
-- opening hours must describe a stable weekly schedule;
-- menu-item prices are not restaurant spend ranges;
-- `recommendedDishes` needs explicit recommendation/popularity/signature evidence;
-- `featuredDishes` can use broader source-backed representative items;
-- source claims remain field-specific.
-
-## 9. Large-scale OSM strategy
-
-The old `build_area1_osm.py` public-Overpass job is retained only as historical/small manual tooling. It is not the preferred recurring bulk refresh path.
-
-For full refreshes:
-
-1. download/cache the Geofabrik Kanto PBF;
-2. filter local `amenity`/`shop` food POIs with osmium/pyosmium or another local parser;
-3. calculate precise Area1 distance locally;
-4. preserve OSM element IDs and tags;
-5. compare the resulting snapshot against the prior OSM snapshot.
-
-This avoids turning shared public geocoding/query services into a batch backend.
-
-## 10. Cost guard
-
-`scripts/audit_no_paid_apis.mjs` scans active workflow and maintenance-script text for forbidden known endpoint/secret patterns.
-
-`.github/workflows/data-api-policy.yml` runs the guard on relevant pushes and pull requests. The Pages build also runs it before deployment.
-
-Legacy paid-call scripts are fail-closed stubs. Legacy paid workflows are manual no-op stubs or have had the paid stage removed. The deployment workflow does not inject the former Google API secret into the public artifact.
-
-## 11. Canonical build
-
-`scripts/build_production_dataset.mjs` remains authoritative for current production compatibility.
-
-For the current frozen model it:
-
-- builds from already-established identities;
-- attaches exact source-only records afterward;
-- prefers durable independent geospatial/source data;
-- applies field-level source claims/suppression;
-- emits one canonical row per existing production identity;
-- rejects duplicate identities, out-of-radius rows and malformed normalized data.
-
-Do not broaden production to new open-data-only entities until a source-native canonical identity key is designed and audited.
-
-## 12. Progress accounting
-
-Always distinguish:
-
-- frozen historical identity inventory;
-- actionable historical reconciliation rows;
-- current independent-source candidates;
-- canonical production entities;
-- usable source coverage;
-- source outcomes;
-- field completeness;
-- staging extraction/reconciliation candidates.
-
-The historical `2,804 / 2,804` count remains valuable as a snapshot benchmark, but it is no longer a requirement to perform live paid refreshes for every opaque ID.
-
-## 13. Current execution order
-
-1. enforce no-paid-API CI policy;
-2. generate Overture Area1 staging candidates;
-3. build cross-source reconciliation and review A/B tiers;
-4. resolve the existing 3 medium + 49 review OSM relationships without new Google calls;
-5. continue the 208 unresolved production source outcomes from open/known official sources;
-6. batch-complete fields from newly reviewed sources;
-7. add source-native identity support before expanding production scope.
+本次已验证的项目与尚未实现的验收项目分列于 [验证报告](docs/database/VALIDATION_2026-09-07.md)。
