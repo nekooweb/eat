@@ -11,6 +11,12 @@ on:
       - "scripts/database/reconcile_private_address_consensus_v2.py"
       - "scripts/database/reconcile_private_multisource_consensus_v3.py"
       - "scripts/database/reconcile_private_official_web_consensus_v4.py"
+      - "scripts/database/build_master.py"
+      - "data/google_basic_source_matches.json"
+      - "data/hotpepper_catalog_facts.json"
+      - "data/hotpepper_area1.js"
+      - "data/area1_osm.js"
+      - "data/overture_area1_candidates.json"
 
 permissions:
   actions: read
