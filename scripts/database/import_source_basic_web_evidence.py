@@ -2,9 +2,11 @@
 """Import public-web field evidence for already source-backed restaurant identities.
 
 The input is generated only after a public HTTPS page independently agrees with the
-currently source-backed restaurant identity. This importer performs no network requests.
-It never upgrades an ID-only identity; it only adds field observations to an identity
-that is already publishable and non-conflict in the SQLite master.
+currently source-backed restaurant identity, or from an already retained/reviewed
+official-page identity whose current page still matches that retained official name.
+This importer performs no network requests. It never upgrades an ID-only identity; it
+only adds field observations to an identity that is already publishable and non-conflict
+in the SQLite master.
 """
 from __future__ import annotations
 
@@ -21,6 +23,12 @@ RULE_VERSION = "source-basic-web-field-evidence-v1"
 ACQUISITION_METHOD = "public_source_basic_web_field_evidence_v1"
 BINDING_METHOD = "field_only_from_public_web_after_existing_identity_check"
 HASH_RE = re.compile(r"^[0-9a-f]{64}$")
+ALLOWED_IDENTITY_RULES = {
+    "official_name_plus_structured_address",
+    "official_name_plus_phone",
+    "official_name_plus_geo",
+    "retained_verified_official_page",
+}
 
 
 def valid_https(value) -> bool:
@@ -108,11 +116,7 @@ def import_evidence(db, id_set: set[str], conflict_places: set[str], stamp: str)
         if identity_check.get("accepted") is not True:
             counts["identity_check_not_accepted"] += 1
             continue
-        if identity_check.get("identityRule") not in {
-            "official_name_plus_structured_address",
-            "official_name_plus_phone",
-            "official_name_plus_geo",
-        }:
+        if identity_check.get("identityRule") not in ALLOWED_IDENTITY_RULES:
             counts["identity_rule_invalid"] += 1
             continue
 
@@ -135,7 +139,7 @@ def import_evidence(db, id_set: set[str], conflict_places: set[str], stamp: str)
             final_url,
             retrieved_at,
             ACQUISITION_METHOD,
-            "public HTTPS page already carried by an independently source-backed identity; robots respected; raw HTML not retained",
+            "public HTTPS page tied to an independently source-backed/reviewed official identity; robots respected; raw HTML not retained",
             stamp,
         )
         core.upsert_binding(
