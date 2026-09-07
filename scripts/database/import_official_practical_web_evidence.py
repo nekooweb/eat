@@ -3,7 +3,8 @@
 
 No network requests are made here. Identity must already be publishable and non-conflict.
 Only explicitly labeled boolean claims are accepted; import is missing-only and never
-changes identity state.
+changes identity state. The importer is reusable for landing-page and same-origin detail
+page evidence files while keeping each URL/content hash as a separate source snapshot.
 """
 from __future__ import annotations
 
@@ -35,10 +36,20 @@ def valid_https(value) -> bool:
     return isinstance(value, str) and value.startswith("https://")
 
 
-def import_evidence(db, id_set: set[str], conflict_places: set[str], stamp: str):
-    if not EVIDENCE_PATH.exists():
+def import_evidence(
+    db,
+    id_set: set[str],
+    conflict_places: set[str],
+    stamp: str,
+    *,
+    evidence_path: Path = EVIDENCE_PATH,
+    acquisition_method: str = ACQUISITION_METHOD,
+    binding_method: str = BINDING_METHOD,
+    provider_prefix: str = "official-practical",
+):
+    if not evidence_path.exists():
         return {"inputRows": 0, "acceptedRows": 0, "resolvedFields": 0, "fieldCounts": {}}
-    doc = core.read_json(EVIDENCE_PATH)
+    doc = core.read_json(evidence_path)
     policy = doc.get("policy") or {}
     if doc.get("ruleVersion") != RULE_VERSION:
         raise RuntimeError(f"unexpected official practical ruleVersion: {doc.get('ruleVersion')}")
@@ -65,9 +76,14 @@ def import_evidence(db, id_set: set[str], conflict_places: set[str], stamp: str)
 
     for row in doc.get("rows") or []:
         pid = str(row.get("googlePlaceId") or "").strip()
-        if not pid or pid in seen:
-            raise RuntimeError(f"invalid/duplicate official practical Place ID: {pid or '<missing>'}")
-        seen.add(pid)
+        evidence = row.get("webEvidence") or {}
+        source_url = str(evidence.get("sourceUrl") or "").strip()
+        final_url = str(evidence.get("finalUrl") or source_url).strip()
+        content_hash = str(evidence.get("contentHash") or "").strip()
+        snapshot_key = (pid, final_url, content_hash)
+        if not pid or snapshot_key in seen:
+            raise RuntimeError(f"invalid/duplicate official practical snapshot: {pid or '<missing>'} {final_url}")
+        seen.add(snapshot_key)
         if pid not in id_set:
             counts["outside_catalog"] += 1
             continue
@@ -84,10 +100,6 @@ def import_evidence(db, id_set: set[str], conflict_places: set[str], stamp: str)
         if identity_check.get("accepted") is not True or identity_check.get("identityRule") != "retained_verified_official_page":
             counts["identity_check_invalid"] += 1
             continue
-        evidence = row.get("webEvidence") or {}
-        source_url = str(evidence.get("sourceUrl") or "").strip()
-        final_url = str(evidence.get("finalUrl") or source_url).strip()
-        content_hash = str(evidence.get("contentHash") or "").strip()
         retrieved_at = str(evidence.get("retrievedAt") or row.get("checkedAt") or stamp).strip()
         if not valid_https(source_url) or not valid_https(final_url):
             counts["invalid_https"] += 1
@@ -113,7 +125,7 @@ def import_evidence(db, id_set: set[str], conflict_places: set[str], stamp: str)
             counts["no_claims"] += 1
             continue
 
-        provider_id = f"official-practical:{pid}:{core.sha256_text(final_url)[:18]}:{content_hash[:12]}"
+        provider_id = f"{provider_prefix}:{pid}:{core.sha256_text(final_url)[:18]}:{content_hash[:12]}"
         payload = {
             "placeId": pid,
             "identityCheck": identity_check,
@@ -124,12 +136,12 @@ def import_evidence(db, id_set: set[str], conflict_places: set[str], stamp: str)
         }
         srid = core.source_record(
             db, "official-web", provider_id, payload, final_url, retrieved_at,
-            ACQUISITION_METHOD,
+            acquisition_method,
             "explicit labeled practical facts from a reviewed official restaurant page; robots respected; raw HTML not retained",
             stamp,
         )
         core.upsert_binding(
-            db, pid, srid, "reviewed", BINDING_METHOD, "retained_verified_official_page", None, stamp
+            db, pid, srid, "reviewed", binding_method, "retained_verified_official_page", None, stamp
         )
         for field_key, value in sorted(normalized.items()):
             if (pid, field_key) in known:
