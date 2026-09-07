@@ -8,6 +8,7 @@ const productionPath = path.join(DATA, 'production_area1.js');
 const basicPath = path.join(DATA, 'google_basic_source_matches.json');
 const detailEvidencePath = path.join(DATA, 'google_inventory_detail_evidence.json');
 const hotPepperFactsPath = path.join(DATA, 'hotpepper_catalog_facts.json');
+const webFieldEvidencePath = path.join(DATA, 'source_basic_web_field_evidence.json');
 const outputPath = path.join(DATA, 'google_inventory_runtime.js');
 
 function readJson(file) {
@@ -112,6 +113,19 @@ function dedupeFeatured(items) {
   return output;
 }
 
+function hoursReference(value) {
+  if (typeof value === 'string') return value.trim();
+  if (Array.isArray(value)) return value.map((x) => String(x || '').trim()).filter(Boolean).join(' / ');
+  return '';
+}
+
+function mergeWebsite(row, value) {
+  const url = String(value || '').trim();
+  if (!url.startsWith('https://')) return;
+  const current = Array.isArray(row.sourceWebsites) ? row.sourceWebsites : [];
+  row.sourceWebsites = [...new Set([...current, url])];
+}
+
 const inventory = readJson(inventoryPath);
 const ids = inventory.googlePlaceIds || [];
 if (inventory.radiusMeters !== 1200 || inventory.count !== 2804 || ids.length !== 2804) {
@@ -144,6 +158,14 @@ const hotPepperDoc = fs.existsSync(hotPepperFactsPath)
   ? readJson(hotPepperFactsPath)
   : { rows: [] };
 const hotPepperById = new Map((hotPepperDoc.rows || []).filter((row) => row.googlePlaceId).map((row) => [row.googlePlaceId, row]));
+
+const webFieldDoc = fs.existsSync(webFieldEvidencePath)
+  ? readJson(webFieldEvidencePath)
+  : { rows: [], summary: {} };
+if ((webFieldDoc.policy?.paidDataApiCalls ?? 0) !== 0 || webFieldDoc.policy?.googleDisplayPayloadPersisted === true) {
+  throw new Error('Public web field evidence violates zero-paid/no-Google-display policy');
+}
+const webFieldById = new Map((webFieldDoc.rows || []).filter((row) => row.googlePlaceId).map((row) => [row.googlePlaceId, row]));
 
 const rows = ids.map((pid) => {
   const rich = canonicalById.get(pid);
@@ -206,6 +228,41 @@ const rows = ids.map((pid) => {
     }
   }
 
+  const webEvidence = webFieldById.get(pid);
+  if (webEvidence && webEvidence.identityCheck?.accepted === true) {
+    const claims = webEvidence.fieldClaims || {};
+    if (!row.address && String(claims.address || '').trim()) row.address = String(claims.address).trim();
+    const hours = hoursReference(claims.openingHoursRaw);
+    if (!row.openingHours?.days && !row.hoursReference && hours) row.hoursReference = hours;
+    if (!row.cuisine && String(claims.cuisineNormalized || '').trim()) {
+      row.cuisine = String(claims.cuisineNormalized).trim();
+      row.tags = [row.cuisine];
+    }
+    if ((!finite(row.lat) || !finite(row.lng)) && claims.geo && finite(claims.geo.lat) && finite(claims.geo.lng)) {
+      row.lat = claims.geo.lat;
+      row.lng = claims.geo.lng;
+    }
+    if (String(claims.priceRange || '').trim()) row.priceReference = String(claims.priceRange).trim();
+    mergeWebsite(row, webEvidence.webEvidence?.finalUrl);
+    row.publicWebFieldEvidence = true;
+    row.publicWebFieldCheckedAt = webEvidence.checkedAt || webFieldDoc.checkedAt || null;
+  }
+
+  // v4 identity-recovery rows may carry official evidence directly before the generic
+  // source-basic field collector has refreshed. Consume those facts missing-only too.
+  const basicEvidence = basicById.get(pid)?.officialEvidence;
+  if (basicEvidence && row.basicInfoState === 'source_matched') {
+    if (!row.address && String(basicEvidence.address || '').trim()) row.address = String(basicEvidence.address).trim();
+    const hours = hoursReference(basicEvidence.openingHoursRaw);
+    if (!row.openingHours?.days && !row.hoursReference && hours) row.hoursReference = hours;
+    if (!row.cuisine && typeof basicEvidence.cuisine === 'string' && basicEvidence.cuisine.trim()) {
+      row.cuisine = basicEvidence.cuisine.trim();
+      row.tags = [row.cuisine];
+    }
+    mergeWebsite(row, basicEvidence.finalUrl);
+    row.identityOfficialEvidence = true;
+  }
+
   const evidence = detailById.get(pid);
   if (evidence) {
     row.recommendedDishes = dedupeRecommendationNames([
@@ -255,9 +312,12 @@ const runtimeStats = {
   dinnerBudgetKnown: publishedRows.filter((row) => Array.isArray(row.dinner) && row.dinner.length >= 2).length,
   hoursKnown: publishedRows.filter((row) => row.openingHours?.days || row.hoursReference).length,
   hotPepperBasicDetailRows: publishedRows.filter((row) => row.hotPepperBasicDetail).length,
+  publicWebFieldEvidenceRows: publishedRows.filter((row) => row.publicWebFieldEvidence).length,
+  identityOfficialEvidenceRows: publishedRows.filter((row) => row.identityOfficialEvidence).length,
   sourceBasicProviders: basicDoc.summary?.providers || {},
   detailEvidenceRestaurants: detailById.size,
-  detailEvidenceSummary: detailEvidence.summary || {}
+  detailEvidenceSummary: detailEvidence.summary || {},
+  publicWebFieldEvidenceSummary: webFieldDoc.summary || {}
 };
 
 if (rows.length !== 2804 || new Set(rows.map((row) => row.googlePlaceId)).size !== 2804) {
