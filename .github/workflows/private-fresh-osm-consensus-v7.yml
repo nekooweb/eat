@@ -1,22 +1,15 @@
 name: Diagnose fresh OSM strong identity consensus v7
 
 on:
+  workflow_run:
+    workflows: ["Diagnose fresh OSM rich identity tags"]
+    types: [completed]
   workflow_dispatch:
-  push:
-    branches: ["main"]
-    paths:
-      - ".github/workflows/private-fresh-osm-consensus-v7.yml"
-      - "scripts/database/diagnose_private_fresh_osm_consensus_v7.py"
-      - "scripts/database/diagnose_fresh_osm_rich_tags.py"
-      - "scripts/database/diagnose_private_strong_consensus_v5.py"
-      - "scripts/database/reconcile_private_google_hints.py"
-      - "scripts/database/reconcile_private_address_consensus_v2.py"
-      - "scripts/database/reconcile_private_multisource_consensus_v3.py"
-      - "scripts/database/reconcile_private_official_web_consensus_v4.py"
-      - "scripts/database/build_master.py"
-      - "data/hotpepper_catalog_facts.json"
-      - "data/overture_area1_candidates.json"
-      - "data/area1_osm.js"
+    inputs:
+      fresh_run_id:
+        description: "Successful fresh OSM rich-tag workflow run ID"
+        required: true
+        type: string
 
 permissions:
   actions: read
@@ -24,10 +17,15 @@ permissions:
 
 jobs:
   diagnose:
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
+    env:
+      FRESH_RUN_ID: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.id || inputs.fresh_run_id }}
     steps:
-      - name: Checkout
+      - name: Checkout latest main
         uses: actions/checkout@v4
+        with:
+          ref: main
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -43,13 +41,40 @@ jobs:
           node scripts/audit_no_paid_apis.mjs
           python -m py_compile \
             scripts/database/diagnose_private_fresh_osm_consensus_v7.py \
-            scripts/database/diagnose_fresh_osm_rich_tags.py \
             scripts/database/diagnose_private_strong_consensus_v5.py \
             scripts/database/reconcile_private_google_hints.py \
             scripts/database/reconcile_private_address_consensus_v2.py \
             scripts/database/reconcile_private_multisource_consensus_v3.py \
             scripts/database/reconcile_private_official_web_consensus_v4.py \
             scripts/database/build_master.py
+
+      - name: Download reusable fresh OSM public snapshot
+        uses: actions/download-artifact@v5
+        with:
+          name: fresh-osm-rich-tag-diagnostic
+          path: _fresh_osm
+          github-token: ${{ github.token }}
+          repository: nekooweb/eat
+          run-id: ${{ env.FRESH_RUN_ID }}
+
+      - name: Validate fresh OSM acquisition artifact
+        run: |
+          python - <<'PY'
+          import json
+          p='_fresh_osm/fresh-osm-rich-public-rows.json'
+          d=json.load(open(p))
+          assert d['ruleVersion']=='fresh-osm-rich-public-snapshot-v1'
+          q=d['query']; assert q['radiusMeters']==1200 and q['exactRadiusAppliedLocally'] is True
+          policy=d['policy']
+          assert policy['paidDataApiCalls']==0
+          assert policy['googleDataIncluded'] is False
+          assert policy['rawOverpassResponsePersisted'] is False
+          assert policy['parsedPublicOsmRowsOnly'] is True
+          assert len(d['rows']) > 0
+          ids=[r['providerId'] for r in d['rows']]
+          assert len(ids)==len(set(ids))
+          print(json.dumps({'freshRunId':'${{ env.FRESH_RUN_ID }}','rows':len(ids),'retrievedAt':d.get('retrievedAt')},sort_keys=True))
+          PY
 
       - name: Download original private sweep
         uses: actions/download-artifact@v5
@@ -76,13 +101,14 @@ jobs:
           python scripts/database/build_master.py --output _tmp/eat-master.sqlite --reset | tee _tmp/master.json
           python scripts/database/validate_master.py _tmp/eat-master.sqlite | tee _tmp/master-validate.json
 
-      - name: Run fresh OSM strong-consensus diagnostic
+      - name: Run fresh OSM strong-consensus diagnostic without network
         run: |
           set -euo pipefail
           python scripts/database/diagnose_private_fresh_osm_consensus_v7.py \
             --database _tmp/eat-master.sqlite \
             --initial _private_google/initial/full_inventory_place_details.json \
             --retry _private_google/retry/full_inventory_retry_private.json \
+            --fresh-osm-snapshot _fresh_osm/fresh-osm-rich-public-rows.json \
             --output _tmp/private-fresh-osm-consensus-v7.json \
             | tee _tmp/private-fresh-osm-consensus-v7-summary.json
 
@@ -95,8 +121,8 @@ jobs:
           p=d['policy']
           assert p['newGoogleApiCalls']==0
           assert p['googleDisplayPayloadPersisted'] is False
-          assert p['newPublicNetworkRequests']==1
-          assert p['publicNetworkSource']=='OpenStreetMap Overpass'
+          assert p['newPublicNetworkRequests']==0
+          assert p['freshOsmInputIsReusableArtifact'] is True
           assert p['promotionPerformed'] is False
           assert p['proximityOnlyBindingAllowed'] is False
           assert p['privateHistoricalHintsDurable'] is False
@@ -119,8 +145,7 @@ jobs:
           walk(d)
           ids=[r['googlePlaceId'] for r in d['candidates']]
           assert len(ids)==len(set(ids))
-          native=[]
-          signals=[]
+          native=[]; signals=[]
           for r in d['candidates']:
             assert r['rule'] in {
               'exact_cross_provider_phone','exact_cross_provider_official_url','domain_plus_structured_address'
