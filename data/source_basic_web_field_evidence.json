@@ -12,21 +12,22 @@
     "restrictedAccessBypass": false
   },
   "summary": {
-    "rows": 48,
+    "rows": 50,
     "fieldCounts": {
       "address": 2,
       "cuisineNormalized": 1,
       "geo": 1,
-      "openingHoursRaw": 30,
+      "openingHoursRaw": 31,
       "priceRange": 6,
-      "telephone": 29
+      "telephone": 31
     },
     "providerCounts": {
-      "Overture Maps": 15,
+      "Overture Maps": 17,
       "official": 33
     },
     "lastMerge": {
-      "added": 33
+      "added": 2,
+      "already_present": 48
     }
   },
   "rows": [
@@ -201,6 +202,38 @@
           "lng": 139.7592182
         },
         "telephone": "03-5244-5888"
+      },
+      "checkedAt": "2026-09-07"
+    },
+    {
+      "googlePlaceId": "ChIJ3by20D6MGGARC1Rvg3N9tMw",
+      "sourceProvider": "Overture Maps",
+      "sourceProviderId": "e47dafa2-5636-475f-89bf-c7bf63d2aee6",
+      "missingBefore": [
+        "dinner_budget",
+        "hours",
+        "lunch_budget"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "official_name_plus_structured_address",
+        "score": 0.8,
+        "maxSourceNameSimilarity": 1.0,
+        "addressSupportingMembers": 1,
+        "phoneSupportingMembers": 1,
+        "minimumGeoDistanceMeters": null,
+        "pageAddress": "Tokyo Prefecture Bunkyo 1-14-6 Hongo"
+      },
+      "webEvidence": {
+        "sourceUrl": "https://bar-a6.food96.com",
+        "finalUrl": "https://food96.com/place/bar-a6",
+        "retrievedAt": "2026-09-07T11:10:24Z",
+        "contentHash": "c5e1150335ec73e70f62cb60b426f870ea9ec9fe7b7ed63dba092ac16a13bd5a",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false
+      },
+      "fieldClaims": {
+        "telephone": "81356896121"
       },
       "checkedAt": "2026-09-07"
     },
@@ -1610,6 +1643,42 @@
         "openingHoursRaw": [
           "営業時間 月曜日～木曜日 18:00～2:00（フードL.O. 0:30／ドリンクL.O. 1:30）※最終入店0:30 金曜日、祝前日 18:00～3:00（フードL.O. 1:30／ドリンクL.O. 2:30）※最終入店1:00 土曜日 18:00～23:00（フードL.O. 22:00／ドリンクL.O. 22:30）※最終入店22:00"
         ]
+      },
+      "checkedAt": "2026-09-07"
+    },
+    {
+      "googlePlaceId": "ChIJzWgC5oaNGGAR3-KMpjvoIfE",
+      "sourceProvider": "Overture Maps",
+      "sourceProviderId": "13e108b6-b1f2-4bb0-9cf2-0b52272c5da1",
+      "missingBefore": [
+        "dinner_budget",
+        "hours",
+        "lunch_budget"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "official_name_plus_structured_address",
+        "score": 0.8,
+        "maxSourceNameSimilarity": 1.0,
+        "addressSupportingMembers": 1,
+        "phoneSupportingMembers": 1,
+        "minimumGeoDistanceMeters": null,
+        "pageAddress": "101-0054 東京都 千代田区神田錦町３-16-11 エルヴァージュ神田錦町1F"
+      },
+      "webEvidence": {
+        "sourceUrl": "https://clover-club-jimbocho.com/",
+        "finalUrl": "https://clover-club-jimbocho.com/",
+        "retrievedAt": "2026-09-07T11:10:32Z",
+        "contentHash": "8682fbca23790d9bffebc0677f8d5bc6e3978feb34a6f286ed7be58e1024becd",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false
+      },
+      "fieldClaims": {
+        "openingHoursRaw": [
+          "Sunday,Saturday 18:00-24:00",
+          "Monday,Tuesday,Wednesday,Thursday,Friday 18:00-02:00"
+        ],
+        "telephone": "03-6773-7069"
       },
       "checkedAt": "2026-09-07"
     }
