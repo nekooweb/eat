@@ -39,7 +39,6 @@ CREATE TABLE IF NOT EXISTS source_bindings (
   reviewed_at TEXT,
   PRIMARY KEY(place_id, source_record_id)
 );
-
 CREATE INDEX IF NOT EXISTS bindings_by_source ON source_bindings(source_record_id);
 CREATE INDEX IF NOT EXISTS bindings_by_place ON source_bindings(place_id);
 
@@ -58,7 +57,6 @@ CREATE TABLE IF NOT EXISTS field_observations (
   CHECK(field_state <> 'known' OR (value_json IS NOT NULL AND value_json <> 'null')),
   UNIQUE(observation_id, place_id, field_key)
 );
-
 CREATE INDEX IF NOT EXISTS observations_by_place_field ON field_observations(place_id, field_key);
 CREATE INDEX IF NOT EXISTS observations_by_source ON field_observations(source_record_id);
 
@@ -94,6 +92,22 @@ CREATE TABLE IF NOT EXISTS ingestion_tasks (
   next_retry_at TEXT,
   error_code TEXT
 );
+
+CREATE TABLE IF NOT EXISTS ingestion_task_details (
+  task_id TEXT PRIMARY KEY REFERENCES ingestion_tasks(task_id) ON DELETE CASCADE,
+  task_type TEXT NOT NULL CHECK(task_type IN ('identity_conflict_review','identity_recovery','field_completion','dish_semantic_review')),
+  priority INTEGER NOT NULL CHECK(priority >= 0),
+  field_keys_json TEXT NOT NULL DEFAULT '[]' CHECK(json_valid(field_keys_json)),
+  task_payload_json TEXT NOT NULL DEFAULT '{}' CHECK(json_valid(task_payload_json)),
+  source_hint TEXT,
+  planner_version TEXT NOT NULL,
+  active INTEGER NOT NULL DEFAULT 1 CHECK(active IN (0,1)),
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS ingestion_tasks_status ON ingestion_tasks(status);
+CREATE INDEX IF NOT EXISTS ingestion_task_details_active_priority ON ingestion_task_details(active, priority DESC, task_type);
+CREATE INDEX IF NOT EXISTS ingestion_task_details_type ON ingestion_task_details(task_type, active);
 
 CREATE TABLE IF NOT EXISTS retained_exceptions (
   exception_id TEXT PRIMARY KEY,
