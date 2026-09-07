@@ -1,0 +1,104 @@
+name: Probe historical Google hints against independent sources
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/private-historical-reconciliation.yml"
+      - "scripts/database/reconcile_private_google_hints.py"
+      - "scripts/database/**"
+      - "data/overture_area1_candidates.json"
+      - "data/area1_osm.js"
+      - "data/hotpepper_catalog_facts.json"
+  workflow_dispatch:
+
+permissions:
+  actions: read
+  contents: read
+
+concurrency:
+  group: private-historical-reconciliation
+  cancel-in-progress: true
+
+jobs:
+  reconcile:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Download original paid-once private sweep
+        uses: actions/download-artifact@v5
+        with:
+          name: full-area1-collection-private-audit
+          path: _private_google/initial
+          github-token: ${{ github.token }}
+          repository: nekooweb/eat
+          run-id: 34018919233
+      - name: Download retry private sweep
+        uses: actions/download-artifact@v5
+        with:
+          name: full-area1-retry-private-audit
+          path: _private_google/retry
+          github-token: ${{ github.token }}
+          repository: nekooweb/eat
+          run-id: 34019078280
+      - name: Build current SQLite master
+        run: |
+          set -euo pipefail
+          mkdir -p _tmp
+          python -m py_compile scripts/database/reconcile_private_google_hints.py
+          python scripts/database/build_master.py --output _tmp/eat-master.sqlite --reset | tee _tmp/master-build.json
+          python scripts/database/validate_master.py _tmp/eat-master.sqlite | tee _tmp/master-validate.json
+      - name: Reconcile private hints to independent sources
+        run: |
+          set -euo pipefail
+          python scripts/database/reconcile_private_google_hints.py \
+            --database _tmp/eat-master.sqlite \
+            --initial _private_google/initial/full_inventory_place_details.json \
+            --retry _private_google/retry/full_inventory_retry_private.json \
+            --private-output _tmp/private-reconciliation.json \
+            --durable-output _tmp/durable-independent-proposals.json \
+            | tee _tmp/reconciliation-summary.json
+      - name: Enforce no Google display payload in durable proposals
+        run: |
+          python - <<'PY'
+          import json
+          p='_tmp/durable-independent-proposals.json'
+          d=json.load(open(p))
+          assert d['policy']['newGoogleApiCalls'] == 0
+          assert d['policy']['googleDisplayPayloadPersisted'] is False
+          assert d['policy']['durableFieldsIndependentSourceOnly'] is True
+          banned={
+            'displayName','formattedAddress','businessStatus','primaryType','types',
+            'googleName','googleAddress','googleLocation','currentOpeningHours',
+            'nationalPhoneNumber','internationalPhoneNumber','websiteUri'
+          }
+          def walk(v):
+            if isinstance(v,dict):
+              for k,x in v.items():
+                assert k not in banned, (k, v.get('googlePlaceId'))
+                walk(x)
+            elif isinstance(v,list):
+              for x in v: walk(x)
+          walk(d)
+          ids=[r['googlePlaceId'] for r in d['rows']]
+          assert len(ids)==len(set(ids))
+          assert all(r['provider'] in {'Hot Pepper','OpenStreetMap','Overture Maps'} for r in d['rows'])
+          assert all(r['matchLevel']=='strict_reconciliation_v1' for r in d['rows'])
+          print(json.dumps({'durableRows':len(d['rows'])},ensure_ascii=False))
+          PY
+      - name: Upload private reconciliation reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: historical-google-independent-reconciliation
+          path: |
+            _tmp/reconciliation-summary.json
+            _tmp/private-reconciliation.json
+            _tmp/durable-independent-proposals.json
+            _tmp/master-validate.json
+          if-no-files-found: error
+          retention-days: 2

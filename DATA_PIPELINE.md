@@ -2,204 +2,80 @@
 
 更新日期：2026-09-07。
 
-## 0. 重构期运行模式
+## 1. 数据方向
 
-当前进入 `EAT_REFACTOR_MODE=1`。整体流程修改期间只把成本、安全、语法、冻结目录完整性和当前 Pages 可部署性作为硬门槛。旧 canonical shape、overlay 一致性、coverage、旧推荐优先队列、旧 normalized-field 规则等改为 warning/report，避免旧模型阻断新模型开发。
+公开来源 / retained data → versioned source records → identity bindings → field observations → resolver → field resolutions → SQLite master → catalog/recommendation exports → Pages。
 
-Refactor mode 是临时兼容策略。切换新主库前必须重新建立新架构 strict checks，并将 warning 项逐步归零或明确迁移替代。
+2,804 frozen Place ID 始终保留在 catalog。`id_only` 只下架，不删除；只有真实名称和可发布 identity 才能进入 recommendation。
 
-## 1. 唯一数据方向
+## 2. Refactor mode
 
-公开来源 / 已有留存资料
-→ versioned raw records
-→ identity bindings
-→ field observations
-→ resolver
-→ field resolutions
-→ local SQLite master
-→ catalog/recommendation exports
-→ GitHub Pages
+`EAT_REFACTOR_MODE=1` 期间，付费 API 禁令、语法、catalog 完整性、敏感 Google payload 泄漏、数据库/导出契约与 Pages 可部署性继续 blocking；旧 canonical/overlay/coverage 规则降为 warning。切换新主库前重新建立完整 strict gates。
 
-GitHub 保存代码、schema、文档、输入快照和发布 export；本地 SQLite 是唯一可写目标主库。Actions 临时目录、Pages JS 和旧 enrichment shards 都只能作为输入/派生物，不再作为事实主库。
+## 3. Identity recovery
 
-## 2. 迁移输入与快照
+### Retained official
 
-正式迁移必须固定 source commit，并记录每个输入文件的 Git blob SHA、字节数和 SHA-256。旧文件保留原貌，不直接覆盖。
+`official_candidate_index.json` 只接受此前独立 fetch 成功、HTTPS candidate-official、name-match 的记录。无 conflict 时可 `id_only -> source_matched`；有 conflict 只 candidate。
 
-当前已接入主库的 retained 输入包括：
+### Retained verified OSM
 
-- `data/area1_google_ids.json`
-- `data/google_basic_source_matches.json`
-- `data/hotpepper_catalog_facts.json`
-- `data/hotpepper_rich_metadata.js`
-- `data/source_facts.js`
-- `data/source_provenance.js`
-- `data/google_inventory_detail_evidence.json`
-- `data/official_candidate_index.json`
-- `data/google_entities.generated.js`
-- `data/area1_osm.js`
-- 旧 canonical / historical exception 数据
+historical `sourceId -> Place ID` verified verdict 必须与 `area1_osm.js` 中同一 OSM ID 精确 join。Native OSM source ID 在 binding 导入前就进入 cross-layer collision discovery；相同 OSM ID 对多个 Place ID 时全部 conflict。
 
-`official_candidate_index.json` 只作为此前独立抓取并完成官网候选/name-match 筛选后的 retained identity evidence；不会重新请求 Google 数据 API，也不会把 discovery distance 当成官网事实。
+### Historical Google private sweep
 
-`google_entities.generated.js` 在新主库中只作为历史 identity-QC verdict 输入：读取 `sourceId / verified status / Place ID / qcVersion`，不恢复 Google display response；真正持久化的店名、地址、坐标、菜系和 OSM opening-hours 均来自独立的 `area1_osm.js` candidate row。
+2026-09-06 已存在的两个私有 Actions artifact 只允许用于**短期 identity matching hint**，不会重新调用 Google API：
 
-## 3. Catalog 导入
+- run 34018919233 / `full-area1-collection-private-audit`；
+- run 34019078280 / `full-area1-retry-private-audit`。
 
-以冻结 2,804 Place ID 建立 catalog。要求：
+Google Places display content 不作为 durable source record，不提交仓库，不进入 public export。长期可保存的 Google 标识仍仅使用 Place ID。
 
-- 数量保持 2,804；
-- Place ID 唯一；
-- 保留 membership snapshot；
-- id-only 使用 `name=null`；
-- 不因为缺失字段、冲突或来源访问失败删除目录条目。
+Private reconciliation 的 durable proposal 只能保存独立 Hot Pepper / OSM / Overture 内容。Match metrics 与 Google hint 保持 private artifact，并在很短 retention 后过期。
 
-旧核心库中 3 条不属于冻结目录的记录进入 retained exception 区，不自动扩展 scope。
+## 4. Source/field resolver
 
-## 4. Source records
+所有字段先进入 observation。Identity conflict 的 observation 不能成为 selected known resolution；失败/空值不能覆盖旧 known。
 
-每条来源记录保存 provider/provider_id、source URL、raw payload 或 retained raw text、observed/ingested time、content hash、parser version、retrieval method 和 permission/licensing note（如适用）。
+### Retained-field resolver v2
 
-相同 provider ID 的不同内容版本分别保存，不用覆盖式更新破坏历史。
+只处理 publishable + no-conflict Place ID；provider 仅 official/Tabelog；要求 `claimedFields` 支持目标字段且有 HTTPS provenance。Missing-only，不覆盖当前等价 known 值。Derived observation 保存原 observation ID 与 rule version。
 
-## 5. Identity bindings
+### Hot Pepper candidate field-only review
 
-Binding 与 source record 分离。状态至少包含 candidate、reviewed、conflict、retracted。
+原 HP candidate binding 永远保持 candidate。只有当前已有 publishable identity，且现有 selected name/coordinates 与 HP candidate 通过严格一致性检查，才允许补 missing address/hours/dinner/closure/practical。Derived binding 标记 `field_only_not_identity`，禁止 name/coordinates/canonical cuisine/identity promotion。
 
-Retained provider/source-ID 复用必须先形成 cross-layer collision index；同一 native provider ID 对应多个 Place ID 时全部进入 conflict，不能因为旧记录写着 `strong` 或历史 `verified` 就自动选择 canonical identity。
+## 5. Historical-private reconciliation probe
 
-空间距离只能作为约束，不单独证明同一店。多分店、同楼层、同品牌、重复 listing 必须保留审查状态。
+`scripts/database/reconcile_private_google_hints.py` 只在 private CI 中读取历史 Google hint，并尝试寻找当前 1,392 id-only 对应的独立 candidate。
 
-### 5.1 Retained official identity recovery
+自动 proposal 门槛：
 
-自动 `id_only -> source_matched` 必须同时满足：
+- 单来源：exact normalized name ≤6m，或 similarity ≥0.995 且 ≤4m；
+- 较宽匹配必须至少两个 independent providers 形成一致 consensus；
+- provider ID 已被其他 Place ID 使用则拒绝；
+- 存在近似竞争 candidate 则拒绝；
+- proximity-only 禁止。
 
-1. Place ID 属于冻结 catalog；
-2. retained name 非空；
-3. retained page URL 是 HTTPS；
-4. host 不属于 Google / 聚合站 / 社交媒体；
-5. 该索引此前已完成独立页面抓取、candidate-official 分类和 name-match；
-6. 当前 Place ID 没有任何 identity conflict。
+输出分两层：
 
-导入时建立 `retained_verified_official_identity_index` source record 和 reviewed binding。存在 conflict 时只以 candidate 保存证据，不自动清除 conflict。索引 discovery distance 不写入 `distance_m`。
+- private report：PID + match metrics，仅 Actions artifact；
+- durable proposal：PID + independent provider/source fields，不含 Google displayName/formattedAddress/location/status/types。
 
-### 5.2 Retained verified OSM identity QC
+Probe 不自动写回 main。只有实际 proposal 经过 leakage/uniqueness/identity review 后才进入下一批 master import。
 
-历史 OSM recovery 必须由两部分精确 join：
+## 6. Unified task plan
 
-- historical QC 中 `status=verified` 的 OSM `sourceId -> Place ID`；
-- `area1_osm.js` 中相同 `id=sourceId` 的 OpenStreetMap candidate。
+SQLite task priority：identity conflict review > identity recovery > field completion > dish semantic review。每次 recovery/resolver 后立即重新 planner；成功 identity recovery 会从 identity task 转成 field completion，因此看 task 类型变化而不只看总数。
 
-所有 verified OSM native source ID 在 basic binding 导入前就加入 cross-layer collision discovery。若同一 OSM object 在任意 retained layer 对应多个 Place ID，全部相关 binding 进入 conflict；如果 Place ID 因其他来源已经 conflict，新 OSM evidence 只保留 candidate。
+## 7. Network-second 原则
 
-只有 reviewed verified mapping 才能贡献 selected field 或把 id-only 升为 source_matched。禁止仅凭空间邻近自动绑定。
+Retained evidence 用尽后才访问免费公开来源。不得回退到付费 Places/Text/Nearby API，不绕过登录/CAPTCHA/访问限制。一次确认来源访问应尽量提取全部支持字段，避免按字段重复请求。
 
-## 6. Field observations
+## 8. Export/Pages
 
-所有字段先入 observation，不直接写最终网页字段。
+Catalog export 始终 2,804；recommendation 只包含 eligibility 通过项，并记录 exclusion reason。Shadow-only 新增必须能追溯到 approved reviewed independent source。Pages 切换前要求 idempotence、collision quarantine、backup/restore、provenance、field diff 和浏览器回归全部通过。
 
-### 名称/地址/坐标
+## 9. 开发记录
 
-必须来自与 Place ID 明确绑定的来源记录。来源字段保持 provider identity，不伪装成 Google 提供。
-
-### 营业时间
-
-- `openingHoursText` / OSM `openingHoursRaw` 保存 raw hours text；
-- `closedText` 保存 raw closure text；
-- weekly normalized schedule 独立生成；
-- 临时休业、节假日、活动通知独立存储。
-
-### 预算
-
-保存 meal、currency、lower、upper、inclusive/open bound、raw text 和 evidence type。`N以上` 必须表示 lower=N、upper=null；禁止生成 `N+2000`。
-
-### 菜品/推荐
-
-菜单 item、featured、signature、recommended 分开。只有存在明确推荐/招牌/名物语义和具体菜名关联时，才能进入 strict recommendation resolution。
-
-## 7. Resolver
-
-Resolver 的最终值不得由文件导入顺序决定。输入包括 binding state、observation state、source/provider、observed_at、rule version、correction/retraction 和 conflict state。
-
-新空值、网络失败、页面无法访问不得清除旧 known resolution。Identity conflict 的 observation 不得成为 known selected value。
-
-### 7.1 Retained-field resolver v2
-
-Batch C 使用 `retained_source_fact_overlay` 做**missing-only**确定性补全，而不是覆盖式 canonical rebuild。
-
-自动 promotion 的前提：
-
-- Place ID 当前必须是 `verified` 或 `source_matched`；
-- Place ID 不得存在任何 identity conflict；
-- provider 只能为 `official` 或 `Tabelog`；
-- retained source fact 的 `claimedFields` 必须支持目标字段；
-- 至少一个 retained provenance link 为 HTTPS；
-- source value 通过字段类型/范围验证。
-
-第一版目标字段：address、cuisine、hours.raw、lunch/dinner budget range、closure.raw、closure.days.raw。
-
-“Missing” 按产品等价字段判断。例如已有 `hours.reference.legacy` 或 `hours.normalized.legacy` 时，不再额外用 source fact 覆盖 `hours.raw`；已有 legacy lunch/dinner range 时，也不创建新的 canonical budget range。
-
-采用后建立 acquisition=`derived_retained_field_resolution_v2` 的 field-only source record / reviewed binding。该 binding 的 confidence 明确标记 `field_only_not_identity`，绝不调用 identity upgrade。Derived observation 必须：
-
-- 值与原 retained source observation 完全一致；
-- `derived_from_observation_id` 指向原 observation；
-- `transformation_rule_version=retained-field-resolver-v2`；
-- selected resolution 仍保留完整 provenance。
-
-重复 build 时已 known 字段直接跳过，因此导入计数和 resolution 结果保持幂等。
-
-## 8. Derived fields
-
-任何规范化/派生值必须记录 source observation(s)、transformation rule、rule version 和 generated time。Derived 值不能伪装成 source raw field。
-
-## 9. Unified ingestion tasks 与批量补齐
-
-所有补全工作由 SQLite task plan 统一表达：
-
-1. `identity_conflict_review`；
-2. `identity_recovery`；
-3. `field_completion`；
-4. `dish_semantic_review`。
-
-批量执行采用 retained-first / network-second：先消费已有、可追溯证据，再访问验证过的免费公开来源。一次已确认来源访问尽量提取所有可支持字段；遇到登录、验证码或访问限制停止，不绕过，也不回退付费 Google Data API。
-
-### 批次设计
-
-- Batch A：independently verified official identity index；
-- Batch B：historical verified OSM sourceId ↔ Place ID QC；
-- Batch C：missing-only retained-field resolver v2；
-- Batch D：消费仍 active 的免费公开来源 network tasks。
-
-每批结束后重新运行 planner，以 identity/field missing task 的变化作为补全效果指标，而不是只看新增 source-record 数量。
-
-## 10. Export
-
-从同一 SQLite snapshot 生成全部 2,804 的 catalog export，以及只包含 eligibility 通过条目的 recommendation export。Recommendation 必须记录 exclusion reason，id-only 不再因 frozen membership 自动获得 recommendation eligibility。
-
-Export metadata 包含 schema/resolver version、source snapshot/hash、row count、generated time 和 content hash。
-
-## 11. GitHub/Pages handoff
-
-local SQLite → integrity/foreign-key/export validation → commit validated export → Actions hard checks → compatibility reports → Pages deploy。
-
-电脑离线时继续发布上次已验证 export，不声称数据自动刷新。
-
-## 12. 切换条件
-
-Pages 切换前至少满足：
-
-1. 2,804 catalog ID 集合一致；
-2. 导入幂等；
-3. 所有 discovered provider-ID collision 不自动 canonicalize；
-4. retained hours/closure 正确迁移；
-5. open-ended budget 不伪造上界；
-6. known 值不被失败请求或 missing-only resolver 覆盖；
-7. catalog/recommendation export 可从同一 snapshot 重现；
-8. 所有 shadow-only 新增都能追溯到 approved reviewed recovery source；
-9. derived field 可追溯到原 retained observation；
-10. 新旧前端结果完成 regression diff；
-11. backup/restore 通过；
-12. 新架构 strict gates 已取代 refactor warning。
-
-完成实际开发后必须同步更新 `DEVELOPMENT.md`、相关架构/数据文档和当日 `logs/`。
+每批完成必须同步更新 `DEVELOPMENT.md`、本文件和当天 `logs/`；未通过 CI 不写“完成”。

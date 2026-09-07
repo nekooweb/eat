@@ -1,60 +1,71 @@
 # 2026-09-07 批量补齐开发记录
 
-## 初始基线
-
-2,804 catalog；651 verified / 747 source_matched / 1,393 id_only / 13 conflict；2,972 active tasks。
-
 ## Batch A — retained official identity recovery
 
-状态：完成，blocking CI pass。Commit `f43cffb`。
-
-- official input 194；reviewed 193；conflict deferred 1；
-- identity recovered 1：`ChIJ2yzmKgCNGGARujgyaVuRhy8`；
-- shadow safe-added 1 / unsafe-added 0。
+完成，CI pass。194 input / 193 reviewed / 1 conflict-deferred；新恢复 id-only 1；shadow safe-added 1 / unsafe 0。
 
 ## Batch B — retained verified OSM identity QC
 
-状态：完成，blocking CI pass。Commit `6aa04eb`。
-
-- verified pairs 662；reviewed 657 / candidate 3 / conflict 2；
-- identity recovered 0；
-- 新暴露 cross-layer collision 2 组 / 4 Place ID；总 collision 10 组 / 20 Place ID；
-- master 4,439 source records、46,013 observations、30,673 resolutions；
-- hours field gap 689 -> 679。
+完成，CI pass。662 verified pairs / 657 reviewed / 3 candidate / 2 conflict；新恢复 id-only 0；新增发现 2 collision groups / 4 Place ID；总 conflict Places 20。
 
 ## Batch C — deterministic retained-field resolver v2
 
-状态：完成，blocking CI pass。Commit `d948d45`。
+完成，CI pass。1,176 candidate place-fields 中安全 derived 188：closure.days.raw 123、closure.raw 58、hours.raw 7；Tabelog 156 / official 32；missing-only repeat build 新增 0。
 
-规则：publishable/no-conflict identity；provider 仅 official/Tabelog；HTTPS provenance；claimedFields 支持；missing-only；绝不覆盖 known 值；derived observation 必须链接原 observation。
+## Batch D — Hot Pepper candidate field-only review
 
-实际：
+完成，CI pass。Commit `a33fc72`。
 
-- candidate place-fields 1,176；
-- resolved 188；
-- Tabelog 156 / official 32；
-- closure.days.raw 123；closure.raw 58；hours.raw 7；
-- already-known skip 968；identity-conflict skip 20；
-- master 4,627 source records/bindings、46,201 observations、30,854 resolutions；
-- hours task gap 679 -> 672；
-- repeat build 再 resolved 0，计数保持稳定；
-- backup/restore/export/regression 全通过。
+58 candidate bindings：
 
-## Batch D — retained Hot Pepper candidate field-only review
+- eligible candidate identity consistency：6；
+- consistency rejected：22；
+- identity not publishable：30。
 
-状态：代码已实现，等待 blocking CI。
+6 家共补 59 fields：dinner 6、hours 6、closure 6、card 6、course 5、free drink 6、free food 6、lunch 6、parking 6、private room 6。
 
-目标：复用 58 条 retained Hot Pepper candidate，但 candidate identity 本身保持 candidate。
+Master：4,686 source records/bindings、46,260 observations、30,913 resolutions。Identity 保持 651 verified / 746 source_matched / 1,392 id_only / 15 conflict。Field gaps：address 337、coordinates 1、cuisine 1、dinner 789、hours 666、lunch 1,228、practical 906。Repeat build Batch D 新增 0；backup/export pass。
 
-Identity consistency：
+## Batch E — historical private Google hint reconciliation
 
-- 只允许当前 verified/source_matched + no-conflict；
-- exact normalized name + ≤150m；或
-- name similarity ≥0.95 + ≤80m；或
-- exact normalized address + name similarity ≥0.85 + ≤100m。
+状态：代码/私有 workflow 已实现，等待 CI probe。
 
-通过后只补当前缺失的 address / hours.raw / dinner budget / closure.raw / conservative practical booleans。禁止 name、coordinates、canonical cuisine，禁止 identity upgrade。
+### 发现
 
-所有 field promotion 生成新的 field-only derived source/binding，并记录原 observation、identity check、rule version。Blocking validator 会重算 identity consistency，确认原 Hot Pepper binding 仍是 candidate，并检查 direct value equality / practical parser reproducibility / no-conflict / no identity-field writes。
+旧 workflow `recover-google-inventory-basic.yml` 明确引用两次 2026-09-06 私有 Google sweep：
 
-Batch D 通过后记录实际 resolved 数和 task 变化，然后进入针对剩余 1,392 id-only 的免费公开来源 collector。
+- run `34018919233` / artifact `full-area1-collection-private-audit`；
+- run `34019078280` / artifact `full-area1-retry-private-audit`。
+
+两个 artifact 当前仍有效至 2026-09-09。下载审计确认：
+
+- initial `full_inventory_place_details.json`：2,159 rows，其中 1,716 success + 443 error；
+- retry `full_inventory_retry_private.json`：443 rows，全部取得 name/address/coordinates/status；
+- 合并后当时 2,159 条非核心 inventory 具备历史成功 detail hint；
+- 本轮不产生任何新 Google API request / cost。
+
+### 持久化边界
+
+历史 Google display content 只作为 private ephemeral hint，不写入 durable master/repository/public export。Durable proposal 只允许 Google Place ID + independent Hot Pepper/OSM/Overture facts。
+
+### 新增实现
+
+- `scripts/database/reconcile_private_google_hints.py`
+  - 构建当前 1,392 id-only set；
+  - 合并 initial + retry private hint；
+  - 对 Hot Pepper / OSM / Overture 建 spatial candidate index；
+  - provider ID 已被其他 PID 使用时拒绝；
+  - 同 provider 有近似竞争候选时拒绝；
+  - single-source 只允许 ultra-tight exact/super-exact match；
+  - 较宽条件要求 multi-provider consensus；
+  - 输出 private metrics 与 independent-only durable proposal 两份文件。
+
+- `.github/workflows/private-historical-reconciliation.yml`
+  - `actions: read` 下载两个历史 artifact；
+  - 构建/验证当前 SQLite master；
+  - 执行 reconciliation；
+  - blocking 检查 durable proposal 不含 Google display payload；
+  - 上传 2-day private reconciliation artifact；
+  - 不自动 commit proposal。
+
+Probe 通过后先记录 strict proposal 实际数量和 provider/rule 分布，再决定是否正式导入。若数量很少，不降低门槛，转向免费公开来源 collector。
