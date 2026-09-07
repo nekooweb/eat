@@ -92,7 +92,7 @@
 
 这与 `privacy.html` 已声明的“内嵌地图使用 OpenStreetMap/Leaflet、不注入 Google Maps API key”保持一致。
 
-## 下一阶段：Batch F — free public-source identity collector
+## Batch F — free public-source identity collector
 
 目标不是继续调 retained matching threshold，而是为剩余 1,392 个 id-only 建立真正可持久化的公开来源证据。
 
@@ -108,6 +108,31 @@
 8. **access-respectful**：不绕过登录、CAPTCHA、robots/access restriction，不恢复付费 Google Places/Text/Nearby API。
 
 优先执行顺序仍为：identity conflict review > identity recovery > field completion > dish semantic review。Identity recovery 成功后自动进入 field-completion 队列。
+
+## 并行 sub-agent 执行层
+
+已实现第一版 deterministic workplan，commit `1aa34ef`。
+
+核心文件：
+
+- `scripts/database/build_agent_workplan.py`：读取当前 SQLite `ingestion_tasks`，按任务类型与已有 source provider 自动路由到 worker family；
+- `.github/workflows/parallel-agent-workplan.yml`：从真实 master 构建 proposal-only shard，并验证唯一 ownership、最大 shard 大小与 no-paid-API policy；
+- `logs/2026-09-07-parallel-subagent-architecture.md`：记录并行设计与约束。
+
+当前设计不是让多个 worker 同时修改 SQLite，而是：
+
+`master tasks -> deterministic shards -> parallel workers -> evidence/proposals -> central resolver -> master rebuild -> re-plan`
+
+默认 worker family：
+
+- `identity-public-recovery`：8 shards；
+- `field-official` / `field-hotpepper` / `field-tabelog-retained` / `field-open-data` / `field-existing-source`：各最多按需要拆分，默认 6 shards；
+- `dish-semantic-review`：2 shards；
+- `identity-conflict-review`：低并发人工/严格复核。
+
+硬约束：每条 active task 恰好属于一个 shard；每个 shard <=250 tasks；worker 只能输出 proposal/evidence，不能直接写 master；proximity-only identity 绑定继续禁止；任何 accepted proposal 仍需通过中央 resolver、collision quarantine、provenance/export validation 与 no-paid-API audit。
+
+下一步在这个 workplan 上增加各 family 的 worker executor 和 central proposal importer，而不再创建互相独立、重复扫描全量数据的 workflow。
 
 ## 开发纪律
 
