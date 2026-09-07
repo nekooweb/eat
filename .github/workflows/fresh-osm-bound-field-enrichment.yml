@@ -87,7 +87,7 @@ jobs:
           from pathlib import Path
           base=json.load(open('data/fresh_osm_bound_field_evidence.json'))
           inc=json.load(open('_tmp/fresh-osm-bound-field-incoming.json'))
-          assert base['ruleVersion']==inc['ruleVersion']=='fresh-osm-bound-field-evidence-v1'
+          assert base['ruleVersion']==inc['ruleVersion']=='fresh-osm-bound-field-evidence-v2'
           rows={(r['googlePlaceId'],r['providerId']):r for r in base.get('rows',[])}
           for r in inc.get('rows',[]):
               key=(r['googlePlaceId'],r['providerId'])
