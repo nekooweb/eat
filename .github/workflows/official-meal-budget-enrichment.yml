@@ -7,6 +7,7 @@ on:
     paths:
       - ".github/workflows/official-meal-budget-enrichment.yml"
       - "scripts/database/collect_official_meal_budgets.py"
+      - "scripts/database/collect_official_detail_meal_budgets.py"
       - "scripts/database/import_official_meal_budget_web_evidence.py"
       - "scripts/database/merge_official_meal_budget_evidence.py"
       - "scripts/database/import_source_basic_web_evidence.py"
@@ -44,6 +45,7 @@ jobs:
           node scripts/audit_no_paid_apis.mjs
           python -m py_compile \
             scripts/database/collect_official_meal_budgets.py \
+            scripts/database/collect_official_detail_meal_budgets.py \
             scripts/database/import_official_meal_budget_web_evidence.py \
             scripts/database/merge_official_meal_budget_evidence.py \
             scripts/database/import_source_basic_web_evidence.py \
@@ -69,15 +71,36 @@ jobs:
           print(json.dumps(s,sort_keys=True))
           PY
 
-      - name: Collect explicit official meal budgets
+      - name: Collect explicit official landing-page meal budgets
         run: |
           set -euo pipefail
           python scripts/database/collect_official_meal_budgets.py \
             --database _tmp/eat-master-before.sqlite \
-            --output _tmp/official-meal-budget-incoming.json \
+            --output _tmp/official-meal-budget-landing.json \
             --workers 6 \
             --max-pages 250 \
-            | tee _tmp/official-meal-budget-collection.json
+            | tee _tmp/official-meal-budget-landing-collection.json
+
+      - name: Collect same-origin official detail-page meal budgets
+        run: |
+          set -euo pipefail
+          python scripts/database/collect_official_detail_meal_budgets.py \
+            --database _tmp/eat-master-before.sqlite \
+            --output _tmp/official-meal-budget-detail.json \
+            --workers 6 \
+            --max-restaurants 250 \
+            | tee _tmp/official-meal-budget-detail-collection.json
+
+      - name: Combine incoming evidence
+        run: |
+          set -euo pipefail
+          cp _tmp/official-meal-budget-landing.json _tmp/official-meal-budget-incoming.json
+          python scripts/database/merge_official_meal_budget_evidence.py \
+            _tmp/official-meal-budget-incoming.json \
+            _tmp/official-meal-budget-detail.json \
+            _tmp/official-meal-budget-incoming-combined.json \
+            | tee _tmp/official-meal-budget-incoming-merge.json
+          mv _tmp/official-meal-budget-incoming-combined.json _tmp/official-meal-budget-incoming.json
 
       - name: Validate incoming evidence
         run: |
@@ -97,11 +120,10 @@ jobs:
           assert p['rawHtmlPersisted'] is False
           assert p['robotsRespected'] is True
           assert p['restrictedAccessBypass'] is False
-          ids=[]
+          snapshots=[]
           for row in d['rows']:
-            ids.append(row['googlePlaceId'])
-            assert row['sourceProvider']=='official'
             check=row['identityCheck']
+            assert row['sourceProvider']=='official'
             assert check['accepted'] is True
             assert check['identityRule']=='retained_verified_official_page'
             assert check['retainedOfficialBindingReviewed'] is True
@@ -112,6 +134,7 @@ jobs:
             assert re.fullmatch(r'[0-9a-f]{64}',str(ev['contentHash']))
             assert ev['parserVersion']=='official-meal-budget-web-v1'
             assert ev['rawHtmlPersisted'] is False
+            snapshots.append((row['googlePlaceId'],ev['finalUrl'],ev['contentHash']))
             claims=row['budgetClaims']
             assert claims and set(claims).issubset({'lunch','dinner'})
             for meal,claim in claims.items():
@@ -122,8 +145,8 @@ jobs:
               assert 100 <= claim['lower'] <= claim['upper'] <= 200000
               assert 0 < len(claim['rawText']) <= 180
               assert 0 < len(row['evidenceSnippets'][meal]) <= 180
-          assert len(ids)==len(set(ids))
-          print(json.dumps({'rows':len(ids),'fieldCounts':d['summary']['fieldCounts'],'fetchCounts':d['summary']['fetchCounts']},ensure_ascii=False,sort_keys=True))
+          assert len(snapshots)==len(set(snapshots))
+          print(json.dumps({'snapshots':len(snapshots),'fieldCounts':d['summary']['fieldCounts']},ensure_ascii=False,sort_keys=True))
           PY
 
       - name: Merge and validate master effect
@@ -196,8 +219,12 @@ jobs:
         with:
           name: official-meal-budget-enrichment
           path: |
+            _tmp/official-meal-budget-landing.json
+            _tmp/official-meal-budget-detail.json
             _tmp/official-meal-budget-incoming.json
-            _tmp/official-meal-budget-collection.json
+            _tmp/official-meal-budget-landing-collection.json
+            _tmp/official-meal-budget-detail-collection.json
+            _tmp/official-meal-budget-incoming-merge.json
             _tmp/official-meal-budget-working-merge.json
             _tmp/official-meal-budget-latest-merge.json
             _tmp/budget-before.json
