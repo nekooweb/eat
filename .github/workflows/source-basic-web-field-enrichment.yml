@@ -1,0 +1,148 @@
+name: Enrich source-basic fields from public web evidence
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/source-basic-web-field-enrichment.yml"
+      - "scripts/database/collect_source_basic_web_fields.py"
+      - "scripts/database/import_source_basic_web_evidence.py"
+      - "scripts/database/reconcile_private_official_web_consensus_v4.py"
+      - "scripts/build_google_inventory_runtime.mjs"
+      - "data/google_basic_source_matches.json"
+      - "data/overture_area1_candidates.json"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: source-basic-web-field-enrichment
+  cancel-in-progress: false
+
+jobs:
+  enrich:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Enforce no-paid-data-API policy
+        run: node scripts/audit_no_paid_apis.mjs
+      - name: Build baseline master
+        run: |
+          set -euo pipefail
+          mkdir -p _tmp
+          python -m py_compile \
+            scripts/database/collect_source_basic_web_fields.py \
+            scripts/database/import_source_basic_web_evidence.py \
+            scripts/database/reconcile_private_official_web_consensus_v4.py
+          python scripts/database/build_master.py --output _tmp/eat-master-before.sqlite --reset | tee _tmp/master-before.json
+          python scripts/database/validate_master.py _tmp/eat-master-before.sqlite | tee _tmp/master-before-validate.json
+          python - <<'PY'
+          import json,sqlite3
+          db=sqlite3.connect('_tmp/eat-master-before.sqlite')
+          active=db.execute("select count(*) from ingestion_tasks where active=1 and task_type='field_completion'").fetchone()[0]
+          missing={}
+          for payload, in db.execute("select payload_json from ingestion_tasks where active=1 and task_type='field_completion'"):
+            for field in json.loads(payload).get('missingFields',[]): missing[field]=missing.get(field,0)+1
+          json.dump({'fieldTasks':active,'missing':missing},open('_tmp/field-before.json','w'),sort_keys=True)
+          print(json.dumps({'fieldTasks':active,'missing':missing},sort_keys=True))
+          PY
+      - name: Collect verified public web fields
+        run: |
+          set -euo pipefail
+          python scripts/database/collect_source_basic_web_fields.py \
+            --database _tmp/eat-master-before.sqlite \
+            --existing data/source_basic_web_field_evidence.json \
+            --output data/source_basic_web_field_evidence.json \
+            --workers 8 \
+            --max-pages 800 \
+            | tee _tmp/web-field-collection.json
+      - name: Validate durable web field evidence
+        run: |
+          python - <<'PY'
+          import json,re
+          d=json.load(open('data/source_basic_web_field_evidence.json'))
+          assert d['ruleVersion']=='source-basic-web-field-evidence-v1'
+          p=d['policy']
+          assert p['paidDataApiCalls']==0
+          assert p['googleDisplayPayloadPersisted'] is False
+          assert p['sourceBackedIdentityRequired'] is True
+          assert p['httpsExistingSourceUrlsOnly'] is True
+          assert p['rawHtmlPersisted'] is False
+          assert p['robotsRespected'] is True
+          ids=[]
+          for row in d['rows']:
+            ids.append(row['googlePlaceId'])
+            check=row['identityCheck']; assert check['accepted'] is True
+            assert check['identityRule'] in {'official_name_plus_structured_address','official_name_plus_phone','official_name_plus_geo'}
+            ev=row['webEvidence']
+            assert str(ev['sourceUrl']).startswith('https://')
+            assert str(ev['finalUrl']).startswith('https://')
+            assert re.fullmatch(r'[0-9a-f]{64}',str(ev['contentHash']))
+            assert ev['rawHtmlPersisted'] is False
+            assert row['fieldClaims']
+          assert len(ids)==len(set(ids))
+          print(json.dumps({'rows':len(ids),'fieldCounts':d['summary']['fieldCounts']},ensure_ascii=False,sort_keys=True))
+          PY
+      - name: Validate master and runtime after enrichment
+        run: |
+          set -euo pipefail
+          python scripts/database/build_master.py --output _tmp/eat-master-after.sqlite --reset | tee _tmp/master-after.json
+          python scripts/database/validate_master.py _tmp/eat-master-after.sqlite | tee _tmp/master-after-validate.json
+          node scripts/build_google_inventory_runtime.mjs | tee _tmp/runtime-after-web-fields.json
+          node scripts/audit_google_inventory_runtime.mjs | tee _tmp/runtime-after-web-fields-audit.json
+          python - <<'PY'
+          import json,sqlite3
+          before=json.load(open('_tmp/field-before.json'))
+          db=sqlite3.connect('_tmp/eat-master-after.sqlite')
+          active=db.execute("select count(*) from ingestion_tasks where active=1 and task_type='field_completion'").fetchone()[0]
+          missing={}
+          for payload, in db.execute("select payload_json from ingestion_tasks where active=1 and task_type='field_completion'"):
+            for field in json.loads(payload).get('missingFields',[]): missing[field]=missing.get(field,0)+1
+          assert active <= before['fieldTasks'], (before['fieldTasks'],active)
+          json.dump({'fieldTasks':active,'missing':missing},open('_tmp/field-after.json','w'),sort_keys=True)
+          print(json.dumps({'before':before,'after':{'fieldTasks':active,'missing':missing}},sort_keys=True))
+          PY
+      - name: Commit durable field evidence
+        run: |
+          set -euo pipefail
+          git restore -- data/google_inventory_runtime.js 2>/dev/null || true
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/source_basic_web_field_evidence.json
+          if git diff --cached --quiet; then
+            echo "No new public web field evidence."
+            exit 0
+          fi
+          git commit -m "Add source-basic public web field evidence"
+          git fetch origin main
+          git rebase --autostash origin/main
+          git push origin HEAD:main
+      - name: Upload field enrichment audit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: source-basic-web-field-enrichment
+          path: |
+            _tmp/web-field-collection.json
+            _tmp/field-before.json
+            _tmp/field-after.json
+            _tmp/master-before.json
+            _tmp/master-before-validate.json
+            _tmp/master-after.json
+            _tmp/master-after-validate.json
+            _tmp/runtime-after-web-fields.json
+            _tmp/runtime-after-web-fields-audit.json
+          if-no-files-found: warn
+          retention-days: 2
