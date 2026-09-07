@@ -70,10 +70,13 @@ priority：identity conflict review > identity recovery > field completion > dis
 - 不使用 Google Maps Embed iframe；
 - 地图渲染只读取已经存在于本地 runtime 的坐标，不向 Google 请求地点数据；
 - Google Place ID 仅用于普通外部导航兼容链接；
+- 三店总览中的 1–3 marker popup 可生成 Google Maps 普通跳转 URL，但该链接只在用户点击后离开本站，不参与数据读取；
+- 总览地图固定加入 `国立情報学研究所（学術総合センター）` reference point（東京都千代田区一ツ橋2-1-2）并以红色 circle marker 展示；该 reference point 是 UI 常量，不属于 restaurant source record / observation / resolution，也不参与推荐逻辑；
+- overview `fitBounds` 同时包含 NII reference point 和三家餐厅，作为地区1️⃣的空间参照；
 - `audit_no_paid_apis.mjs` 和 Pages assemble 都阻止 Google key/embed 配置重新进入公开页面；
 - 页面必须保留 OpenStreetMap attribution。
 
-因此“地图显示”和“Google 数据采集”不再共享任何 API key 或运行时依赖。
+因此“地图显示”和“Google 数据采集”不再共享任何 API key 或运行时依赖。普通 Google Maps 跳转只属于 UI navigation surface。
 
 ## Network-second
 
