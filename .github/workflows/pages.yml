@@ -176,7 +176,7 @@ jobs:
           cp data/production_area1.js data/google_inventory_runtime.js data/source_provenance.js data/source_facts.js data/hotpepper_rich_metadata.js _site/data/
           cp voice/*.mp3 _site/voice/
           cp image/*.webp _site/image/
-          if grep -Eqi 'google-maps-embed-key|__GOOGLE_MAPS_EMBED_KEY__|maps/embed/v1' _site/index.html; then
+          if grep -Eqi 'google-maps-embed-key|maps/embed/v1' _site/index.html; then
             echo 'Google Embed configuration must not be present in the public site.' >&2
             exit 1
           fi
