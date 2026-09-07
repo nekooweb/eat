@@ -38,8 +38,9 @@ function parseBudgetRange(value) {
   }
   match = text.match(/(\d+)\s*以下/);
   if (match) return [0, Number(match[1])];
-  match = text.match(/(\d+)\s*以上/);
-  if (match) return [Number(match[1]), Number(match[1]) + 2000];
+  // Legacy runtime arrays cannot represent an open upper bound safely.
+  // Preserve the raw source for the SQLite importer instead of inventing N+2000.
+  if (/(\d+)\s*以上/.test(text)) return null;
   return null;
 }
 
@@ -48,7 +49,7 @@ function baseEmpty(pid) {
     id: `g-${pid}`,
     profile: 'TOKYO',
     area: '地区1️⃣',
-    name: 'Google Maps 餐厅',
+    name: '',
     nameKnown: false,
     cuisine: '',
     tags: [],
@@ -162,7 +163,7 @@ const rows = ids.map((pid) => {
         id: `g-${pid}`,
         profile: 'TOKYO',
         area: '地区1️⃣',
-        name: basic.name || 'Google Maps 餐厅',
+        name: basic.name || '',
         nameKnown: Boolean(basic.name),
         cuisine: basic.cuisine || '',
         tags: basic.cuisine ? [basic.cuisine] : [],
@@ -195,8 +196,8 @@ const rows = ids.map((pid) => {
         const facts = hp.facts || {};
         const dinner = parseBudgetRange(facts.budget?.name || facts.budget?.average || facts.budgetMemo);
         if (dinner) row.dinner = dinner;
-        if (String(facts.open || '').trim()) row.hoursReference = String(facts.open).trim();
-        if (String(facts.close || '').trim()) row.closedNote = String(facts.close).trim();
+        if (String(facts.openingHoursText || '').trim()) row.hoursReference = String(facts.openingHoursText).trim();
+        if (String(facts.closedText || '').trim()) row.closedNote = String(facts.closedText).trim();
         if (!row.address && facts.address) row.address = String(facts.address).trim();
         row.hotPepperBasicDetail = true;
       }
@@ -224,39 +225,61 @@ const counts = rows.reduce((acc, row) => {
   acc[row.basicInfoState] = (acc[row.basicInfoState] || 0) + 1;
   return acc;
 }, {});
+
+// Keep all 2,804 identities in the frozen catalog, but do not publish ID-only
+// placeholders to the recommendation runtime. They automatically return once
+// a durable source supplies a real name/basic identity.
+const publishedRows = rows.filter((row) =>
+  row.basicInfoState !== 'google_place_id_only'
+  && row.nameKnown === true
+  && String(row.name || '').trim().length > 0
+);
+
 const runtimeStats = {
   scope: inventory.scope,
   radiusMeters: 1200,
-  inventoryTotal: rows.length,
-  uniquePlaceIds: new Set(rows.map((row) => row.googlePlaceId)).size,
-  canonicalRich: counts.canonical || 0,
-  sourceBasic: counts.source_matched || 0,
-  namedBasic: rows.filter((row) => row.nameKnown).length,
-  placeIdOnly: counts.google_place_id_only || 0,
-  withCoordinates: rows.filter((row) => finite(row.lat) && finite(row.lng)).length,
-  withDistance: rows.filter((row) => finite(row.distanceMeters)).length,
-  recommendedDishesKnown: rows.filter((row) => Array.isArray(row.recommendedDishes) && row.recommendedDishes.length).length,
-  featuredDishesKnown: rows.filter((row) => Array.isArray(row.featuredDishes) && row.featuredDishes.length).length,
-  cuisineKnown: rows.filter((row) => row.cuisine).length,
-  dinnerBudgetKnown: rows.filter((row) => Array.isArray(row.dinner) && row.dinner.length >= 2).length,
-  hoursKnown: rows.filter((row) => row.openingHours?.days || row.hoursReference).length,
-  hotPepperBasicDetailRows: rows.filter((row) => row.hotPepperBasicDetail).length,
+  catalogTotal: rows.length,
+  inventoryTotal: publishedRows.length,
+  uniquePlaceIds: new Set(publishedRows.map((row) => row.googlePlaceId)).size,
+  canonicalRich: publishedRows.filter((row) => row.basicInfoState === 'canonical').length,
+  sourceBasic: publishedRows.filter((row) => row.basicInfoState === 'source_matched').length,
+  namedBasic: publishedRows.length,
+  placeIdOnly: 0,
+  catalogPlaceIdOnly: counts.google_place_id_only || 0,
+  unpublishedPlaceIdOnly: counts.google_place_id_only || 0,
+  withCoordinates: publishedRows.filter((row) => finite(row.lat) && finite(row.lng)).length,
+  withDistance: publishedRows.filter((row) => finite(row.distanceMeters)).length,
+  recommendedDishesKnown: publishedRows.filter((row) => Array.isArray(row.recommendedDishes) && row.recommendedDishes.length).length,
+  featuredDishesKnown: publishedRows.filter((row) => Array.isArray(row.featuredDishes) && row.featuredDishes.length).length,
+  cuisineKnown: publishedRows.filter((row) => row.cuisine).length,
+  dinnerBudgetKnown: publishedRows.filter((row) => Array.isArray(row.dinner) && row.dinner.length >= 2).length,
+  hoursKnown: publishedRows.filter((row) => row.openingHours?.days || row.hoursReference).length,
+  hotPepperBasicDetailRows: publishedRows.filter((row) => row.hotPepperBasicDetail).length,
   sourceBasicProviders: basicDoc.summary?.providers || {},
   detailEvidenceRestaurants: detailById.size,
   detailEvidenceSummary: detailEvidence.summary || {}
 };
 
-if (runtimeStats.inventoryTotal !== 2804 || runtimeStats.uniquePlaceIds !== 2804) {
-  throw new Error('Runtime does not contain exactly the frozen 2,804 Place IDs');
+if (rows.length !== 2804 || new Set(rows.map((row) => row.googlePlaceId)).size !== 2804) {
+  throw new Error('Internal catalog does not contain exactly the frozen 2,804 Place IDs');
 }
-if (rows.some((row) => finite(row.distanceMeters) && (row.distanceMeters < 0 || row.distanceMeters > 1200))) {
+if (runtimeStats.inventoryTotal + runtimeStats.unpublishedPlaceIdOnly !== 2804) {
+  throw new Error('Published + held ID-only rows do not reconcile to the frozen catalog');
+}
+if (publishedRows.some((row) => !row.nameKnown || !String(row.name || '').trim())) {
+  throw new Error('Published runtime contains an unnamed restaurant');
+}
+if (publishedRows.some((row) => row.basicInfoState === 'google_place_id_only')) {
+  throw new Error('Published runtime contains an ID-only placeholder');
+}
+if (publishedRows.some((row) => finite(row.distanceMeters) && (row.distanceMeters < 0 || row.distanceMeters > 1200))) {
   throw new Error('Runtime contains an out-of-radius durable distance');
 }
 
 fs.writeFileSync(
   outputPath,
-  `// Generated from the frozen Google Place ID inventory plus durable independent-source basics and detail evidence.\n` +
-  `window.GOOGLE_INVENTORY_RESTAURANTS=${JSON.stringify(rows)};\n` +
+  `// Generated from the frozen Google Place ID catalog. ID-only entries stay internal until a real source-backed name is available.\n` +
+  `window.GOOGLE_INVENTORY_RESTAURANTS=${JSON.stringify(publishedRows)};\n` +
   `window.GOOGLE_INVENTORY_STATS=${JSON.stringify(runtimeStats)};\n`,
   'utf8'
 );
