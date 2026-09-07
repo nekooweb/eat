@@ -9,7 +9,7 @@
 - Bulk completion 继续只更新 SQLite / shadow，未切 SQLite recommendation export 到 Pages。
 - no-paid-data-API、catalog 完整性、Google payload 泄漏、数据库契约和 Pages 可部署性保持 blocking。
 - 地图显示已切换为 **Leaflet + OpenStreetMap**：页面不再注入 Google Maps API key，不再使用 Google Embed iframe。Google Maps 只保留普通外部导航链接，不用于页面内数据读取。
-- 三店位置总览中，1–3 餐厅 marker 的 popup 保留对应 Google Maps 普通跳转链接；国立情報学研究所（NII，学術総合センター）作为固定参考点以红点显示，不参与餐厅筛选或推荐。
+- 三店位置总览中，1–3 餐厅 marker 的 popup 保留对应 Google Maps 普通跳转链接；另有一个固定红色空间参考点，仅作为 UI 坐标参照，不显示字段且不可点击。
 
 ## 当前已验证 master（Batch D 后基线）
 
@@ -86,8 +86,9 @@
 5. `audit_no_paid_apis.mjs` 新增前端/Pages 防回归检查，阻止 Google map key、embed placeholder 和公开页面 embed 配置重新进入部署；
 6. Pages assemble 阶段再次检查公开 `index.html` 不含 Google Embed 配置，并确认 Leaflet/OpenStreetMap 存在；
 7. 总览地图的 1–3 餐厅 marker popup 增加普通 Google Maps 跳转链接，使用现有 Place ID/name/address 生成 URL，不发起数据 API 请求；
-8. 固定增加 NII reference marker：`国立情報学研究所（学術総合センター）`，地址 `東京都千代田区一ツ橋2-1-2`，显示为红色 circle marker；红点仅作位置参照，不写入餐厅 catalog、不参与距离过滤、不影响随机权重；
-9. 总览 `fitBounds` 同时包含三家可绘制餐厅和 NII reference point，确保参考建筑不会被裁出视野。
+8. 总览固定增加一个红色 reference marker，仅在前端保存经纬度常量；不保存/显示名称、地址或链接，不绑定 popup/tooltip，`interactive: false`；
+9. reference marker 不写入餐厅 catalog/master，不参与距离过滤、推荐 eligibility 或随机权重；
+10. 总览 `fitBounds` 将 reference point 纳入视野范围；页面不显示任何关于该红点或 marker 点击行为的说明文字。
 
 这与 `privacy.html` 已声明的“内嵌地图使用 OpenStreetMap/Leaflet、不注入 Google Maps API key”保持一致。
 
