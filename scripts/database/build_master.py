@@ -11,6 +11,7 @@ import derive_hotpepper_practical as derived
 import import_bound_open_data_fields as bound_open_data
 import import_hotpepper_rich_metadata as hotpepper_rich
 import import_official_meal_budget_web_evidence as official_meal_budget
+import import_official_practical_detail_web_evidence as official_practical_detail
 import import_official_practical_web_evidence as official_practical
 import import_source_basic_web_evidence as source_basic_web
 import master_import_core as core
@@ -48,16 +49,10 @@ core.resolve = _resolve_preserving_known_on_conflict
 def _import_hotpepper_preserving_normalized_cuisine(db, doc, conflict_keys, stamp):
     original = core.add_field
 
-    def guarded(
-        db_, place_id, source_record_id, field_key, value, binding_state,
-        provider, observed_at, stamp_, *, resolve_field=True
-    ):
+    def guarded(db_, place_id, source_record_id, field_key, value, binding_state, provider, observed_at, stamp_, *, resolve_field=True):
         if field_key == "cuisine":
             return None
-        return original(
-            db_, place_id, source_record_id, field_key, value, binding_state,
-            provider, observed_at, stamp_, resolve_field=resolve_field,
-        )
+        return original(db_, place_id, source_record_id, field_key, value, binding_state, provider, observed_at, stamp_, resolve_field=resolve_field)
 
     core.add_field = guarded
     try:
@@ -80,13 +75,10 @@ def retained_conflict_index(basics, hotpepper, phase2_inputs, extra_identity_row
         all_sources[key].add(pid)
     for key, pid in extra_identity_rows:
         all_sources[key].add(pid)
-
     basic_conflicts = {key for key, values in basic.items() if len(values) > 1}
     all_conflicts = {key for key, values in all_sources.items() if len(values) > 1}
     if len(basic_conflicts) != 5:
-        raise RuntimeError(
-            f"retained basic collision baseline changed: expected 5 groups, found {len(basic_conflicts)}"
-        )
+        raise RuntimeError(f"retained basic collision baseline changed: expected 5 groups, found {len(basic_conflicts)}")
     if not basic_conflicts.issubset(all_conflicts):
         raise RuntimeError("cross-layer collision index lost a known basic collision")
     return basic_conflicts, all_conflicts, all_sources
@@ -112,12 +104,8 @@ def build(output: Path, reset: bool = False):
         raise RuntimeError("frozen catalog must contain exactly 2,804 unique Place IDs")
 
     osm_native_rows = osm_identity.native_identity_rows(id_set)
-    basic_conflicts, conflict_keys, all_sources = retained_conflict_index(
-        basics, hotpepper, phase2_inputs, osm_native_rows
-    )
-    conflict_places = (
-        set().union(*(all_sources[key] for key in conflict_keys)) if conflict_keys else set()
-    )
+    basic_conflicts, conflict_keys, all_sources = retained_conflict_index(basics, hotpepper, phase2_inputs, osm_native_rows)
+    conflict_places = set().union(*(all_sources[key] for key in conflict_keys)) if conflict_keys else set()
 
     stamp = core.now_iso()
     source_commit = os.environ.get("GITHUB_SHA") or "repository-working-tree"
@@ -126,103 +114,52 @@ def build(output: Path, reset: bool = False):
     try:
         core.apply_migrations(db)
         db.execute("BEGIN IMMEDIATE")
-        db.execute(
-            "INSERT INTO ingestion_runs(run_id,started_at,source_commit,parser_version,status) VALUES(?,?,?,?,?)",
-            (run_id, stamp, source_commit, PARSER_VERSION, "running"),
-        )
-        snapshot = core.canonical_json({
-            "checkedAt": inventory.get("checkedAt"),
-            "method": inventory.get("method"),
-            "count": inventory.get("count"),
-        })
+        db.execute("INSERT INTO ingestion_runs(run_id,started_at,source_commit,parser_version,status) VALUES(?,?,?,?,?)", (run_id, stamp, source_commit, PARSER_VERSION, "running"))
+        snapshot = core.canonical_json({"checkedAt": inventory.get("checkedAt"), "method": inventory.get("method"), "count": inventory.get("count")})
         for pid in ids:
-            core.upsert_catalog(
-                db,
-                pid,
-                inventory.get("scope") or "TOKYO/地区1️⃣",
-                snapshot,
-                "id_only",
-                stamp,
-            )
+            core.upsert_catalog(db, pid, inventory.get("scope") or "TOKYO/地区1️⃣", snapshot, "id_only", stamp)
 
         legacy = core.import_legacy_canonical(db, production, id_set, stamp)
         basic = core.import_basic(db, basics, conflict_keys, stamp)
-        hotpepper_counts = _import_hotpepper_preserving_normalized_cuisine(
-            db, hotpepper, conflict_keys, stamp
-        )
+        hotpepper_counts = _import_hotpepper_preserving_normalized_cuisine(db, hotpepper, conflict_keys, stamp)
         phase = phase2.import_all(db, phase2_inputs, conflict_keys, stamp)
-
         official_counts = official_identity.import_index(db, id_set, conflict_places, stamp)
-        osm_counts = osm_identity.import_verified_osm(
-            db, id_set, conflict_keys, conflict_places, stamp
-        )
+        osm_counts = osm_identity.import_verified_osm(db, id_set, conflict_keys, conflict_places, stamp)
         bound_open_data_counts = bound_open_data.import_bound_open_data_fields(db, stamp)
-        source_basic_web_counts = source_basic_web.import_evidence(
-            db, id_set, conflict_places, stamp
-        )
-        official_meal_budget_counts = official_meal_budget.import_evidence(
-            db, id_set, conflict_places, stamp
-        )
+        source_basic_web_counts = source_basic_web.import_evidence(db, id_set, conflict_places, stamp)
+        official_meal_budget_counts = official_meal_budget.import_evidence(db, id_set, conflict_places, stamp)
 
         retained_field_counts = retained_field_resolver.resolve_missing_retained_fields(db, stamp)
         candidate_hp_counts = hotpepper_candidate_review.resolve_candidate_fields(db, stamp)
         source_fact_budget_counts = hotpepper_source_fact_budget.resolve_budgets(db, stamp)
         derived_counts = derived.resolve_hotpepper_basic_practical(db, stamp)
         rich = resolver.resolve_safe_practical(db, stamp)
-        hotpepper_rich_counts = hotpepper_rich.resolve_rich_metadata(
-            db, id_set, conflict_places, stamp
-        )
-        # Official web practical evidence is deliberately last among field resolvers:
-        # it fills only residual gaps after retained/structured provider facts.
-        official_practical_counts = official_practical.import_evidence(
-            db, id_set, conflict_places, stamp
-        )
+        hotpepper_rich_counts = hotpepper_rich.resolve_rich_metadata(db, id_set, conflict_places, stamp)
+        official_practical_counts = official_practical.import_evidence(db, id_set, conflict_places, stamp)
+        official_practical_detail_counts = official_practical_detail.import_evidence(db, id_set, conflict_places, stamp)
         taskplan = planner.plan_tasks(db, stamp)
 
         summary = {
             "catalog": db.execute("SELECT count(*) FROM catalog_entries").fetchone()[0],
-            "identityStates": dict(db.execute(
-                "SELECT identity_state,count(*) FROM catalog_entries GROUP BY identity_state"
-            )),
+            "identityStates": dict(db.execute("SELECT identity_state,count(*) FROM catalog_entries GROUP BY identity_state")),
             "sourceRecords": db.execute("SELECT count(*) FROM source_records").fetchone()[0],
             "sourceBindings": db.execute("SELECT count(*) FROM source_bindings").fetchone()[0],
             "observations": db.execute("SELECT count(*) FROM field_observations").fetchone()[0],
             "resolutions": db.execute("SELECT count(*) FROM field_resolutions").fetchone()[0],
-            "legacyCanonical": dict(legacy),
-            "basicBindings": dict(basic),
-            "hotPepperBindings": dict(hotpepper_counts),
-            "phase2": phase,
-            "officialIdentityRecovery": official_counts,
-            "osmIdentityRecovery": osm_counts,
-            "boundOpenDataFields": bound_open_data_counts,
-            "sourceBasicWebEvidence": source_basic_web_counts,
-            "officialMealBudgetWebEvidence": official_meal_budget_counts,
-            "officialPracticalWebEvidence": official_practical_counts,
-            "retainedFieldResolverV2": retained_field_counts,
-            "hotPepperCandidateFieldReview": candidate_hp_counts,
-            "hotPepperSourceFactBudgetResolver": source_fact_budget_counts,
-            "hotPepperBasicPractical": derived_counts,
-            "safePracticalResolver": rich,
-            "hotPepperRichFieldResolver": hotpepper_rich_counts,
-            "ingestionPlan": taskplan,
-            "basicConflictSourceKeys": len(basic_conflicts),
-            "allRetainedConflictSourceKeys": len(conflict_keys),
-            "allRetainedConflictPlaces": len(conflict_places),
-            "hoursRawObserved": db.execute(
-                "SELECT count(*) FROM field_observations WHERE field_key='hours.raw' AND value_json IS NOT NULL"
-            ).fetchone()[0],
-            "closuresRawObserved": db.execute(
-                "SELECT count(*) FROM field_observations WHERE field_key='closure.raw' AND value_json IS NOT NULL"
-            ).fetchone()[0],
-            "budgetRangesKnown": db.execute(
-                "SELECT count(*) FROM field_resolutions WHERE field_key='budget.dinner.range' AND resolution_state='known'"
-            ).fetchone()[0],
+            "legacyCanonical": dict(legacy), "basicBindings": dict(basic), "hotPepperBindings": dict(hotpepper_counts), "phase2": phase,
+            "officialIdentityRecovery": official_counts, "osmIdentityRecovery": osm_counts, "boundOpenDataFields": bound_open_data_counts,
+            "sourceBasicWebEvidence": source_basic_web_counts, "officialMealBudgetWebEvidence": official_meal_budget_counts,
+            "officialPracticalWebEvidence": official_practical_counts, "officialPracticalDetailWebEvidence": official_practical_detail_counts,
+            "retainedFieldResolverV2": retained_field_counts, "hotPepperCandidateFieldReview": candidate_hp_counts,
+            "hotPepperSourceFactBudgetResolver": source_fact_budget_counts, "hotPepperBasicPractical": derived_counts,
+            "safePracticalResolver": rich, "hotPepperRichFieldResolver": hotpepper_rich_counts, "ingestionPlan": taskplan,
+            "basicConflictSourceKeys": len(basic_conflicts), "allRetainedConflictSourceKeys": len(conflict_keys), "allRetainedConflictPlaces": len(conflict_places),
+            "hoursRawObserved": db.execute("SELECT count(*) FROM field_observations WHERE field_key='hours.raw' AND value_json IS NOT NULL").fetchone()[0],
+            "closuresRawObserved": db.execute("SELECT count(*) FROM field_observations WHERE field_key='closure.raw' AND value_json IS NOT NULL").fetchone()[0],
+            "budgetRangesKnown": db.execute("SELECT count(*) FROM field_resolutions WHERE field_key='budget.dinner.range' AND resolution_state='known'").fetchone()[0],
             "exceptions": db.execute("SELECT count(*) FROM retained_exceptions").fetchone()[0],
         }
-        db.execute(
-            "UPDATE ingestion_runs SET completed_at=?,status='succeeded',summary_json=? WHERE run_id=?",
-            (core.now_iso(), core.canonical_json(summary), run_id),
-        )
+        db.execute("UPDATE ingestion_runs SET completed_at=?,status='succeeded',summary_json=? WHERE run_id=?", (core.now_iso(), core.canonical_json(summary), run_id))
         db.commit()
         return summary
     except Exception:
