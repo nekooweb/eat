@@ -1,0 +1,150 @@
+name: Diagnose shared official listing identity consensus v6.1
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/private-official-listing-consensus-v6-1.yml"
+      - "scripts/database/diagnose_private_official_listing_consensus_v6_1.py"
+      - "scripts/database/diagnose_private_official_detail_consensus_v6.py"
+      - "scripts/database/reconcile_private_google_hints.py"
+      - "scripts/database/reconcile_private_address_consensus_v2.py"
+      - "scripts/database/reconcile_private_multisource_consensus_v3.py"
+      - "scripts/database/reconcile_private_official_web_consensus_v4.py"
+      - "scripts/database/build_master.py"
+      - "data/google_basic_source_matches.json"
+      - "data/hotpepper_catalog_facts.json"
+      - "data/overture_area1_candidates.json"
+      - "data/area1_osm.js"
+
+permissions:
+  actions: read
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Enforce no-paid policy and syntax
+        run: |
+          set -euo pipefail
+          node scripts/audit_no_paid_apis.mjs
+          python -m py_compile \
+            scripts/database/diagnose_private_official_listing_consensus_v6_1.py \
+            scripts/database/diagnose_private_official_detail_consensus_v6.py \
+            scripts/database/reconcile_private_official_web_consensus_v4.py \
+            scripts/database/build_master.py
+
+      - name: Download original private sweep
+        uses: actions/download-artifact@v5
+        with:
+          name: full-area1-collection-private-audit
+          path: _private_google/initial
+          github-token: ${{ github.token }}
+          repository: nekooweb/eat
+          run-id: 34018919233
+
+      - name: Download retry private sweep
+        uses: actions/download-artifact@v5
+        with:
+          name: full-area1-retry-private-audit
+          path: _private_google/retry
+          github-token: ${{ github.token }}
+          repository: nekooweb/eat
+          run-id: 34019078280
+
+      - name: Build current master
+        run: |
+          set -euo pipefail
+          mkdir -p _tmp
+          python scripts/database/build_master.py --output _tmp/eat-master.sqlite --reset | tee _tmp/master.json
+          python scripts/database/validate_master.py _tmp/eat-master.sqlite | tee _tmp/master-validate.json
+
+      - name: Run shared-listing fact diagnostic
+        run: |
+          set -euo pipefail
+          python scripts/database/diagnose_private_official_listing_consensus_v6_1.py \
+            --database _tmp/eat-master.sqlite \
+            --initial _private_google/initial/full_inventory_place_details.json \
+            --retry _private_google/retry/full_inventory_retry_private.json \
+            --output _tmp/private-official-listing-v6-1.json \
+            --workers 6 \
+            --max-landing-pages 250 \
+            --max-detail-pages 500 \
+            | tee _tmp/private-official-listing-v6-1-summary.json
+
+      - name: Enforce private diagnostic boundary
+        run: |
+          python - <<'PY'
+          import json
+          d=json.load(open('_tmp/private-official-listing-v6-1.json'))
+          assert d['ruleVersion']=='private-official-listing-diagnostic-v6-1'
+          p=d['policy']
+          assert p['newGoogleApiCalls']==0
+          assert p['googleDisplayPayloadPersisted'] is False
+          assert p['promotionPerformed'] is False
+          assert p['privateHistoricalHintsDurable'] is False
+          assert p['proximityOnlyBindingAllowed'] is False
+          assert p['minimumIndependentProviders'] == 2
+          assert p['publicOfficialPageRequired'] is True
+          assert p['sameOriginOnly'] is True
+          assert p['sharedOfficialUrlRequiresUniqueStoreFact'] is True
+          assert p['maxDepth'] == 2
+          assert p['rawHtmlPersisted'] is False
+          assert p['robotsRespected'] is True
+          assert p['restrictedAccessBypass'] is False
+          banned={
+            'displayName','formattedAddress','businessStatus','primaryType','types',
+            'googleName','googleAddress','googleLocation','location',
+            'nationalPhoneNumber','internationalPhoneNumber','websiteUri','currentOpeningHours'
+          }
+          def walk(v):
+            if isinstance(v,dict):
+              for k,x in v.items():
+                assert k not in banned, k
+                walk(x)
+            elif isinstance(v,list):
+              for x in v: walk(x)
+          walk(d)
+          ids=[r['googlePlaceId'] for r in d['candidates']]
+          assert len(ids)==len(set(ids))
+          urlfacts=[]
+          native=[]
+          for r in d['candidates']:
+            assert r['rule']=='official_same_origin_unique_store_fact'
+            assert r['providerCount'] >= 2
+            assert r['detailDepth'] in (0,1,2)
+            assert str(r['officialUrl']).startswith('https://')
+            assert len(r['officialFactFingerprint']) == 24
+            urlfacts.append((r['officialUrl'],r['officialFactFingerprint']))
+            for s in r['independentSourceKeys']:
+              native.append((s['provider'],s['providerId']))
+          assert len(urlfacts)==len(set(urlfacts))
+          assert len(native)==len(set(native))
+          print(json.dumps({'strongCandidates':len(ids),'counts':d['summary']['counts']},sort_keys=True))
+          PY
+
+      - name: Upload short-lived diagnostic
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: private-official-listing-v6-1
+          path: |
+            _tmp/private-official-listing-v6-1.json
+            _tmp/private-official-listing-v6-1-summary.json
+            _tmp/master.json
+            _tmp/master-validate.json
+          if-no-files-found: warn
+          retention-days: 2
