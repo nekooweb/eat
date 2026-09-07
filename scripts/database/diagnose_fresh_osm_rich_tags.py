@@ -31,7 +31,7 @@ CENTER_LNG = 139.7576
 RADIUS_M = 1200
 BBOX = (35.68512, 139.74433, 35.70668, 139.77087)  # south, west, north, east
 OVERPASS_URL = "https://overpass-api.de/api/interpreter"
-USER_AGENT = "nekooweb-eat-osm-rich-diagnostic/1.0 (+https://github.com/nekooweb/eat)"
+USER_AGENT = "nekooweb-eat-osm-rich-diagnostic/1.1 (+https://github.com/nekooweb/eat)"
 RULE_VERSION = "fresh-osm-rich-tag-diagnostic-v1"
 SNAPSHOT_RULE_VERSION = "fresh-osm-rich-public-snapshot-v1"
 AMENITIES = "restaurant|cafe|fast_food|bar|pub|food_court|ice_cream|biergarten"
@@ -131,12 +131,19 @@ def coordinates(element: dict):
 
 
 def query_text() -> str:
+    """Use explicit element selectors for broad Overpass parser compatibility."""
     south, west, north, east = BBOX
-    return f'''[out:json][timeout:25];
-(
-  nwr["amenity"~"^({AMENITIES})$"]["name"]({south},{west},{north},{east});
-);
-out center tags;'''
+    bbox = f"({south},{west},{north},{east})"
+    selector = f'["amenity"~"^({AMENITIES})$"]["name"]'
+    return "\n".join([
+        "[out:json][timeout:25];",
+        "(",
+        f"  node{selector}{bbox};",
+        f"  way{selector}{bbox};",
+        f"  relation{selector}{bbox};",
+        ");",
+        "out center tags;",
+    ])
 
 
 def fetch_overpass():
@@ -144,7 +151,11 @@ def fetch_overpass():
     req = Request(
         OVERPASS_URL,
         data=body,
-        headers={"User-Agent": USER_AGENT, "Accept": "application/json"},
+        headers={
+            "User-Agent": USER_AGENT,
+            "Accept": "application/json",
+            "Content-Type": "application/x-www-form-urlencoded; charset=utf-8",
+        },
         method="POST",
     )
     started = time.time()
@@ -161,7 +172,17 @@ def fetch_overpass():
     except HTTPError as exc:
         if exc.code in (401, 403, 429):
             raise RuntimeError(f"Overpass access restriction HTTP {exc.code}; not bypassed") from exc
-        raise
+        if exc.code == 400:
+            # 400 is a query/parser/transport failure, not a reason to retry around access controls.
+            # Keep a small log-only excerpt to make parser incompatibilities diagnosable; it is
+            # never written into the durable public snapshot.
+            try:
+                excerpt = exc.read(1200).decode("utf-8", errors="replace")
+            except Exception:
+                excerpt = ""
+            compact = re.sub(r"\s+", " ", excerpt).strip()[:500]
+            raise RuntimeError(f"Overpass parser/transport HTTP 400: {compact or 'no response excerpt'}") from exc
+        raise RuntimeError(f"Overpass HTTP {exc.code}") from exc
     except (URLError, TimeoutError) as exc:
         raise RuntimeError(f"Overpass request unavailable: {type(exc).__name__}") from exc
     doc = json.loads(payload.decode("utf-8"))
