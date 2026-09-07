@@ -8,6 +8,7 @@ from collections import defaultdict
 from pathlib import Path
 
 import derive_hotpepper_practical as derived
+import import_source_basic_web_evidence as source_basic_web
 import master_import_core as core
 import plan_ingestion_tasks as planner
 import retained_official_identity as official_identity
@@ -69,7 +70,7 @@ def retained_conflict_index(basics, hotpepper, phase2_inputs, extra_identity_row
         basic[key].add(pid)
         all_sources[key].add(pid)
     for row in hotpepper.get("rows", []):
-        all_sources[f"Hot Pepper|{row['hotpepperId']}"].add(row["googlePlaceId"])
+        all_sources[f"Hot Pepper|{row['hotpepperId']}"] .add(row["googlePlaceId"])
     for key, pid in phase2.native_identity_rows(phase2_inputs):
         all_sources[key].add(pid)
     for key, pid in extra_identity_rows:
@@ -150,6 +151,9 @@ def build(output: Path, reset: bool = False):
         osm_counts = osm_identity.import_verified_osm(
             db, id_set, conflict_keys, conflict_places, stamp
         )
+        source_basic_web_counts = source_basic_web.import_evidence(
+            db, id_set, conflict_places, stamp
+        )
 
         retained_field_counts = retained_field_resolver.resolve_missing_retained_fields(db, stamp)
         candidate_hp_counts = hotpepper_candidate_review.resolve_candidate_fields(db, stamp)
@@ -172,6 +176,7 @@ def build(output: Path, reset: bool = False):
             "phase2": phase,
             "officialIdentityRecovery": official_counts,
             "osmIdentityRecovery": osm_counts,
+            "sourceBasicWebEvidence": source_basic_web_counts,
             "retainedFieldResolverV2": retained_field_counts,
             "hotPepperCandidateFieldReview": candidate_hp_counts,
             "hotPepperBasicPractical": derived_counts,
