@@ -40,8 +40,9 @@ jobs:
           mkdir -p _tmp
           python scripts/database/diagnose_fresh_osm_rich_tags.py \
             --output _tmp/fresh-osm-rich-tag-diagnostic.json \
+            --rows-output _tmp/fresh-osm-rich-public-rows.json \
             | tee _tmp/fresh-osm-rich-tag-summary.json
-      - name: Enforce diagnostic boundary
+      - name: Enforce diagnostic and snapshot boundary
         run: |
           python - <<'PY'
           import json
@@ -62,9 +63,24 @@ jobs:
           s=d['summary']
           assert s['retainedRows'] > 0
           assert s['freshRows'] > 0
-          print(json.dumps(s,sort_keys=True))
+
+          r=json.load(open('_tmp/fresh-osm-rich-public-rows.json'))
+          assert r['ruleVersion']=='fresh-osm-rich-public-snapshot-v1'
+          rp=r['policy']
+          assert rp['paidDataApiCalls']==0
+          assert rp['googleDataIncluded'] is False
+          assert rp['rawOverpassResponsePersisted'] is False
+          assert rp['parsedPublicOsmRowsOnly'] is True
+          assert rp['masterWrites']==0
+          assert rp['promotionPerformed'] is False
+          assert len(r['rows'])==s['freshRows']
+          ids=[x['providerId'] for x in r['rows']]
+          assert len(ids)==len(set(ids))
+          assert all(x['provider']=='OpenStreetMap' for x in r['rows'])
+          assert all(str(x['sourceUrl']).startswith('https://www.openstreetmap.org/') for x in r['rows'])
+          print(json.dumps({'summary':s,'snapshotRows':len(r['rows'])},sort_keys=True))
           PY
-      - name: Upload short-lived diagnostic
+      - name: Upload reusable short-lived public-source snapshot
         if: always()
         uses: actions/upload-artifact@v4
         with:
@@ -72,5 +88,6 @@ jobs:
           path: |
             _tmp/fresh-osm-rich-tag-diagnostic.json
             _tmp/fresh-osm-rich-tag-summary.json
+            _tmp/fresh-osm-rich-public-rows.json
           if-no-files-found: warn
           retention-days: 3
