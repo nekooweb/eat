@@ -8,6 +8,7 @@ import uuid
 from collections import defaultdict
 from pathlib import Path
 
+import derive_hotpepper_practical as derived
 import master_import_core as core
 import retained_phase2 as phase2
 import resolve_master as resolver
@@ -37,26 +38,19 @@ core.resolve = _resolve_preserving_known_on_conflict
 def retained_conflict_index(basics, hotpepper, phase2_inputs):
     basic_places = defaultdict(set)
     all_places = defaultdict(set)
-
     for row in basics.get("rows", []):
         key = f"{row['provider']}|{row['providerId']}"
         pid = row["googlePlaceId"]
         basic_places[key].add(pid)
         all_places[key].add(pid)
-
     for row in hotpepper.get("rows", []):
-        key = f"Hot Pepper|{row['hotpepperId']}"
-        all_places[key].add(row["googlePlaceId"])
-
+        all_places[f"Hot Pepper|{row['hotpepperId']}"] .add(row["googlePlaceId"])
     for key, pid in phase2.native_identity_rows(phase2_inputs):
         all_places[key].add(pid)
-
     basic_conflicts = {key for key, places in basic_places.items() if len(places) > 1}
     all_conflicts = {key for key, places in all_places.items() if len(places) > 1}
     if len(basic_conflicts) != 5:
-        raise RuntimeError(
-            f"retained basic collision baseline changed: expected 5 groups, found {len(basic_conflicts)}"
-        )
+        raise RuntimeError(f"retained basic collision baseline changed: expected 5 groups, found {len(basic_conflicts)}")
     if not basic_conflicts.issubset(all_conflicts):
         raise RuntimeError("cross-layer collision index lost a known basic collision")
     return basic_conflicts, all_conflicts, all_places
@@ -81,9 +75,7 @@ def build(output: Path, reset: bool = False):
     if len(ids) != 2804 or len(id_set) != 2804 or inventory.get("count") != 2804:
         raise RuntimeError("frozen catalog must contain exactly 2,804 unique Place IDs")
 
-    basic_conflicts, conflict_keys, all_places = retained_conflict_index(
-        basics, hotpepper, phase2_inputs
-    )
+    basic_conflicts, conflict_keys, all_places = retained_conflict_index(basics, hotpepper, phase2_inputs)
     conflict_place_ids = set().union(*(all_places[key] for key in conflict_keys)) if conflict_keys else set()
 
     stamp = core.now_iso()
@@ -103,20 +95,14 @@ def build(output: Path, reset: bool = False):
             "count": inventory.get("count"),
         })
         for pid in ids:
-            core.upsert_catalog(
-                db,
-                pid,
-                inventory.get("scope") or "TOKYO/地区1️⃣",
-                snapshot,
-                "id_only",
-                stamp,
-            )
+            core.upsert_catalog(db, pid, inventory.get("scope") or "TOKYO/地区1️⃣", snapshot, "id_only", stamp)
 
         legacy_counts = core.import_legacy_canonical(db, production, id_set, stamp)
         basic_counts = core.import_basic(db, basics, conflict_keys, stamp)
         hp_counts = core.import_hotpepper(db, hotpepper, conflict_keys, stamp)
         phase2_counts = phase2.import_all(db, phase2_inputs, conflict_keys, stamp)
-        practical_counts = resolver.resolve_safe_practical(db, stamp)
+        basic_practical_counts = derived.resolve_hotpepper_basic_practical(db, stamp)
+        rich_practical_counts = resolver.resolve_safe_practical(db, stamp)
 
         summary = {
             "catalog": db.execute("SELECT count(*) FROM catalog_entries").fetchone()[0],
@@ -129,7 +115,8 @@ def build(output: Path, reset: bool = False):
             "basicBindings": dict(basic_counts),
             "hotPepperBindings": dict(hp_counts),
             "phase2": phase2_counts,
-            "safePracticalResolver": practical_counts,
+            "hotPepperBasicPractical": basic_practical_counts,
+            "safePracticalResolver": rich_practical_counts,
             "basicConflictSourceKeys": len(basic_conflicts),
             "allRetainedConflictSourceKeys": len(conflict_keys),
             "allRetainedConflictPlaces": len(conflict_place_ids),

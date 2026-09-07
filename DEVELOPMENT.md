@@ -2,99 +2,87 @@
 
 更新日期：2026-09-07。
 
-## 当前线上状态
+## 当前线上
 
-- frozen catalog：2,804 Place ID 全部内部保留。
-- 公开 runtime：1,411 条已有真实名称记录。
-- 1,393 条 ID-only 已下架，不显示“Google Maps 餐厅”伪名称；补齐真实名称和基础身份后再上架。
-- Hot Pepper runtime 已修正 `openingHoursText` / `closedText`，hours coverage 363 → 716。
-- `N以上 -> N+2000` 伪预算上界已移除。
-- Pages 与 no-paid-data-API policy 保持 blocking。
+- 2,804 Place ID 全部保留为 frozen catalog。
+- 公开 runtime 为 1,411 条已有真实名称记录；1,393 条 ID-only 已下架，不使用“Google Maps 餐厅”伪名称。
+- Hot Pepper runtime 已修复营业字段映射，hours coverage 363 → 716。
+- 禁止付费数据 API、语法、catalog 完整性、Pages 可部署性继续 blocking。
 
-## Phase 1 — persistent SQLite v1
+## Phase 1 — persistent SQLite
 
-状态：完成并通过 blocking smoke。
+状态：完成。
 
-基线：2,804 catalog、651 legacy migration snapshots、3 retained exceptions、1,946 source records/bindings、28,992 observations、25,162 resolutions；8 source-ID collision groups / 16 Place ID 全部隔离；二次导入幂等，SQLite backup/restore 再验证通过。
+真实 SQLite、幂等重复导入、cross-layer identity collision、backup/restore 均已通过。统一主库发现 8 collision groups / 16 Place ID；conflict evidence 保留，但 known resolution 不选择 conflict binding，也不能擦除其他 non-conflict known value。
 
 ## Phase 2 — retained evidence
 
+状态：完成。
+
+已纳入 SQLite：575 provider facts、644 provenance links、135 Hot Pepper rich rows、283 dish evidence items。主库达到 3,583 source records/bindings、36,737 observations；Phase 2 evidence 首轮保持 0 direct resolutions，并通过重复导入/恢复验证。
+
+## Phase 3 — safe practical resolver + shadow export
+
 状态：**完成并通过 blocking smoke**。
 
-已进入 master：
+Reviewed、非 conflict Hot Pepper rich metadata 已安全解析出 1,194 个 practical `(Place ID, field)` resolutions，覆盖 133 家店：
 
-- 575 provider source facts
-- 644 provenance links
-- 135 Hot Pepper rich metadata rows
-- 283 dish recommendation/featured evidence items
+- access 133
+- amenities 133
+- capacity 133
+- lunch available 133
+- mobile access 133
+- mobile coupon available 133
+- nearest station 133
+- accepted credit cards 117
+- party capacity 107
+- special features 39
 
-Phase 2 后 master：
+field resolutions 从 25,162 增至 26,356，二次 importer/resolver 仍完全幂等，backup/restore 后 validator 一致。
 
-- source records / bindings：3,583 / 3,583
-- field observations：36,737
-- field resolutions：仍为 25,162
-- Phase 2 evidence selected resolutions：0
-- collision groups / places：仍为 8 / 16
-- 二次导入核心表计数完全不增长
-- backup/restore validator 再通过
+Shadow export 也已验证：
 
-历史 JS wrapper 现使用 `JSONDecoder.raw_decode()` 安全解析，不执行 JS，也不会被字符串内部的分号截断。
+- catalog 2,804 / frozen order exact
+- recommendation 1,395
+- 当前 public runtime 1,411
+- shadow 比当前少 16 条，全部为存在 identity conflict binding 的 Place ID
+- shadow 没有新增当前 public runtime 之外的 Place ID
+- id-only 继续 name=null / ineligible
 
-## Phase 3 — safe resolver + shadow export
+Shadow 仍只存在 CI artifact，不接 Pages。
+
+## Phase 3B — Hot Pepper full practical derivation + runtime diff gate
 
 状态：**已实现，等待 blocking smoke。**
 
-### 3A. reviewed Hot Pepper practical fields
+新增 `derive_hotpepper_practical.py`，只从 reviewed `retained_hotpepper_artifact` raw observations 派生可明确解释的布尔 practical 字段：
 
-新增 `scripts/database/resolve_master.py`。第一批只允许 reviewed、非 conflict 的 Hot Pepper rich observations 进入 resolution，字段白名单：
-
-- accepted credit cards
-- special features
-- mobile coupon availability
-- nearest station
-- access / mobile access
 - lunch availability
-- capacity / party capacity
-- amenities
+- course availability
+- free drink availability
+- free food availability
+- private room availability
+- card availability
+- parking availability
 
-不在白名单内的 rich/core 字段不允许因此进入 resolution；source facts、provenance、dish evidence 继续保持 evidence-only。
+只接受明确 `あり/なし` 或 `利用可/利用不可` 前缀；其他文本不推断。Derived observation 保存 `derived_from_observation_id` 和 `hotpepper-basic-practical-v1` rule version。
 
-### 3B. shadow catalog / recommendation export
+Rich practical resolver 在 derived pass 之后执行，因此同一 Hot Pepper 来源的 rich reviewed metadata 可覆盖较基础的 derived lunch state；其余字段使用独立 practical key。
 
-新增：
+新增 blocking validator：derived observation 数必须等于 reviewed raw facts 中可解析数量，不能来自 candidate/conflict binding，每个 derived `(Place ID, field)` 最终都必须有 known resolution。
 
-- `scripts/database/export_master.py`
-- `scripts/database/validate_export.py`
+新增 `compare_runtime_shadow.py`：要求 shadow recommendation 与当前 1,411 runtime 的差异只能是 conflict Place ID，并保持原 frozen/public 顺序。这个 gate 为未来 Pages cutover 做准备。
 
-Shadow export 目前只用于 CI/比较，不接 Pages：
+## 下一步
 
-- `catalog.shadow.json`：必须保留全部 2,804，按 frozen catalog 原顺序。
-- `recommendation.shadow.json`：只允许 `verified/source_matched + known name + 无 conflict binding`。
-- id-only 必须 `name=null` 且不可 eligible。
-- conflict binding Place ID 不得进入 recommendation。
-- raw source payload / permission metadata 不进入 public shadow rows。
+Phase 3B 通过后：
 
-Export 同时带 `exclusionReasons`、`missingFields`、evidence count、database SHA-256 和 eligibility version，为后续旧/新 runtime diff 做准备。
-
-### Phase 3 blocking checks
-
-- safe practical resolution 数必须等于当前 reviewed rich observation 中白名单的 distinct `(Place ID, field)` 数。
-- source facts / provenance / dish evidence 仍不得被选入 resolution。
-- Hot Pepper rich 非 practical 字段不得被选入 resolution。
-- importer + resolver 二次运行核心表计数不得增长。
-- backup/restore 后 resolver 状态仍一致。
-- shadow catalog 必须 exact 2,804；recommendation IDs 必须与 SQLite eligibility 计算完全一致。
-
-通过后再考虑 resolver v2 的 hours/budget/dish semantic promotion，并做旧 runtime vs shadow export 差异报告。
-
-## Refactor mode
-
-旧 canonical/overlay/coverage/queue 检查继续 warning-only；成本、安全、语法、2,804 catalog、公开 unnamed-ID-only 禁止、Pages 可部署性与新 SQLite/export contract 始终 blocking。
-
-## 后续数据补全
-
-主库和 shadow export 稳定后，继续处理 id-only。第一优先是恢复真实名称/身份，其次地址/坐标/菜系、hours、budget、dish semantics 与 practical fields。不能仅凭空间邻近把 Overture/OSM 候选自动绑定到未知 Place ID。
+1. 更新文档记录实际 derived field counts；
+2. 构建旧 runtime vs SQLite shadow 的字段级 diff（name/address/cuisine/budget/hours/dishes/practical）；
+3. 继续 resolver v2：优先 hours/budget 的确定性规则，dish recommendation 仍保持高门槛；
+4. 再决定何时将 SQLite recommendation export 接到 Pages；
+5. 主库稳定后继续 1,393 id-only 的真实名称/身份补全，不能仅凭 Overture/OSM 空间邻近自动绑定。
 
 ## 开发纪律
 
-每批实际开发同步更新本文件、数据库/架构文档和 `logs/`；测试未通过前只写“已实现/待验证”，通过后再标记完成。
+每批实际开发同步更新本文件、数据库/架构文档和 `logs/`；测试未通过只标记“已实现/待验证”，通过后再标记完成。

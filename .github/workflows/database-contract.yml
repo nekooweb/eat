@@ -17,6 +17,7 @@ on:
       - "data/source_provenance.js"
       - "data/hotpepper_rich_metadata.js"
       - "data/google_inventory_detail_evidence.json"
+      - "data/google_inventory_runtime.js"
   pull_request:
     paths:
       - "database/**"
@@ -32,6 +33,7 @@ on:
       - "data/source_provenance.js"
       - "data/hotpepper_rich_metadata.js"
       - "data/google_inventory_detail_evidence.json"
+      - "data/google_inventory_runtime.js"
   workflow_dispatch:
 
 env:
@@ -58,11 +60,15 @@ jobs:
             scripts/database/master_import_core.py \
             scripts/database/retained_phase2_core.py \
             scripts/database/retained_phase2.py \
+            scripts/database/derive_hotpepper_practical.py \
             scripts/database/resolve_master.py \
             scripts/database/build_master.py \
             scripts/database/validate_master.py \
+            scripts/database/validate_derived_practical.py \
+            scripts/database/export_master_core.py \
             scripts/database/export_master.py \
-            scripts/database/validate_export.py
+            scripts/database/validate_export.py \
+            scripts/database/compare_runtime_shadow.py
 
       - name: Legacy in-memory prototype contract (warning only)
         continue-on-error: true
@@ -80,6 +86,7 @@ jobs:
           python scripts/database/build_master.py --output _tmp/eat-master.sqlite --reset | tee _tmp/master-build-1.json
           test -s _tmp/eat-master.sqlite
           python scripts/database/validate_master.py _tmp/eat-master.sqlite | tee _tmp/master-validate-1.json
+          python scripts/database/validate_derived_practical.py _tmp/eat-master.sqlite | tee _tmp/derived-practical-validate-1.json
 
       - name: Verify idempotent repeat import and resolver
         run: |
@@ -103,6 +110,7 @@ jobs:
           echo "after=${after}"
           test "${before}" = "${after}"
           python scripts/database/validate_master.py _tmp/eat-master.sqlite | tee _tmp/master-validate-2.json
+          python scripts/database/validate_derived_practical.py _tmp/eat-master.sqlite | tee _tmp/derived-practical-validate-2.json
 
       - name: Verify backup and restore
         run: |
@@ -119,6 +127,7 @@ jobs:
           print('backup_restore=pass')
           PY
           python scripts/database/validate_master.py _tmp/eat-master-backup.sqlite | tee _tmp/master-backup-validate.json
+          python scripts/database/validate_derived_practical.py _tmp/eat-master-backup.sqlite | tee _tmp/derived-practical-backup-validate.json
 
       - name: Generate and validate shadow exports
         run: |
@@ -129,6 +138,9 @@ jobs:
             _tmp/eat-master.sqlite \
             _tmp/export/catalog.shadow.json \
             _tmp/export/recommendation.shadow.json | tee _tmp/shadow-export-validate.json
+          python scripts/database/compare_runtime_shadow.py \
+            _tmp/eat-master.sqlite \
+            _tmp/export/recommendation.shadow.json | tee _tmp/runtime-shadow-compare.json
 
       - name: Upload database smoke-test reports
         if: always()
