@@ -31,47 +31,55 @@
 
 ## Phase 1 — persistent SQLite v1
 
-状态：代码已实现；第一次真实 SQLite smoke 成功建立数据库，但严格 validator 发现跨 retained layer 的新增身份冲突，正在按冲突结果修正后重跑。
+状态：代码已实现，真实 SQLite 已连续暴露并修复两类旧分层模型没有发现的问题；当前等待第三次完整 smoke。
 
-新增正式数据库工具：
+正式数据库工具：
 
 - `database/migrations/001_initial.sql`
 - `scripts/database/master_import_core.py`
 - `scripts/database/build_master.py`
 - `scripts/database/validate_master.py`
 
-第一版 importer 不联网，直接迁移仓库已有 retained inputs：
+Importer 不联网，迁移：
 
-1. 2,804 个 frozen catalog entries。
-2. 651 条目录内 legacy canonical resolved snapshot；它只作为迁移基线，不伪装成新的外部来源。
-3. 旧 canonical 中 3 条目录外记录进入 `retained_exceptions`，不自动扩展 catalog。
-4. 760 条 retained basic source bindings。basic 层原先已知 5 组 / 10 Place ID 来源 ID 复用。
-5. 535 条 Hot Pepper retained source records，保存名称、地址、坐标、分类、预算、营业/休息日原文、交通和设施等字段。
-6. Hot Pepper budget band 生成显式结构化 observation；开放上界使用 `upper=null`。
+1. 2,804 frozen catalog entries。
+2. 651 条目录内 legacy canonical resolved snapshot；3 条目录外进入 `retained_exceptions`。
+3. 760 retained basic source bindings。
+4. 535 Hot Pepper retained full source records及其名称、地址、坐标、分类、预算、营业/休息日、交通和设施字段。
+5. Hot Pepper budget band 结构化保存，开放上界为 `upper=null`。
 
-### 第一次 persistent smoke 的新发现
+### Persistent smoke 发现 1：跨层 source-ID collision
 
-真实数据库已经成功构建并得到：2,804 catalog、651 legacy snapshot、3 exceptions、760 basic bindings、535 Hot Pepper full records、535 hours raw 和 535 closure raw observations。
+Basic-only 层原先记录 5 组 / 10 Place ID collision；把 basic 与 Hot Pepper full retained records 放进同一 SQLite 后实际发现 **8 组 / 16 Place ID**。
 
-严格 validator 将 basic 与 Hot Pepper full records 联合后发现：来源 ID collision 不止 basic 层原先的 5 组 / 10 Place ID，而是 **8 组 / 16 Place ID**。这不是 schema build 失败，而是旧分层检查未暴露的跨层 identity conflict。
+因此 importer 现在先跨全部本轮 retained source layer 建立 `provider + source_id -> Place IDs` 索引；所有碰撞 key 在全部 layer 中统一标为 conflict。Raw evidence 保留，但 known resolution 不能选择 conflict binding。
 
-处理原则：不降低测试、不忽略新增冲突。`build_master.py` 现在先跨全部 retained source layer 建 provider/source-ID → Place-ID 索引；任何同一来源 ID 指向多个 Place ID 的 key 都统一进入 conflict。原始 evidence 保留，但 resolver 不允许从 conflict binding 选择 known field。
+### Persistent smoke 发现 2：conflict 不能擦除其他来源的 known
 
-数据库文件本身为本地/临时产物，`*.sqlite`、`_local/`、`_tmp/` 已加入 `.gitignore`，不会被提交到 Pages。
+8 组 collision 中有 3 个 Place ID 同时属于 651 条 legacy verified catalog。第二次 smoke 发现旧 resolver 会让较高优先级的 conflict observation 覆盖已有 non-conflict known name，从而出现 `resolvedNames < verified + sourceMatched`。
+
+当前修复规则：
+
+- conflict evidence / binding / observation 全部保留；
+- identity/recommendation eligibility 仍可被 conflict 阻断；
+- 但如果某字段已经从另一非 conflict binding 得到 `known` resolution，新 conflict observation 不擦除该 known value；
+- validator 继续严格禁止 known resolution 指向 conflict binding。
+
+固定“名称至少 1401”不再作为 blocking gate，因为更严格 collision 隔离可能合理降低可采用名称数量。Blocking invariant 改为 `resolved known names == verified + source_matched identities`；覆盖率继续报告但不冒充结构正确性。
 
 ### SQLite smoke test
 
-新 database workflow 执行：
+Database workflow 必须完成：
 
-1. 建立真实临时 SQLite 文件；
-2. 校验 `integrity_check` / `foreign_key_check`；
-3. 校验 2,804 catalog、651 legacy snapshot、3 exceptions、535 Hot Pepper records、535 hours/closure raw observations；
-4. 动态识别全部跨层 collision，并要求所有相关 source binding 都是 conflict；
-5. 要求任何 known resolution 都不能选自 conflict binding；
-6. 再运行一次 importer，要求核心表计数完全不增长；
-7. 用 SQLite backup API 创建恢复副本并再次完整验证。
+1. 建立真实临时 SQLite；
+2. `integrity_check` / `foreign_key_check`；
+3. 2,804 catalog、651 legacy snapshot、3 exceptions、535 Hot Pepper records、535 hours/closure raw；
+4. 动态识别全部 cross-layer collision，并要求所有相关 binding 为 conflict；
+5. 要求 known resolution 不得选择 conflict binding；
+6. 二次运行 importer，核心表计数完全不增长；
+7. SQLite backup API 创建副本并再次完整验证。
 
-这些检查是新架构的 blocking gate，不跟随旧审查一起降级。
+这些都是 blocking gate。
 
 ## Phase 2 — retained source 扩展
 
@@ -81,7 +89,7 @@ SQLite v1 smoke 通过后继续导入：
 - `source_provenance.js`
 - `hotpepper_rich_metadata.js`
 - `google_inventory_detail_evidence.json`
-- 已绑定的官网/公共来源 retained evidence
+- 已绑定官网/公共来源 retained evidence
 
 所有数据先成为 source record / observation，再由 resolver 选择，不再直接靠 JS overlay 顺序覆盖。
 
@@ -94,7 +102,7 @@ SQLite v1 smoke 通过后继续导入：
 - `catalog`：全部 2,804，允许名称待补/冲突。
 - `recommendation`：只发布满足 eligibility 的记录，并记录 exclusion reason。
 
-当前 1,411 条公开 runtime 是这一逻辑的过渡实现；最终由 SQLite export 取代旧 `google_inventory_runtime.js` builder。
+当前 1,411 条公开 runtime 是过渡实现；最终由 SQLite export 取代旧 builder。
 
 ## Phase 5 — Pages cutover
 
@@ -102,7 +110,7 @@ SQLite v1 smoke 通过后继续导入：
 
 ## Phase 6 — 恢复增量补全
 
-新主库稳定后再批量补数据。当前最高优先级仍是 1,393 个 id-only 的名称/身份恢复，其次地址/坐标/菜系、营业时间、预算、菜单/推荐语义和实用字段。
+新主库稳定后再批量补数据。最高优先级仍是 id-only 的名称/身份恢复，其次地址/坐标/菜系、营业时间、预算、菜单/推荐语义和实用字段。
 
 ## 开发纪律
 

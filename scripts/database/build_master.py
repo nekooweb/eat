@@ -2,16 +2,16 @@
 """Persistent Eat master-database entrypoint.
 
 The reusable import primitives live in master_import_core.py. This entrypoint builds a
-cross-layer conflict index before any source is admitted, so a provider/source ID that
-points at multiple Place IDs anywhere in retained inputs is quarantined consistently.
+cross-layer conflict index before admission and applies the current resolver safety
+rule: conflict evidence is retained but may not erase an already-known value selected
+from another binding.
 """
 from __future__ import annotations
 
 import argparse
 import os
-import sqlite3
 import uuid
-from collections import Counter, defaultdict
+from collections import defaultdict
 from pathlib import Path
 
 import master_import_core as core
@@ -20,6 +20,24 @@ ROOT = Path(__file__).resolve().parents[2]
 DATA = ROOT / "data"
 PARSER_VERSION = core.PARSER_VERSION
 parse_budget_range = core.parse_budget_range
+
+_ORIGINAL_RESOLVE = core.resolve
+
+
+def _resolve_preserving_known_on_conflict(db, place_id, field_key, observation_id, state, provider, stamp):
+    if state == "conflict":
+        current = db.execute(
+            "SELECT resolution_state FROM field_resolutions WHERE place_id=? AND field_key=?",
+            (place_id, field_key),
+        ).fetchone()
+        if current is not None and current[0] == "known":
+            return
+    return _ORIGINAL_RESOLVE(db, place_id, field_key, observation_id, state, provider, stamp)
+
+
+# Import helpers resolve fields through the core module global. Override it once here
+# so the production entrypoint has monotonic known-value retention across conflicts.
+core.resolve = _resolve_preserving_known_on_conflict
 
 
 def retained_conflict_index(basics, hotpepper):
