@@ -11,6 +11,7 @@ import derive_hotpepper_practical as derived
 import master_import_core as core
 import plan_ingestion_tasks as planner
 import retained_official_identity as official_identity
+import retained_osm_identity as osm_identity
 import retained_phase2 as phase2
 import resolve_master as resolver
 
@@ -57,7 +58,7 @@ def _import_hotpepper_preserving_normalized_cuisine(db, doc, conflict_keys, stam
         core.add_field = original
 
 
-def retained_conflict_index(basics, hotpepper, phase2_inputs):
+def retained_conflict_index(basics, hotpepper, phase2_inputs, extra_identity_rows=()):
     basic = defaultdict(set)
     all_sources = defaultdict(set)
     for row in basics.get("rows", []):
@@ -66,8 +67,10 @@ def retained_conflict_index(basics, hotpepper, phase2_inputs):
         basic[key].add(pid)
         all_sources[key].add(pid)
     for row in hotpepper.get("rows", []):
-        all_sources[f"Hot Pepper|{row['hotpepperId']}"] .add(row["googlePlaceId"])
+        all_sources[f"Hot Pepper|{row['hotpepperId']}"].add(row["googlePlaceId"])
     for key, pid in phase2.native_identity_rows(phase2_inputs):
+        all_sources[key].add(pid)
+    for key, pid in extra_identity_rows:
         all_sources[key].add(pid)
 
     basic_conflicts = {key for key, values in basic.items() if len(values) > 1}
@@ -100,8 +103,13 @@ def build(output: Path, reset: bool = False):
     if len(ids) != 2804 or len(id_set) != 2804 or inventory.get("count") != 2804:
         raise RuntimeError("frozen catalog must contain exactly 2,804 unique Place IDs")
 
+    # Historical verified OSM source IDs are native provider identity keys. Include
+    # them in collision discovery before any binding import so an old reviewed basic
+    # binding cannot survive if retained QC proves the same OSM object was attached
+    # to more than one Place ID.
+    osm_native_rows = osm_identity.native_identity_rows(id_set)
     basic_conflicts, conflict_keys, all_sources = retained_conflict_index(
-        basics, hotpepper, phase2_inputs
+        basics, hotpepper, phase2_inputs, osm_native_rows
     )
     conflict_places = (
         set().union(*(all_sources[key] for key in conflict_keys)) if conflict_keys else set()
@@ -140,10 +148,10 @@ def build(output: Path, reset: bool = False):
         )
         phase = phase2.import_all(db, phase2_inputs, conflict_keys, stamp)
 
-        # First large completion consumer: reuse only retained identity evidence that
-        # has already passed an independent official-page fetch/name-match. Conflict
-        # places are retained as candidate evidence and are never auto-promoted.
         official_counts = official_identity.import_index(db, id_set, conflict_places, stamp)
+        osm_counts = osm_identity.import_verified_osm(
+            db, id_set, conflict_keys, conflict_places, stamp
+        )
 
         derived_counts = derived.resolve_hotpepper_basic_practical(db, stamp)
         rich = resolver.resolve_safe_practical(db, stamp)
@@ -163,6 +171,7 @@ def build(output: Path, reset: bool = False):
             "hotPepperBindings": dict(hotpepper_counts),
             "phase2": phase,
             "officialIdentityRecovery": official_counts,
+            "osmIdentityRecovery": osm_counts,
             "hotPepperBasicPractical": derived_counts,
             "safePracticalResolver": rich,
             "ingestionPlan": taskplan,

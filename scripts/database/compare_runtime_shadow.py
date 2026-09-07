@@ -17,6 +17,7 @@ DATA = ROOT / "data"
 RUNTIME = DATA / "google_inventory_runtime.js"
 APPROVED_SAFE_RECOVERY_METHODS = {
     "retained_verified_official_identity_index",
+    "retained_verified_osm_identity_qc",
 }
 
 

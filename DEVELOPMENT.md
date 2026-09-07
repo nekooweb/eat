@@ -8,72 +8,91 @@
 - 当前 Pages 发布逻辑：1,411 条已有真实名称记录；1,393 条 ID-only 已下架，不使用“Google Maps 餐厅”伪名称。
 - Hot Pepper runtime 已修复营业字段映射；`N以上 -> N+2000` 伪预算上界已移除。
 - Pages build/deploy 与 no-paid-data-API policy 继续通过。
+- Bulk recovery 目前只改变 SQLite/shadow；尚未把新恢复记录直接切到 Pages。
 
 ## 已完成主库阶段
 
 Persistent SQLite、retained evidence、cross-layer identity conflict、safe practical resolver、shadow catalog/recommendation、runtime-shadow membership diff、字段级 diff 和 unified ingestion task plan 均已通过 blocking smoke。
 
-最近一次已验证 master 基线：
+Batch A 后已验证 master：
 
 - 2,804 catalog；
-- 3,583 source records / bindings；
-- 39,473 observations；
-- 29,501 resolutions；
+- 3,777 source records / bindings；
+- 40,055 observations；
+- 29,695 resolutions；
 - 8 source-ID collision groups / 16 Place ID 全部隔离；
-- identity state：651 verified / 747 source_matched / 1,393 id_only / 13 conflict；
-- active ingestion tasks：2,972。
-
-Shadow recommendation 为 1,395；当前 runtime 1,411，上一基线的唯一 membership 差异是 16 个 conflict-binding Place ID。
+- identity state：651 verified / 748 source_matched / 1,392 id_only / 13 conflict。
 
 ## Cuisine 语义修复
 
-Hot Pepper full source 的 535 条 provider genre 保留为 `cuisine_source`，不再直接覆盖 canonical cuisine。修复后共同 1,395 家的 cuisine diff 为 1,237 equal / 158 absentBoth / 0 changed；至少一个字段存在 runtime/shadow 差异的 Place ID 从 814 降到 595。
+Hot Pepper full source 的 535 条 provider genre 保留为 `cuisine_source`，不再直接覆盖 canonical cuisine。上一稳定 diff 中共同 1,395 家的 cuisine 为 1,237 equal / 158 absentBoth / 0 changed。
 
 ## Unified ingestion / review task plan
 
 状态：完成并通过 blocking smoke。
 
-SQLite `ingestion_tasks` / `ingestion_task_details` 已成为统一补全队列。当前任务：
+Batch A 后 active task 仍为 2,972，但组成发生了正确迁移：
 
 1. `identity_conflict_review`：16；
-2. `identity_recovery`：1,393；
-3. `field_completion`：1,352；
+2. `identity_recovery`：**1,392**；
+3. `field_completion`：**1,353**；
 4. `dish_semantic_review`：211。
 
-当前 field-completion 缺口：address 338、dinner budget 796、hours 688、lunch budget 1,230、practical 915。Task ID 由 `(task_type, Place ID)` 确定，重复 planner 不增长，旧任务仅 deactivate 不删除历史状态。
+总任务数没有下降是因为 1 家成功恢复身份后，任务从 identity recovery 转成了 field completion；这符合 planner 设计。当前 field-completion 缺口为 address 339、coordinates 1、cuisine 1、dinner budget 797、hours 689、lunch budget 1,231、practical 916。
 
 ## Bulk completion — Batch A：retained official identity recovery
 
-状态：已实现，等待 blocking CI 实际计数。
+状态：**完成并通过 blocking CI**。
 
-新增 `scripts/database/retained_official_identity.py`，开始真正消费 identity-recovery 任务。输入为已经留存在仓库中的 `data/official_candidate_index.json`，该索引只包含此前独立抓取成功、被分类为 candidate official host、且页面名称匹配的 HTTPS 页面。
+输入 `data/official_candidate_index.json` 共 194 条有效 retained official identity 记录：
 
-自动恢复条件：
+- 193 reviewed；
+- 1 因当前 identity conflict 延后为 candidate；
+- 0 outside catalog；
+- 新恢复 id-only：**1**；
+- `id_only 1393 -> 1392`；
+- `source_matched 747 -> 748`；
+- shadow recommendation `1395 -> 1396`；
+- unsafe shadow additions：**0**。
 
-- Place ID 必须属于冻结 2,804 catalog；
-- 店名非空；
-- page URL 必须为 HTTPS；
-- 排除 Google、Tabelog、Hot Pepper、Retty、Tripadvisor、社交媒体等非官网 host；
-- 当前 Place ID 不得存在 identity conflict；
-- 不使用索引里的 discovery distance 作为身份或字段事实；
-- 不发起任何新的 Google Places / Text Search / Nearby Search 数据 API 请求。
+实际新增恢复 Place ID：`ChIJ2yzmKgCNGGARujgyaVuRhy8`。
 
-满足条件时建立 versioned official source record、reviewed binding、name/source URL observations，并允许 `id_only -> source_matched`。已有 identity conflict 的官方证据只保存为 candidate，不能自动解除冲突或进入 recommendation。
+这说明官网 retained index 的质量高，但 193/194 主要覆盖已有名称记录，因此它更适合作为高优先 provenance/name 校正层，而不是解决剩余 1,392 个 id-only 的主要来源。
 
-新增 `validate_official_identity.py` 作为 blocking validator；shadow/runtime comparison 也改为只允许来自明确 approved recovery method 的新增条目。未被批准的 shadow-only ID 仍直接失败。
+## Bulk completion — Batch B：retained verified OSM identity QC
 
-本批实际恢复数量、identity/task 下降量和 shadow recommendation 增量以 CI 结果为准；测试通过后再写成完成状态。
+状态：**已实现，等待 blocking CI 实际计数**。
 
-## 后续批量补齐顺序
+新增 `retained_osm_identity.py`，复用两个已经存在的 retained 层：
 
-Batch A 通过后继续：
+1. `google_entities.generated.js`：只读取历史 `sourceId / verified status / Google Place ID / qcVersion`，不读取或恢复 Google display payload；
+2. `area1_osm.js`：从独立 OpenStreetMap candidate 取得真正要持久化的 name/address/coordinates/cuisine/tags/hours/distance。
 
-1. **Batch B — retained verified OSM identity QC**：复用历史已验证 `sourceId -> Place ID` QC，再从 OSM retained candidate 取得 name/address/coordinates/cuisine/hours；严禁 proximity-only 自动绑定。
-2. **Batch C — deterministic field resolver v2**：对已经确认身份、无冲突的餐厅，从 retained official / Tabelog / Hot Pepper facts 中只填补缺失 address/hours/budget/practical 等确定字段。
-3. **Batch D — public-source collector**：只有 retained evidence 用尽后才消费仍 active 的 SQLite tasks；一次已确认来源访问提取全部可支持字段。
-4. **Dish semantic review** 保持低优先级和高门槛，不因为存在菜名 evidence 就自动变成“推荐菜”。
+安全规则：
 
-Shadow 暂不切 Pages。批量 recovery 可以让新条目进入 shadow，但正式 Pages 切换仍需字段 diff、浏览器回归、backup/restore 和 provenance 验收。
+- 只接受历史 `status=verified` 的 mapping；
+- Google Place ID 必须属于当前 frozen 2,804；
+- QC sourceId 必须能精确找到同一个 OSM candidate row；
+- OSM source ID 若历史上绑定多个 Place ID，会在**导入 basic bindings 前**进入 cross-layer collision index，所有相关 binding 必须 conflict；
+- Place ID 已存在其他 identity conflict 时，新 OSM 证据只 candidate，不自动 promotion；
+- 只有 reviewed verified mapping 才能 `id_only -> source_matched`；
+- 不允许根据距离近自动绑定；
+- 本批不发起任何 Google Places/Text/Nearby API 请求。
+
+新增 `validate_osm_identity.py` blocking 检查 retained pair 完整性、OSM URL、禁止 Google display key、collision quarantine、selected field 必须来自 reviewed binding、id-only 不得拥有 selected name。
+
+Shadow comparison 的 approved recovery method 同步加入 `retained_verified_osm_identity_qc`；除此之外的新 shadow-only 条目仍 blocking fail。
+
+## 下一批
+
+Batch B 通过后：
+
+1. 记录 OSM 实际恢复数量、剩余 id-only、field task 变化及新增 hours/address/coordinates/cuisine 覆盖；
+2. 进入 **Batch C deterministic field resolver v2**，利用 retained official / Tabelog / Hot Pepper facts 填补已确认身份条目的 address/hours/budget/practical 缺口；
+3. retained evidence 用尽后才开始网络 public-source collector；
+4. dish recommendation 继续保持低优先级和严格语义审查。
+
+Shadow 暂不切 Pages。正式切换仍需字段 diff、浏览器回归、backup/restore 和 provenance 验收。
 
 ## Refactor mode
 

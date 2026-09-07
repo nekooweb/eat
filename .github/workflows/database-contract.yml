@@ -18,6 +18,8 @@ on:
       - "data/hotpepper_rich_metadata.js"
       - "data/google_inventory_detail_evidence.json"
       - "data/official_candidate_index.json"
+      - "data/google_entities.generated.js"
+      - "data/area1_osm.js"
       - "data/google_inventory_runtime.js"
       - "scripts/build_google_inventory_runtime.mjs"
   pull_request:
@@ -36,6 +38,8 @@ on:
       - "data/hotpepper_rich_metadata.js"
       - "data/google_inventory_detail_evidence.json"
       - "data/official_candidate_index.json"
+      - "data/google_entities.generated.js"
+      - "data/area1_osm.js"
       - "data/google_inventory_runtime.js"
       - "scripts/build_google_inventory_runtime.mjs"
   workflow_dispatch:
@@ -69,6 +73,7 @@ jobs:
             scripts/database/retained_phase2_core.py \
             scripts/database/retained_phase2.py \
             scripts/database/retained_official_identity.py \
+            scripts/database/retained_osm_identity.py \
             scripts/database/derive_hotpepper_practical.py \
             scripts/database/resolve_master.py \
             scripts/database/plan_ingestion_tasks.py \
@@ -77,6 +82,7 @@ jobs:
             scripts/database/validate_derived_practical.py \
             scripts/database/validate_source_semantics.py \
             scripts/database/validate_official_identity.py \
+            scripts/database/validate_osm_identity.py \
             scripts/database/validate_ingestion_plan.py \
             scripts/database/export_master_core.py \
             scripts/database/export_master.py \
@@ -98,6 +104,7 @@ jobs:
           python scripts/database/validate_derived_practical.py _tmp/eat-master.sqlite | tee _tmp/derived-practical-validate-1.json
           python scripts/database/validate_source_semantics.py _tmp/eat-master.sqlite | tee _tmp/source-semantics-validate-1.json
           python scripts/database/validate_official_identity.py _tmp/eat-master.sqlite | tee _tmp/official-identity-validate-1.json
+          python scripts/database/validate_osm_identity.py _tmp/eat-master.sqlite | tee _tmp/osm-identity-validate-1.json
           python scripts/database/validate_ingestion_plan.py _tmp/eat-master.sqlite | tee _tmp/ingestion-plan-validate-1.json
 
       - name: Verify idempotent repeat import resolver and plan
@@ -125,6 +132,7 @@ jobs:
           python scripts/database/validate_derived_practical.py _tmp/eat-master.sqlite | tee _tmp/derived-practical-validate-2.json
           python scripts/database/validate_source_semantics.py _tmp/eat-master.sqlite | tee _tmp/source-semantics-validate-2.json
           python scripts/database/validate_official_identity.py _tmp/eat-master.sqlite | tee _tmp/official-identity-validate-2.json
+          python scripts/database/validate_osm_identity.py _tmp/eat-master.sqlite | tee _tmp/osm-identity-validate-2.json
           python scripts/database/validate_ingestion_plan.py _tmp/eat-master.sqlite | tee _tmp/ingestion-plan-validate-2.json
 
       - name: Verify backup and restore
@@ -143,6 +151,7 @@ jobs:
           python scripts/database/validate_derived_practical.py _tmp/eat-master-backup.sqlite | tee _tmp/derived-practical-backup-validate.json
           python scripts/database/validate_source_semantics.py _tmp/eat-master-backup.sqlite | tee _tmp/source-semantics-backup-validate.json
           python scripts/database/validate_official_identity.py _tmp/eat-master-backup.sqlite | tee _tmp/official-identity-backup-validate.json
+          python scripts/database/validate_osm_identity.py _tmp/eat-master-backup.sqlite | tee _tmp/osm-identity-backup-validate.json
           python scripts/database/validate_ingestion_plan.py _tmp/eat-master-backup.sqlite | tee _tmp/ingestion-plan-backup-validate.json
 
       - name: Generate and validate shadow exports
