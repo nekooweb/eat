@@ -12,17 +12,21 @@
     "restrictedAccessBypass": false
   },
   "summary": {
-    "rows": 15,
+    "rows": 48,
     "fieldCounts": {
-      "openingHoursRaw": 13,
-      "priceRange": 3,
-      "telephone": 7
+      "address": 2,
+      "cuisineNormalized": 1,
+      "geo": 1,
+      "openingHoursRaw": 30,
+      "priceRange": 6,
+      "telephone": 29
     },
     "providerCounts": {
-      "Overture Maps": 15
+      "Overture Maps": 15,
+      "official": 33
     },
     "lastMerge": {
-      "already_present": 15
+      "added": 33
     }
   },
   "rows": [
@@ -61,6 +65,41 @@
       "checkedAt": "2026-09-07"
     },
     {
+      "googlePlaceId": "ChIJ08lD_gOMGGAR8oYpyY0SS6w",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:f25dc12c02d763628e91",
+      "missingBefore": [
+        "address",
+        "dinner_budget",
+        "hours",
+        "lunch_budget"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "jsonld_business_name",
+        "pageNameSimilarity": 1.0,
+        "titleNameSimilarity": 0.6
+      },
+      "webEvidence": {
+        "sourceUrl": "https://fukuhara-0303.gorp.jp/",
+        "finalUrl": "https://fukuhara-0303.gorp.jp/",
+        "retrievedAt": "2026-09-07T10:44:54Z",
+        "contentHash": "7163d4bf5d701c2e69a1910b33e9b0d19b916235c0e849bc8ed9dbdd533984a7",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06"
+      },
+      "fieldClaims": {
+        "openingHoursRaw": [
+          "営業時間 月～金 17:00～23:30 （L.O.23:00）"
+        ],
+        "telephone": "03-3256-6477"
+      },
+      "checkedAt": "2026-09-07"
+    },
+    {
       "googlePlaceId": "ChIJ1WlifwiMGGAR6JeSKWTwPnU",
       "sourceProvider": "Overture Maps",
       "sourceProviderId": "d26a689c-5c86-4664-b0b1-3c7cb6a13169",
@@ -91,6 +130,177 @@
         "openingHoursRaw": [
           "営業時間】 月～金 ランチ 11:00～14:00(L.O.13:30) ※ランチのご予約は受付しておりません。 ディナー 17:00～22:30 (フードL.O.21:30 ドリンクL.O.22:00) 【"
         ]
+      },
+      "checkedAt": "2026-09-07"
+    },
+    {
+      "googlePlaceId": "ChIJ2atVJwSMGGARrwm6ahMJsfo",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:6ec2a2b019f01dbaf6cc",
+      "missingBefore": [
+        "lunch_budget"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "jsonld_business_name",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://gf14902.gorp.jp/",
+        "finalUrl": "https://gf14902.gorp.jp/",
+        "retrievedAt": "2026-09-07T10:44:45Z",
+        "contentHash": "20376ba921565cf8321355b94a7abf5e115e5fc2add4e045d01646e8f6795b7d",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06"
+      },
+      "fieldClaims": {
+        "telephone": "03-5280-1630"
+      },
+      "checkedAt": "2026-09-07"
+    },
+    {
+      "googlePlaceId": "ChIJ2yzmKgCNGGARujgyaVuRhy8",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:4dbe0208f3134e474db6",
+      "missingBefore": [
+        "address",
+        "coordinates",
+        "cuisine",
+        "dinner_budget",
+        "hours",
+        "lunch_budget"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "jsonld_business_name",
+        "pageNameSimilarity": 1.0,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://gj8y401.gorp.jp/?utm_source=Google-Map&utm_medium=MEO_Adtag2",
+        "finalUrl": "https://gj8y401.gorp.jp/?utm_source=Google-Map&utm_medium=MEO_Adtag2",
+        "retrievedAt": "2026-09-07T10:44:26Z",
+        "contentHash": "79b38df61838104e4c224218bcda1174ccf5fffb49801efb63ae9241548fa600",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06"
+      },
+      "fieldClaims": {
+        "openingHoursRaw": [
+          "営業時間 ランチ 11:00～15:00 ディナー 17:00～23:30 （L.O.22:30、ドリンクL.O.23:00）"
+        ],
+        "cuisineNormalized": "中华",
+        "geo": {
+          "lat": 35.6942062,
+          "lng": 139.7592182
+        },
+        "telephone": "03-5244-5888"
+      },
+      "checkedAt": "2026-09-07"
+    },
+    {
+      "googlePlaceId": "ChIJ44VsmjyMGGARJVL9gwj7Afc",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:72a226f4157d4525d664",
+      "missingBefore": [
+        "address",
+        "dinner_budget",
+        "hours",
+        "lunch_budget"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "jsonld_business_name",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://zuienshanghichubo.gorp.jp/",
+        "finalUrl": "https://zuienshanghichubo.gorp.jp/",
+        "retrievedAt": "2026-09-07T10:45:09Z",
+        "contentHash": "9882a11654ce3c366dc7972a5e8ece10eacb18b1a391d9af97d843b676bd329f",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06"
+      },
+      "fieldClaims": {
+        "openingHoursRaw": [
+          "営業時間 月～日 ランチ 11:00～15:00 （L.O.15:00） 月～日 ディナー 17:00～23:00 （L.O.22:30） ※新型コロナウイルス感染症の拡大防止に向け 今後営業時間の短縮 店休の可能性もございます。詳細は店舗にご確認下さい。"
+        ],
+        "telephone": "03-6801-8166"
+      },
+      "checkedAt": "2026-09-07"
+    },
+    {
+      "googlePlaceId": "ChIJ4SygCUSMGGAR5k9kG84PJi8",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:6384803a8aeaf6306b48",
+      "missingBefore": [
+        "dinner_budget",
+        "lunch_budget"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "jsonld_business_name",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://map.reins.co.jp/onyasai/detail/353571229",
+        "finalUrl": "https://map.reins.co.jp/onyasai/detail/353571229",
+        "retrievedAt": "2026-09-07T10:45:04Z",
+        "contentHash": "1b20c29f8c475ce2022cf5fc06d5e5349b7ff0711f755390476cc032b17447a5",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06"
+      },
+      "fieldClaims": {
+        "telephone": "03-5357-1229"
+      },
+      "checkedAt": "2026-09-07"
+    },
+    {
+      "googlePlaceId": "ChIJ4V7HsByMGGAR3-Klt48CI28",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:e42a73405e439855b666",
+      "missingBefore": [
+        "address",
+        "dinner_budget",
+        "hours",
+        "lunch_budget"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "jsonld_business_name",
+        "pageNameSimilarity": 1.0,
+        "titleNameSimilarity": 0.352941
+      },
+      "webEvidence": {
+        "sourceUrl": "https://ginban.gorp.jp/",
+        "finalUrl": "https://ginban.gorp.jp/",
+        "retrievedAt": "2026-09-07T10:44:48Z",
+        "contentHash": "c858777e3bcae2e97675ea287b99f46c36e6344318b8866e5016aadd38d17618",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06"
+      },
+      "fieldClaims": {
+        "openingHoursRaw": [
+          "営業時間 月～金 11:30～13:30 月～金 17:00～23:00 （L.O.22:00） 食材の仕入れ状況や予約状況で、閉店時間を早める場合がございます。※2023年から土曜日は"
+        ],
+        "telephone": "03-3252-1030"
       },
       "checkedAt": "2026-09-07"
     },
@@ -129,6 +339,222 @@
       "checkedAt": "2026-09-07"
     },
     {
+      "googlePlaceId": "ChIJ8-ZxaRCMGGARChoRjY3b720",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:f137fcce9318cd17bd15",
+      "missingBefore": [
+        "address",
+        "dinner_budget",
+        "lunch_budget"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "jsonld_business_name",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://stores.marugame.com/110630?utm_source=google_serps&utm_medium=gmb&utm_campaign=gbpwebs",
+        "finalUrl": "https://stores.marugame.com/110630?utm_source=google_serps&utm_medium=gmb&utm_campaign=gbpwebs",
+        "retrievedAt": "2026-09-07T10:44:30Z",
+        "contentHash": "9d33399abfc6455a884c492fdcdd73f99f6a003c6cae8518cef0e1b38672927b",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06"
+      },
+      "fieldClaims": {
+        "address": "101-0052 東京都 千代田区 神田小川町3-3",
+        "telephone": "+81332967313"
+      },
+      "checkedAt": "2026-09-07"
+    },
+    {
+      "googlePlaceId": "ChIJ9TDnyQ-MGGARG-nByNz8I0E",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:cb14339a4283b105eb08",
+      "missingBefore": [
+        "dinner_budget"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "jsonld_business_name",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://gb32300.gorp.jp/",
+        "finalUrl": "https://gb32300.gorp.jp/",
+        "retrievedAt": "2026-09-07T10:44:34Z",
+        "contentHash": "44144816b348270224351b019e64f6e50a553302a7042809bc4c88139fb807dc",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06"
+      },
+      "fieldClaims": {
+        "telephone": "03-3296-7177"
+      },
+      "checkedAt": "2026-09-07"
+    },
+    {
+      "googlePlaceId": "ChIJA7vjSxCMGGARpf4TitkGqMk",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:e03c9139ef31fb7a0127",
+      "missingBefore": [
+        "dinner_budget",
+        "lunch_budget"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "jsonld_business_name",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://shop.tullys.co.jp/detail/1000109?utm_source=google&utm_medium=gbp&utm_campaign=map",
+        "finalUrl": "https://shop.tullys.co.jp/detail/1000109?utm_source=google&utm_medium=gbp&utm_campaign=map",
+        "retrievedAt": "2026-09-07T10:44:29Z",
+        "contentHash": "ec9bd8f6ac06bf72bfd3c3234d1bfc44de3ce07ed732dc4a5d3c9f9e84eed3a6",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06"
+      },
+      "fieldClaims": {
+        "telephone": "03-3518-6160"
+      },
+      "checkedAt": "2026-09-07"
+    },
+    {
+      "googlePlaceId": "ChIJAQC0dESMGGAR0VQTphLwmdw",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:2494d06328130163ce91",
+      "missingBefore": [
+        "dinner_budget",
+        "hours",
+        "lunch_budget"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "strong_page_title",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://shoplist.teke-teke.com/detail/T36/?utm_source=google&utm_medium=maps&utm_campaign=gbp",
+        "finalUrl": "https://shoplist.teke-teke.com/detail/T36/?utm_source=google&utm_medium=maps&utm_campaign=gbp",
+        "retrievedAt": "2026-09-07T10:45:09Z",
+        "contentHash": "cdadc394ac19cc9d443c8ec00ebc12fe9111dd5ae01bd3cd7f56ce33083e3bf0",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06"
+      },
+      "fieldClaims": {
+        "openingHoursRaw": [
+          "営業時間 月〜金 11:30〜14:00, 17:00〜23:30 土 16:00〜23:30 日 16:00〜23:00 下記日程は営業時間を変更しております。 9/21(月)〜9/23(水) 16:00〜23:00 Googleマップで混雑状況をみる ラストオーダー 【月〜土】23:00【日・祝】22:30【ランチ】13:30 メニュー メニュー 営業内容 ディナー ランチ 土日祝昼飲み"
+        ]
+      },
+      "checkedAt": "2026-09-07"
+    },
+    {
+      "googlePlaceId": "ChIJAyADpR6MGGARWHp8EC3s12E",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:c549eff8bddfaea49c44",
+      "missingBefore": [
+        "lunch_budget"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "jsonld_business_name",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://miyabi-honten.gorp.jp/",
+        "finalUrl": "https://miyabi-honten.gorp.jp/",
+        "retrievedAt": "2026-09-07T10:45:02Z",
+        "contentHash": "a1f3b6eb148e2f2415189162db167ffdc529d10c3c0c6452af7a457aa271abe1",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06"
+      },
+      "fieldClaims": {
+        "telephone": "03-3251-0155"
+      },
+      "checkedAt": "2026-09-07"
+    },
+    {
+      "googlePlaceId": "ChIJBWY0oOONGGARfDSN38wt5l0",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:18d944a20fb5b668e2e7",
+      "missingBefore": [
+        "lunch_budget"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "jsonld_business_name",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://ge07111.gorp.jp/",
+        "finalUrl": "https://ge07111.gorp.jp/",
+        "retrievedAt": "2026-09-07T10:44:43Z",
+        "contentHash": "b06843c2ed1a4a80a14d43193e042b4c1547c87ce6b04893e84e60f0ccde0c51",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06"
+      },
+      "fieldClaims": {
+        "telephone": "03-6206-0707"
+      },
+      "checkedAt": "2026-09-07"
+    },
+    {
+      "googlePlaceId": "ChIJBwhgUwKMGGARjoO2N1BAAdk",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:f8d1722e159dba7071fa",
+      "missingBefore": [
+        "address",
+        "dinner_budget",
+        "hours",
+        "lunch_budget"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "strong_page_title",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://store.yayoiken.com/b/yayoiken/info/1048/",
+        "finalUrl": "https://store.yayoiken.com/b/yayoiken/info/1048/",
+        "retrievedAt": "2026-09-07T10:45:05Z",
+        "contentHash": "0442a625cb7e7bbf77ea27aa9d99c67fa3140066084ec003ecb1ebd15f9aac74",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06"
+      },
+      "fieldClaims": {
+        "openingHoursRaw": [
+          "営業時間 月 8:00-23:00 火 8:00-23:00 水 8:00-23:00 木 8:00-23:00 金 8:00-23:00 土 8:00-23:00 日 8:00-23:00 お知らせ ※当店では22時から翌5時の間、定?、テイクアウトメニューに深夜料?50円を加算させていただいております。（一部のメニューは深夜料?対象外） ※当店ではアルコール飲料の販売をしておりません。 ※ラストオーダーは閉店時間の30分前です。 支払い方法 メニュー イートインメニューを見る テイクアウトメニューを見る サービス モバイルオーダー アプリ こだわり やよい軒のテイクアウトおうち定食"
+        ]
+      },
+      "checkedAt": "2026-09-07"
+    },
+    {
       "googlePlaceId": "ChIJC-fH9HuNGGARVlh7vQw84LU",
       "sourceProvider": "Overture Maps",
       "sourceProviderId": "4a771e22-5db5-4f70-95f8-72c7467d38ab",
@@ -161,6 +587,325 @@
         ],
         "priceRange": "¥¥¥¥",
         "telephone": "080-7960-9445"
+      },
+      "checkedAt": "2026-09-07"
+    },
+    {
+      "googlePlaceId": "ChIJC94crAaMGGARQ5ATOkusuPs",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:d0fe32df972130c55ea5",
+      "missingBefore": [
+        "lunch_budget"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "jsonld_business_name",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://kanda-tenfu.gorp.jp/",
+        "finalUrl": "https://kanda-tenfu.gorp.jp/",
+        "retrievedAt": "2026-09-07T10:44:53Z",
+        "contentHash": "e7372e34df44f7bc41b7bdf144921e884b68591e1e2ca57c5239093715638f7d",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06"
+      },
+      "fieldClaims": {
+        "telephone": "03-6206-9008"
+      },
+      "checkedAt": "2026-09-07"
+    },
+    {
+      "googlePlaceId": "ChIJCRf6uziMGGARPOpXUziKe7s",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:e110acba17274235999f",
+      "missingBefore": [
+        "dinner_budget",
+        "lunch_budget"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "jsonld_business_name",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://shop.tullys.co.jp/detail/1710899?utm_source=google&utm_medium=gbp&utm_campaign=map",
+        "finalUrl": "https://shop.tullys.co.jp/detail/1710899?utm_source=google&utm_medium=gbp&utm_campaign=map",
+        "retrievedAt": "2026-09-07T10:44:47Z",
+        "contentHash": "17f49f3ae7a87b9295cb2de8f7e559cc0c4aa790ca9c9d5d5f1f3143021da76b",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06"
+      },
+      "fieldClaims": {
+        "telephone": "03-5840-8865"
+      },
+      "checkedAt": "2026-09-07"
+    },
+    {
+      "googlePlaceId": "ChIJCabBDR6NGGARgIhOTt5XEIs",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:d5113a539107338d8144",
+      "missingBefore": [
+        "address",
+        "dinner_budget",
+        "hours",
+        "lunch_budget"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "strong_page_title",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://thali-ya.com/",
+        "finalUrl": "https://thali-ya.com/",
+        "retrievedAt": "2026-09-07T10:44:51Z",
+        "contentHash": "890b145075d128036aa435343b27309a034da450a2e08c677232064b69570894",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06"
+      },
+      "fieldClaims": {
+        "openingHoursRaw": [
+          "営業時間が変更となります。 11:00~21:00(LO.20:30)酒類の提供20:30迄 《2020 4/11》 コロナウィルスの影響により 4月11日〜5月6日の間、営業時間が変更となります。 営業時間変更一覧》》》 《2020 4/5》 アリオ上尾店がコロナウィルスの影響により 4月8日以降、テイクアウト販売のみの営業となります。 《2020 4/5》 アリオ西新井店、錦糸町店がコロナウィルスの影響により 4月8日以降、当分の間休業となります。 《2020 4/5》 新宿西口店の営業時間が一時的に変更となります 平 日 11:00~24:00(23:30ラストオーダー) 土日祝 11:00~22:00(21:30ラストオーダー) 《2020 4/1》 霞が関コモンゲート店の営業時間が一時的に変更となります 11:00~21:30(21:00ラストオーダー) 《2020 4/1》 アリオ西新井店の営業時間が一時的に変更となります 11:30~22:30(22:00ラストオーダー) また、4月4日（土）、4月5日（日）を臨時休業とさせていただきます。 《2019 12/1》 谷町２丁目店がオープンしました。 《2019 8/２８》 第４５回新宿三井ビルのど自慢大会決勝でチャゲ&飛鳥の《エピローグ》をターリー屋社長が歌いました 《2019 7/6》 中野サンモール店が本日オープン"
+        ]
+      },
+      "checkedAt": "2026-09-07"
+    },
+    {
+      "googlePlaceId": "ChIJCzypNAWMGGAR_z5GQlqWIjE",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:60ae8cdd30f73f2d12a8",
+      "missingBefore": [
+        "lunch_budget"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "jsonld_business_name",
+        "pageNameSimilarity": 1.0,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://yakiniku-ittou.foodre.jp/",
+        "finalUrl": "https://yakiniku-ittou.foodre.jp/",
+        "retrievedAt": "2026-09-07T10:44:30Z",
+        "contentHash": "e0983cfbfcee27b3267b560cd932f5cf18e300cf0e4a78413f1af4c6a20bebb0",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06"
+      },
+      "fieldClaims": {
+        "priceRange": "ランチ予算: 営業時間外 ディナー予算: 〜8,000円",
+        "telephone": "03-3518-8250"
+      },
+      "checkedAt": "2026-09-07"
+    },
+    {
+      "googlePlaceId": "ChIJG1HzOhGMGGARbc3MsTlAYkA",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:43048f9cfbadd037ef3a",
+      "missingBefore": [
+        "lunch_budget"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "jsonld_business_name",
+        "pageNameSimilarity": 1.0,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://masato-ipa.wixsite.com/8taps-website",
+        "finalUrl": "https://masato-ipa.wixsite.com/8taps-website",
+        "retrievedAt": "2026-09-07T10:44:25Z",
+        "contentHash": "80f67de8fc013a2b73006701adb525bce80739e1a3453b07b1a795aabd1848c6",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06"
+      },
+      "fieldClaims": {
+        "telephone": "03-6273-7489"
+      },
+      "checkedAt": "2026-09-07"
+    },
+    {
+      "googlePlaceId": "ChIJH45U0y2NGGARFO8F9X8I1nA",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:d7b11cf3c0257eb693e3",
+      "missingBefore": [
+        "address",
+        "dinner_budget",
+        "hours",
+        "lunch_budget"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "jsonld_business_name",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://g148300.gorp.jp/",
+        "finalUrl": "https://g148300.gorp.jp/",
+        "retrievedAt": "2026-09-07T10:44:46Z",
+        "contentHash": "0f923246a065ac08e9a48fe180fee24bc5f62189caa0a68262a1dab9ff4ca6a6",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06"
+      },
+      "fieldClaims": {
+        "openingHoursRaw": [
+          "営業時間 月～金 ランチ 11:00～14:00 （L.O.14:00） 月～金 居酒屋タイム 17:00～22:20 （L.O.21:30、ドリンクL.O.22:00）"
+        ],
+        "telephone": "03-6275-0575"
+      },
+      "checkedAt": "2026-09-07"
+    },
+    {
+      "googlePlaceId": "ChIJHdflUQCNGGAR1yV32-VceT0",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:e0ac8c4804ef4cbf97de",
+      "missingBefore": [
+        "dinner_budget",
+        "hours",
+        "lunch_budget"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "strong_page_title",
+        "pageNameSimilarity": 1.0,
+        "titleNameSimilarity": 1.0
+      },
+      "webEvidence": {
+        "sourceUrl": "https://taisho-ken.tokyo/",
+        "finalUrl": "https://taisho-ken.tokyo/",
+        "retrievedAt": "2026-09-07T10:44:31Z",
+        "contentHash": "c71b2897bfc1bfc5372b1c0abcbdaaafbfdc6ae982bd5de314aecfcafdf38a39",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06"
+      },
+      "fieldClaims": {
+        "openingHoursRaw": [
+          "営業時間 11:00～21:00 ＜17時より復刻版（Classic）メニューもご提供します＞"
+        ]
+      },
+      "checkedAt": "2026-09-07"
+    },
+    {
+      "googlePlaceId": "ChIJIeDGY_6NGGARWCyGYme_2bA",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:7c9c79d7e37090550eaa",
+      "missingBefore": [
+        "dinner_budget",
+        "lunch_budget"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "jsonld_business_name",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://www.pasela.co.jp/paselabo_shop/grandcypher-kitchen/",
+        "finalUrl": "https://www.pasela.co.jp/paselabo_shop/grandcypher-kitchen/",
+        "retrievedAt": "2026-09-07T10:45:06Z",
+        "contentHash": "76b60ccb97c2cb1fd367eea4f04786247072215be640457696bbd9ae712839c2",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06"
+      },
+      "fieldClaims": {
+        "priceRange": "770～",
+        "telephone": "+81-120-192-759"
+      },
+      "checkedAt": "2026-09-07"
+    },
+    {
+      "googlePlaceId": "ChIJJ_D4jRmMGGARMpn_E26qUCA",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:7c203caff6c4ae8061dc",
+      "missingBefore": [
+        "address",
+        "dinner_budget",
+        "hours",
+        "lunch_budget"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "strong_page_title",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://shop.ringerhut.jp/detail/r0494/",
+        "finalUrl": "https://shop.ringerhut.jp/detail/r0494/",
+        "retrievedAt": "2026-09-07T10:44:41Z",
+        "contentHash": "ecfbc3457276a9ff5802957c4f756836591f5b12cfa58b68e53835d8deea7f18",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06"
+      },
+      "fieldClaims": {
+        "openingHoursRaw": [
+          "営業時間 ※営業時間は急遽変更になる可能性がございますので、詳細は店舗まで"
+        ]
+      },
+      "checkedAt": "2026-09-07"
+    },
+    {
+      "googlePlaceId": "ChIJKQlfZLaNGGARTe95b99jJXE",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:ea243ecf50a2d8786451",
+      "missingBefore": [
+        "address",
+        "dinner_budget",
+        "hours",
+        "lunch_budget"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "strong_page_title",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://shop.machidashoten.com/japan/detail/112114/?utm_source=gbp?utm_medium=organic",
+        "finalUrl": "https://shop.machidashoten.com/japan/detail/112114/?utm_source=gbp?utm_medium=organic",
+        "retrievedAt": "2026-09-07T10:44:43Z",
+        "contentHash": "1457fbe9846b8dc33d2e83ffef0b1e801c38d325f26572403c65f0d9fb5363f8",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06"
+      },
+      "fieldClaims": {
+        "openingHoursRaw": [
+          "営業時間 月〜日 11:00〜23:00 Googleマップで混雑状況をみる"
+        ]
       },
       "checkedAt": "2026-09-07"
     },
@@ -236,6 +981,37 @@
       "checkedAt": "2026-09-07"
     },
     {
+      "googlePlaceId": "ChIJOQQ3ZwCNGGARr1lhaWGb9Lc",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:26a28ef3432d22423b3f",
+      "missingBefore": [
+        "hours"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "strong_page_title",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://betoya.jp/store/jimbocho/",
+        "finalUrl": "https://betoya.jp/store/jimbocho/",
+        "retrievedAt": "2026-09-07T10:44:27Z",
+        "contentHash": "b23485d87aeff552e9adab3a0f1ee371a6f436faee723bcce0a09f6e4f181616",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06"
+      },
+      "fieldClaims": {
+        "openingHoursRaw": [
+          "営業時間 11:00~22:00 ※ ラストオーダーは閉店30分前。"
+        ]
+      },
+      "checkedAt": "2026-09-07"
+    },
+    {
       "googlePlaceId": "ChIJPWGA4l6NGGARhtdd0pnbo_0",
       "sourceProvider": "Overture Maps",
       "sourceProviderId": "bb04a649-4532-4a3d-b8ae-2a826ad1cf65",
@@ -304,6 +1080,135 @@
       "checkedAt": "2026-09-07"
     },
     {
+      "googlePlaceId": "ChIJTy1GTG-NGGAR4WUtZrMr1mE",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:da03f0e841f889114d5d",
+      "missingBefore": [
+        "address",
+        "dinner_budget",
+        "hours",
+        "lunch_budget"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "strong_page_title",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://www.zetteria.jp/shop/shop1022.html",
+        "finalUrl": "https://www.zetteria.jp/shop/shop1022.html",
+        "retrievedAt": "2026-09-07T10:44:40Z",
+        "contentHash": "648434f5e9c17a70b4b2d0a08347a48d50eedbe74b7e490aef09dfa1d7a1b641",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06"
+      },
+      "fieldClaims": {
+        "openingHoursRaw": [
+          "営業時間 ■店内 平日 5:00～22:00 （ラストオーダー 21:30） 土日祝 5:00～22:00 （ラストオーダー 21:30） ■お持ち帰り 全日 24時間営業"
+        ]
+      },
+      "checkedAt": "2026-09-07"
+    },
+    {
+      "googlePlaceId": "ChIJUbftRRyMGGARi3P1XkxGJFM",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:a9dd9c1c95b09e61459c",
+      "missingBefore": [
+        "address",
+        "dinner_budget",
+        "hours",
+        "lunch_budget"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "jsonld_business_name",
+        "pageNameSimilarity": 1.0,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://concafechan.com/shop/frapeco/",
+        "finalUrl": "https://concafechan.com/shop/frapeco/",
+        "retrievedAt": "2026-09-07T10:45:03Z",
+        "contentHash": "75552c42a536a6086c2c61c2558ca7dfb09ca48d451c9f620e65b9ed1a030b57",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06"
+      },
+      "fieldClaims": {
+        "address": "秋葉原",
+        "openingHoursRaw": [
+          "営業時間 15:00～24:00"
+        ],
+        "telephone": "03-6811-6880"
+      },
+      "checkedAt": "2026-09-07"
+    },
+    {
+      "googlePlaceId": "ChIJVwXD9E6NGGARkHzeYVBeacw",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:a500eaa9e6e7ac831484",
+      "missingBefore": [
+        "dinner_budget",
+        "lunch_budget"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "jsonld_business_name",
+        "pageNameSimilarity": 1.0,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://shop.tullys.co.jp/detail/1003115?utm_source=google&utm_medium=gbp&utm_campaign=map",
+        "finalUrl": "https://shop.tullys.co.jp/detail/1003115?utm_source=google&utm_medium=gbp&utm_campaign=map",
+        "retrievedAt": "2026-09-07T10:45:01Z",
+        "contentHash": "46cffe81415df259b88d0b76516affcd84ffaab89f4887f6df93256926619b82",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06"
+      },
+      "fieldClaims": {
+        "telephone": "03-5209-2008"
+      },
+      "checkedAt": "2026-09-07"
+    },
+    {
+      "googlePlaceId": "ChIJ____DxGMGGARxguBsW1lnd0",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:7670f918d2e9ded4acff",
+      "missingBefore": [
+        "address"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "jsonld_business_name",
+        "pageNameSimilarity": 1.0,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://gcu3400.gorp.jp/",
+        "finalUrl": "https://gcu3400.gorp.jp/",
+        "retrievedAt": "2026-09-07T10:44:27Z",
+        "contentHash": "51f62f8e04f1dbe6167319ecd934a88a7e6abe79b508fd6ebbeb6a170a7dc89e",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06"
+      },
+      "fieldClaims": {
+        "telephone": "03-3291-9221"
+      },
+      "checkedAt": "2026-09-07"
+    },
+    {
       "googlePlaceId": "ChIJ_dlidcCNGGARaps03scrCg0",
       "sourceProvider": "Overture Maps",
       "sourceProviderId": "dd851ba2-856d-4bc9-bf35-283f6c825a92",
@@ -365,6 +1270,74 @@
       "fieldClaims": {
         "openingHoursRaw": [
           "営業時間】11:00～18:00 【"
+        ]
+      },
+      "checkedAt": "2026-09-07"
+    },
+    {
+      "googlePlaceId": "ChIJc3taaQGMGGARJDSjckIspnw",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:ae9ad0b2b35196e1a963",
+      "missingBefore": [
+        "address",
+        "dinner_budget",
+        "hours",
+        "lunch_budget"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "strong_page_title",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://www.thali-ya.com/",
+        "finalUrl": "https://www.thali-ya.com/",
+        "retrievedAt": "2026-09-07T10:45:09Z",
+        "contentHash": "890b145075d128036aa435343b27309a034da450a2e08c677232064b69570894",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06"
+      },
+      "fieldClaims": {
+        "openingHoursRaw": [
+          "営業時間が変更となります。 11:00~21:00(LO.20:30)酒類の提供20:30迄 《2020 4/11》 コロナウィルスの影響により 4月11日〜5月6日の間、営業時間が変更となります。 営業時間変更一覧》》》 《2020 4/5》 アリオ上尾店がコロナウィルスの影響により 4月8日以降、テイクアウト販売のみの営業となります。 《2020 4/5》 アリオ西新井店、錦糸町店がコロナウィルスの影響により 4月8日以降、当分の間休業となります。 《2020 4/5》 新宿西口店の営業時間が一時的に変更となります 平 日 11:00~24:00(23:30ラストオーダー) 土日祝 11:00~22:00(21:30ラストオーダー) 《2020 4/1》 霞が関コモンゲート店の営業時間が一時的に変更となります 11:00~21:30(21:00ラストオーダー) 《2020 4/1》 アリオ西新井店の営業時間が一時的に変更となります 11:30~22:30(22:00ラストオーダー) また、4月4日（土）、4月5日（日）を臨時休業とさせていただきます。 《2019 12/1》 谷町２丁目店がオープンしました。 《2019 8/２８》 第４５回新宿三井ビルのど自慢大会決勝でチャゲ&飛鳥の《エピローグ》をターリー屋社長が歌いました 《2019 7/6》 中野サンモール店が本日オープン"
+        ]
+      },
+      "checkedAt": "2026-09-07"
+    },
+    {
+      "googlePlaceId": "ChIJeygUHWuMGGAR6JSkGxomd2c",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:795d6c267d6d7e02f881",
+      "missingBefore": [
+        "address",
+        "dinner_budget",
+        "hours",
+        "lunch_budget"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "strong_page_title",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://locations.royalhost.jp/detail/108901/?utm_source=google&utm_medium=gbp&utm_campaign=kudanshita",
+        "finalUrl": "https://locations.royalhost.jp/detail/108901/?utm_source=google&utm_medium=gbp&utm_campaign=kudanshita",
+        "retrievedAt": "2026-09-07T10:44:37Z",
+        "contentHash": "0ce0af5f939284644ac360f4902051fd4b36a4078aef93a9d4ada93a2d946beb",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06"
+      },
+      "fieldClaims": {
+        "openingHoursRaw": [
+          "営業時間 月〜日 9:00〜22:00 下記日程は営業時間を変更しております。 9/10(木) 臨時休業 ラストオーダーは閉店の30分前です。 営業時間は急遽変更となる場合がございます。お手数をおかけしますが、最新の情報は直接店舗へ"
         ]
       },
       "checkedAt": "2026-09-07"
@@ -543,6 +1516,99 @@
       "fieldClaims": {
         "openingHoursRaw": [
           "営業時間 平日 月曜日～金曜日 11:30-15:00 (14:30 L.O.) 18:00-22:00 (21:30 L.O.) ※：土・日・祝日は除きます ※：ディナーのフードオーダーは21:00まで jimbocho_cafe_staff ▪️昼: ハワイアンカフェ🌈 夜: 薬膳カレー🍛 ▪️平日ランチ営業11:30〜15:00（L.O14:30） ▪️平日ディナー営業18:00〜22:00（L.O21:30、フードは21:00まで） ◾️土日祝休み ▪️アルバイト募集‼️詳しくはDMにて #神保町カレー #神保町ランチ こちらも遅かなりましたが、9月の限定カレーです！ 【帆立出汁のスリランカカレー】 スリランカのロース 遅くなりましたが、 ディナーに提供しているアミューズです！ 今月は【秋刀魚のリエット】です🐟 旬の秋 本日、ありがたいことに TBS番組【ひるおび】にて、jimbochoがご紹介してくださりましたー！！ 九月の営業案内です♫ シルバーウィークはお休みさせていただきます。 また、 月末にイベントが入る可能 よろしくお願いいたします🙇‍♂️ おはようございます☀ なんと、今日の朝に日テレの【シューイチ】にて 出演いたしましたー！！！🙌⭐️ おはようございます☀ 8/1からスタートした、神田カレーグランプリのスタンプラリーイベント限定カレ おはようございます☀ 8"
+        ]
+      },
+      "checkedAt": "2026-09-07"
+    },
+    {
+      "googlePlaceId": "ChIJt3xAUkGMGGARcxgjRIBAeTo",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:77875f504d78975b8002",
+      "missingBefore": [
+        "lunch_budget"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "jsonld_business_name",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://okonomiking.gorp.jp/",
+        "finalUrl": "https://okonomiking.gorp.jp/",
+        "retrievedAt": "2026-09-07T10:44:56Z",
+        "contentHash": "0e21b5050a1c672e7a0d0311cdf10824c2e299057ee3bbf17990a9d438cff10f",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06"
+      },
+      "fieldClaims": {
+        "telephone": "03-6261-6161"
+      },
+      "checkedAt": "2026-09-07"
+    },
+    {
+      "googlePlaceId": "ChIJwVPZogOMGGARJe7b3LBQPsM",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:60ab36ed5e4c97a8c352",
+      "missingBefore": [
+        "dinner_budget",
+        "lunch_budget"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "jsonld_business_name",
+        "pageNameSimilarity": 1.0,
+        "titleNameSimilarity": 0.16
+      },
+      "webEvidence": {
+        "sourceUrl": "https://kanda-sanmasa.com/ja?utm_medium=referral&utm_source=google&utm_campaign=mm&utm_content=hp",
+        "finalUrl": "https://kanda-sanmasa.com/ja?utm_medium=referral&utm_source=google&utm_campaign=mm&utm_content=hp",
+        "retrievedAt": "2026-09-07T10:44:54Z",
+        "contentHash": "6127c780fed1c6ec9496aa791253cc51ef6c4c2bdf26416de2006fd590957922",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06"
+      },
+      "fieldClaims": {
+        "priceRange": "JPY 6,000",
+        "telephone": "03-3251-2518"
+      },
+      "checkedAt": "2026-09-07"
+    },
+    {
+      "googlePlaceId": "ChIJxY7gPgGMGGARb9tWwbUOOxg",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:4d78c5d20b80706306c3",
+      "missingBefore": [
+        "dinner_budget",
+        "hours",
+        "lunch_budget"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "strong_page_title",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://www.lamplight-kanda.com/",
+        "finalUrl": "https://www.lamplight-kanda.com/",
+        "retrievedAt": "2026-09-07T10:45:05Z",
+        "contentHash": "5f4eae3a1c1d4761fa91e764a9275dedaa1c3cf84eaea7ec45a8bb9bf675ef66",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06"
+      },
+      "fieldClaims": {
+        "openingHoursRaw": [
+          "営業時間 月曜日～木曜日 18:00～2:00（フードL.O. 0:30／ドリンクL.O. 1:30）※最終入店0:30 金曜日、祝前日 18:00～3:00（フードL.O. 1:30／ドリンクL.O. 2:30）※最終入店1:00 土曜日 18:00～23:00（フードL.O. 22:00／ドリンクL.O. 22:30）※最終入店22:00"
         ]
       },
       "checkedAt": "2026-09-07"
