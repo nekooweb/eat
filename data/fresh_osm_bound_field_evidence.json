@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "ruleVersion": "fresh-osm-bound-field-evidence-v2",
-  "checkedAt": "2026-09-07T14:29:36Z",
+  "checkedAt": "2026-09-07T14:56:05Z",
   "source": "OpenStreetMap public Overpass",
   "policy": {
     "paidGoogleDataApiCalls": 0,
@@ -13,13 +13,70 @@
     "exactReviewedBindingOnly": true,
     "missingOnly": true
   },
-  "rows": [],
+  "rows": [
+    {
+      "googlePlaceId": "ChIJ06Y7zmmNGGARO-ajG7EusUA",
+      "provider": "OpenStreetMap",
+      "providerId": "node/7899845177",
+      "sourceUrl": "https://www.openstreetmap.org/node/7899845177",
+      "retrievedAt": "2026-09-07T14:56:05Z",
+      "acquisitionContentHash": "6b5deb93109d2e4aea957010a8f562d63dd63915730ef58557ea1f80e4c64d3d",
+      "evidenceContentHash": "c46b8ac39bd97cce2b3a789565ea1f00e54e0d4cd0c598aff0acfa65dc112e5a",
+      "fields": {
+        "address": "102-0000"
+      },
+      "provenance": {
+        "snapshotRuleVersion": "fresh-osm-rich-public-snapshot-v1",
+        "bindingRequirement": "existing reviewed exact native OSM binding",
+        "idNormalization": "native node/way/relation plus retained osm-n/w/r compatibility"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJcf2INWuMGGARteCaKYtQc1E",
+      "provider": "OpenStreetMap",
+      "providerId": "node/1916766478",
+      "sourceUrl": "https://www.openstreetmap.org/node/1916766478",
+      "retrievedAt": "2026-09-07T14:56:05Z",
+      "acquisitionContentHash": "6b5deb93109d2e4aea957010a8f562d63dd63915730ef58557ea1f80e4c64d3d",
+      "evidenceContentHash": "03c56c3d4cc701f0a5d03eba0e8a33fb6bd1811176095019a21e738bedac4287",
+      "fields": {
+        "address": "102-0074"
+      },
+      "provenance": {
+        "snapshotRuleVersion": "fresh-osm-rich-public-snapshot-v1",
+        "bindingRequirement": "existing reviewed exact native OSM binding",
+        "idNormalization": "native node/way/relation plus retained osm-n/w/r compatibility"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJgwB6yw-MGGARz1e_MPGRIlM",
+      "provider": "OpenStreetMap",
+      "providerId": "node/5455583292",
+      "sourceUrl": "https://www.openstreetmap.org/node/5455583292",
+      "retrievedAt": "2026-09-07T14:56:05Z",
+      "acquisitionContentHash": "6b5deb93109d2e4aea957010a8f562d63dd63915730ef58557ea1f80e4c64d3d",
+      "evidenceContentHash": "ea554ee69219df8ba53b77b544d052f028e15c9d88857003428e9c32e2552587",
+      "fields": {
+        "address": "102-0000"
+      },
+      "provenance": {
+        "snapshotRuleVersion": "fresh-osm-rich-public-snapshot-v1",
+        "bindingRequirement": "existing reviewed exact native OSM binding",
+        "idNormalization": "native node/way/relation plus retained osm-n/w/r compatibility"
+      }
+    }
+  ],
   "summary": {
-    "rows": 0,
-    "fieldCounts": {},
-    "reviewedOsmBindingPairsScanned": 0,
-    "uniqueReviewedNativeOsmIds": 0,
+    "rows": 3,
+    "fieldCounts": {
+      "address": 3
+    },
+    "reviewedOsmBindingPairsScanned": 666,
+    "uniqueReviewedNativeOsmIds": 666,
     "freshSnapshotRows": 1237,
-    "skipped": {}
+    "skipped": {
+      "no_missing_supported_field": 641,
+      "not_in_fresh_snapshot": 22
+    }
   }
 }
