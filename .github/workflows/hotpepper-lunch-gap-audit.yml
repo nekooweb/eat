@@ -1,0 +1,81 @@
+name: Audit retained Hot Pepper lunch gaps
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/hotpepper-lunch-gap-audit.yml"
+      - "scripts/database/audit_hotpepper_lunch_gaps.py"
+      - "scripts/database/import_hotpepper_rich_metadata.py"
+      - "scripts/database/resolve_hotpepper_source_fact_budgets.py"
+      - "scripts/database/build_master.py"
+      - "data/hotpepper_catalog_facts.json"
+      - "data/hotpepper_rich_metadata.js"
+      - "data/source_facts.js"
+      - "data/source_provenance.js"
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Validate syntax and no-paid policy
+        run: |
+          set -euo pipefail
+          python -m py_compile \
+            scripts/database/audit_hotpepper_lunch_gaps.py \
+            scripts/database/import_hotpepper_rich_metadata.py \
+            scripts/database/resolve_hotpepper_source_fact_budgets.py
+          node scripts/audit_no_paid_apis.mjs
+      - name: Build current master
+        run: |
+          set -euo pipefail
+          mkdir -p _tmp
+          python scripts/database/build_master.py --output _tmp/eat-master.sqlite --reset | tee _tmp/master.json
+          python scripts/database/validate_master.py _tmp/eat-master.sqlite | tee _tmp/master-validate.json
+      - name: Audit retained lunch evidence
+        run: |
+          set -euo pipefail
+          python scripts/database/audit_hotpepper_lunch_gaps.py \
+            _tmp/eat-master.sqlite \
+            --output _tmp/hotpepper-lunch-gap-audit.json \
+            | tee _tmp/hotpepper-lunch-gap-audit-summary.json
+      - name: Enforce diagnostic-only boundary
+        run: |
+          python - <<'PY'
+          import json
+          d=json.load(open('_tmp/hotpepper-lunch-gap-audit.json'))
+          assert d['ruleVersion']=='hotpepper-lunch-gap-audit-v1'
+          p=d['policy']
+          assert p['networkRequests']==0
+          assert p['databaseWrites']==0
+          assert p['identityChanges']==0
+          assert p['fieldResolutionChanges']==0
+          assert p['strictFiniteRangeRuleUnchanged'] is True
+          print(json.dumps(d['summary'],sort_keys=True))
+          PY
+      - name: Upload audit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hotpepper-lunch-gap-audit
+          path: |
+            _tmp/hotpepper-lunch-gap-audit.json
+            _tmp/hotpepper-lunch-gap-audit-summary.json
+            _tmp/master.json
+            _tmp/master-validate.json
+          if-no-files-found: warn
+          retention-days: 3
