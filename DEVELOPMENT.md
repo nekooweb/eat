@@ -4,26 +4,62 @@
 
 ## 当前线上与发布边界
 
-- frozen catalog：2,804 Place ID 全部保留。
-- Pages 仍发布旧 runtime 的 1,411 条已有真实名称记录；未命名 Place-ID-only 不展示。
-- Bulk completion 继续只更新 SQLite / shadow，未切 SQLite recommendation export 到 Pages。
-- no-paid-data-API、catalog 完整性、Google payload 泄漏、数据库契约和 Pages 可部署性保持 blocking。
-- 地图显示已切换为 **Leaflet + OpenStreetMap**：页面不再注入 Google Maps API key，不再使用 Google Embed iframe。Google Maps 只保留普通外部导航链接，不用于页面内数据读取。
-- 三店位置总览中，1–3 餐厅 marker 的 popup 保留对应 Google Maps 普通跳转链接；另有一个固定红色空间参考点，仅作为 UI 坐标参照，不显示字段且不可点击。
+- frozen catalog：**2,804 Place ID** 全部保留。
+- Pages 继续使用 generated runtime；未命名 Place-ID-only 不展示。SQLite recommendation export 尚未切换成线上唯一数据源。
+- no-paid-data-API、catalog 完整性、Google display payload 泄漏、数据库契约和 Pages 可部署性均保持 blocking。
+- 页面内地图统一使用 **Leaflet + OpenStreetMap**；不注入 Google Maps API key、不使用 Google Embed iframe。Google Maps 只保留普通外部导航链接。
+- 历史 Google Places 结果仅允许在短期私有 Actions artifact 中作为 linkage/navigation hint；不得作为 durable restaurant display source。
+- identity 仍禁止 proximity-only / postcode-only 绑定；冲突或模糊结果必须留在 candidate/deferred。
 
-## 当前已验证 master（Batch D 后基线）
+## 当前已验证 SQLite master
 
-- 2,804 catalog；
-- 4,686 source records / bindings；
-- 46,260 observations；
-- 30,913 resolutions；
-- identity：651 verified / 746 source_matched / 1,392 id_only / 15 conflict；
-- collision：10 source-ID groups / 20 Place ID；
-- active tasks：2,972 = 20 conflict review + 1,392 identity recovery + 1,349 field completion + 211 dish review。
+最新 database-contract 已通过，当前基线：
 
-主要字段缺口：address 337、coordinates 1、cuisine 1、dinner budget 789、hours 666、lunch budget 1,228、practical 906。
+- catalog：**2,804**；
+- source records / bindings：**4,796 / 4,796**；
+- observations：**48,312**；
+- resolutions：**32,762**；
+- identity：**651 verified / 750 source_matched / 1,388 id_only / 15 conflict**；
+- active tasks：**2,966** = 20 conflict review + 1,388 identity recovery + 1,347 field completion + 211 dish review。
 
-## 已完成批次
+当前 field-completion 缺口：
+
+- address：**334**；
+- dinner budget：**792**；
+- hours：**633**；
+- lunch budget：**1,232**；
+- practical：**882**。
+
+coordinates / cuisine 已不再出现在当前 planner 的缺失统计中。
+
+## 当前并行 workplan
+
+最新 validated workplan：**2,966 tasks / 35 shards / max shard 186**。
+
+worker family：
+
+- `identity-public-recovery`：1,388；
+- `field-open-data`：511；
+- `field-hotpepper`：409；
+- `field-official`：242；
+- `field-tabelog-retained`：185；
+- `dish-semantic-review`：211；
+- `identity-conflict-review`：20。
+
+field 结构中的关键事实：
+
+- `field-hotpepper` 409 个任务全部缺 lunch budget，其中 **395 个为 lunch-only**；
+- `field-open-data` 511 个任务几乎都同时缺预算与 practical，因此不能把 OSM/Overture categories 当作预算来源；
+- `field-official` 中仍有 44 个 lunch-only；
+- Tabelog live runner 受 403 限制，只继续使用已经保留且 provenance 明确的 retained facts，不绕过访问限制。
+
+执行模型仍为：
+
+`master tasks -> deterministic shards -> parallel workers -> evidence/proposals -> central resolver/importer -> master rebuild -> re-plan`
+
+worker 不能直接修改 master；每条 active task 只能属于一个 shard；accepted evidence 必须继续经过 collision/provenance/no-paid-API validation。
+
+## 已完成基础批次
 
 ### Batch A — retained official identity recovery
 
@@ -31,109 +67,186 @@
 
 ### Batch B — retained verified OSM identity QC
 
-完成 / blocking CI pass。662 verified mappings 中 657 reviewed / 3 candidate / 2 conflict；没有新增 id-only recovery，但发现 2 个新 collision groups，使 conflict Places 16 -> 20，并补入 OSM retained fields。
+完成 / blocking CI pass。662 verified mappings 中 657 reviewed / 3 candidate / 2 conflict；补入独立 OSM fields，并保留 collision quarantine。
 
 ### Batch C — deterministic retained-field resolver v2
 
-完成 / blocking CI pass。只处理 publishable/no-conflict identity，provider 仅 official/Tabelog，missing-only。安全 derived 188：closure.days.raw 123、closure.raw 58、hours.raw 7；repeat build 新增 0。
+完成 / blocking CI pass。仅处理 publishable/no-conflict identity，missing-only；安全 derived 188：closure.days.raw 123、closure.raw 58、hours.raw 7。
 
 ### Batch D — Hot Pepper candidate field-only review
 
-完成 / blocking CI pass。58 candidate 中 6 家通过严格 existing-identity consistency，补 59 fields；原 candidate identity 不升级。Dinner gap 795 -> 789、hours 672 -> 666、practical 912 -> 906。
+完成 / blocking CI pass。58 candidate 中 6 家通过严格 existing-identity consistency，补 59 fields；candidate identity 不升级。
 
-## Batch E — historical private hint reconciliation
+## Identity recovery：v2–v6.1
 
-### E1 — ultra-strict reconciliation
+### v2 — structured address consensus
 
-完成 / CI pass。2026-09-06 已付费取得的两个私有 Actions artifact 只在短期 CI 中作为 identity match hint，不把 Google display content 写入仓库、SQLite 或公开导出。
+通过私有历史 hint + 独立 structured-address evidence 严格恢复 1 家：Tully's Coffee（Place ID `ChIJswfCsA-MGGARIz1TprVs`），durable provider 为 Overture Maps。
 
-实际结果：
+### v3 — independent multi-source consensus
 
-- current id-only：1,392；
-- 有历史成功 hint：1,391；
+在 Hot Pepper / OSM / Overture 先互相证明同一实体后，再使用私有历史 hint 连接 frozen Place ID。严格自动恢复 1 家：`和Dining三十`（Place ID `ChIJq9lWshaMGGARk5S-OqNwPUU`）。
+
+### v4 — public official-page third evidence
+
+只访问独立来源记录中已有的公开 HTTPS website，遵守 robots/access restrictions，不保存 raw HTML。第一轮 31 个 unique candidate pages 中 22 成功读取，最终严格恢复 **2 家**。
+
+### v5 — strong retained-source consensus
+
+Workflow run `34123552810`：success。
+
+在剩余 **1,388 ID-only** 中检查：
+
+- exact cross-provider phone；
+- exact cross-provider official URL；
+- official domain + structured address。
+
+结果：
+
+- 有 multi-source independent cluster：566；
+- no strong signal：1,386；
 - historical non-operational：1；
-- 没有历史 hint：1；
-- 在现有 Hot Pepper / OSM / Overture 中满足 ultra-strict independent reconciliation：**0**；
-- durable proposal：0；
-- Google display payload leakage：0；
-- new Google API calls：0。
+- no historical hint：1；
+- **strong candidates：0**。
 
-结论：历史 Google hint 几乎覆盖全部 id-only，但不能作为 durable source；现有独立来源不能在当前严格 identity rule 下直接恢复新餐厅。
+结论：现有 HP / OSM / Overture retained payload 中未剩可直接利用的强 phone/domain/URL 共识。不得通过降低距离/名称阈值追数量。
 
-### E2 — private near-match diagnostics
+### v6 — same-origin official detail pages
 
-完成 / CI pass。只做 private diagnostics，不改变 durable acceptance rule。
+Workflow run `34125988881`：success。
 
-实际统计：
+对 multi-source component 已携带的官网做最多两跳 same-origin store/access/info traversal：
 
-- 1,392 id-only 中，1,390 在 120m 内至少有一个 Hot Pepper / OSM / Overture candidate；
-- exact normalized name 在 10m–120m 内都只有 **1** 条；
-- name similarity >=0.90、0.95、0.98、0.99、0.995 在 10m–120m 内同样都只有 **1** 条；
-- best candidate postcode match：801；
-- provider spatial coverage：1 provider = 17、2 providers = 65、3 providers = 1,308；
-- durable proposal 仍为 0。
+- multi-source cluster：566；
+- components with allowed website：175；
+- landing pages：29 scheduled / 20 OK；
+- hop1：209 links / 35 pages OK / 9 page-level matches；
+- hop2：358 links / 40 pages OK / 16 page-level matches；
+- 9 个 Place-ID-level provisional 结果全部命中共享 official listing URL；
+- **final strong candidates：0**。
 
-解释：独立候选的**空间覆盖并不低**，但东京核心区候选密度很高，距离/postcode 本身无法证明 Google Place ID 与独立记录是同一实体；真正缺的是可判别的名称/地址/电话/官网等 identity evidence。因此不采用 proximity-only，也不通过放宽 6m/20m/50m 阈值来追数量。
+### v6.1 — shared listing unique store fact
+
+Workflow run `34126400628`：success。
+
+允许共享 listing URL 只有在每个 Place ID 都对应不同且可判别的 official store-fact fingerprint 时继续。结果：
+
+- shared official listing URLs：2；
+- provisional rows：9；
+- duplicate store-fact fingerprint deferred：9；
+- unique-store-fact accepted：0；
+- **final strong candidates：0**。
+
+因此 v2–v6.1 已经把当前 retained sources + 它们直接携带的官网强信号基本穷尽。下一阶段必须增加真正新的独立公开证据覆盖，而不是继续调 fuzzy name / distance / postcode 阈值。
+
+详细记录：`logs/2026-09-07-identity-recovery-v5-v6-1.md`。
+
+## Public-web field completion
+
+### source-basic / official field evidence
+
+公开网页 evidence importer 均为 missing-only；只有 identity 已 `verified` / `source_matched` 且 non-conflict 才可使用。网络抓取与 SQLite import 分离，importer 本身 network requests = 0。
+
+当前已有效补入：
+
+- source-basic web evidence：57 rows / 40 canonical fields；
+- address +3；
+- coordinates +1；
+- cuisine +1；
+- hours +35。
+
+### official practical landing pages
+
+第一批 run `34122726395` 全链路 success：
+
+- 144 targets；
+- 118 pages OK；
+- 23 restaurants produced evidence；
+- 新增 35 practical fields。
+
+随后累计 landing evidence 达 26 rows / 42 canonical fields。
+
+### official practical same-origin detail pages
+
+run `34123205772` success：
+
+- 143 targets；
+- 93 homepage identity reconfirmed；
+- 54 detail links；
+- 52 detail pages OK；
+- 4 durable detail evidence rows；
+- 新增 5 fields：parking 2、Wi-Fi 2、card 1。
+
+当前 official practical 累计使 restaurant-level practical gap 降到 **882**。
+
+详细记录：`logs/2026-09-07-official-practical-enrichment.md`。
+
+## Budget completion 结论
+
+### official web meal-budget
+
+landing + same-origin detail collector 已执行。官网页面虽然大量可访问，但在严格要求“明确 lunch/dinner 标签 + finite JPY range”下 **0 durable meal-budget claims**。不把菜单单品价格、套餐价或 generic `priceRange` 误当人均午/晚餐预算。
+
+### Hot Pepper lunch retained-evidence audit
+
+Workflow run `34126682698`：success。
+
+当前 reviewed Hot Pepper 中 lunch 仍未解析的 432 家：
+
+- 已存在严格 eligible evidence 但 resolver 漏吃：**0**；
+- 无 retained lunch-budget evidence：**409**；
+- retained 但非严格 lunch evidence：23：
+  - single value 14；
+  - numeric unstructured 7；
+  - open-ended / single lower bound 2。
+
+因此 395 个 `field-hotpepper` lunch-only 任务不是 resolver bug。禁止把单值伪造成 `[x,x]` 或擅自补上下界。
+
+详细记录：`logs/2026-09-07-hotpepper-lunch-gap-audit.md`。
+
+## Open data 当前状态
+
+### Overture Maps
+
+`data/overture_area1_candidates.json` 已重新审计：
+
+- release：**2026-08-19.0**；
+- scope：TOKYO / 地区1️⃣；center 35.6959, 139.7576；radius 1,200 m；
+- rows：3,908；
+- Overture IDs：3,908 / 全唯一；
+- phone coverage：3,629；
+- website coverage：2,744；
+- structured addresses：3,908；
+- taxonomy：3,898。
+
+该 snapshot 已经是 2026-09-07 时 Overture 当前公开最新 release，因此立即重新下载同 release 不会增加数据。等待下一 release 再做 refresh 更合理。
+
+### OpenStreetMap
+
+历史 `area1_osm.js` 是 flattened candidate layer，master 已消费 name/address/coordinates/cuisine/hours；但 flattening 没有保留原始 OSM `phone/contact:phone`、`website/contact:website` 等 tags，而这些正是剩余 identity recovery 最缺的 discriminator。
+
+已新增 `fresh-osm-rich-tag-diagnostic-v1`：固定同一 1.2 km scope，只做一次 public Overpass query，比较现有 native OSM source IDs 与 fresh rich tags。该阶段只输出 short-lived diagnostic，不写 master、不 promotion；访问限制不重试绕过。
 
 ## 地图显示修复
 
 已实现：
 
-1. 删除 `index.html` 的 `google-maps-embed-key` meta；
-2. Pages 不再读取或注入 `GOOGLE_MAP_API` / Google Maps embed key；
-3. 页面内单店地图和三店总览统一走现有 Leaflet + OpenStreetMap tile；
-4. Google Place ID 仅用于普通 Google Maps 外部导航链接，不触发 Places API / Embed API 数据读取；
-5. `audit_no_paid_apis.mjs` 新增前端/Pages 防回归检查，阻止 Google map key、embed placeholder 和公开页面 embed 配置重新进入部署；
-6. Pages assemble 阶段再次检查公开 `index.html` 不含 Google Embed 配置，并确认 Leaflet/OpenStreetMap 存在；
-7. 总览地图的 1–3 餐厅 marker popup 增加普通 Google Maps 跳转链接，使用现有 Place ID/name/address 生成 URL，不发起数据 API 请求；
-8. 总览固定增加一个红色 reference marker，仅在前端保存经纬度常量；不保存/显示名称、地址或链接，不绑定 popup/tooltip，`interactive: false`；
-9. reference marker 不写入餐厅 catalog/master，不参与距离过滤、推荐 eligibility 或随机权重；
-10. 总览 `fitBounds` 将 reference point 纳入视野范围；页面不显示任何关于该红点或 marker 点击行为的说明文字。
+1. 删除 `index.html` 的 Google Maps embed key 配置；
+2. Pages 不再读取/注入 Google map API key；
+3. 单店与三店总览统一 Leaflet + OSM tile；
+4. Google Place ID 仅生成普通外部导航 URL；
+5. no-paid audit 阻止 Google embed/API 配置重新进入前端；
+6. reference marker 仅为前端空间参考，不进入 catalog/master/recommendation logic。
 
-这与 `privacy.html` 已声明的“内嵌地图使用 OpenStreetMap/Leaflet、不注入 Google Maps API key”保持一致。
+## 下一阶段优先级
 
-## Batch F — free public-source identity collector
-
-目标不是继续调 retained matching threshold，而是为剩余 1,392 个 id-only 建立真正可持久化的公开来源证据。
-
-设计原则：
-
-1. **private hint only for navigation**：历史 Google hint 只能在短期私有 workflow 中帮助定位搜索目标，Google display 字段不得进入 durable record；
-2. **durable source must be independent**：正式写入必须来自官网、公开店铺页面、Hot Pepper、OSM、Overture 或其他许可明确的公开来源；
-3. **identity evidence first**：至少取得真实名称 + 稳定 source URL，并优先结合地址/postcode/电话/坐标/官网域名等信号确认实体；
-4. **no proximity-only**：单纯距离近、同 postcode、同建筑不能自动绑定；
-5. **one visit, multi-field extraction**：身份确认后，同一次来源访问尽量提取 name/address/coordinates/cuisine/hours/budget/practical/menu 等全部支持字段；
-6. **candidate -> reviewed**：模糊结果先保存 candidate，不直接上架；只有通过规则或人工复核才升级 reviewed/source_matched；
-7. **batchable and resumable**：按 100–250 条一批执行，记录 source hash、retrieved_at、parser/rule version、失败原因和下一次重试状态；
-8. **access-respectful**：不绕过登录、CAPTCHA、robots/access restriction，不恢复付费 Google Places/Text/Nearby API。
-
-优先执行顺序仍为：identity conflict review > identity recovery > field completion > dish semantic review。Identity recovery 成功后自动进入 field-completion 队列。
-
-## 并行 sub-agent 执行层
-
-已实现第一版 deterministic workplan，commit `1aa34ef`。
-
-核心文件：
-
-- `scripts/database/build_agent_workplan.py`：读取当前 SQLite `ingestion_tasks`，按任务类型与已有 source provider 自动路由到 worker family；
-- `.github/workflows/parallel-agent-workplan.yml`：从真实 master 构建 proposal-only shard，并验证唯一 ownership、最大 shard 大小与 no-paid-API policy；
-- `logs/2026-09-07-parallel-subagent-architecture.md`：记录并行设计与约束。
-
-当前设计不是让多个 worker 同时修改 SQLite，而是：
-
-`master tasks -> deterministic shards -> parallel workers -> evidence/proposals -> central resolver -> master rebuild -> re-plan`
-
-默认 worker family：
-
-- `identity-public-recovery`：8 shards；
-- `field-official` / `field-hotpepper` / `field-tabelog-retained` / `field-open-data` / `field-existing-source`：各最多按需要拆分，默认 6 shards；
-- `dish-semantic-review`：2 shards；
-- `identity-conflict-review`：低并发人工/严格复核。
-
-硬约束：每条 active task 恰好属于一个 shard；每个 shard <=250 tasks；worker 只能输出 proposal/evidence，不能直接写 master；proximity-only identity 绑定继续禁止；任何 accepted proposal 仍需通过中央 resolver、collision quarantine、provenance/export validation 与 no-paid-API audit。
-
-下一步在这个 workplan 上增加各 family 的 worker executor 和 central proposal importer，而不再创建互相独立、重复扫描全量数据的 workflow。
+1. **Fresh OSM rich tags**：先量化现有 OSM native rows 新增 phone/domain/structured-address 的覆盖，再决定是否构建 v7 identity consensus；
+2. **Identity new-source coverage**：只有新独立来源才能继续推进剩余 1,388 ID-only；v2–v6.1 阈值保持冻结；
+3. **Field completion**：hours / practical 继续走独立网页或 structured source；budget 只接受语义明确的 lunch/dinner evidence；
+4. **Overture refresh**：当前已是 2026-08-19.0，等下一公开 release 后再 diff，而不是重复下载同版本；
+5. **Dish semantic review**：211 个任务保持独立低优先级队列；
+6. **Conflict review**：20 个 collision/conflict tasks 保持严格人工/证据式处理。
 
 ## 开发纪律
 
-每批开发完成同步更新 `DEVELOPMENT.md`、`DATA_PIPELINE.md` 和 `logs/`。只有 CI/数据验证实际通过才写“完成”；代码已提交但验证未结束统一标记为“已实现/待验证”。
+每批开发完成同步更新 `DEVELOPMENT.md`、`DATA_PIPELINE.md` 和 `logs/`。只有 CI/数据验证实际通过才写“完成”；代码已提交但验证未结束统一标记为“已实现/待验证”。任何来源访问继续遵守其公开访问条件，不绕过登录、CAPTCHA、robots/access restriction，也不恢复付费 Google Places/Text/Nearby API。
