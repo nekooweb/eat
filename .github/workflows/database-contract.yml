@@ -1,19 +1,27 @@
-name: Validate proposed database contract
+name: Validate master database contract
 
 on:
   push:
     branches: ["main"]
     paths:
+      - "database/**"
+      - "scripts/database/**"
       - "docs/database/**"
       - ".github/workflows/database-contract.yml"
+      - ".gitignore"
       - "data/area1_google_ids.json"
       - "data/google_basic_source_matches.json"
+      - "data/hotpepper_catalog_facts.json"
   pull_request:
     paths:
+      - "database/**"
+      - "scripts/database/**"
       - "docs/database/**"
       - ".github/workflows/database-contract.yml"
+      - ".gitignore"
       - "data/area1_google_ids.json"
       - "data/google_basic_source_matches.json"
+      - "data/hotpepper_catalog_facts.json"
   workflow_dispatch:
 
 env:
@@ -32,13 +40,78 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Check prototype syntax
-        run: python -m py_compile docs/database/validate_schema.py
-      - name: Validate pinned source inputs and in-memory SQLite contract
+
+      - name: Check database tooling syntax
+        run: |
+          python -m py_compile \
+            docs/database/validate_schema.py \
+            scripts/database/build_master.py \
+            scripts/database/validate_master.py
+
+      - name: Legacy in-memory prototype contract (warning only)
         continue-on-error: true
         run: |
           python docs/database/validate_schema.py || {
             code=$?
-            echo "::warning title=Database refactor contract::Prototype contract validation failed with exit ${code}. This is tolerated while EAT_REFACTOR_MODE=1; syntax remains blocking."
+            echo "::warning title=Legacy database prototype::Old in-memory contract failed with exit ${code}; tolerated during refactor."
             exit ${code}
           }
+
+      # New master-database smoke tests are blocking even in refactor mode.
+      # They validate the architecture being migrated toward, not legacy shape compatibility.
+      - name: Build persistent SQLite master from retained inputs
+        run: |
+          set -euo pipefail
+          mkdir -p _tmp
+          python scripts/database/build_master.py --output _tmp/eat-master.sqlite --reset | tee _tmp/master-build-1.json
+          test -s _tmp/eat-master.sqlite
+          python scripts/database/validate_master.py _tmp/eat-master.sqlite | tee _tmp/master-validate-1.json
+
+      - name: Verify idempotent repeat import
+        run: |
+          set -euo pipefail
+          before="$(python - <<'PY'
+          import json, sqlite3
+          db=sqlite3.connect('_tmp/eat-master.sqlite')
+          tables=['catalog_entries','source_records','source_bindings','field_observations','field_resolutions']
+          print(json.dumps({t:db.execute('select count(*) from '+t).fetchone()[0] for t in tables},sort_keys=True))
+          PY
+          )"
+          python scripts/database/build_master.py --output _tmp/eat-master.sqlite | tee _tmp/master-build-2.json
+          after="$(python - <<'PY'
+          import json, sqlite3
+          db=sqlite3.connect('_tmp/eat-master.sqlite')
+          tables=['catalog_entries','source_records','source_bindings','field_observations','field_resolutions']
+          print(json.dumps({t:db.execute('select count(*) from '+t).fetchone()[0] for t in tables},sort_keys=True))
+          PY
+          )"
+          echo "before=${before}"
+          echo "after=${after}"
+          test "${before}" = "${after}"
+          python scripts/database/validate_master.py _tmp/eat-master.sqlite | tee _tmp/master-validate-2.json
+
+      - name: Verify backup and restore
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import sqlite3
+          src=sqlite3.connect('_tmp/eat-master.sqlite')
+          dst=sqlite3.connect('_tmp/eat-master-backup.sqlite')
+          src.backup(dst)
+          assert dst.execute('pragma integrity_check').fetchone()[0] == 'ok'
+          assert list(dst.execute('pragma foreign_key_check')) == []
+          assert dst.execute('select count(*) from catalog_entries').fetchone()[0] == 2804
+          src.close(); dst.close()
+          print('backup_restore=pass')
+          PY
+          python scripts/database/validate_master.py _tmp/eat-master-backup.sqlite | tee _tmp/master-backup-validate.json
+
+      - name: Upload database smoke-test reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: eat-master-database-smoke
+          path: |
+            _tmp/*.json
+          if-no-files-found: warn
+          retention-days: 3

@@ -1,59 +1,86 @@
 # 主数据库契约
 
-更新日期：2026-09-07。状态：已验证的最小关系模型；不是已经部署的数据库迁移。
-
-目标是一个 SQLite 主库，保存全部目录及关联资料。字段为空也保留目录条目；来源候选没有已确认 Place ID 时可以独立保存。
+更新日期：2026-09-07。状态：persistent SQLite v1 已实现，正式 smoke test 由 GitHub Actions 验证；旧 `docs/database/schema-v1.sql` 仅保留为早期原型，生产迁移使用 `database/migrations/001_initial.sql`。
 
 ## 表及职责
 
 | 表 | 主键或关联键 | 职责 |
 | --- | --- | --- |
-| `catalog_entries` | `place_id` | 范围、成员快照、身份状态 |
-| `source_records` | 提供方 + 来源 ID + 内容版本 | 原始来源记录，不要求已经绑定目录 |
-| `source_bindings` | Place ID + 来源记录 | 关联依据和 reviewed / candidate / conflict / retracted 状态 |
-| `field_observations` | 观察 ID | 字段原值、来源、观察时间、有效状态 |
-| `field_resolutions` | Place ID + 字段 | 被采用的观察及规则版本，或者未解决状态 |
-| `ingestion_tasks` | 任务 ID | 提供方、进度、失败原因、重试信息 |
-| `exports` | 导出版本 ID | 输入提交、schema 版本、数量、校验值 |
+| `schema_migrations` | version | 数据库迁移版本 |
+| `catalog_entries` | `place_id` | 2,804 frozen catalog 范围、成员快照、身份状态 |
+| `source_records` | content-addressed ID | 版本化来源记录、raw payload、取得方式、parser、permission、hash |
+| `source_bindings` | Place ID + source record | reviewed / candidate / conflict / retracted 身份关联 |
+| `field_observations` | observation ID | 字段原值/状态/时间及 derived-from 信息 |
+| `field_resolutions` | Place ID + field | 被采用 observation、resolver rule/priority 或未解决状态 |
+| `ingestion_runs` | run ID | 每次导入的提交、parser、状态与摘要 |
+| `ingestion_tasks` | task ID | 后续增量采集/复核任务状态 |
+| `retained_exceptions` | exception ID | 不应静默丢弃但不属于当前 catalog 的历史资料 |
+| `exports` | export ID | catalog/recommendation/public/audit 导出版本与校验信息 |
 
-最小 SQL 位于 [schema-v1.sql](docs/database/schema-v1.sql)。该模型用复合外键限制字段采用记录指向其他餐厅或其他字段，但并未实现完整业务解析器。正式实施还需补充采集运行元数据、授权记录、证据定位、撤销记录及公开字段规则。
+## 身份状态
 
-来源 ID 在不同提供方中分别命名。一个网页可含多个分店，因此 URL 不能独自作为店铺主键。同一个提供方的同一分店 ID 对应多个 Place ID 时保留全部记录并核对，不自动合并。
+`catalog_entries.identity_state`：
 
-## 字段状态
+- `id_only`：仅有 catalog Place ID，当前不公开推荐。
+- `source_matched`：存在 reviewed source binding 和可采用真实名称。
+- `verified`：迁移自现有严格 canonical identity 或未来完成更高等级核验。
+- `closed` / `moved`：有明确状态证据。
+- `conflict`：身份存在未解决冲突。
 
-- `known`：值存在且符合字段和身份采用规则。
-- `unknown`：尚未取得可采用值，不能填空字符串占位假装已知。
-- `reviewed_none`：来源已审查且明确没有该项。
-- `not_applicable`：该项不适用于这条业务记录。
-- `conflict`：身份或字段有未解决分歧。
-- `retracted`：旧观察已明确撤销，保留历史。
+Catalog membership 与 publication eligibility 分离。即使 `id_only` 或 `conflict` 也保留 Place ID，不等于必须展示。
 
-`source_available_unextracted` 属于任务/提取进度，不等同于字段已知。网络失败保存在任务表，不能被翻译成闭店或 reviewed_none。
+## Source record 与 binding
 
-## 字段分组
+`source_records` 不负责宣布“这是哪一家 Google Place”；它保存来源原记录和版本。一个 provider/source ID 可存在多个内容版本。
 
-- 基础：名称原文、假名、译名、地址、来源坐标、计算距离、电话、网站、业务状态。
-- 分类：提供方原分类与规范化菜系分别保存。
-- 时间：营业原文、休息日原文、每周时段、节假日/临时例外分别保存。
-- 金额：币种 JPY、餐段、下界、上界、包含关系、原文、预算或菜单价格类型、证据等级。
-- 菜品：原菜名、译名、单品价格、代表菜/招牌/推荐类型、支持该类型的具体证据。
-- 实用资料：交通、座位、支付、吸烟、停车、包间、儿童及其他来源支持的设施。
+`source_bindings` 才表示该 source record 与 Place ID 的身份判断。相同 provider source ID 对多个 Place ID 时全部保留并标记 conflict，不自动合并。当前 retained basic 数据已知 5 组 reused provider ID / 10 个 Place ID。
 
-Google 公开页面原字段、官网字段与 Hot Pepper 字段保存各自来源，不统一伪装成 Google 数据。已有授权资料可持久化，但新来源不能在尚未取得数据时写成已采集。
+候选或 conflict source 仍保存原始 evidence，但 candidate 不能自动生成 resolution；conflict 不能被 resolver 选择为 known observation。
 
-## 映射约束
+## Field observation 与 resolution
 
-Hot Pepper 留存格式的营业字段为 `facts.openingHoursText`，休息日为 `facts.closedText`。新适配器不得使用旧错误映射 `facts.open / facts.close`。
+字段状态：`known / unknown / reviewed_none / not_applicable / conflict / retracted`。
 
-空白/零值/false 分开判断。午餐供应不是午餐预算；菜单单价不是人均消费；开放上界不能补造；泛指菜系不自动计为具体推荐菜。
+- 空抓取、超时或新空值不能覆盖旧 known。
+- `known` 必须有实际 JSON value。
+- derived field 可记录 `derived_from_observation_id` 和 `transformation_rule_version`。
+- `field_resolutions` 的复合外键限制采用 observation 必须属于同一 Place ID 和 field key。
+- resolver 使用明确 rule version / priority，不由文件导入顺序决定。
 
-来源检查时间与本次入库时间分开。重导入旧资料不刷新来源时效。
+当前初始来源优先级用于迁移稳定性：official > Hot Pepper > legacy resolved snapshot > Overture > OpenStreetMap。它不是永久业务规则；后续 resolver 会结合字段类型、时间、retraction 与冲突证据细化。
 
-## 数据库展示契约
+## Legacy canonical 迁移
 
-目录视图包括所有 2,804 条记录。每行展示 Place ID、已取得名称或「名称待补」状态、资料完整度、冲突提示、来源日期和外部地图入口。
+现有 `production_area1.js` 是多来源解析后的派生状态，不应假装成新的直接来源，但如果完全忽略会让 SQLite 首次导出丢失当前线上字段。因此 v1 将：
 
-推荐视图是目录的显式用途视图，不负责删掉不完整条目。未知距离不能进入小半径筛选；冻结目录归属也不能冒充当前精确坐标。
+- 651 条 frozen catalog 内 canonical 作为 `legacy_resolved_snapshot` source record 导入；
+- identity 设为 `verified`；
+- 字段以较低于 direct official/Hot Pepper 的迁移优先级保留；
+- 3 条目录外 canonical 进入 `retained_exceptions`。
 
-公开导出使用明确字段白名单；完整主库、原始响应和授权凭据不直接发布到 Pages。
+未来 direct source observation 覆盖后，legacy snapshot 仍保留为历史 provenance，而不继续主导字段。
+
+## Hot Pepper v1
+
+保存 raw：名称、假名、地址、坐标、genre/subgenre、budget、营业原文、休息日原文、午餐供应、access、station、URL、catch、course、free drink/food、private room、card、smoking、parking。
+
+显式 derived budget range：
+
+- 区间 → lower/upper
+- `N以下` → lower=0, upper=N
+- `N以上` → lower=N, upper=null
+
+`openingHoursText` / `closedText` 是原始 evidence；在可靠 parser 完成前不强行把全部 535 条转换为 weekly normalized schedule。
+
+## Public export 契约
+
+最终从同一数据库 snapshot 生成：
+
+- catalog：全部 2,804；
+- recommendation：仅满足 eligibility，必须有真实名称并无阻断身份冲突。
+
+当前旧 runtime 已提前执行这一 publication gate：1,393 个 ID-only 下架、1,411 个 named rows 在线。SQLite exporter 完成后再替换这段过渡逻辑。
+
+## 本地与 CI
+
+本地 DB 默认 `_local/eat-main.sqlite`，SQLite 文件和 WAL/SHM 不提交仓库。Actions 仅构建 `_tmp` smoke database，执行两次幂等导入和 backup/restore；公开 Pages 不包含整个 SQLite。
