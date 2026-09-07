@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "ruleVersion": "private-address-consensus-v2",
+  "policy": {
+    "newGoogleApiCalls": 0,
+    "googleDisplayPayloadPersisted": false,
+    "durableFieldsIndependentSourceOnly": true,
+    "proximityOnlyBindingAllowed": false
+  },
+  "sourceRun": {
+    "workflowRunId": 34107297339,
+    "artifact": "private-address-reconciliation-v2",
+    "checkedAt": "2026-09-07"
+  },
+  "rows": [
+    {
+      "googlePlaceId": "ChIJswfCsA-MGGARIz1Zn1TprVs",
+      "provider": "Overture Maps",
+      "providerId": "4ac1e72b-be43-4856-b732-2488312fe8ec",
+      "name": "Tully's Coffee",
+      "address": "千代田区 101-0054 Kanda Nishikicho, 3 Chome−19 Hirose 2nd Bldg., 1F",
+      "lat": 35.6915669,
+      "lng": 139.7605241,
+      "distanceMeters": 549,
+      "cuisine": "咖啡",
+      "sourceCuisine": "coffee_shop",
+      "websites": [],
+      "sourceCheckedAt": "2026-09-07",
+      "verification": "reviewed_independent_source_match_using_expiring_private_address_hint",
+      "matchLevel": "private-address-consensus-v2",
+      "matchRule": "structured_address_name_unique",
+      "transformation": {
+        "cuisineRule": "overture-basic-category-v1:coffee_shop->咖啡"
+      }
+    }
+  ]
+}
