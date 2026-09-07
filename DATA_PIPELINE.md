@@ -46,6 +46,36 @@ Retained evidence 用尽后的正式 identity-recovery 路径：
 9. 每批 100–250 task，可中断、可重跑、可统计失败原因；
 10. 不绕过登录/CAPTCHA/robots/access restriction，不调用付费 Google Places/Text/Nearby API。
 
+## Parallel sub-agent execution
+
+批量补齐改为 task-owner 明确的 proposal-only 并行层，而不是多个 workflow 同时全量扫描和直接改 master：
+
+`SQLite master -> unified ingestion tasks -> deterministic agent shards -> parallel evidence/proposal workers -> central validator/resolver -> master rebuild -> planner re-run`
+
+`build_agent_workplan.py` 读取 `ingestion_tasks` / `ingestion_task_details` 和当前 source bindings，将每条 active task 精确分配给一个 agent family：
+
+- `identity-public-recovery`：剩余 id-only 的公开来源身份恢复；
+- `identity-conflict-review`：source-ID collision / conflict；
+- `field-official`：已有 official source 的字段补齐；
+- `field-hotpepper`：已有 Hot Pepper source 的字段补齐；
+- `field-tabelog-retained`：已有 retained Tabelog source 的字段补齐；
+- `field-open-data`：OSM/Overture 等公开源字段补齐；
+- `field-existing-source`：其他已有 source 的字段补齐；
+- `dish-semantic-review`：推荐菜/特色菜证据的语义复核。
+
+分片采用稳定 SHA-256 bucket，重复生成同一任务集时 ownership 保持稳定。默认 identity 8 shards、field family 6 shards、dish 2 shards；如果任务过多，自动增加 shard 数，保证每个 shard <=250 tasks。
+
+所有 shard 都是 **proposal-only**：worker 不能直接写 SQLite master。worker 输出必须保留 `taskId` / `placeId` / source URL/provider / evidence / confidence / field claims，中央 importer 再执行 identity/binding/field acceptance。硬约束：
+
+- 每条 active task 只属于一个 shard；
+- paid Google data API calls = 0；
+- historical Google display payload 不得进入 durable proposal；
+- proximity-only identity binding 禁止；
+- ambiguous identity 保持 candidate/review-required；
+- accepted data 继续经过 collision quarantine、provenance、resolver、export 与 no-paid-API validation。
+
+`.github/workflows/parallel-agent-workplan.yml` 负责从真实 master 生成短期 workplan artifact；planning 本身不访问外部数据源。后续 worker executor 只消费自己的 shard，避免重复请求同一来源。
+
 ## Field completion
 
 Retained-field resolver v2：publishable/no-conflict only，official/Tabelog only，HTTPS provenance + claimedFields，missing-only，derived observation 链接原 observation。
