@@ -84,10 +84,19 @@ Near-match 明细仍仅保存在短期 private artifact，不持久化 Google �
 4. 页面内三店总览和单店地图统一由现有 Leaflet 读取本地 runtime 坐标，再加载 OpenStreetMap tiles；
 5. Google Maps 只保留外部普通导航链接，Place ID 作为导航兼容键，不通过 Google API 读取地点字段；
 6. `scripts/audit_no_paid_apis.mjs` 删除旧 free-embed exception，并将 `app.js` / `index.html` 纳入扫描；
-7. 新增对 `GOOGLE_MAPS_EMBED_KEY`、Google map key secret、公开 index embed meta/placeholder 的 blocking 检查；
+7. 新增对 Google map key secret、公开 index embed meta/placeholder 的 blocking 检查；
 8. Pages assemble 再次检查公开页面不含 embed key/endpoint 配置，并确认 Leaflet/OpenStreetMap 标记存在。
 
 目标：地图渲染和餐厅数据采集完全解耦。即使 Google API key 不存在或被删除，页面地图仍可正常显示。
+
+### Overview navigation + silent NII reference
+
+- 三家餐厅的 1–3 marker 继续可点击；popup 内保留普通 Google Maps 跳转链接。
+- 总览中增加一个固定红色位置参考点，对应 NII 所在建筑位置。
+- 红点仅保存 UI 坐标常量，不包含名称、地址或 Google URL 等字段。
+- 红点设置 `interactive: false`，不绑定 popup、tooltip、链接或任何点击事件。
+- 页面不显示“点 1–3 可跳转 Google Maps / 红点为 NII”等解释文字；总览只显示标题与地图。
+- 红点仅参与 `fitBounds`，不进入 catalog/master、不参与筛选、距离条件或推荐随机逻辑。
 
 ## 下一阶段
 
