@@ -4,64 +4,46 @@
 
 ## 已验证 master baseline
 
-当前 SQLite master 已通过真实文件 build、严格 FK/integrity、二次幂等导入、resolver 重跑、SQLite backup/restore 和 shadow export validation。
+当前 SQLite master 已通过真实文件 build、严格 FK/integrity、二次幂等导入、resolver 重跑、SQLite backup/restore、shadow export 与 runtime/shadow membership 对照。
 
-当前主库：
+当前主库基线：
 
 - catalog 2,804
 - source records / bindings 3,583 / 3,583
 - field observations 40,008
 - field resolutions 29,501
-- verified 651
-- source-matched 747
-- conflict identity state 13
-- id-only 1,393
-- resolved names 1,398
 - source-ID collision 8 组 / 16 Place ID
+- shadow recommendation 1,395
 
-## Retained evidence 与 practical resolution
+## 字段级 diff 结果
 
-已迁移：575 provider facts、644 provenance links、135 Hot Pepper rich metadata、283 dish evidence items。
+共同 1,395 家的诊断显示：name 89 changed、address 49 changed、coordinates 126 changed、cuisine 169 changed、dinner budget 40 changed、hours 126 changed；lunch budget 无 changed。推荐菜有 151 shadowMissing，特色菜 50 shadowMissing，因此 dish evidence 暂不自动 promotion。Practical 有 480 家 shadowAdded。
 
-已安全采用：
+这些差异用于选择 resolver v2，不作为旧 overlay 兼容性的 blocking gate。
 
-- reviewed rich practical `(Place ID, field)`：1,194
-- reviewed Hot Pepper full practical derived observations：3,271
+## Source category / normalized cuisine 契约
 
-Derived practical 只接受明确 `あり/なし`、`利用可/利用不可` 等可机械解释文本，并保留 raw observation FK 与 rule version。Candidate/conflict binding 不参加派生。
+Hot Pepper `genre` / `subGenre` 是 provider category，不等于本项目 canonical normalized cuisine。
+
+新的 master import 规则：
+
+- `retained_hotpepper_artifact` 保存 `cuisine_source` 与 `sub_cuisine_source`；
+- 不再从 full Hot Pepper artifact 直接生成/采用 canonical `cuisine`；
+- `cuisine` 当前只由已规范化 basic/canonical observation 提供；
+- 未来若要从 provider genre 转为 canonical cuisine，必须通过单独、版本化的 category normalizer，并保存 derived-from / transformation rule provenance。
+
+`validate_source_semantics.py` 在 build、repeat import 与 backup/restore 后检查：535 条 source genre 保留；full Hot Pepper artifact 的 canonical cuisine observation/resolution 均为 0。
 
 ## Shadow export
 
-Shadow catalog 必须 exact 2,804 / frozen order。Shadow recommendation eligibility：
+Catalog exact 2,804 / frozen order。Recommendation eligibility：`verified/source_matched + known real name + no conflict binding`。
 
-`verified or source_matched` + `known real name` + `no conflict binding`。
+已验证 current runtime 1,411 → shadow 1,395 的唯一 membership 差异为 16 个 conflict-binding Place ID。Shadow 仍只在 CI artifact 中生成，不接 Pages。
 
-最终已验证：当前 runtime 1,411、shadow recommendation 1,395；差异 16 条全部是 conflict-binding Place ID，shadow-only=0，移除 conflict 后顺序一致。
+## 下一步
 
-Shadow 当前仍只在 CI artifact 中生成，不接 Pages。
-
-## 字段级 diff
-
-新增 `scripts/database/diff_runtime_shadow_fields.py`，比较共同 1,395 个推荐 Place ID 的 name/address/coordinates/cuisine/budget/hours/dishes/practical。
-
-报告类别：
-
-- `equal`
-- `changed`
-- `shadowAdded`
-- `shadowMissing`
-- `absentBoth`
-
-字段差异当前是诊断报告，不用来强迫新模型兼容旧 overlay；membership、order、identity conflict、raw/private data leakage 等仍是 blocking contract。
-
-下一步根据该报告选择 resolver v2，而不是凭直觉批量 promotion。
-
-## 本地运行
-
-```bash
-python scripts/database/build_master.py --output _local/eat-main.sqlite --reset
-python scripts/database/validate_master.py _local/eat-main.sqlite
-python scripts/database/export_master.py _local/eat-main.sqlite --outdir _local/export
-```
-
-SQLite/WAL/SHM 和 raw master 不进入 Pages。
+1. 重跑字段 diff，确认 cuisine 语义修复后的 changed 数量；
+2. 建立统一 ingestion task queue，而不是继续增加散乱 workflow；
+3. 再开发 budget/hours resolver v2；
+4. dish recommendation 继续 evidence-only；
+5. 主库稳定后开始 id-only identity/name recovery。

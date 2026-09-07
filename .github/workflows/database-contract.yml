@@ -71,6 +71,7 @@ jobs:
             scripts/database/build_master.py \
             scripts/database/validate_master.py \
             scripts/database/validate_derived_practical.py \
+            scripts/database/validate_source_semantics.py \
             scripts/database/export_master_core.py \
             scripts/database/export_master.py \
             scripts/database/validate_export.py \
@@ -95,6 +96,7 @@ jobs:
           test -s _tmp/eat-master.sqlite
           python scripts/database/validate_master.py _tmp/eat-master.sqlite | tee _tmp/master-validate-1.json
           python scripts/database/validate_derived_practical.py _tmp/eat-master.sqlite | tee _tmp/derived-practical-validate-1.json
+          python scripts/database/validate_source_semantics.py _tmp/eat-master.sqlite | tee _tmp/source-semantics-validate-1.json
 
       - name: Verify idempotent repeat import and resolver
         run: |
@@ -119,6 +121,7 @@ jobs:
           test "${before}" = "${after}"
           python scripts/database/validate_master.py _tmp/eat-master.sqlite | tee _tmp/master-validate-2.json
           python scripts/database/validate_derived_practical.py _tmp/eat-master.sqlite | tee _tmp/derived-practical-validate-2.json
+          python scripts/database/validate_source_semantics.py _tmp/eat-master.sqlite | tee _tmp/source-semantics-validate-2.json
 
       - name: Verify backup and restore
         run: |
@@ -136,6 +139,7 @@ jobs:
           PY
           python scripts/database/validate_master.py _tmp/eat-master-backup.sqlite | tee _tmp/master-backup-validate.json
           python scripts/database/validate_derived_practical.py _tmp/eat-master-backup.sqlite | tee _tmp/derived-practical-backup-validate.json
+          python scripts/database/validate_source_semantics.py _tmp/eat-master-backup.sqlite | tee _tmp/source-semantics-backup-validate.json
 
       - name: Generate and validate shadow exports
         run: |
@@ -147,16 +151,11 @@ jobs:
             _tmp/export/catalog.shadow.json \
             _tmp/export/recommendation.shadow.json | tee _tmp/shadow-export-validate.json
 
-          # Rebuild the current publication snapshot in the runner. The tracked
-          # generated file may lag behind the builder and is not the comparison truth.
           node scripts/build_google_inventory_runtime.mjs | tee _tmp/current-runtime-build.json
           python scripts/database/compare_runtime_shadow.py \
             _tmp/eat-master.sqlite \
             _tmp/export/recommendation.shadow.json | tee _tmp/runtime-shadow-compare.json
 
-          # Field differences are diagnostic during refactor. The script exits only
-          # on parsing/tooling errors; changed/missing/added field counts are reported,
-          # not used as a legacy compatibility gate.
           python scripts/database/diff_runtime_shadow_fields.py \
             _tmp/export/recommendation.shadow.json \
             --output _tmp/runtime-shadow-field-diff-full.json | tee _tmp/runtime-shadow-field-diff-summary.json

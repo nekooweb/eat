@@ -35,6 +35,34 @@ def _resolve_preserving_known_on_conflict(db, place_id, field_key, observation_i
 core.resolve = _resolve_preserving_known_on_conflict
 
 
+def _import_hotpepper_preserving_normalized_cuisine(db, doc, conflict_keys, stamp):
+    """Import full Hot Pepper facts without treating provider genre as canonical cuisine.
+
+    `cuisine_source` and `sub_cuisine_source` are retained normally. The historical
+    importer also wrote `genre.name` to the canonical `cuisine` field; during the
+    refactor that is deliberately suppressed until a versioned cuisine normalizer exists.
+    Basic source-match rows may still provide their already-normalized `cuisine` field.
+    """
+    original_add_field = core.add_field
+
+    def add_field_without_provider_genre(
+        db_, place_id, source_record_id, field_key, value, binding_state,
+        provider, observed_at, stamp_, *, resolve_field=True,
+    ):
+        if field_key == "cuisine":
+            return None
+        return original_add_field(
+            db_, place_id, source_record_id, field_key, value, binding_state,
+            provider, observed_at, stamp_, resolve_field=resolve_field,
+        )
+
+    core.add_field = add_field_without_provider_genre
+    try:
+        return core.import_hotpepper(db, doc, conflict_keys, stamp)
+    finally:
+        core.add_field = original_add_field
+
+
 def retained_conflict_index(basics, hotpepper, phase2_inputs):
     basic_places = defaultdict(set)
     all_places = defaultdict(set)
@@ -99,7 +127,7 @@ def build(output: Path, reset: bool = False):
 
         legacy_counts = core.import_legacy_canonical(db, production, id_set, stamp)
         basic_counts = core.import_basic(db, basics, conflict_keys, stamp)
-        hp_counts = core.import_hotpepper(db, hotpepper, conflict_keys, stamp)
+        hp_counts = _import_hotpepper_preserving_normalized_cuisine(db, hotpepper, conflict_keys, stamp)
         phase2_counts = phase2.import_all(db, phase2_inputs, conflict_keys, stamp)
         basic_practical_counts = derived.resolve_hotpepper_basic_practical(db, stamp)
         rich_practical_counts = resolver.resolve_safe_practical(db, stamp)
