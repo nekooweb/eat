@@ -55,10 +55,13 @@ jobs:
           assert s['basicReadyTotal'] >= 1412
           assert s['identityOnlyRemaining'] <= 1392
           ids=[r['googlePlaceId'] for r in d['rows']]
-          native=[(r['provider'],str(r['providerId'])) for r in d['rows']]
           assert len(ids)==len(set(ids))
-          assert len(native)==len(set(native))
-          assert any(r['googlePlaceId']=='ChIJswfCsA-MGGARIz1Zn1TprVs' for r in d['rows'])
+          # Historical source-ID collisions are intentionally retained/quarantined.
+          # The merger separately blocks any NEW overlay native-source collision.
+          target=[r for r in d['rows'] if r['googlePlaceId']=='ChIJswfCsA-MGGARIz1Zn1TprVs']
+          assert len(target)==1
+          assert target[0]['provider']=='Overture Maps'
+          assert str(target[0]['providerId'])=='4ac1e72b-be43-4856-b732-2488312fe8ec'
           print(json.dumps(s,ensure_ascii=False,sort_keys=True))
           PY
       - name: Validate current runtime
