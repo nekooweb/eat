@@ -12,11 +12,12 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import re
 import sqlite3
 from collections import Counter, defaultdict
 from pathlib import Path
 
-RULE_VERSION = "fresh-osm-bound-field-evidence-v1"
+RULE_VERSION = "fresh-osm-bound-field-evidence-v2"
 SUPPORTED = ("address", "coordinates", "cuisine", "hours.raw")
 EQUIVALENTS = {
     "address": ("address",),
@@ -24,10 +25,23 @@ EQUIVALENTS = {
     "cuisine": ("cuisine",),
     "hours.raw": ("hours.raw", "hours.reference.legacy", "hours.normalized.legacy"),
 }
+LEGACY_OSM_ID_RE = re.compile(r"^osm-([nwr])-(\d+)$", re.I)
+OSM_KIND = {"n": "node", "w": "way", "r": "relation"}
 
 
 def canonical_osm_id(value: object) -> str:
+    """Normalize current native IDs and retained legacy row IDs to kind/numeric-id.
+
+    Fresh snapshots expose native IDs such as ``node/6817614546``. The retained
+    historical QC layer used internal row IDs such as ``osm-n-6817614546`` even
+    though the corresponding OSM candidate carries ``sourceId=node/6817614546``.
+    Both forms identify the same native OSM element and must canonicalize before an
+    exact reviewed-binding join. No fuzzy/location matching is introduced here.
+    """
     text = str(value or "").strip().lower()
+    legacy = LEGACY_OSM_ID_RE.fullmatch(text)
+    if legacy:
+        return f"{OSM_KIND[legacy.group(1)]}/{int(legacy.group(2))}"
     if text.startswith("osm:"):
         text = text[4:]
     if text.startswith("openstreetmap:"):
@@ -62,7 +76,7 @@ def field_missing(known: set[tuple[str, str]], pid: str, key: str) -> bool:
 
 
 def reviewed_osm_bindings(db: sqlite3.Connection) -> tuple[dict[str, str], set[str], int]:
-    """Return collision-free native OSM id -> place id reviewed bindings."""
+    """Return collision-free canonical native OSM id -> place id reviewed bindings."""
     places: dict[str, set[str]] = defaultdict(set)
     pairs = 0
     for pid, provider_id, identity_state in db.execute(
@@ -164,6 +178,7 @@ def build(database: Path, snapshot_path: Path, output: Path) -> dict:
             "provenance": {
                 "snapshotRuleVersion": snapshot.get("ruleVersion"),
                 "bindingRequirement": "existing reviewed exact native OSM binding",
+                "idNormalization": "native node/way/relation plus retained osm-n/w/r compatibility",
             },
         })
 
