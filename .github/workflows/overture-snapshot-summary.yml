@@ -38,7 +38,9 @@ jobs:
           assert d['policy']['restaurantDisplayPayloadCopied'] is False
           s=d['summary']
           assert s['rows'] > 0
-          assert s['providerIdsPresent'] == s['uniqueProviderIds']
+          assert s['overtureIdsPresent'] == s['rows']
+          assert s['overtureIdsPresent'] == s['uniqueOvertureIds']
+          assert s['duplicateOvertureIds'] == 0
           e=s['extent']
           assert 138 < e['west'] < e['east'] < 141
           assert 34 < e['south'] < e['north'] < 37
