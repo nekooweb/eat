@@ -2,11 +2,6 @@ name: Collect structured Hot Pepper dish evidence
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
-    paths:
-      - _ops/run-hotpepper-structured-full-once-2026-09-08.txt
 
 permissions:
   contents: write
