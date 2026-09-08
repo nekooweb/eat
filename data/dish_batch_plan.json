@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-08T11:07:40.560Z",
+  "generatedAt": "2026-09-08T11:17:43.556Z",
   "policy": {
     "catalogIdentityKey": "frozen Place ID only",
     "catalogTotal": 2804,
@@ -19,9 +19,9 @@
     "dishWorkRows": 1225,
     "shards": 8,
     "laneCounts": {
-      "official_crawl": 265,
+      "official_crawl": 266,
       "retained_source_mining": 597,
-      "independent_source_discovery": 301,
+      "independent_source_discovery": 300,
       "official_or_retained_featured": 62
     },
     "shardCounts": [
@@ -69,9 +69,9 @@
         "shard": 4,
         "total": 153,
         "lanes": {
-          "official_crawl": 36,
+          "official_crawl": 37,
           "retained_source_mining": 72,
-          "independent_source_discovery": 39,
+          "independent_source_discovery": 38,
           "official_or_retained_featured": 6
         }
       },
@@ -9335,6 +9335,20 @@
       "featuredDishesKnown": 0
     },
     {
+      "googlePlaceId": "ChIJI1W-PkKMGGARSpB6s8XZQKU",
+      "name": "la cantina cancemi",
+      "lane": "official_crawl",
+      "nextAction": "collect_strict_recommended_dishes",
+      "shard": 4,
+      "priorityScore": 1150,
+      "cuisine": "餐厅",
+      "crawlableOfficialUrlCount": 1,
+      "retainedThirdPartyUrlCount": 0,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 0,
+      "featuredDishesKnown": 0
+    },
+    {
       "googlePlaceId": "ChIJIQy99i2NGGAR4Udb7j8D-pg",
       "name": "ovgo Baker Cookie Factory Shop",
       "lane": "official_crawl",
@@ -10863,20 +10877,6 @@
     {
       "googlePlaceId": "ChIJH6xJGKONGGARU28BTcWvIbA",
       "name": "PIZZERIA FORNO NERO",
-      "lane": "independent_source_discovery",
-      "nextAction": "find_independent_dish_source",
-      "shard": 4,
-      "priorityScore": 1050,
-      "cuisine": "餐厅",
-      "crawlableOfficialUrlCount": 0,
-      "retainedThirdPartyUrlCount": 0,
-      "sourceUrlCount": 0,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0
-    },
-    {
-      "googlePlaceId": "ChIJI1W-PkKMGGARSpB6s8XZQKU",
-      "name": "la cantina cancemi",
       "lane": "independent_source_discovery",
       "nextAction": "find_independent_dish_source",
       "shard": 4,

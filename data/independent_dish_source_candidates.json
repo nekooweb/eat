@@ -1,6 +1,6 @@
 {
   "schemaVersion": 3,
-  "generatedAt": "2026-09-08T11:07:40.804Z",
+  "generatedAt": "2026-09-08T11:17:43.816Z",
   "policy": {
     "proposalOnly": true,
     "identityBindingChanges": 0,
@@ -43,20 +43,20 @@
     "schemaVersion": 3,
     "catalogTotal": 2804,
     "publicRuntimeTotal": 1422,
-    "currentIndependentDishSourceGap": 301,
+    "currentIndependentDishSourceGap": 300,
     "officialCandidateIndexRecords": 194,
     "overtureSnapshotRows": 3908,
     "overtureRowsWithIndependentUrls": 2411,
-    "proposalRows": 32,
+    "proposalRows": 31,
     "retainedIndexProposalRows": 0,
-    "overtureProposalRows": 32,
-    "highConfidenceOvertureProposalRows": 20,
+    "overtureProposalRows": 31,
+    "highConfidenceOvertureProposalRows": 19,
     "proposalRowsWithExplicitMenuUrls": 0,
-    "proposalRowsPageOnly": 32,
-    "proposalCoverageOfIndependentGapPct": 10.6,
+    "proposalRowsPageOnly": 31,
+    "proposalCoverageOfIndependentGapPct": 10.3,
     "explicitMenuCoverageOfIndependentGapPct": 0,
     "overtureTargetsWithoutCoordinates": 0,
-    "overtureTargetsWithNearbyCandidates": 301,
+    "overtureTargetsWithNearbyCandidates": 300,
     "overtureRejectedName": 257,
     "overtureRejectedWeak": 12,
     "overtureRejectedAmbiguous": 0,
@@ -93,9 +93,9 @@
       },
       {
         "shard": 4,
-        "total": 3,
+        "total": 2,
         "withMenuUrl": 0,
-        "overture": 3
+        "overture": 2
       },
       {
         "shard": 5,
@@ -325,41 +325,6 @@
         "http://hinoya.jp/"
       ],
       "shard": 2,
-      "reviewRequiredBeforeBinding": true,
-      "mayWriteDishEvidenceBeforeIdentityReview": false
-    },
-    {
-      "googlePlaceId": "ChIJI1W-PkKMGGARSpB6s8XZQKU",
-      "name": "la cantina cancemi",
-      "distanceMeters": 1041,
-      "currentAction": "find_independent_dish_source",
-      "currentSourceUrlCount": 0,
-      "pageUrl": "http://www.cancemi.jp/cantina/",
-      "menuUrls": [],
-      "candidateHosts": [
-        "cancemi.jp"
-      ],
-      "checkedAt": "2026-08-19.0",
-      "candidateName": "La Cantina Cancemi",
-      "candidateProvider": "Overture Maps",
-      "candidateProviderId": "f2824d46-89e1-4646-83e2-c43ac3c570e6",
-      "candidateDistanceMeters": 2.8,
-      "nameSimilarity": 1,
-      "candidateMargin": 0.9737,
-      "proposalScore": 0.9949,
-      "overtureConfidence": 0.9987486499547958,
-      "proposalState": "review_high_confidence_overture_website_candidate",
-      "confidenceSignals": [
-        "current_public_identity_has_independent_name_and_coordinates",
-        "retained_overture_candidate_with_independent_http_url",
-        "normalized_name_similarity_above_proposal_threshold",
-        "candidate_within_bounded_coordinate_distance",
-        "best_candidate_margin_above_ambiguity_threshold"
-      ],
-      "candidateUrls": [
-        "http://www.cancemi.jp/cantina/"
-      ],
-      "shard": 4,
       "reviewRequiredBeforeBinding": true,
       "mayWriteDishEvidenceBeforeIdentityReview": false
     },
