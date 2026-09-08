@@ -213,3 +213,11 @@ jobs:
           git fetch origin main
           git rebase origin/main
           git push origin HEAD:main
+
+  validate_database:
+    needs: collect
+    permissions:
+      contents: read
+    uses: ./.github/workflows/database-contract.yml
+    with:
+      sync_main: true
