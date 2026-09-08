@@ -18,14 +18,15 @@
     "privateOfficialWebConsensusV4Overlay": true,
     "privateOfficialWebConsensusV4Rule": "private-official-web-consensus-v4",
     "retainedOsmWebsiteOverlay": true,
-    "retainedOsmWebsiteOverlayRule": "existing-bound-osm-provider-id-website-v1",
+    "retainedOsmWebsiteOverlayRule": "existing-bound-osm-provider-id-website-v2",
     "retainedOsmWebsiteOverlayIdentityChanges": 0,
     "retainedOsmWebsiteOverlayPaidApiCalls": 0,
     "retainedOsmWebsiteOverlayGoogleDisplayPayloadUsed": false,
     "retainedOsmWebsiteOverlayExistingBindingsOnly": true,
     "retainedOsmWebsiteOverlayIndependentHttpsOnly": true,
     "reviewedMultisourceCurrentnessV1Overlay": true,
-    "reviewedMultisourceCurrentnessV1Rule": "reviewed-multisource-currentness-v1"
+    "reviewedMultisourceCurrentnessV1Rule": "reviewed-multisource-currentness-v1",
+    "retainedOsmWebsiteOverlayAggregatorHostsExcluded": true
   },
   "summary": {
     "productionBacked": 651,
@@ -50,10 +51,10 @@
     "retainedOsmWebsiteOverlay": {
       "boundOsmRows": 11,
       "boundOsmRowsFoundInSnapshot": 11,
-      "boundOsmRowsWithRetainedWebsite": 1,
+      "boundOsmRowsWithRetainedWebsite": 0,
       "rowsChanged": 0,
       "websitesAdded": 0,
-      "rejectedWebsiteValues": 1
+      "rejectedWebsiteValues": 0
     },
     "reviewedMultisourceCurrentnessV1Rows": 1,
     "reviewedMultisourceCurrentnessV1AddedThisMerge": 1
@@ -2402,7 +2403,7 @@
           "lat": 35.69549,
           "lng": 139.769903,
           "distanceMeters": 12.9,
-          "nameSimilarity": 1.0,
+          "nameSimilarity": 1,
           "addressSimilarity": 0.75,
           "postalMatch": false,
           "margin": 0.3102
@@ -2599,7 +2600,7 @@
           "lng": 139.756448,
           "distanceMeters": 5.1,
           "nameSimilarity": 0.82,
-          "addressSimilarity": 1.0,
+          "addressSimilarity": 1,
           "postalMatch": false,
           "margin": 0.4103
         },
@@ -2611,7 +2612,7 @@
           "pageName": "サクラカフェ神保町 - サクラカフェ Sakura Cafe | 24時間いつでも世界の味を - 池袋 / 幡ヶ谷 / 神保町 / 日暮里 / 浅草",
           "pageAddress": "東京都千代田区神田神保町2-21-4",
           "nameSimilarity": 0.82,
-          "addressSimilarity": 1.0,
+          "addressSimilarity": 1,
           "postalMatch": false,
           "geoDistanceMeters": null,
           "locationConfirmed": true
