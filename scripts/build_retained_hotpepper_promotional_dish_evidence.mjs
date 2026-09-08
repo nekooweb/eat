@@ -37,11 +37,35 @@ function sourceItem(match, sourceUrl, checkedAt, evidenceClass, evidenceRule, sn
   };
 }
 
+const PROMOTIONAL_SPECIFIC_RULES = [
+  [/鉄板焼(?:き)?そば/i, '铁板炒面'],
+  [/焼きそば|焼そば/i, '炒面'],
+  [/肉寿司/i, '肉寿司']
+];
+
 function featuredMatchesFromText(value, limit = 4) {
   const text = cleanText(value);
   const output = [];
   const seen = new Set();
+
+  for (const [pattern, nameZh] of PROMOTIONAL_SPECIFIC_RULES) {
+    const match = text.match(pattern);
+    if (!match || seen.has(nameZh)) continue;
+    seen.add(nameZh);
+    output.push({
+      nameZh,
+      nameOriginal: match[0],
+      rule: `promotional-specific:${pattern.source}`,
+      evidenceSnippet: text.slice(0, 90)
+    });
+    if (output.length >= limit) return output;
+  }
+
+  const hasYakisoba = /鉄板焼(?:き)?そば|焼きそば|焼そば/i.test(text);
+  const hasMeatSushi = /肉寿司/i.test(text);
   for (const [pattern, nameZh] of DISH_RULES) {
+    if (hasYakisoba && nameZh === '荞麦面') continue;
+    if (hasMeatSushi && nameZh === '寿司') continue;
     const match = text.match(pattern);
     if (!match || seen.has(nameZh)) continue;
     seen.add(nameZh);
@@ -96,13 +120,15 @@ function main() {
   // Aggregate retained promotional text by frozen Place ID. The basic provider
   // catch is intentionally excluded because collect_google_inventory_recommendations.mjs
   // already consumes facts.catch. This pass adds the previously-unused
-  // facts.genre.catch at all retained catalog bindings plus reviewed rich
-  // special-feature titles.
+  // facts.genre.catch at all retained catalog bindings, reviewed rich
+  // special-feature titles, and concrete all-you-can-eat provider text when that
+  // field names an actual dish. Generic service booleans are not dish evidence.
   const retainedById = new Map();
   let eligibleCatalogRows = 0;
   let eligibleRichRows = 0;
   let catalogGenreCatchTexts = 0;
   let richSpecialFeatureTitleTexts = 0;
+  let richAllYouCanEatTexts = 0;
 
   function addText(googlePlaceId, sourceUrl, checkedAt, kind, text) {
     const publicRow = runtimeById.get(googlePlaceId);
@@ -145,6 +171,12 @@ function main() {
       addText(googlePlaceId, sourceUrl, checkedAt, 'richSpecialFeatureTitle', title);
       richSpecialFeatureTitleTexts += 1;
     }
+
+    const allYouCanEat = cleanText(richRow.sourceServiceText?.allYouCanEat);
+    if (allYouCanEat && /食べ放題|食放|ビュッフェ|バイキング/i.test(allYouCanEat) && featuredMatchesFromText(allYouCanEat, 1).length) {
+      addText(googlePlaceId, sourceUrl, checkedAt, 'richAllYouCanEat', allYouCanEat);
+      richAllYouCanEatTexts += 1;
+    }
   }
 
   const evidenceRows = [];
@@ -154,7 +186,7 @@ function main() {
   let featuredTextHits = 0;
   const recommendationPlaceIds = new Set();
   const featuredPlaceIds = new Set();
-  const providerItemCounts = { catalogGenreCatch: 0, richSpecialFeatureTitle: 0 };
+  const providerItemCounts = { catalogGenreCatch: 0, richSpecialFeatureTitle: 0, richAllYouCanEat: 0 };
 
   for (const retained of retainedById.values()) {
     const recommendedDishes = [];
@@ -225,6 +257,7 @@ function main() {
     eligibleReviewedRichRows: eligibleRichRows,
     catalogGenreCatchTexts,
     richSpecialFeatureTitleTexts,
+    richAllYouCanEatTexts,
     promotionalTextsScanned,
     duplicatePromotionalTextsSkipped,
     recommendationTextHits,
@@ -238,7 +271,7 @@ function main() {
   };
 
   const payload = {
-    schemaVersion: 2,
+    schemaVersion: 3,
     checkedAt: richCheckedAt,
     policy: {
       source: 'retained Hot Pepper catalog facts plus reviewed rich metadata only',
@@ -246,14 +279,18 @@ function main() {
       paidGoogleDataApiCalls: 0,
       catalogBindingTrustMatchesExistingRetainedCatchCollector: true,
       richEligibleBindings: ['strict_auto', 'manual_exact'],
-      textFields: ['facts.genre.catch', 'specialFeatures[].title'],
+      textFields: ['facts.genre.catch', 'specialFeatures[].title', 'sourceServiceText.allYouCanEat (concrete dish text only)'],
       basicFactsCatchExcludedBecauseMainCollectorAlreadyConsumesIt: true,
       richSourceCatchExcludedAsDuplicateOfCatalogFactsCatch: true,
+      shopDetailExcludedBecauseKeywordListsAreNotStableMenuEvidence: true,
+      genericServiceBooleansAreDishEvidence: false,
       restaurantNameInferenceAllowed: false,
       cuisineInferenceAllowed: false,
       genericFallbackAllowed: false,
       recommendationRequiresExplicitMarker: true,
       featuredRequiresConcreteDishTermInRetainedProviderText: true,
+      allYouCanEatRequiresConcreteAvailabilityWording: true,
+      promotionalSpecificRulesBeforeBroadDishFamilyRules: true,
       targetLanguage: 'zh-CN',
       preserveSourceOriginal: true
     },
