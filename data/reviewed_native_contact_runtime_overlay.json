@@ -1,15 +1,19 @@
 {
-  "schemaVersion": 1,
-  "ruleVersion": "reviewed-native-contact-runtime-v1",
+  "schemaVersion": 2,
+  "ruleVersion": "reviewed-native-contact-runtime-v2",
   "checkedAt": "2026-09-05",
   "policy": {
     "sourceBackedOnly": true,
     "reviewedBindingsOnly": true,
     "exactRetainedProviderIdOnly": true,
     "sameCrossLayerCollisionLogicAsSQLiteMaster": true,
+    "basicOsmPracticalRule": "bound-open-data-fields-v3",
     "overturePhoneRule": "bound-overture-metadata-v1",
     "osmPhoneRule": "verified-osm-native-metadata-v3",
+    "osmPracticalRule": "verified-osm-native-metadata-v3",
     "osmSingleNativePhoneRequired": true,
+    "explicitOsmPracticalTagsOnly": true,
+    "contradictoryCardTagsDeferred": true,
     "nativeFormattingPreserved": true,
     "digitCountValidation": "8..15",
     "networkRequests": 0,
@@ -21,12 +25,22 @@
       "telephoneSourceUrl",
       "telephoneCheckedAt",
       "telephoneProvider",
-      "telephoneRuleVersion"
+      "telephoneRuleVersion",
+      "cardPaymentAvailable",
+      "wifiAvailable",
+      "barrierFree",
+      "smokingPolicy"
     ],
-    "runtimePrecedence": [
+    "telephoneRuntimePrecedence": [
       "Overture Maps",
       "public_web",
       "OpenStreetMap"
+    ],
+    "practicalRuntimePrecedence": [
+      "basic OpenStreetMap",
+      "retained practical",
+      "official practical",
+      "historical OpenStreetMap"
     ]
   },
   "summary": {
@@ -37,10 +51,17 @@
     "reviewedOvertureBasicBindings": 387,
     "retainedUniqueOvertureRows": 3908,
     "overtureTelephoneRows": 363,
+    "reviewedBasicOsmBindings": 9,
+    "osmBasicPracticalRows": 2,
     "reviewedHistoricalOsmBindings": 657,
     "osmTelephoneRows": 100,
+    "osmPracticalRows": 133,
     "overtureSkipped": {
       "no_valid_native_phone": 24
+    },
+    "osmBasicSkipped": {
+      "binding_conflict": 2,
+      "no_mappable_practical": 7
     },
     "osmSkipped": {
       "multiple_native_phones_deferred": 1,
@@ -6220,16 +6241,54 @@
       "ruleVersion": "bound-overture-metadata-v1"
     }
   ],
+  "osmBasicPracticalRows": [
+    {
+      "googlePlaceId": "ChIJ-3hjRgGMGGARUm7ETP8WqDY",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-12090542925",
+      "nativeSourceId": "node/12090542925",
+      "practicalClaims": {
+        "practical.barrier_free": false
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "no"
+      },
+      "sourceUrl": "https://www.openstreetmap.org/node/12090542925",
+      "checkedAt": "2026-09-06",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_repository_basic_match",
+        "matchLevel": "strong"
+      },
+      "ruleVersion": "bound-open-data-fields-v3"
+    },
+    {
+      "googlePlaceId": "ChIJaUd7gDyMGGARqvkMTnUvf3k",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-4961630543",
+      "nativeSourceId": "node/4961630543",
+      "practicalClaims": {
+        "practical.barrier_free": false
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "no"
+      },
+      "sourceUrl": "https://www.openstreetmap.org/node/4961630543",
+      "checkedAt": "2026-09-06",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_repository_basic_match",
+        "matchLevel": "strong"
+      },
+      "ruleVersion": "bound-open-data-fields-v3"
+    }
+  ],
   "osmRows": [
     {
       "googlePlaceId": "ChIJ--CxOByMGGARJ-bOqi3ExPA",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-5397541759",
       "nativeSourceId": "node/5397541759",
-      "telephone": "+81-050-1180-6584",
-      "sourceTelephones": [
-        "+81-050-1180-6584"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/5397541759",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -6238,17 +6297,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81-050-1180-6584",
+      "sourceTelephones": [
+        "+81-050-1180-6584"
+      ]
     },
     {
       "googlePlaceId": "ChIJ1delkxOMGGARiM8Ggy7fYXA",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-5506259360",
       "nativeSourceId": "node/5506259360",
-      "telephone": "+81 3 32616030",
-      "sourceTelephones": [
-        "+81 3 32616030"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/5506259360",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -6257,17 +6316,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81 3 32616030",
+      "sourceTelephones": [
+        "+81 3 32616030"
+      ]
     },
     {
       "googlePlaceId": "ChIJ2-A_OgWMGGAR-gf8DcaSAMY",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-6331046187",
       "nativeSourceId": "node/6331046187",
-      "telephone": "+81 3 32925455",
-      "sourceTelephones": [
-        "+81 3 32925455"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/6331046187",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -6276,17 +6335,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81 3 32925455",
+      "sourceTelephones": [
+        "+81 3 32925455"
+      ]
     },
     {
       "googlePlaceId": "ChIJ2WGN9heMGGARIpk8EbXf8b4",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-3611935202",
       "nativeSourceId": "node/3611935202",
-      "telephone": "+81 3-5842-6325",
-      "sourceTelephones": [
-        "+81 3-5842-6325"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/3611935202",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -6295,17 +6354,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81 3-5842-6325",
+      "sourceTelephones": [
+        "+81 3-5842-6325"
+      ]
     },
     {
       "googlePlaceId": "ChIJ2edswDuMGGAREjmUSuQI_6E",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-6085385901",
       "nativeSourceId": "node/6085385901",
-      "telephone": "+81 3 3816 1071",
-      "sourceTelephones": [
-        "+81 3 3816 1071"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/6085385901",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -6314,17 +6373,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81 3 3816 1071",
+      "sourceTelephones": [
+        "+81 3 3816 1071"
+      ]
     },
     {
       "googlePlaceId": "ChIJ34CgHASMGGARG5poMVhiB1w",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-7824528386",
       "nativeSourceId": "node/7824528386",
-      "telephone": "03-6677-2922",
-      "sourceTelephones": [
-        "03-6677-2922"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/7824528386",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -6333,17 +6392,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "03-6677-2922",
+      "sourceTelephones": [
+        "03-6677-2922"
+      ]
     },
     {
       "googlePlaceId": "ChIJ44VsmjyMGGARJVL9gwj7Afc",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-4961624775",
       "nativeSourceId": "node/4961624775",
-      "telephone": "+81 3 6801 8166",
-      "sourceTelephones": [
-        "+81 3 6801 8166"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/4961624775",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -6352,17 +6411,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81 3 6801 8166",
+      "sourceTelephones": [
+        "+81 3 6801 8166"
+      ]
     },
     {
       "googlePlaceId": "ChIJ4aeBR_2NGGARMCkJz8MK3Io",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-6331046188",
       "nativeSourceId": "node/6331046188",
-      "telephone": "+81 3 32338750",
-      "sourceTelephones": [
-        "+81 3 32338750"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/6331046188",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -6371,17 +6430,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81 3 32338750",
+      "sourceTelephones": [
+        "+81 3 32338750"
+      ]
     },
     {
       "googlePlaceId": "ChIJ4e3_CQ6MGGARgbvLFz2U9kQ",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-1952088853",
       "nativeSourceId": "node/1952088853",
-      "telephone": "+81 3-3212-3510",
-      "sourceTelephones": [
-        "+81 3-3212-3510"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/1952088853",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -6390,17 +6449,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81 3-3212-3510",
+      "sourceTelephones": [
+        "+81 3-3212-3510"
+      ]
     },
     {
       "googlePlaceId": "ChIJ4ymkbRGMGGARIv2mv2Uyrhw",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-4249515023",
       "nativeSourceId": "node/4249515023",
-      "telephone": "+81 3-3291-8186",
-      "sourceTelephones": [
-        "+81 3-3291-8186"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/4249515023",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -6409,17 +6468,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81 3-3291-8186",
+      "sourceTelephones": [
+        "+81 3-3291-8186"
+      ]
     },
     {
       "googlePlaceId": "ChIJ5_oeyTmNGGAR0INuyci-AWc",
       "provider": "OpenStreetMap",
       "providerId": "osm-w-522196010",
       "nativeSourceId": "way/522196010",
-      "telephone": "+81 3 3813 5360",
-      "sourceTelephones": [
-        "+81 3 3813 5360"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/way/522196010",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -6428,17 +6487,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81 3 3813 5360",
+      "sourceTelephones": [
+        "+81 3 3813 5360"
+      ]
     },
     {
       "googlePlaceId": "ChIJ6-JxGJyNGGARhu0YEPhV3mc",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-6384667704",
       "nativeSourceId": "node/6384667704",
-      "telephone": "+81 50-3466-6152",
-      "sourceTelephones": [
-        "+81 50-3466-6152"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/6384667704",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -6447,17 +6506,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81 50-3466-6152",
+      "sourceTelephones": [
+        "+81 50-3466-6152"
+      ]
     },
     {
       "googlePlaceId": "ChIJ67ggdxeMGGAR5uSOMBBDfHU",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-599541465",
       "nativeSourceId": "node/599541465",
-      "telephone": "+81-3-32938835",
-      "sourceTelephones": [
-        "+81-3-32938835"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/599541465",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -6466,17 +6525,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81-3-32938835",
+      "sourceTelephones": [
+        "+81-3-32938835"
+      ]
     },
     {
       "googlePlaceId": "ChIJ6QXNGBuMGGARoa9gDeTHnEs",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-3376950602",
       "nativeSourceId": "node/3376950602",
-      "telephone": "+81 3-3253-1681",
-      "sourceTelephones": [
-        "+81 3-3253-1681"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/3376950602",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -6485,17 +6544,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81 3-3253-1681",
+      "sourceTelephones": [
+        "+81 3-3253-1681"
+      ]
     },
     {
       "googlePlaceId": "ChIJ6edLOD6MGGARse6qSI5hyn8",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-5640927732",
       "nativeSourceId": "node/5640927732",
-      "telephone": "0332914102",
-      "sourceTelephones": [
-        "0332914102"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/5640927732",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -6504,17 +6563,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "0332914102",
+      "sourceTelephones": [
+        "0332914102"
+      ]
     },
     {
       "googlePlaceId": "ChIJ88kY7BOMGGARlcxHyHJELCM",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-6934233985",
       "nativeSourceId": "node/6934233985",
-      "telephone": "+81 3 32618790",
-      "sourceTelephones": [
-        "+81 3 32618790"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/6934233985",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -6523,17 +6582,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81 3 32618790",
+      "sourceTelephones": [
+        "+81 3 32618790"
+      ]
     },
     {
       "googlePlaceId": "ChIJ8YrMy7qNGGARLO2JDbagXNo",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-13357153901",
       "nativeSourceId": "node/13357153901",
-      "telephone": "+81-3-6281-7741",
-      "sourceTelephones": [
-        "+81-3-6281-7741"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/13357153901",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -6542,17 +6601,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81-3-6281-7741",
+      "sourceTelephones": [
+        "+81-3-6281-7741"
+      ]
     },
     {
       "googlePlaceId": "ChIJ93J8IxSMGGARcOixOZM4jwQ",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-6299113885",
       "nativeSourceId": "node/6299113885",
-      "telephone": "+81 3 32395110",
-      "sourceTelephones": [
-        "+81 3 32395110"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/6299113885",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -6561,17 +6620,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81 3 32395110",
+      "sourceTelephones": [
+        "+81 3 32395110"
+      ]
     },
     {
       "googlePlaceId": "ChIJ9XhQqmmMGGARMGTXDZDOYlU",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-5607372142",
       "nativeSourceId": "node/5607372142",
-      "telephone": "03-3221-6588",
-      "sourceTelephones": [
-        "03-3221-6588"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/5607372142",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -6580,17 +6639,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "03-3221-6588",
+      "sourceTelephones": [
+        "03-3221-6588"
+      ]
     },
     {
       "googlePlaceId": "ChIJA3cvTRuMGGARs_9D7PJIUgg",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-3377000472",
       "nativeSourceId": "node/3377000472",
-      "telephone": "+81-120-870-443",
-      "sourceTelephones": [
-        "+81-120-870-443"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/3377000472",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -6599,17 +6658,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81-120-870-443",
+      "sourceTelephones": [
+        "+81-120-870-443"
+      ]
     },
     {
       "googlePlaceId": "ChIJA7vjSxCMGGARpf4TitkGqMk",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-3626203879",
       "nativeSourceId": "node/3626203879",
-      "telephone": "+81 3 3518-6160",
-      "sourceTelephones": [
-        "+81 3 3518-6160"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/3626203879",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -6618,17 +6677,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81 3 3518-6160",
+      "sourceTelephones": [
+        "+81 3 3518-6160"
+      ]
     },
     {
       "googlePlaceId": "ChIJAQBEWxyMGGARC1ExIDYL7SY",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-5479236748",
       "nativeSourceId": "node/5479236748",
-      "telephone": "+81 3 5207 2773",
-      "sourceTelephones": [
-        "+81 3 5207 2773"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/5479236748",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -6637,17 +6696,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81 3 5207 2773",
+      "sourceTelephones": [
+        "+81 3 5207 2773"
+      ]
     },
     {
       "googlePlaceId": "ChIJASnkQRGMGGAREBT-v7jdmq4",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-6299113585",
       "nativeSourceId": "node/6299113585",
-      "telephone": "+81 3 62737148",
-      "sourceTelephones": [
-        "+81 3 62737148"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/6299113585",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -6656,17 +6715,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81 3 62737148",
+      "sourceTelephones": [
+        "+81 3 62737148"
+      ]
     },
     {
       "googlePlaceId": "ChIJBefQ4hOMGGARIkZIs01cRlQ",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-1276856487",
       "nativeSourceId": "node/1276856487",
-      "telephone": "+81 3 32242080",
-      "sourceTelephones": [
-        "+81 3 32242080"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/1276856487",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -6675,17 +6734,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81 3 32242080",
+      "sourceTelephones": [
+        "+81 3 32242080"
+      ]
     },
     {
       "googlePlaceId": "ChIJD6lQsUOMGGARZuQcIDrpKbw",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-13869361602",
       "nativeSourceId": "node/13869361602",
-      "telephone": "+81-3-6261-7988",
-      "sourceTelephones": [
-        "+81-3-6261-7988"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/13869361602",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -6694,17 +6753,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81-3-6261-7988",
+      "sourceTelephones": [
+        "+81-3-6261-7988"
+      ]
     },
     {
       "googlePlaceId": "ChIJDVdSfmmMGGARn19s9XYBdOY",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-3632462818",
       "nativeSourceId": "node/3632462818",
-      "telephone": "+81 3-3239-8739",
-      "sourceTelephones": [
-        "+81 3-3239-8739"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/3632462818",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -6713,17 +6772,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81 3-3239-8739",
+      "sourceTelephones": [
+        "+81 3-3239-8739"
+      ]
     },
     {
       "googlePlaceId": "ChIJDZB2CXiNGGARp-Y3XLzQMrw",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-5203427995",
       "nativeSourceId": "node/5203427995",
-      "telephone": "+81 3 5684 8150",
-      "sourceTelephones": [
-        "+81 3 5684 8150"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/5203427995",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -6732,17 +6791,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81 3 5684 8150",
+      "sourceTelephones": [
+        "+81 3 5684 8150"
+      ]
     },
     {
       "googlePlaceId": "ChIJE4TSaa6NGGAR9OX7ziIkn6Q",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-12495327901",
       "nativeSourceId": "node/12495327901",
-      "telephone": "+81 3-3518-5733",
-      "sourceTelephones": [
-        "+81 3-3518-5733"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/12495327901",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -6751,17 +6810,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81 3-3518-5733",
+      "sourceTelephones": [
+        "+81 3-3518-5733"
+      ]
     },
     {
       "googlePlaceId": "ChIJE4dDNz2MGGARGZHEIOrFjGw",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-5493628068",
       "nativeSourceId": "node/5493628068",
-      "telephone": "+81 3 5615 8378",
-      "sourceTelephones": [
-        "+81 3 5615 8378"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/5493628068",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -6770,17 +6829,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81 3 5615 8378",
+      "sourceTelephones": [
+        "+81 3 5615 8378"
+      ]
     },
     {
       "googlePlaceId": "ChIJF1SVaAGMGGARcnCMoPo0Zog",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-4266283812",
       "nativeSourceId": "node/4266283812",
-      "telephone": "+81 3 3526-6969",
-      "sourceTelephones": [
-        "+81 3 3526-6969"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/4266283812",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -6789,17 +6848,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81 3 3526-6969",
+      "sourceTelephones": [
+        "+81 3 3526-6969"
+      ]
     },
     {
       "googlePlaceId": "ChIJF3cSy0GMGGARwvwIZmKFgm4",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-5145229150",
       "nativeSourceId": "node/5145229150",
-      "telephone": "03-6261-7830",
-      "sourceTelephones": [
-        "03-6261-7830"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/5145229150",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -6808,17 +6867,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "03-6261-7830",
+      "sourceTelephones": [
+        "03-6261-7830"
+      ]
     },
     {
       "googlePlaceId": "ChIJFcNX9RaMGGAR2c6-_mg7ocY",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-6298747185",
       "nativeSourceId": "node/6298747185",
-      "telephone": "+81 3 32913529",
-      "sourceTelephones": [
-        "+81 3 32913529"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/6298747185",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -6827,17 +6886,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81 3 32913529",
+      "sourceTelephones": [
+        "+81 3 32913529"
+      ]
     },
     {
       "googlePlaceId": "ChIJFyJLpEOMGGARDeh7k8QydZE",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-4341890791",
       "nativeSourceId": "node/4341890791",
-      "telephone": "+81 3-3556-0703",
-      "sourceTelephones": [
-        "+81 3-3556-0703"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/4341890791",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -6846,17 +6905,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81 3-3556-0703",
+      "sourceTelephones": [
+        "+81 3-3556-0703"
+      ]
     },
     {
       "googlePlaceId": "ChIJGwjljhWMGGARjLafECSEbqA",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-2805728310",
       "nativeSourceId": "node/2805728310",
-      "telephone": "81335152454",
-      "sourceTelephones": [
-        "81335152454"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/2805728310",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -6865,17 +6924,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "81335152454",
+      "sourceTelephones": [
+        "81335152454"
+      ]
     },
     {
       "googlePlaceId": "ChIJH8GYiROMGGARAjxscGAOoIA",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-3626212560",
       "nativeSourceId": "node/3626212560",
-      "telephone": "+81 3 5215-2025",
-      "sourceTelephones": [
-        "+81 3 5215-2025"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/3626212560",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -6884,17 +6943,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81 3 5215-2025",
+      "sourceTelephones": [
+        "+81 3 5215-2025"
+      ]
     },
     {
       "googlePlaceId": "ChIJHR3eZRyMGGARIuKl5cgd_vs",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-7913003776",
       "nativeSourceId": "node/7913003776",
-      "telephone": "+81 3291 2552",
-      "sourceTelephones": [
-        "+81 3291 2552"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/7913003776",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -6903,17 +6962,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81 3291 2552",
+      "sourceTelephones": [
+        "+81 3291 2552"
+      ]
     },
     {
       "googlePlaceId": "ChIJHc25sgSMGGARAqITOEMtNxk",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-1635233552",
       "nativeSourceId": "node/1635233552",
-      "telephone": "0081352987010",
-      "sourceTelephones": [
-        "0081352987010"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/1635233552",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -6922,17 +6981,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "0081352987010",
+      "sourceTelephones": [
+        "0081352987010"
+      ]
     },
     {
       "googlePlaceId": "ChIJITsXUxaMGGAREtKypQBMSXI",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-3606906653",
       "nativeSourceId": "node/3606906653",
-      "telephone": "+81 3 32913274",
-      "sourceTelephones": [
-        "+81 3 32913274"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/3606906653",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -6941,17 +7000,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81 3 32913274",
+      "sourceTelephones": [
+        "+81 3 32913274"
+      ]
     },
     {
       "googlePlaceId": "ChIJIeIjchSMGGARssRDzwpDNuM",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-6299113287",
       "nativeSourceId": "node/6299113287",
-      "telephone": "+81 3 32631898",
-      "sourceTelephones": [
-        "+81 3 32631898"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/6299113287",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -6960,17 +7019,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81 3 32631898",
+      "sourceTelephones": [
+        "+81 3 32631898"
+      ]
     },
     {
       "googlePlaceId": "ChIJJ8_bnU6NGGARsXyvg0mnXI0",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-3263272304",
       "nativeSourceId": "node/3263272304",
-      "telephone": "+81-3-3253-8046",
-      "sourceTelephones": [
-        "+81-3-3253-8046"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/3263272304",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -6979,17 +7038,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81-3-3253-8046",
+      "sourceTelephones": [
+        "+81-3-3253-8046"
+      ]
     },
     {
       "googlePlaceId": "ChIJJ9zW1BqMGGARfIp-qxuT1pg",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-2805773601",
       "nativeSourceId": "node/2805773601",
-      "telephone": "+81 3-5280-8155",
-      "sourceTelephones": [
-        "+81 3-5280-8155"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/2805773601",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -6998,17 +7057,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81 3-5280-8155",
+      "sourceTelephones": [
+        "+81 3-5280-8155"
+      ]
     },
     {
       "googlePlaceId": "ChIJK-zPABCMGGARXZAJ9C8lHCY",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-6934374687",
       "nativeSourceId": "node/6934374687",
-      "telephone": "+81 3 32915755",
-      "sourceTelephones": [
-        "+81 3 32915755"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/6934374687",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -7017,17 +7076,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81 3 32915755",
+      "sourceTelephones": [
+        "+81 3 32915755"
+      ]
     },
     {
       "googlePlaceId": "ChIJKQlfZLaNGGARTe95b99jJXE",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-4463088495",
       "nativeSourceId": "node/4463088495",
-      "telephone": "03-6272-5005",
-      "sourceTelephones": [
-        "03-6272-5005"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/4463088495",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -7036,17 +7095,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "03-6272-5005",
+      "sourceTelephones": [
+        "03-6272-5005"
+      ]
     },
     {
       "googlePlaceId": "ChIJM1B1zgWMGGAR04DJYO1QtR0",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-1969396058",
       "nativeSourceId": "node/1969396058",
-      "telephone": "+81-3-32192711",
-      "sourceTelephones": [
-        "+81-3-32192711"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/1969396058",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -7055,17 +7114,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81-3-32192711",
+      "sourceTelephones": [
+        "+81-3-32192711"
+      ]
     },
     {
       "googlePlaceId": "ChIJN0VWZhWMGGARLvOMzqiFHWI",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-2172639808",
       "nativeSourceId": "node/2172639808",
-      "telephone": "+81 3-3263-7328",
-      "sourceTelephones": [
-        "+81 3-3263-7328"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/2172639808",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -7074,17 +7133,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81 3-3263-7328",
+      "sourceTelephones": [
+        "+81 3-3263-7328"
+      ]
     },
     {
       "googlePlaceId": "ChIJNfqy4EaMGGAR51sW_7PltDQ",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-3611878119",
       "nativeSourceId": "node/3611878119",
-      "telephone": "+81 3-5802-3901",
-      "sourceTelephones": [
-        "+81 3-5802-3901"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/3611878119",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -7093,17 +7152,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81 3-5802-3901",
+      "sourceTelephones": [
+        "+81 3-5802-3901"
+      ]
     },
     {
       "googlePlaceId": "ChIJOWqVHj-MGGARZd0fgS_r3tI",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-3611901927",
       "nativeSourceId": "node/3611901927",
-      "telephone": "+81 3-5840-9275",
-      "sourceTelephones": [
-        "+81 3-5840-9275"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/3611901927",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -7112,17 +7171,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81 3-5840-9275",
+      "sourceTelephones": [
+        "+81 3-5840-9275"
+      ]
     },
     {
       "googlePlaceId": "ChIJP857rBGMGGARhVAFsAnb2S8",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-6934234285",
       "nativeSourceId": "node/6934234285",
-      "telephone": "+81 3 32938234",
-      "sourceTelephones": [
-        "+81 3 32938234"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/6934234285",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -7131,17 +7190,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81 3 32938234",
+      "sourceTelephones": [
+        "+81 3 32938234"
+      ]
     },
     {
       "googlePlaceId": "ChIJQ3MESwOMGGARX99d47o0V6k",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-1635279739",
       "nativeSourceId": "node/1635279739",
-      "telephone": "+81 3-3251-1556",
-      "sourceTelephones": [
-        "+81 3-3251-1556"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/1635279739",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -7150,17 +7209,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81 3-3251-1556",
+      "sourceTelephones": [
+        "+81 3-3251-1556"
+      ]
     },
     {
       "googlePlaceId": "ChIJQ7aufj-MGGAR-NTeQP2lniU",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-6331068985",
       "nativeSourceId": "node/6331068985",
-      "telephone": "0332622092",
-      "sourceTelephones": [
-        "0332622092"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/6331068985",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -7169,17 +7228,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "0332622092",
+      "sourceTelephones": [
+        "0332622092"
+      ]
     },
     {
       "googlePlaceId": "ChIJT9HCuRyMGGARqIt735A6L1k",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-6583060208",
       "nativeSourceId": "node/6583060208",
-      "telephone": "+81 3 6885-1910",
-      "sourceTelephones": [
-        "+81 3 6885-1910"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/6583060208",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -7188,17 +7247,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81 3 6885-1910",
+      "sourceTelephones": [
+        "+81 3 6885-1910"
+      ]
     },
     {
       "googlePlaceId": "ChIJTTQAOBGMGGARXRYbp0wUyAM",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-3163990965",
       "nativeSourceId": "node/3163990965",
-      "telephone": "+81 3-5283-3214",
-      "sourceTelephones": [
-        "+81 3-5283-3214"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/3163990965",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -7207,17 +7266,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81 3-5283-3214",
+      "sourceTelephones": [
+        "+81 3-5283-3214"
+      ]
     },
     {
       "googlePlaceId": "ChIJT_TH7BmMGGARFPtKt6M3yqk",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-5214002993",
       "nativeSourceId": "node/5214002993",
-      "telephone": "+81-3-5283-8782",
-      "sourceTelephones": [
-        "+81-3-5283-8782"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/5214002993",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -7226,17 +7285,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81-3-5283-8782",
+      "sourceTelephones": [
+        "+81-3-5283-8782"
+      ]
     },
     {
       "googlePlaceId": "ChIJTy1GTG-NGGAR4WUtZrMr1mE",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-599540612",
       "nativeSourceId": "node/599540612",
-      "telephone": "+81 3 5281 8524",
-      "sourceTelephones": [
-        "+81 3 5281 8524"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/599540612",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -7245,17 +7304,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81 3 5281 8524",
+      "sourceTelephones": [
+        "+81 3 5281 8524"
+      ]
     },
     {
       "googlePlaceId": "ChIJU3-_NwWMGGARoBcetg2Ko8Y",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-12679545115",
       "nativeSourceId": "node/12679545115",
-      "telephone": "+81-3-5577-4349",
-      "sourceTelephones": [
-        "+81-3-5577-4349"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/12679545115",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -7264,17 +7323,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81-3-5577-4349",
+      "sourceTelephones": [
+        "+81-3-5577-4349"
+      ]
     },
     {
       "googlePlaceId": "ChIJU4sI4gaMGGARPBBnRO9pbpw",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-6652884270",
       "nativeSourceId": "node/6652884270",
-      "telephone": "0362252570",
-      "sourceTelephones": [
-        "0362252570"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/6652884270",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -7283,17 +7342,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "0362252570",
+      "sourceTelephones": [
+        "0362252570"
+      ]
     },
     {
       "googlePlaceId": "ChIJV774dBaMGGARo7574RyGa1M",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-4005076101",
       "nativeSourceId": "node/4005076101",
-      "telephone": "+81 3-3233-0855",
-      "sourceTelephones": [
-        "+81 3-3233-0855"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/4005076101",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -7302,17 +7361,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81 3-3233-0855",
+      "sourceTelephones": [
+        "+81 3-3233-0855"
+      ]
     },
     {
       "googlePlaceId": "ChIJV92zNT6MGGAROru704vXOho",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-3343292898",
       "nativeSourceId": "node/3343292898",
-      "telephone": "+81 3-3230-0309",
-      "sourceTelephones": [
-        "+81 3-3230-0309"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/3343292898",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -7321,17 +7380,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81 3-3230-0309",
+      "sourceTelephones": [
+        "+81 3-3230-0309"
+      ]
     },
     {
       "googlePlaceId": "ChIJVTolURyMGGARmV5611ctEqE",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-2277871454",
       "nativeSourceId": "node/2277871454",
-      "telephone": "+81 3 3525 4351",
-      "sourceTelephones": [
-        "+81 3 3525 4351"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/2277871454",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -7340,17 +7399,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81 3 3525 4351",
+      "sourceTelephones": [
+        "+81 3 3525 4351"
+      ]
     },
     {
       "googlePlaceId": "ChIJVVWV4gaMGGARF7KwvERRSl0",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-6652928176",
       "nativeSourceId": "node/6652928176",
-      "telephone": "0335166633",
-      "sourceTelephones": [
-        "0335166633"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/6652928176",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -7359,17 +7418,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "0335166633",
+      "sourceTelephones": [
+        "0335166633"
+      ]
     },
     {
       "googlePlaceId": "ChIJVwXD9E6NGGARkHzeYVBeacw",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-10137263017",
       "nativeSourceId": "node/10137263017",
-      "telephone": "03-5209-2008",
-      "sourceTelephones": [
-        "03-5209-2008"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/10137263017",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -7378,17 +7437,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "03-5209-2008",
+      "sourceTelephones": [
+        "03-5209-2008"
+      ]
     },
     {
       "googlePlaceId": "ChIJW4ph90OMGGARdlhIHYAGMRw",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-1915019819",
       "nativeSourceId": "node/1915019819",
-      "telephone": "+81-3-32348201",
-      "sourceTelephones": [
-        "+81-3-32348201"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/1915019819",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -7397,17 +7456,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81-3-32348201",
+      "sourceTelephones": [
+        "+81-3-32348201"
+      ]
     },
     {
       "googlePlaceId": "ChIJW9bTbxqMGGARzrp71TKW5lU",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-1916698184",
       "nativeSourceId": "node/1916698184",
-      "telephone": "+81 3 5283-1575",
-      "sourceTelephones": [
-        "+81 3 5283-1575"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/1916698184",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -7416,17 +7475,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81 3 5283-1575",
+      "sourceTelephones": [
+        "+81 3 5283-1575"
+      ]
     },
     {
       "googlePlaceId": "ChIJWTLuiBaMGGARYTzFFpLy_f8",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-6920741085",
       "nativeSourceId": "node/6920741085",
-      "telephone": "0355774051",
-      "sourceTelephones": [
-        "0355774051"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/6920741085",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -7435,17 +7494,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "0355774051",
+      "sourceTelephones": [
+        "0355774051"
+      ]
     },
     {
       "googlePlaceId": "ChIJX-yVohyMGGARUTdpnpXyQNQ",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-688657370",
       "nativeSourceId": "node/688657370",
-      "telephone": "+81-03-32510287",
-      "sourceTelephones": [
-        "+81-03-32510287"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/688657370",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -7454,17 +7513,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81-03-32510287",
+      "sourceTelephones": [
+        "+81-03-32510287"
+      ]
     },
     {
       "googlePlaceId": "ChIJZQZwfxWMGGARoD8aXy_2l3Q",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-2805723434",
       "nativeSourceId": "node/2805723434",
-      "telephone": "+81 3-3263-3301",
-      "sourceTelephones": [
-        "+81 3-3263-3301"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/2805723434",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -7473,17 +7532,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81 3-3263-3301",
+      "sourceTelephones": [
+        "+81 3-3263-3301"
+      ]
     },
     {
       "googlePlaceId": "ChIJ_wdr4ViNGGAReP_o0t_N1xw",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-13911016141",
       "nativeSourceId": "node/13911016141",
-      "telephone": "+81-3-5843-9929",
-      "sourceTelephones": [
-        "+81-3-5843-9929"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/13911016141",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -7492,17 +7551,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81-3-5843-9929",
+      "sourceTelephones": [
+        "+81-3-5843-9929"
+      ]
     },
     {
       "googlePlaceId": "ChIJa1cTbBWMGGAR_Qfil3p9uCQ",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-6299113389",
       "nativeSourceId": "node/6299113389",
-      "telephone": "0332610239",
-      "sourceTelephones": [
-        "0332610239"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/6299113389",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -7511,17 +7570,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "0332610239",
+      "sourceTelephones": [
+        "0332610239"
+      ]
     },
     {
       "googlePlaceId": "ChIJb1NJHRSMGGARQHQ71gBl4Dg",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-3632300630",
       "nativeSourceId": "node/3632300630",
-      "telephone": "+81 3 3221-5795",
-      "sourceTelephones": [
-        "+81 3 3221-5795"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/3632300630",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -7530,17 +7589,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81 3 3221-5795",
+      "sourceTelephones": [
+        "+81 3 3221-5795"
+      ]
     },
     {
       "googlePlaceId": "ChIJcf2INWuMGGARteCaKYtQc1E",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-1916766478",
       "nativeSourceId": "node/1916766478",
-      "telephone": "+81-3-32397888",
-      "sourceTelephones": [
-        "+81-3-32397888"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/1916766478",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -7549,17 +7608,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81-3-32397888",
+      "sourceTelephones": [
+        "+81-3-32397888"
+      ]
     },
     {
       "googlePlaceId": "ChIJd40yEACNGGAR4P046X_ux2U",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-2511109592",
       "nativeSourceId": "node/2511109592",
-      "telephone": "+81 3-5282-5309",
-      "sourceTelephones": [
-        "+81 3-5282-5309"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/2511109592",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -7568,17 +7627,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81 3-5282-5309",
+      "sourceTelephones": [
+        "+81 3-5282-5309"
+      ]
     },
     {
       "googlePlaceId": "ChIJd50aRRyMGGARvomrfrvV6ZY",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-2059303758",
       "nativeSourceId": "node/2059303758",
-      "telephone": "+81 3-3251-3803",
-      "sourceTelephones": [
-        "+81 3-3251-3803"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/2059303758",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -7587,17 +7646,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81 3-3251-3803",
+      "sourceTelephones": [
+        "+81 3-3251-3803"
+      ]
     },
     {
       "googlePlaceId": "ChIJf9IQHWuMGGAR3tH7Sw31YX0",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-1969060893",
       "nativeSourceId": "node/1969060893",
-      "telephone": "+81-3-32215431",
-      "sourceTelephones": [
-        "+81-3-32215431"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/1969060893",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -7606,17 +7665,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81-3-32215431",
+      "sourceTelephones": [
+        "+81-3-32215431"
+      ]
     },
     {
       "googlePlaceId": "ChIJfX4IJxqMGGARSVQyEy4i_QI",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-6331069587",
       "nativeSourceId": "node/6331069587",
-      "telephone": "0332331905",
-      "sourceTelephones": [
-        "0332331905"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/6331069587",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -7625,17 +7684,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "0332331905",
+      "sourceTelephones": [
+        "0332331905"
+      ]
     },
     {
       "googlePlaceId": "ChIJgRZVxxWMGGARzlentlXZoHw",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-6331046186",
       "nativeSourceId": "node/6331046186",
-      "telephone": "0332614116",
-      "sourceTelephones": [
-        "0332614116"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/6331046186",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -7644,17 +7703,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "0332614116",
+      "sourceTelephones": [
+        "0332614116"
+      ]
     },
     {
       "googlePlaceId": "ChIJh4hmXeCNGGARK7cpKqXTWqE",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-13586057072",
       "nativeSourceId": "node/13586057072",
-      "telephone": "03-6260-7331",
-      "sourceTelephones": [
-        "03-6260-7331"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/13586057072",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -7663,17 +7722,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "03-6260-7331",
+      "sourceTelephones": [
+        "03-6260-7331"
+      ]
     },
     {
       "googlePlaceId": "ChIJhR9ZkxCMGGAROLEM3x_VSFk",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-6299113385",
       "nativeSourceId": "node/6299113385",
-      "telephone": "+81 3 32954310",
-      "sourceTelephones": [
-        "+81 3 32954310"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/6299113385",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -7682,17 +7741,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81 3 32954310",
+      "sourceTelephones": [
+        "+81 3 32954310"
+      ]
     },
     {
       "googlePlaceId": "ChIJj2u4pwSMGGARkTHj4PP1MEA",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-1635233592",
       "nativeSourceId": "node/1635233592",
-      "telephone": "+81 3-5294-0908",
-      "sourceTelephones": [
-        "+81 3-5294-0908"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/1635233592",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -7701,17 +7760,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81 3-5294-0908",
+      "sourceTelephones": [
+        "+81 3-5294-0908"
+      ]
     },
     {
       "googlePlaceId": "ChIJjY134BCMGGAR9h4cOpHB94U",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-1969385479",
       "nativeSourceId": "node/1969385479",
-      "telephone": "+81 3 5282 7850",
-      "sourceTelephones": [
-        "+81 3 5282 7850"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/1969385479",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -7720,17 +7779,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81 3 5282 7850",
+      "sourceTelephones": [
+        "+81 3 5282 7850"
+      ]
     },
     {
       "googlePlaceId": "ChIJkSjJMtWNGGARBJEfaEl17hI",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-6517857691",
       "nativeSourceId": "node/6517857691",
-      "telephone": "+81-03-6876-4178",
-      "sourceTelephones": [
-        "+81-03-6876-4178"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/6517857691",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -7739,17 +7798,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81-03-6876-4178",
+      "sourceTelephones": [
+        "+81-03-6876-4178"
+      ]
     },
     {
       "googlePlaceId": "ChIJkf2ziASMGGARHUeHSS0R9Vw",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-5285669308",
       "nativeSourceId": "node/5285669308",
-      "telephone": "+81 3 3293 5177",
-      "sourceTelephones": [
-        "+81 3 3293 5177"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/5285669308",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -7758,17 +7817,17 @@
         "qcStatus": "verified",
         "qcVersion": 5
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81 3 3293 5177",
+      "sourceTelephones": [
+        "+81 3 3293 5177"
+      ]
     },
     {
       "googlePlaceId": "ChIJkyKS_RyMGGARsIZYG9gpMNc",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-9654182669",
       "nativeSourceId": "node/9654182669",
-      "telephone": "+81 3 3255 7828",
-      "sourceTelephones": [
-        "+81 3 3255 7828"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/9654182669",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -7777,17 +7836,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81 3 3255 7828",
+      "sourceTelephones": [
+        "+81 3 3255 7828"
+      ]
     },
     {
       "googlePlaceId": "ChIJlag912qMGGARURk2NM8k6lc",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-4964137909",
       "nativeSourceId": "node/4964137909",
-      "telephone": "+81-3-3263-6356",
-      "sourceTelephones": [
-        "+81-3-3263-6356"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/4964137909",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -7796,17 +7855,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81-3-3263-6356",
+      "sourceTelephones": [
+        "+81-3-3263-6356"
+      ]
     },
     {
       "googlePlaceId": "ChIJlbohVy2NGGARYM9c0wZX34I",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-12531640901",
       "nativeSourceId": "node/12531640901",
-      "telephone": "+81-3-6810-0655",
-      "sourceTelephones": [
-        "+81-3-6810-0655"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/12531640901",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -7815,17 +7874,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81-3-6810-0655",
+      "sourceTelephones": [
+        "+81-3-6810-0655"
+      ]
     },
     {
       "googlePlaceId": "ChIJp52jo0OMGGAR6L7VsZ1y3MY",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-989291887",
       "nativeSourceId": "node/989291887",
-      "telephone": "+81 3 5226 6345",
-      "sourceTelephones": [
-        "+81 3 5226 6345"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/989291887",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -7834,17 +7893,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81 3 5226 6345",
+      "sourceTelephones": [
+        "+81 3 5226 6345"
+      ]
     },
     {
       "googlePlaceId": "ChIJp5cOrBqMGGARMCiyzZVc7B8",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-1635104326",
       "nativeSourceId": "node/1635104326",
-      "telephone": "+81-3-52811115",
-      "sourceTelephones": [
-        "+81-3-52811115"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/1635104326",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -7853,17 +7912,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81-3-52811115",
+      "sourceTelephones": [
+        "+81-3-52811115"
+      ]
     },
     {
       "googlePlaceId": "ChIJpSBgsBaMGGARRUpLmaFtDFc",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-5614976936",
       "nativeSourceId": "node/5614976936",
-      "telephone": "+81 3 3291 3484",
-      "sourceTelephones": [
-        "+81 3 3291 3484"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/5614976936",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -7872,17 +7931,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81 3 3291 3484",
+      "sourceTelephones": [
+        "+81 3 3291 3484"
+      ]
     },
     {
       "googlePlaceId": "ChIJpevAiRSMGGARJ3j_AniCivM",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-3632301439",
       "nativeSourceId": "node/3632301439",
-      "telephone": "+81 3 3262-2758",
-      "sourceTelephones": [
-        "+81 3 3262-2758"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/3632301439",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -7891,17 +7950,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81 3 3262-2758",
+      "sourceTelephones": [
+        "+81 3 3262-2758"
+      ]
     },
     {
       "googlePlaceId": "ChIJq-tfOBGMGGARFR9OxPRRFrc",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-2505682007",
       "nativeSourceId": "node/2505682007",
-      "telephone": "+81 3-3233-8491",
-      "sourceTelephones": [
-        "+81 3-3233-8491"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/2505682007",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -7910,17 +7969,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81 3-3233-8491",
+      "sourceTelephones": [
+        "+81 3-3233-8491"
+      ]
     },
     {
       "googlePlaceId": "ChIJq6pq1xyMGGAR-lolaDOLzUU",
       "provider": "OpenStreetMap",
       "providerId": "osm-w-743276344",
       "nativeSourceId": "way/743276344",
-      "telephone": "+81 3-6206-8455",
-      "sourceTelephones": [
-        "+81 3-6206-8455"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/way/743276344",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -7929,17 +7988,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81 3-6206-8455",
+      "sourceTelephones": [
+        "+81 3-6206-8455"
+      ]
     },
     {
       "googlePlaceId": "ChIJqxsi-ECMGGAR9MgoPJ4JWHw",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-3626460286",
       "nativeSourceId": "node/3626460286",
-      "telephone": "+81 3-3512-9722",
-      "sourceTelephones": [
-        "+81 3-3512-9722"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/3626460286",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -7948,17 +8007,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81 3-3512-9722",
+      "sourceTelephones": [
+        "+81 3-3512-9722"
+      ]
     },
     {
       "googlePlaceId": "ChIJr3knVhCMGGARzV5mJJqG8_c",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-4018929188",
       "nativeSourceId": "node/4018929188",
-      "telephone": "+81 3-3291-6222",
-      "sourceTelephones": [
-        "+81 3-3291-6222"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/4018929188",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -7967,17 +8026,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81 3-3291-6222",
+      "sourceTelephones": [
+        "+81 3-3291-6222"
+      ]
     },
     {
       "googlePlaceId": "ChIJr8i9lkCMGGARIQjvEBFKvXc",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-11621660295",
       "nativeSourceId": "node/11621660295",
-      "telephone": "+81-3-3288-1578",
-      "sourceTelephones": [
-        "+81-3-3288-1578"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/11621660295",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -7986,17 +8045,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81-3-3288-1578",
+      "sourceTelephones": [
+        "+81-3-3288-1578"
+      ]
     },
     {
       "googlePlaceId": "ChIJrQJoMmuMGGARJ8q86MIn6_I",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-1969058268",
       "nativeSourceId": "node/1969058268",
-      "telephone": "+81-3-52751158",
-      "sourceTelephones": [
-        "+81-3-52751158"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/1969058268",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -8005,17 +8064,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81-3-52751158",
+      "sourceTelephones": [
+        "+81-3-52751158"
+      ]
     },
     {
       "googlePlaceId": "ChIJs-O79UyNGGARoDH2Vg85mXM",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-13005640655",
       "nativeSourceId": "node/13005640655",
-      "telephone": "+81 3-6272-3524",
-      "sourceTelephones": [
-        "+81 3-6272-3524"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/13005640655",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -8024,17 +8083,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81 3-6272-3524",
+      "sourceTelephones": [
+        "+81 3-6272-3524"
+      ]
     },
     {
       "googlePlaceId": "ChIJsw2B-mqNGGARnGg5qLOjwFk",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-11815973369",
       "nativeSourceId": "node/11815973369",
-      "telephone": "05036972547",
-      "sourceTelephones": [
-        "05036972547"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/11815973369",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -8043,17 +8102,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "05036972547",
+      "sourceTelephones": [
+        "05036972547"
+      ]
     },
     {
       "googlePlaceId": "ChIJxaFliBWMGGARsF0TD5NiBH0",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-3632309203",
       "nativeSourceId": "node/3632309203",
-      "telephone": "+81 3-3264-3963",
-      "sourceTelephones": [
-        "+81 3-3264-3963"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/3632309203",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -8062,17 +8121,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81 3-3264-3963",
+      "sourceTelephones": [
+        "+81 3-3264-3963"
+      ]
     },
     {
       "googlePlaceId": "ChIJy5iG5ECMGGARnUtzLDHlU3o",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-1969374619",
       "nativeSourceId": "node/1969374619",
-      "telephone": "+81-3-32398222",
-      "sourceTelephones": [
-        "+81-3-32398222"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/1969374619",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -8081,17 +8140,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81-3-32398222",
+      "sourceTelephones": [
+        "+81-3-32398222"
+      ]
     },
     {
       "googlePlaceId": "ChIJyb94PwOMGGARtDDndNvDe9Y",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-1231861290",
       "nativeSourceId": "node/1231861290",
-      "telephone": "+81 3-5209-6781",
-      "sourceTelephones": [
-        "+81 3-5209-6781"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/1231861290",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -8100,17 +8159,17 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81 3-5209-6781",
+      "sourceTelephones": [
+        "+81 3-5209-6781"
+      ]
     },
     {
       "googlePlaceId": "ChIJzzrWJWuMGGARXDyRYYR1JJ0",
       "provider": "OpenStreetMap",
       "providerId": "osm-n-2135934904",
       "nativeSourceId": "node/2135934904",
-      "telephone": "+81 3-3261-2579",
-      "sourceTelephones": [
-        "+81 3-3261-2579"
-      ],
       "sourceUrl": "https://www.openstreetmap.org/node/2135934904",
       "checkedAt": "2026-09-05",
       "binding": {
@@ -8119,7 +8178,2885 @@
         "qcStatus": "verified",
         "qcVersion": 4
       },
-      "ruleVersion": "verified-osm-native-metadata-v3"
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "telephone": "+81 3-3261-2579",
+      "sourceTelephones": [
+        "+81 3-3261-2579"
+      ]
+    }
+  ],
+  "osmPracticalRows": [
+    {
+      "googlePlaceId": "ChIJ-YkEWBeMGGARfOUCHahbddE",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-1511441600",
+      "nativeSourceId": "node/1511441600",
+      "sourceUrl": "https://www.openstreetmap.org/node/1511441600",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.barrier_free": false
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "no"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJ-c9WERGMGGARFQx2dyqYVWo",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-5455368497",
+      "nativeSourceId": "node/5455368497",
+      "sourceUrl": "https://www.openstreetmap.org/node/5455368497",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.barrier_free": false,
+        "practical.smoking_policy": "yes"
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "no",
+        "smoking": "yes"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJ09Mm5xmMGGAR6drOCC8NmEA",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-4013988106",
+      "nativeSourceId": "node/4013988106",
+      "sourceUrl": "https://www.openstreetmap.org/node/4013988106",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.barrier_free": false
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "no"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJ0W7HkgOMGGARSdJEu-NnDB4",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-w-231665064",
+      "nativeSourceId": "way/231665064",
+      "sourceUrl": "https://www.openstreetmap.org/way/231665064",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.barrier_free": true
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "yes"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJ0_2CIRGMGGARZxuMcOPWxwk",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-3343070911",
+      "nativeSourceId": "node/3343070911",
+      "sourceUrl": "https://www.openstreetmap.org/node/3343070911",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.barrier_free": false
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "no"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJ20wrgRmMGGARluo4JoLb8Q8",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-1654251446",
+      "nativeSourceId": "node/1654251446",
+      "sourceUrl": "https://www.openstreetmap.org/node/1654251446",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.barrier_free": false
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "no"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJ2WGN9heMGGARIpk8EbXf8b4",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-3611935202",
+      "nativeSourceId": "node/3611935202",
+      "sourceUrl": "https://www.openstreetmap.org/node/3611935202",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.barrier_free": true
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "yes"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJ2ZVGFQGMGGARmN1lf5qU8MU",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-11515951778",
+      "nativeSourceId": "node/11515951778",
+      "sourceUrl": "https://www.openstreetmap.org/node/11515951778",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.barrier_free": false
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "no"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJ2atVJwSMGGARrwm6ahMJsfo",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-12087568305",
+      "nativeSourceId": "node/12087568305",
+      "sourceUrl": "https://www.openstreetmap.org/node/12087568305",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.barrier_free": true
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "yes"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJ38OBKhqMGGARv2PCpjtd6uI",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-5184977461",
+      "nativeSourceId": "node/5184977461",
+      "sourceUrl": "https://www.openstreetmap.org/node/5184977461",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.barrier_free": false
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "no"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJ38dCzRqMGGAR9Awruuaqr_A",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-4987355250",
+      "nativeSourceId": "node/4987355250",
+      "sourceUrl": "https://www.openstreetmap.org/node/4987355250",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.barrier_free": true
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "yes"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJ4e3_CQ6MGGARgbvLFz2U9kQ",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-1952088853",
+      "nativeSourceId": "node/1952088853",
+      "sourceUrl": "https://www.openstreetmap.org/node/1952088853",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.wifi_available": true
+      },
+      "sourcePracticalTags": {
+        "internet_access": "wlan"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJ4ePngBmMGGARu5LUFztq7tI",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-4071246357",
+      "nativeSourceId": "node/4071246357",
+      "sourceUrl": "https://www.openstreetmap.org/node/4071246357",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.barrier_free": true,
+        "practical.smoking_policy": "no"
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "yes",
+        "smoking": "no"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJ6-JxGJyNGGARhu0YEPhV3mc",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-6384667704",
+      "nativeSourceId": "node/6384667704",
+      "sourceUrl": "https://www.openstreetmap.org/node/6384667704",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.card_available": true
+      },
+      "sourcePracticalTags": {
+        "payment:credit_cards": "yes"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJ67ggdxeMGGAR5uSOMBBDfHU",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-599541465",
+      "nativeSourceId": "node/599541465",
+      "sourceUrl": "https://www.openstreetmap.org/node/599541465",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.wifi_available": true,
+        "practical.smoking_policy": "no"
+      },
+      "sourcePracticalTags": {
+        "internet_access": "wlan",
+        "smoking": "no"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJ6QXNGBuMGGARoa9gDeTHnEs",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-3376950602",
+      "nativeSourceId": "node/3376950602",
+      "sourceUrl": "https://www.openstreetmap.org/node/3376950602",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.smoking_policy": "separated"
+      },
+      "sourcePracticalTags": {
+        "smoking": "separated"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJ6X2dkgSMGGARx4ZIQvpQm6w",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-5285922168",
+      "nativeSourceId": "node/5285922168",
+      "sourceUrl": "https://www.openstreetmap.org/node/5285922168",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.barrier_free": false
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "no"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJ6cAc-AaMGGARENpbvkjOucs",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-12254663101",
+      "nativeSourceId": "node/12254663101",
+      "sourceUrl": "https://www.openstreetmap.org/node/12254663101",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.barrier_free": true
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "yes"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJ7aCmgBuMGGARQGT-kFw_KtI",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-3164057661",
+      "nativeSourceId": "node/3164057661",
+      "sourceUrl": "https://www.openstreetmap.org/node/3164057661",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.barrier_free": true
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "yes"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJ7wAjrBuMGGARHOWStkoMVCI",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-2452371904",
+      "nativeSourceId": "node/2452371904",
+      "sourceUrl": "https://www.openstreetmap.org/node/2452371904",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 5
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.wifi_available": true
+      },
+      "sourcePracticalTags": {
+        "internet_access": "wlan"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJ8X1X0FSNGGAR9y3HrPtiS3A",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-13580057218",
+      "nativeSourceId": "node/13580057218",
+      "sourceUrl": "https://www.openstreetmap.org/node/13580057218",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.barrier_free": true
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "yes"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJ8YrMy7qNGGARLO2JDbagXNo",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-13357153901",
+      "nativeSourceId": "node/13357153901",
+      "sourceUrl": "https://www.openstreetmap.org/node/13357153901",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.card_available": true,
+        "practical.smoking_policy": "no"
+      },
+      "sourcePracticalTags": {
+        "payment:credit_cards": "yes",
+        "smoking": "no"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJ8eELK2yNGGARR4AIf3-Wffo",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-6417162489",
+      "nativeSourceId": "node/6417162489",
+      "sourceUrl": "https://www.openstreetmap.org/node/6417162489",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.wifi_available": true
+      },
+      "sourcePracticalTags": {
+        "internet_access": "wlan"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJA3uXWgOMGGARW_LZHuzxH7o",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-1231861284",
+      "nativeSourceId": "node/1231861284",
+      "sourceUrl": "https://www.openstreetmap.org/node/1231861284",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.smoking_policy": "no"
+      },
+      "sourcePracticalTags": {
+        "smoking": "no"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJA7vjSxCMGGARpf4TitkGqMk",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-3626203879",
+      "nativeSourceId": "node/3626203879",
+      "sourceUrl": "https://www.openstreetmap.org/node/3626203879",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.wifi_available": true,
+        "practical.smoking_policy": "yes"
+      },
+      "sourcePracticalTags": {
+        "internet_access": "wlan",
+        "smoking": "yes"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJAQALSQGMGGARSP9jwTsW9sk",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-12090542918",
+      "nativeSourceId": "node/12090542918",
+      "sourceUrl": "https://www.openstreetmap.org/node/12090542918",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.barrier_free": false
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "no"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJAQBEjBiMGGARYUv2a_TphXI",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-4962906595",
+      "nativeSourceId": "node/4962906595",
+      "sourceUrl": "https://www.openstreetmap.org/node/4962906595",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.barrier_free": false
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "no"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJAQC0dESMGGAR0VQTphLwmdw",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-4967321860",
+      "nativeSourceId": "node/4967321860",
+      "sourceUrl": "https://www.openstreetmap.org/node/4967321860",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.card_available": true,
+        "practical.barrier_free": false
+      },
+      "sourcePracticalTags": {
+        "payment:credit_cards": "yes",
+        "wheelchair": "no"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJAe9OMzWNGGARJmv6abBeXzE",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-12872108675",
+      "nativeSourceId": "node/12872108675",
+      "sourceUrl": "https://www.openstreetmap.org/node/12872108675",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.barrier_free": true
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "yes"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJBXu_LgSMGGARXn0ZfwtG-kk",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-12085741471",
+      "nativeSourceId": "node/12085741471",
+      "sourceUrl": "https://www.openstreetmap.org/node/12085741471",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.barrier_free": true
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "yes"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJB_WeKhqMGGAR4IwXOJ-iUCk",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-1654251469",
+      "nativeSourceId": "node/1654251469",
+      "sourceUrl": "https://www.openstreetmap.org/node/1654251469",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.barrier_free": false
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "no"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJB_WeKhqMGGAR9DCL2lv0LEE",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-2388253217",
+      "nativeSourceId": "node/2388253217",
+      "sourceUrl": "https://www.openstreetmap.org/node/2388253217",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.barrier_free": true
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "yes"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJB_WeKhqMGGARiHfhZXYgVFo",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-2388254203",
+      "nativeSourceId": "node/2388254203",
+      "sourceUrl": "https://www.openstreetmap.org/node/2388254203",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 5
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.wifi_available": false,
+        "practical.barrier_free": true
+      },
+      "sourcePracticalTags": {
+        "internet_access": "no",
+        "wheelchair": "yes"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJC4ofDxCMGGARWaogIKxHSCw",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-7215839977",
+      "nativeSourceId": "node/7215839977",
+      "sourceUrl": "https://www.openstreetmap.org/node/7215839977",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.barrier_free": false
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "no"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJC94crAaMGGARQ5ATOkusuPs",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-12090801565",
+      "nativeSourceId": "node/12090801565",
+      "sourceUrl": "https://www.openstreetmap.org/node/12090801565",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.barrier_free": false
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "no"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJDVdSfmmMGGARn19s9XYBdOY",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-3632462818",
+      "nativeSourceId": "node/3632462818",
+      "sourceUrl": "https://www.openstreetmap.org/node/3632462818",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.smoking_policy": "separated"
+      },
+      "sourcePracticalTags": {
+        "smoking": "separated"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJDxYKIhCMGGARScnqzc-T-TU",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-5455368500",
+      "nativeSourceId": "node/5455368500",
+      "sourceUrl": "https://www.openstreetmap.org/node/5455368500",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.wifi_available": true
+      },
+      "sourcePracticalTags": {
+        "internet_access": "wlan"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJF3cSy0GMGGARwvwIZmKFgm4",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-5145229150",
+      "nativeSourceId": "node/5145229150",
+      "sourceUrl": "https://www.openstreetmap.org/node/5145229150",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.smoking_policy": "yes"
+      },
+      "sourcePracticalTags": {
+        "smoking": "yes"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJFY6dSxCMGGAR61a2qrCEco0",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-6187350565",
+      "nativeSourceId": "node/6187350565",
+      "sourceUrl": "https://www.openstreetmap.org/node/6187350565",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.barrier_free": false
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "no"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJGwjljhWMGGARjLafECSEbqA",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-2805728310",
+      "nativeSourceId": "node/2805728310",
+      "sourceUrl": "https://www.openstreetmap.org/node/2805728310",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.smoking_policy": "no"
+      },
+      "sourcePracticalTags": {
+        "smoking": "no"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJH45U0y2NGGARFO8F9X8I1nA",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-12089239331",
+      "nativeSourceId": "node/12089239331",
+      "sourceUrl": "https://www.openstreetmap.org/node/12089239331",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.barrier_free": false
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "no"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJH6xJGKONGGARU28BTcWvIbA",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-11515951780",
+      "nativeSourceId": "node/11515951780",
+      "sourceUrl": "https://www.openstreetmap.org/node/11515951780",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.barrier_free": true
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "yes"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJH8GYiROMGGARAjxscGAOoIA",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-3626212560",
+      "nativeSourceId": "node/3626212560",
+      "sourceUrl": "https://www.openstreetmap.org/node/3626212560",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.wifi_available": true,
+        "practical.smoking_policy": "yes"
+      },
+      "sourcePracticalTags": {
+        "internet_access": "wlan",
+        "smoking": "yes"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJHR3eZRyMGGARgb3K60lZKb4",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-5026473704",
+      "nativeSourceId": "node/5026473704",
+      "sourceUrl": "https://www.openstreetmap.org/node/5026473704",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.barrier_free": true,
+        "practical.smoking_policy": "yes"
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "yes",
+        "smoking": "yes"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJHc25sgSMGGARAqITOEMtNxk",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-1635233552",
+      "nativeSourceId": "node/1635233552",
+      "sourceUrl": "https://www.openstreetmap.org/node/1635233552",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.wifi_available": true,
+        "practical.smoking_policy": "yes"
+      },
+      "sourcePracticalTags": {
+        "internet_access": "wlan",
+        "smoking": "yes"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJJ9zW1BqMGGARfIp-qxuT1pg",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-2805773601",
+      "nativeSourceId": "node/2805773601",
+      "sourceUrl": "https://www.openstreetmap.org/node/2805773601",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.smoking_policy": "separated"
+      },
+      "sourcePracticalTags": {
+        "smoking": "separated"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJKSq4ewOMGGARvdJFWODrifw",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-7877309022",
+      "nativeSourceId": "node/7877309022",
+      "sourceUrl": "https://www.openstreetmap.org/node/7877309022",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.barrier_free": false
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "no"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJKV27XcWNGGARUMPjYkQlDlQ",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-13847220701",
+      "nativeSourceId": "node/13847220701",
+      "sourceUrl": "https://www.openstreetmap.org/node/13847220701",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.wifi_available": true
+      },
+      "sourcePracticalTags": {
+        "internet_access": "wlan"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJL97HJVqNGGARHc-DjzpVfls",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-12686156373",
+      "nativeSourceId": "node/12686156373",
+      "sourceUrl": "https://www.openstreetmap.org/node/12686156373",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.wifi_available": true,
+        "practical.barrier_free": false,
+        "practical.smoking_policy": "no"
+      },
+      "sourcePracticalTags": {
+        "internet_access": "wlan",
+        "wheelchair": "no",
+        "smoking": "no"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJLSgaVwGMGGARxX2c6r_1V8I",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-8930640206",
+      "nativeSourceId": "node/8930640206",
+      "sourceUrl": "https://www.openstreetmap.org/node/8930640206",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.barrier_free": false
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "no"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJLf0tjASMGGARSDTzYIiYzno",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-5285922170",
+      "nativeSourceId": "node/5285922170",
+      "sourceUrl": "https://www.openstreetmap.org/node/5285922170",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.barrier_free": false
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "no"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJLfEVOBGMGGARSgVXcaRddlY",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-3343070906",
+      "nativeSourceId": "node/3343070906",
+      "sourceUrl": "https://www.openstreetmap.org/node/3343070906",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.barrier_free": false
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "no"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJLzK5Fa6NGGARoekuSAi9AEg",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-9979008281",
+      "nativeSourceId": "node/9979008281",
+      "sourceUrl": "https://www.openstreetmap.org/node/9979008281",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.barrier_free": true
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "yes"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJM1B1zgWMGGAR04DJYO1QtR0",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-1969396058",
+      "nativeSourceId": "node/1969396058",
+      "sourceUrl": "https://www.openstreetmap.org/node/1969396058",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.wifi_available": true
+      },
+      "sourcePracticalTags": {
+        "internet_access": "wlan"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJMYM_ELeNGGAR4_Rjpux4b9k",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-4486431765",
+      "nativeSourceId": "node/4486431765",
+      "sourceUrl": "https://www.openstreetmap.org/node/4486431765",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.smoking_policy": "no"
+      },
+      "sourcePracticalTags": {
+        "smoking": "no"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJM_9L_BCMGGAR_bEtGkUWb8c",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-6832689590",
+      "nativeSourceId": "node/6832689590",
+      "sourceUrl": "https://www.openstreetmap.org/node/6832689590",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.barrier_free": false
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "no"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJN0VWZhWMGGARLvOMzqiFHWI",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-2172639808",
+      "nativeSourceId": "node/2172639808",
+      "sourceUrl": "https://www.openstreetmap.org/node/2172639808",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.wifi_available": true
+      },
+      "sourcePracticalTags": {
+        "internet_access": "wlan"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJNRdnDRGMGGAReEOlgaAWYB8",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-5455368496",
+      "nativeSourceId": "node/5455368496",
+      "sourceUrl": "https://www.openstreetmap.org/node/5455368496",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.barrier_free": false
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "no"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJNfqy4EaMGGAR51sW_7PltDQ",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-3611878119",
+      "nativeSourceId": "node/3611878119",
+      "sourceUrl": "https://www.openstreetmap.org/node/3611878119",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.wifi_available": true,
+        "practical.barrier_free": true,
+        "practical.smoking_policy": "outside"
+      },
+      "sourcePracticalTags": {
+        "internet_access": "wlan",
+        "wheelchair": "yes",
+        "smoking": "outside"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJOWqVHj-MGGARZd0fgS_r3tI",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-3611901927",
+      "nativeSourceId": "node/3611901927",
+      "sourceUrl": "https://www.openstreetmap.org/node/3611901927",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.wifi_available": true,
+        "practical.barrier_free": true
+      },
+      "sourcePracticalTags": {
+        "internet_access": "wlan",
+        "wheelchair": "yes"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJP0OnFSaNGGARMDw_hTS2-XY",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-12051018762",
+      "nativeSourceId": "node/12051018762",
+      "sourceUrl": "https://www.openstreetmap.org/node/12051018762",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.card_available": true,
+        "practical.wifi_available": true
+      },
+      "sourcePracticalTags": {
+        "payment:credit_cards": "yes",
+        "internet_access": "wlan"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJPwXvEraNGGARLI4u5n0hLBs",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-4961630545",
+      "nativeSourceId": "node/4961630545",
+      "sourceUrl": "https://www.openstreetmap.org/node/4961630545",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.card_available": true,
+        "practical.barrier_free": false
+      },
+      "sourcePracticalTags": {
+        "payment:visa": "yes",
+        "payment:mastercard": "yes",
+        "payment:jcb": "yes",
+        "payment:american_express": "yes",
+        "payment:diners_club": "yes",
+        "wheelchair": "no"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJQ3MESwOMGGARX99d47o0V6k",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-1635279739",
+      "nativeSourceId": "node/1635279739",
+      "sourceUrl": "https://www.openstreetmap.org/node/1635279739",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.barrier_free": false
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "no"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJQTWWWwGMGGARwafkBcO3tLk",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-516368792",
+      "nativeSourceId": "node/516368792",
+      "sourceUrl": "https://www.openstreetmap.org/node/516368792",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.barrier_free": true
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "yes"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJRcu6ggOMGGAR62_THvo-ho4",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-7877309020",
+      "nativeSourceId": "node/7877309020",
+      "sourceUrl": "https://www.openstreetmap.org/node/7877309020",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.barrier_free": true
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "yes"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJS9VGpBuMGGAR1hMANtBU8Ws",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-4315444326",
+      "nativeSourceId": "node/4315444326",
+      "sourceUrl": "https://www.openstreetmap.org/node/4315444326",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.barrier_free": true
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "yes"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJS9VGpBuMGGARmOdUaAQPbWo",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-4315444331",
+      "nativeSourceId": "node/4315444331",
+      "sourceUrl": "https://www.openstreetmap.org/node/4315444331",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.barrier_free": true
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "yes"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJSdEMKDmMGGARyiy9F60mMLk",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-4963781758",
+      "nativeSourceId": "node/4963781758",
+      "sourceUrl": "https://www.openstreetmap.org/node/4963781758",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.barrier_free": false
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "no"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJTeVcswOMGGARkoFdU2QQPbY",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-7931318504",
+      "nativeSourceId": "node/7931318504",
+      "sourceUrl": "https://www.openstreetmap.org/node/7931318504",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.barrier_free": false
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "no"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJU4sI4gaMGGARPBBnRO9pbpw",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-6652884270",
+      "nativeSourceId": "node/6652884270",
+      "sourceUrl": "https://www.openstreetmap.org/node/6652884270",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.barrier_free": true
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "yes"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJU9NtWQOMGGARIOyGVUhXqxs",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-8929796975",
+      "nativeSourceId": "node/8929796975",
+      "sourceUrl": "https://www.openstreetmap.org/node/8929796975",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.smoking_policy": "no"
+      },
+      "sourcePracticalTags": {
+        "smoking": "no"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJVVWV4gaMGGAR7lcQ0R67fBE",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-4330517193",
+      "nativeSourceId": "node/4330517193",
+      "sourceUrl": "https://www.openstreetmap.org/node/4330517193",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.barrier_free": true
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "yes"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJVVWV4gaMGGARF7KwvERRSl0",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-6652928176",
+      "nativeSourceId": "node/6652928176",
+      "sourceUrl": "https://www.openstreetmap.org/node/6652928176",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.barrier_free": true
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "yes"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJVVWVuBOMGGARR14mDlWkiS4",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-5844639468",
+      "nativeSourceId": "node/5844639468",
+      "sourceUrl": "https://www.openstreetmap.org/node/5844639468",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.smoking_policy": "no"
+      },
+      "sourcePracticalTags": {
+        "smoking": "no"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJVwXD9E6NGGARkHzeYVBeacw",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-10137263017",
+      "nativeSourceId": "node/10137263017",
+      "sourceUrl": "https://www.openstreetmap.org/node/10137263017",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.wifi_available": true
+      },
+      "sourcePracticalTags": {
+        "internet_access": "wlan"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJW4ph90OMGGARdlhIHYAGMRw",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-1915019819",
+      "nativeSourceId": "node/1915019819",
+      "sourceUrl": "https://www.openstreetmap.org/node/1915019819",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.wifi_available": true,
+        "practical.barrier_free": true,
+        "practical.smoking_policy": "separated"
+      },
+      "sourcePracticalTags": {
+        "internet_access": "wlan",
+        "wheelchair": "yes",
+        "smoking": "separated"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJW9bTbxqMGGARzrp71TKW5lU",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-1916698184",
+      "nativeSourceId": "node/1916698184",
+      "sourceUrl": "https://www.openstreetmap.org/node/1916698184",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.smoking_policy": "separated"
+      },
+      "sourcePracticalTags": {
+        "smoking": "separated"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJX4pJHwKMGGARyKR-5lGfPYA",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-5285922169",
+      "nativeSourceId": "node/5285922169",
+      "sourceUrl": "https://www.openstreetmap.org/node/5285922169",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.barrier_free": false
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "no"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJXXE5YkGMGGARkjQd_KkZSWA",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-w-144480712",
+      "nativeSourceId": "way/144480712",
+      "sourceUrl": "https://www.openstreetmap.org/way/144480712",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.smoking_policy": "yes"
+      },
+      "sourcePracticalTags": {
+        "smoking": "yes"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJZ6B6S2uMGGAR1FZFUTrzDm8",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-5622291636",
+      "nativeSourceId": "node/5622291636",
+      "sourceUrl": "https://www.openstreetmap.org/node/5622291636",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.barrier_free": false,
+        "practical.smoking_policy": "yes"
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "no",
+        "smoking": "yes"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJZQZwfxWMGGARoD8aXy_2l3Q",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-2805723434",
+      "nativeSourceId": "node/2805723434",
+      "sourceUrl": "https://www.openstreetmap.org/node/2805723434",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.smoking_policy": "separated"
+      },
+      "sourcePracticalTags": {
+        "smoking": "separated"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJ____DxGMGGARxguBsW1lnd0",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-7202136550",
+      "nativeSourceId": "node/7202136550",
+      "sourceUrl": "https://www.openstreetmap.org/node/7202136550",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.barrier_free": false
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "no"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJ_____xSMGGARX2t1iIjgdT0",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-5251966322",
+      "nativeSourceId": "node/5251966322",
+      "sourceUrl": "https://www.openstreetmap.org/node/5251966322",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.smoking_policy": "no"
+      },
+      "sourcePracticalTags": {
+        "smoking": "no"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJb1NJHRSMGGARQHQ71gBl4Dg",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-3632300630",
+      "nativeSourceId": "node/3632300630",
+      "sourceUrl": "https://www.openstreetmap.org/node/3632300630",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.smoking_policy": "separated"
+      },
+      "sourcePracticalTags": {
+        "smoking": "separated"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJcf2INWuMGGARteCaKYtQc1E",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-1916766478",
+      "nativeSourceId": "node/1916766478",
+      "sourceUrl": "https://www.openstreetmap.org/node/1916766478",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.wifi_available": true
+      },
+      "sourcePracticalTags": {
+        "internet_access": "wlan"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJd40yEACNGGAR4P046X_ux2U",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-2511109592",
+      "nativeSourceId": "node/2511109592",
+      "sourceUrl": "https://www.openstreetmap.org/node/2511109592",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.wifi_available": false,
+        "practical.barrier_free": true,
+        "practical.smoking_policy": "separated"
+      },
+      "sourcePracticalTags": {
+        "internet_access": "no",
+        "wheelchair": "yes",
+        "smoking": "separated"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJd50aRRyMGGARvomrfrvV6ZY",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-2059303758",
+      "nativeSourceId": "node/2059303758",
+      "sourceUrl": "https://www.openstreetmap.org/node/2059303758",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.wifi_available": true,
+        "practical.smoking_policy": "separated"
+      },
+      "sourcePracticalTags": {
+        "internet_access": "wlan",
+        "smoking": "separated"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJdx7kXAGMGGARKu7Y4nibeSE",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-9979221123",
+      "nativeSourceId": "node/9979221123",
+      "sourceUrl": "https://www.openstreetmap.org/node/9979221123",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.barrier_free": true
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "yes"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJe16F5T6MGGARu6gbV4qNbKg",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-2959535333",
+      "nativeSourceId": "node/2959535333",
+      "sourceUrl": "https://www.openstreetmap.org/node/2959535333",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.barrier_free": false
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "no"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJeS5N6hiMGGARefJMORLgr68",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-4893865865",
+      "nativeSourceId": "node/4893865865",
+      "sourceUrl": "https://www.openstreetmap.org/node/4893865865",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.barrier_free": true
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "yes"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJeSvAydGNGGARI3MmVMxkkKg",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-8016329008",
+      "nativeSourceId": "node/8016329008",
+      "sourceUrl": "https://www.openstreetmap.org/node/8016329008",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.barrier_free": false
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "no"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJeUnkM6iOGGARC-e2DoGOpDM",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-7881041520",
+      "nativeSourceId": "node/7881041520",
+      "sourceUrl": "https://www.openstreetmap.org/node/7881041520",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.barrier_free": false
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "no"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJf9IQHWuMGGAR3tH7Sw31YX0",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-1969060893",
+      "nativeSourceId": "node/1969060893",
+      "sourceUrl": "https://www.openstreetmap.org/node/1969060893",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.wifi_available": true
+      },
+      "sourcePracticalTags": {
+        "internet_access": "wlan"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJfb3UoQaMGGARQ0eGxFvMa38",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-12089239332",
+      "nativeSourceId": "node/12089239332",
+      "sourceUrl": "https://www.openstreetmap.org/node/12089239332",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.barrier_free": false
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "no"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJfb3UoQaMGGARrJrGKjzbA3M",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-12089239333",
+      "nativeSourceId": "node/12089239333",
+      "sourceUrl": "https://www.openstreetmap.org/node/12089239333",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.barrier_free": false
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "no"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJgaPNVhCMGGARILh-OhDkTn8",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-11328955209",
+      "nativeSourceId": "node/11328955209",
+      "sourceUrl": "https://www.openstreetmap.org/node/11328955209",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.wifi_available": true,
+        "practical.barrier_free": false,
+        "practical.smoking_policy": "no"
+      },
+      "sourcePracticalTags": {
+        "internet_access": "wlan",
+        "wheelchair": "no",
+        "smoking": "no"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJgf3tagGMGGARkEwmHXAshfQ",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-11515951779",
+      "nativeSourceId": "node/11515951779",
+      "sourceUrl": "https://www.openstreetmap.org/node/11515951779",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.barrier_free": true
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "yes"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJhXD3-AaMGGARbLVQPEtml80",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-6650890508",
+      "nativeSourceId": "node/6650890508",
+      "sourceUrl": "https://www.openstreetmap.org/node/6650890508",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.wifi_available": true,
+        "practical.barrier_free": true
+      },
+      "sourcePracticalTags": {
+        "internet_access": "wlan",
+        "wheelchair": "yes"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJhXD3-AaMGGARcRQ90hRePdE",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-6653152579",
+      "nativeSourceId": "node/6653152579",
+      "sourceUrl": "https://www.openstreetmap.org/node/6653152579",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.barrier_free": true
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "yes"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJhYJN9OuNGGARWrd1qlB8v9M",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-12691308938",
+      "nativeSourceId": "node/12691308938",
+      "sourceUrl": "https://www.openstreetmap.org/node/12691308938",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.barrier_free": true
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "yes"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJhxpvm0KNGGARvFCnFG1Y5TM",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-7863493838",
+      "nativeSourceId": "node/7863493838",
+      "sourceUrl": "https://www.openstreetmap.org/node/7863493838",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.smoking_policy": "no"
+      },
+      "sourcePracticalTags": {
+        "smoking": "no"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJiTYVJhyMGGAREI-WsUbMRL4",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-2959542534",
+      "nativeSourceId": "node/2959542534",
+      "sourceUrl": "https://www.openstreetmap.org/node/2959542534",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.barrier_free": false
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "no"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJj2u4pwSMGGARkTHj4PP1MEA",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-1635233592",
+      "nativeSourceId": "node/1635233592",
+      "sourceUrl": "https://www.openstreetmap.org/node/1635233592",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.smoking_policy": "separated"
+      },
+      "sourcePracticalTags": {
+        "smoking": "separated"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJkYyE7gSMGGARNuyvrhRFIiw",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-8016329015",
+      "nativeSourceId": "node/8016329015",
+      "sourceUrl": "https://www.openstreetmap.org/node/8016329015",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.barrier_free": false
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "no"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJkf2ziASMGGARHUeHSS0R9Vw",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-5285669308",
+      "nativeSourceId": "node/5285669308",
+      "sourceUrl": "https://www.openstreetmap.org/node/5285669308",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 5
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.barrier_free": false
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "no"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJlUK4oAaMGGARXI9y5vVdWj8",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-12089239323",
+      "nativeSourceId": "node/12089239323",
+      "sourceUrl": "https://www.openstreetmap.org/node/12089239323",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.barrier_free": true
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "yes"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJlag912qMGGARURk2NM8k6lc",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-4964137909",
+      "nativeSourceId": "node/4964137909",
+      "sourceUrl": "https://www.openstreetmap.org/node/4964137909",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.barrier_free": false,
+        "practical.smoking_policy": "no"
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "no",
+        "smoking": "no"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJm_L1ZwaMGGARItmByJT3IxE",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-13240711701",
+      "nativeSourceId": "node/13240711701",
+      "sourceUrl": "https://www.openstreetmap.org/node/13240711701",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.barrier_free": true
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "yes"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJp3be1AeMGGAR1V1CQhkbTJQ",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-5340832504",
+      "nativeSourceId": "node/5340832504",
+      "sourceUrl": "https://www.openstreetmap.org/node/5340832504",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.barrier_free": true
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "yes"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJp52jo0OMGGAR6L7VsZ1y3MY",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-989291887",
+      "nativeSourceId": "node/989291887",
+      "sourceUrl": "https://www.openstreetmap.org/node/989291887",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.smoking_policy": "separated"
+      },
+      "sourcePracticalTags": {
+        "smoking": "separated"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJp5cOrBqMGGARMCiyzZVc7B8",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-1635104326",
+      "nativeSourceId": "node/1635104326",
+      "sourceUrl": "https://www.openstreetmap.org/node/1635104326",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.wifi_available": true
+      },
+      "sourcePracticalTags": {
+        "internet_access": "wlan"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJpZBYkxCMGGARrdO6BQ1yGPQ",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-4053987170",
+      "nativeSourceId": "node/4053987170",
+      "sourceUrl": "https://www.openstreetmap.org/node/4053987170",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.smoking_policy": "no"
+      },
+      "sourcePracticalTags": {
+        "smoking": "no"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJpevAiRSMGGARJ3j_AniCivM",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-3632301439",
+      "nativeSourceId": "node/3632301439",
+      "sourceUrl": "https://www.openstreetmap.org/node/3632301439",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.wifi_available": false,
+        "practical.smoking_policy": "separated"
+      },
+      "sourcePracticalTags": {
+        "internet_access": "no",
+        "smoking": "separated"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJq-tfOBGMGGARFR9OxPRRFrc",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-2505682007",
+      "nativeSourceId": "node/2505682007",
+      "sourceUrl": "https://www.openstreetmap.org/node/2505682007",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.smoking_policy": "separated"
+      },
+      "sourcePracticalTags": {
+        "smoking": "separated"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJq30xaxyMGGARHPVzI5YnVow",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-2059303753",
+      "nativeSourceId": "node/2059303753",
+      "sourceUrl": "https://www.openstreetmap.org/node/2059303753",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.barrier_free": false
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "no"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJqxsi-ECMGGAR9MgoPJ4JWHw",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-3626460286",
+      "nativeSourceId": "node/3626460286",
+      "sourceUrl": "https://www.openstreetmap.org/node/3626460286",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.wifi_available": true,
+        "practical.barrier_free": true,
+        "practical.smoking_policy": "yes"
+      },
+      "sourcePracticalTags": {
+        "internet_access": "wlan",
+        "wheelchair": "yes",
+        "smoking": "yes"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJr8i9lkCMGGARIQjvEBFKvXc",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-11621660295",
+      "nativeSourceId": "node/11621660295",
+      "sourceUrl": "https://www.openstreetmap.org/node/11621660295",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.card_available": true,
+        "practical.smoking_policy": "isolated"
+      },
+      "sourcePracticalTags": {
+        "payment:credit_cards": "yes",
+        "smoking": "isolated"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJrQJoMmuMGGARJ8q86MIn6_I",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-1969058268",
+      "nativeSourceId": "node/1969058268",
+      "sourceUrl": "https://www.openstreetmap.org/node/1969058268",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.wifi_available": true
+      },
+      "sourcePracticalTags": {
+        "internet_access": "wlan"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJrZPAHBGMGGARge1vNIrQh80",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-4018935292",
+      "nativeSourceId": "node/4018935292",
+      "sourceUrl": "https://www.openstreetmap.org/node/4018935292",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.wifi_available": false,
+        "practical.barrier_free": false
+      },
+      "sourcePracticalTags": {
+        "internet_access": "no",
+        "wheelchair": "no"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJs-O79UyNGGARoDH2Vg85mXM",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-13005640655",
+      "nativeSourceId": "node/13005640655",
+      "sourceUrl": "https://www.openstreetmap.org/node/13005640655",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.wifi_available": true,
+        "practical.barrier_free": false
+      },
+      "sourcePracticalTags": {
+        "internet_access": "wlan",
+        "wheelchair": "no"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJsRMycUGMGGARBaJQWCNAef8",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-6017156248",
+      "nativeSourceId": "node/6017156248",
+      "sourceUrl": "https://www.openstreetmap.org/node/6017156248",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.smoking_policy": "yes"
+      },
+      "sourcePracticalTags": {
+        "smoking": "yes"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJt0K6H0KNGGARxz0yiOKOzw0",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-6199854558",
+      "nativeSourceId": "node/6199854558",
+      "sourceUrl": "https://www.openstreetmap.org/node/6199854558",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.barrier_free": true
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "yes"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJtZ-j77GNGGARFWePKILzQP4",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-8929796972",
+      "nativeSourceId": "node/8929796972",
+      "sourceUrl": "https://www.openstreetmap.org/node/8929796972",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.smoking_policy": "no"
+      },
+      "sourcePracticalTags": {
+        "smoking": "no"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJwRnSIQSMGGARhf6J07NnEsM",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-12089239328",
+      "nativeSourceId": "node/12089239328",
+      "sourceUrl": "https://www.openstreetmap.org/node/12089239328",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.barrier_free": false
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "no"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJxQWvSQGMGGARSaEHfWmu2rU",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-4032288525",
+      "nativeSourceId": "node/4032288525",
+      "sourceUrl": "https://www.openstreetmap.org/node/4032288525",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.barrier_free": true
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "yes"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJxY7gPgGMGGARb9tWwbUOOxg",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-12090542941",
+      "nativeSourceId": "node/12090542941",
+      "sourceUrl": "https://www.openstreetmap.org/node/12090542941",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.barrier_free": false
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "no"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJxaFliBWMGGARsF0TD5NiBH0",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-3632309203",
+      "nativeSourceId": "node/3632309203",
+      "sourceUrl": "https://www.openstreetmap.org/node/3632309203",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.wifi_available": true,
+        "practical.smoking_policy": "separated"
+      },
+      "sourcePracticalTags": {
+        "internet_access": "wlan",
+        "smoking": "separated"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJy5iG5ECMGGARnUtzLDHlU3o",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-1969374619",
+      "nativeSourceId": "node/1969374619",
+      "sourceUrl": "https://www.openstreetmap.org/node/1969374619",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.wifi_available": true,
+        "practical.barrier_free": true
+      },
+      "sourcePracticalTags": {
+        "internet_access": "wlan",
+        "wheelchair": "yes"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJy65GrQaMGGARMBALI0bVdmU",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-12090819976",
+      "nativeSourceId": "node/12090819976",
+      "sourceUrl": "https://www.openstreetmap.org/node/12090819976",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.barrier_free": false
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "no"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJyZAT2BCMGGARLI6GGHovI0c",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-6239135093",
+      "nativeSourceId": "node/6239135093",
+      "sourceUrl": "https://www.openstreetmap.org/node/6239135093",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 5
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.barrier_free": false
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "no"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJyb94PwOMGGARtDDndNvDe9Y",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-1231861290",
+      "nativeSourceId": "node/1231861290",
+      "sourceUrl": "https://www.openstreetmap.org/node/1231861290",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.barrier_free": true,
+        "practical.smoking_policy": "separated"
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "yes",
+        "smoking": "separated"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJz8SuURyMGGARXx5W3pTieaA",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-9043566646",
+      "nativeSourceId": "node/9043566646",
+      "sourceUrl": "https://www.openstreetmap.org/node/9043566646",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.card_available": true
+      },
+      "sourcePracticalTags": {
+        "payment:credit_cards": "yes",
+        "payment:visa": "yes"
+      }
+    },
+    {
+      "googlePlaceId": "ChIJzzrWJWuMGGARXDyRYYR1JJ0",
+      "provider": "OpenStreetMap",
+      "providerId": "osm-n-2135934904",
+      "nativeSourceId": "node/2135934904",
+      "sourceUrl": "https://www.openstreetmap.org/node/2135934904",
+      "checkedAt": "2026-09-05",
+      "binding": {
+        "state": "reviewed",
+        "method": "retained_historical_verified_osm_place_id_qc",
+        "qcStatus": "verified",
+        "qcVersion": 4
+      },
+      "ruleVersion": "verified-osm-native-metadata-v3",
+      "practicalClaims": {
+        "practical.barrier_free": true,
+        "practical.smoking_policy": "yes"
+      },
+      "sourcePracticalTags": {
+        "wheelchair": "yes",
+        "smoking": "yes"
+      }
     }
   ]
 }
