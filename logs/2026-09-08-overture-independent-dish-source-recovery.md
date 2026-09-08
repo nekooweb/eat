@@ -285,15 +285,101 @@ Overpass OSM refresh
 
 The workflow is serialized and rebases on latest main before pushing generated artifacts.
 
-## Current status
+## Validated OSM recovery result
 
-The OSM source-recovery refresh is running. Final counts for:
+Workflow run:
 
-- OSM rows with website metadata;
-- OSM proposals against the 301-source gap;
-- high-confidence proposals;
-- strict-reviewed approvals;
+`34188517180` — **success**
 
-will be appended after the workflow completes.
+Generated-data commit:
 
-No Overture/Gurunavi candidate has been promoted to runtime, and the public recommendation/featured dataset remains protected by the existing R/F and source-review boundaries.
+`d28e659207578c3bec67e777348f9fec61eaec3a` — `Refresh Area1 OSM source recovery data`
+
+OSM refresh metrics:
+
+- Area1 OSM food candidates: **1,273**;
+- curated-name overlaps retained: **7**;
+- OSM rows containing raw `website` / `contact:website`: **115**;
+- raw website values: **115**;
+- identity promotions in OSM builder: **0**.
+
+After the independent-source URL filter:
+
+- OSM rows with eligible independent websites: **109**;
+- website values excluded as non-independent/invalid: **6**;
+- current 301-source-gap targets with a nearby OSM website POI: **106**;
+- proposal rows after strict name/distance/margin filtering: **8**;
+- high-confidence proposal rows: **8**;
+- proposal coverage of the 301-source gap: **2.7%**;
+- name-incompatible nearby rows rejected: **98**;
+- weak-match rejection: **0**;
+- ambiguous-winner rejection: **0**.
+
+Strict page review of the 8 high-confidence OSM proposals produced:
+
+- reviewed: **8**;
+- approved: **0**;
+- rejected: **8**;
+- `no_strong_page_name_evidence`: **5**;
+- `generic_root_missing_location_confirmation`: **1**;
+- fetch failures: **2**.
+
+Therefore no new OSM candidate URL was promoted into runtime or dish evidence.
+
+## Stage 6 — exact-provider backfill on already-bound OSM source rows
+
+A separate safe opportunity was checked for the **11** public source-basic rows that were already bound to OpenStreetMap by the existing transient-Google QC process. Because those bindings already exist, a website can be joined by exact existing OSM `providerId` without performing a new restaurant identity match.
+
+Added:
+
+`scripts/refresh_bound_osm_source_websites.mjs`
+
+Commit:
+
+`c890fea408c1c1e11cf0d19f9e168cfded7bfc48` — `Backfill websites on already-bound OSM sources`
+
+The script accepts only:
+
+- existing `provider == OpenStreetMap` rows in `google_basic_source_matches.json`;
+- exact existing OSM provider ID;
+- HTTPS;
+- independent non-social/non-directory URL;
+- zero identity changes.
+
+The Area1 refresh was extended to run this exact-provider backfill:
+
+`c7fd1f0ff076d06554d5b5e731ee79fe0b7fe371` — `Backfill websites on bound OSM source rows during refresh`
+
+Validation run:
+
+`34188681592` — **success**
+
+Results:
+
+- already-bound OSM source-basic rows: **11**;
+- exact provider IDs found in refreshed OSM snapshot: **11 / 11**;
+- bound rows with a retained OSM website value: **1**;
+- website values accepted for runtime source backfill: **0**;
+- rows changed: **0**;
+- websites added: **0**.
+
+The single retained website did not pass the independent HTTPS URL policy. It was not relaxed or promoted.
+
+Generated refresh commit:
+
+`dd0fa70` — `Refresh Area1 OSM source recovery data`
+
+## Current conclusion for the source-less recommendation lane
+
+The new Overture and OSM layers are useful as **proposal/review assets**, but the current public snapshots do not contain enough independently verifiable branch-level website evidence to safely turn those candidates into automatic production sources.
+
+Current safe result:
+
+- Overture reviewed independent source approvals: **0**;
+- OSM reviewed independent source approvals: **0**;
+- exact-bound OSM website backfills: **0**;
+- erroneous Gurunavi approvals retained: **0**;
+- identity changes from these recovery lanes: **0**;
+- paid Google data API calls: **0**.
+
+The pipeline now captures and audits more free source metadata than before, while deliberately refusing to trade identity/source correctness for apparent coverage. Further automatic completion should prioritize already source-backed evidence extraction and deterministic normalization improvements rather than lowering branch-level website review thresholds.
