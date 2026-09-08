@@ -27,40 +27,40 @@
     "catalogTotal": 2804,
     "publicRuntimeTotal": 1415,
     "hotPepperRowsAvailable": 535,
-    "hotPepperRecommendedRestaurants": 18,
-    "hotPepperFeaturedRestaurants": 68,
+    "hotPepperRecommendedRestaurants": 20,
+    "hotPepperFeaturedRestaurants": 70,
     "websiteTasks": 243,
     "websiteHosts": 209,
     "websiteRecommendedRestaurants": 0,
     "websiteStructuredMenuRestaurants": 0,
-    "sourceBackedRecommendationRestaurants": 18,
-    "sourceBackedFeaturedOnlyRestaurants": 68,
-    "recommendationItems": 19,
-    "featuredItems": 72,
+    "sourceBackedRecommendationRestaurants": 20,
+    "sourceBackedFeaturedOnlyRestaurants": 70,
+    "recommendationItems": 21,
+    "featuredItems": 74,
     "statusCounts": {
-      "no_match_with_errors": 78,
-      "no_match": 160
+      "no_match_with_errors": 214,
+      "no_match": 24
     },
     "previousEvidence": {
       "recommendationRestaurants": 165,
-      "featuredRestaurants": 163,
-      "evidenceRestaurants": 277,
+      "featuredRestaurants": 174,
+      "evidenceRestaurants": 287,
       "recommendationItems": 236,
-      "featuredItems": 214
+      "featuredItems": 250
     },
     "freshCrawlEvidence": {
-      "recommendationRestaurants": 18,
-      "featuredRestaurants": 68,
-      "evidenceRestaurants": 86,
-      "recommendationItems": 19,
-      "featuredItems": 72
+      "recommendationRestaurants": 20,
+      "featuredRestaurants": 70,
+      "evidenceRestaurants": 90,
+      "recommendationItems": 21,
+      "featuredItems": 74
     },
     "mergedEvidence": {
-      "recommendationRestaurants": 165,
-      "featuredRestaurants": 163,
-      "evidenceRestaurants": 277,
-      "recommendationItems": 236,
-      "featuredItems": 214
+      "recommendationRestaurants": 167,
+      "featuredRestaurants": 176,
+      "evidenceRestaurants": 290,
+      "recommendationItems": 238,
+      "featuredItems": 252
     }
   },
   "rows": [
@@ -454,6 +454,16 @@
       "recommendedDishes": [],
       "featuredDishes": [
         {
+          "nameZh": "烤串",
+          "nameJa": "串焼き",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13044561/",
+          "checkedAt": "2026-09-05",
+          "evidenceClass": "retained_source_menu_item",
+          "evidenceRule": "retained:dishes:串焼き",
+          "evidenceSnippet": "串焼き"
+        },
+        {
           "nameZh": "烤鸡串",
           "nameJa": "焼き鳥",
           "provider": "Tabelog",
@@ -587,6 +597,16 @@
           "evidenceClass": "retained_source_menu_item",
           "evidenceRule": "retained:featuredDishes:retained-nameZh",
           "evidenceSnippet": "招牌鸡腿贵族烧（酱汁）"
+        },
+        {
+          "nameZh": "鸡腿贵族烧（酱汁）",
+          "nameJa": "もも貴族焼(たれ)",
+          "provider": "official",
+          "sourceUrl": "https://torikizoku.co.jp/menu/yakitori/",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "retained_source_menu_item",
+          "evidenceRule": "retained:dishes:もも貴族焼\\s*[（(]?たれ[）)]?",
+          "evidenceSnippet": "もも貴族焼(たれ)"
         }
       ]
     },
@@ -595,6 +615,16 @@
       "name": "焼肉ホルモンがく 水道橋本店",
       "recommendedDishes": [],
       "featuredDishes": [
+        {
+          "nameZh": "上等肝片",
+          "nameJa": "上レバー",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13153349/",
+          "checkedAt": "2026-09-05",
+          "evidenceClass": "retained_source_menu_item",
+          "evidenceRule": "retained:dishes:上レバー",
+          "evidenceSnippet": "上レバー"
+        },
         {
           "nameZh": "冷面",
           "nameJa": "盛岡冷麺",
@@ -895,6 +925,16 @@
           "evidenceClass": "retained_source_menu_item",
           "evidenceRule": "retained:featuredDishes:retained-nameZh",
           "evidenceSnippet": "汤汁乌冬面"
+        },
+        {
+          "nameZh": "清汤乌冬面",
+          "nameJa": "かけ",
+          "provider": "official",
+          "sourceUrl": "https://www.hanamaruudon.com/menu/index.html",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "retained_source_menu_item",
+          "evidenceRule": "retained:dishes:^かけ$",
+          "evidenceSnippet": "かけ"
         }
       ]
     },
@@ -987,6 +1027,23 @@
       "featuredDishes": []
     },
     {
+      "googlePlaceId": "ChIJ6Qgzoj-MGGARQQeRidkwz9I",
+      "name": "へそまがり",
+      "recommendedDishes": [
+        {
+          "nameZh": "烤串",
+          "nameJa": "串焼き",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ000955033/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "hotpepper-catch:串焼き",
+          "evidenceSnippet": "自慢の串焼き 常連さんに愛されるお店！"
+        }
+      ],
+      "featuredDishes": []
+    },
+    {
       "googlePlaceId": "ChIJ6X2dkgSMGGARx4ZIQvpQm6w",
       "name": "和牛焼肉 牛正",
       "recommendedDishes": [],
@@ -1000,6 +1057,16 @@
           "evidenceClass": "retained_source_menu_item",
           "evidenceRule": "retained:dishes:already-chinese",
           "evidenceSnippet": "A5和牛"
+        },
+        {
+          "nameZh": "厚切牛舌",
+          "nameJa": "厚切りタン",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13054579/",
+          "checkedAt": "2026-09-05",
+          "evidenceClass": "retained_source_menu_item",
+          "evidenceRule": "retained:dishes:厚切りタン",
+          "evidenceSnippet": "厚切りタン"
         }
       ]
     },
@@ -1095,6 +1162,16 @@
           "evidenceClass": "retained_source_menu_item",
           "evidenceRule": "retained:featuredDishes:retained-nameZh",
           "evidenceSnippet": "茄子培根番茄意面"
+        },
+        {
+          "nameZh": "茄子培根番茄酱意面",
+          "nameJa": "ナスとベーコンのトマトソース",
+          "provider": "official",
+          "sourceUrl": "https://www.pronto.co.jp/cafe/cafefood/",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "retained_source_menu_item",
+          "evidenceRule": "retained:dishes:ナスとベーコンのトマトソース",
+          "evidenceSnippet": "ナスとベーコンのトマトソース"
         }
       ]
     },
@@ -1216,6 +1293,16 @@
           "evidenceClass": "retained_source_menu_item",
           "evidenceRule": "retained:dishes:焼き?鳥|やきとり|yakitori",
           "evidenceSnippet": "やきとり"
+        },
+        {
+          "nameZh": "超大份炸薯条",
+          "nameJa": "バカ盛りポテトフライ",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13240031/",
+          "checkedAt": "2026-09-05",
+          "evidenceClass": "retained_source_menu_item",
+          "evidenceRule": "retained:dishes:バカ盛りポテトフライ",
+          "evidenceSnippet": "バカ盛りポテトフライ"
         }
       ]
     },
@@ -1313,6 +1400,16 @@
       "name": "ひろしま酒蔵 歓粋亭",
       "recommendedDishes": [],
       "featuredDishes": [
+        {
+          "nameZh": "小沙丁鱼天妇罗",
+          "nameJa": "小いわし天婦羅",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13112878/",
+          "checkedAt": "2026-09-05",
+          "evidenceClass": "retained_source_menu_item",
+          "evidenceRule": "retained:dishes:小いわし天婦羅|小いわし天ぷら",
+          "evidenceSnippet": "小いわし天婦羅"
+        },
         {
           "nameZh": "星鳗料理",
           "nameJa": "穴子白焼き",
@@ -1927,6 +2024,16 @@
           "evidenceClass": "retained_source_menu_item",
           "evidenceRule": "retained:dishes:刺身|お造り|sashimi",
           "evidenceSnippet": "刺身"
+        },
+        {
+          "nameZh": "炖牛杂",
+          "nameJa": "牛もつ煮込み",
+          "provider": "official",
+          "sourceUrl": "https://hachiku-japan.com/",
+          "checkedAt": "2026-09-05",
+          "evidenceClass": "retained_source_menu_item",
+          "evidenceRule": "retained:dishes:牛もつ煮込み",
+          "evidenceSnippet": "牛もつ煮込み"
         }
       ]
     },
@@ -1987,6 +2094,16 @@
       "name": "ランチョン",
       "recommendedDishes": [],
       "featuredDishes": [
+        {
+          "nameZh": "每日午餐套餐",
+          "nameJa": "日替わりランチ",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13000241/dtlmenu/lunch/",
+          "checkedAt": "2026-09-05",
+          "evidenceClass": "retained_source_menu_item",
+          "evidenceRule": "retained:dishes:日替わりランチ",
+          "evidenceSnippet": "日替わりランチ"
+        },
         {
           "nameZh": "牛排",
           "nameJa": "ステーキランチ",
@@ -2183,6 +2300,23 @@
       ]
     },
     {
+      "googlePlaceId": "ChIJCzypNAWMGGAR_z5GQlqWIjE",
+      "name": "焼肉一頭",
+      "recommendedDishes": [],
+      "featuredDishes": [
+        {
+          "nameZh": "上等厚切牛舌",
+          "nameJa": "厚切上タン",
+          "provider": "official",
+          "sourceUrl": "https://yakiniku-ittou.foodre.jp/",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "retained_source_menu_item",
+          "evidenceRule": "retained:dishes:厚切上タン",
+          "evidenceSnippet": "厚切上タン"
+        }
+      ]
+    },
+    {
       "googlePlaceId": "ChIJD0ZKkQSMGGARmP9uEaruIAo",
       "name": "みますや",
       "recommendedDishes": [],
@@ -2225,6 +2359,43 @@
         }
       ],
       "featuredDishes": []
+    },
+    {
+      "googlePlaceId": "ChIJd49TtwSMGGARlKP5sGO5e6g",
+      "name": "スジャ食堂 神田店",
+      "recommendedDishes": [],
+      "featuredDishes": [
+        {
+          "nameZh": "参鸡汤",
+          "nameJa": "サムゲタン",
+          "provider": "official",
+          "sourceUrl": "https://sujya-kanda-yoyaku.com/",
+          "checkedAt": "2026-09-05",
+          "evidenceClass": "retained_source_menu_item",
+          "evidenceRule": "retained:dishes:サムゲタン",
+          "evidenceSnippet": "サムゲタン"
+        },
+        {
+          "nameZh": "嫩豆腐锅",
+          "nameJa": "純豆腐チゲ",
+          "provider": "official",
+          "sourceUrl": "https://sujya-kanda-yoyaku.com/",
+          "checkedAt": "2026-09-05",
+          "evidenceClass": "retained_source_menu_item",
+          "evidenceRule": "retained:dishes:純豆腐チゲ",
+          "evidenceSnippet": "純豆腐チゲ"
+        },
+        {
+          "nameZh": "石锅拌饭",
+          "nameJa": "石焼ビビンパ",
+          "provider": "official",
+          "sourceUrl": "https://sujya-kanda-yoyaku.com/",
+          "checkedAt": "2026-09-05",
+          "evidenceClass": "retained_source_menu_item",
+          "evidenceRule": "retained:dishes:石焼ビビンパ",
+          "evidenceSnippet": "石焼ビビンパ"
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJd50aRRyMGGARvomrfrvV6ZY",
@@ -2313,6 +2484,16 @@
           "evidenceClass": "retained_source_menu_item",
           "evidenceRule": "retained:dishes:ピザ|ピッツァ|pizza",
           "evidenceSnippet": "ピザ"
+        },
+        {
+          "nameZh": "达美乐豪华披萨",
+          "nameJa": "ドミノ・デラックス",
+          "provider": "official",
+          "sourceUrl": "https://www.dominos.jp/menu-pizza/1602",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "retained_source_menu_item",
+          "evidenceRule": "retained:dishes:ドミノ・デラックス",
+          "evidenceSnippet": "ドミノ・デラックス"
         }
       ]
     },
@@ -2455,6 +2636,16 @@
           "evidenceClass": "retained_source_menu_item",
           "evidenceRule": "retained:dishes:すき焼き|すきやき|sukiyaki",
           "evidenceSnippet": "大山鶏のすき焼き"
+        },
+        {
+          "nameZh": "盐烤赤鯥",
+          "nameJa": "のどぐろ塩焼き",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13286363/",
+          "checkedAt": "2026-09-05",
+          "evidenceClass": "retained_source_menu_item",
+          "evidenceRule": "retained:dishes:のどぐろ塩焼き",
+          "evidenceSnippet": "のどぐろ塩焼き"
         }
       ]
     },
@@ -2519,6 +2710,16 @@
           "evidenceClass": "retained_source_menu_item",
           "evidenceRule": "retained:featuredDishes:retained-nameZh",
           "evidenceSnippet": "招牌鸡腿贵族烧（酱汁）"
+        },
+        {
+          "nameZh": "鸡腿贵族烧（酱汁）",
+          "nameJa": "もも貴族焼(たれ)",
+          "provider": "official",
+          "sourceUrl": "https://torikizoku.co.jp/menu/yakitori/",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "retained_source_menu_item",
+          "evidenceRule": "retained:dishes:もも貴族焼\\s*[（(]?たれ[）)]?",
+          "evidenceSnippet": "もも貴族焼(たれ)"
         }
       ]
     },
@@ -2682,6 +2883,16 @@
           "evidenceClass": "retained_source_menu_item",
           "evidenceRule": "retained:dishes:刺身|お造り|sashimi",
           "evidenceSnippet": "刺身盛り合わせ"
+        },
+        {
+          "nameZh": "炖牛杂",
+          "nameJa": "牛もつ煮込み",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13057066/",
+          "checkedAt": "2026-09-05",
+          "evidenceClass": "retained_source_menu_item",
+          "evidenceRule": "retained:dishes:牛もつ煮込み",
+          "evidenceSnippet": "牛もつ煮込み"
         }
       ]
     },
@@ -3178,6 +3389,16 @@
           "evidenceClass": "retained_source_menu_item",
           "evidenceRule": "retained:dishes:ティラミス|tiramisu",
           "evidenceSnippet": "ティラミス"
+        },
+        {
+          "nameZh": "整只梭子蟹番茄奶油意面",
+          "nameJa": "丸ごとワタリガニのトマトクリーム",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13266325/",
+          "checkedAt": "2026-09-05",
+          "evidenceClass": "retained_source_menu_item",
+          "evidenceRule": "retained:dishes:丸ごとワタリガニのトマトクリーム",
+          "evidenceSnippet": "丸ごとワタリガニのトマトクリーム"
         }
       ]
     },
@@ -3268,7 +3489,18 @@
     {
       "googlePlaceId": "ChIJIagAawCNGGARvwW9Z6rmvS0",
       "name": "博多野菜巻き串 九州うまいもん よかよか 小川町店",
-      "recommendedDishes": [],
+      "recommendedDishes": [
+        {
+          "nameZh": "蔬菜卷串",
+          "nameJa": "野菜巻き串",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ004612762/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "hotpepper-catch:野菜巻き串",
+          "evidenceSnippet": "博多名物☆野菜巻き串堪能 駅近くでご褒美の一杯を♪"
+        }
+      ],
       "featuredDishes": [
         {
           "nameZh": "牛杂锅",
@@ -3279,6 +3511,16 @@
           "evidenceClass": "retained_source_menu_item",
           "evidenceRule": "retained:dishes:もつ鍋",
           "evidenceSnippet": "もつ鍋"
+        },
+        {
+          "nameZh": "蔬菜卷串",
+          "nameJa": "野菜巻き串",
+          "provider": "official",
+          "sourceUrl": "https://yokayokaogawamati.owst.jp/",
+          "checkedAt": "2026-09-05",
+          "evidenceClass": "retained_source_menu_item",
+          "evidenceRule": "retained:dishes:野菜巻き串",
+          "evidenceSnippet": "野菜巻き串"
         }
       ]
     },
@@ -3337,6 +3579,16 @@
       "name": "四川厨房 随苑",
       "recommendedDishes": [],
       "featuredDishes": [
+        {
+          "nameZh": "川味牛肉炖豆腐",
+          "nameJa": "牛肉と豆腐の四川風煮込み",
+          "provider": "official",
+          "sourceUrl": "https://shisenchubouzuien.jp/sp/menu.html",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "retained_source_menu_item",
+          "evidenceRule": "retained:dishes:牛肉と豆腐の四川風煮込み",
+          "evidenceSnippet": "牛肉と豆腐の四川風煮込み"
+        },
         {
           "nameZh": "鉢鉢鶏",
           "nameJa": "鉢鉢鶏",
@@ -3531,6 +3783,23 @@
           "evidenceClass": "retained_source_menu_item",
           "evidenceRule": "retained:featuredDishes:retained-nameZh",
           "evidenceSnippet": "浓厚蘸面"
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJj9JhyUGNGGARTRFW5jWoMtM",
+      "name": "EDOCCO CAFE MASUMASU",
+      "recommendedDishes": [],
+      "featuredDishes": [
+        {
+          "nameZh": "饭团",
+          "nameJa": "おむすび",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001295004/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-catch-menu:おむすび",
+          "evidenceSnippet": "神社でカフェを楽しめる 握りたてのおむすび"
         }
       ]
     },
@@ -3905,7 +4174,18 @@
           "evidenceSnippet": "しが食べ放題がおすすめ！鯛の旨味がしみた鯛めしを存分にお楽しみください！ 鯛の炊き込みご飯をまずはそのまま、その後は、おすきなおかずと一緒に！ 最後は鯛出汁で旨味たっぷりの鯛茶漬け"
         }
       ],
-      "featuredDishes": []
+      "featuredDishes": [
+        {
+          "nameZh": "金枪鱼腩铁火卷",
+          "nameJa": "本気のトロ鉄火巻き",
+          "provider": "official",
+          "sourceUrl": "https://www.dynacjapan.com/brands/madume/shops/ochanomizu/",
+          "checkedAt": "2026-09-05",
+          "evidenceClass": "retained_source_menu_item",
+          "evidenceRule": "retained:dishes:本気のトロ鉄火巻き",
+          "evidenceSnippet": "本気のトロ鉄火巻き"
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJMUNBOQGMGGARlL54gM1tRHY",
@@ -4006,6 +4286,16 @@
       "name": "にしき家",
       "recommendedDishes": [],
       "featuredDishes": [
+        {
+          "nameZh": "肉豆腐",
+          "nameJa": "肉豆腐定食",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13079097/",
+          "checkedAt": "2026-09-05",
+          "evidenceClass": "retained_source_menu_item",
+          "evidenceRule": "retained:dishes:(?:YEBISU BAR[^\\s]*)?肉豆富|肉豆腐",
+          "evidenceSnippet": "肉豆腐定食"
+        },
         {
           "nameZh": "肉豆腐定食",
           "nameJa": "肉豆腐定食",
@@ -4473,6 +4763,23 @@
       "featuredDishes": []
     },
     {
+      "googlePlaceId": "ChIJPwqvuBOMGGARlZrEgZIL-pM",
+      "name": "おかん",
+      "recommendedDishes": [],
+      "featuredDishes": [
+        {
+          "nameZh": "秋田烤米棒",
+          "nameJa": "きりたんぽ",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13021354/",
+          "checkedAt": "2026-09-05",
+          "evidenceClass": "retained_source_menu_item",
+          "evidenceRule": "retained:dishes:きりたんぽ",
+          "evidenceSnippet": "きりたんぽ"
+        }
+      ]
+    },
+    {
       "googlePlaceId": "ChIJpXvzihSMGGARk9bmHIQyz7A",
       "name": null,
       "recommendedDishes": [],
@@ -4706,6 +5013,23 @@
         }
       ],
       "featuredDishes": []
+    },
+    {
+      "googlePlaceId": "ChIJQ7aufj-MGGAR-NTeQP2lniU",
+      "name": "上海飯店",
+      "recommendedDishes": [],
+      "featuredDishes": [
+        {
+          "nameZh": "里脊肉盖饭",
+          "nameJa": "ロース丼",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13073568/",
+          "checkedAt": "2026-09-05",
+          "evidenceClass": "retained_source_menu_item",
+          "evidenceRule": "retained:dishes:ロース丼",
+          "evidenceSnippet": "ロース丼"
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJQ7aufj-MGGARdknUqae7iTo",
@@ -4960,6 +5284,23 @@
       ]
     },
     {
+      "googlePlaceId": "ChIJS4nF7xOMGGARFzUis-fRspU",
+      "name": "CRAFT BEER MARKET 神保町店",
+      "recommendedDishes": [],
+      "featuredDishes": [
+        {
+          "nameZh": "烤鸡",
+          "nameJa": "ローストチキン",
+          "provider": "official",
+          "sourceUrl": "https://www.craftbeermarket.jp/jimbocho/",
+          "checkedAt": "2026-09-05",
+          "evidenceClass": "retained_source_menu_item",
+          "evidenceRule": "retained:dishes:ローストチキン",
+          "evidenceSnippet": "ローストチキン"
+        }
+      ]
+    },
+    {
       "googlePlaceId": "ChIJS7a4XfWNGGARUYoR8xGwexc",
       "name": "JB s BAR BLUE RABBIT ジェービーズ バー ブルー ラビット",
       "recommendedDishes": [],
@@ -5019,6 +5360,16 @@
           "evidenceClass": "retained_source_menu_item",
           "evidenceRule": "retained:featuredDishes:retained-nameZh",
           "evidenceSnippet": "真鲷炸鱼薯条"
+        },
+        {
+          "nameZh": "肉豆腐",
+          "nameJa": "「YEBISU BAR」の肉豆富",
+          "provider": "official",
+          "sourceUrl": "https://www.ginzalion.jp/shop/brand/yebisubar/shop64.html",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "retained_source_menu_item",
+          "evidenceRule": "retained:dishes:(?:YEBISU BAR[^\\s]*)?肉豆富|肉豆腐",
+          "evidenceSnippet": "「YEBISU BAR」の肉豆富"
         }
       ]
     },
@@ -5215,6 +5566,23 @@
       ]
     },
     {
+      "googlePlaceId": "ChIJT8K4jLGNGGARiX4Dja4lBZk",
+      "name": "博多松介 神田店",
+      "recommendedDishes": [],
+      "featuredDishes": [
+        {
+          "nameZh": "烤串",
+          "nameJa": "串焼き",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ004402309/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-catch-menu:串焼き",
+          "evidenceSnippet": "絶品の串焼きをご堪能あれ 厳選したお酒を取り揃え！"
+        }
+      ]
+    },
+    {
       "googlePlaceId": "ChIJt8WVrz-MGGAR4pzfwL13RbA",
       "name": "Tomy Grill",
       "recommendedDishes": [
@@ -5285,6 +5653,16 @@
           "evidenceClass": "retained_source_menu_item",
           "evidenceRule": "retained:featuredDishes:retained-nameZh",
           "evidenceSnippet": "招牌混合咖啡"
+        },
+        {
+          "nameZh": "拼配咖啡",
+          "nameJa": "ブレンドコーヒー",
+          "provider": "official",
+          "sourceUrl": "https://c-united.co.jp/veloce/products/hotdrink/coffee/",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "retained_source_menu_item",
+          "evidenceRule": "retained:dishes:ブレンドコーヒー",
+          "evidenceSnippet": "ブレンドコーヒー"
         }
       ]
     },
@@ -5370,6 +5748,23 @@
           "evidenceClass": "retained_source_menu_item",
           "evidenceRule": "retained:dishes:ラーメン|らーめん|拉麺|ramen",
           "evidenceSnippet": "生姜醤油ラーメン"
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJu556IxSMGGAR5GmHiqGpLLo",
+      "name": "個室居酒屋 座楽 神保町店",
+      "recommendedDishes": [],
+      "featuredDishes": [
+        {
+          "nameZh": "盐麹烤神威猪里脊",
+          "nameJa": "神威豚ロース塩麹グリル",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13179916/",
+          "checkedAt": "2026-09-05",
+          "evidenceClass": "retained_source_menu_item",
+          "evidenceRule": "retained:dishes:神威豚ロース塩麹グリル",
+          "evidenceSnippet": "神威豚ロース塩麹グリル"
         }
       ]
     },
@@ -5616,6 +6011,23 @@
       ]
     },
     {
+      "googlePlaceId": "ChIJVVWVxQSMGGARepPjnzW2-Cg",
+      "name": "広島県府中市アンテナショップNEKI",
+      "recommendedDishes": [],
+      "featuredDishes": [
+        {
+          "nameZh": "备后府中烧",
+          "nameJa": "備後府中焼き",
+          "provider": "official",
+          "sourceUrl": "https://www.neki-hiroshimafuchu.com/info/",
+          "checkedAt": "2026-09-05",
+          "evidenceClass": "retained_source_menu_item",
+          "evidenceRule": "retained:dishes:備後府中焼き",
+          "evidenceSnippet": "備後府中焼き"
+        }
+      ]
+    },
+    {
       "googlePlaceId": "ChIJVwXD9E6NGGARkHzeYVBeacw",
       "name": "タリーズコーヒー 住友不動産秋葉原ファーストビル・テラス店",
       "recommendedDishes": [],
@@ -5649,6 +6061,33 @@
       "featuredDishes": []
     },
     {
+      "googlePlaceId": "ChIJvyDKWN7hGGARrFkY0C5a9Kw",
+      "name": "和食日和 おさけと 神保町",
+      "recommendedDishes": [],
+      "featuredDishes": [
+        {
+          "nameZh": "刺身",
+          "nameJa": "お造里",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13226799/",
+          "checkedAt": "2026-09-05",
+          "evidenceClass": "retained_source_menu_item",
+          "evidenceRule": "retained:dishes:お造里",
+          "evidenceSnippet": "お造里"
+        },
+        {
+          "nameZh": "宇和岛式鲷鱼饭",
+          "nameJa": "宇和島流鯛めし",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13226799/",
+          "checkedAt": "2026-09-05",
+          "evidenceClass": "retained_source_menu_item",
+          "evidenceRule": "retained:dishes:宇和島流鯛めし",
+          "evidenceSnippet": "宇和島流鯛めし"
+        }
+      ]
+    },
+    {
       "googlePlaceId": "ChIJVyqVQxGMGGARAMwOpJAO12U",
       "name": "はなまるうどん 神保町店",
       "recommendedDishes": [
@@ -5672,6 +6111,16 @@
           "evidenceClass": "retained_source_menu_item",
           "evidenceRule": "retained:featuredDishes:retained-nameZh",
           "evidenceSnippet": "汤汁乌冬面"
+        },
+        {
+          "nameZh": "清汤乌冬面",
+          "nameJa": "かけ",
+          "provider": "official",
+          "sourceUrl": "https://www.hanamaruudon.com/menu/index.html",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "retained_source_menu_item",
+          "evidenceRule": "retained:dishes:^かけ$",
+          "evidenceSnippet": "かけ"
         }
       ]
     },
@@ -5884,6 +6333,23 @@
       "featuredDishes": []
     },
     {
+      "googlePlaceId": "ChIJX4pJHwKMGGARyKR-5lGfPYA",
+      "name": "ぢどり屋 神田店",
+      "recommendedDishes": [],
+      "featuredDishes": [
+        {
+          "nameZh": "七轮炭烤",
+          "nameJa": "七輪焼き",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13045544/",
+          "checkedAt": "2026-09-05",
+          "evidenceClass": "retained_source_menu_item",
+          "evidenceRule": "retained:dishes:七輪焼き",
+          "evidenceSnippet": "七輪焼き"
+        }
+      ]
+    },
+    {
       "googlePlaceId": "ChIJXy2A7WSNGGARSpt_OZLqh9Y",
       "name": "秋葉原下町もんじゃ おしかつ",
       "recommendedDishes": [],
@@ -6029,6 +6495,16 @@
           "evidenceClass": "retained_source_menu_item",
           "evidenceRule": "retained:featuredDishes:retained-nameZh",
           "evidenceSnippet": "招牌混合咖啡"
+        },
+        {
+          "nameZh": "拼配咖啡",
+          "nameJa": "ブレンドコーヒー",
+          "provider": "official",
+          "sourceUrl": "https://c-united.co.jp/veloce/products/hotdrink/coffee/",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "retained_source_menu_item",
+          "evidenceRule": "retained:dishes:ブレンドコーヒー",
+          "evidenceSnippet": "ブレンドコーヒー"
         }
       ]
     },
@@ -6098,6 +6574,23 @@
         }
       ],
       "featuredDishes": []
+    },
+    {
+      "googlePlaceId": "ChIJZ7Pq3gSMGGARqzSYizyRXm0",
+      "name": "串焼 庭 本格ハルビン",
+      "recommendedDishes": [],
+      "featuredDishes": [
+        {
+          "nameZh": "烤串",
+          "nameJa": "串焼き",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13201390/",
+          "checkedAt": "2026-09-05",
+          "evidenceClass": "retained_source_menu_item",
+          "evidenceRule": "retained:dishes:串焼き",
+          "evidenceSnippet": "串焼き"
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJz9KX_wOMGGARruVg61rYoMY",
