@@ -19,11 +19,13 @@ const DATA = path.join(ROOT, 'data');
 const OUTPUT = process.argv[2] || path.join(DATA, 'official_pdf_dish_evidence.json');
 const CHECKED_AT = new Date().toISOString().slice(0, 10);
 const TIMEOUT_MS = Math.max(2000, Math.min(15000, Number(process.env.OFFICIAL_PDF_FETCH_TIMEOUT_MS || 8000)));
-const HOST_WORKERS = Math.max(1, Math.min(16, Number(process.env.OFFICIAL_PDF_HOST_WORKERS || 8)));
+const DISCOVERY_WORKERS = Math.max(1, Math.min(24, Number(process.env.OFFICIAL_PDF_DISCOVERY_WORKERS || 16)));
+const PDF_WORKERS = Math.max(1, Math.min(16, Number(process.env.OFFICIAL_PDF_HOST_WORKERS || 8)));
+const ROOT_LIMIT = Math.max(1, Math.min(6, Number(process.env.OFFICIAL_PDF_ROOT_LIMIT || 4)));
 const PDF_LINK_LIMIT = Math.max(1, Math.min(8, Number(process.env.OFFICIAL_PDF_LINK_LIMIT || 4)));
 const MAX_PDF_BYTES = Math.max(1_000_000, Math.min(25_000_000, Number(process.env.OFFICIAL_PDF_MAX_BYTES || 15_000_000)));
 const MAX_TEXT_CHARS = 1_000_000;
-const USER_AGENT = 'eat-official-pdf-dish/1.0 (+https://github.com/nekooweb/eat)';
+const USER_AGENT = 'eat-official-pdf-dish/2.0 (+https://github.com/nekooweb/eat)';
 const PDF_RE = /\.pdf(?:$|[?#])/i;
 const BANNED_HOST = /(?:^|\.)(?:facebook\.com|instagram\.com|x\.com|twitter\.com|youtube\.com|tiktok\.com|tabelog\.com|hotpepper\.jp|google\.[a-z.]+|googleusercontent\.com|gnavi\.co\.jp|retty\.me|foursquare\.com|autoreserve\.com|ekiten\.jp)$/i;
 
@@ -33,11 +35,7 @@ function loadWindowFile(filename) {
   vm.runInContext(fs.readFileSync(path.join(DATA, filename), 'utf8'), sandbox, { filename });
   return sandbox.window;
 }
-
-function clean(value) {
-  return String(value || '').replace(/\s+/g, ' ').trim();
-}
-
+function clean(value) { return String(value || '').replace(/\s+/g, ' ').trim(); }
 function safeUrl(value) {
   try {
     const url = new URL(value);
@@ -46,22 +44,16 @@ function safeUrl(value) {
     const host = url.hostname.toLowerCase().replace(/^www\./, '');
     if (BANNED_HOST.test(host)) return null;
     return url;
-  } catch {
-    return null;
-  }
+  } catch { return null; }
 }
-
 function hostKey(value) {
   const url = value instanceof URL ? value : safeUrl(value);
   return url ? url.hostname.toLowerCase().replace(/^www\./, '') : '';
 }
-
 function sameOriginFamily(a, b) {
-  const x = hostKey(a);
-  const y = hostKey(b);
+  const x = hostKey(a), y = hostKey(b);
   return Boolean(x && y && (x === y || x.endsWith(`.${y}`) || y.endsWith(`.${x}`)));
 }
-
 function isEligibleSource(value) {
   const url = safeUrl(value);
   if (!url) return false;
@@ -69,7 +61,6 @@ function isEligibleSource(value) {
   if (/openstreetmap\.org$/.test(host)) return false;
   return !BANNED_HOST.test(host);
 }
-
 function sourceItem(match, sourceUrl, evidenceClass, evidenceRule, snippet = '') {
   return {
     nameZh: match.nameZh,
@@ -82,7 +73,6 @@ function sourceItem(match, sourceUrl, evidenceClass, evidenceRule, snippet = '')
     evidenceSnippet: clean(snippet || match.evidenceSnippet || match.nameOriginal || '').slice(0, 120)
   };
 }
-
 function dedupe(items, limit = 6) {
   const map = new Map();
   for (const item of items || []) {
@@ -92,12 +82,10 @@ function dedupe(items, limit = 6) {
   }
   return [...map.values()].slice(0, limit);
 }
-
 function pdfLinksFromHtml(html, baseUrl) {
   const base = safeUrl(baseUrl);
   if (!base) return [];
-  const output = [];
-  const seen = new Set();
+  const output = [], seen = new Set();
   const re = /<a\b[^>]*href=["']([^"']+)["'][^>]*>([\s\S]*?)<\/a>/gi;
   let match;
   while ((match = re.exec(String(html || '')))) {
@@ -115,28 +103,25 @@ function pdfLinksFromHtml(html, baseUrl) {
   }
   return output;
 }
-
-async function fetchHtml(url) {
-  const response = await fetch(url, {
-    redirect: 'follow',
-    signal: AbortSignal.timeout(TIMEOUT_MS),
+async function fetchHtml(rawUrl) {
+  const source = safeUrl(rawUrl);
+  if (!source) throw new Error('invalid HTML URL');
+  const response = await fetch(source, {
+    redirect: 'follow', signal: AbortSignal.timeout(TIMEOUT_MS),
     headers: { 'user-agent': USER_AGENT, accept: 'text/html,application/xhtml+xml;q=0.9,*/*;q=0.1' }
   });
   if (!response.ok) throw new Error(`HTTP ${response.status}`);
   const finalUrl = safeUrl(response.url);
-  if (!finalUrl || !sameOriginFamily(url, finalUrl)) throw new Error('cross-origin redirect');
+  if (!finalUrl || !sameOriginFamily(source, finalUrl)) throw new Error('cross-origin redirect');
   const type = response.headers.get('content-type') || '';
   if (!/text\/html|application\/xhtml\+xml/i.test(type)) throw new Error(`non-html ${type}`);
   return { finalUrl: finalUrl.toString(), html: (await response.text()).slice(0, 1_200_000) };
 }
-
 async function fetchPdf(rawUrl, anchorUrl) {
-  const source = safeUrl(rawUrl);
-  const anchor = safeUrl(anchorUrl || rawUrl);
+  const source = safeUrl(rawUrl), anchor = safeUrl(anchorUrl || rawUrl);
   if (!source || !anchor) throw new Error('invalid PDF URL');
   const response = await fetch(source, {
-    redirect: 'follow',
-    signal: AbortSignal.timeout(TIMEOUT_MS),
+    redirect: 'follow', signal: AbortSignal.timeout(TIMEOUT_MS),
     headers: { 'user-agent': USER_AGENT, accept: 'application/pdf,*/*;q=0.1' }
   });
   if (!response.ok) throw new Error(`HTTP ${response.status}`);
@@ -151,33 +136,24 @@ async function fetchPdf(rawUrl, anchorUrl) {
   if (magic !== '%PDF-' && !/application\/pdf/i.test(type)) throw new Error(`not a PDF: ${type}`);
   return { finalUrl: finalUrl.toString(), bytes };
 }
-
 function pdfToText(bytes, hint = 'menu') {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'eat-pdf-'));
   const input = path.join(dir, `${String(hint).replace(/[^a-z0-9_-]+/gi, '_').slice(0, 50) || 'menu'}.pdf`);
   try {
     fs.writeFileSync(input, Buffer.from(bytes));
     const result = spawnSync('pdftotext', ['-layout', '-enc', 'UTF-8', input, '-'], {
-      encoding: 'utf8',
-      maxBuffer: 12 * 1024 * 1024,
-      timeout: 20_000
+      encoding: 'utf8', maxBuffer: 12 * 1024 * 1024, timeout: 20_000
     });
     if (result.error) throw result.error;
     if (result.status !== 0) throw new Error(clean(result.stderr).slice(0, 300) || `pdftotext exit ${result.status}`);
     return String(result.stdout || '').slice(0, MAX_TEXT_CHARS);
-  } finally {
-    fs.rmSync(dir, { recursive: true, force: true });
-  }
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
 }
-
 function textLines(text) {
-  return String(text || '').replace(/\r/g, '\n').split(/\n+/)
-    .map((line) => clean(line)).filter((line) => line.length >= 2 && line.length <= 500);
+  return String(text || '').replace(/\r/g, '\n').split(/\n+/).map(clean).filter((line) => line.length >= 2 && line.length <= 500);
 }
-
 function recommendationMatches(lines, limit = 6) {
-  const out = [];
-  const seen = new Set();
+  const out = [], seen = new Set();
   for (const line of lines) {
     if (!RECOMMENDATION_MARKER.test(line)) continue;
     for (const match of extractStrictRecommendationsFromText(line, 4)) {
@@ -189,10 +165,8 @@ function recommendationMatches(lines, limit = 6) {
   }
   return out;
 }
-
 function featuredMatches(lines, limit = 12) {
-  const out = [];
-  const seen = new Set();
+  const out = [], seen = new Set();
   for (const line of lines) {
     for (const [pattern, nameZh] of DISH_RULES) {
       const match = line.match(pattern);
@@ -213,9 +187,7 @@ async function main() {
   const runtimeRows = Array.isArray(runtimeWindow.GOOGLE_INVENTORY_RESTAURANTS) ? runtimeWindow.GOOGLE_INVENTORY_RESTAURANTS : [];
   const runtimeStats = runtimeWindow.GOOGLE_INVENTORY_STATS || {};
   const queue = JSON.parse(fs.readFileSync(path.join(DATA, 'google_inventory_detail_queue.json'), 'utf8'));
-  if (runtimeStats.catalogTotal !== 2804 || runtimeStats.inventoryTotal !== runtimeRows.length || runtimeRows.length + Number(runtimeStats.unpublishedPlaceIdOnly || 0) !== 2804) {
-    throw new Error('PDF collector requires the complete frozen catalog runtime');
-  }
+  if (runtimeStats.catalogTotal !== 2804 || runtimeStats.inventoryTotal !== runtimeRows.length || runtimeRows.length + Number(runtimeStats.unpublishedPlaceIdOnly || 0) !== 2804) throw new Error('PDF collector requires complete frozen catalog runtime');
   if (queue.summary?.publicRuntimeTotal !== runtimeRows.length) throw new Error('PDF collector queue/runtime mismatch');
 
   const provenanceWindow = fs.existsSync(path.join(DATA, 'source_provenance.js')) ? loadWindowFile('source_provenance.js') : {};
@@ -225,57 +197,56 @@ async function main() {
   const eligibleActions = new Set(['collect_strict_recommended_dishes', 'collect_source_backed_featured_dishes']);
   const targets = (queue.rows || []).filter((row) => eligibleActions.has(row.nextAction) && runtimeById.has(row.googlePlaceId));
 
-  let rootHtmlFetched = 0;
-  let rootHtmlErrors = 0;
+  const pdfsById = new Map(), namesById = new Map(), rootJobs = [];
   let directPdfUrls = 0;
-  let discoveredPdfUrls = 0;
-  const tasks = [];
   for (const target of targets) {
     const runtime = runtimeById.get(target.googlePlaceId);
-    const roots = new Set();
-    const direct = new Set();
-    for (const raw of runtime.sourceWebsites || []) {
-      if (!isEligibleSource(raw)) continue;
+    namesById.set(target.googlePlaceId, runtime.name);
+    const pdfs = new Map(), roots = new Set();
+    const addSource = (raw, officialOnly = false, provider = '') => {
+      if (officialOnly && String(provider || '').toLowerCase() !== 'official') return;
+      if (!isEligibleSource(raw)) return;
       const url = safeUrl(raw);
-      if (PDF_RE.test(url.toString())) direct.add(url.toString());
-      else roots.add(url.toString());
-    }
-    const prov = provenanceById.get(target.googlePlaceId);
-    for (const link of prov?.sourceLinks || []) {
-      if (String(link?.provider || '').toLowerCase() !== 'official' || !isEligibleSource(link.url)) continue;
-      const url = safeUrl(link.url);
-      if (PDF_RE.test(url.toString())) direct.add(url.toString());
-      else roots.add(url.toString());
-    }
-    directPdfUrls += direct.size;
-    const pdfs = new Map([...direct].map((url) => [url, { url, anchor: url, discovery: 'direct_bound_pdf' }]));
-    for (const root of [...roots].slice(0, 4)) {
-      try {
-        const fetched = await fetchHtml(root);
-        rootHtmlFetched += 1;
-        for (const pdfUrl of pdfLinksFromHtml(fetched.html, fetched.finalUrl)) {
-          if (!pdfs.has(pdfUrl)) {
-            pdfs.set(pdfUrl, { url: pdfUrl, anchor: fetched.finalUrl, discovery: 'same_origin_menu_pdf_link' });
-            discoveredPdfUrls += 1;
-          }
-        }
-      } catch {
-        rootHtmlErrors += 1;
-      }
-    }
-    for (const task of [...pdfs.values()].slice(0, PDF_LINK_LIMIT)) tasks.push({ ...task, googlePlaceId: target.googlePlaceId, name: runtime.name });
+      if (PDF_RE.test(url.toString())) {
+        if (!pdfs.has(url.toString())) { pdfs.set(url.toString(), { url: url.toString(), anchor: url.toString(), discovery: 'direct_bound_pdf' }); directPdfUrls += 1; }
+      } else roots.add(url.toString());
+    };
+    for (const raw of runtime.sourceWebsites || []) addSource(raw);
+    for (const link of provenanceById.get(target.googlePlaceId)?.sourceLinks || []) addSource(link.url, true, link.provider);
+    pdfsById.set(target.googlePlaceId, pdfs);
+    for (const root of [...roots].slice(0, ROOT_LIMIT)) rootJobs.push({ googlePlaceId: target.googlePlaceId, root });
   }
 
-  const byId = new Map();
-  const errors = [];
-  let index = 0;
-  let pdfFetched = 0;
-  let pdfTextExtracted = 0;
-  let pdfRecommendationPages = 0;
-  let pdfFeaturedPages = 0;
-  async function worker() {
+  let rootHtmlFetched = 0, rootHtmlErrors = 0, discoveredPdfUrls = 0, rootIndex = 0;
+  async function discoveryWorker() {
     while (true) {
-      const current = index++;
+      const current = rootIndex++;
+      if (current >= rootJobs.length) return;
+      const job = rootJobs[current];
+      try {
+        const fetched = await fetchHtml(job.root);
+        rootHtmlFetched += 1;
+        const pdfs = pdfsById.get(job.googlePlaceId);
+        for (const pdfUrl of pdfLinksFromHtml(fetched.html, fetched.finalUrl)) {
+          if (pdfs.has(pdfUrl)) continue;
+          pdfs.set(pdfUrl, { url: pdfUrl, anchor: fetched.finalUrl, discovery: 'same_origin_menu_pdf_link' });
+          discoveredPdfUrls += 1;
+        }
+      } catch { rootHtmlErrors += 1; }
+    }
+  }
+  await Promise.all(Array.from({ length: Math.min(DISCOVERY_WORKERS, Math.max(1, rootJobs.length)) }, () => discoveryWorker()));
+
+  const tasks = [];
+  for (const [googlePlaceId, pdfs] of pdfsById) {
+    for (const task of [...pdfs.values()].slice(0, PDF_LINK_LIMIT)) tasks.push({ ...task, googlePlaceId, name: namesById.get(googlePlaceId) });
+  }
+
+  const byId = new Map(), errors = [];
+  let pdfIndex = 0, pdfFetched = 0, pdfTextExtracted = 0, pdfRecommendationPages = 0, pdfFeaturedPages = 0;
+  async function pdfWorker() {
+    while (true) {
+      const current = pdfIndex++;
       if (current >= tasks.length) return;
       const task = tasks[current];
       try {
@@ -285,12 +256,8 @@ async function main() {
         if (!clean(text)) throw new Error('PDF has no extractable text');
         pdfTextExtracted += 1;
         const lines = textLines(text);
-        const rec = recommendationMatches(lines, 6).map((match) => sourceItem(
-          match, pdf.finalUrl, 'source_pdf_recommendation_text', `pdf-line:${match.rule}`, match.evidenceSnippet
-        ));
-        const featured = featuredMatches(lines, 12).map((match) => sourceItem(
-          match, pdf.finalUrl, 'source_pdf_menu_text', `pdf-menu-line:${match.rule}`, match.evidenceSnippet
-        ));
+        const rec = recommendationMatches(lines, 6).map((match) => sourceItem(match, pdf.finalUrl, 'source_pdf_recommendation_text', `pdf-line:${match.rule}`, match.evidenceSnippet));
+        const featured = featuredMatches(lines, 12).map((match) => sourceItem(match, pdf.finalUrl, 'source_pdf_menu_text', `pdf-menu-line:${match.rule}`, match.evidenceSnippet));
         if (rec.length) pdfRecommendationPages += 1;
         if (featured.length) pdfFeaturedPages += 1;
         if (!rec.length && !featured.length) continue;
@@ -303,23 +270,14 @@ async function main() {
       }
     }
   }
-  await Promise.all(Array.from({ length: Math.min(HOST_WORKERS, Math.max(1, tasks.length)) }, () => worker()));
+  await Promise.all(Array.from({ length: Math.min(PDF_WORKERS, Math.max(1, tasks.length)) }, () => pdfWorker()));
 
   const rows = [...byId.values()].sort((a, b) => a.googlePlaceId.localeCompare(b.googlePlaceId));
   const summary = {
-    catalogTotal: 2804,
-    publicRuntimeTotal: runtimeRows.length,
-    queueTargetRows: targets.length,
-    rootHtmlFetched,
-    rootHtmlErrors,
-    directPdfUrls,
-    discoveredPdfUrls,
-    pdfTasks: tasks.length,
-    pdfFetched,
-    pdfTextExtracted,
-    pdfErrorRows: errors.length,
-    pdfRecommendationPages,
-    pdfFeaturedPages,
+    catalogTotal: 2804, publicRuntimeTotal: runtimeRows.length, queueTargetRows: targets.length,
+    rootJobs: rootJobs.length, discoveryWorkers: DISCOVERY_WORKERS, rootHtmlFetched, rootHtmlErrors,
+    directPdfUrls, discoveredPdfUrls, pdfTasks: tasks.length, pdfWorkers: PDF_WORKERS,
+    pdfFetched, pdfTextExtracted, pdfErrorRows: errors.length, pdfRecommendationPages, pdfFeaturedPages,
     evidenceRestaurants: rows.length,
     recommendationRestaurants: rows.filter((row) => row.recommendedDishes.length).length,
     featuredRestaurants: rows.filter((row) => row.featuredDishes.length).length,
@@ -327,12 +285,13 @@ async function main() {
     featuredItems: rows.reduce((n, row) => n + row.featuredDishes.length, 0)
   };
   const payload = {
-    schemaVersion: 1,
-    checkedAt: CHECKED_AT,
+    schemaVersion: 2, checkedAt: CHECKED_AT,
     policy: {
       paidGoogleDataApiCalls: 0,
       source: 'already-bound independent official/source websites only',
       pdfDiscovery: 'direct bound PDF or same-origin menu-labelled PDF link from an already-bound source page',
+      boundedConcurrentSourcePageDiscovery: true,
+      maximumSourceRootsPerRestaurant: ROOT_LIMIT,
       crossOriginPdfUrlsAllowed: false,
       maximumPdfLinksPerRestaurant: PDF_LINK_LIMIT,
       maximumPdfBytes: MAX_PDF_BYTES,
@@ -347,15 +306,10 @@ async function main() {
       targetLanguage: 'zh-CN',
       extractor: 'pdftotext + source-native DISH_RULES'
     },
-    summary,
-    rows,
-    errors: errors.slice(0, 100)
+    summary, rows, errors: errors.slice(0, 100)
   };
   fs.writeFileSync(OUTPUT, JSON.stringify(payload, null, 2) + '\n', 'utf8');
   console.log(JSON.stringify(summary));
 }
 
-main().catch((error) => {
-  console.error(error);
-  process.exitCode = 1;
-});
+main().catch((error) => { console.error(error); process.exitCode = 1; });
