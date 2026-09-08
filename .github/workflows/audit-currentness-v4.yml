@@ -1,0 +1,65 @@
+name: Audit branch-address currentness v4
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/audit-currentness-v4.yml"
+      - "scripts/database/review_id_only_currentness_sources_v4.py"
+      - "data/id_only_currentness_source_overrides.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Build current strict master and review v4
+        run: |
+          set -euo pipefail
+          mkdir -p _tmp
+          node scripts/audit_no_paid_apis.mjs
+          python -m py_compile scripts/database/review_id_only_currentness_sources_v4.py
+          python scripts/database/build_master.py --output _tmp/master.sqlite --reset | tee _tmp/master.json
+          python scripts/database/validate_master.py _tmp/master.sqlite
+          python scripts/database/review_id_only_currentness_sources_v4.py \
+            --database _tmp/master.sqlite --output _tmp/review-v4.json --workers 8 | tee _tmp/review-v4-summary.json
+          python - <<'PY'
+          import json
+          d=json.load(open('_tmp/review-v4.json')); p=d['policy']
+          assert d['ruleVersion']=='id-only-currentness-review-v4'
+          assert p['paidDataApiCalls']==0 and p['googleDisplayPayloadPersisted'] is False
+          assert p['proximityOnlyAdmissionAllowed'] is False
+          assert p['overtureBase20mGateRetained'] is True
+          assert p['overtureAddressOffsetMaximumMeters']==60
+          assert p['overtureAddressOffsetRequiresStreetCoreMatch'] is True
+          assert p['overtureAddressOffsetRequiresNameComponents'] is True
+          assert p['overtureAddressOffsetRequiresRunnerUpMargin']==0.15
+          ready=[]
+          for r in d['rows']:
+            if r.get('admissionReady'):
+              ready.append({
+                'googlePlaceId':r['googlePlaceId'],
+                'name':(r.get('expected') or {}).get('name'),
+                'url':r.get('currentnessUrl'),
+                'overtureGate':r.get('overtureGateV4'),
+                'currentness':(r.get('currentnessReview') or {}).get('bestCheck'),
+              })
+          print('V4_READY='+json.dumps(ready,ensure_ascii=False,separators=(',',':')))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: audit-currentness-v4
+          path: _tmp/*.json
+          if-no-files-found: warn
+          retention-days: 3
