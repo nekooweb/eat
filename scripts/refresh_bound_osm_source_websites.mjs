@@ -29,7 +29,7 @@ function safeIndependentHttps(value) {
     if (/facebook\.com$|instagram\.com$|x\.com$|twitter\.com$|youtube\.com$|tiktok\.com$/.test(host)) return null;
     if (/gnavi\.co\.jp$|retty\.me$|tripadvisor\.[a-z.]+$|yelp\.[a-z.]+$|foursquare\.com$/.test(host)) return null;
     if (/loco\.yahoo\.co\.jp$|paypaygourmet\.yahoo\.co\.jp$|autoreserve\.com$|ekiten\.jp$/.test(host)) return null;
-    if (/restaurant\.ikyu\.com$|bar-navi\.suntory\.co\.jp$/.test(host)) return null;
+    if (/restaurant\.ikyu\.com$|bar-navi\.suntory\.co\.jp$|supleks\.jp$/.test(host)) return null;
     return url.toString();
   } catch {
     return null;
@@ -38,8 +38,11 @@ function safeIndependentHttps(value) {
 
 const basic = JSON.parse(fs.readFileSync(BASIC_PATH, 'utf8'));
 const osmRows = loadOsmRows();
-if (basic.inventoryCount !== 2804 || basic.summary?.basicReadyTotal !== 1415) {
-  throw new Error('Bound OSM website refresh requires frozen 2,804 / public 1,415 basic baseline');
+const expectedReady = Number(basic.summary?.productionBacked || 0)
+  + Number(basic.summary?.sourceMatchedInventoryOnly || 0);
+if (basic.inventoryCount !== 2804 || !Number.isInteger(expectedReady)
+  || basic.summary?.basicReadyTotal !== expectedReady) {
+  throw new Error('Bound OSM website refresh requires frozen 2,804 inventory and internally consistent current basic-ready count');
 }
 
 const osmById = new Map(osmRows.filter((row) => row?.id).map((row) => [String(row.id), row]));
@@ -78,12 +81,13 @@ for (const row of basic.rows || []) {
 basic.policy = {
   ...(basic.policy || {}),
   retainedOsmWebsiteOverlay: true,
-  retainedOsmWebsiteOverlayRule: 'existing-bound-osm-provider-id-website-v1',
+  retainedOsmWebsiteOverlayRule: 'existing-bound-osm-provider-id-website-v2',
   retainedOsmWebsiteOverlayIdentityChanges: 0,
   retainedOsmWebsiteOverlayPaidApiCalls: 0,
   retainedOsmWebsiteOverlayGoogleDisplayPayloadUsed: false,
   retainedOsmWebsiteOverlayExistingBindingsOnly: true,
-  retainedOsmWebsiteOverlayIndependentHttpsOnly: true
+  retainedOsmWebsiteOverlayIndependentHttpsOnly: true,
+  retainedOsmWebsiteOverlayAggregatorHostsExcluded: true
 };
 basic.summary = {
   ...(basic.summary || {}),
