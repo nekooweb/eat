@@ -10,6 +10,7 @@ on:
       - "scripts/collect_google_inventory_recommendations.mjs"
       - "scripts/merge_google_inventory_detail_evidence.mjs"
       - "scripts/build_google_inventory_detail_queue.mjs"
+      - "scripts/build_dish_batch_plan.mjs"
       - "scripts/audit_google_inventory_detail_evidence.mjs"
       - "scripts/build_google_inventory_runtime.mjs"
   workflow_dispatch:
@@ -85,7 +86,9 @@ jobs:
       - name: Collect current official-site and retained Hot Pepper evidence
         env:
           INVENTORY_DETAIL_FETCH_TIMEOUT_MS: "7000"
-          INVENTORY_DETAIL_HOST_WORKERS: "20"
+          INVENTORY_DETAIL_HOST_WORKERS: "24"
+          INVENTORY_DETAIL_SITE_PAGE_LIMIT: "5"
+          INVENTORY_DETAIL_MENU_LINK_LIMIT: "4"
         run: |
           set -euo pipefail
           node scripts/collect_google_inventory_recommendations.mjs /tmp/fresh-dish-evidence.json | tee /tmp/fresh-dish-summary.json
@@ -102,15 +105,17 @@ jobs:
             /tmp/fresh-dish-evidence.json \
             data/google_inventory_detail_evidence.json | tee /tmp/fresh-merge-summary.json
           node scripts/audit_google_inventory_detail_evidence.mjs
-      - name: Rebuild runtime and recommendation-first detail queue
+      - name: Rebuild runtime, queue and deterministic bulk plan
         run: |
           set -euo pipefail
           node scripts/build_google_inventory_runtime.mjs
           node scripts/audit_google_inventory_runtime.mjs
           node scripts/build_google_inventory_detail_queue.mjs data/google_inventory_detail_queue.json
+          node scripts/build_dish_batch_plan.mjs data/dish_batch_plan.json 8 | tee /tmp/dish-batch-plan-summary.json
           node - <<'NODE'
           const fs = require('fs');
           const q = JSON.parse(fs.readFileSync('data/google_inventory_detail_queue.json', 'utf8'));
+          const plan = JSON.parse(fs.readFileSync('data/dish_batch_plan.json', 'utf8'));
           if (q.summary.catalogTotal !== 2804 || !q.summary.runtimeBaselineComplete) {
             throw new Error('frozen 2,804 Place-ID catalog baseline must remain complete');
           }
@@ -126,9 +131,15 @@ jobs:
           if (invalidRecommendationTask) {
             throw new Error(`recommendation gap lost recommendation-first priority: ${invalidRecommendationTask.googlePlaceId}: ${invalidRecommendationTask.nextAction}`);
           }
-          console.log(JSON.stringify(q.summary));
+          if (plan.policy?.paidGoogleDataApiCalls !== 0 || plan.policy?.targetLanguage !== 'zh-CN' || plan.summary?.shards !== 8) {
+            throw new Error('invalid deterministic dish bulk plan contract');
+          }
+          if ((plan.rows || []).some((row) => row.shard < 0 || row.shard >= 8 || !row.googlePlaceId || !row.lane)) {
+            throw new Error('invalid dish bulk plan row');
+          }
+          console.log(JSON.stringify({ queue: q.summary, batchPlan: plan.summary }));
           NODE
-      - name: Commit detailed evidence and queue
+      - name: Commit detailed evidence, queue and bulk plan
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"
@@ -137,7 +148,8 @@ jobs:
             data/google_inventory_detail_evidence.json \
             data/google_inventory_detail_queue.json \
             data/google_inventory_runtime.js \
-            data/dish_translation_pending.json
+            data/dish_translation_pending.json \
+            data/dish_batch_plan.json
           if git diff --cached --quiet; then
             echo "No inventory detail changes to commit."
             exit 0
