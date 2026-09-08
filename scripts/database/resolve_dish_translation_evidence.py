@@ -20,12 +20,16 @@ import master_import_core as core
 RULE_VERSION = "dish-source-translation-zh-v1"
 RESOLVER_PROVIDER = "dish_evidence_resolver"
 RESOLVER_PRIORITY = 85
-RECOMMENDATION_CLASSES = {"source_recommendation_text"}
+RECOMMENDATION_CLASSES = {
+    "source_recommendation_text",
+    "source_pdf_recommendation_text",
+}
 FEATURED_CLASSES = {
     "retained_source_menu_item",
     "provider_promotional_dish_text",
     "structured_menu_item",
     "source_menu_text",
+    "source_pdf_menu_text",
     "tabelog_menu_text",
 }
 
