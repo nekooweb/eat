@@ -1,0 +1,21 @@
+name: One-shot retained dish audit dispatcher
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - _ops/run-retained-dish-audit-once-2026-09-08.txt
+
+permissions:
+  actions: write
+  contents: read
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dispatch retained Hot Pepper dish audit
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run audit-retained-hotpepper-service-dishes.yml --repo "$GITHUB_REPOSITORY" --ref main
