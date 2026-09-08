@@ -1,0 +1,37 @@
+name: Audit retained Hot Pepper service dish candidates
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/audit-retained-hotpepper-service-dishes.yml"
+      - "scripts/audit_retained_hotpepper_service_dish_candidates.mjs"
+      - "scripts/recommended_dish_extractor.mjs"
+      - "data/hotpepper_rich_metadata.js"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Enforce zero-paid-data-API policy
+        run: node scripts/audit_no_paid_apis.mjs
+      - name: Audit retained service-text dish candidates
+        run: |
+          set -euo pipefail
+          node scripts/audit_retained_hotpepper_service_dish_candidates.mjs | tee /tmp/hotpepper-service-dish-audit.json
+          node - <<'NODE'
+          const fs = require('fs');
+          const x = JSON.parse(fs.readFileSync('/tmp/hotpepper-service-dish-audit.json', 'utf8'));
+          if (x.networkRequests !== 0 || x.paidGoogleDataApiCalls !== 0) throw new Error('audit must remain network-free');
+          console.log(JSON.stringify({candidateRows:x.candidateRows,candidateTexts:x.candidateTexts,recommendationCandidateTexts:x.recommendationCandidateTexts}));
+          NODE
