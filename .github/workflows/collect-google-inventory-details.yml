@@ -66,8 +66,22 @@ jobs:
       - name: Mine retained official and third-party dish facts
         run: |
           set -euo pipefail
-          node scripts/build_retained_dish_evidence.mjs /tmp/retained-dish-evidence.json | tee /tmp/retained-dish-summary.json
+          node scripts/build_retained_dish_evidence.mjs \
+            /tmp/retained-dish-evidence.json \
+            data/dish_translation_pending.json | tee /tmp/retained-dish-summary.json
           test -s /tmp/retained-dish-evidence.json
+          test -s data/dish_translation_pending.json
+          node - <<'NODE'
+          const fs = require('fs');
+          const q = JSON.parse(fs.readFileSync('data/dish_translation_pending.json', 'utf8'));
+          if (q.policy?.targetLanguage !== 'zh-CN' || q.policy?.sourceLanguageMayBeJapanese !== true) {
+            throw new Error('dish translation queue must preserve source-native/Japanese evidence and target zh-CN');
+          }
+          if ((q.rows || []).some((row) => !row.sourceName || !row.sourceUrl || row.status !== 'needs_zh_normalization')) {
+            throw new Error('invalid dish translation pending row');
+          }
+          console.log(JSON.stringify(q.summary));
+          NODE
       - name: Collect current official-site and retained Hot Pepper evidence
         env:
           INVENTORY_DETAIL_FETCH_TIMEOUT_MS: "7000"
@@ -119,7 +133,11 @@ jobs:
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/google_inventory_detail_evidence.json data/google_inventory_detail_queue.json data/google_inventory_runtime.js
+          git add \
+            data/google_inventory_detail_evidence.json \
+            data/google_inventory_detail_queue.json \
+            data/google_inventory_runtime.js \
+            data/dish_translation_pending.json
           if git diff --cached --quiet; then
             echo "No inventory detail changes to commit."
             exit 0
@@ -127,8 +145,7 @@ jobs:
           git commit -m "Update source-backed recommended dish evidence"
           # Build helpers may rewrite tracked derivative files that are deliberately
           # not part of this evidence commit. Reset only the runner worktree to the
-          # just-created commit before rebasing; the three staged targets are safe
-          # because they are already recorded in HEAD.
+          # just-created commit before rebasing; staged targets are already in HEAD.
           git reset --hard HEAD
           git fetch origin main
           git rebase origin/main
