@@ -1,0 +1,121 @@
+name: Recover order-normalized current id-only identities v3
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/current-hotpepper-id-recovery-v3.yml"
+      - "scripts/database/review_id_only_currentness_sources_v3.py"
+      - "scripts/database/promote_reviewed_multisource_currentness_v3.py"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: current-hotpepper-id-recovery-v3
+  cancel-in-progress: false
+
+jobs:
+  recover:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Sync latest main
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          git reset --hard origin/main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Review, promote and validate
+        run: |
+          set -euo pipefail
+          mkdir -p _tmp
+          node scripts/audit_no_paid_apis.mjs
+          python -m py_compile scripts/database/review_id_only_currentness_sources_v3.py scripts/database/promote_reviewed_multisource_currentness_v3.py
+          python scripts/database/build_master.py --output _tmp/before.sqlite --reset | tee _tmp/before.json
+          python scripts/database/validate_master.py _tmp/before.sqlite
+          node scripts/build_google_inventory_runtime.mjs | tee _tmp/runtime-before-build.json
+          node scripts/audit_google_inventory_runtime.mjs | tee _tmp/runtime-before.json
+
+          python scripts/database/review_id_only_currentness_sources_v3.py \
+            --database _tmp/before.sqlite --output _tmp/review.json --workers 8 | tee _tmp/review-summary.json
+          python - <<'PY'
+          import json
+          d=json.load(open('_tmp/review.json')); p=d['policy']
+          assert d['ruleVersion']=='id-only-currentness-review-v3'
+          assert p['paidDataApiCalls']==0 and p['googleDisplayPayloadPersisted'] is False
+          assert p['orderInsensitiveRetainedNameComponents'] is True
+          assert p['genericBranchSuffixNormalizationOnly'] is True
+          assert p['minimumMatchedRetainedNameComponents']>=2
+          assert p['locationThresholdsUnchangedFromV2'] is True
+          assert p['admissionThresholdsUnchangedFromV2'] is True
+          ready=[r for r in d['rows'] if r.get('admissionReady') is True]
+          print(json.dumps({'targets':d['summary']['targets'],'counts':d['summary']['counts'],'admissionReady':len(ready),'ready':[{'googlePlaceId':r['googlePlaceId'],'name':(r.get('expected') or {}).get('name'),'check':(r.get('currentnessReview') or {}).get('bestCheck')} for r in ready]},ensure_ascii=False,sort_keys=True))
+          PY
+
+          python scripts/database/promote_reviewed_multisource_currentness_v3.py \
+            --database _tmp/before.sqlite \
+            --review _tmp/review.json \
+            --base data/google_basic_source_matches.json \
+            --hotpepper data/hotpepper_catalog_facts.json \
+            --output _tmp/overlay.json | tee _tmp/overlay-summary.json
+          python scripts/merge_basic_recovery_overlays.py data/google_basic_source_matches.json _tmp/overlay.json data/google_basic_source_matches.json | tee _tmp/merge.json
+          added=$(python - <<'PY'
+          import json
+          print(json.load(open('_tmp/merge.json')).get('added',0))
+          PY
+          )
+          if [ "$added" = "0" ]; then
+            git restore -- data/google_basic_source_matches.json data/google_inventory_runtime.js 2>/dev/null || true
+            echo "No v3 identities passed all unchanged gates"
+            exit 0
+          fi
+
+          node scripts/build_google_inventory_runtime.mjs | tee _tmp/runtime-after-build.json
+          node scripts/audit_google_inventory_runtime.mjs | tee _tmp/runtime-after.json
+          python scripts/database/build_master.py --output _tmp/after.sqlite --reset | tee _tmp/after.json
+          python scripts/database/validate_master.py _tmp/after.sqlite
+          python scripts/database/validate_ingestion_plan.py _tmp/after.sqlite
+          python - <<'PY'
+          import json,sqlite3
+          b=json.load(open('_tmp/before.json')); a=json.load(open('_tmp/after.json')); m=json.load(open('_tmp/merge.json')); o=json.load(open('_tmp/overlay.json'))
+          rb=json.load(open('_tmp/runtime-before.json')); ra=json.load(open('_tmp/runtime-after.json'))
+          n=m['added']; assert n==len(o['rows']) and n>0
+          assert a['identityStates']['id_only']==b['identityStates']['id_only']-n
+          assert a['identityStates']['source_matched']==b['identityStates']['source_matched']+n
+          assert a['identityStates']['verified']==b['identityStates']['verified']
+          assert ra['inventoryTotal']==rb['inventoryTotal']+n
+          assert ra['unpublishedPlaceIdOnly']==rb['unpublishedPlaceIdOnly']-n
+          db=sqlite3.connect('_tmp/after.sqlite')
+          states={r['googlePlaceId']:db.execute('select identity_state from catalog_entries where place_id=?',(r['googlePlaceId'],)).fetchone()[0] for r in o['rows']}
+          assert all(v=='source_matched' for v in states.values())
+          effect={'added':n,'placeIds':[r['googlePlaceId'] for r in o['rows']],'states':states,'identityBefore':b['identityStates'],'identityAfter':a['identityStates'],'runtimeBefore':rb['inventoryTotal'],'runtimeAfter':ra['inventoryTotal'],'missingBefore':b['ingestionPlan']['fieldCompletionMissingCounts'],'missingAfter':a['ingestionPlan']['fieldCompletionMissingCounts']}
+          json.dump(effect,open('_tmp/effect.json','w'),ensure_ascii=False,indent=2,sort_keys=True)
+          print(json.dumps(effect,ensure_ascii=False,sort_keys=True))
+          PY
+          node scripts/audit_no_paid_apis.mjs
+
+          git restore -- data/google_inventory_runtime.js 2>/dev/null || true
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/google_basic_source_matches.json
+          git commit -m "Promote order-normalized reviewed identities"
+          git fetch origin main
+          git rebase origin/main
+          git push origin HEAD:main
+      - name: Upload v3 audit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: current-hotpepper-id-recovery-v3
+          path: _tmp/*.json
+          if-no-files-found: warn
+          retention-days: 3
