@@ -33,11 +33,13 @@
     "singleDistinctCandidateRequired": true,
     "corporateAddressContextRejected": true,
     "area1TokyoWardRequiredForVisibleAddress": true,
-    "concreteTimeRequiredForVisibleHours": true
+    "concreteTimeRequiredForVisibleHours": true,
+    "retainedMultisourceCurrentnessPageOnly": true,
+    "freshNameAndLocationReconfirmationRequired": true
   },
   "summary": {
-    "rows": 149,
-    "places": 120,
+    "rows": 150,
+    "places": 121,
     "placesWithMultipleSnapshots": 28,
     "fieldCounts": {
       "address": 3,
@@ -45,13 +47,16 @@
       "geo": 1,
       "openingHoursRaw": 38,
       "priceRange": 12,
-      "telephone": 123
+      "telephone": 124
     },
     "providerCounts": {
       "Overture Maps": 18,
-      "official": 131
+      "official": 132
     },
-    "lastMerge": {}
+    "lastMerge": {
+      "snapshot_added": 1,
+      "snapshot_added_new_place": 1
+    }
   },
   "rows": [
     {
@@ -1315,6 +1320,54 @@
         "telephone": "03-3296-7177"
       },
       "checkedAt": "2026-09-07"
+    },
+    {
+      "googlePlaceId": "ChIJ9_YVEQaMGGARcUCNVh29d9M",
+      "sourceProvider": "official",
+      "sourceProviderId": "currentness-page:9771f481f15711d8af35",
+      "missingBefore": [
+        "telephone"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_multisource_currentness_page",
+        "preExistingSourceMatchedIdentity": true,
+        "freshNameAndLocationReconfirmed": true,
+        "proximityOnlyBindingAllowed": false,
+        "retainedConsensusRule": "reviewed-multisource-currentness-v4",
+        "retainedVerification": "reviewed_hotpepper_overture_branch_address_currentness_consensus",
+        "currentnessReason": "current_page_reconfirmed_source_alias_and_location",
+        "pageName": "カンファレンスセンター店 of 野らぼー",
+        "pageAddress": "東京都千代田区大手町１−３−２ 大手町カンファレンスセンター内B１F",
+        "matchedExpectedName": "讃岐うどん 野らぼー カンファレンスセンター",
+        "pageNameSimilarity": 0.915,
+        "pageAddressSimilarity": 0.9355,
+        "postalMatch": false,
+        "minimumGeoDistanceMeters": null,
+        "locationConfirmed": true
+      },
+      "webEvidence": {
+        "sourceUrl": "https://www.norabow.jp/shopinfo/conference.html",
+        "finalUrl": "https://www.norabow.jp/shopinfo/conference.html",
+        "retrievedAt": "2026-09-08T09:44:25Z",
+        "contentHash": "77acd2c548b835df7ad1a8cf3fde0517ae5b79fda98ba02219b1aed5e92db10f",
+        "parserVersion": "retained-currentness-labeled-telephone-v1",
+        "rawHtmlPersisted": false,
+        "discovery": {
+          "method": "retained_multisource_currentness_page",
+          "retainedConsensusRule": "reviewed-multisource-currentness-v4",
+          "currentPageFetchedAgain": true,
+          "nameAndLocationReconfirmedAgain": true,
+          "telephoneParserVersion": "official-labeled-telephone-v1",
+          "labelRequired": true,
+          "singleDistinctLabeledNumberRequired": true,
+          "evidenceSnippet": "電話番号 03 (6269) 9700"
+        }
+      },
+      "fieldClaims": {
+        "telephone": "03 (6269) 9700"
+      },
+      "checkedAt": "2026-09-08"
     },
     {
       "googlePlaceId": "ChIJA3uXWgOMGGARW_LZHuzxH7o",
