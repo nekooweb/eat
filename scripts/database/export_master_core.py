@@ -97,6 +97,7 @@ def build_exports(database: Path, outdir: Path):
         catalog_rows = []
         recommendation_rows = []
         exclusions = Counter()
+        telephone_known = 0
 
         for place_id in ordered_ids:
             state = identity.get(place_id)
@@ -108,6 +109,7 @@ def build_exports(database: Path, outdir: Path):
             coordinates = first_value(values, place_id, "coordinates")
             cuisine = first_value(values, place_id, "cuisine")
             distance_m = first_value(values, place_id, "distance_m")
+            telephone = first_value(values, place_id, "contact.telephone")
             lunch_budget = first_value(values, place_id, "budget.lunch.range", "budget.lunch.legacy_range")
             dinner_budget = first_value(values, place_id, "budget.dinner.range", "budget.dinner.legacy_range")
             hours_raw = first_value(values, place_id, "hours.raw")
@@ -116,6 +118,8 @@ def build_exports(database: Path, outdir: Path):
             opening_hours_legacy = first_value(values, place_id, "hours.normalized.legacy")
             recommended = first_value(values, place_id, "recommended_dishes.zh", "recommended_dishes.legacy") or []
             featured = first_value(values, place_id, "featured_dishes.zh", "featured_dishes.legacy") or []
+            if isinstance(telephone, str) and telephone.strip():
+                telephone_known += 1
 
             practical = {}
             for field_key, public_key in PRACTICAL_EXPORT_FIELDS.items():
@@ -141,6 +145,7 @@ def build_exports(database: Path, outdir: Path):
                 ("address", address),
                 ("coordinates", coordinates),
                 ("cuisine", cuisine),
+                ("telephone", telephone),
                 ("dinnerBudget", dinner_budget),
                 ("hours", hours_raw or hours_reference or opening_hours_legacy),
             ):
@@ -157,6 +162,7 @@ def build_exports(database: Path, outdir: Path):
                 "coordinates": coordinates,
                 "distanceMeters": distance_m,
                 "cuisine": cuisine,
+                "telephone": telephone,
                 "lunchBudget": lunch_budget,
                 "dinnerBudget": dinner_budget,
                 "hoursRaw": hours_raw,
@@ -189,12 +195,14 @@ def build_exports(database: Path, outdir: Path):
             **common,
             "exportType": "catalog",
             "rowCount": len(catalog_rows),
+            "telephoneKnown": telephone_known,
             "rows": catalog_rows,
         }
         recommendation_doc = {
             **common,
             "exportType": "recommendation",
             "rowCount": len(recommendation_rows),
+            "telephoneKnown": sum(1 for row in recommendation_rows if isinstance(row.get("telephone"), str) and row["telephone"].strip()),
             "exclusionCounts": dict(sorted(exclusions.items())),
             "rows": recommendation_rows,
         }
@@ -209,6 +217,8 @@ def build_exports(database: Path, outdir: Path):
             "status": "pass",
             "catalogRows": len(catalog_rows),
             "recommendationRows": len(recommendation_rows),
+            "telephoneKnown": telephone_known,
+            "recommendationTelephoneKnown": recommendation_doc["telephoneKnown"],
             "excludedRows": len(catalog_rows) - len(recommendation_rows),
             "exclusionCounts": dict(sorted(exclusions.items())),
             "catalogPath": str(catalog_path),
