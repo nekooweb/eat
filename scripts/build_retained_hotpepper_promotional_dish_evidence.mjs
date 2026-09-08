@@ -66,6 +66,11 @@ function dedupe(items, limit = 8) {
   return [...map.values()].slice(0, limit);
 }
 
+function validHotPepperUrl(value) {
+  const text = cleanText(value);
+  return /^https:\/\/www\.hotpepper\.jp\/strJ\d+/i.test(text) ? text : '';
+}
+
 function main() {
   const runtime = loadWindowFile('google_inventory_runtime.js');
   const runtimeRows = Array.isArray(runtime.GOOGLE_INVENTORY_RESTAURANTS)
@@ -79,51 +84,89 @@ function main() {
   }
   const runtimeById = new Map(runtimeRows.map((row) => [row.googlePlaceId, row]));
 
+  const catalogFacts = JSON.parse(fs.readFileSync(path.join(DATA, 'hotpepper_catalog_facts.json'), 'utf8'));
+  const catalogRows = Array.isArray(catalogFacts.rows) ? catalogFacts.rows : [];
+  const catalogCheckedAt = cleanText(catalogFacts.checkedAt) || '2026-09-06';
+
   const richWindow = loadWindowFile('hotpepper_rich_metadata.js');
   const rich = richWindow.HOTPEPPER_RICH_METADATA || {};
   const richRows = Array.isArray(rich.rows) ? rich.rows : [];
-  const defaultCheckedAt = cleanText(rich.checkedAt) || '2026-09-06';
+  const richCheckedAt = cleanText(rich.checkedAt) || catalogCheckedAt;
+
+  // Aggregate retained promotional text by frozen Place ID. The basic provider
+  // catch is intentionally excluded because collect_google_inventory_recommendations.mjs
+  // already consumes facts.catch. This pass adds the previously-unused
+  // facts.genre.catch at all retained catalog bindings plus reviewed rich
+  // special-feature titles.
+  const retainedById = new Map();
+  let eligibleCatalogRows = 0;
+  let eligibleRichRows = 0;
+  let catalogGenreCatchTexts = 0;
+  let richSpecialFeatureTitleTexts = 0;
+
+  function addText(googlePlaceId, sourceUrl, checkedAt, kind, text) {
+    const publicRow = runtimeById.get(googlePlaceId);
+    const clean = cleanText(text);
+    if (!publicRow || !sourceUrl || !clean) return;
+    if (!retainedById.has(googlePlaceId)) {
+      retainedById.set(googlePlaceId, {
+        googlePlaceId,
+        name: publicRow.name,
+        texts: []
+      });
+    }
+    retainedById.get(googlePlaceId).texts.push({ sourceUrl, checkedAt, kind, text: clean });
+  }
+
+  for (const catalogRow of catalogRows) {
+    const googlePlaceId = cleanText(catalogRow.googlePlaceId);
+    if (!runtimeById.has(googlePlaceId)) continue;
+    const sourceUrl = validHotPepperUrl(catalogRow.facts?.urls?.pc || catalogRow.facts?.urls?.mobile);
+    if (!sourceUrl) continue;
+    eligibleCatalogRows += 1;
+    const genreCatch = cleanText(catalogRow.facts?.genre?.catch);
+    if (genreCatch) {
+      addText(googlePlaceId, sourceUrl, catalogCheckedAt, 'catalogGenreCatch', genreCatch);
+      catalogGenreCatchTexts += 1;
+    }
+  }
+
+  for (const richRow of richRows) {
+    const googlePlaceId = cleanText(richRow.googlePlaceId);
+    if (!runtimeById.has(googlePlaceId)) continue;
+    if (!['strict_auto', 'manual_exact'].includes(cleanText(richRow.hotpepperReviewMode))) continue;
+    const sourceUrl = validHotPepperUrl(richRow.hotpepperUrl);
+    if (!sourceUrl) continue;
+    eligibleRichRows += 1;
+    const checkedAt = cleanText(richRow.checkedAt) || richCheckedAt;
+    for (const feature of richRow.specialFeatures || []) {
+      const title = cleanText(feature?.title);
+      if (!title) continue;
+      addText(googlePlaceId, sourceUrl, checkedAt, 'richSpecialFeatureTitle', title);
+      richSpecialFeatureTitleTexts += 1;
+    }
+  }
 
   const evidenceRows = [];
-  let eligibleRichRows = 0;
   let promotionalTextsScanned = 0;
-  let genreCatchTexts = 0;
-  let specialFeatureTitleTexts = 0;
+  let duplicatePromotionalTextsSkipped = 0;
   let recommendationTextHits = 0;
   let featuredTextHits = 0;
   const recommendationPlaceIds = new Set();
   const featuredPlaceIds = new Set();
-  const providerItemCounts = { genreCatch: 0, specialFeatureTitle: 0 };
+  const providerItemCounts = { catalogGenreCatch: 0, richSpecialFeatureTitle: 0 };
 
-  for (const richRow of richRows) {
-    const googlePlaceId = cleanText(richRow.googlePlaceId);
-    const publicRow = runtimeById.get(googlePlaceId);
-    if (!publicRow) continue;
-    if (!['strict_auto', 'manual_exact'].includes(cleanText(richRow.hotpepperReviewMode))) continue;
-    const sourceUrl = cleanText(richRow.hotpepperUrl);
-    if (!/^https:\/\/www\.hotpepper\.jp\/strJ\d+/i.test(sourceUrl)) continue;
-    const checkedAt = cleanText(richRow.checkedAt) || defaultCheckedAt;
-    eligibleRichRows += 1;
-
-    const texts = [];
-    const genreCatch = cleanText(richRow.hotpepperGenre?.catch);
-    if (genreCatch) {
-      texts.push({ kind: 'genreCatch', text: genreCatch });
-      genreCatchTexts += 1;
-    }
-    for (const feature of richRow.specialFeatures || []) {
-      const title = cleanText(feature?.title);
-      if (!title) continue;
-      texts.push({ kind: 'specialFeatureTitle', text: title });
-      specialFeatureTitleTexts += 1;
-    }
-
+  for (const retained of retainedById.values()) {
     const recommendedDishes = [];
     const featuredDishes = [];
     const seenTexts = new Set();
-    for (const entry of texts) {
-      if (seenTexts.has(entry.text)) continue;
-      seenTexts.add(entry.text);
+    for (const entry of retained.texts) {
+      const textKey = `${entry.sourceUrl}|${entry.text}`;
+      if (seenTexts.has(textKey)) {
+        duplicatePromotionalTextsSkipped += 1;
+        continue;
+      }
+      seenTexts.add(textKey);
       promotionalTextsScanned += 1;
 
       const strict = extractStrictRecommendationsFromText(entry.text, 4);
@@ -132,10 +175,10 @@ function main() {
         for (const match of strict) {
           recommendedDishes.push(sourceItem(
             match,
-            sourceUrl,
-            checkedAt,
+            entry.sourceUrl,
+            entry.checkedAt,
             'source_recommendation_text',
-            `hotpepper-rich-${entry.kind}:${match.rule}`,
+            `hotpepper-retained-${entry.kind}:${match.rule}`,
             entry.text
           ));
           providerItemCounts[entry.kind] += 1;
@@ -148,10 +191,10 @@ function main() {
       for (const match of featured) {
         featuredDishes.push(sourceItem(
           match,
-          sourceUrl,
-          checkedAt,
+          entry.sourceUrl,
+          entry.checkedAt,
           'provider_promotional_dish_text',
-          `hotpepper-rich-${entry.kind}:${match.rule}`,
+          `hotpepper-retained-${entry.kind}:${match.rule}`,
           entry.text
         ));
         providerItemCounts[entry.kind] += 1;
@@ -162,11 +205,11 @@ function main() {
     const recommendedNames = new Set(recommended.map((item) => item.nameZh));
     const featured = dedupe(featuredDishes, 8).filter((item) => !recommendedNames.has(item.nameZh)).slice(0, 6);
     if (!recommended.length && !featured.length) continue;
-    if (recommended.length) recommendationPlaceIds.add(googlePlaceId);
-    if (featured.length) featuredPlaceIds.add(googlePlaceId);
+    if (recommended.length) recommendationPlaceIds.add(retained.googlePlaceId);
+    if (featured.length) featuredPlaceIds.add(retained.googlePlaceId);
     evidenceRows.push({
-      googlePlaceId,
-      name: publicRow.name,
+      googlePlaceId: retained.googlePlaceId,
+      name: retained.name,
       recommendedDishes: recommended,
       featuredDishes: featured
     });
@@ -176,11 +219,14 @@ function main() {
   const summary = {
     catalogTotal: 2804,
     publicRuntimeTotal: runtimeRows.length,
+    hotPepperCatalogFactRows: catalogRows.length,
+    eligibleCatalogRows,
     richMetadataRows: richRows.length,
     eligibleReviewedRichRows: eligibleRichRows,
+    catalogGenreCatchTexts,
+    richSpecialFeatureTitleTexts,
     promotionalTextsScanned,
-    genreCatchTexts,
-    specialFeatureTitleTexts,
+    duplicatePromotionalTextsSkipped,
     recommendationTextHits,
     featuredTextHits,
     evidenceRestaurants: evidenceRows.length,
@@ -192,15 +238,17 @@ function main() {
   };
 
   const payload = {
-    schemaVersion: 1,
-    checkedAt: defaultCheckedAt,
+    schemaVersion: 2,
+    checkedAt: richCheckedAt,
     policy: {
-      source: 'retained reviewed Hot Pepper rich metadata only',
+      source: 'retained Hot Pepper catalog facts plus reviewed rich metadata only',
       networkRequests: 0,
       paidGoogleDataApiCalls: 0,
-      eligibleBindings: ['strict_auto', 'manual_exact'],
-      textFields: ['hotpepperGenre.catch', 'specialFeatures[].title'],
-      sourceCatchExcludedAsDuplicateOfCatalogFactsCatch: true,
+      catalogBindingTrustMatchesExistingRetainedCatchCollector: true,
+      richEligibleBindings: ['strict_auto', 'manual_exact'],
+      textFields: ['facts.genre.catch', 'specialFeatures[].title'],
+      basicFactsCatchExcludedBecauseMainCollectorAlreadyConsumesIt: true,
+      richSourceCatchExcludedAsDuplicateOfCatalogFactsCatch: true,
       restaurantNameInferenceAllowed: false,
       cuisineInferenceAllowed: false,
       genericFallbackAllowed: false,
