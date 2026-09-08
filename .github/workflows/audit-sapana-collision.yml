@@ -1,0 +1,73 @@
+name: Audit SAPANA provider collision
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/audit-sapana-collision.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Inspect both frozen Place IDs and shared Overture native source
+        run: |
+          set -euo pipefail
+          mkdir -p _tmp
+          node scripts/audit_no_paid_apis.mjs
+          python scripts/database/build_master.py --output _tmp/master.sqlite --reset >/dev/null
+          python scripts/database/validate_master.py _tmp/master.sqlite >/dev/null
+          python - <<'PY'
+          import json,sqlite3
+          from pathlib import Path
+          pids=['ChIJMfCVqm2NGGARrwMXwwd62O4','ChIJGVRApwmNGGAR_KPo9VG0ioQ']
+          shared='23981099-c6b5-4d97-b5ff-ee44f92f3922'
+          db=sqlite3.connect('_tmp/master.sqlite'); db.row_factory=sqlite3.Row
+          out=[]
+          for pid in pids:
+            state=db.execute('select identity_state from catalog_entries where place_id=?',(pid,)).fetchone()
+            fields={}
+            for key in ('name','address','coordinates','cuisine','contact.telephone','hours.raw'):
+              r=db.execute('''select o.value_json,sr.provider,sr.provider_id,sb.binding_state,sb.binding_method,sb.confidence,sb.source_distance_m
+                              from field_resolutions fr
+                              join field_observations o on o.observation_id=fr.observation_id
+                              join source_records sr on sr.source_record_id=o.source_record_id
+                              left join source_bindings sb on sb.place_id=fr.place_id and sb.source_record_id=o.source_record_id
+                              where fr.place_id=? and fr.field_key=? and fr.resolution_state='known' ''',(pid,key)).fetchone()
+              if r: fields[key]=dict(r)
+            bindings=[dict(r) for r in db.execute('''select sr.provider,sr.provider_id,sr.source_url,sb.binding_state,sb.binding_method,sb.confidence,sb.source_distance_m,sr.acquisition_method,sr.payload_json
+                                                     from source_bindings sb join source_records sr on sr.source_record_id=sb.source_record_id
+                                                     where sb.place_id=? order by sr.provider,sr.provider_id''',(pid,))]
+            for b in bindings:
+              try:
+                payload=json.loads(b['payload_json'] or '{}')
+              except Exception: payload={}
+              # Keep only identity-relevant compact metadata in logs.
+              b['payload']={k:payload.get(k) for k in ('name','address','lat','lng','candidate','verification','identityConsensus') if k in payload}
+              b.pop('payload_json',None)
+            out.append({'googlePlaceId':pid,'identityState':state[0] if state else None,'fields':fields,'bindings':bindings})
+          shared_rows=[dict(r) for r in db.execute('''select sb.place_id,sr.provider,sr.provider_id,sb.binding_state,sb.binding_method,sb.confidence,sb.source_distance_m
+                                                       from source_bindings sb join source_records sr on sr.source_record_id=sb.source_record_id
+                                                       where sr.provider='Overture Maps' and sr.provider_id=? order by sb.place_id''',(shared,))]
+          hp=json.load(open('data/hotpepper_catalog_facts.json'))
+          hp_rows=[r for r in hp.get('rows',[]) if r.get('googlePlaceId') in pids]
+          result={'placeRows':out,'sharedOvertureBindings':shared_rows,'hotPepperRows':hp_rows}
+          Path('_tmp/sapana-collision.json').write_text(json.dumps(result,ensure_ascii=False,indent=2),encoding='utf-8')
+          print('SAPANA_COLLISION='+json.dumps(result,ensure_ascii=False,separators=(',',':')))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: audit-sapana-collision
+          path: _tmp/sapana-collision.json
+          retention-days: 3
