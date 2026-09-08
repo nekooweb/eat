@@ -26,11 +26,13 @@
     "genericPriceRangeMealInference": false,
     "reviewedOfficialBindingRequired": true,
     "explicitTelephoneLabelRequired": true,
-    "singleDistinctLabeledNumberRequired": true
+    "singleDistinctLabeledNumberRequired": true,
+    "explicitTelHrefRequired": true,
+    "singleDistinctTelNumberRequired": true
   },
   "summary": {
-    "rows": 143,
-    "places": 117,
+    "rows": 146,
+    "places": 120,
     "placesWithMultipleSnapshots": 26,
     "fieldCounts": {
       "address": 3,
@@ -38,15 +40,15 @@
       "geo": 1,
       "openingHoursRaw": 38,
       "priceRange": 9,
-      "telephone": 120
+      "telephone": 123
     },
     "providerCounts": {
       "Overture Maps": 18,
-      "official": 125
+      "official": 128
     },
     "lastMerge": {
-      "snapshot_added": 1,
-      "snapshot_added_new_place": 1
+      "snapshot_added": 3,
+      "snapshot_added_new_place": 3
     }
   },
   "rows": [
@@ -2762,6 +2764,42 @@
       "checkedAt": "2026-09-07"
     },
     {
+      "googlePlaceId": "ChIJOeeMRyuNGGARKnRqvu0io-E",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:a10c6c4f9f0b00851ce5",
+      "missingBefore": [
+        "telephone"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "strong_page_title",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://www.front-du-chaton.com/",
+        "finalUrl": "https://www.front-du-chaton.com/",
+        "retrievedAt": "2026-09-08T06:38:27Z",
+        "contentHash": "b79e4ac836ffbe6fa048a75ab0c5afaaa8b89b00ea0c81ef713a4896e5ea2469",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06",
+        "discovery": {
+          "method": "explicit_html_tel_link",
+          "telephoneParserVersion": "official-tel-link-v1",
+          "explicitTelHrefRequired": true,
+          "singleDistinctTelNumberRequired": true,
+          "normalizedDomesticDigits": "0363809979"
+        }
+      },
+      "fieldClaims": {
+        "telephone": "0363809979"
+      },
+      "checkedAt": "2026-09-08"
+    },
+    {
       "googlePlaceId": "ChIJPWGA4l6NGGARhtdd0pnbo_0",
       "sourceProvider": "Overture Maps",
       "sourceProviderId": "bb04a649-4532-4a3d-b8ae-2a826ad1cf65",
@@ -4461,6 +4499,42 @@
       "checkedAt": "2026-09-08"
     },
     {
+      "googlePlaceId": "ChIJrX3KvUOMGGARswxEPJNUwrk",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:c6248f2296a7b7e1dbe3",
+      "missingBefore": [
+        "telephone"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "strong_page_title",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://tobiushi.com/",
+        "finalUrl": "https://tobiushi.com/",
+        "retrievedAt": "2026-09-08T06:38:41Z",
+        "contentHash": "956ad07caf89da33d47dd6cd04317955b2ab6abe2368537e910d00f97cfaefcb",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06",
+        "discovery": {
+          "method": "explicit_html_tel_link",
+          "telephoneParserVersion": "official-tel-link-v1",
+          "explicitTelHrefRequired": true,
+          "singleDistinctTelNumberRequired": true,
+          "normalizedDomesticDigits": "05055701266"
+        }
+      },
+      "fieldClaims": {
+        "telephone": "05055701266"
+      },
+      "checkedAt": "2026-09-08"
+    },
+    {
       "googlePlaceId": "ChIJs1M2cgCNGGARriJT0eDqUkg",
       "sourceProvider": "official",
       "sourceProviderId": "official-index:d365df90d25e5a2c86fa",
@@ -4720,6 +4794,42 @@
         "telephone": "03-3251-2518"
       },
       "checkedAt": "2026-09-07"
+    },
+    {
+      "googlePlaceId": "ChIJx2UcUhmMGGARiJRERLkJywo",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:3ab81af1e80fd6cf0332",
+      "missingBefore": [
+        "telephone"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "strong_page_title",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://nihonshu.com/?utm_source=GBP&utm_medium=GBP&utm_term=GBP&utm_content=GBP&utm_campaign=GBP",
+        "finalUrl": "https://nihonshu.com/?utm_source=GBP&utm_medium=GBP&utm_term=GBP&utm_content=GBP&utm_campaign=GBP",
+        "retrievedAt": "2026-09-08T06:38:39Z",
+        "contentHash": "e2fa4e362f3d3e776d9f5513ba6836738ad48719ed01a8d962fa53dcb35c663a",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06",
+        "discovery": {
+          "method": "explicit_html_tel_link",
+          "telephoneParserVersion": "official-tel-link-v1",
+          "explicitTelHrefRequired": true,
+          "singleDistinctTelNumberRequired": true,
+          "normalizedDomesticDigits": "0352072420"
+        }
+      },
+      "fieldClaims": {
+        "telephone": "03-5207-2420"
+      },
+      "checkedAt": "2026-09-08"
     },
     {
       "googlePlaceId": "ChIJxY7gPgGMGGARb9tWwbUOOxg",
