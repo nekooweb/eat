@@ -1,0 +1,45 @@
+name: One-shot remaining dish completion cycle
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - _ops/run-remaining-dish-cycle-once-2026-09-08.txt
+
+permissions:
+  actions: write
+  contents: read
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Run remaining-dish workflows serially
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          run_one() {
+            wf="$1"
+            echo "Dispatching $wf"
+            gh workflow run "$wf" --repo "$GITHUB_REPOSITORY" --ref main
+            id=""
+            for i in $(seq 1 30); do
+              sleep 2
+              id=$(gh run list --repo "$GITHUB_REPOSITORY" --workflow "$wf" --branch main --event workflow_dispatch --limit 1 --json databaseId --jq '.[0].databaseId // empty')
+              if [ -n "$id" ]; then break; fi
+            done
+            if [ -z "$id" ]; then
+              echo "Could not resolve dispatched run for $wf" >&2
+              exit 1
+            fi
+            echo "$wf run id: $id"
+            gh run watch "$id" --repo "$GITHUB_REPOSITORY" --exit-status
+          }
+
+          run_one refresh-area1.yml
+          run_one build-independent-dish-source-candidates.yml
+          run_one review-independent-dish-sources.yml
+          run_one collect-google-inventory-details.yml
