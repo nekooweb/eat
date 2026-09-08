@@ -6,6 +6,7 @@ on:
     paths:
       - ".github/workflows/collect-google-inventory-details.yml"
       - "scripts/recommended_dish_extractor.mjs"
+      - "scripts/correct_dish_specificity_evidence.mjs"
       - "scripts/build_retained_dish_evidence.mjs"
       - "scripts/build_retained_hotpepper_promotional_dish_evidence.mjs"
       - "scripts/collect_google_inventory_recommendations.mjs"
@@ -170,7 +171,7 @@ jobs:
           }
           console.log(JSON.stringify(x.summary));
           NODE
-      - name: Merge evidence monotonically
+      - name: Merge and specificity-correct evidence monotonically
         run: |
           set -euo pipefail
           node scripts/merge_google_inventory_detail_evidence.mjs \
@@ -189,6 +190,30 @@ jobs:
             /tmp/dish-evidence-fresh-merged.json \
             /tmp/official-sitemap-dish-evidence.json \
             data/google_inventory_detail_evidence.json | tee /tmp/official-sitemap-merge-summary.json
+          node scripts/correct_dish_specificity_evidence.mjs \
+            data/google_inventory_detail_evidence.json \
+            data/google_inventory_detail_evidence.json | tee /tmp/dish-specificity-correction-summary.json
+          node - <<'NODE'
+          const fs = require('fs');
+          const x = JSON.parse(fs.readFileSync('data/google_inventory_detail_evidence.json', 'utf8'));
+          const p = x.policy || {};
+          const s = x.summary?.specificityCorrection || {};
+          if (p.dishSpecificityCorrection !== 'source-native-composite-v1') throw new Error('dish specificity correction policy missing');
+          if (p.dishSpecificityCorrectionUsesSourceNativeEvidenceOnly !== true) throw new Error('specificity correction must require source-native evidence');
+          if (p.dishSpecificityCorrectionCuisineInferenceAllowed !== false || p.dishSpecificityCorrectionBrandInferenceAllowed !== false) throw new Error('specificity correction inference boundary failed');
+          if (p.dishSpecificityCorrectionPaidGoogleDataApiCalls !== 0) throw new Error('specificity correction violated zero-paid policy');
+          if (!Number.isInteger(Number(s.correctedItems || 0)) || Number(s.correctedItems || 0) < 0) throw new Error('invalid specificity correction count');
+          const invalid = [];
+          for (const row of x.rows || []) {
+            for (const item of [...(row.recommendedDishes || []), ...(row.featuredDishes || [])]) {
+              const source = `${item.nameJa || ''} ${item.nameOriginal || ''} ${item.evidenceSnippet || ''}`;
+              if (item.nameZh === '荞麦面' && /鉄板焼(?:き)?そば|焼きそば|焼そば/i.test(source)) invalid.push([row.googlePlaceId, item.nameZh, source]);
+              if (item.nameZh === '寿司' && /肉寿司/i.test(source)) invalid.push([row.googlePlaceId, item.nameZh, source]);
+            }
+          }
+          if (invalid.length) throw new Error(`specificity correction left ${invalid.length} known composite-term misclassifications`);
+          console.log(JSON.stringify(s));
+          NODE
           node scripts/audit_google_inventory_detail_evidence.mjs
       - name: Rebuild runtime, queue and deterministic bulk plans
         run: |
