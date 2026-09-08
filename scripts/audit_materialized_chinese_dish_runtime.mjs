@@ -137,6 +137,19 @@ const topRepeatedRecommendedPairs = [...pairCounts.entries()]
   .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], 'zh-CN'))
   .slice(0, 20)
   .map(([pair, count]) => ({ pair, count }));
+
+// Repetition is an anomaly signal, not an automatic proof of bad data. Still,
+// the earlier category-template regression produced identical two-dish pairs in
+// dozens/hundreds of restaurants. Block that class of regression early. A real
+// chain/source-backed cluster above these thresholds can be explicitly reviewed
+// rather than silently entering the public runtime.
+const suspiciousRepeatedPair = topRepeatedRecommendedPairs.find(({ pair, count }) =>
+  (pair.includes(' · ') && count >= 20) || (!pair.includes(' · ') && count >= 60)
+);
+if (suspiciousRepeatedPair) {
+  throw new Error(`Suspicious repeated recommendation cluster requires review: ${suspiciousRepeatedPair.pair} x${suspiciousRepeatedPair.count}`);
+}
+
 const topUnfilledCuisines = Object.entries(unfilledCuisineCounts)
   .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], 'zh-CN'))
   .slice(0, 20)
@@ -164,6 +177,7 @@ console.log(JSON.stringify({
   sourceBackedOrExistingChineseDishRows: chineseDishDisplayRows,
   unfilledDishRows,
   topRepeatedRecommendedPairs,
+  repetitionGuard: { maxTwoDishPairBeforeReview: 19, maxSingleDishBeforeReview: 59 },
   topUnfilledCuisines,
   dishReviewPolicy: stats.dishReviewPolicy,
   genericFallbackAllowed: stats.genericFallbackAllowed,
