@@ -1,0 +1,77 @@
+name: Build retained Hot Pepper practical overlay
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - _ops/run-hotpepper-practical-overlay-once-2026-09-09.txt
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-hotpepper-practical-overlay
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Sync latest main
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          git reset --hard origin/main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Build and validate strict practical overlay
+        run: |
+          set -euo pipefail
+          node scripts/audit_no_paid_apis.mjs
+          node --check scripts/build_hotpepper_catalog_practical_overlay.mjs
+          node scripts/build_hotpepper_catalog_practical_overlay.mjs data/hotpepper_catalog_practical_overlay.json | tee /tmp/hotpepper-practical-overlay-summary.json
+          node - <<'NODE'
+          const fs = require('fs');
+          const x = JSON.parse(fs.readFileSync('data/hotpepper_catalog_practical_overlay.json','utf8'));
+          const p = x.policy || {};
+          if (x.ruleVersion !== 'hotpepper-catalog-practical-v1') throw new Error('unexpected practical overlay rule version');
+          if (p.sourceBackedOnly !== true || p.reviewedAutoEligibleBindingOnly !== true) throw new Error('practical overlay identity policy mismatch');
+          if (p.paidGoogleDataApiCalls !== 0 || p.hotPepperWebServiceApiCalls !== 0 || p.networkRequests !== 0) throw new Error('practical overlay must remain offline/zero-paid');
+          if (p.ambiguousContradictoryValuesResolveToUnknown !== true || p.parkingNearbyPaidIsNotOnSiteParking !== true || p.privateSemiRoomIsNotFullPrivateRoom !== true) throw new Error('practical normalization safety policy mismatch');
+          if (!Array.isArray(x.rows) || x.rows.length !== x.summary.trustedRows) throw new Error('practical overlay row/summary mismatch');
+          if (x.rows.some(r => !r.googlePlaceId || !r.hotpepperId || r.binding?.autoEligible !== true)) throw new Error('invalid practical overlay identity row');
+          const boolFields = ['lunchAvailable','courseAvailable','allYouCanDrinkAvailable','allYouCanEatAvailable','privateRoomAvailable','cardPaymentAvailable','parkingAvailable'];
+          for (const r of x.rows) for (const k of boolFields) {
+            const v = r.normalized?.[k];
+            if (v !== null && typeof v !== 'boolean') throw new Error(`non-boolean normalized ${k}`);
+          }
+          console.log(JSON.stringify({summary:x.summary, rows:x.rows.length}));
+          NODE
+      - name: Commit overlay
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/hotpepper_catalog_practical_overlay.json
+          if git diff --cached --quiet; then
+            echo 'No practical overlay changes.'
+            exit 0
+          fi
+          git commit -m "Build retained Hot Pepper practical field overlay"
+          git fetch origin main
+          git rebase origin/main
+          git push origin HEAD:main
+
+  validate_database:
+    needs: build
+    permissions:
+      contents: read
+    uses: ./.github/workflows/database-contract.yml
+    with:
+      sync_main: true
