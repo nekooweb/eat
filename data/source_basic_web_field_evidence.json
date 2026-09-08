@@ -23,28 +23,32 @@
     "rootIdentityGateRequiredBeforeDetailDiscovery": true,
     "detailIdentityReconfirmationRequired": true,
     "maxExplicitDetailLinksPerRoot": 6,
-    "genericPriceRangeMealInference": false
+    "genericPriceRangeMealInference": false,
+    "reviewedOfficialBindingRequired": true,
+    "explicitTelephoneLabelRequired": true,
+    "singleDistinctLabeledNumberRequired": true
   },
   "summary": {
-    "rows": 87,
-    "places": 67,
-    "placesWithMultipleSnapshots": 20,
+    "rows": 142,
+    "places": 116,
+    "placesWithMultipleSnapshots": 26,
     "fieldCounts": {
       "address": 3,
       "cuisineNormalized": 1,
       "geo": 1,
       "openingHoursRaw": 38,
       "priceRange": 9,
-      "telephone": 58
+      "telephone": 119
     },
     "providerCounts": {
       "Overture Maps": 18,
-      "official": 69
+      "official": 124
     },
     "lastMerge": {
-      "snapshot_added": 3,
-      "snapshot_added_new_place": 3,
-      "snapshot_already_present": 4
+      "same_snapshot_claims_extended": 6,
+      "snapshot_added": 55,
+      "snapshot_added_existing_place": 6,
+      "snapshot_added_new_place": 49
     }
   },
   "rows": [
@@ -178,6 +182,42 @@
       "checkedAt": "2026-09-07"
     },
     {
+      "googlePlaceId": "ChIJ0_vaEhGMGGAR8zPLZw2iAas",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:5d14b784b9862de7121e",
+      "missingBefore": [
+        "telephone"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "strong_page_title",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://kanda-bunsendo.com/",
+        "finalUrl": "https://kanda-bunsendo.com/",
+        "retrievedAt": "2026-09-08T06:22:57Z",
+        "contentHash": "a68ab6a96368d225a3ef92dabc73aadad6b5bca497bb0d02d55ad89184603b53",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06",
+        "discovery": {
+          "method": "explicit_labeled_telephone",
+          "telephoneParserVersion": "official-labeled-telephone-v1",
+          "labelRequired": true,
+          "singleDistinctLabeledNumberRequired": true,
+          "evidenceSnippet": "※各種クレジットカードがご利用いただけます tel:03-3292-0003"
+        }
+      },
+      "fieldClaims": {
+        "telephone": "03-3292-0003"
+      },
+      "checkedAt": "2026-09-08"
+    },
+    {
       "googlePlaceId": "ChIJ1WlifwiMGGAR6JeSKWTwPnU",
       "sourceProvider": "Overture Maps",
       "sourceProviderId": "d26a689c-5c86-4664-b0b1-3c7cb6a13169",
@@ -210,6 +250,114 @@
         ]
       },
       "checkedAt": "2026-09-07"
+    },
+    {
+      "googlePlaceId": "ChIJ2QzuEhCMGGAR_GwijOC6vao",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:744f21062b0915e8652d",
+      "missingBefore": [
+        "telephone"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "strong_page_title",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://mafumicofffee.vercel.app/",
+        "finalUrl": "https://mafumicofffee.vercel.app/",
+        "retrievedAt": "2026-09-08T06:23:02Z",
+        "contentHash": "ef309181304e99a5eacc697a4e053772b063ec6e945ae991cdbb7825efd4daaa",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06",
+        "discovery": {
+          "method": "explicit_labeled_telephone",
+          "telephoneParserVersion": "official-labeled-telephone-v1",
+          "labelRequired": true,
+          "singleDistinctLabeledNumberRequired": true,
+          "evidenceSnippet": "電話番号 03-6873-9351"
+        }
+      },
+      "fieldClaims": {
+        "telephone": "03-6873-9351"
+      },
+      "checkedAt": "2026-09-08"
+    },
+    {
+      "googlePlaceId": "ChIJ2VSV8TyMGGARaAQ_NoqxeiU",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:c0901c586e8b5a884551",
+      "missingBefore": [
+        "telephone"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "strong_page_title",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://www.pastafresca-quel.jp/",
+        "finalUrl": "https://www.pastafresca-quel.jp/",
+        "retrievedAt": "2026-09-08T06:23:18Z",
+        "contentHash": "c2fec2ca96945447110783bc27225795b5c022c2d051e061fdbb4e81ecc25a3e",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06",
+        "discovery": {
+          "method": "explicit_labeled_telephone",
+          "telephoneParserVersion": "official-labeled-telephone-v1",
+          "labelRequired": true,
+          "singleDistinctLabeledNumberRequired": true,
+          "evidenceSnippet": "TELEPHONE 03-6801-8853"
+        }
+      },
+      "fieldClaims": {
+        "telephone": "03-6801-8853"
+      },
+      "checkedAt": "2026-09-08"
+    },
+    {
+      "googlePlaceId": "ChIJ2Yrt4RmMGGARLlGJseqwXLU",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:a62a6c422112fd27a92e",
+      "missingBefore": [
+        "telephone"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "strong_page_title",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://shop.viedefrance.co.jp/detail/7001/",
+        "finalUrl": "https://shop.viedefrance.co.jp/detail/7001/",
+        "retrievedAt": "2026-09-08T06:23:08Z",
+        "contentHash": "bcae2625288cdd8a5f2772bd94ab1753a0ea90faa24c0bfe6a7d1515f87d46e5",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06",
+        "discovery": {
+          "method": "explicit_labeled_telephone",
+          "telephoneParserVersion": "official-labeled-telephone-v1",
+          "labelRequired": true,
+          "singleDistinctLabeledNumberRequired": true,
+          "evidenceSnippet": "電話番号 03-3233-6731"
+        }
+      },
+      "fieldClaims": {
+        "telephone": "03-3233-6731"
+      },
+      "checkedAt": "2026-09-08"
     },
     {
       "googlePlaceId": "ChIJ2ZVGFQGMGGARmN1lf5qU8MU",
@@ -392,7 +540,8 @@
       "missingBefore": [
         "dinner_budget",
         "hours",
-        "lunch_budget"
+        "lunch_budget",
+        "telephone"
       ],
       "identityCheck": {
         "accepted": true,
@@ -414,7 +563,8 @@
       "fieldClaims": {
         "openingHoursRaw": [
           "営業時間】 LUNCH：11:30～14:30（L.O13:45）月～金曜日 DINNER：18:00～22:00（L.O21:00） 【"
-        ]
+        ],
+        "telephone": "03-5817-4288"
       },
       "checkedAt": "2026-09-07"
     },
@@ -449,6 +599,42 @@
         "telephone": "81356896121"
       },
       "checkedAt": "2026-09-07"
+    },
+    {
+      "googlePlaceId": "ChIJ3wcsHh2MGGAR-BCRlpETRq0",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:9ddcf922981159d652b9",
+      "missingBefore": [
+        "telephone"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "strong_page_title",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://menya634.co.jp/storelist/akihabara2/",
+        "finalUrl": "https://menya634.co.jp/storelist/akihabara2/",
+        "retrievedAt": "2026-09-08T06:23:26Z",
+        "contentHash": "dcedac1aff340d1c99445aa4fc32b4f18953cb9c66c275b1886c95872c72ca81",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06",
+        "discovery": {
+          "method": "explicit_labeled_telephone",
+          "telephoneParserVersion": "official-labeled-telephone-v1",
+          "labelRequired": true,
+          "singleDistinctLabeledNumberRequired": true,
+          "evidenceSnippet": "電話番号 03-3256-0634"
+        }
+      },
+      "fieldClaims": {
+        "telephone": "03-3256-0634"
+      },
+      "checkedAt": "2026-09-08"
     },
     {
       "googlePlaceId": "ChIJ44VsmjyMGGARJVL9gwj7Afc",
@@ -492,7 +678,8 @@
       "missingBefore": [
         "dinner_budget",
         "hours",
-        "lunch_budget"
+        "lunch_budget",
+        "telephone"
       ],
       "identityCheck": {
         "accepted": true,
@@ -514,7 +701,8 @@
       "fieldClaims": {
         "openingHoursRaw": [
           "営業時間 火〜金 14:00〜22:00 土・日・祝 13:00〜22:00 祝前日 夜更かし休止中 PageTop ペンギンレター コモレビフィーカ東京 BLUE EGG（ブルーエッグ） 〒101-0021 東京都千代田区外神田 1-6-3 アキバあそび館 5F"
-        ]
+        ],
+        "telephone": "03-6206-9220"
       },
       "checkedAt": "2026-09-07"
     },
@@ -645,6 +833,42 @@
       "checkedAt": "2026-09-08"
     },
     {
+      "googlePlaceId": "ChIJ4e3_CQ6MGGARgbvLFz2U9kQ",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:ee3e7711a2ec37e21113",
+      "missingBefore": [
+        "telephone"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "strong_page_title",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://store.starbucks.co.jp/detail-75/?utm_source=GMB&utm_medium=organic&utm_campaign=store&utm_content=75",
+        "finalUrl": "https://store.starbucks.co.jp/detail-75/?utm_source=GMB&utm_medium=organic&utm_campaign=store&utm_content=75",
+        "retrievedAt": "2026-09-08T06:23:06Z",
+        "contentHash": "63d0fc664c46a9915f4b8f06dc0f04efff4a35313dc77f297bccf94ff02adfbc",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06",
+        "discovery": {
+          "method": "explicit_labeled_telephone",
+          "telephoneParserVersion": "official-labeled-telephone-v1",
+          "labelRequired": true,
+          "singleDistinctLabeledNumberRequired": true,
+          "evidenceSnippet": "電話番号 03-3212-3510"
+        }
+      },
+      "fieldClaims": {
+        "telephone": "03-3212-3510"
+      },
+      "checkedAt": "2026-09-08"
+    },
+    {
       "googlePlaceId": "ChIJ5ZzWHQ6MGGARs0xILkJsbdI",
       "sourceProvider": "Overture Maps",
       "sourceProviderId": "fe933546-a207-47c3-b81b-a85ed52c8f37",
@@ -677,6 +901,42 @@
         ]
       },
       "checkedAt": "2026-09-07"
+    },
+    {
+      "googlePlaceId": "ChIJ67ggdxeMGGAR5uSOMBBDfHU",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:736c7f8801eb1806538c",
+      "missingBefore": [
+        "telephone"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "strong_page_title",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://store.starbucks.co.jp/detail-2/?utm_source=GMB&utm_medium=organic&utm_campaign=store&utm_content=2",
+        "finalUrl": "https://store.starbucks.co.jp/detail-2/?utm_source=GMB&utm_medium=organic&utm_campaign=store&utm_content=2",
+        "retrievedAt": "2026-09-08T06:23:08Z",
+        "contentHash": "a5a317c108b139e7f968eab6ad2adc2a40a1ebdc6d180d01ce3db00d29d70b4b",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06",
+        "discovery": {
+          "method": "explicit_labeled_telephone",
+          "telephoneParserVersion": "official-labeled-telephone-v1",
+          "labelRequired": true,
+          "singleDistinctLabeledNumberRequired": true,
+          "evidenceSnippet": "電話番号 03-3293-8835"
+        }
+      },
+      "fieldClaims": {
+        "telephone": "03-3293-8835"
+      },
+      "checkedAt": "2026-09-08"
     },
     {
       "googlePlaceId": "ChIJ6QLp3BmMGGAR1-0MdDO-bTs",
@@ -722,6 +982,42 @@
       "checkedAt": "2026-09-08"
     },
     {
+      "googlePlaceId": "ChIJ6QXNGBuMGGARoa9gDeTHnEs",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:dfe791c77e38bf751361",
+      "missingBefore": [
+        "telephone"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "strong_page_title",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://c-united.co.jp/store/detail/000258/",
+        "finalUrl": "https://c-united.co.jp/store/detail/000258/",
+        "retrievedAt": "2026-09-08T06:23:11Z",
+        "contentHash": "1ba75b4af8cb4870b70b93b8a74e6be2ece943d65b382ca4388c6f4d6452c794",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06",
+        "discovery": {
+          "method": "explicit_labeled_telephone",
+          "telephoneParserVersion": "official-labeled-telephone-v1",
+          "labelRequired": true,
+          "singleDistinctLabeledNumberRequired": true,
+          "evidenceSnippet": "電話番号 03-3253-1681"
+        }
+      },
+      "fieldClaims": {
+        "telephone": "03-3253-1681"
+      },
+      "checkedAt": "2026-09-08"
+    },
+    {
       "googlePlaceId": "ChIJ6eEHmziMGGARZb0rRUApRm0",
       "sourceProvider": "official",
       "sourceProviderId": "official-index:701b9fee1d42be017321",
@@ -755,6 +1051,42 @@
       "checkedAt": "2026-09-07"
     },
     {
+      "googlePlaceId": "ChIJ6eEHmziMGGARZb0rRUApRm0",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:701b9fee1d42be017321",
+      "missingBefore": [
+        "telephone"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "strong_page_title",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://shakeshack.jp/locations/tokyo-dome/?utm_source=mybusiness&utm_medium=website",
+        "finalUrl": "https://shakeshack.jp/locations/tokyo-dome/?utm_source=mybusiness&utm_medium=website",
+        "retrievedAt": "2026-09-08T06:23:20Z",
+        "contentHash": "eb5cc137e5851f3333f68a7e4cf8fa86e41852c9322cb736dea959767f1c8ad5",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06",
+        "discovery": {
+          "method": "explicit_labeled_telephone",
+          "telephoneParserVersion": "official-labeled-telephone-v1",
+          "labelRequired": true,
+          "singleDistinctLabeledNumberRequired": true,
+          "evidenceSnippet": "OPEN 11:00 - L.O. 19:00 TEL: 03-6801-8855"
+        }
+      },
+      "fieldClaims": {
+        "telephone": "03-6801-8855"
+      },
+      "checkedAt": "2026-09-08"
+    },
+    {
       "googlePlaceId": "ChIJ70HROtqNGGARLeoqNcrVbq8",
       "sourceProvider": "official",
       "sourceProviderId": "official-index:82a176cb77e640dc451f",
@@ -780,6 +1112,42 @@
       },
       "fieldClaims": {
         "telephone": "03-5577-6099"
+      },
+      "checkedAt": "2026-09-08"
+    },
+    {
+      "googlePlaceId": "ChIJ7wAjrBuMGGARHOWStkoMVCI",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:6b7cf61479bdd54aeb96",
+      "missingBefore": [
+        "telephone"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "strong_page_title",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://www.ginza-renoir.co.jp/shopsearch/shops/tokyo/chiyoda-ku/nyc-surugadai-4chome.html",
+        "finalUrl": "https://www.ginza-renoir.co.jp/shopsearch/shops/tokyo/chiyoda-ku/nyc-surugadai-4chome.html",
+        "retrievedAt": "2026-09-08T06:23:11Z",
+        "contentHash": "3dcc5cf6a2e2ecacce60a1f575e2bb67da9fe1f401e8493f2b074d783934c47c",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06",
+        "discovery": {
+          "method": "explicit_labeled_telephone",
+          "telephoneParserVersion": "official-labeled-telephone-v1",
+          "labelRequired": true,
+          "singleDistinctLabeledNumberRequired": true,
+          "evidenceSnippet": "電話番号 03-3293-9460"
+        }
+      },
+      "fieldClaims": {
+        "telephone": "03-3293-9460"
       },
       "checkedAt": "2026-09-08"
     },
@@ -846,6 +1214,78 @@
       "checkedAt": "2026-09-07"
     },
     {
+      "googlePlaceId": "ChIJ8SkTyj-MGGAR831cxKM3YPU",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:7eeab0cac34cf04636ee",
+      "missingBefore": [
+        "telephone"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "strong_page_title",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://gaburi-suidobashi.owst.jp/",
+        "finalUrl": "https://gaburi-suidobashi.owst.jp/",
+        "retrievedAt": "2026-09-08T06:23:09Z",
+        "contentHash": "753685480f757ef4d7a68c476aac92ecaaf4bf9a260821a1aaaf0c875d085359",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06",
+        "discovery": {
+          "method": "explicit_labeled_telephone",
+          "telephoneParserVersion": "official-labeled-telephone-v1",
+          "labelRequired": true,
+          "singleDistinctLabeledNumberRequired": true,
+          "evidenceSnippet": "電話番号 03-6256-9725"
+        }
+      },
+      "fieldClaims": {
+        "telephone": "03-6256-9725"
+      },
+      "checkedAt": "2026-09-08"
+    },
+    {
+      "googlePlaceId": "ChIJ8zcFAQSMGGARjT19WihSuNk",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:ae55a3f4c514ff0bcc2b",
+      "missingBefore": [
+        "telephone"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "strong_page_title",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://mirai.holy.jp/kanda.html",
+        "finalUrl": "https://mirai.holy.jp/kanda.html",
+        "retrievedAt": "2026-09-08T06:23:16Z",
+        "contentHash": "d4deb2284799d1c7b7d2159266b6ec0356eccb995b233df04bcf66d961026c5c",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06",
+        "discovery": {
+          "method": "explicit_labeled_telephone",
+          "telephoneParserVersion": "official-labeled-telephone-v1",
+          "labelRequired": true,
+          "singleDistinctLabeledNumberRequired": true,
+          "evidenceSnippet": "TEL 03-3254-3760"
+        }
+      },
+      "fieldClaims": {
+        "telephone": "03-3254-3760"
+      },
+      "checkedAt": "2026-09-08"
+    },
+    {
       "googlePlaceId": "ChIJ9TDnyQ-MGGARG-nByNz8I0E",
       "sourceProvider": "official",
       "sourceProviderId": "official-index:cb14339a4283b105eb08",
@@ -873,6 +1313,84 @@
         "telephone": "03-3296-7177"
       },
       "checkedAt": "2026-09-07"
+    },
+    {
+      "googlePlaceId": "ChIJA3uXWgOMGGARW_LZHuzxH7o",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:4c6bd2ef7899036f89b9",
+      "missingBefore": [
+        "telephone"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "strong_page_title",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://yudetaro.jp/contact",
+        "finalUrl": "https://yudetaro.jp/contact/",
+        "retrievedAt": "2026-09-08T06:23:42Z",
+        "contentHash": "968d1ba06e6fc7407c78b814ca0d8a2ef2d17ddf72c3d144ef0466c9586880ab",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06",
+        "discovery": {
+          "method": "explicit_labeled_telephone",
+          "telephoneParserVersion": "official-labeled-telephone-v1",
+          "labelRequired": true,
+          "singleDistinctLabeledNumberRequired": true,
+          "evidenceSnippet": "電話でのお問い合わせ お客様窓口　TEL 03-5747-9002",
+          "sameOriginDetailPage": true,
+          "parentSourceUrl": "https://yudetaro.jp/area/tokyo/",
+          "rootIdentityReconfirmedBeforeDiscovery": true,
+          "detailIdentityReconfirmedIndependently": true,
+          "anchorText": "お問い合わせ",
+          "linkScore": 3
+        }
+      },
+      "fieldClaims": {
+        "telephone": "03-5747-9002"
+      },
+      "checkedAt": "2026-09-08"
+    },
+    {
+      "googlePlaceId": "ChIJA4cmnRyMGGARWf4uYcSUjNI",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:f9ede534ea927bc350cc",
+      "missingBefore": [
+        "telephone"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "strong_page_title",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://echigoya-sanjurou.owst.jp/",
+        "finalUrl": "https://echigoya-sanjurou.owst.jp/",
+        "retrievedAt": "2026-09-08T06:23:13Z",
+        "contentHash": "48f8ea7f3db19d4d8e24fa9c103280353df6029556e0af14f66fff7e0281ae5d",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06",
+        "discovery": {
+          "method": "explicit_labeled_telephone",
+          "telephoneParserVersion": "official-labeled-telephone-v1",
+          "labelRequired": true,
+          "singleDistinctLabeledNumberRequired": true,
+          "evidenceSnippet": "電話番号 03-3525-4207"
+        }
+      },
+      "fieldClaims": {
+        "telephone": "03-3525-4207"
+      },
+      "checkedAt": "2026-09-08"
     },
     {
       "googlePlaceId": "ChIJA7vjSxCMGGARpf4TitkGqMk",
@@ -935,13 +1453,50 @@
       "checkedAt": "2026-09-07"
     },
     {
+      "googlePlaceId": "ChIJAQAAZBuMGGARiAS9STYZnRk",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:99a52131692fb62b482f",
+      "missingBefore": [
+        "telephone"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "strong_page_title",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://www.ichigoichie.jp/tokinoniwa/kosuzu/",
+        "finalUrl": "https://www.ichigoichie.jp/tokinoniwa/kosuzu/",
+        "retrievedAt": "2026-09-08T06:23:12Z",
+        "contentHash": "bb628d2cdde9b0d1601c371aa36a776f790afe39b315d145a367609c51e638a0",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06",
+        "discovery": {
+          "method": "explicit_labeled_telephone",
+          "telephoneParserVersion": "official-labeled-telephone-v1",
+          "labelRequired": true,
+          "singleDistinctLabeledNumberRequired": true,
+          "evidenceSnippet": "電話番号 03-3251-9164"
+        }
+      },
+      "fieldClaims": {
+        "telephone": "03-3251-9164"
+      },
+      "checkedAt": "2026-09-08"
+    },
+    {
       "googlePlaceId": "ChIJAQC0dESMGGAR0VQTphLwmdw",
       "sourceProvider": "official",
       "sourceProviderId": "official-index:2494d06328130163ce91",
       "missingBefore": [
         "dinner_budget",
         "hours",
-        "lunch_budget"
+        "lunch_budget",
+        "telephone"
       ],
       "identityCheck": {
         "accepted": true,
@@ -963,9 +1518,46 @@
       "fieldClaims": {
         "openingHoursRaw": [
           "営業時間 月〜金 11:30〜14:00, 17:00〜23:30 土 16:00〜23:30 日 16:00〜23:00 下記日程は営業時間を変更しております。 9/21(月)〜9/23(水) 16:00〜23:00 Googleマップで混雑状況をみる ラストオーダー 【月〜土】23:00【日・祝】22:30【ランチ】13:30 メニュー メニュー 営業内容 ディナー ランチ 土日祝昼飲み"
-        ]
+        ],
+        "telephone": "03-3263-2306"
       },
       "checkedAt": "2026-09-07"
+    },
+    {
+      "googlePlaceId": "ChIJAZYgBA2NGGARHdsXwqthY1E",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:50f172769198060be8c1",
+      "missingBefore": [
+        "telephone"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "strong_page_title",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://shop.sake-genkabar.com/detail/kanda/?utm_source=google&utm_medium=maps&utm_campaign=gbp",
+        "finalUrl": "https://shop.sake-genkabar.com/detail/kanda/?utm_source=google&utm_medium=maps&utm_campaign=gbp",
+        "retrievedAt": "2026-09-08T06:23:19Z",
+        "contentHash": "4b57ea56e432ec69f172a05731bb72fcfc0d9a7447ed1b32b6777fbd409e4a4e",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06",
+        "discovery": {
+          "method": "explicit_labeled_telephone",
+          "telephoneParserVersion": "official-labeled-telephone-v1",
+          "labelRequired": true,
+          "singleDistinctLabeledNumberRequired": true,
+          "evidenceSnippet": "電話番号 050-5786-7595"
+        }
+      },
+      "fieldClaims": {
+        "telephone": "050-5786-7595"
+      },
+      "checkedAt": "2026-09-08"
     },
     {
       "googlePlaceId": "ChIJAyADpR6MGGARWHp8EC3s12E",
@@ -1051,6 +1643,42 @@
       },
       "fieldClaims": {
         "telephone": "090-4618-5488"
+      },
+      "checkedAt": "2026-09-08"
+    },
+    {
+      "googlePlaceId": "ChIJB2nh4jiMGGARJuDAY_TVfJA",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:4b70671afb723cafdeb9",
+      "missingBefore": [
+        "telephone"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "strong_page_title",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://shop.saizeriya.co.jp/sz_restaurant/spot/detail?code=1244",
+        "finalUrl": "https://shop.saizeriya.co.jp/sz_restaurant/spot/detail?code=1244",
+        "retrievedAt": "2026-09-08T06:23:23Z",
+        "contentHash": "c446311a938ac8ab042a314cd7044b71264cfcdcaa0f759b28e67e861fc07ad2",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06",
+        "discovery": {
+          "method": "explicit_labeled_telephone",
+          "telephoneParserVersion": "official-labeled-telephone-v1",
+          "labelRequired": true,
+          "singleDistinctLabeledNumberRequired": true,
+          "evidenceSnippet": "電話番号 03-5840-8271"
+        }
+      },
+      "fieldClaims": {
+        "telephone": "03-5840-8271"
       },
       "checkedAt": "2026-09-08"
     },
@@ -1147,6 +1775,42 @@
       "checkedAt": "2026-09-07"
     },
     {
+      "googlePlaceId": "ChIJBwhgUwKMGGARjoO2N1BAAdk",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:f8d1722e159dba7071fa",
+      "missingBefore": [
+        "telephone"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "strong_page_title",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://store.yayoiken.com/b/yayoiken/info/1048/",
+        "finalUrl": "https://store.yayoiken.com/b/yayoiken/info/1048/",
+        "retrievedAt": "2026-09-08T06:23:24Z",
+        "contentHash": "9d0e5011804d24804f4061127585df05ff2d65aa4d7ef00baaeb93c232811758",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06",
+        "discovery": {
+          "method": "explicit_labeled_telephone",
+          "telephoneParserVersion": "official-labeled-telephone-v1",
+          "labelRequired": true,
+          "singleDistinctLabeledNumberRequired": true,
+          "evidenceSnippet": "電話番号 03-3526-5625"
+        }
+      },
+      "fieldClaims": {
+        "telephone": "03-3526-5625"
+      },
+      "checkedAt": "2026-09-08"
+    },
+    {
       "googlePlaceId": "ChIJC-fH9HuNGGARVlh7vQw84LU",
       "sourceProvider": "Overture Maps",
       "sourceProviderId": "4a771e22-5db5-4f70-95f8-72c7467d38ab",
@@ -1239,6 +1903,42 @@
         "telephone": "03-6206-9008"
       },
       "checkedAt": "2026-09-07"
+    },
+    {
+      "googlePlaceId": "ChIJCQOApBGMGGARtd0fPNBMuHc",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:fd82cd645c024e9634b3",
+      "missingBefore": [
+        "telephone"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "strong_page_title",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://locations.royalhost.jp/detail/108804/?utm_source=google&utm_medium=gbp&utm_campaign=kandajimbocho",
+        "finalUrl": "https://locations.royalhost.jp/detail/108804/?utm_source=google&utm_medium=gbp&utm_campaign=kandajimbocho",
+        "retrievedAt": "2026-09-08T06:22:59Z",
+        "contentHash": "5e9453164e06609c97d2d9e6a805767145e6406afd47d9dd081376a4203771ca",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06",
+        "discovery": {
+          "method": "explicit_labeled_telephone",
+          "telephoneParserVersion": "official-labeled-telephone-v1",
+          "labelRequired": true,
+          "singleDistinctLabeledNumberRequired": true,
+          "evidenceSnippet": "電話番号 03-5217-0297"
+        }
+      },
+      "fieldClaims": {
+        "telephone": "03-5217-0297"
+      },
+      "checkedAt": "2026-09-08"
     },
     {
       "googlePlaceId": "ChIJCRf6uziMGGARPOpXUziKe7s",
@@ -1363,6 +2063,42 @@
         "telephone": "03-3518-8250"
       },
       "checkedAt": "2026-09-07"
+    },
+    {
+      "googlePlaceId": "ChIJDUGL7RCMGGARErPxhJ7bXgc",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:03303115d92ef6aa57d9",
+      "missingBefore": [
+        "telephone"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "strong_page_title",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://hinata-ya.info/",
+        "finalUrl": "https://hinata-ya.info/",
+        "retrievedAt": "2026-09-08T06:23:02Z",
+        "contentHash": "a0f55b08acefc108d0118d27e5b3d7154c48b8fa89c383c0cad18565a4c1e6db",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06",
+        "discovery": {
+          "method": "explicit_labeled_telephone",
+          "telephoneParserVersion": "official-labeled-telephone-v1",
+          "labelRequired": true,
+          "singleDistinctLabeledNumberRequired": true,
+          "evidenceSnippet": "定休日：日曜・祝日 TEL： 03-5848-7520"
+        }
+      },
+      "fieldClaims": {
+        "telephone": "03-5848-7520"
+      },
+      "checkedAt": "2026-09-08"
     },
     {
       "googlePlaceId": "ChIJG1HzOhGMGGARbc3MsTlAYkA",
@@ -1495,7 +2231,8 @@
       "missingBefore": [
         "dinner_budget",
         "hours",
-        "lunch_budget"
+        "lunch_budget",
+        "telephone"
       ],
       "identityCheck": {
         "accepted": true,
@@ -1517,7 +2254,8 @@
       "fieldClaims": {
         "openingHoursRaw": [
           "営業時間 11:00～21:00 ＜17時より復刻版（Classic）メニューもご提供します＞"
-        ]
+        ],
+        "telephone": "03-3291-9933"
       },
       "checkedAt": "2026-09-07"
     },
@@ -1609,6 +2347,42 @@
         "telephone": "03-3261-2211"
       },
       "checkedAt": "2026-09-07"
+    },
+    {
+      "googlePlaceId": "ChIJJ_D4jRmMGGARMpn_E26qUCA",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:7c203caff6c4ae8061dc",
+      "missingBefore": [
+        "telephone"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "strong_page_title",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://shop.ringerhut.jp/detail/r0494/",
+        "finalUrl": "https://shop.ringerhut.jp/detail/r0494/",
+        "retrievedAt": "2026-09-08T06:23:11Z",
+        "contentHash": "04e67cb9d069b78eda9cc604f3d9f8a98227c342add860b83dd88b8e5fd05f7d",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06",
+        "discovery": {
+          "method": "explicit_labeled_telephone",
+          "telephoneParserVersion": "official-labeled-telephone-v1",
+          "labelRequired": true,
+          "singleDistinctLabeledNumberRequired": true,
+          "evidenceSnippet": "電話番号 03-5283-6230"
+        }
+      },
+      "fieldClaims": {
+        "telephone": "03-5283-6230"
+      },
+      "checkedAt": "2026-09-08"
     },
     {
       "googlePlaceId": "ChIJJ_D4jRmMGGARMpn_E26qUCA",
@@ -1708,6 +2482,42 @@
       "checkedAt": "2026-09-08"
     },
     {
+      "googlePlaceId": "ChIJMcHsGRGMGGAR6N5SJOHGdls",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:3f9fd2d5775f2714d58d",
+      "missingBefore": [
+        "telephone"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "strong_page_title",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://k-brazil.jp/",
+        "finalUrl": "https://k-brazil.jp/",
+        "retrievedAt": "2026-09-08T06:22:59Z",
+        "contentHash": "22d860a860396f059f4de19df4f4a2e6e9fb39b429a29cc2bf65ab318307895b",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06",
+        "discovery": {
+          "method": "explicit_labeled_telephone",
+          "telephoneParserVersion": "official-labeled-telephone-v1",
+          "labelRequired": true,
+          "singleDistinctLabeledNumberRequired": true,
+          "evidenceSnippet": "11:00〜21:00(日祝〜19:00) TEL:03-3291-2013"
+        }
+      },
+      "fieldClaims": {
+        "telephone": "03-3291-2013"
+      },
+      "checkedAt": "2026-09-08"
+    },
+    {
       "googlePlaceId": "ChIJN43AC9KNGGARqhKvBwkG2qM",
       "sourceProvider": "Overture Maps",
       "sourceProviderId": "2a1032ed-5c3d-4c3b-a145-19f50086c72c",
@@ -1777,6 +2587,150 @@
         "telephone": "090-3807-0007"
       },
       "checkedAt": "2026-09-07"
+    },
+    {
+      "googlePlaceId": "ChIJNd98ZACNGGAR4F8EqlaT9k8",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:212379533d8f2319b911",
+      "missingBefore": [
+        "telephone"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "strong_page_title",
+        "pageNameSimilarity": 1.0,
+        "titleNameSimilarity": 1.0
+      },
+      "webEvidence": {
+        "sourceUrl": "https://www.thewalkabout.jp/",
+        "finalUrl": "https://www.thewalkabout.jp/",
+        "retrievedAt": "2026-09-08T06:23:08Z",
+        "contentHash": "96d833479cddfb66dfe42c4880ef47df4b21936b7cf6452701d8762072aaaa6b",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06",
+        "discovery": {
+          "method": "explicit_labeled_telephone",
+          "telephoneParserVersion": "official-labeled-telephone-v1",
+          "labelRequired": true,
+          "singleDistinctLabeledNumberRequired": true,
+          "evidenceSnippet": "contact tel：03-6285-0007"
+        }
+      },
+      "fieldClaims": {
+        "telephone": "03-6285-0007"
+      },
+      "checkedAt": "2026-09-08"
+    },
+    {
+      "googlePlaceId": "ChIJNfqy4EaMGGAR51sW_7PltDQ",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:59bda5ddbbb662b11537",
+      "missingBefore": [
+        "telephone"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "strong_page_title",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://store.starbucks.co.jp/detail-152/?utm_source=GMB&utm_medium=organic&utm_campaign=store&utm_content=152",
+        "finalUrl": "https://store.starbucks.co.jp/detail-152/?utm_source=GMB&utm_medium=organic&utm_campaign=store&utm_content=152",
+        "retrievedAt": "2026-09-08T06:23:18Z",
+        "contentHash": "6169b9e376e87837ae1ed63700b5f3f4d1d27fd96153d52659af67970f4a5291",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06",
+        "discovery": {
+          "method": "explicit_labeled_telephone",
+          "telephoneParserVersion": "official-labeled-telephone-v1",
+          "labelRequired": true,
+          "singleDistinctLabeledNumberRequired": true,
+          "evidenceSnippet": "電話番号 03-5802-3901"
+        }
+      },
+      "fieldClaims": {
+        "telephone": "03-5802-3901"
+      },
+      "checkedAt": "2026-09-08"
+    },
+    {
+      "googlePlaceId": "ChIJNwRqpBaMGGAR07TdHcGkY5w",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:ec4a0fd439b97980ddc8",
+      "missingBefore": [
+        "telephone"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "strong_page_title",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://asobicafe.com/",
+        "finalUrl": "https://asobicafe.com/",
+        "retrievedAt": "2026-09-08T06:22:58Z",
+        "contentHash": "85e794c6e951974a8af7ec022460ee07600d03b7f298232e0e84042e233494a7",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06",
+        "discovery": {
+          "method": "explicit_labeled_telephone",
+          "telephoneParserVersion": "official-labeled-telephone-v1",
+          "labelRequired": true,
+          "singleDistinctLabeledNumberRequired": true,
+          "evidenceSnippet": "〒101-0051　東京都千代田区神田神保町1-32-42 堀井ビル1F tel : 03-5577-4217"
+        }
+      },
+      "fieldClaims": {
+        "telephone": "03-5577-4217"
+      },
+      "checkedAt": "2026-09-08"
+    },
+    {
+      "googlePlaceId": "ChIJOQQ3ZwCNGGARr1lhaWGb9Lc",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:26a28ef3432d22423b3f",
+      "missingBefore": [
+        "telephone"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "strong_page_title",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://betoya.jp/store/jimbocho/",
+        "finalUrl": "https://betoya.jp/store/jimbocho/",
+        "retrievedAt": "2026-09-08T06:22:59Z",
+        "contentHash": "4c07738ae76e4112dc9af9413eca26c9a29dce01396bfa31884b93ad8d25b68a",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06",
+        "discovery": {
+          "method": "explicit_labeled_telephone",
+          "telephoneParserVersion": "official-labeled-telephone-v1",
+          "labelRequired": true,
+          "singleDistinctLabeledNumberRequired": true,
+          "evidenceSnippet": "電話 03 6260 5090"
+        }
+      },
+      "fieldClaims": {
+        "telephone": "03 6260 5090"
+      },
+      "checkedAt": "2026-09-08"
     },
     {
       "googlePlaceId": "ChIJOQQ3ZwCNGGARr1lhaWGb9Lc",
@@ -1901,6 +2855,42 @@
       },
       "fieldClaims": {
         "telephone": "03-5577-7505"
+      },
+      "checkedAt": "2026-09-08"
+    },
+    {
+      "googlePlaceId": "ChIJTTQAOBGMGGARXRYbp0wUyAM",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:6b6ad5b770cf6faaa884",
+      "missingBefore": [
+        "telephone"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "strong_page_title",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://c-united.co.jp/store/detail/000340/",
+        "finalUrl": "https://c-united.co.jp/store/detail/000340/",
+        "retrievedAt": "2026-09-08T06:22:57Z",
+        "contentHash": "c95bdb3521e38d536ea2a838fd39a0fe0c6fb3a62e72f72006476ee922daa5e2",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06",
+        "discovery": {
+          "method": "explicit_labeled_telephone",
+          "telephoneParserVersion": "official-labeled-telephone-v1",
+          "labelRequired": true,
+          "singleDistinctLabeledNumberRequired": true,
+          "evidenceSnippet": "電話番号 03-5283-3214"
+        }
+      },
+      "fieldClaims": {
+        "telephone": "03-5283-3214"
       },
       "checkedAt": "2026-09-08"
     },
@@ -2039,6 +3029,114 @@
       "checkedAt": "2026-09-08"
     },
     {
+      "googlePlaceId": "ChIJV4goyRWMGGARKjwdXMoOJp0",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:aa721f9f315224f5014d",
+      "missingBefore": [
+        "telephone"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "strong_page_title",
+        "pageNameSimilarity": 1.0,
+        "titleNameSimilarity": 1.0
+      },
+      "webEvidence": {
+        "sourceUrl": "https://ebimaru.com/",
+        "finalUrl": "https://ebimaru.com/",
+        "retrievedAt": "2026-09-08T06:23:01Z",
+        "contentHash": "f9bfc0e4bf13c90ecdaafd1e186af611ebdda68b5625b1e8d40d71b6ba968a03",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06",
+        "discovery": {
+          "method": "explicit_labeled_telephone",
+          "telephoneParserVersion": "official-labeled-telephone-v1",
+          "labelRequired": true,
+          "singleDistinctLabeledNumberRequired": true,
+          "evidenceSnippet": "東京都千代田区西神田2-1-13　十勝ビル1F TEL 03-6272-6416 / FAX 03-6272-6417"
+        }
+      },
+      "fieldClaims": {
+        "telephone": "03-6272-6416"
+      },
+      "checkedAt": "2026-09-08"
+    },
+    {
+      "googlePlaceId": "ChIJV92zNT6MGGAROru704vXOho",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:a83d4572acc64c216498",
+      "missingBefore": [
+        "telephone"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "strong_page_title",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://www.saint-marc-hd.com/saintmarccafe/shop/491/",
+        "finalUrl": "https://www.saint-marc-hd.com/saintmarccafe/shop/491/",
+        "retrievedAt": "2026-09-08T06:23:09Z",
+        "contentHash": "6da344b2387d98391b2a3d216e1a3529491d95cc7ad5f42f8eabe8a1e48e1572",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06",
+        "discovery": {
+          "method": "explicit_labeled_telephone",
+          "telephoneParserVersion": "official-labeled-telephone-v1",
+          "labelRequired": true,
+          "singleDistinctLabeledNumberRequired": true,
+          "evidenceSnippet": "電話番号 03-3230-0309"
+        }
+      },
+      "fieldClaims": {
+        "telephone": "03-3230-0309"
+      },
+      "checkedAt": "2026-09-08"
+    },
+    {
+      "googlePlaceId": "ChIJVVWV4gaMGGAR7lcQ0R67fBE",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:57bd581e461abd400eac",
+      "missingBefore": [
+        "telephone"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "strong_page_title",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://lookinggood.jp/",
+        "finalUrl": "https://lookinggood.jp/",
+        "retrievedAt": "2026-09-08T06:23:17Z",
+        "contentHash": "4af344817fe78e70d9132b86f6eded63acd6fa608daaf6b14c3f26a432ea82a1",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06",
+        "discovery": {
+          "method": "explicit_labeled_telephone",
+          "telephoneParserVersion": "official-labeled-telephone-v1",
+          "labelRequired": true,
+          "singleDistinctLabeledNumberRequired": true,
+          "evidenceSnippet": "ご予約・お問合せはこちら TEL  03-6262-2939"
+        }
+      },
+      "fieldClaims": {
+        "telephone": "03-6262-2939"
+      },
+      "checkedAt": "2026-09-08"
+    },
+    {
       "googlePlaceId": "ChIJVwXD9E6NGGARkHzeYVBeacw",
       "sourceProvider": "official",
       "sourceProviderId": "official-index:a500eaa9e6e7ac831484",
@@ -2099,6 +3197,78 @@
       "checkedAt": "2026-09-08"
     },
     {
+      "googlePlaceId": "ChIJVyqVQxGMGGARAMwOpJAO12U",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:8e76441b4393a60cda3d",
+      "missingBefore": [
+        "telephone"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "strong_page_title",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://stores.hanamaruudon.com/hanamaru/spot/detail?code=1156",
+        "finalUrl": "https://stores.hanamaruudon.com/hanamaru/spot/detail?code=1156",
+        "retrievedAt": "2026-09-08T06:22:57Z",
+        "contentHash": "c5aa6477971df704106bf13747c3c24ad67cd037c1d788278551598bfb6054dc",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06",
+        "discovery": {
+          "method": "explicit_labeled_telephone",
+          "telephoneParserVersion": "official-labeled-telephone-v1",
+          "labelRequired": true,
+          "singleDistinctLabeledNumberRequired": true,
+          "evidenceSnippet": "電話番号 03-5283-7870"
+        }
+      },
+      "fieldClaims": {
+        "telephone": "03-5283-7870"
+      },
+      "checkedAt": "2026-09-08"
+    },
+    {
+      "googlePlaceId": "ChIJW4ph90OMGGARdlhIHYAGMRw",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:5d467a929af0b14fbf1d",
+      "missingBefore": [
+        "telephone"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "strong_page_title",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://c-united.co.jp/store/detail/001209/",
+        "finalUrl": "https://c-united.co.jp/store/detail/001209/",
+        "retrievedAt": "2026-09-08T06:23:21Z",
+        "contentHash": "fced95cbc3b97ccabc13b9da0afdca0f567c892ebd4a646d4de65d056306f946",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06",
+        "discovery": {
+          "method": "explicit_labeled_telephone",
+          "telephoneParserVersion": "official-labeled-telephone-v1",
+          "labelRequired": true,
+          "singleDistinctLabeledNumberRequired": true,
+          "evidenceSnippet": "電話番号 03-3234-8201"
+        }
+      },
+      "fieldClaims": {
+        "telephone": "03-3234-8201"
+      },
+      "checkedAt": "2026-09-08"
+    },
+    {
       "googlePlaceId": "ChIJZ6B6S2uMGGAR1FZFUTrzDm8",
       "sourceProvider": "official",
       "sourceProviderId": "official-index:037e281e60c81ee7fec6",
@@ -2124,6 +3294,42 @@
       },
       "fieldClaims": {
         "telephone": "03-3264-4672"
+      },
+      "checkedAt": "2026-09-08"
+    },
+    {
+      "googlePlaceId": "ChIJZQZwfxWMGGARoD8aXy_2l3Q",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:9ebf296498b838cbe27f",
+      "missingBefore": [
+        "telephone"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "strong_page_title",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://c-united.co.jp/store/detail/000245/",
+        "finalUrl": "https://c-united.co.jp/store/detail/000245/",
+        "retrievedAt": "2026-09-08T06:23:04Z",
+        "contentHash": "8c006303b015c078e44f3bb1ea46ac458007c158229a75796cbec0bbc6a2d5c9",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06",
+        "discovery": {
+          "method": "explicit_labeled_telephone",
+          "telephoneParserVersion": "official-labeled-telephone-v1",
+          "labelRequired": true,
+          "singleDistinctLabeledNumberRequired": true,
+          "evidenceSnippet": "電話番号 03-3263-3301"
+        }
+      },
+      "fieldClaims": {
+        "telephone": "03-3263-3301"
       },
       "checkedAt": "2026-09-08"
     },
@@ -2218,6 +3424,48 @@
       "checkedAt": "2026-09-07"
     },
     {
+      "googlePlaceId": "ChIJ_e5g3SCNGGAR6qW5ceaLoco",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:39a3321b40cb2736dcda",
+      "missingBefore": [
+        "telephone"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "strong_page_title",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://www.dynacjapan.com/brands/toridori/shops/ochanomizu/outline/",
+        "finalUrl": "https://www.dynacjapan.com/brands/toridori/shops/ochanomizu/outline/",
+        "retrievedAt": "2026-09-08T06:23:39Z",
+        "contentHash": "24aa9d3b4df35b3c967581bb41fc1fbaa60e9e7e6b078c2be2d57bec1d3c02b2",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06",
+        "discovery": {
+          "method": "explicit_labeled_telephone",
+          "telephoneParserVersion": "official-labeled-telephone-v1",
+          "labelRequired": true,
+          "singleDistinctLabeledNumberRequired": true,
+          "evidenceSnippet": "電話番号 +81 3-5577-3290",
+          "sameOriginDetailPage": true,
+          "parentSourceUrl": "https://www.dynacjapan.com/brands/toridori/shops/ochanomizu/?utm_source=google&utm_medium=map&utm_campaign=top",
+          "rootIdentityReconfirmedBeforeDiscovery": true,
+          "detailIdentityReconfirmedIndependently": true,
+          "anchorText": "店舗情報・地図 Store information and map",
+          "linkScore": 2
+        }
+      },
+      "fieldClaims": {
+        "telephone": "+81 3-5577-3290"
+      },
+      "checkedAt": "2026-09-08"
+    },
+    {
       "googlePlaceId": "ChIJbR57HVCNGGARzVRZXQjjbGM",
       "sourceProvider": "Overture Maps",
       "sourceProviderId": "c8986049-5901-44a0-b4cf-01675405fe09",
@@ -2250,6 +3498,42 @@
         ]
       },
       "checkedAt": "2026-09-07"
+    },
+    {
+      "googlePlaceId": "ChIJbTOaERGMGGARRbVxba8mOck",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:50da6683892643f33e75",
+      "missingBefore": [
+        "telephone"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "strong_page_title",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://www.sansou-gr.co.jp/liberte/",
+        "finalUrl": "https://www.sansou-gr.co.jp/liberte/",
+        "retrievedAt": "2026-09-08T06:23:00Z",
+        "contentHash": "33693e5cb1d0aa5dc5c851e9136528e059ebe6574d09e81c698c4c8295534fce",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06",
+        "discovery": {
+          "method": "explicit_labeled_telephone",
+          "telephoneParserVersion": "official-labeled-telephone-v1",
+          "labelRequired": true,
+          "singleDistinctLabeledNumberRequired": true,
+          "evidenceSnippet": "電話番号 03-5280-1233"
+        }
+      },
+      "fieldClaims": {
+        "telephone": "03-5280-1233"
+      },
+      "checkedAt": "2026-09-08"
     },
     {
       "googlePlaceId": "ChIJc3taaQGMGGARJDSjckIspnw",
@@ -2286,6 +3570,114 @@
       "checkedAt": "2026-09-07"
     },
     {
+      "googlePlaceId": "ChIJc5NiOxGMGGARL8jOKrnIR5c",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:c8efaf2444a9edf6efcb",
+      "missingBefore": [
+        "telephone"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "strong_page_title",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://www.kyoueidoo.com/",
+        "finalUrl": "https://www.kyoueidoo.com/",
+        "retrievedAt": "2026-09-08T06:22:59Z",
+        "contentHash": "cc3a427043b46d9a54024643a977dc41dd1d521b409c53099ba93fe1ae4066a9",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06",
+        "discovery": {
+          "method": "explicit_labeled_telephone",
+          "telephoneParserVersion": "official-labeled-telephone-v1",
+          "labelRequired": true,
+          "singleDistinctLabeledNumberRequired": true,
+          "evidenceSnippet": "電話番号 03-3291-1475"
+        }
+      },
+      "fieldClaims": {
+        "telephone": "03-3291-1475"
+      },
+      "checkedAt": "2026-09-08"
+    },
+    {
+      "googlePlaceId": "ChIJcf2INWuMGGARteCaKYtQc1E",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:755dcf067898c284f311",
+      "missingBefore": [
+        "telephone"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "strong_page_title",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://c-united.co.jp/store/detail/001597/",
+        "finalUrl": "https://c-united.co.jp/store/detail/001597/",
+        "retrievedAt": "2026-09-08T06:23:05Z",
+        "contentHash": "003fc3d7094a035b15f44472aa17dfe9329de0b61ad90807c187ada814e87d3e",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06",
+        "discovery": {
+          "method": "explicit_labeled_telephone",
+          "telephoneParserVersion": "official-labeled-telephone-v1",
+          "labelRequired": true,
+          "singleDistinctLabeledNumberRequired": true,
+          "evidenceSnippet": "電話番号 03-3239-7888"
+        }
+      },
+      "fieldClaims": {
+        "telephone": "03-3239-7888"
+      },
+      "checkedAt": "2026-09-08"
+    },
+    {
+      "googlePlaceId": "ChIJe4ebpD-MGGARksrpQ0_0cLs",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:0f98204b8d010af730c2",
+      "missingBefore": [
+        "telephone"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "strong_page_title",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://keijo-suidobashi.com/?utm_source=google&utm_medium=meo",
+        "finalUrl": "https://keijo-suidobashi.com/?utm_source=google&utm_medium=meo",
+        "retrievedAt": "2026-09-08T06:23:10Z",
+        "contentHash": "6f512e98f88d864ba8e97bd57759ea6007ad827cb7d5cae57fccc03e4fdb870c",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06",
+        "discovery": {
+          "method": "explicit_labeled_telephone",
+          "telephoneParserVersion": "official-labeled-telephone-v1",
+          "labelRequired": true,
+          "singleDistinctLabeledNumberRequired": true,
+          "evidenceSnippet": "電話番号 050-5269-9381"
+        }
+      },
+      "fieldClaims": {
+        "telephone": "050-5269-9381"
+      },
+      "checkedAt": "2026-09-08"
+    },
+    {
       "googlePlaceId": "ChIJeygUHWuMGGAR6JSkGxomd2c",
       "sourceProvider": "official",
       "sourceProviderId": "official-index:795d6c267d6d7e02f881",
@@ -2318,6 +3710,114 @@
         ]
       },
       "checkedAt": "2026-09-07"
+    },
+    {
+      "googlePlaceId": "ChIJeygUHWuMGGAR6JSkGxomd2c",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:795d6c267d6d7e02f881",
+      "missingBefore": [
+        "telephone"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "strong_page_title",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://locations.royalhost.jp/detail/108901/?utm_source=google&utm_medium=gbp&utm_campaign=kudanshita",
+        "finalUrl": "https://locations.royalhost.jp/detail/108901/?utm_source=google&utm_medium=gbp&utm_campaign=kudanshita",
+        "retrievedAt": "2026-09-08T06:23:07Z",
+        "contentHash": "ea534f1750b13a16c9842a3fca14ad63c4977c57c38c4601019f06aab0a6db17",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06",
+        "discovery": {
+          "method": "explicit_labeled_telephone",
+          "telephoneParserVersion": "official-labeled-telephone-v1",
+          "labelRequired": true,
+          "singleDistinctLabeledNumberRequired": true,
+          "evidenceSnippet": "電話番号 03-3230-2251"
+        }
+      },
+      "fieldClaims": {
+        "telephone": "03-3230-2251"
+      },
+      "checkedAt": "2026-09-08"
+    },
+    {
+      "googlePlaceId": "ChIJf3qh_BOMGGARX-8IW1kbae4",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:1c9dc836d83dc90696e5",
+      "missingBefore": [
+        "telephone"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "strong_page_title",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://rakugocafe.exblog.jp/",
+        "finalUrl": "https://rakugocafe.exblog.jp/",
+        "retrievedAt": "2026-09-08T06:22:56Z",
+        "contentHash": "c35c290aaacc23ebf5d175bbe5186d9c2f0a5583020f96de455da694821e7118",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06",
+        "discovery": {
+          "method": "explicit_labeled_telephone",
+          "telephoneParserVersion": "official-labeled-telephone-v1",
+          "labelRequired": true,
+          "singleDistinctLabeledNumberRequired": true,
+          "evidenceSnippet": "@hotmail.co.jp 電話03-6268-9818"
+        }
+      },
+      "fieldClaims": {
+        "telephone": "03-6268-9818"
+      },
+      "checkedAt": "2026-09-08"
+    },
+    {
+      "googlePlaceId": "ChIJf9IQHWuMGGAR3tH7Sw31YX0",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:ba2654a5b8b1697f5f8a",
+      "missingBefore": [
+        "telephone"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "strong_page_title",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://store.starbucks.co.jp/detail-657/?utm_source=GMB&utm_medium=organic&utm_campaign=store&utm_content=657",
+        "finalUrl": "https://store.starbucks.co.jp/detail-657/?utm_source=GMB&utm_medium=organic&utm_campaign=store&utm_content=657",
+        "retrievedAt": "2026-09-08T06:23:08Z",
+        "contentHash": "ba6460eae6812560e12e5fd40c7dc3fb56782c9562d1ef167f161fe139660f37",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06",
+        "discovery": {
+          "method": "explicit_labeled_telephone",
+          "telephoneParserVersion": "official-labeled-telephone-v1",
+          "labelRequired": true,
+          "singleDistinctLabeledNumberRequired": true,
+          "evidenceSnippet": "電話番号 03-3221-5431"
+        }
+      },
+      "fieldClaims": {
+        "telephone": "03-3221-5431"
+      },
+      "checkedAt": "2026-09-08"
     },
     {
       "googlePlaceId": "ChIJfYV20zqNGGARrB2wp5fqEPo",
@@ -2380,6 +3880,186 @@
       },
       "fieldClaims": {
         "telephone": "+81-3-5280-8688"
+      },
+      "checkedAt": "2026-09-08"
+    },
+    {
+      "googlePlaceId": "ChIJhXD3-AaMGGARbLVQPEtml80",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:0c3feaa9fd538e688f80",
+      "missingBefore": [
+        "telephone"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "strong_page_title",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://shop.ufs.co.jp/ufs/spot/detail?code=3691",
+        "finalUrl": "https://shop.ufs.co.jp/ufs/spot/detail?code=3691",
+        "retrievedAt": "2026-09-08T06:23:21Z",
+        "contentHash": "fecacb1e1d36e31aba339fc59bbea353446fc4da336e43429438a0ed1a487e7a",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06",
+        "discovery": {
+          "method": "explicit_labeled_telephone",
+          "telephoneParserVersion": "official-labeled-telephone-v1",
+          "labelRequired": true,
+          "singleDistinctLabeledNumberRequired": true,
+          "evidenceSnippet": "電話番号 03-3517-2181"
+        }
+      },
+      "fieldClaims": {
+        "telephone": "03-3517-2181"
+      },
+      "checkedAt": "2026-09-08"
+    },
+    {
+      "googlePlaceId": "ChIJhYC5NhGMGGARYMx7p3ySob8",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:de7332d9887867bf164a",
+      "missingBefore": [
+        "telephone"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "strong_page_title",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://kongouann-jinboutyou.owst.jp/",
+        "finalUrl": "https://kongouann-jinboutyou.owst.jp/",
+        "retrievedAt": "2026-09-08T06:22:57Z",
+        "contentHash": "c636c94517e5e12b689832c9be848632ea127f1c3db14cf5a23dfa8cdb1b55f9",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06",
+        "discovery": {
+          "method": "explicit_labeled_telephone",
+          "telephoneParserVersion": "official-labeled-telephone-v1",
+          "labelRequired": true,
+          "singleDistinctLabeledNumberRequired": true,
+          "evidenceSnippet": "電話番号 03-3518-2661"
+        }
+      },
+      "fieldClaims": {
+        "telephone": "03-3518-2661"
+      },
+      "checkedAt": "2026-09-08"
+    },
+    {
+      "googlePlaceId": "ChIJiYAt_buNGGARFvMBSTCT2Lk",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:d1fdb4887f01cbbcd08c",
+      "missingBefore": [
+        "telephone"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "strong_page_title",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://shisenchubouzuien.jp/sp/menu.html",
+        "finalUrl": "https://shisenchubouzuien.jp/sp/menu.html",
+        "retrievedAt": "2026-09-08T06:23:22Z",
+        "contentHash": "412531d572a84615a1cfd99c009cf611ed9b88f056cf9db529f4b7ad10ea3f0d",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06",
+        "discovery": {
+          "method": "explicit_labeled_telephone",
+          "telephoneParserVersion": "official-labeled-telephone-v1",
+          "labelRequired": true,
+          "singleDistinctLabeledNumberRequired": true,
+          "evidenceSnippet": "電話番号 03-6260-7888"
+        }
+      },
+      "fieldClaims": {
+        "telephone": "03-6260-7888"
+      },
+      "checkedAt": "2026-09-08"
+    },
+    {
+      "googlePlaceId": "ChIJiwo3a6CNGGARBUReP3Qr7pE",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:e706153b48142b952006",
+      "missingBefore": [
+        "telephone"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "strong_page_title",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://awajizaka-coffee.owst.jp/",
+        "finalUrl": "https://awajizaka-coffee.owst.jp/",
+        "retrievedAt": "2026-09-08T06:23:15Z",
+        "contentHash": "a18aa59d1d1b02caa38080fe2d3b110d035743d00d839ec21bef68d29282ac55",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06",
+        "discovery": {
+          "method": "explicit_labeled_telephone",
+          "telephoneParserVersion": "official-labeled-telephone-v1",
+          "labelRequired": true,
+          "singleDistinctLabeledNumberRequired": true,
+          "evidenceSnippet": "ご予約・お問い合わせはこちら TEL 03-3255-6033"
+        }
+      },
+      "fieldClaims": {
+        "telephone": "03-3255-6033"
+      },
+      "checkedAt": "2026-09-08"
+    },
+    {
+      "googlePlaceId": "ChIJjdmff6KNGGARf1NV0O_Nmug",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:1959fa2f84df1f0f5e02",
+      "missingBefore": [
+        "telephone"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "strong_page_title",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://osteria-nora.com/",
+        "finalUrl": "https://osteria-nora.com/",
+        "retrievedAt": "2026-09-08T06:23:14Z",
+        "contentHash": "5f870ab0230d043ac5a92db0b2860bb3416659621f85a80a1c8722d1f5f327c3",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06",
+        "discovery": {
+          "method": "explicit_labeled_telephone",
+          "telephoneParserVersion": "official-labeled-telephone-v1",
+          "labelRequired": true,
+          "singleDistinctLabeledNumberRequired": true,
+          "evidenceSnippet": "ホテルマイステイズ御茶ノ水コンファレンスセンター１F TEL：03-3258-3911"
+        }
+      },
+      "fieldClaims": {
+        "telephone": "03-3258-3911"
       },
       "checkedAt": "2026-09-08"
     },
@@ -2452,7 +4132,8 @@
       "fieldClaims": {
         "openingHoursRaw": [
           "営業時間について ▲▲ 通常、18:00開店（ラストオーダー22:00） 23:00閉店とさせて頂いておりましたが、 感染症対策と致しまして、しばらくは 22:00閉店とさせて頂きます。 お1人でお食事が出来る方（中学生以上）に 限らせて頂きます。 ◎ 営業時間 開店 18:00 食事のラストオーダー 20:00 お酒のラストオーダー 21:30 閉店 22:00（これより早く閉店する場合あり） ＊お食後のご滞在は30分程度でお願いしております。 ★ ランチタイム 月～金（祝日を除く） １１：３０～１３：３０（L.O） １４：００閉店 ★ ディナータイム 月～土（祝日休みの場合あり） １８：００～２２：００（食事のL.O ２０：００） お休み：日曜日、祝日は不定休 ★ ☆ ★ 旬の食材と美味しいワインをご用意してお待ちしてます ★ ☆ ★ 新御茶ノ水駅 B３出口より 徒歩２分 B３b出口より 徒歩１分 丸ノ内線 淡路町 B３出口より 徒歩２分 都営新宿線 小川町 B３出口より 徒歩２分 JR 御茶ノ水駅 聖橋出口より 徒歩５分 都営三田線 神保町駅より 徒歩７分 千代田区神田駿河台3-7-3 Tel. 03-5577-6682 ・メニュー （ アラカルト 、 パーティプラン 、 コース ） ・ワイン （ スパークリング 、 白ワイン 、 赤ワイン ブルゴーニュ 、 赤ワイン ボルド"
-        ]
+        ],
+        "telephone": "03-5577-6682"
       },
       "checkedAt": "2026-09-08"
     },
@@ -2556,6 +4237,42 @@
       "checkedAt": "2026-09-07"
     },
     {
+      "googlePlaceId": "ChIJp5cOrBqMGGARMCiyzZVc7B8",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:2dd073a29c4e056f131a",
+      "missingBefore": [
+        "telephone"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "strong_page_title",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://store.starbucks.co.jp/detail-100/?utm_source=GMB&utm_medium=organic&utm_campaign=store&utm_content=100",
+        "finalUrl": "https://store.starbucks.co.jp/detail-100/?utm_source=GMB&utm_medium=organic&utm_campaign=store&utm_content=100",
+        "retrievedAt": "2026-09-08T06:23:05Z",
+        "contentHash": "0dd0d02c08263631bba2a69becb4e806fe8032fbe6b805ad633c8c47151abb2c",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06",
+        "discovery": {
+          "method": "explicit_labeled_telephone",
+          "telephoneParserVersion": "official-labeled-telephone-v1",
+          "labelRequired": true,
+          "singleDistinctLabeledNumberRequired": true,
+          "evidenceSnippet": "電話番号 03-5281-1115"
+        }
+      },
+      "fieldClaims": {
+        "telephone": "03-5281-1115"
+      },
+      "checkedAt": "2026-09-08"
+    },
+    {
       "googlePlaceId": "ChIJq7Cosb2NGGARKNrijY_We80",
       "sourceProvider": "Overture Maps",
       "sourceProviderId": "7c48ddc7-14d9-4016-b5f1-bdc6f933e700",
@@ -2632,6 +4349,114 @@
       "checkedAt": "2026-09-07"
     },
     {
+      "googlePlaceId": "ChIJqctn6o6NGGAR6ePlEjHoyrs",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:e5591c237d549e7ff164",
+      "missingBefore": [
+        "telephone"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "strong_page_title",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://nitarimushitarikonpeitou.owst.jp/",
+        "finalUrl": "https://nitarimushitarikonpeitou.owst.jp/",
+        "retrievedAt": "2026-09-08T06:23:25Z",
+        "contentHash": "7522c0bb936eeea66b306c5976104262964897005a8e83accade5d4d030de6a5",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06",
+        "discovery": {
+          "method": "explicit_labeled_telephone",
+          "telephoneParserVersion": "official-labeled-telephone-v1",
+          "labelRequired": true,
+          "singleDistinctLabeledNumberRequired": true,
+          "evidenceSnippet": "ご予約・お問い合わせはこちら TEL 03-6272-4886"
+        }
+      },
+      "fieldClaims": {
+        "telephone": "03-6272-4886"
+      },
+      "checkedAt": "2026-09-08"
+    },
+    {
+      "googlePlaceId": "ChIJrQJoMmuMGGARJ8q86MIn6_I",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:8227ad6ae9bfff1a374d",
+      "missingBefore": [
+        "telephone"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "strong_page_title",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://store.starbucks.co.jp/detail-111/?utm_source=GMB&utm_medium=organic&utm_campaign=store&utm_content=111",
+        "finalUrl": "https://store.starbucks.co.jp/detail-111/?utm_source=GMB&utm_medium=organic&utm_campaign=store&utm_content=111",
+        "retrievedAt": "2026-09-08T06:23:05Z",
+        "contentHash": "a05b3c71463ba31663b58f89b17d6b3d0ea7cfaf7d430d31ad4feed1cd68252a",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06",
+        "discovery": {
+          "method": "explicit_labeled_telephone",
+          "telephoneParserVersion": "official-labeled-telephone-v1",
+          "labelRequired": true,
+          "singleDistinctLabeledNumberRequired": true,
+          "evidenceSnippet": "電話番号 03-5275-1158"
+        }
+      },
+      "fieldClaims": {
+        "telephone": "03-5275-1158"
+      },
+      "checkedAt": "2026-09-08"
+    },
+    {
+      "googlePlaceId": "ChIJs1M2cgCNGGARriJT0eDqUkg",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:d365df90d25e5a2c86fa",
+      "missingBefore": [
+        "telephone"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "strong_page_title",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://www.miyakoshiya-coffee.co.jp/shopinfo/kandamyojin",
+        "finalUrl": "https://www.miyakoshiya-coffee.co.jp/shopinfo/kandamyojin",
+        "retrievedAt": "2026-09-08T06:23:30Z",
+        "contentHash": "5cfaf38d608229459768c00b045eb8cd47f30ebb9a727f36e7c8984b93eb14bb",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06",
+        "discovery": {
+          "method": "explicit_labeled_telephone",
+          "telephoneParserVersion": "official-labeled-telephone-v1",
+          "labelRequired": true,
+          "singleDistinctLabeledNumberRequired": true,
+          "evidenceSnippet": "TEL 03-6260-9095 予約不可"
+        }
+      },
+      "fieldClaims": {
+        "telephone": "03-6260-9095"
+      },
+      "checkedAt": "2026-09-08"
+    },
+    {
       "googlePlaceId": "ChIJs1M2cgCNGGARriJT0eDqUkg",
       "sourceProvider": "official",
       "sourceProviderId": "official-index:d365df90d25e5a2c86fa",
@@ -2663,6 +4488,42 @@
         ]
       },
       "checkedAt": "2026-09-07"
+    },
+    {
+      "googlePlaceId": "ChIJscYzucyNGGARLBWj8tUbrpY",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:df52b1f8ab1eca20e039",
+      "missingBefore": [
+        "telephone"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "strong_page_title",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://b-yaohachi.owst.jp/",
+        "finalUrl": "https://b-yaohachi.owst.jp/",
+        "retrievedAt": "2026-09-08T06:23:16Z",
+        "contentHash": "00ce4feba407ede287e8d9de52c9be8c84ca649b6a1a901509f18e4c7e9c36bc",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06",
+        "discovery": {
+          "method": "explicit_labeled_telephone",
+          "telephoneParserVersion": "official-labeled-telephone-v1",
+          "labelRequired": true,
+          "singleDistinctLabeledNumberRequired": true,
+          "evidenceSnippet": "電話番号 03-3256-0310"
+        }
+      },
+      "fieldClaims": {
+        "telephone": "03-3256-0310"
+      },
+      "checkedAt": "2026-09-08"
     },
     {
       "googlePlaceId": "ChIJt3xAUkGMGGARcxgjRIBAeTo",
@@ -2719,6 +4580,42 @@
       },
       "fieldClaims": {
         "telephone": "03-6261-6161"
+      },
+      "checkedAt": "2026-09-08"
+    },
+    {
+      "googlePlaceId": "ChIJtRVuPxuMGGARS3pDVvNhcGk",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:b9aec529159bbd38f803",
+      "missingBefore": [
+        "telephone"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "strong_page_title",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://www.ichigoichie.jp/tokinoniwa/kanda/",
+        "finalUrl": "https://www.ichigoichie.jp/tokinoniwa/kanda/",
+        "retrievedAt": "2026-09-08T06:23:13Z",
+        "contentHash": "9550e5f4e987fe3bea460b2a519a6cae8d7102c713362dc3bf13589dabf9b32e",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06",
+        "discovery": {
+          "method": "explicit_labeled_telephone",
+          "telephoneParserVersion": "official-labeled-telephone-v1",
+          "labelRequired": true,
+          "singleDistinctLabeledNumberRequired": true,
+          "evidenceSnippet": "電話番号 03-3258-8928"
+        }
+      },
+      "fieldClaims": {
+        "telephone": "03-3258-8928"
       },
       "checkedAt": "2026-09-08"
     },
@@ -2791,7 +4688,8 @@
       "missingBefore": [
         "dinner_budget",
         "hours",
-        "lunch_budget"
+        "lunch_budget",
+        "telephone"
       ],
       "identityCheck": {
         "accepted": true,
@@ -2813,9 +4711,82 @@
       "fieldClaims": {
         "openingHoursRaw": [
           "営業時間 月曜日～木曜日 18:00～2:00（フードL.O. 0:30／ドリンクL.O. 1:30）※最終入店0:30 金曜日、祝前日 18:00～3:00（フードL.O. 1:30／ドリンクL.O. 2:30）※最終入店1:00 土曜日 18:00～23:00（フードL.O. 22:00／ドリンクL.O. 22:30）※最終入店22:00"
-        ]
+        ],
+        "telephone": "03-3253-8787"
       },
       "checkedAt": "2026-09-07"
+    },
+    {
+      "googlePlaceId": "ChIJyZAT2BCMGGARLI6GGHovI0c",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:709f5da46015849137c1",
+      "missingBefore": [
+        "telephone"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "strong_page_title",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://www.brussels.co.jp/restaurant_01.html",
+        "finalUrl": "https://www.brussels.co.jp/restaurant_01.html",
+        "retrievedAt": "2026-09-08T06:22:59Z",
+        "contentHash": "facf8d9e5c4d0e677eddd256b13424de02c010bd90926eb3cf64e4864eacc38d",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06",
+        "discovery": {
+          "method": "explicit_labeled_telephone",
+          "telephoneParserVersion": "official-labeled-telephone-v1",
+          "labelRequired": true,
+          "singleDistinctLabeledNumberRequired": true,
+          "evidenceSnippet": "電話番号 03-3233-4247"
+        }
+      },
+      "fieldClaims": {
+        "telephone": "03-3233-4247"
+      },
+      "checkedAt": "2026-09-08"
+    },
+    {
+      "googlePlaceId": "ChIJyb94PwOMGGARtDDndNvDe9Y",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:fa33022cc56b52bed61e",
+      "missingBefore": [
+        "telephone"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "strong_page_title",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://c-united.co.jp/store/detail/000370/",
+        "finalUrl": "https://c-united.co.jp/store/detail/000370/",
+        "retrievedAt": "2026-09-08T06:23:15Z",
+        "contentHash": "bdb729dd4fbf2f74e748bca4c73e1acfcffde0cc1a991550a07e4895903e6690",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06",
+        "discovery": {
+          "method": "explicit_labeled_telephone",
+          "telephoneParserVersion": "official-labeled-telephone-v1",
+          "labelRequired": true,
+          "singleDistinctLabeledNumberRequired": true,
+          "evidenceSnippet": "電話番号 03-5209-6781"
+        }
+      },
+      "fieldClaims": {
+        "telephone": "03-5209-6781"
+      },
+      "checkedAt": "2026-09-08"
     },
     {
       "googlePlaceId": "ChIJzWgC5oaNGGAR3-KMpjvoIfE",
@@ -2852,6 +4823,42 @@
         "telephone": "03-6773-7069"
       },
       "checkedAt": "2026-09-07"
+    },
+    {
+      "googlePlaceId": "ChIJzdH-Ym2NGGARNTgMz5QhTvw",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:6be1644b833abe212216",
+      "missingBefore": [
+        "telephone"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "strong_page_title",
+        "pageNameSimilarity": 0.888889,
+        "titleNameSimilarity": 0.888889
+      },
+      "webEvidence": {
+        "sourceUrl": "https://folkburgersandbeers.owst.jp/",
+        "finalUrl": "https://folkburgersandbeers.owst.jp/",
+        "retrievedAt": "2026-09-08T06:22:59Z",
+        "contentHash": "57b92b0d479327f74a1893808cbd34f008cc0a26b59347e556cf44559f8f7ff2",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06",
+        "discovery": {
+          "method": "explicit_labeled_telephone",
+          "telephoneParserVersion": "official-labeled-telephone-v1",
+          "labelRequired": true,
+          "singleDistinctLabeledNumberRequired": true,
+          "evidenceSnippet": "電話番号 03-3511-3188"
+        }
+      },
+      "fieldClaims": {
+        "telephone": "03-3511-3188"
+      },
+      "checkedAt": "2026-09-08"
     }
   ]
 }
