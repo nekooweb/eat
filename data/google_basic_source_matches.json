@@ -16,7 +16,14 @@
     "multiSourceConsensusV3Overlay": true,
     "multiSourceConsensusV3Rule": "private-multisource-consensus-v3",
     "privateOfficialWebConsensusV4Overlay": true,
-    "privateOfficialWebConsensusV4Rule": "private-official-web-consensus-v4"
+    "privateOfficialWebConsensusV4Rule": "private-official-web-consensus-v4",
+    "retainedOsmWebsiteOverlay": true,
+    "retainedOsmWebsiteOverlayRule": "existing-bound-osm-provider-id-website-v1",
+    "retainedOsmWebsiteOverlayIdentityChanges": 0,
+    "retainedOsmWebsiteOverlayPaidApiCalls": 0,
+    "retainedOsmWebsiteOverlayGoogleDisplayPayloadUsed": false,
+    "retainedOsmWebsiteOverlayExistingBindingsOnly": true,
+    "retainedOsmWebsiteOverlayIndependentHttpsOnly": true
   },
   "summary": {
     "productionBacked": 651,
@@ -37,7 +44,15 @@
     "multiSourceConsensusV3Rows": 0,
     "multiSourceConsensusV3AddedThisMerge": 0,
     "privateOfficialWebConsensusV4Rows": 2,
-    "privateOfficialWebConsensusV4AddedThisMerge": 0
+    "privateOfficialWebConsensusV4AddedThisMerge": 0,
+    "retainedOsmWebsiteOverlay": {
+      "boundOsmRows": 11,
+      "boundOsmRowsFoundInSnapshot": 11,
+      "boundOsmRowsWithRetainedWebsite": 1,
+      "rowsChanged": 0,
+      "websitesAdded": 0,
+      "rejectedWebsiteValues": 1
+    }
   },
   "rows": [
     {
@@ -11025,7 +11040,7 @@
           "Hot Pepper",
           "Overture Maps"
         ],
-        "averageMutualNameSimilarity": 1.0,
+        "averageMutualNameSimilarity": 1,
         "maximumMutualDistanceMeters": 7.117,
         "sourceAddressSupportingPairs": 1,
         "sharedDomains": [],
@@ -12866,5 +12881,11 @@
       "verification": "matched_against_transient_google_place_details",
       "matchLevel": "strong"
     }
-  ]
+  ],
+  "lastRetainedOsmWebsiteOverlay": {
+    "checkedAt": "2026-09-08",
+    "rowsChanged": 0,
+    "websitesAdded": 0,
+    "changedPlaceIds": []
+  }
 }
