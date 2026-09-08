@@ -70,3 +70,13 @@ SHA-256：`eb33e903da5d611187b60e5ddf813c21e72cd49d38aa91cf4d76007655be8c5b`。
 `dc828d156128bd2fceb0bc5c47a0895bb07b631158158de2f28e36118c289869`。
 
 原始 Google 历史 zip 备份没有修改，没有重新调用历史 Google 数据 API。主库恢复与生产发布状态以此次合并后的实际验证记录为准。
+
+## 用户停止持续运行后的交付状态
+
+- 用户明确只需要移除问题逻辑/无用字段，并准备后续代码和方案。
+- 已结束的扩展验证：run 34216698239，11 项回归全通过；未继续启动新采集。
+- 全量 reset workflow 改为仅 workflow_dispatch；Pages 只运行 public-only，不附带主库 reset。
+- 修复留在 PR #32，未合并、未发布；不再用已下载结果替换本地 main.sqlite。
+- 本地 main.sqlite 仍为 source commit 18da2aee 的既有版本，validated reset artifacts 仅作为可选恢复资料。
+- 最后提交仅修改执行开关与文档，使用 [skip ci] 遵从用户停止运行的要求；此前核心代码验证记录保持有效，但不把未运行的最终配置提交说成重新全测通过。
+- 后续字段保留/移除与命令入口见 [DATA_LOADING_FIELDS](../DATA_LOADING_FIELDS.md)。

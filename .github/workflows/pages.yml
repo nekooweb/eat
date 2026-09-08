@@ -52,10 +52,10 @@ jobs:
               assert r['distanceMeters'] <= 1200
           print(json.dumps(d['summary'],ensure_ascii=False))
           PY
-      - name: Rebuild database runtime and queues from one input revision
+      - name: Rebuild public runtime and queues from one input revision
         run: |
           set -euo pipefail
-          python3 scripts/reload_data.py --outdir _audit/data-reload --reset
+          python3 scripts/reload_data.py --public-only --outdir _audit/data-reload
 
       - name: Static syntax and required-file checks
         run: |

@@ -2,6 +2,15 @@
 
 更新日期：2026-09-08。
 
+## 执行状态：修复准备好，后续按需运行
+
+按 2026-09-08 用户最新要求，停止继续采集、持续重建和本地主库替换。本次修改保留在 [PR #32](https://github.com/nekooweb/eat/pull/32)，未合并，未据此启动新生产发布。
+
+此前完整离线验证及扩展的 11 项回归已通过 [run 34216698239](https://github.com/nekooweb/eat/actions/runs/34216698239)。这些是已执行的验证记录，不是正在运行的任务。本地主库未用重建产物替换，旧库与恢复资料都保留。
+
+全量 reset workflow 现为 manual-only。Pages 常规构建只执行 `--public-only`，不重置主库。后续字段和命令以 [字段契约](DATA_LOADING_FIELDS.md)为准。
+
+
 ## 1. 当前唯一离线入口
 
 `scripts/reload_data.py` 按实际 Git checkout commit 执行：
@@ -83,7 +92,7 @@ Pages 装配以每个生成 JS 的 SHA-256 前缀替换旧固定查询版本，�
 
 ## 8. 当前发布的实际边界
 
-Pages 通过统一入口先验证当前 SQLite 与公开输出，但浏览器仍消费 generated runtime；SQLite recommendation.shadow.json 尚未成为唯一发布源。本次修复消除的是构建顺序和版本脱节，不是一次未经回归的 eligibility 改写。
+Pages 通过统一入口验证公开 runtime 与队列；SQLite 校验由独立数据库契约/手动全量流程负责。浏览器仍消费 generated runtime；SQLite recommendation.shadow.json 尚未成为唯一发布源。本次修复消除的是构建顺序和版本脱节，不是一次未经回归的 eligibility 改写。
 
 本地经过校验的主库副本可由 GitHub artifact 恢复。个人电脑离线不会自动同步到 GitHub；本地新增证据需要显式交接给维护输入或未来的直接主库发布器。
 

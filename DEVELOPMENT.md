@@ -2,6 +2,15 @@
 
 更新日期：2026-09-08。
 
+## 执行状态：修复准备好，后续按需运行
+
+按 2026-09-08 用户最新要求，停止继续采集、持续重建和本地主库替换。本次修改保留在 [PR #32](https://github.com/nekooweb/eat/pull/32)，未合并，未据此启动新生产发布。
+
+此前完整离线验证及扩展的 11 项回归已通过 [run 34216698239](https://github.com/nekooweb/eat/actions/runs/34216698239)。这些是已执行的验证记录，不是正在运行的任务。本地主库未用重建产物替换，旧库与恢复资料都保留。
+
+全量 reset workflow 现为 manual-only。Pages 常规构建只执行 `--public-only`，不重置主库。后续字段和命令以 [字段契约](DATA_LOADING_FIELDS.md)为准。
+
+
 ## 当前修复基线
 
 本轮修复数据载入中断、危险重置、任务类型不一致和重复自动触发问题。核心修复提交 `da60a70` 已通过 [完整重建与回归](https://github.com/nekooweb/eat/actions/runs/34215698634)、数据库契约、PR 和 Pages 预览构建。生产是否已发布应以合并提交对应的 Pages deploy 状态为准，不以预览构建代替。
@@ -26,7 +35,7 @@
 2. planner 新增 `dish_source_acquisition` 和 `featured_dish_source_acquisition`，数据库 CHECK 约束仍是旧类型。新增 migration 002，保留旧任务数据并更新约束；迁移只应用一次，验证器按实际迁移文件列表核对。
 3. `--reset` 原先先删除数据库，输入失败后旧库也丢失。现在先生成旧库备份，再在临时库重建及验证，最后通过 SQLite backup 事务复制替换；失败保留旧库。
 4. failed active tasks 被分片器忽略。现在进入 workplan，新增菜品任务有明确路由；桶过大继续拆分，空桶不生成无效分片。
-5. Pages、PR、数据库检查和候选计划分别使用不同构建步骤，容易读取旧生成文件。新增统一离线入口 `scripts/reload_data.py`，按同一 checkout revision 重建。
+5. Pages、PR、数据库检查和候选计划原先分别使用不同构建步骤，容易读取旧生成文件。新增统一离线入口 `scripts/reload_data.py`，按同一 checkout revision 重建。
 6. PR 仍要求已退役 Google Embed，阻断现行 Leaflet 页面。已调整为 Leaflet / OpenStreetMap 检查，并继续禁止 Google key/embed 配置回归。
 7. 普通代码推送会触发许多旧采集/写回任务。44 个维护 workflow 改为手动触发，保留原有输入；自动任务只做当前构建、校验、规划和发布。
 

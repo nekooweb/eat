@@ -2,12 +2,6 @@ name: Reset and validate data loading
 
 on:
   workflow_dispatch:
-  push:
-    branches: ["codex/reset-data-loading-20260908"]
-    paths:
-      - ".github/workflows/reset-data-loading.yml"
-      - "scripts/**"
-      - "database/**"
 
 permissions:
   contents: read
