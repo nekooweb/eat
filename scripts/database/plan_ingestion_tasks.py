@@ -4,7 +4,7 @@ import argparse,json,sqlite3
 from collections import Counter,defaultdict
 from datetime import datetime,timezone
 from pathlib import Path
-PLANNER_VERSION='master-plan-v2'
+PLANNER_VERSION='master-plan-v3'
 FIELD_REQUIREMENTS={'address':('address',),'coordinates':('coordinates',),'cuisine':('cuisine',),'hours':('hours.raw','hours.reference.legacy','hours.normalized.legacy'),'dinner_budget':('budget.dinner.range','budget.dinner.legacy_range'),'lunch_budget':('budget.lunch.range','budget.lunch.legacy_range')}
 FIELD_WEIGHTS={'address':60,'coordinates':70,'cuisine':60,'hours':80,'dinner_budget':70,'lunch_budget':30,'practical':20}
 def now_iso(): return datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace('+00:00','Z')
@@ -42,11 +42,17 @@ def compute_desired_tasks(db):
     for p,f,c in db.execute("SELECT o.place_id,o.field_key,count(*) FROM field_observations o JOIN source_records sr ON sr.source_record_id=o.source_record_id WHERE sr.acquisition_method='retained_dish_evidence' AND o.field_key IN ('dish.recommendation.evidence','dish.featured.evidence') GROUP BY o.place_id,o.field_key"):
         dish[p]['recommendationEvidence' if f=='dish.recommendation.evidence' else 'featuredEvidence']=c
     for p,counts in sorted(dish.items()):
+        # Dish semantics/translation are only actionable after identity is publishable.
+        # An id-only/conflict restaurant stays in the identity queue; when identity
+        # later becomes publishable, the planner will create a dish review only if
+        # validated source evidence still lacks a canonical zh field.
+        if identities.get(p) not in ('verified','source_matched') or p in conflict_places or p not in names:
+            continue
         missing_semantics=[]
         if counts['recommendationEvidence'] and (p,'recommended_dishes.zh') not in known: missing_semantics.append('recommended_dishes.zh')
         if counts['featuredEvidence'] and (p,'featured_dishes.zh') not in known: missing_semantics.append('featured_dishes.zh')
         if not missing_semantics: continue
-        desired[task_id('dish_semantic_review',p)]={'placeId':p,'taskType':'dish_semantic_review','provider':'semantic-review','status':'review_required','priority':300 if p not in conflict_places else 150,'fieldKeys':missing_semantics,'sourceHint':'review_only_source_backed_dish_evidence_that_failed_zh_translation_or_semantic_resolution','payload':{**counts,'resolvedRecommendedZh':(p,'recommended_dishes.zh') in known,'resolvedFeaturedZh':(p,'featured_dishes.zh') in known,'identityConflict':p in conflict_places,'currentName':names.get(p)}}
+        desired[task_id('dish_semantic_review',p)]={'placeId':p,'taskType':'dish_semantic_review','provider':'semantic-review','status':'review_required','priority':300,'fieldKeys':missing_semantics,'sourceHint':'review_only_publishable_source_backed_dish_evidence_that_failed_zh_translation_or_semantic_resolution','payload':{**counts,'resolvedRecommendedZh':(p,'recommended_dishes.zh') in known,'resolvedFeaturedZh':(p,'featured_dishes.zh') in known,'identityConflict':False,'currentName':names.get(p)}}
     return desired
 def upsert_task(db,task,stamp):
     tid=task_id(task['taskType'],task['placeId'])
