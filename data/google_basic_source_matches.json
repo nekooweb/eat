@@ -12,7 +12,7 @@
     "pass2Rule": "strict geospatial + name/address match against transient retained Google sweep; durable fields are independent-source only",
     "structuredAddressConsensusV2Overlay": true,
     "structuredAddressConsensusV2Rule": "private-address-consensus-v2",
-    "lastIdentityRecoveryOverlayRule": "private-multisource-consensus-v3",
+    "lastIdentityRecoveryOverlayRule": "reviewed-multisource-currentness-v5",
     "multiSourceConsensusV3Overlay": true,
     "multiSourceConsensusV3Rule": "private-multisource-consensus-v3",
     "privateOfficialWebConsensusV4Overlay": true,
@@ -28,24 +28,26 @@
     "reviewedMultisourceCurrentnessV1Rule": "reviewed-multisource-currentness-v1",
     "retainedOsmWebsiteOverlayAggregatorHostsExcluded": true,
     "reviewedMultisourceCurrentnessV4Overlay": true,
-    "reviewedMultisourceCurrentnessV4Rule": "reviewed-multisource-currentness-v4"
+    "reviewedMultisourceCurrentnessV4Rule": "reviewed-multisource-currentness-v4",
+    "reviewedMultisourceCurrentnessV5Overlay": true,
+    "reviewedMultisourceCurrentnessV5Rule": "reviewed-multisource-currentness-v5"
   },
   "summary": {
     "productionBacked": 651,
-    "sourceMatchedInventoryOnly": 770,
-    "basicReadyTotal": 1421,
-    "identityOnlyRemaining": 1383,
+    "sourceMatchedInventoryOnly": 771,
+    "basicReadyTotal": 1422,
+    "identityOnlyRemaining": 1382,
     "providers": {
-      "Hot Pepper": 364,
+      "Hot Pepper": 365,
       "OpenStreetMap": 11,
       "Overture Maps": 395
     },
     "pass2NewMatches": 27,
     "structuredAddressConsensusV2Rows": 1,
     "structuredAddressConsensusV2AddedThisMerge": 0,
-    "lastIdentityRecoveryOverlayRule": "private-multisource-consensus-v3",
-    "lastIdentityRecoveryOverlayRows": 0,
-    "lastIdentityRecoveryOverlayAddedThisMerge": 0,
+    "lastIdentityRecoveryOverlayRule": "reviewed-multisource-currentness-v5",
+    "lastIdentityRecoveryOverlayRows": 1,
+    "lastIdentityRecoveryOverlayAddedThisMerge": 1,
     "multiSourceConsensusV3Rows": 0,
     "multiSourceConsensusV3AddedThisMerge": 0,
     "privateOfficialWebConsensusV4Rows": 2,
@@ -61,7 +63,9 @@
     "reviewedMultisourceCurrentnessV1Rows": 2,
     "reviewedMultisourceCurrentnessV1AddedThisMerge": 2,
     "reviewedMultisourceCurrentnessV4Rows": 2,
-    "reviewedMultisourceCurrentnessV4AddedThisMerge": 2
+    "reviewedMultisourceCurrentnessV4AddedThisMerge": 2,
+    "reviewedMultisourceCurrentnessV5Rows": 1,
+    "reviewedMultisourceCurrentnessV5AddedThisMerge": 1
   },
   "rows": [
     {
@@ -5383,6 +5387,85 @@
       "sourceCheckedAt": "2026-09-06",
       "verification": "matched_against_transient_google_place_details",
       "matchLevel": "strong"
+    },
+    {
+      "googlePlaceId": "ChIJN8DWpLSNGGARJLws0udg_08",
+      "provider": "Hot Pepper",
+      "providerId": "J003533149",
+      "name": "シュラスコレストラン ALEGRIA Jimbocho アレグリア神保町",
+      "address": "東京都千代田区神田神保町１－８ ファンデス神保町　４Ｆ",
+      "lat": 35.6961452125,
+      "lng": 139.7589356966,
+      "distanceMeters": 124,
+      "cuisine": "ダイニングバー・バル",
+      "websites": [
+        "https://www.hotpepper.jp/strJ003533149/?vos=nhppalsa000016",
+        "https://alegria.hapyres.com/restaurant/jinnbocho"
+      ],
+      "sourceCheckedAt": "2026-09-08",
+      "verification": "reviewed_hotpepper_overture_branch_address_currentness_consensus",
+      "matchLevel": "reviewed-multisource-currentness-v5",
+      "identityConsensus": {
+        "historicalHotPepperReview": {
+          "hotpepperId": "J003533149",
+          "distanceMeters": 5.7,
+          "nameSimilarity": 0.6588,
+          "addressSimilarity": null,
+          "combinedScore": 0.7725,
+          "confidence": "high",
+          "seedSource": "transient_full_sweep"
+        },
+        "overtureSupport": {
+          "overtureId": "cfc36882-70cb-41a2-9bcc-91adff77f334",
+          "name": "シュラスコレストラン アレグリア神保町",
+          "address": "千代田区Kanda Jinbocho, 1 Chome−8 ファンデス神保町 4F",
+          "lat": 35.6961842,
+          "lng": 139.7589687,
+          "distanceMeters": 5.3,
+          "nameSimilarity": 0.7059,
+          "addressSimilarity": 0.5424,
+          "postalMatch": false,
+          "margin": 0.2122,
+          "v4Gate": {
+            "accepted": true,
+            "base20mGate": true,
+            "branchAddressOffsetGate": false,
+            "distanceMeters": 5.3,
+            "rawNameSimilarity": 0.7059,
+            "effectiveNameSimilarity": 0.8618,
+            "addressCoreMatch": false,
+            "rawAddressSimilarity": 0.5424,
+            "margin": 0.2122,
+            "maximumOffsetMetersWhenAddressCoreMatches": 60
+          }
+        },
+        "currentIndependentPage": {
+          "url": "https://alegria.hapyres.com/restaurant/jinnbocho",
+          "retrievedAt": "2026-09-08T09:49:18Z",
+          "contentHash": "893a2b7d109be6350dc699623a71260d225d8d3acb616dc314060ebf57a068ac",
+          "matchedExpectedName": "alegria",
+          "pageName": "alegria + 神田神保町 + 田神保町",
+          "pageAddress": "東京都千代田区神田神保町１丁目８ ファンデス神保町 4F",
+          "nameSimilarity": 0.94,
+          "addressSimilarity": 0.96,
+          "postalMatch": false,
+          "geoDistanceMeters": null,
+          "locationConfirmed": true
+        },
+        "policy": {
+          "legacyVerifiedStateCreated": false,
+          "sourceMatchedOnly": true,
+          "independentSources": [
+            "Hot Pepper",
+            "Overture Maps",
+            "current independent branch page"
+          ],
+          "currentnessRequired": true,
+          "providerReuseForbidden": true,
+          "proximityOnlyBindingAllowed": false,
+          "ruleVersion": "reviewed-multisource-currentness-v5"
+        }
+      }
     },
     {
       "googlePlaceId": "ChIJN8sLKICNGGARkp_JZ6NWnSc",
