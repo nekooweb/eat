@@ -9,12 +9,16 @@ import sqlite3
 from collections import defaultdict
 from pathlib import Path
 
-RECOMMENDATION_CLASSES = {"source_recommendation_text"}
+RECOMMENDATION_CLASSES = {
+    "source_recommendation_text",
+    "source_pdf_recommendation_text",
+}
 FEATURED_CLASSES = {
     "retained_source_menu_item",
     "provider_promotional_dish_text",
     "structured_menu_item",
     "source_menu_text",
+    "source_pdf_menu_text",
     "tabelog_menu_text",
 }
 RULE_VERSION = "dish-source-translation-zh-v1"
@@ -109,6 +113,7 @@ def main():
             "acceptedEvidenceItems": accepted_evidence,
             "acceptedEvidenceWithSourceOriginal": source_original,
             "featuredEvidenceClasses": sorted(FEATURED_CLASSES),
+            "recommendationEvidenceClasses": sorted(RECOMMENDATION_CLASSES),
             "recommendedCanonicalPlaces": sum(1 for x in resolved.values() if x.get("recommended")),
             "featuredCanonicalPlaces": sum(1 for x in resolved.values() if x.get("featured")),
             "policy": "source language may be Japanese; database canonical dish labels must be Chinese",
