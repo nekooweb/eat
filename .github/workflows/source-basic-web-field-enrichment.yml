@@ -6,6 +6,7 @@ on:
     paths:
       - ".github/workflows/source-basic-web-field-enrichment.yml"
       - "scripts/database/collect_source_basic_web_fields.py"
+      - "scripts/database/collect_source_basic_web_fields_no_telephone.py"
       - "scripts/database/import_source_basic_web_evidence.py"
       - "scripts/database/merge_public_web_field_evidence.py"
       - "scripts/database/reconcile_private_official_web_consensus_v4.py"
@@ -45,6 +46,7 @@ jobs:
           mkdir -p _tmp
           python -m py_compile \
             scripts/database/collect_source_basic_web_fields.py \
+            scripts/database/collect_source_basic_web_fields_no_telephone.py \
             scripts/database/import_source_basic_web_evidence.py \
             scripts/database/merge_public_web_field_evidence.py \
             scripts/database/reconcile_private_official_web_consensus_v4.py
@@ -61,10 +63,10 @@ jobs:
           json.dump(snapshot,open('_tmp/field-before.json','w'),sort_keys=True)
           print(json.dumps(snapshot,sort_keys=True))
           PY
-      - name: Collect verified public web fields
+      - name: Collect verified public web fields without telephone
         run: |
           set -euo pipefail
-          python scripts/database/collect_source_basic_web_fields.py \
+          python scripts/database/collect_source_basic_web_fields_no_telephone.py \
             --database _tmp/eat-master-before.sqlite \
             --existing data/source_basic_web_field_evidence.json \
             --output _tmp/source-basic-web-field-incoming.json \
@@ -89,7 +91,10 @@ jobs:
           assert p['multiSnapshotEvidenceByPlaceId'] is True
           assert p['snapshotIdentity']==['googlePlaceId','finalUrl','contentHash']
           assert p['crossSnapshotClaimMerge'] is False
-          allowed={'official_name_plus_structured_address','official_name_plus_phone','official_name_plus_geo','retained_verified_official_page'}
+          assert p['telephoneIncludedInCompletionTargets'] is False
+          assert p['telephoneCollectionEnabled'] is False
+          assert d['summary'].get('newFieldClaims',{}).get('contact.telephone',0)==0
+          allowed={'official_name_plus_structured_address','official_name_plus_phone','official_name_plus_geo','retained_verified_official_page','retained_multisource_currentness_page'}
           snapshots=[]; places=set()
           for row in d['rows']:
             places.add(row['googlePlaceId'])
@@ -103,7 +108,7 @@ jobs:
             assert row['fieldClaims']
             snapshots.append((row['googlePlaceId'],ev['finalUrl'],ev['contentHash']))
           assert len(snapshots)==len(set(snapshots))
-          print(json.dumps({'rows':len(snapshots),'places':len(places),'multiSnapshotPlaces':len(snapshots)-len(places),'fieldCounts':d['summary']['fieldCounts']},ensure_ascii=False,sort_keys=True))
+          print(json.dumps({'rows':len(snapshots),'places':len(places),'multiSnapshotPlaces':len(snapshots)-len(places),'fieldCounts':d['summary']['fieldCounts'],'telephoneCollectionEnabled':False},ensure_ascii=False,sort_keys=True))
           PY
       - name: Validate master and runtime after enrichment
         run: |
@@ -124,6 +129,7 @@ jobs:
           assert after['fieldTasks'] <= before['fieldTasks'], (before,after)
           for field,count in after['missing'].items():
             assert count <= before['missing'].get(field,count), (field,before,after)
+          assert after['missing'].get('telephone') == before['missing'].get('telephone')
           json.dump(after,open('_tmp/field-after.json','w'),sort_keys=True)
           print(json.dumps({'before':before,'after':after},sort_keys=True))
           PY
