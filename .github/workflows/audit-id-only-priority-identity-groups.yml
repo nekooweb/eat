@@ -1,0 +1,68 @@
+name: Audit priority id-only identity groups
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/audit-id-only-priority-identity-groups.yml"
+      - "scripts/database/audit_id_only_priority_identity_groups.py"
+      - "scripts/database/build_master.py"
+      - "data/area1_enrichment_queue.json"
+      - "data/hotpepper_catalog_facts.json"
+      - "data/overture_area1_candidates.json"
+      - "data/area1_google_ids.json"
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Enforce no-paid-data-API policy
+        run: node scripts/audit_no_paid_apis.mjs
+      - name: Build strict master
+        run: |
+          set -euo pipefail
+          mkdir -p _tmp
+          python scripts/database/build_master.py --output _tmp/eat-master.sqlite --reset | tee _tmp/master-build.json
+          python scripts/database/validate_master.py _tmp/eat-master.sqlite | tee _tmp/master-validate.json
+      - name: Audit priority identity groups
+        run: |
+          set -euo pipefail
+          python scripts/database/audit_id_only_priority_identity_groups.py \
+            --database _tmp/eat-master.sqlite \
+            --output _tmp/id-only-priority-groups.json \
+            | tee _tmp/id-only-priority-groups-summary.json
+          python - <<'PY'
+          import json
+          d=json.load(open('_tmp/id-only-priority-groups.json'))
+          assert d['policy']['readOnly'] is True
+          assert d['policy']['paidDataApiCalls']==0
+          assert d['policy']['automaticIdentityPromotion'] is False
+          assert d['summary']['strictIdOnly'] >= 1000
+          print(json.dumps(d['summary'],ensure_ascii=False,sort_keys=True))
+          PY
+      - name: Upload audit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: id-only-priority-identity-groups
+          path: |
+            _tmp/id-only-priority-groups.json
+            _tmp/id-only-priority-groups-summary.json
+            _tmp/master-build.json
+            _tmp/master-validate.json
+          if-no-files-found: warn
+          retention-days: 3
