@@ -1,0 +1,71 @@
+name: Audit unresolved hours observations
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/audit-unresolved-hours-observations.yml"
+      - "scripts/database/audit_unresolved_hours_observations.py"
+      - "scripts/database/build_master.py"
+      - "scripts/database/resolve_retained_fields.py"
+      - "data/google_basic_source_matches.json"
+      - "data/source_enrichment*.js"
+      - "data/hotpepper_catalog_facts.json"
+      - "data/hotpepper_rich_metadata.js"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Sync latest main
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          git reset --hard origin/main
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check syntax
+        run: python -m py_compile scripts/database/audit_unresolved_hours_observations.py
+      - name: Build current SQLite master
+        run: |
+          set -euo pipefail
+          mkdir -p _tmp
+          python scripts/database/build_master.py --output _tmp/eat-master.sqlite --reset > /tmp/master-build.json
+      - name: Audit unresolved hours observations
+        run: |
+          set -euo pipefail
+          python scripts/database/audit_unresolved_hours_observations.py \
+            _tmp/eat-master.sqlite \
+            --output _tmp/unresolved-hours-observations.json | tee /tmp/unresolved-hours-summary.json
+          test -s _tmp/unresolved-hours-observations.json
+          python - <<'PY'
+          import json
+          x=json.load(open('_tmp/unresolved-hours-observations.json',encoding='utf-8'))
+          p=x.get('policy') or {}
+          s=x.get('summary') or {}
+          assert p.get('networkRequests') == 0
+          assert p.get('databaseWrites') == 0
+          assert p.get('identityChanges') == 0
+          assert p.get('fieldResolutionChanges') == 0
+          assert p.get('publishableNonConflictOnly') is True
+          assert s.get('publishableNonConflictPlaces') == 1396
+          assert s.get('unresolvedHoursPlaces') == 633
+          assert s.get('knownHoursPlaces') + s.get('unresolvedHoursPlaces') == s.get('publishableNonConflictPlaces')
+          print(json.dumps(s,ensure_ascii=False,sort_keys=True))
+          PY
+      - name: Upload audit artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: unresolved-hours-observation-audit
+          path: _tmp/unresolved-hours-observations.json
+          retention-days: 3
