@@ -15,6 +15,15 @@ on:
       - "scripts/build_dish_batch_plan.mjs"
       - "scripts/audit_google_inventory_detail_evidence.mjs"
       - "scripts/build_google_inventory_runtime.mjs"
+      - "scripts/database/export_reviewed_official_runtime_sources.py"
+      - "scripts/database/retained_official_identity.py"
+      - "scripts/database/retained_osm_identity.py"
+      - "scripts/database/retained_phase2.py"
+      - "scripts/database/build_master.py"
+      - "data/official_candidate_index.json"
+      - "data/google_basic_source_matches.json"
+      - "data/area1_osm.js"
+      - "data/source_enrichment*.js"
       - "data/hotpepper_catalog_facts.json"
       - "data/hotpepper_rich_metadata.js"
   workflow_dispatch:
@@ -48,8 +57,36 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
       - name: Enforce no-paid-data-API policy
         run: node scripts/audit_no_paid_apis.mjs
+      - name: Export SQLite-reviewed official source URL overlay
+        run: |
+          set -euo pipefail
+          python scripts/database/export_reviewed_official_runtime_sources.py \
+            --output data/reviewed_official_runtime_sources.json | tee /tmp/reviewed-official-runtime-sources-summary.json
+          test -s data/reviewed_official_runtime_sources.json
+          python - <<'PY'
+          import json
+          x=json.load(open('data/reviewed_official_runtime_sources.json',encoding='utf-8'))
+          p=x.get('policy') or {}
+          s=x.get('summary') or {}
+          assert p.get('sameCollisionLogicAsSQLiteMaster') is True
+          assert p.get('reviewedRowsOnly') is True
+          assert p.get('conflictRowsPublished') is False
+          assert p.get('paidGoogleDataApiCalls') == 0
+          assert p.get('runtimeNameMutationAllowed') is False
+          assert p.get('runtimeCoordinateMutationAllowed') is False
+          assert p.get('runtimeIdentityMutationAllowed') is False
+          assert s.get('catalogTotal') == 2804
+          assert s.get('officialCandidateIndexRows') == 194
+          assert s.get('conflictDeferredRows') == 1
+          assert len(x.get('rows') or []) == s.get('reviewedRows')
+          print(json.dumps(s,ensure_ascii=False,sort_keys=True))
+          PY
       - name: Build current published runtime and dish queue
         run: |
           set -euo pipefail
@@ -190,19 +227,20 @@ jobs:
           }
           console.log(JSON.stringify({ queue: q.summary, batchPlan: plan.summary }));
           NODE
-      - name: Commit detailed evidence, queue and bulk plan
+      - name: Commit detailed evidence, reviewed source overlay, queue and bulk plan
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add \
+            data/reviewed_official_runtime_sources.json \
             data/google_inventory_detail_evidence.json \
             data/google_inventory_detail_queue.json \
             data/google_inventory_runtime.js \
             data/dish_translation_pending.json \
             data/dish_batch_plan.json
           if git diff --cached --quiet; then
-            echo "No inventory detail changes to commit."
+            echo "No inventory detail/source-overlay changes to commit."
             exit 0
           fi
           git commit -m "Update source-backed recommended dish evidence"
