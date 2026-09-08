@@ -9,6 +9,7 @@ OSM provenance. Ambiguous native source-ID reuse is quarantined instead of promo
 from __future__ import annotations
 
 import json
+import re
 from collections import Counter, defaultdict
 
 import master_import_core as core
@@ -23,6 +24,7 @@ EQUIVALENTS = {
     "coordinates": ("coordinates",),
     "cuisine": ("cuisine",),
     "hours.raw": ("hours.raw", "hours.reference.legacy", "hours.normalized.legacy"),
+    "contact.telephone": ("contact.telephone",),
 }
 
 
@@ -64,13 +66,32 @@ def _native_source_places(db) -> dict[str, set[str]]:
         SELECT sr.provider_id,sb.place_id
         FROM source_records sr
         JOIN source_bindings sb ON sb.source_record_id=sr.source_record_id
-        WHERE sr.provider='OpenStreetMap'
-          AND sr.provider_id LIKE 'node/%'
-           OR sr.provider='OpenStreetMap' AND sr.provider_id LIKE 'way/%'
-           OR sr.provider='OpenStreetMap' AND sr.provider_id LIKE 'relation/%'
+        WHERE (sr.provider='OpenStreetMap' AND sr.provider_id LIKE 'node/%')
+           OR (sr.provider='OpenStreetMap' AND sr.provider_id LIKE 'way/%')
+           OR (sr.provider='OpenStreetMap' AND sr.provider_id LIKE 'relation/%')
         """
     ):
         output[str(provider_id)].add(pid)
+    return output
+
+
+def _native_phones(candidate: dict) -> list[str]:
+    output = []
+    seen_digits = set()
+    raw_values = candidate.get("sourcePhones") or []
+    if isinstance(raw_values, str):
+        raw_values = [raw_values]
+    if not isinstance(raw_values, list):
+        return output
+    for raw in raw_values:
+        text = str(raw or "").strip()
+        if not text or len(text) > 80:
+            continue
+        digits = re.sub(r"\D", "", text)
+        if not (8 <= len(digits) <= 15) or digits in seen_digits:
+            continue
+        seen_digits.add(digits)
+        output.append(text)
     return output
 
 
@@ -102,6 +123,7 @@ def import_bound_open_data_fields(db, stamp: str):
 
         source_url = retained_osm.osm_url(candidate)
         observed = stamp[:10]
+        native_phones = _native_phones(candidate)
         payload = {
             "googlePlaceId": pid,
             "reviewedBasicBinding": {
@@ -111,10 +133,12 @@ def import_bound_open_data_fields(db, stamp: str):
             },
             "osmNativeSourceId": native_source_id,
             "osmCandidate": candidate,
+            "nativePhones": native_phones,
             "policy": {
                 "identityChangeAllowed": False,
                 "networkRequests": 0,
                 "missingOnly": True,
+                "exactReviewedProviderIdOnly": True,
                 "ruleVersion": RULE_VERSION,
             },
         }
@@ -149,6 +173,7 @@ def import_bound_open_data_fields(db, stamp: str):
             "coordinates": coordinate_value,
             "cuisine": candidate.get("cuisine"),
             "hours.raw": candidate.get("openingHoursRaw"),
+            "contact.telephone": native_phones[0] if native_phones else None,
         }
         for field_key, value in task_fields.items():
             if not core.nonempty(value):
@@ -179,6 +204,7 @@ def import_bound_open_data_fields(db, stamp: str):
             "tags": candidate.get("tags") or None,
             "closure.days.raw": candidate.get("closedDays") or None,
             "source_websites": [source_url] if source_url else None,
+            "contact.telephones.source": native_phones or None,
             "provenance.osm_native_source_id": native_source_id,
         }
         for field_key, value in optional_fields.items():
@@ -197,21 +223,26 @@ def import_bound_open_data_fields(db, stamp: str):
                 resolve_field=False,
             )
         counts["reviewed_rows_processed"] += 1
+        if native_phones:
+            counts["reviewed_rows_with_native_phone"] += 1
 
     return {
         "ruleVersion": RULE_VERSION,
         "reviewedBasicOsmBindings": len(reviewed),
         "processed": counts["reviewed_rows_processed"],
+        "reviewedRowsWithNativePhone": counts["reviewed_rows_with_native_phone"],
         "placesWithNewTaskFields": len(place_ids),
         "resolvedTaskFields": sum(fields.values()),
         "fieldCounts": dict(sorted(fields.items())),
         "skipped": {
             key: value
             for key, value in sorted(counts.items())
-            if key != "reviewed_rows_processed" and value
+            if key not in {"reviewed_rows_processed", "reviewed_rows_with_native_phone"} and value
         },
         "networkRequests": 0,
         "identityChanges": 0,
+        "exactReviewedBindingOnly": True,
+        "missingOnly": True,
     }
 
 
