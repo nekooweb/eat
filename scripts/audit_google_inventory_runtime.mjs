@@ -32,12 +32,8 @@ const forbiddenKeys = new Set([
 if (expected.length !== 2804 || expectedSet.size !== 2804) {
   throw new Error('Frozen catalog must contain exactly 2,804 unique Google Place IDs');
 }
-if (ids.length !== publishedSet.size) {
-  throw new Error('Published runtime contains duplicate Google Place IDs');
-}
-if (ids.some((pid) => !expectedSet.has(pid))) {
-  throw new Error('Published runtime contains a Place ID outside the frozen catalog');
-}
+if (ids.length !== publishedSet.size) throw new Error('Published runtime contains duplicate Google Place IDs');
+if (ids.some((pid) => !expectedSet.has(pid))) throw new Error('Published runtime contains a Place ID outside the frozen catalog');
 const expectedPublishedOrder = expected.filter((pid) => publishedSet.has(pid));
 if (expectedPublishedOrder.length !== ids.length || expectedPublishedOrder.some((pid, index) => pid !== ids[index])) {
   throw new Error('Published runtime order must preserve frozen catalog order');
@@ -48,15 +44,9 @@ for (const row of rows) {
   if (!['canonical', 'source_matched'].includes(row.basicInfoState)) {
     throw new Error(`Unpublished/basic state leaked into public runtime for ${row.googlePlaceId}: ${row.basicInfoState}`);
   }
-  if (row.nameKnown !== true || !String(row.name || '').trim()) {
-    throw new Error(`Published runtime contains an unnamed restaurant: ${row.googlePlaceId}`);
-  }
-  if (String(row.name).trim() === 'Google Maps 餐厅') {
-    throw new Error(`Legacy placeholder name leaked into public runtime: ${row.googlePlaceId}`);
-  }
-  for (const key of forbiddenKeys) {
-    if (key in row) throw new Error(`Persisted forbidden Google content key ${key}`);
-  }
+  if (row.nameKnown !== true || !String(row.name || '').trim()) throw new Error(`Published runtime contains an unnamed restaurant: ${row.googlePlaceId}`);
+  if (String(row.name).trim() === 'Google Maps 餐厅') throw new Error(`Legacy placeholder name leaked into public runtime: ${row.googlePlaceId}`);
+  for (const key of forbiddenKeys) if (key in row) throw new Error(`Persisted forbidden Google content key ${key}`);
   if (Number.isFinite(row.distanceMeters) && (row.distanceMeters < 0 || row.distanceMeters > 1200)) {
     throw new Error(`Out-of-radius distance for ${row.googlePlaceId}`);
   }
@@ -78,15 +68,10 @@ if (stats.unpublishedPlaceIdOnly !== 2804 - rows.length) throw new Error('Held I
 if (stats.catalogPlaceIdOnly !== stats.unpublishedPlaceIdOnly) throw new Error('Catalog/public ID-only counters diverged');
 if (rows.length < 3) throw new Error('Published recommendation runtime has fewer than 3 rows');
 
-// Dish review v2: approximate suggestions are allowed, but only when a concrete
-// brand/dish/cuisine rule fires. Meaningless universal fallbacks are forbidden.
-const dishSandbox = {
-  window: {
-    GOOGLE_INVENTORY_RESTAURANTS: rows,
-    PRODUCTION_RESTAURANTS: []
-  },
-  console
-};
+// Dish review v2: approximate suggestions are allowed when a concrete brand,
+// dish keyword, specific cuisine, or food-bearing broad cuisine class fires.
+// Universal restaurant/bar filler remains forbidden.
+const dishSandbox = { window: { GOOGLE_INVENTORY_RESTAURANTS: rows, PRODUCTION_RESTAURANTS: [] }, console };
 vm.createContext(dishSandbox);
 vm.runInContext(dishPatchText, dishSandbox, { filename: 'chinese_dish_runtime_patch.js' });
 
@@ -104,7 +89,7 @@ const featuredZh = (item) => {
 };
 
 const bannedGenericExact = new Set(['招牌主菜', '时令小菜', '推荐菜', '特色菜', '主菜']);
-const allowedTiers = new Set(['brand', 'dish-keyword', 'cuisine']);
+const allowedTiers = new Set(['brand', 'dish-keyword', 'cuisine', 'broad-cuisine']);
 let approximateChineseDishRows = 0;
 let sourceBackedOrExistingChineseDishRows = 0;
 let chineseDishDisplayRows = 0;
@@ -125,15 +110,11 @@ for (const row of rows) {
     if (row.dishRecommendationLanguage !== 'zh-CN' || row.dishRecommendationDisplayPolicy !== 'relaxed-zh-v2') {
       throw new Error(`Approximate dish metadata is incomplete: ${row.googlePlaceId}`);
     }
-    if (!allowedTiers.has(tier)) {
-      throw new Error(`Approximate dish tier is not allowed: ${row.googlePlaceId}: ${tier}`);
-    }
+    if (!allowedTiers.has(tier)) throw new Error(`Approximate dish tier is not allowed: ${row.googlePlaceId}: ${tier}`);
     if (!Array.isArray(row.recommendedDishes) || row.recommendedDishes.length < 1 || row.recommendedDishes.length > 2) {
       throw new Error(`Approximate dish count must be 1-2: ${row.googlePlaceId}`);
     }
-    if (row.recommendedDishes.some((dish) => !isChineseDish(dish))) {
-      throw new Error(`Approximate recommendation is not Chinese: ${row.googlePlaceId}`);
-    }
+    if (row.recommendedDishes.some((dish) => !isChineseDish(dish))) throw new Error(`Approximate recommendation is not Chinese: ${row.googlePlaceId}`);
     if (row.recommendedDishes.some((dish) => bannedGenericExact.has(String(dish).trim()))) {
       throw new Error(`Meaningless generic dish fallback is forbidden: ${row.googlePlaceId}`);
     }
@@ -147,29 +128,17 @@ for (const row of rows) {
     unfilledDishRows += 1;
     const cuisine = String(row.cuisine || '未分类');
     unfilledCuisineCounts[cuisine] = (unfilledCuisineCounts[cuisine] || 0) + 1;
-    if (unfilledSamples.length < 80) {
-      unfilledSamples.push({
-        googlePlaceId: row.googlePlaceId,
-        name: row.name,
-        cuisine
-      });
-    }
+    if (unfilledSamples.length < 100) unfilledSamples.push({ googlePlaceId: row.googlePlaceId, name: row.name, cuisine });
   }
 }
 
 const dishPatchStats = dishSandbox.window.CHINESE_DISH_FALLBACK_STATS?.inventory || {};
 const patchPolicy = dishSandbox.window.CHINESE_DISH_FALLBACK_STATS?.policy;
 if (patchPolicy !== 'relaxed-zh-v2') throw new Error(`Unexpected Chinese dish patch policy: ${patchPolicy}`);
-if (dishSandbox.window.CHINESE_DISH_FALLBACK_STATS?.genericFallbackAllowed !== false) {
-  throw new Error('Generic dish fallback must remain disabled');
-}
+if (dishSandbox.window.CHINESE_DISH_FALLBACK_STATS?.genericFallbackAllowed !== false) throw new Error('Generic dish fallback must remain disabled');
 if (dishPatchStats.total !== rows.length) throw new Error('Chinese dish patch did not scan the full public runtime');
-if ((dishPatchStats.patchedApproximate || 0) !== approximateChineseDishRows) {
-  throw new Error('Chinese dish patch/audit approximate counts diverged');
-}
-if ((dishPatchStats.unfilledNoSpecificSignal || 0) !== unfilledDishRows) {
-  throw new Error('Chinese dish patch/audit unfilled counts diverged');
-}
+if ((dishPatchStats.patchedApproximate || 0) !== approximateChineseDishRows) throw new Error('Chinese dish patch/audit approximate counts diverged');
+if ((dishPatchStats.unfilledNoSpecificSignal || 0) !== unfilledDishRows) throw new Error('Chinese dish patch/audit unfilled counts diverged');
 
 const topUnfilledCuisines = Object.entries(unfilledCuisineCounts)
   .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], 'zh-CN'))
