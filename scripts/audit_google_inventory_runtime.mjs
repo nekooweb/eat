@@ -1,10 +1,12 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import vm from 'node:vm';
 
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
 const DATA = path.join(ROOT, 'data');
 const inventory = JSON.parse(fs.readFileSync(path.join(DATA, 'area1_google_ids.json'), 'utf8'));
 const runtimeText = fs.readFileSync(path.join(DATA, 'google_inventory_runtime.js'), 'utf8');
+const dishPatchText = fs.readFileSync(path.join(ROOT, 'scripts', 'chinese_dish_runtime_patch.js'), 'utf8');
 
 function parseAssignment(name) {
   const prefix = `window.${name}=`;
@@ -76,4 +78,72 @@ if (stats.unpublishedPlaceIdOnly !== 2804 - rows.length) throw new Error('Held I
 if (stats.catalogPlaceIdOnly !== stats.unpublishedPlaceIdOnly) throw new Error('Catalog/public ID-only counters diverged');
 if (rows.length < 3) throw new Error('Published recommendation runtime has fewer than 3 rows');
 
-console.log(JSON.stringify({ status: 'pass', ...stats }));
+// Dish review is intentionally permissive. Approximate recommendations are allowed
+// without source-level recommendation semantics, but the public display must remain
+// Chinese, short, non-empty and bounded. The patch is evaluated only in memory here;
+// it does not alter the durable evidence/runtime artifact audited above.
+const dishSandbox = {
+  window: {
+    GOOGLE_INVENTORY_RESTAURANTS: rows,
+    PRODUCTION_RESTAURANTS: []
+  },
+  console
+};
+vm.createContext(dishSandbox);
+vm.runInContext(dishPatchText, dishSandbox, { filename: 'chinese_dish_runtime_patch.js' });
+
+const HAN_RE = /[\u3400-\u9fff]/u;
+const KANA_RE = /[\u3040-\u30ff]/u;
+const isChineseDish = (value) => {
+  const text = String(value || '').trim();
+  return Boolean(text) && text.length <= 24 && HAN_RE.test(text) && !KANA_RE.test(text);
+};
+const featuredZh = (item) => {
+  if (typeof item === 'string') return isChineseDish(item) ? item.trim() : '';
+  if (!item || typeof item !== 'object') return '';
+  const value = String(item.nameZh || '').trim();
+  return isChineseDish(value) ? value : '';
+};
+
+let approximateChineseDishRows = 0;
+let sourceBackedOrExistingChineseDishRows = 0;
+let genericApproximateRows = 0;
+for (const row of rows) {
+  const recommended = Array.isArray(row.recommendedDishes) ? row.recommendedDishes.filter(isChineseDish) : [];
+  const featured = Array.isArray(row.featuredDishes) ? row.featuredDishes.map(featuredZh).filter(Boolean) : [];
+  if (!recommended.length && !featured.length) {
+    throw new Error(`Published row has no Chinese dish display after relaxed fallback: ${row.googlePlaceId}`);
+  }
+
+  if (row.dishRecommendationConfidence === 'approximate') {
+    approximateChineseDishRows += 1;
+    if (row.dishRecommendationLanguage !== 'zh-CN' || row.dishRecommendationDisplayPolicy !== 'relaxed-zh-v1') {
+      throw new Error(`Approximate dish metadata is incomplete: ${row.googlePlaceId}`);
+    }
+    if (!Array.isArray(row.recommendedDishes) || row.recommendedDishes.length < 1 || row.recommendedDishes.length > 2) {
+      throw new Error(`Approximate dish count must be 1-2: ${row.googlePlaceId}`);
+    }
+    if (row.recommendedDishes.some((dish) => !isChineseDish(dish))) {
+      throw new Error(`Approximate recommendation is not Chinese: ${row.googlePlaceId}`);
+    }
+    if (row.dishRecommendationBasis === 'generic-restaurant') genericApproximateRows += 1;
+  } else {
+    sourceBackedOrExistingChineseDishRows += 1;
+  }
+}
+
+const dishPatchStats = dishSandbox.window.CHINESE_DISH_FALLBACK_STATS?.inventory || {};
+if (dishPatchStats.total !== rows.length) throw new Error('Chinese dish patch did not scan the full public runtime');
+if ((dishPatchStats.patchedApproximate || 0) !== approximateChineseDishRows) {
+  throw new Error('Chinese dish patch/audit approximate counts diverged');
+}
+
+console.log(JSON.stringify({
+  status: 'pass',
+  ...stats,
+  chineseDishDisplayCoverage: rows.length,
+  approximateChineseDishRows,
+  sourceBackedOrExistingChineseDishRows,
+  genericApproximateRows,
+  dishReviewPolicy: 'relaxed-zh-v1'
+}));
