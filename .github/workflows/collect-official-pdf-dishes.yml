@@ -1,0 +1,136 @@
+name: Collect official PDF dish evidence
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: collect-official-pdf-dish-evidence
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Sync latest main
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          git reset --hard origin/main
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Enforce no-paid-data-API policy
+        run: node scripts/audit_no_paid_apis.mjs
+      - name: Prepare PDF extraction tooling
+        run: |
+          set -euo pipefail
+          node --check scripts/collect_official_pdf_dish_evidence.mjs
+          if ! command -v pdftotext >/dev/null 2>&1; then
+            sudo apt-get update -qq
+            sudo apt-get install -y poppler-utils
+          fi
+          pdftotext -v 2>&1 | head -n 2
+      - name: Rebuild current source-backed runtime and queue
+        run: python scripts/reload_data.py --public-only --outdir _audit/pdf-pre-reload
+      - name: Snapshot existing dish evidence
+        run: |
+          set -euo pipefail
+          cp data/google_inventory_detail_evidence.json /tmp/google_inventory_detail_evidence.before-pdf.json
+      - name: Collect bounded official PDF menu evidence
+        env:
+          OFFICIAL_PDF_FETCH_TIMEOUT_MS: "8000"
+          OFFICIAL_PDF_HOST_WORKERS: "8"
+          OFFICIAL_PDF_LINK_LIMIT: "4"
+          OFFICIAL_PDF_MAX_BYTES: "15000000"
+        run: |
+          set -euo pipefail
+          node scripts/collect_official_pdf_dish_evidence.mjs /tmp/official-pdf-dish-evidence.json | tee /tmp/official-pdf-summary.json
+          test -s /tmp/official-pdf-dish-evidence.json
+          node - <<'NODE'
+          const fs = require('fs');
+          const x = JSON.parse(fs.readFileSync('/tmp/official-pdf-dish-evidence.json', 'utf8'));
+          const p = x.policy || {};
+          const s = x.summary || {};
+          if (p.paidGoogleDataApiCalls !== 0 || p.crossOriginPdfUrlsAllowed !== false || p.identityChanges !== 0) throw new Error('PDF collector violated source/identity boundary');
+          if (p.recommendationRequiresExplicitMarkerOnSameExtractedPdfLine !== true || p.ordinaryPdfMenuItemsAreFeaturedOnly !== true) throw new Error('PDF recommendation/featured semantics mismatch');
+          if (p.cuisineNameBrandInferenceAllowed !== false || p.genericFallbackAllowed !== false) throw new Error('PDF collector may not infer dish evidence');
+          if (s.catalogTotal !== 2804 || s.publicRuntimeTotal <= 0 || s.pdfFetched < s.pdfTextExtracted) throw new Error('PDF collector summary invalid');
+          for (const row of x.rows || []) {
+            for (const item of row.recommendedDishes || []) {
+              if (item.evidenceClass !== 'source_pdf_recommendation_text' || item.provider !== 'sourceWebsite') throw new Error('invalid PDF recommendation item');
+            }
+            for (const item of row.featuredDishes || []) {
+              if (item.evidenceClass !== 'source_pdf_menu_text' || item.provider !== 'sourceWebsite') throw new Error('invalid PDF featured item');
+            }
+          }
+          console.log(JSON.stringify(s));
+          NODE
+      - name: Merge PDF evidence monotonically and audit
+        run: |
+          set -euo pipefail
+          node scripts/merge_google_inventory_detail_evidence.mjs \
+            /tmp/google_inventory_detail_evidence.before-pdf.json \
+            /tmp/official-pdf-dish-evidence.json \
+            data/google_inventory_detail_evidence.json | tee /tmp/pdf-merge-summary.json
+          node scripts/correct_dish_specificity_evidence.mjs \
+            data/google_inventory_detail_evidence.json \
+            data/google_inventory_detail_evidence.json | tee /tmp/pdf-specificity-summary.json
+          node scripts/audit_google_inventory_detail_evidence.mjs | tee /tmp/pdf-evidence-audit.json
+      - name: Rebuild runtime and plans from merged PDF evidence
+        run: python scripts/reload_data.py --public-only --outdir _audit/pdf-post-reload
+      - name: Verify PDF pass does not regress dish coverage
+        run: |
+          set -euo pipefail
+          node - <<'NODE'
+          const fs = require('fs');
+          const q = JSON.parse(fs.readFileSync('data/google_inventory_detail_queue.json', 'utf8'));
+          const plan = JSON.parse(fs.readFileSync('data/dish_batch_plan.json', 'utf8'));
+          const pdf = JSON.parse(fs.readFileSync('/tmp/official-pdf-dish-evidence.json', 'utf8'));
+          if (q.summary.catalogTotal !== 2804 || q.summary.publicRuntimeTotal + q.summary.unpublishedPlaceIdOnly !== 2804) throw new Error('catalog/runtime reconciliation failed after PDF pass');
+          if (q.summary.recommendedDishesKnown < 259 || q.summary.featuredDishesKnown < 430 || q.summary.displayDishKnown < 492) throw new Error('PDF pass regressed existing dish coverage');
+          if (plan.policy?.paidGoogleDataApiCalls !== 0) throw new Error('dish plan paid API policy mismatch');
+          console.log(JSON.stringify({ pdf: pdf.summary, queue: q.summary, plan: plan.summary }));
+          NODE
+      - name: Re-check no-paid-data-API policy
+        run: node scripts/audit_no_paid_apis.mjs
+      - name: Commit merged PDF dish evidence and rebuilt plans
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            data/google_inventory_detail_evidence.json \
+            data/google_inventory_runtime.js \
+            data/google_inventory_detail_queue.json \
+            data/dish_batch_plan.json \
+            data/independent_dish_source_candidates.json
+          if git diff --cached --quiet; then
+            echo "No new strict official PDF dish evidence to commit."
+            exit 0
+          fi
+          git commit -m "Add strict official PDF dish evidence"
+          git reset --hard HEAD
+          git fetch origin main
+          git rebase origin/main
+          git push origin HEAD:main
+
+  validate_database:
+    needs: collect
+    permissions:
+      contents: read
+    uses: ./.github/workflows/database-contract.yml
+    with:
+      sync_main: true
