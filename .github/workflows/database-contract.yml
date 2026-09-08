@@ -51,6 +51,13 @@ on:
       - "data/google_inventory_runtime.js"
       - "scripts/build_google_inventory_runtime.mjs"
   workflow_dispatch:
+  workflow_call:
+    inputs:
+      sync_main:
+        description: "Fetch and validate the latest main after an upstream workflow has pushed generated evidence."
+        required: false
+        type: boolean
+        default: false
 
 env:
   EAT_REFACTOR_MODE: "1"
@@ -64,6 +71,15 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Sync latest main for reusable handoff
+        if: ${{ github.event_name == 'workflow_call' && inputs.sync_main == true }}
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          git reset --hard origin/main
+          echo "DATABASE_CONTRACT_VALIDATED_SHA=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
