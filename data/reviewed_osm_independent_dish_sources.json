@@ -28,11 +28,11 @@
     "reviewedRows": 8,
     "approvedRows": 0,
     "rejectedRows": 8,
-    "fetchErrorRows": 2,
+    "fetchErrorRows": 1,
     "reasonCounts": {
       "generic_root_missing_location_confirmation": 1,
-      "no_strong_page_name_evidence": 5,
-      "fetch_failed": 2
+      "no_strong_page_name_evidence": 6,
+      "fetch_failed": 1
     }
   },
   "rows": [],
@@ -145,17 +145,21 @@
       "proposalDistanceMeters": 0,
       "proposalScore": 1,
       "approved": false,
-      "reason": "fetch_failed",
-      "finalUrl": null,
-      "title": null,
+      "reason": "no_strong_page_name_evidence",
+      "finalUrl": "http://tokyomamehana.com/",
+      "title": "台湾伝統豆花専門店「東京豆花工房」",
       "structuredFacts": 0,
-      "titleNameSimilarity": 0,
+      "titleNameSimilarity": 0.87,
       "structuredNameSimilarity": 0,
-      "locationSignals": [],
-      "reviewSignals": [],
-      "errors": [
-        "http://tokyomamehana.com/: The operation was aborted due to timeout"
-      ]
+      "locationSignals": [
+        "visible_address_agreement",
+        "osm_address_visible_agreement"
+      ],
+      "reviewSignals": [
+        "visible_address_agreement",
+        "osm_address_visible_agreement"
+      ],
+      "errors": []
     },
     {
       "googlePlaceId": "ChIJX-yVohyMGGARUTdpnpXyQNQ",
