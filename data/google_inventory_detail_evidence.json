@@ -31,36 +31,37 @@
     "hotPepperFeaturedRestaurants": 70,
     "websiteTasks": 243,
     "websiteHosts": 209,
-    "websiteRecommendedRestaurants": 0,
+    "websiteRecommendedRestaurants": 3,
     "websiteStructuredMenuRestaurants": 0,
-    "sourceBackedRecommendationRestaurants": 20,
+    "sourceBackedRecommendationRestaurants": 23,
     "sourceBackedFeaturedOnlyRestaurants": 70,
-    "recommendationItems": 21,
+    "recommendationItems": 24,
     "featuredItems": 74,
     "statusCounts": {
-      "no_match_with_errors": 214,
-      "no_match": 24
+      "no_match_with_errors": 84,
+      "no_match": 151,
+      "recommended_match": 3
     },
     "previousEvidence": {
-      "recommendationRestaurants": 165,
-      "featuredRestaurants": 174,
-      "evidenceRestaurants": 287,
-      "recommendationItems": 236,
-      "featuredItems": 250
-    },
-    "freshCrawlEvidence": {
-      "recommendationRestaurants": 20,
-      "featuredRestaurants": 70,
-      "evidenceRestaurants": 90,
-      "recommendationItems": 21,
-      "featuredItems": 74
-    },
-    "mergedEvidence": {
       "recommendationRestaurants": 167,
       "featuredRestaurants": 176,
       "evidenceRestaurants": 290,
       "recommendationItems": 238,
-      "featuredItems": 252
+      "featuredItems": 255
+    },
+    "freshCrawlEvidence": {
+      "recommendationRestaurants": 23,
+      "featuredRestaurants": 70,
+      "evidenceRestaurants": 93,
+      "recommendationItems": 24,
+      "featuredItems": 74
+    },
+    "mergedEvidence": {
+      "recommendationRestaurants": 170,
+      "featuredRestaurants": 176,
+      "evidenceRestaurants": 292,
+      "recommendationItems": 241,
+      "featuredItems": 255
     }
   },
   "rows": [
@@ -334,6 +335,16 @@
           "evidenceClass": "retained_source_menu_item",
           "evidenceRule": "retained:featuredDishes:retained-nameZh",
           "evidenceSnippet": "那不勒斯辣味内脏炖汤"
+        },
+        {
+          "nameZh": "那不勒斯辣味炖猪杂",
+          "nameJa": "ズッパフォルテ",
+          "provider": "official",
+          "sourceUrl": "https://www.giraud.co.jp/napoli",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "retained_source_menu_item",
+          "evidenceRule": "retained:dishes:ズッパフォルテ",
+          "evidenceSnippet": "ズッパフォルテ"
         }
       ]
     },
@@ -1692,7 +1703,18 @@
     {
       "googlePlaceId": "ChIJB_WeKhqMGGARiHfhZXYgVFo",
       "name": "おむすび権米衛 御茶ノ水ソラシティ店",
-      "recommendedDishes": [],
+      "recommendedDishes": [
+        {
+          "nameZh": "饭团",
+          "nameJa": "おむすび",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.omusubi-gonbei.com/particular/foodstuff/",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "html-block:おむすび",
+          "evidenceSnippet": "高菜 「ごま高菜」「高菜玄米」のおむすびに使われている高菜は、 九州産の「三池高菜」 。高菜漬けの中でも 発酵度合いが比較的弱いため酸味が少なくて食べやすく 、海外でも人気の商品。"
+        }
+      ],
       "featuredDishes": [
         {
           "nameZh": "饭团",
@@ -4176,6 +4198,16 @@
       ],
       "featuredDishes": [
         {
+          "nameZh": "神经处理鲜鱼",
+          "nameJa": "神経〆活魚",
+          "provider": "official",
+          "sourceUrl": "https://www.dynacjapan.com/brands/madume/shops/ochanomizu/",
+          "checkedAt": "2026-09-05",
+          "evidenceClass": "retained_source_menu_item",
+          "evidenceRule": "retained:dishes:神経〆活魚|活魚神経〆|活魚神経締め",
+          "evidenceSnippet": "神経〆活魚"
+        },
+        {
           "nameZh": "金枪鱼腩铁火卷",
           "nameJa": "本気のトロ鉄火巻き",
           "provider": "official",
@@ -4184,6 +4216,16 @@
           "evidenceClass": "retained_source_menu_item",
           "evidenceRule": "retained:dishes:本気のトロ鉄火巻き",
           "evidenceSnippet": "本気のトロ鉄火巻き"
+        },
+        {
+          "nameZh": "钓获鲜鱼",
+          "nameJa": "釣り魚",
+          "provider": "official",
+          "sourceUrl": "https://www.dynacjapan.com/brands/madume/shops/ochanomizu/",
+          "checkedAt": "2026-09-05",
+          "evidenceClass": "retained_source_menu_item",
+          "evidenceRule": "retained:dishes:釣り魚",
+          "evidenceSnippet": "釣り魚"
         }
       ]
     },
@@ -5917,6 +5959,23 @@
       ]
     },
     {
+      "googlePlaceId": "ChIJV6aN40CMGGARrvS6UIfFCVA",
+      "name": "おむすび権米衛飯田橋アイガーデンテラス店",
+      "recommendedDishes": [
+        {
+          "nameZh": "饭团",
+          "nameJa": "おむすび",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.omusubi-gonbei.com/particular/foodstuff/",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "html-block:おむすび",
+          "evidenceSnippet": "高菜 「ごま高菜」「高菜玄米」のおむすびに使われている高菜は、 九州産の「三池高菜」 。高菜漬けの中でも 発酵度合いが比較的弱いため酸味が少なくて食べやすく 、海外でも人気の商品。"
+        }
+      ],
+      "featuredDishes": []
+    },
+    {
       "googlePlaceId": "ChIJv9PQxOSNGGARaAHELx3znPo",
       "name": "The 3rd Burger Otemachi One",
       "recommendedDishes": [
@@ -6199,6 +6258,23 @@
           "evidenceSnippet": "『各種コースのご用意◎』 『石窯仕上げの本格ピザ』"
         }
       ]
+    },
+    {
+      "googlePlaceId": "ChIJwVPZogOMGGARJe7b3LBQPsM",
+      "name": "三政",
+      "recommendedDishes": [
+        {
+          "nameZh": "烤串",
+          "nameJa": "串焼き",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://kanda-sanmasa.com/ja?utm_medium=referral&utm_source=google&utm_campaign=mm&utm_content=hp",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "html-block:串焼き",
+          "evidenceSnippet": "こだわりのもつやきを堪能 厳選された素材を使用し、丁寧に焼き上げたもつやきが自慢です。串焼きの香ばしい香りとともに、ジューシーな味わいを楽しむことができます。シンプルながらも奥深い"
+        }
+      ],
+      "featuredDishes": []
     },
     {
       "googlePlaceId": "ChIJwXpy4uKNGGARVaxa8BjTPVs",

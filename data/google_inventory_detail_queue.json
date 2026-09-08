@@ -7,19 +7,19 @@
     "publicRuntimeTotal": 1415,
     "unpublishedPlaceIdOnly": 1389,
     "runtimeBaselineComplete": true,
-    "recommendedDishesKnown": 193,
+    "recommendedDishesKnown": 196,
     "featuredDishesKnown": 190,
-    "recommendationGap": 1222,
-    "recommendationGapWithAnyKnownSourceUrl": 887,
-    "recommendationGapWithCrawlableOfficialUrl": 229,
+    "recommendationGap": 1219,
+    "recommendationGapWithAnyKnownSourceUrl": 884,
+    "recommendationGapWithCrawlableOfficialUrl": 226,
     "recommendationGapWithRetainedThirdPartyOnly": 646,
     "recommendationGapNeedingNewDishSource": 347,
     "actionCounts": {
-      "collect_strict_recommended_dishes": 229,
+      "collect_strict_recommended_dishes": 226,
       "extract_retained_dish_source": 646,
       "find_independent_dish_source": 347,
-      "collect_source_backed_featured_dishes": 113,
-      "collect_opening_hours": 11,
+      "collect_source_backed_featured_dishes": 115,
+      "collect_opening_hours": 12,
       "collect_dinner_budget": 19,
       "collect_lunch_budget": 24,
       "collect_identity_detail_fields": 1,
@@ -300,26 +300,6 @@
       "gaps": [
         "recommendedDishes",
         "lunchBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1125
-    },
-    {
-      "googlePlaceId": "ChIJB_WeKhqMGGARiHfhZXYgVFo",
-      "name": "おむすび権米衛 御茶ノ水ソラシティ店",
-      "basicInfoState": "canonical",
-      "cuisine": "日式",
-      "distanceMeters": 823,
-      "sourceUrlCount": 1,
-      "crawlableOfficialUrlCount": 1,
-      "retainedThirdPartyUrlCount": 0,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 1,
-      "gaps": [
-        "recommendedDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
       ],
       "nextAction": "collect_strict_recommended_dishes",
       "priorityScore": 1125
@@ -1221,26 +1201,6 @@
         "recommendedDishes",
         "featuredDishes",
         "lunchBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1110
-    },
-    {
-      "googlePlaceId": "ChIJwVPZogOMGGARJe7b3LBQPsM",
-      "name": "三政",
-      "basicInfoState": "canonical",
-      "cuisine": "酒吧",
-      "distanceMeters": 1064,
-      "sourceUrlCount": 1,
-      "crawlableOfficialUrlCount": 1,
-      "retainedThirdPartyUrlCount": 0,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "lunchBudget",
-        "dinnerBudget"
       ],
       "nextAction": "collect_strict_recommended_dishes",
       "priorityScore": 1110
@@ -3234,27 +3194,6 @@
       "basicInfoState": "source_matched",
       "cuisine": "法餐",
       "distanceMeters": 867,
-      "sourceUrlCount": 1,
-      "crawlableOfficialUrlCount": 1,
-      "retainedThirdPartyUrlCount": 0,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1100
-    },
-    {
-      "googlePlaceId": "ChIJV6aN40CMGGARrvS6UIfFCVA",
-      "name": "おむすび権米衛飯田橋アイガーデンテラス店",
-      "basicInfoState": "source_matched",
-      "cuisine": "日式",
-      "distanceMeters": 873,
       "sourceUrlCount": 1,
       "crawlableOfficialUrlCount": 1,
       "retainedThirdPartyUrlCount": 0,
@@ -25718,6 +25657,26 @@
       "priorityScore": 710
     },
     {
+      "googlePlaceId": "ChIJV6aN40CMGGARrvS6UIfFCVA",
+      "name": "おむすび権米衛飯田橋アイガーデンテラス店",
+      "basicInfoState": "source_matched",
+      "cuisine": "日式",
+      "distanceMeters": 873,
+      "sourceUrlCount": 1,
+      "crawlableOfficialUrlCount": 1,
+      "retainedThirdPartyUrlCount": 0,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
       "googlePlaceId": "ChIJa8kQmgSMGGARv-J7qr2iU6Y",
       "name": "Ottotto BREWERY Awajicho",
       "basicInfoState": "source_matched",
@@ -26320,6 +26279,25 @@
       "featuredDishesKnown": 0,
       "gaps": [
         "featuredDishes"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
+      "googlePlaceId": "ChIJwVPZogOMGGARJe7b3LBQPsM",
+      "name": "三政",
+      "basicInfoState": "canonical",
+      "cuisine": "酒吧",
+      "distanceMeters": 1064,
+      "sourceUrlCount": 1,
+      "crawlableOfficialUrlCount": 1,
+      "retainedThirdPartyUrlCount": 0,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "lunchBudget",
+        "dinnerBudget"
       ],
       "nextAction": "collect_source_backed_featured_dishes",
       "priorityScore": 710
@@ -26985,6 +26963,25 @@
       "priorityScore": 405
     },
     {
+      "googlePlaceId": "ChIJB_WeKhqMGGARiHfhZXYgVFo",
+      "name": "おむすび権米衛 御茶ノ水ソラシティ店",
+      "basicInfoState": "canonical",
+      "cuisine": "日式",
+      "distanceMeters": 823,
+      "sourceUrlCount": 1,
+      "crawlableOfficialUrlCount": 1,
+      "retainedThirdPartyUrlCount": 0,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 1,
+      "gaps": [
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_opening_hours",
+      "priorityScore": 405
+    },
+    {
       "googlePlaceId": "ChIJc3y8okOMGGARcvEFuVzOJY8",
       "name": "Yakitori Brochette",
       "basicInfoState": "source_matched",
@@ -27390,7 +27387,7 @@
       "crawlableOfficialUrlCount": 1,
       "retainedThirdPartyUrlCount": 2,
       "recommendedDishesKnown": 2,
-      "featuredDishesKnown": 2,
+      "featuredDishesKnown": 3,
       "gaps": [
         "lunchBudget"
       ],
