@@ -6,6 +6,7 @@ on:
     paths:
       - ".github/workflows/official-index-web-field-enrichment.yml"
       - "scripts/database/collect_official_index_web_fields.py"
+      - "scripts/database/collect_official_index_web_fields_no_telephone.py"
       - "scripts/database/import_source_basic_web_evidence.py"
       - "scripts/database/merge_public_web_field_evidence.py"
       - "scripts/database/reconcile_private_official_web_consensus_v4.py"
@@ -44,6 +45,7 @@ jobs:
           mkdir -p _tmp
           python -m py_compile \
             scripts/database/collect_official_index_web_fields.py \
+            scripts/database/collect_official_index_web_fields_no_telephone.py \
             scripts/database/import_source_basic_web_evidence.py \
             scripts/database/merge_public_web_field_evidence.py \
             scripts/database/reconcile_private_official_web_consensus_v4.py
@@ -57,10 +59,10 @@ jobs:
           json.dump(s,open('_tmp/field-before.json','w'),sort_keys=True)
           print(json.dumps(s,sort_keys=True))
           PY
-      - name: Collect current official-page fields
+      - name: Collect current official-page fields without telephone
         run: |
           set -euo pipefail
-          python scripts/database/collect_official_index_web_fields.py \
+          python scripts/database/collect_official_index_web_fields_no_telephone.py \
             --database _tmp/eat-master-before.sqlite \
             --output _tmp/official-index-web-field-incoming.json \
             --workers 8 \
@@ -79,10 +81,13 @@ jobs:
           assert p['sourceBackedIdentityRequired'] is True
           assert p['rawHtmlPersisted'] is False
           assert p['robotsRespected'] is True
-          assert p['telephoneIncludedInCompletionTargets'] is True
+          assert p['telephoneIncludedInCompletionTargets'] is False
+          assert p['telephoneCollectionEnabled'] is False
           assert p['multiSnapshotEvidenceByPlaceId'] is True
           assert p['snapshotIdentity']==['googlePlaceId','finalUrl','contentHash']
           assert p['crossSnapshotClaimMerge'] is False
+          assert d['summary'].get('newFieldClaims',{}).get('contact.telephone',0)==0
+          assert d['summary'].get('newFieldClaims',{}).get('telephone',0)==0
           snapshots=[]; places=set()
           for row in d['rows']:
             places.add(row['googlePlaceId'])
@@ -99,9 +104,10 @@ jobs:
             assert ev['parserVersion']=='official-web-jsonld-v1'
             assert ev['rawHtmlPersisted'] is False
             assert row['fieldClaims']
+            assert 'telephone' not in row['fieldClaims']
             snapshots.append((row['googlePlaceId'],ev['finalUrl'],ev['contentHash']))
           assert len(snapshots)==len(set(snapshots))
-          print(json.dumps({'rows':len(snapshots),'places':len(places),'fieldCounts':d['summary']['fieldCounts'],'fetchCounts':d['summary']['fetchCounts']},ensure_ascii=False,sort_keys=True))
+          print(json.dumps({'rows':len(snapshots),'places':len(places),'fieldCounts':d['summary']['fieldCounts'],'fetchCounts':d['summary']['fetchCounts'],'telephoneCollectionEnabled':False},ensure_ascii=False,sort_keys=True))
           PY
       - name: Merge and validate master effect
         run: |
@@ -125,6 +131,7 @@ jobs:
           assert after['fieldTasks'] <= before['fieldTasks'], (before,after)
           for key,value in before['missing'].items():
             assert after['missing'].get(key,0) <= value, (key,before,after)
+          assert after['missing'].get('telephone') == before['missing'].get('telephone')
           json.dump(after,open('_tmp/field-after.json','w'),sort_keys=True)
           print(json.dumps({'before':before,'after':after},sort_keys=True))
           PY
