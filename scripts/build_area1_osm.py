@@ -34,6 +34,11 @@ CUISINE_MAP = {
     'donburi': '盖饭', 'gyoza': '饺子', 'hotpot': '锅物', 'barbecue': '烧烤',
     'coffee_shop': '咖啡', 'dessert': '甜品', 'cake': '甜品', 'ice_cream': '甜品',
 }
+PRACTICAL_SOURCE_TAGS = (
+    'payment:credit_cards',
+    'internet_access',
+    'wheelchair',
+)
 
 
 def haversine(a, b, c, d):
@@ -63,8 +68,8 @@ def curated_names():
 def fetch_overpass():
     # Keep the independent OSM candidate universe aligned with the repository's
     # Google food-business scope. `out center tags` retains all public OSM tags;
-    # the serializer below keeps selected native website/phone metadata without
-    # treating either field as identity proof.
+    # the serializer below keeps selected native website/phone/practical metadata
+    # without treating any of those fields as identity proof.
     query = f'''[out:json][timeout:180];(
  nwr(around:{RADIUS_M},{CENTER_LAT},{CENTER_LNG})["amenity"~"^(restaurant|fast_food|cafe|food_court|bar|pub|biergarten|ice_cream)$"]["name"];
  nwr(around:{RADIUS_M},{CENTER_LAT},{CENTER_LNG})["shop"~"^(bakery|pastry|confectionery|deli|coffee|tea|ice_cream)$"]["name"];
@@ -152,6 +157,21 @@ def source_phones(tags):
     return output[:4]
 
 
+def source_practical_tags(tags):
+    """Retain only explicit OSM practical tags that have conservative boolean semantics.
+
+    Mapping to canonical fields happens later and only for exact reviewed OSM bindings.
+    Ambiguous values such as wheelchair=limited remain retained source text but are not
+    automatically converted to booleans.
+    """
+    output = {}
+    for key in PRACTICAL_SOURCE_TAGS:
+        raw = str(tags.get(key) or '').strip()
+        if raw:
+            output[key] = raw[:80]
+    return output
+
+
 def main():
     existing = curated_names()
     raw = fetch_overpass()
@@ -162,6 +182,8 @@ def main():
     website_values = 0
     phone_rows = 0
     phone_values = 0
+    practical_rows = 0
+    practical_tag_values = 0
 
     for element in raw.get('elements', []):
         tags = element.get('tags') or {}
@@ -180,6 +202,7 @@ def main():
         overlap = norm(name) in existing
         websites = source_websites(tags)
         phones = source_phones(tags)
+        practical_tags = source_practical_tags(tags)
         if overlap:
             overlap_count += 1
         if websites:
@@ -188,10 +211,13 @@ def main():
         if phones:
             phone_rows += 1
             phone_values += len(phones)
+        if practical_tags:
+            practical_rows += 1
+            practical_tag_values += len(practical_tags)
 
         # Keep curated-name overlaps instead of excluding them. They are useful
-        # independent identity bridges. Website/phone values remain source metadata;
-        # Google status stays pending and no identity is promoted by this builder.
+        # independent identity bridges. Website/phone/practical values remain source
+        # metadata; Google status stays pending and no identity is promoted here.
         output.append({
             'id': 'osm-' + element.get('type', 'x')[0] + '-' + str(element.get('id')),
             'profile': 'TOKYO',
@@ -211,6 +237,7 @@ def main():
             'lng': round(float(lng), 6),
             'sourceWebsites': websites,
             'sourcePhones': phones,
+            'sourcePracticalTags': practical_tags,
             'googlePlaceId': None,
             'googleStatus': 'pending',
             'source': 'OpenStreetMap',
@@ -235,6 +262,8 @@ def main():
         'sourceWebsiteValues': website_values,
         'rowsWithSourcePhones': phone_rows,
         'sourcePhoneValues': phone_values,
+        'rowsWithSourcePracticalTags': practical_rows,
+        'sourcePracticalTagValues': practical_tag_values,
         'googleStatus': 'pending',
         'identityPromotions': 0,
     }, ensure_ascii=False))
