@@ -71,7 +71,7 @@ def main():
         command=[sys.executable,'scripts/database/build_master.py','--output',str(database)]
         if args.reset: command.append('--reset')
         run(command,env,out,'master')
-        for name in ['validate_master','validate_derived_practical','validate_source_semantics',
+        for name in ['validate_master','validate_derived_practical','validate_hotpepper_rich_reference_fields','validate_source_semantics',
                      'validate_official_identity','validate_osm_identity','validate_retained_field_resolver',
                      'validate_hotpepper_candidate_fields','validate_ingestion_plan']:
             run([sys.executable,'scripts/database/'+name+'.py',str(database)],env,out,name)
@@ -111,7 +111,14 @@ def main():
               'smokingPolicyRows':stats.get('smokingPolicyKnown',0),'parkingPolicyRows':stats.get('parkingPolicyKnown',0),
               'seatingCapacityRows':stats.get('seatingCapacityKnown',0),'partyCapacityRows':stats.get('partyCapacityKnown',0),
               'acceptedCreditCardsRows':stats.get('acceptedCreditCardsKnown',0),'mobileCouponAvailabilityRows':stats.get('mobileCouponAvailabilityKnown',0),
-              'budgetMemoRows':stats.get('budgetMemoKnown',0),'wifiRows':stats.get('wifiKnown',0),
+              'budgetMemoRows':stats.get('budgetMemoKnown',0),
+              'nameKanaRows':stats.get('nameKanaKnown',0),'couponUrlRows':stats.get('couponUrlKnown',0),
+              'mobileAccessReferenceRows':stats.get('mobileAccessReferenceKnown',0),
+              'hotPepperOpeningHoursReferenceRows':stats.get('hotPepperOpeningHoursReferenceKnown',0),
+              'hotPepperClosureReferenceRows':stats.get('hotPepperClosureReferenceKnown',0),
+              'hotPepperSourceCatchRows':stats.get('hotPepperSourceCatchKnown',0),
+              'hotPepperReferenceMetadataRows':stats.get('hotPepperReferenceMetadataKnown',0),
+              'wifiRows':stats.get('wifiKnown',0),
               'barrierFreeRows':stats.get('barrierFreeKnown',0),'childrenWelcomeRows':stats.get('childrenWelcomeKnown',0),
               'englishMenuRows':stats.get('englishMenuKnown',0),'horigotatsuRows':stats.get('horigotatsuKnown',0),
               'karaokeRows':stats.get('karaokeKnown',0),'lateNightAfter23Rows':stats.get('lateNightAfter23Known',0),
