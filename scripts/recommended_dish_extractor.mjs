@@ -48,6 +48,10 @@ export function normalizePlainText(value) {
 // keeps useful source detail whenever the source-native text contains it.
 export const DISH_RULES = [
   // Source-native Japanese normalization recovered from retained source evidence.
+  // These three are supported by explicit menu descriptions, not inferred from cuisine.
+  [/ズッパフォルテ/i, '那不勒斯辣味炖猪杂'],
+  [/神経〆活魚|活魚神経〆|活魚神経締め/i, '神经处理鲜鱼'],
+  [/釣り魚/i, '钓获鲜鱼'],
   [/もも貴族焼\s*[（(]?たれ[）)]?/i, '鸡腿贵族烧（酱汁）'],
   [/厚切上タン/i, '上等厚切牛舌'],
   [/厚切りタン/i, '厚切牛舌'],
