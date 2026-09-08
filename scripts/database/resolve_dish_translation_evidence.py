@@ -31,6 +31,7 @@ FEATURED_CLASSES = {
     "source_menu_text",
     "source_pdf_menu_text",
     "tabelog_menu_text",
+    "hotpepper_menu_text",
 }
 
 _HAN = re.compile(r"[\u3400-\u9fff]")
