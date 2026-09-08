@@ -2,11 +2,12 @@
 """Import public-web field evidence for already source-backed restaurant identities.
 
 The input is generated only after a public HTTPS page independently agrees with the
-currently source-backed restaurant identity, or from an already retained/reviewed
-official-page identity whose current page still matches that retained official name.
-This importer performs no network requests. It never upgrades an ID-only identity; it
-only adds field observations to an identity that is already publishable and non-conflict
-in the SQLite master.
+currently source-backed restaurant identity, from an already retained/reviewed official
+page whose current page still matches that retained official name, or from the exact
+current independent branch page already retained by a reviewed multi-source currentness
+identity consensus. This importer performs no network requests. It never upgrades an
+ID-only identity; it only adds field observations to an identity that is already
+publishable and non-conflict in the SQLite master.
 
 V2 allows multiple verified page snapshots for the same Place ID. Snapshot identity is
 `(Place ID, final URL, content hash)`. Canonical fields are checked again at import time,
@@ -37,6 +38,7 @@ ALLOWED_IDENTITY_RULES = {
     "official_name_plus_phone",
     "official_name_plus_geo",
     "retained_verified_official_page",
+    "retained_multisource_currentness_page",
 }
 CANONICAL_EQUIVALENTS = {
     "address": ("address",),
@@ -177,6 +179,16 @@ def import_evidence(db, id_set: set[str], conflict_places: set[str], stamp: str)
         if identity_check.get("identityRule") not in ALLOWED_IDENTITY_RULES:
             counts["identity_rule_invalid"] += 1
             continue
+        if identity_check.get("identityRule") == "retained_multisource_currentness_page":
+            if identity_check.get("preExistingSourceMatchedIdentity") is not True:
+                counts["currentness_identity_precondition_missing"] += 1
+                continue
+            if identity_check.get("freshNameAndLocationReconfirmed") is not True:
+                counts["currentness_page_reconfirmation_missing"] += 1
+                continue
+            if identity_check.get("proximityOnlyBindingAllowed") is not False:
+                counts["currentness_page_identity_policy_invalid"] += 1
+                continue
 
         payload = {
             "placeId": pid,
@@ -197,7 +209,7 @@ def import_evidence(db, id_set: set[str], conflict_places: set[str], stamp: str)
             final_url,
             retrieved_at,
             acquisition_method,
-            "public HTTPS page tied to an independently source-backed/reviewed official identity; robots respected; raw HTML not retained",
+            "public HTTPS page tied to an independently source-backed identity; robots respected; raw HTML not retained",
             stamp,
         )
         core.upsert_binding(
@@ -220,62 +232,53 @@ def import_evidence(db, id_set: set[str], conflict_places: set[str], stamp: str)
         if hours is not None:
             fields.append(("hours.raw", hours, True))
         cuisine = normalized_cuisine(claims.get("cuisineNormalized"))
-        if cuisine:
+        if cuisine is not None:
             fields.append(("cuisine", cuisine, True))
         geo = normalized_geo(claims.get("geo"))
-        if geo:
+        if geo is not None:
             fields.append(("coordinates", geo, True))
-        price_range = claims.get("priceRange")
-        if isinstance(price_range, str) and price_range.strip():
-            fields.append(("budget.web_price_range_raw", price_range.strip(), False))
+        price = claims.get("priceRange")
+        if isinstance(price, str) and price.strip():
+            fields.append(("budget.raw.price_range", price.strip(), False))
         telephone = normalized_telephone(claims.get("telephone"))
-        if telephone:
+        if telephone is not None:
             fields.append(("contact.telephone", telephone, True))
-        fields.append(("source_websites", [final_url], False))
-        fields.append(("provenance.public_web_content_hash", content_hash, False))
 
         for field_key, value, canonical in fields:
-            resolve_now = canonical and canonical_missing(known, pid, field_key)
-            oid = core.add_field(
+            if canonical and not canonical_missing(known, pid, field_key):
+                counts[f"already_known_at_import:{field_key}"] += 1
+                continue
+            core.field_observation(
                 db,
                 pid,
-                srid,
                 field_key,
                 value,
-                "reviewed",
-                "official" if canonical else "official-web",
-                retrieved_at,
+                srid,
+                "explicit" if canonical else "raw",
+                1.0 if canonical else 0.75,
                 stamp,
-                resolve_field=resolve_now,
             )
-            if not canonical:
-                continue
-            if resolve_now and oid is not None:
+            if canonical:
+                core.resolve_missing(db, pid, field_key, value, srid, RULE_VERSION, stamp)
+                for equivalent in CANONICAL_EQUIVALENTS[field_key]:
+                    known.add((pid, equivalent))
                 counts[field_key] += 1
-                known.add((pid, field_key))
             else:
-                counts[f"already_known_at_import:{field_key}"] += 1
+                counts[field_key] += 1
         accepted += 1
 
-    canonical_keys = tuple(CANONICAL_EQUIVALENTS)
     return {
         "inputRows": len(doc.get("rows") or []),
         "acceptedRows": accepted,
         "acceptedSnapshots": accepted,
         "uniqueSnapshotKeys": len(seen_snapshots),
-        "resolvedFields": sum(counts[key] for key in canonical_keys),
-        "fieldCounts": {
-            key: counts[key]
-            for key in canonical_keys
-            if counts[key]
-        },
-        "skipped": {
-            key: value for key, value in sorted(counts.items())
-            if key not in canonical_keys
-        },
+        "resolvedFields": sum(counts[key] for key in CANONICAL_EQUIVALENTS),
+        "fieldCounts": {key: counts[key] for key in CANONICAL_EQUIVALENTS if counts[key]},
+        "skipped": {key: value for key, value in sorted(counts.items()) if key not in CANONICAL_EQUIVALENTS and not key.startswith("budget.raw")},
         "ruleVersion": doc_version,
         "currentRuleVersion": RULE_VERSION,
+        "networkRequests": 0,
         "importTimeMissingOnly": True,
-        "telephoneCanonicalMissingOnly": True,
         "multiSnapshotCompatible": True,
+        "telephoneCanonicalMissingOnly": True,
     }
