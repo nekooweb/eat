@@ -44,6 +44,7 @@ def field_missing(known, pid, kind):
         "hours": ("hours.raw", "hours.reference.legacy", "hours.normalized.legacy"),
         "lunch_budget": ("budget.lunch.range", "budget.lunch.legacy_range"),
         "dinner_budget": ("budget.dinner.range", "budget.dinner.legacy_range"),
+        "telephone": ("contact.telephone",),
     }[kind]
     return not any((pid, key) in known for key in equivalents)
 
@@ -125,10 +126,16 @@ def main():
         if states.get(pid) not in ("verified", "source_matched") or pid in conflicts:
             continue
         if pid in existing_rows:
+            # The current evidence schema deliberately retains one page/content
+            # hash per Place ID. Existing rows are left stable here; missing-field
+            # extension across a changed page requires a provenance-schema upgrade.
             counts["reused_existing_evidence"] += 1
             continue
         missing = [
-            kind for kind in ("address", "coordinates", "cuisine", "hours", "lunch_budget", "dinner_budget")
+            kind for kind in (
+                "address", "coordinates", "cuisine", "hours",
+                "lunch_budget", "dinner_budget", "telephone"
+            )
             if field_missing(known, pid, kind)
         ]
         if not missing:
@@ -150,6 +157,7 @@ def main():
     allowed_urls = set(unique_urls)
     counts["target_rows"] = len(targets)
     counts["unique_pages"] = len(unique_urls)
+    counts["telephone_completion_target_enabled"] = 1
 
     pages = {}
     with concurrent.futures.ThreadPoolExecutor(max_workers=max(1, min(12, args.workers))) as pool:
@@ -206,7 +214,7 @@ def main():
         if ("lunch_budget" in missing or "dinner_budget" in missing) and str(fact.get("priceRange") or "").strip():
             claims["priceRange"] = str(fact.get("priceRange")).strip()
             field_counts["budget.web_price_range_raw"] += 1
-        if str(fact.get("telephone") or "").strip():
+        if "telephone" in missing and str(fact.get("telephone") or "").strip():
             claims["telephone"] = str(fact.get("telephone")).strip()
             field_counts["contact.telephone"] += 1
         if not claims:
@@ -244,6 +252,8 @@ def main():
             "rawHtmlPersisted": False,
             "robotsRespected": True,
             "restrictedAccessBypass": False,
+            "telephoneIncludedInCompletionTargets": True,
+            "existingSinglePageEvidenceNotRewrittenAcrossContentHashes": True,
         },
         "summary": {
             "rows": len(rows),
