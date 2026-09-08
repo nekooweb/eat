@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import vm from 'node:vm';
+import { materializePublicHours, PUBLIC_HOURS_POLICY } from './public_hours_runtime.mjs';
 
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
 const DATA = path.join(ROOT, 'data');
@@ -22,6 +23,10 @@ function parseAssignment(name) {
 
 const rows = parseAssignment('GOOGLE_INVENTORY_RESTAURANTS');
 const stats = parseAssignment('GOOGLE_INVENTORY_STATS');
+
+// Public Pages exposes one schedule field only. Any source prose or legacy
+// schedule object must be normalized to a stable Chinese string or hidden.
+const hoursStats = materializePublicHours(rows);
 
 const sandbox = {
   window: {
@@ -87,6 +92,12 @@ if ((patchStats.inventory.unfilledNoSpecificSignal || 0) !== unfilledDishRows) t
 
 const finalStats = {
   ...stats,
+  hoursKnown: rows.filter((row) => typeof row.hoursReference === 'string' && row.hoursReference.trim()).length,
+  hoursRuntimePolicy: PUBLIC_HOURS_POLICY,
+  hoursNormalizedRows: hoursStats.normalized,
+  hoursHiddenUnparseableRows: hoursStats.hiddenUnparseable,
+  hoursRowsWithoutSource: hoursStats.noScheduleSource,
+  hoursLegacyFieldsStripped: hoursStats.strippedLegacyFields,
   recommendedDishesKnown: rows.filter((row) => Array.isArray(row.recommendedDishes) && row.recommendedDishes.length > 0).length,
   chineseDishDisplayRows,
   chineseDishDisplayCoveragePct: Number(((chineseDishDisplayRows / rows.length) * 100).toFixed(1)),
@@ -101,7 +112,7 @@ const finalStats = {
 
 fs.writeFileSync(
   runtimePath,
-  `// Generated public runtime. Approximate Chinese dish hints are materialized only at this display boundary; they are not source evidence.\n` +
+  `// Generated public runtime. Public opening hours use one normalized Chinese field (hoursReference) or are hidden. Approximate Chinese dish hints are materialized only at this display boundary; they are not source evidence.\n` +
   `window.GOOGLE_INVENTORY_RESTAURANTS=${JSON.stringify(rows)};\n` +
   `window.GOOGLE_INVENTORY_STATS=${JSON.stringify(finalStats)};\n`,
   'utf8'
