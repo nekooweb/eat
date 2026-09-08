@@ -110,6 +110,11 @@ jobs:
             exit 0
           fi
           git commit -m "Update source-backed recommended dish evidence"
+          # Build helpers may rewrite tracked derivative files that are deliberately
+          # not part of this evidence commit. Reset only the runner worktree to the
+          # just-created commit before rebasing; the three staged targets are safe
+          # because they are already recorded in HEAD.
+          git reset --hard HEAD
           git fetch origin main
           git rebase origin/main
           git push origin HEAD:main
