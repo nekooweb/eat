@@ -29,17 +29,21 @@ jobs:
           node-version: '22'
       - name: Enforce no-paid-data-API policy
         run: node scripts/audit_no_paid_apis.mjs
-      - name: Check reviewer syntax
-        run: node --check scripts/review_independent_dish_source_candidates.mjs
+      - name: Check independent-source tooling syntax
+        run: |
+          node --check scripts/review_independent_dish_source_candidates_v2.mjs
+          node --check scripts/apply_reviewed_independent_source_overlay.mjs
+          node --check scripts/audit_reviewed_independent_source_overlay.mjs
       - name: Rebuild current source runtime and queues
         run: python3 scripts/reload_data.py --public-only --outdir _audit/data-reload
-      - name: Review high-confidence Overture website proposals
+      - name: Review high-confidence Overture website proposals with bounded same-origin branch discovery
         env:
           INDEPENDENT_SOURCE_REVIEW_TIMEOUT_MS: "7000"
-          INDEPENDENT_SOURCE_REVIEW_CONCURRENCY: "8"
+          INDEPENDENT_SOURCE_REVIEW_CONCURRENCY: "6"
+          INDEPENDENT_SOURCE_REVIEW_SUBPAGE_LIMIT: "4"
         run: |
           set -euo pipefail
-          node scripts/review_independent_dish_source_candidates.mjs \
+          node scripts/review_independent_dish_source_candidates_v2.mjs \
             data/independent_dish_source_candidates.json \
             data/reviewed_independent_dish_sources.json | tee /tmp/independent-source-review-summary.json
           test -s data/reviewed_independent_dish_sources.json
@@ -48,17 +52,20 @@ jobs:
           const x = JSON.parse(fs.readFileSync('data/reviewed_independent_dish_sources.json', 'utf8'));
           const p = x.policy || {};
           const s = x.summary || {};
-          if (p.strictAutoOnly !== true || p.sourceOverlayOnly !== true) throw new Error('strict review policy missing');
+          if (x.schemaVersion !== 2 || p.strictAutoOnly !== true || p.sourceOverlayOnly !== true) throw new Error('strict v2 review policy missing');
           if (p.paidGoogleDataApiCalls !== 0 || p.googleDisplayPayloadUsed !== false) throw new Error('reviewer violated zero-paid/no-Google-display policy');
           if (p.identityBindingChanges !== 0 || p.runtimeNameMutationAllowed !== false || p.runtimeCoordinateMutationAllowed !== false || p.runtimeIdentityMutationAllowed !== false) throw new Error('reviewer may not mutate identity/core runtime fields');
           if (p.dishEvidenceCreatedByReview !== false || p.genericBrandHomepageAloneAccepted !== false) throw new Error('reviewer crossed source/evidence boundary');
+          if (p.boundedSameOriginSubpageDiscovery !== true || p.explicitLocationEvidenceRequiredUnlessExactSpecificStructured !== true || p.existingSourceResolutionConflictGuardsHonored !== true || p.httpsFinalUrlRequired !== true) throw new Error('bounded branch/location review safeguards missing');
           if (s.catalogTotal !== 2804 || s.publicRuntimeTotal !== JSON.parse(fs.readFileSync('data/google_inventory_detail_queue.json', 'utf8')).summary.publicRuntimeTotal) throw new Error('review baseline mismatch');
-          if (s.approvedRows > s.highConfidenceInputRows) throw new Error('approved count exceeds strict-review input');
+          if (s.approvedRows > s.highConfidenceInputRows || s.approvedRows !== (x.rows || []).length) throw new Error('approved count mismatch');
           const banned = /(?:^|\.)(?:gnavi\.co\.jp|retty\.me|tabelog\.com|hotpepper\.jp|foursquare\.com|autoreserve\.com|ekiten\.jp)$/i;
           for (const row of x.rows || []) {
             if (row.reviewState !== 'strict_auto' || !row.googlePlaceId || !Array.isArray(row.sourceWebsites) || !row.sourceWebsites.length) throw new Error('invalid reviewed source row');
             for (const raw of row.sourceWebsites) {
-              const host = new URL(raw).hostname.toLowerCase().replace(/^www\./, '');
+              const url = new URL(raw);
+              const host = url.hostname.toLowerCase().replace(/^www\./, '');
+              if (url.protocol !== 'https:') throw new Error(`reviewed source must finish on HTTPS: ${raw}`);
               if (banned.test(host) || /tripadvisor\.|yelp\./i.test(host) || host === 'loco.yahoo.co.jp' || host === 'paypaygourmet.yahoo.co.jp' || host === 'restaurant.ikyu.com' || host === 'bar-navi.suntory.co.jp') {
                 throw new Error(`third-party aggregator escaped strict source review: ${host}`);
               }
@@ -66,14 +73,42 @@ jobs:
           }
           console.log(JSON.stringify(s));
           NODE
+      - name: Materialize reviewed independent source URLs into current runtime and rebuild dish plans
+        run: |
+          set -euo pipefail
+          node scripts/apply_reviewed_independent_source_overlay.mjs | tee /tmp/independent-source-overlay-summary.json
+          node scripts/audit_reviewed_independent_source_overlay.mjs
+          node scripts/audit_google_inventory_runtime.mjs
+          node scripts/build_google_inventory_detail_queue.mjs data/google_inventory_detail_queue.json
+          node scripts/build_dish_batch_plan.mjs data/dish_batch_plan.json 8
+          node scripts/build_independent_dish_source_candidate_plan.mjs data/independent_dish_source_candidates.json 8
+          node - <<'NODE'
+          const fs = require('fs');
+          const reviewed = JSON.parse(fs.readFileSync('data/reviewed_independent_dish_sources.json', 'utf8'));
+          const queue = JSON.parse(fs.readFileSync('data/google_inventory_detail_queue.json', 'utf8'));
+          const candidates = JSON.parse(fs.readFileSync('data/independent_dish_source_candidates.json', 'utf8'));
+          const reviewedIds = new Set((reviewed.rows || []).map((row) => row.googlePlaceId));
+          for (const row of queue.rows || []) {
+            if (reviewedIds.has(row.googlePlaceId) && row.recommendedDishesKnown === 0 && row.crawlableOfficialUrlCount < 1) {
+              throw new Error(`reviewed independent source did not enter crawlable source lane: ${row.googlePlaceId}`);
+            }
+          }
+          if (candidates.summary?.currentIndependentDishSourceGap !== queue.summary?.recommendationGapNeedingNewDishSource) throw new Error('independent source plan not rebuilt from overlaid runtime');
+          console.log(JSON.stringify({ reviewed: reviewed.summary, queue: queue.summary, candidates: candidates.summary }));
+          NODE
       - name: Re-check no-paid-data-API policy
         run: node scripts/audit_no_paid_apis.mjs
-      - name: Commit strict reviewed source overlay
+      - name: Commit strict reviewed source overlay and rebuilt plans
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/reviewed_independent_dish_sources.json
+          git add \
+            data/reviewed_independent_dish_sources.json \
+            data/google_inventory_runtime.js \
+            data/google_inventory_detail_queue.json \
+            data/dish_batch_plan.json \
+            data/independent_dish_source_candidates.json
           if git diff --cached --quiet; then
             echo "No strict independent-source review changes."
             exit 0
@@ -83,3 +118,11 @@ jobs:
           git fetch origin main
           git rebase origin/main
           git push origin HEAD:main
+
+  validate_database:
+    needs: review
+    permissions:
+      contents: read
+    uses: ./.github/workflows/database-contract.yml
+    with:
+      sync_main: true
