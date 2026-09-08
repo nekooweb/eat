@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Resolve retained source-native dish evidence into canonical Chinese dish fields.
 
-Source pages are NOT required to contain Chinese.  The retained evidence layer keeps
+Source pages are NOT required to contain Chinese. The retained evidence layer keeps
 source-native dish text (normally Japanese) together with provenance; this resolver
 accepts only already-source-backed semantic evidence whose `nameZh` translation has
 passed the deterministic dish normalizer, and materializes Chinese arrays in SQLite.
@@ -19,6 +19,7 @@ import master_import_core as core
 
 RULE_VERSION = "dish-source-translation-zh-v1"
 RESOLVER_PROVIDER = "dish_evidence_resolver"
+RESOLVER_PRIORITY = 85
 RECOMMENDATION_CLASSES = {"source_recommendation_text"}
 FEATURED_CLASSES = {
     "retained_source_menu_item",
@@ -81,6 +82,30 @@ def _dedupe(items: list[dict], limit: int = 6) -> list[dict]:
         key=lambda x: (x.get("checkedAt", ""), x["nameZh"]),
         reverse=True,
     )[:limit]
+
+
+def _resolve_canonical(db, place_id: str, field_key: str, observation_id: str, stamp: str):
+    """Prefer validated source-backed translations over the legacy snapshot.
+
+    The normal core resolver assigns priority by source provider. This derived field is
+    an aggregate over already validated evidence from multiple providers, so it uses a
+    fixed priority above the legacy snapshot while remaining below direct official
+    identity fields. It cannot affect identity because it only writes dish field keys.
+    """
+    db.execute(
+        """
+        INSERT INTO field_resolutions(
+          place_id,field_key,observation_id,resolution_state,rule_version,resolver_priority,resolved_at
+        ) VALUES(?,?,?,?,?,?,?)
+        ON CONFLICT(place_id,field_key) DO UPDATE SET
+          observation_id=excluded.observation_id,
+          resolution_state=excluded.resolution_state,
+          rule_version=excluded.rule_version,
+          resolver_priority=excluded.resolver_priority,
+          resolved_at=excluded.resolved_at
+        """,
+        (place_id, field_key, observation_id, "known", RULE_VERSION, RESOLVER_PRIORITY, stamp),
+    )
 
 
 def resolve_source_backed_dishes(
@@ -181,11 +206,7 @@ def resolve_source_backed_dishes(
                 observed,
                 rule=RULE_VERSION,
             )
-            core.resolve(db, pid, field_key, oid, "known", RESOLVER_PROVIDER, stamp)
-            db.execute(
-                "UPDATE field_resolutions SET rule_version=? WHERE place_id=? AND field_key=? AND observation_id=?",
-                (RULE_VERSION, pid, field_key, oid),
-            )
+            _resolve_canonical(db, pid, field_key, oid, stamp)
             resolved_places[target] += 1
             resolved_items[target] += len(names)
 
