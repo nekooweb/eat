@@ -58,7 +58,16 @@ jobs:
           if (p.dishEvidenceCreatedByReview !== false || p.genericBrandHomepageAloneAccepted !== false) throw new Error('reviewer crossed source/evidence boundary');
           if (s.catalogTotal !== 2804 || s.publicRuntimeTotal !== 1415) throw new Error('review baseline mismatch');
           if (s.approvedRows > s.highConfidenceInputRows) throw new Error('approved count exceeds strict-review input');
-          if ((x.rows || []).some((row) => row.reviewState !== 'strict_auto' || !row.googlePlaceId || !Array.isArray(row.sourceWebsites) || !row.sourceWebsites.length)) throw new Error('invalid reviewed source row');
+          const banned = /(?:^|\.)(?:gnavi\.co\.jp|retty\.me|tabelog\.com|hotpepper\.jp|foursquare\.com|autoreserve\.com|ekiten\.jp)$/i;
+          for (const row of x.rows || []) {
+            if (row.reviewState !== 'strict_auto' || !row.googlePlaceId || !Array.isArray(row.sourceWebsites) || !row.sourceWebsites.length) throw new Error('invalid reviewed source row');
+            for (const raw of row.sourceWebsites) {
+              const host = new URL(raw).hostname.toLowerCase().replace(/^www\./, '');
+              if (banned.test(host) || /tripadvisor\.|yelp\./i.test(host) || host === 'loco.yahoo.co.jp' || host === 'paypaygourmet.yahoo.co.jp' || host === 'restaurant.ikyu.com' || host === 'bar-navi.suntory.co.jp') {
+                throw new Error(`third-party aggregator escaped strict source review: ${host}`);
+              }
+            }
+          }
           console.log(JSON.stringify(s));
           NODE
       - name: Re-check no-paid-data-API policy
