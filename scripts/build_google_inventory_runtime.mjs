@@ -9,6 +9,7 @@ const basicPath = path.join(DATA, 'google_basic_source_matches.json');
 const detailEvidencePath = path.join(DATA, 'google_inventory_detail_evidence.json');
 const hotPepperFactsPath = path.join(DATA, 'hotpepper_catalog_facts.json');
 const webFieldEvidencePath = path.join(DATA, 'source_basic_web_field_evidence.json');
+const reviewedOfficialSourcesPath = path.join(DATA, 'reviewed_official_runtime_sources.json');
 const outputPath = path.join(DATA, 'google_inventory_runtime.js');
 
 function readJson(file) {
@@ -167,6 +168,36 @@ if ((webFieldDoc.policy?.paidDataApiCalls ?? 0) !== 0 || webFieldDoc.policy?.goo
 }
 const webFieldById = new Map((webFieldDoc.rows || []).filter((row) => row.googlePlaceId).map((row) => [row.googlePlaceId, row]));
 
+const reviewedOfficialDoc = fs.existsSync(reviewedOfficialSourcesPath)
+  ? readJson(reviewedOfficialSourcesPath)
+  : {
+      schemaVersion: 1,
+      policy: { reviewedRowsOnly: true, conflictRowsPublished: false, paidGoogleDataApiCalls: 0 },
+      summary: { reviewedRows: 0, conflictDeferredRows: 0 },
+      rows: []
+    };
+if (
+  reviewedOfficialDoc.policy?.reviewedRowsOnly !== true
+  || reviewedOfficialDoc.policy?.conflictRowsPublished !== false
+  || (reviewedOfficialDoc.policy?.paidGoogleDataApiCalls ?? 0) !== 0
+  || reviewedOfficialDoc.policy?.runtimeNameMutationAllowed === true
+  || reviewedOfficialDoc.policy?.runtimeCoordinateMutationAllowed === true
+  || reviewedOfficialDoc.policy?.runtimeIdentityMutationAllowed === true
+  || reviewedOfficialDoc.policy?.dishEvidencePromotionByOverlayAllowed === true
+) {
+  throw new Error('Reviewed official source overlay violates runtime source-only policy');
+}
+if ((reviewedOfficialDoc.rows || []).some((item) =>
+  item.reviewState !== 'reviewed'
+  || !idSet.has(item.googlePlaceId)
+  || !Array.isArray(item.sourceWebsites)
+  || !item.sourceWebsites.length
+  || item.sourceWebsites.some((url) => !String(url || '').startsWith('https://'))
+)) {
+  throw new Error('Reviewed official source overlay contains an invalid/non-reviewed row');
+}
+const reviewedOfficialById = new Map((reviewedOfficialDoc.rows || []).map((row) => [row.googlePlaceId, row]));
+
 const rows = ids.map((pid) => {
   const rich = canonicalById.get(pid);
   let row;
@@ -263,6 +294,22 @@ const rows = ids.map((pid) => {
     row.identityOfficialEvidence = true;
   }
 
+  // SQLite already treats non-conflicting official_candidate_index records as
+  // reviewed official identity bindings. Mirror only their source URLs into an
+  // already-named public row. This does NOT publish ID-only rows and does not
+  // mutate name, coordinates, provider identity, or any dish field.
+  const reviewedOfficial = reviewedOfficialById.get(pid);
+  if (
+    reviewedOfficial
+    && row.basicInfoState !== 'google_place_id_only'
+    && row.nameKnown === true
+    && String(row.name || '').trim()
+  ) {
+    for (const url of reviewedOfficial.sourceWebsites || []) mergeWebsite(row, url);
+    row.reviewedOfficialSourceOverlay = true;
+    row.reviewedOfficialSourceCheckedAt = reviewedOfficial.checkedAt || reviewedOfficialDoc.checkedAt || null;
+  }
+
   const evidence = detailById.get(pid);
   if (evidence) {
     row.recommendedDishes = dedupeRecommendationNames([
@@ -314,10 +361,19 @@ const runtimeStats = {
   hotPepperBasicDetailRows: publishedRows.filter((row) => row.hotPepperBasicDetail).length,
   publicWebFieldEvidenceRows: publishedRows.filter((row) => row.publicWebFieldEvidence).length,
   identityOfficialEvidenceRows: publishedRows.filter((row) => row.identityOfficialEvidence).length,
+  reviewedOfficialOverlayRows: reviewedOfficialDoc.summary?.reviewedRows || 0,
+  reviewedOfficialOverlayConflictDeferredRows: reviewedOfficialDoc.summary?.conflictDeferredRows || 0,
+  reviewedOfficialOverlayAppliedRows: publishedRows.filter((row) => row.reviewedOfficialSourceOverlay).length,
+  reviewedOfficialOverlayAppliedRowsWithMenuUrl: publishedRows.filter((row) => {
+    if (!row.reviewedOfficialSourceOverlay) return false;
+    const source = reviewedOfficialById.get(row.googlePlaceId);
+    return Array.isArray(source?.menuUrls) && source.menuUrls.length > 0;
+  }).length,
   sourceBasicProviders: basicDoc.summary?.providers || {},
   detailEvidenceRestaurants: detailById.size,
   detailEvidenceSummary: detailEvidence.summary || {},
-  publicWebFieldEvidenceSummary: webFieldDoc.summary || {}
+  publicWebFieldEvidenceSummary: webFieldDoc.summary || {},
+  reviewedOfficialOverlaySummary: reviewedOfficialDoc.summary || {}
 };
 
 if (rows.length !== 2804 || new Set(rows.map((row) => row.googlePlaceId)).size !== 2804) {
@@ -334,6 +390,9 @@ if (publishedRows.some((row) => row.basicInfoState === 'google_place_id_only')) 
 }
 if (publishedRows.some((row) => finite(row.distanceMeters) && (row.distanceMeters < 0 || row.distanceMeters > 1200))) {
   throw new Error('Runtime contains an out-of-radius durable distance');
+}
+if (publishedRows.some((row) => row.reviewedOfficialSourceOverlay && !reviewedOfficialById.has(row.googlePlaceId))) {
+  throw new Error('Runtime contains an untraceable reviewed official source overlay marker');
 }
 
 fs.writeFileSync(
