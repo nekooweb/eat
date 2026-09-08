@@ -63,7 +63,8 @@ def curated_names():
 def fetch_overpass():
     # Keep the independent OSM candidate universe aligned with the repository's
     # Google food-business scope. `out center tags` retains all public OSM tags;
-    # the serializer below now keeps website/contact:website as source metadata.
+    # the serializer below keeps selected native website/phone metadata without
+    # treating either field as identity proof.
     query = f'''[out:json][timeout:180];(
  nwr(around:{RADIUS_M},{CENTER_LAT},{CENTER_LNG})["amenity"~"^(restaurant|fast_food|cafe|food_court|bar|pub|biergarten|ice_cream)$"]["name"];
  nwr(around:{RADIUS_M},{CENTER_LAT},{CENTER_LNG})["shop"~"^(bakery|pastry|confectionery|deli|coffee|tea|ice_cream)$"]["name"];
@@ -75,7 +76,7 @@ def fetch_overpass():
             request = urllib.request.Request(
                 endpoint,
                 data=data,
-                headers={'User-Agent': 'nekooweb-eat-static-builder/2.3'},
+                headers={'User-Agent': 'nekooweb-eat-static-builder/2.4'},
             )
             return json.loads(urllib.request.urlopen(request, timeout=210).read().decode())
         except Exception as error:
@@ -122,15 +123,32 @@ def source_websites(tags):
         raw = str(tags.get(key) or '').strip()
         if not raw:
             continue
-        # OSM values occasionally contain semicolon-separated URLs. Preserve only
-        # normal public HTTP(S) URLs; downstream review still decides whether a
-        # URL is independent/official enough to use.
         for value in re.split(r'\s*;\s*', raw):
             value = value.strip()
             if not re.match(r'^https?://', value, re.I):
                 continue
             if value not in output:
                 output.append(value)
+    return output[:4]
+
+
+def source_phones(tags):
+    """Retain source-native OSM phone strings without inferring or reformatting them."""
+    output = []
+    seen_digits = set()
+    for key in ('contact:phone', 'phone'):
+        raw = str(tags.get(key) or '').strip()
+        if not raw:
+            continue
+        for value in re.split(r'\s*;\s*', raw):
+            value = value.strip()
+            if not value or len(value) > 80:
+                continue
+            digits = re.sub(r'\D', '', value)
+            if not (8 <= len(digits) <= 15) or digits in seen_digits:
+                continue
+            seen_digits.add(digits)
+            output.append(value)
     return output[:4]
 
 
@@ -142,6 +160,8 @@ def main():
     overlap_count = 0
     website_rows = 0
     website_values = 0
+    phone_rows = 0
+    phone_values = 0
 
     for element in raw.get('elements', []):
         tags = element.get('tags') or {}
@@ -159,15 +179,19 @@ def main():
         opening = tags.get('opening_hours') or None
         overlap = norm(name) in existing
         websites = source_websites(tags)
+        phones = source_phones(tags)
         if overlap:
             overlap_count += 1
         if websites:
             website_rows += 1
             website_values += len(websites)
+        if phones:
+            phone_rows += 1
+            phone_values += len(phones)
 
         # Keep curated-name overlaps instead of excluding them. They are useful
-        # independent identity bridges. OSM website values are retained only as
-        # source metadata; Google status remains pending and no identity is promoted.
+        # independent identity bridges. Website/phone values remain source metadata;
+        # Google status stays pending and no identity is promoted by this builder.
         output.append({
             'id': 'osm-' + element.get('type', 'x')[0] + '-' + str(element.get('id')),
             'profile': 'TOKYO',
@@ -186,6 +210,7 @@ def main():
             'lat': round(float(lat), 6),
             'lng': round(float(lng), 6),
             'sourceWebsites': websites,
+            'sourcePhones': phones,
             'googlePlaceId': None,
             'googleStatus': 'pending',
             'source': 'OpenStreetMap',
@@ -208,6 +233,8 @@ def main():
         'curatedOverlaps': overlap_count,
         'rowsWithSourceWebsites': website_rows,
         'sourceWebsiteValues': website_values,
+        'rowsWithSourcePhones': phone_rows,
+        'sourcePhoneValues': phone_values,
         'googleStatus': 'pending',
         'identityPromotions': 0,
     }, ensure_ascii=False))
