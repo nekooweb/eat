@@ -9,22 +9,11 @@ const ROOT = path.resolve(HERE, '..');
 const DATA = path.join(ROOT, 'data');
 const OUTPUT = process.argv[2] || path.join(DATA, 'google_inventory_detail_queue.json');
 
-function loadRuntime() {
+function loadWindowFile(filename) {
   const sandbox = { window: {}, console };
   vm.createContext(sandbox);
-  vm.runInContext(fs.readFileSync(path.join(DATA, 'google_inventory_runtime.js'), 'utf8'), sandbox, { filename: 'google_inventory_runtime.js' });
-  return {
-    rows: sandbox.window.GOOGLE_INVENTORY_RESTAURANTS || [],
-    stats: sandbox.window.GOOGLE_INVENTORY_STATS || {}
-  };
-}
-
-function loadProvenance() {
-  if (!fs.existsSync(path.join(DATA, 'source_provenance.js'))) return { rows: [] };
-  const sandbox = { window: {}, console };
-  vm.createContext(sandbox);
-  vm.runInContext(fs.readFileSync(path.join(DATA, 'source_provenance.js'), 'utf8'), sandbox, { filename: 'source_provenance.js' });
-  return sandbox.window.SOURCE_PROVENANCE || { rows: [] };
+  vm.runInContext(fs.readFileSync(path.join(DATA, filename), 'utf8'), sandbox, { filename });
+  return sandbox.window;
 }
 
 function loadEvidence() {
@@ -43,16 +32,24 @@ function sourceUrlCount(row, provenance) {
   return urls.size;
 }
 
-const { rows, stats } = loadRuntime();
-if (rows.length !== 2804 || new Set(rows.map((row) => row.googlePlaceId)).size !== 2804) {
-  throw new Error('Expected exact 2,804 Google inventory runtime before building detail queue');
-}
-const provenance = loadProvenance();
+const runtime = loadWindowFile('google_inventory_runtime.js');
+const rows = runtime.GOOGLE_INVENTORY_RESTAURANTS || [];
+const stats = runtime.GOOGLE_INVENTORY_STATS || {};
+if (stats.catalogTotal !== 2804) throw new Error(`Frozen catalog mismatch: ${stats.catalogTotal}`);
+if (stats.inventoryTotal !== rows.length) throw new Error('Published runtime/stat count mismatch');
+if (rows.length + Number(stats.unpublishedPlaceIdOnly || 0) !== 2804) throw new Error('Published/unpublished catalog counts do not reconcile');
+if (new Set(rows.map((row) => row.googlePlaceId)).size !== rows.length) throw new Error('Duplicate public Place ID');
+if (rows.some((row) => row.nameKnown === false || !String(row.name || '').trim())) throw new Error('Detailed enrichment queue must contain named public rows only');
+
+const provenance = fs.existsSync(path.join(DATA, 'source_provenance.js'))
+  ? loadWindowFile('source_provenance.js').SOURCE_PROVENANCE || { rows: [] }
+  : { rows: [] };
 const provenanceById = new Map((provenance.rows || []).map((row) => [row.googlePlaceId, row]));
 const evidence = loadEvidence();
 const evidenceById = new Map((evidence.rows || []).map((row) => [row.googlePlaceId, row]));
-const unresolvedBasicCount = rows.filter((row) => row.nameKnown === false || row.basicInfoState === 'google_place_id_only' || !row.name).length;
-const runtimeBaselineComplete = rows.length === 2804 && rows.every((row) => row.googlePlaceId && row.inventoryWithinRadius === true);
+const runtimeBaselineComplete = stats.catalogTotal === 2804
+  && stats.inventoryTotal === rows.length
+  && rows.length + Number(stats.unpublishedPlaceIdOnly || 0) === 2804;
 
 const queue = rows.map((row) => {
   const prov = provenanceById.get(row.googlePlaceId) || null;
@@ -66,12 +63,10 @@ const queue = rows.map((row) => {
     Array.isArray(ev?.featuredDishes) ? ev.featuredDishes.length : 0
   );
   const sourceUrls = sourceUrlCount(row, prov);
-  const nameKnown = row.nameKnown !== false && row.basicInfoState !== 'google_place_id_only' && Boolean(row.name);
   const gaps = [];
-  if (!nameKnown) gaps.push('basicIdentity');
   if (!recommendedCount) gaps.push('recommendedDishes');
   if (!featuredCount) gaps.push('featuredDishes');
-  if (!row.openingHours?.days && !row.hoursReference) gaps.push('openingHours');
+  if (!row.hoursReference) gaps.push('openingHours');
   if (!knownPrice(row.lunch)) gaps.push('lunchBudget');
   if (!knownPrice(row.dinner)) gaps.push('dinnerBudget');
   if (!row.address) gaps.push('address');
@@ -79,12 +74,9 @@ const queue = rows.map((row) => {
 
   let nextAction;
   let priorityScore;
-  if (!nameKnown) {
-    nextAction = 'resolve_basic_source_identity';
-    priorityScore = 1200;
-  } else if (!recommendedCount) {
-    nextAction = 'collect_strict_recommended_dishes';
-    priorityScore = 1000 + Math.min(sourceUrls, 10) * 15 + (row.basicInfoState === 'canonical' ? 20 : 0);
+  if (!recommendedCount) {
+    nextAction = sourceUrls > 0 ? 'collect_strict_recommended_dishes' : 'find_independent_dish_source';
+    priorityScore = 1000 + Math.min(sourceUrls, 10) * 20 + (featuredCount ? 15 : 0) + (row.basicInfoState === 'canonical' ? 10 : 0);
   } else if (!featuredCount) {
     nextAction = 'collect_source_backed_featured_dishes';
     priorityScore = 700 + Math.min(sourceUrls, 10) * 10;
@@ -107,8 +99,9 @@ const queue = rows.map((row) => {
 
   return {
     googlePlaceId: row.googlePlaceId,
-    name: nameKnown ? row.name : null,
+    name: row.name,
     basicInfoState: row.basicInfoState,
+    cuisine: row.cuisine || null,
     distanceMeters: Number.isFinite(row.distanceMeters) ? row.distanceMeters : null,
     sourceUrlCount: sourceUrls,
     recommendedDishesKnown: recommendedCount,
@@ -122,18 +115,19 @@ const queue = rows.map((row) => {
 const actionCounts = {};
 for (const row of queue) actionCounts[row.nextAction] = (actionCounts[row.nextAction] || 0) + 1;
 const summary = {
-  schemaVersion: 3,
+  schemaVersion: 4,
   scope: stats.scope || 'TOKYO/地区1️⃣',
   radiusMeters: 1200,
-  inventoryTotal: rows.length,
+  catalogTotal: 2804,
+  publicRuntimeTotal: rows.length,
+  unpublishedPlaceIdOnly: Number(stats.unpublishedPlaceIdOnly || 0),
   runtimeBaselineComplete,
-  namedBasic: rows.filter((row) => row.nameKnown !== false && row.basicInfoState !== 'google_place_id_only').length,
-  placeIdOnly: rows.filter((row) => row.basicInfoState === 'google_place_id_only').length,
-  unresolvedBasicCount,
   recommendedDishesKnown: rows.filter((row) => Array.isArray(row.recommendedDishes) && row.recommendedDishes.length).length,
   featuredDishesKnown: rows.filter((row) => Array.isArray(row.featuredDishes) && row.featuredDishes.length).length,
+  recommendationGap: queue.filter((row) => row.recommendedDishesKnown === 0).length,
+  recommendationGapWithKnownSourceUrl: queue.filter((row) => row.recommendedDishesKnown === 0 && row.sourceUrlCount > 0).length,
   actionCounts,
-  priorityRule: 'unresolved source identity > strict recommended dishes > featured dishes > hours > budgets > address/cuisine; exact 2804 Place-ID runtime is the launch-complete baseline'
+  priorityRule: 'within named public rows: source-backed recommended dishes > featured dishes > hours > budgets > address/cuisine; identity recovery remains in the separate master planner'
 };
 
 fs.writeFileSync(OUTPUT, JSON.stringify({ summary, rows: queue }, null, 2) + '\n', 'utf8');
