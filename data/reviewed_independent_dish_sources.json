@@ -1,13 +1,17 @@
 {
-  "schemaVersion": 2,
+  "schemaVersion": 3,
   "checkedAt": "2026-09-08",
   "policy": {
     "strictAutoOnly": true,
     "sourceOverlayOnly": true,
     "candidateProvider": "Overture Maps retained snapshot",
     "liveNetworkRequests": true,
+    "monotonicApprovedSourceRetention": true,
+    "httpsUpgradeAttemptedBeforeHttp": true,
     "boundedSameOriginSubpageDiscovery": true,
+    "boundedSecondLevelSameOriginDiscovery": true,
     "maximumSameOriginSubpagesPerRoot": 4,
+    "maximumSecondLevelSubpagesTotalPerCandidate": 6,
     "pageMapCoordinateIdentityEvidenceAllowed": true,
     "pageMapCoordinateMaximumDistanceMeters": 120,
     "paidGoogleDataApiCalls": 0,
@@ -28,27 +32,52 @@
   "summary": {
     "catalogTotal": 2804,
     "publicRuntimeTotal": 1422,
-    "proposalRows": 32,
-    "highConfidenceInputRows": 20,
-    "reviewedRows": 20,
-    "approvedRows": 1,
-    "rejectedRows": 19,
+    "proposalRows": 31,
+    "existingApprovedRows": 1,
+    "preservedApprovedRows": 1,
+    "highConfidenceInputRows": 19,
+    "reviewedRows": 19,
+    "newApprovedRows": 1,
+    "approvedRows": 2,
+    "rejectedRows": 18,
     "sourceResolutionBlockedRows": 1,
     "rowsWithDiscoveredSubpages": 6,
-    "discoveredSubpages": 13,
-    "rowsWithMapCoordinateCandidates": 3,
-    "rowsWithAcceptedLocationSignals": 3,
-    "fetchErrorRows": 3,
+    "discoveredSubpages": 19,
+    "secondLevelSubpages": 7,
+    "rowsWithMapCoordinateCandidates": 2,
+    "rowsWithAcceptedLocationSignals": 2,
+    "fetchErrorRows": 7,
     "reasonCounts": {
-      "non_https_final_url": 10,
-      "no_strong_page_name_evidence": 3,
-      "generic_root_missing_location_confirmation": 2,
+      "non_https_final_url": 6,
+      "no_strong_page_name_evidence": 5,
       "approved": 1,
+      "generic_root_missing_location_confirmation": 2,
       "blocked_by_source_resolution_ambiguous": 1,
+      "specific_page_missing_location_or_exact_structured_confirmation": 1,
       "fetch_failed": 3
     }
   },
   "rows": [
+    {
+      "googlePlaceId": "ChIJF3IItgOMGGAR_1EfWn8cjb0",
+      "name": "Al Mina",
+      "reviewState": "strict_auto",
+      "sourceWebsites": [
+        "https://www.almina-restaurant.com/access.html"
+      ],
+      "checkedAt": "2026-09-08",
+      "candidateProvider": "Overture Maps",
+      "candidateProviderId": "b5139968-f545-4798-a826-075020e17fb3",
+      "reviewSignals": [
+        "full_normalized_runtime_name_in_title",
+        "path_specific_page",
+        "bounded_same_origin_second_level",
+        "map_query_latlng_43m"
+      ],
+      "proposalDistanceMeters": 5.7,
+      "proposalNameSimilarity": 1,
+      "pageTitle": "アラブ地中海料理 神田ＡＬ ＭＩＮＡ（アルミーナ） access"
+    },
     {
       "googlePlaceId": "ChIJI1W-PkKMGGARSpB6s8XZQKU",
       "name": "la cantina cancemi",
@@ -67,7 +96,8 @@
       ],
       "proposalDistanceMeters": 2.8,
       "proposalNameSimilarity": 1,
-      "pageTitle": "La Cantina Cancemi"
+      "pageTitle": "La Cantina Cancemi",
+      "preservedFromPreviousReview": true
     }
   ],
   "audit": [
@@ -107,8 +137,8 @@
       "proposalDistanceMeters": 4.6,
       "proposalScore": 0.9915,
       "approved": false,
-      "reason": "non_https_final_url",
-      "finalUrl": "http://magurotei.jp/",
+      "reason": "no_strong_page_name_evidence",
+      "finalUrl": "https://magurotei.jp/",
       "title": "ななブログ",
       "structuredFacts": 0,
       "mapCoordinateCandidates": 0,
@@ -133,11 +163,11 @@
       "proposalScore": 0.996,
       "approved": false,
       "reason": "no_strong_page_name_evidence",
-      "finalUrl": "https://hinoya.jp/category/%e5%ba%97%e8%88%97/",
-      "title": "店舗 | 日乃屋カレー 公式サイト",
+      "finalUrl": "https://hinoya.jp/2024/10/04/branch-sapporo-tsukisamu-open/",
+      "title": "ブランチ札幌月寒店OPEN",
       "structuredFacts": 0,
       "mapCoordinateCandidates": 0,
-      "titleNameSimilarity": 0.235,
+      "titleNameSimilarity": 0,
       "structuredNameSimilarity": 0,
       "exactTitleContainment": false,
       "locationSignals": [],
@@ -147,12 +177,46 @@
       ],
       "discoveredSubpages": [
         {
+          "url": "https://hinoya.jp/2024/10/04/branch-sapporo-tsukisamu-open/",
+          "label": "ブランチ札幌月寒店OPEN",
+          "score": 35,
+          "level": 1,
+          "nameSimilarity": 0
+        },
+        {
+          "url": "https://hinoya.jp/2024/07/19/%e3%82%a2%e3%83%89%e3%83%90%e3%83%b3%e3%82%b9%e3%83%a2%e3%83%bc%e3%83%ab%e6%9d%be%e9%98%aa%e5%ba%97open/",
+          "label": "店舗",
+          "score": 35,
+          "level": 2,
+          "nameSimilarity": 0
+        },
+        {
           "url": "https://hinoya.jp/category/%e5%ba%97%e8%88%97/",
-          "label": "店舗"
+          "label": "店舗",
+          "score": 35,
+          "level": 1,
+          "nameSimilarity": 0
+        },
+        {
+          "url": "https://hinoya.jp/2024/10/18/machida-open/",
+          "label": "東京都町田市に初の日乃屋カレーが誕生です！今後ともよろしくお願いいたします！ https://hinoya.jp/shops/machida/",
+          "score": 35,
+          "level": 2,
+          "nameSimilarity": 0.063
         },
         {
           "url": "https://hinoya.jp/shops/",
-          "label": "店舗一覧"
+          "label": "店舗一覧",
+          "score": 35,
+          "level": 1,
+          "nameSimilarity": 0
+        },
+        {
+          "url": "https://hinoya.jp/shops//nagoya-fushimi/",
+          "label": "名古屋伏見",
+          "score": 35,
+          "level": 2,
+          "nameSimilarity": 0
         }
       ],
       "errors": [],
@@ -211,7 +275,9 @@
         "map_query_latlng_2m"
       ],
       "discoveredSubpages": [],
-      "errors": [],
+      "errors": [
+        "https://www.nakatomi-co.com/: fetch failed"
+      ],
       "sourceResolution": null
     },
     {
@@ -238,7 +304,9 @@
         "full_normalized_runtime_name_in_title"
       ],
       "discoveredSubpages": [],
-      "errors": [],
+      "errors": [
+        "https://www.hongo-kunpei.com/index.html: fetch failed"
+      ],
       "sourceResolution": null
     },
     {
@@ -251,9 +319,9 @@
       "proposalNameSimilarity": 1,
       "proposalDistanceMeters": 5.7,
       "proposalScore": 0.9896,
-      "approved": false,
-      "reason": "non_https_final_url",
-      "finalUrl": "http://www.almina-restaurant.com/access.html",
+      "approved": true,
+      "reason": "approved",
+      "finalUrl": "https://www.almina-restaurant.com/access.html",
       "title": "アラブ地中海料理 神田ＡＬ ＭＩＮＡ（アルミーナ） access",
       "structuredFacts": 0,
       "mapCoordinateCandidates": 1,
@@ -266,17 +334,23 @@
       "reviewSignals": [
         "full_normalized_runtime_name_in_title",
         "path_specific_page",
-        "bounded_same_origin_subpage",
+        "bounded_same_origin_second_level",
         "map_query_latlng_43m"
       ],
       "discoveredSubpages": [
         {
-          "url": "http://www.almina-restaurant.com/index.html",
-          "label": "AL MINA Restaurant"
+          "url": "https://www.almina-restaurant.com/index.html",
+          "label": "AL MINA Restaurant",
+          "score": 235,
+          "level": 1,
+          "nameSimilarity": 0.86
         },
         {
-          "url": "http://www.almina-restaurant.com/access.html",
-          "label": "Access"
+          "url": "https://www.almina-restaurant.com/access.html",
+          "label": "Access",
+          "score": 35,
+          "level": 2,
+          "nameSimilarity": 0
         }
       ],
       "errors": [],
@@ -304,7 +378,9 @@
       "locationSignals": [],
       "reviewSignals": [],
       "discoveredSubpages": [],
-      "errors": [],
+      "errors": [
+        "https://syokushindou.jp/: fetch failed"
+      ],
       "sourceResolution": null
     },
     {
@@ -346,8 +422,8 @@
       "proposalDistanceMeters": 9.9,
       "proposalScore": 0.9818,
       "approved": false,
-      "reason": "non_https_final_url",
-      "finalUrl": "http://manraku.tokyo/",
+      "reason": "no_strong_page_name_evidence",
+      "finalUrl": "https://manraku.tokyo/",
       "title": "台所・洗面台・風呂の蛇口交換おすすめ業者比較",
       "structuredFacts": 0,
       "mapCoordinateCandidates": 0,
@@ -356,38 +432,6 @@
       "exactTitleContainment": false,
       "locationSignals": [],
       "reviewSignals": [],
-      "discoveredSubpages": [],
-      "errors": [],
-      "sourceResolution": null
-    },
-    {
-      "googlePlaceId": "ChIJI1W-PkKMGGARSpB6s8XZQKU",
-      "name": "la cantina cancemi",
-      "proposalState": "review_high_confidence_overture_website_candidate",
-      "candidateProvider": "Overture Maps",
-      "candidateProviderId": "f2824d46-89e1-4646-83e2-c43ac3c570e6",
-      "proposalPageUrl": "http://www.cancemi.jp/cantina/",
-      "proposalNameSimilarity": 1,
-      "proposalDistanceMeters": 2.8,
-      "proposalScore": 0.9949,
-      "approved": true,
-      "reason": "approved",
-      "finalUrl": "https://www.cancemi.jp/cantina/",
-      "title": "La Cantina Cancemi",
-      "structuredFacts": 0,
-      "mapCoordinateCandidates": 1,
-      "titleNameSimilarity": 1,
-      "structuredNameSimilarity": 0,
-      "exactTitleContainment": true,
-      "locationSignals": [
-        "map_query_latlng_14m"
-      ],
-      "reviewSignals": [
-        "title_name_similarity_1.000",
-        "full_normalized_runtime_name_in_title",
-        "path_specific_page",
-        "map_query_latlng_14m"
-      ],
       "discoveredSubpages": [],
       "errors": [],
       "sourceResolution": null
@@ -450,7 +494,10 @@
       "discoveredSubpages": [
         {
           "url": "https://www.parinosuke.com/shop.html",
-          "label": "ランチ"
+          "label": "ランチ",
+          "score": 35,
+          "level": 1,
+          "nameSimilarity": 0
         }
       ],
       "errors": [],
@@ -483,15 +530,24 @@
       "discoveredSubpages": [
         {
           "url": "https://sultan.co.jp/?p=356",
-          "label": "スルターン、夜のようす"
-        },
-        {
-          "url": "https://sultan.co.jp/?p=406",
-          "label": "新店舗開店のお知らせ"
+          "label": "スルターン、夜のようす",
+          "score": 235,
+          "level": 1,
+          "nameSimilarity": 0.86
         },
         {
           "url": "https://sultan.co.jp/?page_id=151",
-          "label": "アクセス"
+          "label": "アクセス",
+          "score": 25,
+          "level": 2,
+          "nameSimilarity": 0
+        },
+        {
+          "url": "https://sultan.co.jp/?p=406",
+          "label": "新店舗開店のお知らせ",
+          "score": 25,
+          "level": 1,
+          "nameSimilarity": 0
         }
       ],
       "errors": [],
@@ -519,7 +575,9 @@
       "locationSignals": [],
       "reviewSignals": [],
       "discoveredSubpages": [],
-      "errors": [],
+      "errors": [
+        "https://kanda-matsuya.jp/: fetch failed"
+      ],
       "sourceResolution": null
     },
     {
@@ -533,35 +591,55 @@
       "proposalDistanceMeters": 0,
       "proposalScore": 1,
       "approved": false,
-      "reason": "no_strong_page_name_evidence",
-      "finalUrl": "https://www.tullys.co.jp/company/pressrelease/2026/08/2026_select_toyotashi.html",
-      "title": "プレスリリース（2026/8/25） |TULLY",
+      "reason": "specific_page_missing_location_or_exact_structured_confirmation",
+      "finalUrl": "https://www.tullys.co.jp/onlinestore/",
+      "title": "タリーズオンラインストア | TULLY'S COFFEE - タリーズコーヒー",
       "structuredFacts": 0,
       "mapCoordinateCandidates": 0,
-      "titleNameSimilarity": 0.267,
+      "titleNameSimilarity": 0.86,
       "structuredNameSimilarity": 0,
-      "exactTitleContainment": false,
+      "exactTitleContainment": true,
       "locationSignals": [],
       "reviewSignals": [
+        "full_normalized_runtime_name_in_title",
         "path_specific_page",
-        "bounded_same_origin_subpage"
+        "bounded_same_origin_second_level"
       ],
       "discoveredSubpages": [
         {
           "url": "https://www.tullys.co.jp/company/pressrelease/2026/08/2026_select_toyotashi.html",
-          "label": "26/08/25 「TULLY’S COFFEE -SELECT- μPLAT豊田市店」を8月26日（水）オープン"
+          "label": "26/08/25 「TULLY’S COFFEE -SELECT- μPLAT豊田市店」を8月26日（水）オープン",
+          "score": 245,
+          "level": 1,
+          "nameSimilarity": 0.86
         },
         {
           "url": "https://www.tullys.co.jp/conceptshops/",
-          "label": "TULLYʼS Concept Shops"
+          "label": "TULLYʼS Concept Shops",
+          "score": 35,
+          "level": 2,
+          "nameSimilarity": 0.414
+        },
+        {
+          "url": "https://www.tullys.co.jp/onlinestore/",
+          "label": "",
+          "score": 35,
+          "level": 2,
+          "nameSimilarity": 0
         },
         {
           "url": "https://www.tullys.co.jp/information/2024/05/post-13.html",
-          "label": "24/05/30 【重要】「タリーズ オンラインストア」不正アクセスによるシステム侵害発生のお詫びとお知らせ"
+          "label": "24/05/30 【重要】「タリーズ オンラインストア」不正アクセスによるシステム侵害発生のお詫びとお知らせ",
+          "score": 35,
+          "level": 1,
+          "nameSimilarity": 0
         },
         {
           "url": "https://www.tullys.co.jp/information/2024/10/post-14.html",
-          "label": "2024/10/03 【重要】弊社が運営する「タリーズ オンラインストア」への不正アクセスによる 個人情報漏洩の恐れに関するお詫びと調査結果のご報告"
+          "label": "2024/10/03 【重要】弊社が運営する「タリーズ オンラインストア」への不正アクセスによる 個人情報漏洩の恐れに関するお詫びと調査結果のご報告",
+          "score": 35,
+          "level": 1,
+          "nameSimilarity": 0
         }
       ],
       "errors": [],
@@ -617,6 +695,7 @@
       "reviewSignals": [],
       "discoveredSubpages": [],
       "errors": [
+        "https://kinkai-ramen.com/wordpress: fetch failed",
         "http://kinkai-ramen.com/wordpress: fetch failed"
       ],
       "sourceResolution": null
@@ -632,8 +711,8 @@
       "proposalDistanceMeters": 7.3,
       "proposalScore": 0.9865,
       "approved": false,
-      "reason": "non_https_final_url",
-      "finalUrl": "http://www.sushiyauoshin.com/access.html",
+      "reason": "no_strong_page_name_evidence",
+      "finalUrl": "https://www.sushiyauoshin.com/access.html",
       "title": "関内駅、馬車道駅、桜木町周辺の寿司「鮨と酒 魚伸」の店舗情報",
       "structuredFacts": 0,
       "mapCoordinateCandidates": 0,
@@ -647,8 +726,18 @@
       ],
       "discoveredSubpages": [
         {
+          "url": "https://www.sushiyauoshin.com/access.html",
+          "label": "店舗情報",
+          "score": 35,
+          "level": 1,
+          "nameSimilarity": 0
+        },
+        {
           "url": "http://www.sushiyauoshin.com/access.html",
-          "label": "店舗情報"
+          "label": "店舗情報",
+          "score": 35,
+          "level": 1,
+          "nameSimilarity": 0
         }
       ],
       "errors": [],
@@ -677,6 +766,7 @@
       "reviewSignals": [],
       "discoveredSubpages": [],
       "errors": [
+        "https://www.hopscotchtokyo.com/: cross-site redirect",
         "http://www.hopscotchtokyo.com/: cross-site redirect"
       ],
       "sourceResolution": null
