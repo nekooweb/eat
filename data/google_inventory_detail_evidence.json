@@ -31,7 +31,23 @@
     "recommendationRequiresExplicitRecommendationSemantics": true,
     "ordinaryMenuDishBecomesFeaturedOnly": true,
     "shardIndex": 7,
-    "shardCount": 8
+    "shardCount": 8,
+    "source": "retained reviewed Hot Pepper rich metadata only",
+    "eligibleBindings": [
+      "strict_auto",
+      "manual_exact"
+    ],
+    "textFields": [
+      "hotpepperGenre.catch",
+      "specialFeatures[].title"
+    ],
+    "sourceCatchExcludedAsDuplicateOfCatalogFactsCatch": true,
+    "restaurantNameInferenceAllowed": false,
+    "cuisineInferenceAllowed": false,
+    "genericFallbackAllowed": false,
+    "recommendationRequiresExplicitMarker": true,
+    "featuredRequiresConcreteDishTermInRetainedProviderText": true,
+    "preserveSourceOriginal": true
   },
   "summary": {
     "catalogTotal": 2804,
@@ -39,44 +55,44 @@
     "hotPepperRowsAvailable": 535,
     "hotPepperRecommendedRestaurants": 20,
     "hotPepperFeaturedRestaurants": 70,
-    "websiteTasks": 280,
-    "websiteHosts": 242,
-    "websitePagesVisited": 459,
-    "websiteRecommendedRestaurants": 31,
-    "websiteFeaturedMenuRestaurants": 35,
+    "websiteTasks": 274,
+    "websiteHosts": 237,
+    "websitePagesVisited": 447,
+    "websiteRecommendedRestaurants": 27,
+    "websiteFeaturedMenuRestaurants": 31,
     "websiteStructuredMenuRestaurants": 0,
-    "websitePlainMenuRestaurants": 35,
-    "websitePlainMenuItems": 139,
-    "sourceBackedRecommendationRestaurants": 51,
-    "sourceBackedFeaturedOnlyRestaurants": 100,
-    "recommendationItems": 73,
-    "featuredItems": 213,
+    "websitePlainMenuRestaurants": 31,
+    "websitePlainMenuItems": 121,
+    "sourceBackedRecommendationRestaurants": 47,
+    "sourceBackedFeaturedOnlyRestaurants": 101,
+    "recommendationItems": 63,
+    "featuredItems": 195,
     "statusCounts": {
-      "no_match_with_errors": 88,
-      "recommended_match": 31,
-      "menu_match": 30,
-      "no_match": 125
+      "no_match_with_errors": 83,
+      "menu_match": 31,
+      "no_match": 127,
+      "recommended_match": 27
     },
     "previousEvidence": {
-      "recommendationRestaurants": 171,
-      "featuredRestaurants": 263,
-      "evidenceRestaurants": 320,
-      "recommendationItems": 315,
-      "featuredItems": 626
+      "recommendationRestaurants": 181,
+      "featuredRestaurants": 293,
+      "evidenceRestaurants": 351,
+      "recommendationItems": 332,
+      "featuredItems": 689
     },
     "freshCrawlEvidence": {
-      "recommendationRestaurants": 51,
-      "featuredRestaurants": 105,
-      "evidenceRestaurants": 151,
-      "recommendationItems": 73,
-      "featuredItems": 213
+      "recommendationRestaurants": 47,
+      "featuredRestaurants": 101,
+      "evidenceRestaurants": 148,
+      "recommendationItems": 63,
+      "featuredItems": 195
     },
     "mergedEvidence": {
-      "recommendationRestaurants": 176,
-      "featuredRestaurants": 268,
-      "evidenceRestaurants": 324,
-      "recommendationItems": 325,
-      "featuredItems": 644
+      "recommendationRestaurants": 181,
+      "featuredRestaurants": 293,
+      "evidenceRestaurants": 351,
+      "recommendationItems": 332,
+      "featuredItems": 689
     }
   },
   "rows": [
@@ -138,6 +154,23 @@
           "evidenceClass": "provider_promotional_dish_text",
           "evidenceRule": "hotpepper-catch-menu:寿司|すし|鮨|sushi",
           "evidenceSnippet": "■寿司屋の本気おつまみ ■こだわり&厳選の鮮魚！"
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJ_5AELhqMGGARx5K_W6T4VQo",
+      "name": "そば酒房 笹陣 お茶の水店",
+      "recommendedDishes": [],
+      "featuredDishes": [
+        {
+          "nameZh": "荞麦面",
+          "nameJa": "そば",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ000658520/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-rich-genreCatch:蕎麦|そば|soba",
+          "evidenceSnippet": "居酒屋 そば 御茶ノ水 接待 宴会 ランチ"
         }
       ]
     },
@@ -338,6 +371,23 @@
           "evidenceSnippet": "抹茶と粒あんのバスクチーズケーキ MATCHA & SWEET RED BEAN BASQUE CHEESECAKE"
         }
       ]
+    },
+    {
+      "googlePlaceId": "ChIJ-byfbkGMGGAReOVUQDAy6qM",
+      "name": "アパ社長カレー",
+      "recommendedDishes": [
+        {
+          "nameZh": "咖喱",
+          "nameJa": "カレー",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001258439/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "hotpepper-rich-genreCatch:カレー|カリー|咖喱|curry",
+          "evidenceSnippet": "アパホテル社長オススメの本格派カレー"
+        }
+      ],
+      "featuredDishes": []
     },
     {
       "googlePlaceId": "ChIJ-bzjHhSMGGAR_TggBs245LY",
@@ -616,6 +666,16 @@
           "evidenceClass": "provider_promotional_dish_text",
           "evidenceRule": "hotpepper-catch-menu:ホルモン",
           "evidenceSnippet": "お肉にこだわっています♪ ホルモン三種盛り☆"
+        },
+        {
+          "nameZh": "烤肉",
+          "nameJa": "焼肉",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001295401/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-rich-genreCatch:焼肉|yakiniku",
+          "evidenceSnippet": "焼肉/ホルモン/飯田橋/牛肉/豚肉/居酒屋"
         }
       ]
     },
@@ -907,6 +967,16 @@
           "evidenceClass": "provider_promotional_dish_text",
           "evidenceRule": "hotpepper-catch-menu:ビリヤニ|biryani",
           "evidenceSnippet": "本場ビリヤニのコース料理 大人数歓迎！貸切・宴会◎"
+        },
+        {
+          "nameZh": "咖喱",
+          "nameJa": "カレー",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ004500004/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-rich-genreCatch:カレー|カリー|咖喱|curry",
+          "evidenceSnippet": "神保町駅からすぐ！カレーや飲み放題◎"
         }
       ]
     },
@@ -954,6 +1024,23 @@
           "evidenceClass": "retained_source_menu_item",
           "evidenceRule": "retained:dishes:もも貴族焼\\s*[（(]?たれ[）)]?",
           "evidenceSnippet": "もも貴族焼(たれ)"
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJ2atVJwSMGGARrwm6ahMJsfo",
+      "name": "ザ・タンドール",
+      "recommendedDishes": [],
+      "featuredDishes": [
+        {
+          "nameZh": "咖喱",
+          "nameJa": "カレー",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ000249195/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-rich-genreCatch:カレー|カリー|咖喱|curry",
+          "evidenceSnippet": "超リーズナブルに本格カレーを楽しめます♪"
         }
       ]
     },
@@ -1009,6 +1096,26 @@
       "name": "焼肉ホルモンがく 水道橋本店",
       "recommendedDishes": [],
       "featuredDishes": [
+        {
+          "nameZh": "烤内脏",
+          "nameJa": "ホルモン",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ004469033/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-rich-genreCatch:ホルモン",
+          "evidenceSnippet": "水道橋/焼肉/ホルモン"
+        },
+        {
+          "nameZh": "烤肉",
+          "nameJa": "焼肉",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ004469033/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-rich-genreCatch:焼肉|yakiniku",
+          "evidenceSnippet": "水道橋/焼肉/ホルモン"
+        },
         {
           "nameZh": "上等肝片",
           "nameJa": "上レバー",
@@ -1653,6 +1760,26 @@
         }
       ],
       "featuredDishes": [
+        {
+          "nameZh": "天妇罗",
+          "nameJa": "天ぷら",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001211019/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-rich-genreCatch:天ぷら|天麩羅|tempura",
+          "evidenceSnippet": "神保町/天ぷら/ランチ/天丼/コース/半個室"
+        },
+        {
+          "nameZh": "天妇罗盖饭",
+          "nameJa": "天丼",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001211019/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-rich-genreCatch:天丼|tendon\\b",
+          "evidenceSnippet": "神保町/天ぷら/ランチ/天丼/コース/半個室"
+        },
         {
           "nameZh": "天妇罗",
           "nameJa": "天ぷら盛り合わせ",
@@ -2323,6 +2450,23 @@
           "evidenceSnippet": "骨付鳥"
         }
       ]
+    },
+    {
+      "googlePlaceId": "ChIJ8zcFAQSMGGARjT19WihSuNk",
+      "name": "やきとり道場",
+      "recommendedDishes": [
+        {
+          "nameZh": "烤鸡串",
+          "nameJa": "焼き鳥",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ000839750/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "hotpepper-rich-specialFeatureTitle:焼き?鳥|やきとり|yakitori",
+          "evidenceSnippet": "当店の焼き鳥はどれもおすすめです♪"
+        }
+      ],
+      "featuredDishes": []
     },
     {
       "googlePlaceId": "ChIJ9-ov_yKNGGARm9u7lkasJbY",
@@ -3017,6 +3161,23 @@
       ]
     },
     {
+      "googlePlaceId": "ChIJay-cC0SMGGARrFB7svEbbs0",
+      "name": "築地食堂源ちゃん",
+      "recommendedDishes": [],
+      "featuredDishes": [
+        {
+          "nameZh": "刺身",
+          "nameJa": "刺身",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ000979913/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-rich-specialFeatureTitle:刺身|お造り|sashimi",
+          "evidenceSnippet": "定食、丼、刺身、焼き魚、フライ、お肉など種類が豊富！"
+        }
+      ]
+    },
+    {
       "googlePlaceId": "ChIJAyADpR6MGGARWHp8EC3s12E",
       "name": "明神下みやび",
       "recommendedDishes": [
@@ -3057,6 +3218,16 @@
       "name": "升屋 神保町店",
       "recommendedDishes": [],
       "featuredDishes": [
+        {
+          "nameZh": "牛杂锅",
+          "nameJa": "もつ鍋",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ000005686/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-rich-genreCatch:もつ鍋",
+          "evidenceSnippet": "神保町◆肉・鉄板焼き・もつ鍋の個室居酒屋"
+        },
         {
           "nameZh": "牛排",
           "nameJa": "山形牛ステーキ",
@@ -3431,6 +3602,40 @@
       "featuredDishes": []
     },
     {
+      "googlePlaceId": "ChIJBWY0oOONGGARfDSN38wt5l0",
+      "name": "インド屋",
+      "recommendedDishes": [],
+      "featuredDishes": [
+        {
+          "nameZh": "咖喱",
+          "nameJa": "カレー",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ003648606/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-rich-genreCatch:カレー|カリー|咖喱|curry",
+          "evidenceSnippet": "御茶ノ水/インドカレー/飲み放題"
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJbYf2gvGNGGAR98ND-4Uh3RU",
+      "name": "個室居酒屋 道らく 水道橋店",
+      "recommendedDishes": [],
+      "featuredDishes": [
+        {
+          "nameZh": "烤牛肉",
+          "nameJa": "ローストビーフ",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ003411636/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-rich-specialFeatureTitle:ローストビーフ|roast beef",
+          "evidenceSnippet": "大山地鶏や自家製ローストビーフもご用意しております！"
+        }
+      ]
+    },
+    {
       "googlePlaceId": "ChIJbZhZ3RiNGGARoHd7nfzoBuc",
       "name": "ゆにおん食堂",
       "recommendedDishes": [
@@ -3500,7 +3705,18 @@
     {
       "googlePlaceId": "ChIJC2yhZOeNGGAR-4zyNEEEQoc",
       "name": "居酒屋 破竹",
-      "recommendedDishes": [],
+      "recommendedDishes": [
+        {
+          "nameZh": "炖牛杂",
+          "nameJa": "牛もつ煮込み",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001283329/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "hotpepper-rich-genreCatch:牛もつ煮込み",
+          "evidenceSnippet": "極 牛もつ煮込みと鮮魚が自慢の海鮮居酒屋"
+        }
+      ],
       "featuredDishes": [
         {
           "nameZh": "刺身",
@@ -3742,7 +3958,18 @@
           "evidenceSnippet": "≪本場四川逸品料理≫ 日本でも有名な四川の伝統料理です。神田天府では本場四川の味に天府ならではの改良を加えました。それは麻・辣・香・燙・回甜です。「麻」は花山椒の痺れ、「辣」は唐辛"
         }
       ],
-      "featuredDishes": []
+      "featuredDishes": [
+        {
+          "nameZh": "饺子",
+          "nameJa": "餃子",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001011949/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-rich-genreCatch:餃子|饺子|gyoza",
+          "evidenceSnippet": "神田 四川 ランチ 火鍋 餃子 中華"
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJCQOApBGMGGARtd0fPNBMuHc",
@@ -3969,6 +4196,16 @@
           "evidenceClass": "retained_source_menu_item",
           "evidenceRule": "retained:dishes:厚切上タン",
           "evidenceSnippet": "厚切上タン"
+        },
+        {
+          "nameZh": "烤肉",
+          "nameJa": "焼肉",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ003411630/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-rich-genreCatch:焼肉|yakiniku",
+          "evidenceSnippet": "うまい！やすい！がモットーの和牛専門焼肉"
         }
       ]
     },
@@ -4038,6 +4275,16 @@
       "name": "スジャ食堂 神田店",
       "recommendedDishes": [],
       "featuredDishes": [
+        {
+          "nameZh": "韩式烤五花肉",
+          "nameJa": "サムギョプサル",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ003649205/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-rich-genreCatch:サムギョプサル|samgyeopsal",
+          "evidenceSnippet": "神田 淡路町 サムギョプサル 飲み放題"
+        },
         {
           "nameZh": "参鸡汤",
           "nameJa": "サムゲタン",
@@ -4960,6 +5207,23 @@
       ]
     },
     {
+      "googlePlaceId": "ChIJF1SVaAGMGGARcnCMoPo0Zog",
+      "name": "宇奈とと神田店",
+      "recommendedDishes": [],
+      "featuredDishes": [
+        {
+          "nameZh": "鳗鱼",
+          "nameJa": "うなぎ",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ000231345/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-rich-genreCatch:うなぎ|鰻|鳗鱼|unagi",
+          "evidenceSnippet": "◆◆焼き立てアツアツのうなぎ屋さん◆◆"
+        }
+      ]
+    },
+    {
       "googlePlaceId": "ChIJF37yb0GMGGAR0xtmmas5qQI",
       "name": "なか卯",
       "recommendedDishes": [
@@ -5551,6 +5815,33 @@
       ]
     },
     {
+      "googlePlaceId": "ChIJh4hmXeCNGGARK7cpKqXTWqE",
+      "name": "熟成豚ホルモン えいじ",
+      "recommendedDishes": [],
+      "featuredDishes": [
+        {
+          "nameZh": "烤内脏",
+          "nameJa": "ホルモン",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ003828046/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-rich-genreCatch:ホルモン",
+          "evidenceSnippet": "神田/焼肉/ホルモン"
+        },
+        {
+          "nameZh": "烤肉",
+          "nameJa": "焼肉",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ003828046/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-rich-genreCatch:焼肉|yakiniku",
+          "evidenceSnippet": "神田/焼肉/ホルモン"
+        }
+      ]
+    },
+    {
       "googlePlaceId": "ChIJH8GYiROMGGARAjxscGAOoIA",
       "name": "タリーズコーヒー 神保町店",
       "recommendedDishes": [],
@@ -5998,6 +6289,33 @@
       ]
     },
     {
+      "googlePlaceId": "ChIJi_Zh7BCMGGARcHWiiqKKE64",
+      "name": "ホルモン焼肉 モリちゃん 御茶ノ水店",
+      "recommendedDishes": [],
+      "featuredDishes": [
+        {
+          "nameZh": "烤内脏",
+          "nameJa": "ホルモン",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ000657933/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-rich-genreCatch:ホルモン",
+          "evidenceSnippet": "ホルモン焼肉・焼肉宴会"
+        },
+        {
+          "nameZh": "烤肉",
+          "nameJa": "焼肉",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ000657933/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-rich-genreCatch:焼肉|yakiniku",
+          "evidenceSnippet": "ホルモン焼肉・焼肉宴会"
+        }
+      ]
+    },
+    {
       "googlePlaceId": "ChIJI0v-7a2NGGARsZDSFsHKkAY",
       "name": "焼き鳥とワイン＋ビストロおでん 3B 飯田橋",
       "recommendedDishes": [],
@@ -6098,6 +6416,16 @@
           "evidenceClass": "source_recommendation_text",
           "evidenceRule": "hotpepper-catch:野菜巻き串",
           "evidenceSnippet": "博多名物☆野菜巻き串堪能 駅近くでご褒美の一杯を♪"
+        },
+        {
+          "nameZh": "牛杂锅",
+          "nameJa": "もつ鍋",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ004612762/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "hotpepper-rich-genreCatch:もつ鍋",
+          "evidenceSnippet": "博多名物・野菜巻串＆もつ鍋堪能!大衆酒場"
         }
       ],
       "featuredDishes": [
@@ -6278,6 +6606,23 @@
           "evidenceClass": "retained_source_menu_item",
           "evidenceRule": "retained:dishes:カレー|カリー|咖喱|curry",
           "evidenceSnippet": "ジャンボカレー"
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJiwo3a6CNGGARBUReP3Qr7pE",
+      "name": "淡路坂珈琲",
+      "recommendedDishes": [],
+      "featuredDishes": [
+        {
+          "nameZh": "三明治",
+          "nameJa": "サンド",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001292999/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-rich-genreCatch:サンドイッチ|サンド|sandwich",
+          "evidenceSnippet": "御茶ノ水 サンド カフェ 珈琲 女子会"
         }
       ]
     },
@@ -6707,6 +7052,23 @@
       ]
     },
     {
+      "googlePlaceId": "ChIJjRXSfYKNGGARjAXt0quyFcQ",
+      "name": "わさび",
+      "recommendedDishes": [],
+      "featuredDishes": [
+        {
+          "nameZh": "寿司",
+          "nameJa": "寿司",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ003298877/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-rich-genreCatch:寿司|すし|鮨|sushi",
+          "evidenceSnippet": "寿司 居酒屋 和食"
+        }
+      ]
+    },
+    {
       "googlePlaceId": "ChIJJZS1WhuMGGARi3Ec1n031R4",
       "name": "カプチェット・ロッソ",
       "recommendedDishes": [],
@@ -7009,6 +7371,40 @@
       ]
     },
     {
+      "googlePlaceId": "ChIJl7YRHRmMGGAReoVumUJxnjI",
+      "name": "細打うどん竹や",
+      "recommendedDishes": [],
+      "featuredDishes": [
+        {
+          "nameZh": "乌冬面",
+          "nameJa": "うどん",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ000237990/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-rich-genreCatch:うどん|udon",
+          "evidenceSnippet": "行列をできるお店★うどんの名店★駅チカ"
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJlag912qMGGARURk2NM8k6lc",
+      "name": "キッチンジロー&ほろよいジロー",
+      "recommendedDishes": [],
+      "featuredDishes": [
+        {
+          "nameZh": "汉堡排",
+          "nameJa": "ハンバーグ",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ000115503/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-rich-genreCatch:ハンバーグ|hamburg steak",
+          "evidenceSnippet": "神保町 ランチ 洋食 定食 肉 ハンバーグ"
+        }
+      ]
+    },
+    {
       "googlePlaceId": "ChIJLdDA4HiNGGARCcHyQmvL0OI",
       "name": "701",
       "recommendedDishes": [
@@ -7023,6 +7419,23 @@
         }
       ],
       "featuredDishes": []
+    },
+    {
+      "googlePlaceId": "ChIJLSgaVwGMGGARyihw7gp2YG8",
+      "name": "El Toros",
+      "recommendedDishes": [],
+      "featuredDishes": [
+        {
+          "nameZh": "塔可",
+          "nameJa": "タコス",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ000662525/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-rich-genreCatch:タコス|tacos?",
+          "evidenceSnippet": "タコスとバー（テキーラ屋）"
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJm_BdC0SMGGARdYy6mb4UcFk",
@@ -7885,6 +8298,23 @@
       ]
     },
     {
+      "googlePlaceId": "ChIJOeeMRyuNGGARKnRqvu0io-E",
+      "name": "Front du CHATON",
+      "recommendedDishes": [],
+      "featuredDishes": [
+        {
+          "nameZh": "炸猪排",
+          "nameJa": "とんかつ",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001259412/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-rich-genreCatch:とんかつ|豚カツ|tonkatsu",
+          "evidenceSnippet": "神保町 とんかつ 洋食 ランチ"
+        }
+      ]
+    },
+    {
       "googlePlaceId": "ChIJoeT3YD-NGGAR3eHpfh3C_Jw",
       "name": "GARB Cheers OTEMACHI",
       "recommendedDishes": [
@@ -8147,6 +8577,23 @@
       ]
     },
     {
+      "googlePlaceId": "ChIJoYoxhsyNGGAR66ND6TKWqJk",
+      "name": "鶏ヤロー",
+      "recommendedDishes": [
+        {
+          "nameZh": "日式炸鸡",
+          "nameJa": "唐揚げ",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001280256/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "hotpepper-rich-specialFeatureTitle:唐揚げ|から揚げ|からあげ|karaage",
+          "evidenceSnippet": "コスパ抜群！120分飲み放題/名物和田唐揚げもある水道橋コース！"
+        }
+      ],
+      "featuredDishes": []
+    },
+    {
       "googlePlaceId": "ChIJP_LdI3SNGGARWVr6Ler5--8",
       "name": "新潟カツ丼タレカツ　飯田橋店",
       "recommendedDishes": [],
@@ -8186,6 +8633,26 @@
           "evidenceClass": "provider_promotional_dish_text",
           "evidenceRule": "hotpepper-catch-menu:刺身|お造り|sashimi",
           "evidenceSnippet": "お刺身も♪豊富な品ぞろえ お一人様でも気軽にどうぞ"
+        },
+        {
+          "nameZh": "烤串",
+          "nameJa": "串焼き",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001043637/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-rich-genreCatch:串焼き",
+          "evidenceSnippet": "【朝〆国産地鶏の極うま焼鳥】串焼き専門店"
+        },
+        {
+          "nameZh": "烤鸡串",
+          "nameJa": "焼鳥",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001043637/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-rich-genreCatch:焼き?鳥|やきとり|yakitori",
+          "evidenceSnippet": "【朝〆国産地鶏の極うま焼鳥】串焼き専門店"
         }
       ]
     },
@@ -8840,6 +9307,23 @@
       ]
     },
     {
+      "googlePlaceId": "ChIJr_sIJGuMGGARzvXnOsUQGP8",
+      "name": "鳥福",
+      "recommendedDishes": [],
+      "featuredDishes": [
+        {
+          "nameZh": "烤鸡串",
+          "nameJa": "焼鳥",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001037186/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-rich-specialFeatureTitle:焼き?鳥|やきとり|yakitori",
+          "evidenceSnippet": "ご宴会に◎焼鳥や鶏出汁鍋を堪能できるコースを豊富にご用意◎"
+        }
+      ]
+    },
+    {
       "googlePlaceId": "ChIJr3knVhCMGGARzV5mJJqG8_c",
       "name": "はちまき",
       "recommendedDishes": [],
@@ -9005,6 +9489,23 @@
       "featuredDishes": []
     },
     {
+      "googlePlaceId": "ChIJraztWRuMGGARGAxXFUVABkE",
+      "name": "Ottimo Kitchen",
+      "recommendedDishes": [],
+      "featuredDishes": [
+        {
+          "nameZh": "披萨",
+          "nameJa": "ピッツァ",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001214944/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-rich-genreCatch:ピザ|ピッツァ|pizza",
+          "evidenceSnippet": "炭火焼本格イタリアンと窯焼きピッツァの店"
+        }
+      ]
+    },
+    {
       "googlePlaceId": "ChIJRbn_gXyNGGARdfFDUzphAIY",
       "name": "AMATERRACE",
       "recommendedDishes": [
@@ -9031,6 +9532,23 @@
       "featuredDishes": []
     },
     {
+      "googlePlaceId": "ChIJRUVVJamNGGARUh98f_E_y7E",
+      "name": "とんかつ まるや",
+      "recommendedDishes": [],
+      "featuredDishes": [
+        {
+          "nameZh": "炸猪排",
+          "nameJa": "とんかつ",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001271018/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-rich-genreCatch:とんかつ|豚カツ|tonkatsu",
+          "evidenceSnippet": "目指すは「日本一のとんかつ屋」"
+        }
+      ]
+    },
+    {
       "googlePlaceId": "ChIJryNhokOMGGARRZPnE_RjgjI",
       "name": "東京餃子 あかり",
       "recommendedDishes": [
@@ -9048,9 +9566,53 @@
       "featuredDishes": []
     },
     {
+      "googlePlaceId": "ChIJs_zQkhCMGGARCN3rJxb_w80",
+      "name": "MAJI CURRY 神田神保町店",
+      "recommendedDishes": [],
+      "featuredDishes": [
+        {
+          "nameZh": "咖喱",
+          "nameJa": "カレー",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ003340019/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-rich-genreCatch:カレー|カリー|咖喱|curry",
+          "evidenceSnippet": "本格スパイシーカレーに舌鼓♪"
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJs-O79UyNGGARoDH2Vg85mXM",
+      "name": "匠苑",
+      "recommendedDishes": [],
+      "featuredDishes": [
+        {
+          "nameZh": "烤肉",
+          "nameJa": "焼肉",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001296271/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-rich-genreCatch:焼肉|yakiniku",
+          "evidenceSnippet": "九段下Ｎｏ．１焼肉☆"
+        }
+      ]
+    },
+    {
       "googlePlaceId": "ChIJs1zmzD-MGGAR_TWUpga5JUs",
       "name": "大庄水産",
       "recommendedDishes": [
+        {
+          "nameZh": "寿司",
+          "nameJa": "寿司",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001170001/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "hotpepper-rich-specialFeatureTitle:寿司|すし|鮨|sushi",
+          "evidenceSnippet": "当店名物ぶっかけ寿司や刺盛りなど海鮮料理を各種ご用意！"
+        },
         {
           "nameZh": "寿司",
           "nameJa": "寿司",
@@ -9198,6 +9760,36 @@
           "evidenceClass": "provider_promotional_dish_text",
           "evidenceRule": "hotpepper-catch-menu:刺身|お造り|sashimi",
           "evidenceSnippet": "喫煙席あり飛騨牛 お刺身 2名-40名様モダン個室空間"
+        },
+        {
+          "nameZh": "寿司",
+          "nameJa": "寿司",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001171178/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-rich-specialFeatureTitle:寿司|すし|鮨|sushi",
+          "evidenceSnippet": "飛騨牛 肉寿司コー3H飲み放題付3000円～"
+        },
+        {
+          "nameZh": "涮涮锅",
+          "nameJa": "しゃぶしゃぶ",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001171178/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-rich-specialFeatureTitle:しゃぶしゃぶ|shabu.?shabu",
+          "evidenceSnippet": "【しゃぶしゃぶ祭】しゃぶしゃぶ＋和食料理食べ飲みプラン3000円"
+        },
+        {
+          "nameZh": "烤鸡串",
+          "nameJa": "焼鳥",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001171178/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-rich-genreCatch:焼き?鳥|やきとり|yakitori",
+          "evidenceSnippet": "神田 居酒屋 個室 鮮魚 肉 焼鳥"
         }
       ]
     },
@@ -10029,6 +10621,16 @@
       "recommendedDishes": [],
       "featuredDishes": [
         {
+          "nameZh": "寿司",
+          "nameJa": "寿司",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001128905/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-rich-specialFeatureTitle:寿司|すし|鮨|sushi",
+          "evidenceSnippet": "【3H飲み放題付】特選牛や馬肉寿司、直送鮮魚など絶品を堪能！"
+        },
+        {
           "nameZh": "盐麹烤神威猪里脊",
           "nameJa": "神威豚ロース塩麹グリル",
           "provider": "Tabelog",
@@ -10058,6 +10660,23 @@
       "featuredDishes": []
     },
     {
+      "googlePlaceId": "ChIJUdOuFReNGGARLaWPEDMUWMc",
+      "name": "串揚げ Bistro 双",
+      "recommendedDishes": [],
+      "featuredDishes": [
+        {
+          "nameZh": "炸串",
+          "nameJa": "串揚げ",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001269562/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-rich-genreCatch:串揚げ|串カツ|kushiage",
+          "evidenceSnippet": "絶品の串揚げをご堪能いただけます！"
+        }
+      ]
+    },
+    {
       "googlePlaceId": "ChIJufenb1iNGGARHcVIujzaKDw",
       "name": "座135 神保町店",
       "recommendedDishes": [],
@@ -10073,6 +10692,23 @@
           "evidenceSnippet": "焼き餃子"
         }
       ]
+    },
+    {
+      "googlePlaceId": "ChIJUSoTI3qNGGARMsnxHgH6PpI",
+      "name": "もみじ屋",
+      "recommendedDishes": [
+        {
+          "nameZh": "御好烧",
+          "nameJa": "お好み焼き",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ003516841/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "hotpepper-rich-specialFeatureTitle:お好み焼き?|okonomiyaki",
+          "evidenceSnippet": "人気のお好み焼きの数々をご堪能ください！SNS映え間違いなし"
+        }
+      ],
+      "featuredDishes": []
     },
     {
       "googlePlaceId": "ChIJuxFlGX-NGGARhKa6awuuSNo",
@@ -10878,6 +11514,23 @@
       ]
     },
     {
+      "googlePlaceId": "ChIJwY-_huuNGGARnlDLau98mtk",
+      "name": "竜太郎",
+      "recommendedDishes": [],
+      "featuredDishes": [
+        {
+          "nameZh": "越南河粉",
+          "nameJa": "フォー",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ003624171/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-rich-specialFeatureTitle:フォー|pho\\b",
+          "evidenceSnippet": "【コストパフォーマンス◎】大人数でもご対応可能です☆彡"
+        }
+      ]
+    },
+    {
       "googlePlaceId": "ChIJX_rO9EONGGARNRk8x0A8Atg",
       "name": "おでん やきとり 伊勢路 水道橋店",
       "recommendedDishes": [],
@@ -11109,6 +11762,23 @@
       ]
     },
     {
+      "googlePlaceId": "ChIJXXE5YkGMGGARkjQd_KkZSWA",
+      "name": "もみじ屋",
+      "recommendedDishes": [],
+      "featuredDishes": [
+        {
+          "nameZh": "御好烧",
+          "nameJa": "お好み焼き",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001038878/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-rich-genreCatch:お好み焼き?|okonomiyaki",
+          "evidenceSnippet": "飯田橋で44年愛される、お好み焼きの名店！"
+        }
+      ]
+    },
+    {
       "googlePlaceId": "ChIJXy2A7WSNGGARSpt_OZLqh9Y",
       "name": "秋葉原下町もんじゃ おしかつ",
       "recommendedDishes": [],
@@ -11246,6 +11916,36 @@
         }
       ],
       "featuredDishes": [
+        {
+          "nameZh": "关东煮",
+          "nameJa": "おでん",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001145995/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-rich-genreCatch:おでん|oden\\b",
+          "evidenceSnippet": "串カツ・串焼き・おでん・水道橋・宴会"
+        },
+        {
+          "nameZh": "炸串",
+          "nameJa": "串カツ",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001145995/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-rich-genreCatch:串揚げ|串カツ|kushiage",
+          "evidenceSnippet": "串カツ・串焼き・おでん・水道橋・宴会"
+        },
+        {
+          "nameZh": "烤串",
+          "nameJa": "串焼き",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001145995/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-rich-genreCatch:串焼き",
+          "evidenceSnippet": "串カツ・串焼き・おでん・水道橋・宴会"
+        },
         {
           "nameZh": "炸串",
           "nameJa": "串揚げ",
@@ -11469,6 +12169,23 @@
       "featuredDishes": []
     },
     {
+      "googlePlaceId": "ChIJyZAT2BCMGGARLI6GGHovI0c",
+      "name": "ブラッセルズ神田神保町",
+      "recommendedDishes": [],
+      "featuredDishes": [
+        {
+          "nameZh": "牛排",
+          "nameJa": "ステーキ",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ000865110/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-rich-specialFeatureTitle:ステーキ|steak",
+          "evidenceSnippet": "熟成肉ステーキを日本最古クラフトビール専門店で楽しむ"
+        }
+      ]
+    },
+    {
       "googlePlaceId": "ChIJZ7Pq3gSMGGARqzSYizyRXm0",
       "name": "串焼 庭 本格ハルビン",
       "recommendedDishes": [],
@@ -11509,7 +12226,18 @@
           "evidenceSnippet": "福島県産銘柄鶏「伊達鶏」 お店自慢の『親子丼』！"
         }
       ],
-      "featuredDishes": []
+      "featuredDishes": [
+        {
+          "nameZh": "亲子盖饭",
+          "nameJa": "親子丼",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ000243520/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-rich-genreCatch:親子丼|oyakodon",
+          "evidenceSnippet": "美味しい串と親子丼！『新鮮地鶏の専門店』"
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJzbh-BgCNGGARYOcIF_C_Og8",

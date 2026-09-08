@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-08T03:05:45.762Z",
+  "generatedAt": "2026-09-08T03:21:55.450Z",
   "policy": {
     "catalogIdentityKey": "frozen Place ID only",
     "catalogTotal": 2804,
@@ -15,14 +15,14 @@
   },
   "summary": {
     "publicRuntimeTotal": 1415,
-    "recommendationGap": 1213,
-    "dishWorkRows": 1268,
+    "recommendationGap": 1209,
+    "dishWorkRows": 1266,
     "shards": 8,
     "laneCounts": {
-      "official_crawl": 220,
-      "retained_source_mining": 646,
+      "official_crawl": 219,
+      "retained_source_mining": 643,
       "independent_source_discovery": 347,
-      "official_or_retained_featured": 55
+      "official_or_retained_featured": 57
     },
     "shardCounts": [
       {
@@ -37,12 +37,12 @@
       },
       {
         "shard": 1,
-        "total": 177,
+        "total": 176,
         "lanes": {
           "official_crawl": 30,
           "retained_source_mining": 92,
           "independent_source_discovery": 46,
-          "official_or_retained_featured": 9
+          "official_or_retained_featured": 8
         }
       },
       {
@@ -60,19 +60,19 @@
         "total": 157,
         "lanes": {
           "official_crawl": 18,
-          "retained_source_mining": 84,
+          "retained_source_mining": 83,
           "independent_source_discovery": 47,
-          "official_or_retained_featured": 8
+          "official_or_retained_featured": 9
         }
       },
       {
         "shard": 4,
         "total": 162,
         "lanes": {
-          "official_crawl": 33,
-          "retained_source_mining": 76,
+          "official_crawl": 32,
+          "retained_source_mining": 75,
           "independent_source_discovery": 46,
-          "official_or_retained_featured": 7
+          "official_or_retained_featured": 9
         }
       },
       {
@@ -80,9 +80,9 @@
         "total": 154,
         "lanes": {
           "official_crawl": 28,
-          "retained_source_mining": 82,
+          "retained_source_mining": 81,
           "independent_source_discovery": 39,
-          "official_or_retained_featured": 5
+          "official_or_retained_featured": 6
         }
       },
       {
@@ -97,12 +97,12 @@
       },
       {
         "shard": 7,
-        "total": 155,
+        "total": 154,
         "lanes": {
           "official_crawl": 27,
           "retained_source_mining": 75,
           "independent_source_discovery": 45,
-          "official_or_retained_featured": 8
+          "official_or_retained_featured": 7
         }
       }
     ]
@@ -540,7 +540,7 @@
       "retainedThirdPartyUrlCount": 1,
       "sourceUrlCount": 1,
       "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 1
+      "featuredDishesKnown": 2
     },
     {
       "googlePlaceId": "ChIJ17dALKONGGARwpbTKxQ1_Mw",
@@ -2752,7 +2752,7 @@
       "retainedThirdPartyUrlCount": 2,
       "sourceUrlCount": 2,
       "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 1
+      "featuredDishesKnown": 2
     },
     {
       "googlePlaceId": "ChIJ6X2dkgSMGGARx4ZIQvpQm6w",
@@ -2794,7 +2794,35 @@
       "retainedThirdPartyUrlCount": 2,
       "sourceUrlCount": 2,
       "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 2
+      "featuredDishesKnown": 3
+    },
+    {
+      "googlePlaceId": "ChIJay-cC0SMGGARrFB7svEbbs0",
+      "name": "築地食堂源ちゃん",
+      "lane": "retained_source_mining",
+      "nextAction": "extract_retained_dish_source",
+      "shard": 1,
+      "priorityScore": 1080,
+      "cuisine": "酒吧",
+      "crawlableOfficialUrlCount": 0,
+      "retainedThirdPartyUrlCount": 1,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 0,
+      "featuredDishesKnown": 1
+    },
+    {
+      "googlePlaceId": "ChIJF1SVaAGMGGARcnCMoPo0Zog",
+      "name": "宇奈とと神田店",
+      "lane": "retained_source_mining",
+      "nextAction": "extract_retained_dish_source",
+      "shard": 1,
+      "priorityScore": 1080,
+      "cuisine": "日式",
+      "crawlableOfficialUrlCount": 0,
+      "retainedThirdPartyUrlCount": 1,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 0,
+      "featuredDishesKnown": 1
     },
     {
       "googlePlaceId": "ChIJN0bDyw-MGGARk68z6gE_YsE",
@@ -2823,6 +2851,34 @@
       "sourceUrlCount": 2,
       "recommendedDishesKnown": 0,
       "featuredDishesKnown": 0
+    },
+    {
+      "googlePlaceId": "ChIJr_sIJGuMGGARzvXnOsUQGP8",
+      "name": "鳥福",
+      "lane": "retained_source_mining",
+      "nextAction": "extract_retained_dish_source",
+      "shard": 1,
+      "priorityScore": 1080,
+      "cuisine": "酒吧",
+      "crawlableOfficialUrlCount": 0,
+      "retainedThirdPartyUrlCount": 1,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 0,
+      "featuredDishesKnown": 1
+    },
+    {
+      "googlePlaceId": "ChIJwY-_huuNGGARnlDLau98mtk",
+      "name": "竜太郎",
+      "lane": "retained_source_mining",
+      "nextAction": "extract_retained_dish_source",
+      "shard": 1,
+      "priorityScore": 1080,
+      "cuisine": "酒吧",
+      "crawlableOfficialUrlCount": 0,
+      "retainedThirdPartyUrlCount": 1,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 0,
+      "featuredDishesKnown": 1
     },
     {
       "googlePlaceId": "ChIJ0QsSYaGOGGAR0qvxM-zjiT4",
@@ -3021,20 +3077,6 @@
       "featuredDishesKnown": 0
     },
     {
-      "googlePlaceId": "ChIJay-cC0SMGGARrFB7svEbbs0",
-      "name": "築地食堂源ちゃん",
-      "lane": "retained_source_mining",
-      "nextAction": "extract_retained_dish_source",
-      "shard": 1,
-      "priorityScore": 1065,
-      "cuisine": "酒吧",
-      "crawlableOfficialUrlCount": 0,
-      "retainedThirdPartyUrlCount": 1,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0
-    },
-    {
       "googlePlaceId": "ChIJb2VWEBCMGGARMK1-6y_JBjY",
       "name": "欧風カレー ボンディ 神田小川町店",
       "lane": "retained_source_mining",
@@ -3070,20 +3112,6 @@
       "shard": 1,
       "priorityScore": 1065,
       "cuisine": "拉面",
-      "crawlableOfficialUrlCount": 0,
-      "retainedThirdPartyUrlCount": 1,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0
-    },
-    {
-      "googlePlaceId": "ChIJF1SVaAGMGGARcnCMoPo0Zog",
-      "name": "宇奈とと神田店",
-      "lane": "retained_source_mining",
-      "nextAction": "extract_retained_dish_source",
-      "shard": 1,
-      "priorityScore": 1065,
-      "cuisine": "日式",
       "crawlableOfficialUrlCount": 0,
       "retainedThirdPartyUrlCount": 1,
       "sourceUrlCount": 1,
@@ -3301,20 +3329,6 @@
       "featuredDishesKnown": 0
     },
     {
-      "googlePlaceId": "ChIJr_sIJGuMGGARzvXnOsUQGP8",
-      "name": "鳥福",
-      "lane": "retained_source_mining",
-      "nextAction": "extract_retained_dish_source",
-      "shard": 1,
-      "priorityScore": 1065,
-      "cuisine": "酒吧",
-      "crawlableOfficialUrlCount": 0,
-      "retainedThirdPartyUrlCount": 1,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0
-    },
-    {
       "googlePlaceId": "ChIJRYYKwBCMGGARJj3X3V8cbWo",
       "name": "麺屋こころ 御茶ノ水店",
       "lane": "retained_source_mining",
@@ -3350,20 +3364,6 @@
       "shard": 1,
       "priorityScore": 1065,
       "cuisine": "印度菜",
-      "crawlableOfficialUrlCount": 0,
-      "retainedThirdPartyUrlCount": 1,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0
-    },
-    {
-      "googlePlaceId": "ChIJwY-_huuNGGARnlDLau98mtk",
-      "name": "竜太郎",
-      "lane": "retained_source_mining",
-      "nextAction": "extract_retained_dish_source",
-      "shard": 1,
-      "priorityScore": 1065,
-      "cuisine": "酒吧",
       "crawlableOfficialUrlCount": 0,
       "retainedThirdPartyUrlCount": 1,
       "sourceUrlCount": 1,
@@ -4757,20 +4757,6 @@
       "featuredDishesKnown": 0
     },
     {
-      "googlePlaceId": "ChIJz9KX_wOMGGARruVg61rYoMY",
-      "name": "伊勢ろく",
-      "lane": "official_or_retained_featured",
-      "nextAction": "collect_source_backed_featured_dishes",
-      "shard": 1,
-      "priorityScore": 710,
-      "cuisine": "日式",
-      "crawlableOfficialUrlCount": 0,
-      "retainedThirdPartyUrlCount": 1,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 2,
-      "featuredDishesKnown": 0
-    },
-    {
       "googlePlaceId": "ChIJZychXwCNGGARKqLV99CEQik",
       "name": "京風親子丼 木曜日",
       "lane": "official_or_retained_featured",
@@ -5219,6 +5205,20 @@
       "featuredDishesKnown": 0
     },
     {
+      "googlePlaceId": "ChIJbYf2gvGNGGAR98ND-4Uh3RU",
+      "name": "個室居酒屋 道らく 水道橋店",
+      "lane": "retained_source_mining",
+      "nextAction": "extract_retained_dish_source",
+      "shard": 2,
+      "priorityScore": 1095,
+      "cuisine": "居酒屋",
+      "crawlableOfficialUrlCount": 0,
+      "retainedThirdPartyUrlCount": 2,
+      "sourceUrlCount": 2,
+      "recommendedDishesKnown": 0,
+      "featuredDishesKnown": 1
+    },
+    {
       "googlePlaceId": "ChIJpf-1IRGMGGAR5tvlV1sec3A",
       "name": "日乃屋カレー 神保町店",
       "lane": "retained_source_mining",
@@ -5226,6 +5226,20 @@
       "shard": 2,
       "priorityScore": 1095,
       "cuisine": "咖喱",
+      "crawlableOfficialUrlCount": 0,
+      "retainedThirdPartyUrlCount": 2,
+      "sourceUrlCount": 2,
+      "recommendedDishesKnown": 0,
+      "featuredDishesKnown": 1
+    },
+    {
+      "googlePlaceId": "ChIJs-O79UyNGGARoDH2Vg85mXM",
+      "name": "匠苑",
+      "lane": "retained_source_mining",
+      "nextAction": "extract_retained_dish_source",
+      "shard": 2,
+      "priorityScore": 1095,
+      "cuisine": "烧烤",
       "crawlableOfficialUrlCount": 0,
       "retainedThirdPartyUrlCount": 2,
       "sourceUrlCount": 2,
@@ -5303,20 +5317,6 @@
       "featuredDishesKnown": 1
     },
     {
-      "googlePlaceId": "ChIJbYf2gvGNGGAR98ND-4Uh3RU",
-      "name": "個室居酒屋 道らく 水道橋店",
-      "lane": "retained_source_mining",
-      "nextAction": "extract_retained_dish_source",
-      "shard": 2,
-      "priorityScore": 1080,
-      "cuisine": "居酒屋",
-      "crawlableOfficialUrlCount": 0,
-      "retainedThirdPartyUrlCount": 2,
-      "sourceUrlCount": 2,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0
-    },
-    {
       "googlePlaceId": "ChIJD0ZKkQSMGGARmP9uEaruIAo",
       "name": "みますや",
       "lane": "retained_source_mining",
@@ -5387,6 +5387,20 @@
       "featuredDishesKnown": 2
     },
     {
+      "googlePlaceId": "ChIJl7YRHRmMGGAReoVumUJxnjI",
+      "name": "細打うどん竹や",
+      "lane": "retained_source_mining",
+      "nextAction": "extract_retained_dish_source",
+      "shard": 2,
+      "priorityScore": 1080,
+      "cuisine": "日式",
+      "crawlableOfficialUrlCount": 0,
+      "retainedThirdPartyUrlCount": 1,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 0,
+      "featuredDishesKnown": 1
+    },
+    {
       "googlePlaceId": "ChIJp23kJhGMGGARSBIhbni6bk4",
       "name": "アボカフェ",
       "lane": "retained_source_mining",
@@ -5415,18 +5429,18 @@
       "featuredDishesKnown": 1
     },
     {
-      "googlePlaceId": "ChIJs-O79UyNGGARoDH2Vg85mXM",
-      "name": "匠苑",
+      "googlePlaceId": "ChIJraztWRuMGGARGAxXFUVABkE",
+      "name": "Ottimo Kitchen",
       "lane": "retained_source_mining",
       "nextAction": "extract_retained_dish_source",
       "shard": 2,
       "priorityScore": 1080,
-      "cuisine": "烧烤",
+      "cuisine": "意大利菜",
       "crawlableOfficialUrlCount": 0,
-      "retainedThirdPartyUrlCount": 2,
-      "sourceUrlCount": 2,
+      "retainedThirdPartyUrlCount": 1,
+      "sourceUrlCount": 1,
       "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0
+      "featuredDishesKnown": 1
     },
     {
       "googlePlaceId": "ChIJs55ZyEqNGGARjtFD8qO9Xe4",
@@ -5441,6 +5455,34 @@
       "sourceUrlCount": 2,
       "recommendedDishesKnown": 0,
       "featuredDishesKnown": 0
+    },
+    {
+      "googlePlaceId": "ChIJUdOuFReNGGARLaWPEDMUWMc",
+      "name": "串揚げ Bistro 双",
+      "lane": "retained_source_mining",
+      "nextAction": "extract_retained_dish_source",
+      "shard": 2,
+      "priorityScore": 1080,
+      "cuisine": "酒吧",
+      "crawlableOfficialUrlCount": 0,
+      "retainedThirdPartyUrlCount": 1,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 0,
+      "featuredDishesKnown": 1
+    },
+    {
+      "googlePlaceId": "ChIJXXE5YkGMGGARkjQd_KkZSWA",
+      "name": "もみじ屋",
+      "lane": "retained_source_mining",
+      "nextAction": "extract_retained_dish_source",
+      "shard": 2,
+      "priorityScore": 1080,
+      "cuisine": "御好烧",
+      "crawlableOfficialUrlCount": 0,
+      "retainedThirdPartyUrlCount": 1,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 0,
+      "featuredDishesKnown": 1
     },
     {
       "googlePlaceId": "ChIJ3w9Ixj-MGGARx_3nnSIeg3M",
@@ -5681,20 +5723,6 @@
       "featuredDishesKnown": 0
     },
     {
-      "googlePlaceId": "ChIJl7YRHRmMGGAReoVumUJxnjI",
-      "name": "細打うどん竹や",
-      "lane": "retained_source_mining",
-      "nextAction": "extract_retained_dish_source",
-      "shard": 2,
-      "priorityScore": 1065,
-      "cuisine": "日式",
-      "crawlableOfficialUrlCount": 0,
-      "retainedThirdPartyUrlCount": 1,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0
-    },
-    {
       "googlePlaceId": "ChIJL85mABSMGGARZ5qPibIpDnk",
       "name": "覆麺 智",
       "lane": "retained_source_mining",
@@ -5807,20 +5835,6 @@
       "featuredDishesKnown": 0
     },
     {
-      "googlePlaceId": "ChIJraztWRuMGGARGAxXFUVABkE",
-      "name": "Ottimo Kitchen",
-      "lane": "retained_source_mining",
-      "nextAction": "extract_retained_dish_source",
-      "shard": 2,
-      "priorityScore": 1065,
-      "cuisine": "意大利菜",
-      "crawlableOfficialUrlCount": 0,
-      "retainedThirdPartyUrlCount": 1,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0
-    },
-    {
       "googlePlaceId": "ChIJrZPAHBGMGGARge1vNIrQh80",
       "name": "ラドリオ",
       "lane": "retained_source_mining",
@@ -5842,34 +5856,6 @@
       "shard": 2,
       "priorityScore": 1065,
       "cuisine": "印度菜",
-      "crawlableOfficialUrlCount": 0,
-      "retainedThirdPartyUrlCount": 1,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0
-    },
-    {
-      "googlePlaceId": "ChIJUdOuFReNGGARLaWPEDMUWMc",
-      "name": "串揚げ Bistro 双",
-      "lane": "retained_source_mining",
-      "nextAction": "extract_retained_dish_source",
-      "shard": 2,
-      "priorityScore": 1065,
-      "cuisine": "酒吧",
-      "crawlableOfficialUrlCount": 0,
-      "retainedThirdPartyUrlCount": 1,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0
-    },
-    {
-      "googlePlaceId": "ChIJXXE5YkGMGGARkjQd_KkZSWA",
-      "name": "もみじ屋",
-      "lane": "retained_source_mining",
-      "nextAction": "extract_retained_dish_source",
-      "shard": 2,
-      "priorityScore": 1065,
-      "cuisine": "御好烧",
       "crawlableOfficialUrlCount": 0,
       "retainedThirdPartyUrlCount": 1,
       "sourceUrlCount": 1,
@@ -7543,6 +7529,20 @@
       "featuredDishesKnown": 0
     },
     {
+      "googlePlaceId": "ChIJlag912qMGGARURk2NM8k6lc",
+      "name": "キッチンジロー&ほろよいジロー",
+      "lane": "retained_source_mining",
+      "nextAction": "extract_retained_dish_source",
+      "shard": 3,
+      "priorityScore": 1095,
+      "cuisine": "居酒屋",
+      "crawlableOfficialUrlCount": 0,
+      "retainedThirdPartyUrlCount": 2,
+      "sourceUrlCount": 2,
+      "recommendedDishesKnown": 0,
+      "featuredDishesKnown": 1
+    },
+    {
       "googlePlaceId": "ChIJdyF1YQmNGGARvDDeU1cwyv4",
       "name": "和食屋 こう太",
       "lane": "retained_source_mining",
@@ -7571,6 +7571,20 @@
       "featuredDishesKnown": 2
     },
     {
+      "googlePlaceId": "ChIJh4hmXeCNGGARK7cpKqXTWqE",
+      "name": "熟成豚ホルモン えいじ",
+      "lane": "retained_source_mining",
+      "nextAction": "extract_retained_dish_source",
+      "shard": 3,
+      "priorityScore": 1080,
+      "cuisine": "烤肉",
+      "crawlableOfficialUrlCount": 0,
+      "retainedThirdPartyUrlCount": 1,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 0,
+      "featuredDishesKnown": 2
+    },
+    {
       "googlePlaceId": "ChIJkYyE7gSMGGARNuyvrhRFIiw",
       "name": "イタリア風食彩 幸三郎 花乃碗",
       "lane": "retained_source_mining",
@@ -7578,20 +7592,6 @@
       "shard": 3,
       "priorityScore": 1080,
       "cuisine": "意大利菜",
-      "crawlableOfficialUrlCount": 0,
-      "retainedThirdPartyUrlCount": 2,
-      "sourceUrlCount": 2,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0
-    },
-    {
-      "googlePlaceId": "ChIJlag912qMGGARURk2NM8k6lc",
-      "name": "キッチンジロー&ほろよいジロー",
-      "lane": "retained_source_mining",
-      "nextAction": "extract_retained_dish_source",
-      "shard": 3,
-      "priorityScore": 1080,
-      "cuisine": "居酒屋",
       "crawlableOfficialUrlCount": 0,
       "retainedThirdPartyUrlCount": 2,
       "sourceUrlCount": 2,
@@ -7613,6 +7613,34 @@
       "featuredDishesKnown": 0
     },
     {
+      "googlePlaceId": "ChIJLSgaVwGMGGARyihw7gp2YG8",
+      "name": "El Toros",
+      "lane": "retained_source_mining",
+      "nextAction": "extract_retained_dish_source",
+      "shard": 3,
+      "priorityScore": 1080,
+      "cuisine": "酒吧",
+      "crawlableOfficialUrlCount": 0,
+      "retainedThirdPartyUrlCount": 1,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 0,
+      "featuredDishesKnown": 1
+    },
+    {
+      "googlePlaceId": "ChIJRUVVJamNGGARUh98f_E_y7E",
+      "name": "とんかつ まるや",
+      "lane": "retained_source_mining",
+      "nextAction": "extract_retained_dish_source",
+      "shard": 3,
+      "priorityScore": 1080,
+      "cuisine": "日式",
+      "crawlableOfficialUrlCount": 0,
+      "retainedThirdPartyUrlCount": 1,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 0,
+      "featuredDishesKnown": 1
+    },
+    {
       "googlePlaceId": "ChIJsajCtO-NGGARS6nXsARRhI0",
       "name": "和食の故郷",
       "lane": "retained_source_mining",
@@ -7624,7 +7652,7 @@
       "retainedThirdPartyUrlCount": 1,
       "sourceUrlCount": 1,
       "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 1
+      "featuredDishesKnown": 4
     },
     {
       "googlePlaceId": "ChIJt79NDhGMGGARiFL_6DFaR9g",
@@ -7732,20 +7760,6 @@
       "shard": 3,
       "priorityScore": 1065,
       "cuisine": "餐厅",
-      "crawlableOfficialUrlCount": 0,
-      "retainedThirdPartyUrlCount": 1,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0
-    },
-    {
-      "googlePlaceId": "ChIJ-byfbkGMGGAReOVUQDAy6qM",
-      "name": "アパ社長カレー",
-      "lane": "retained_source_mining",
-      "nextAction": "extract_retained_dish_source",
-      "shard": 3,
-      "priorityScore": 1065,
-      "cuisine": "咖喱",
       "crawlableOfficialUrlCount": 0,
       "retainedThirdPartyUrlCount": 1,
       "sourceUrlCount": 1,
@@ -7977,20 +7991,6 @@
       "featuredDishesKnown": 0
     },
     {
-      "googlePlaceId": "ChIJh4hmXeCNGGARK7cpKqXTWqE",
-      "name": "熟成豚ホルモン えいじ",
-      "lane": "retained_source_mining",
-      "nextAction": "extract_retained_dish_source",
-      "shard": 3,
-      "priorityScore": 1065,
-      "cuisine": "烤肉",
-      "crawlableOfficialUrlCount": 0,
-      "retainedThirdPartyUrlCount": 1,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0
-    },
-    {
       "googlePlaceId": "ChIJhae4jz-MGGARVDKWzSuUHUk",
       "name": "勝本",
       "lane": "retained_source_mining",
@@ -8007,20 +8007,6 @@
     {
       "googlePlaceId": "ChIJJZS1WhuMGGARg97yhh0fUU8",
       "name": "あがらっし",
-      "lane": "retained_source_mining",
-      "nextAction": "extract_retained_dish_source",
-      "shard": 3,
-      "priorityScore": 1065,
-      "cuisine": "酒吧",
-      "crawlableOfficialUrlCount": 0,
-      "retainedThirdPartyUrlCount": 1,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0
-    },
-    {
-      "googlePlaceId": "ChIJLSgaVwGMGGARyihw7gp2YG8",
-      "name": "El Toros",
       "lane": "retained_source_mining",
       "nextAction": "extract_retained_dish_source",
       "shard": 3,
@@ -8082,20 +8068,6 @@
       "shard": 3,
       "priorityScore": 1065,
       "cuisine": "咖啡",
-      "crawlableOfficialUrlCount": 0,
-      "retainedThirdPartyUrlCount": 1,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0
-    },
-    {
-      "googlePlaceId": "ChIJRUVVJamNGGARUh98f_E_y7E",
-      "name": "とんかつ まるや",
-      "lane": "retained_source_mining",
-      "nextAction": "extract_retained_dish_source",
-      "shard": 3,
-      "priorityScore": 1065,
-      "cuisine": "日式",
       "crawlableOfficialUrlCount": 0,
       "retainedThirdPartyUrlCount": 1,
       "sourceUrlCount": 1,
@@ -9405,6 +9377,20 @@
       "featuredDishesKnown": 0
     },
     {
+      "googlePlaceId": "ChIJ-byfbkGMGGAReOVUQDAy6qM",
+      "name": "アパ社長カレー",
+      "lane": "official_or_retained_featured",
+      "nextAction": "collect_source_backed_featured_dishes",
+      "shard": 3,
+      "priorityScore": 710,
+      "cuisine": "咖喱",
+      "crawlableOfficialUrlCount": 0,
+      "retainedThirdPartyUrlCount": 1,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 0
+    },
+    {
       "googlePlaceId": "ChIJ3woP4BCMGGAR_rK6Rw0LqWA",
       "name": "Starbucks",
       "lane": "official_or_retained_featured",
@@ -9597,20 +9583,6 @@
       "crawlableOfficialUrlCount": 1,
       "retainedThirdPartyUrlCount": 0,
       "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0
-    },
-    {
-      "googlePlaceId": "ChIJ8zcFAQSMGGARjT19WihSuNk",
-      "name": "やきとり道場",
-      "lane": "official_crawl",
-      "nextAction": "collect_strict_recommended_dishes",
-      "shard": 4,
-      "priorityScore": 1110,
-      "cuisine": "居酒屋",
-      "crawlableOfficialUrlCount": 1,
-      "retainedThirdPartyUrlCount": 1,
-      "sourceUrlCount": 2,
       "recommendedDishesKnown": 0,
       "featuredDishesKnown": 0
     },
@@ -9962,7 +9934,7 @@
       "retainedThirdPartyUrlCount": 2,
       "sourceUrlCount": 2,
       "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 3
+      "featuredDishesKnown": 4
     },
     {
       "googlePlaceId": "ChIJITsXUxaMGGAREtKypQBMSXI",
@@ -10448,20 +10420,6 @@
       "shard": 4,
       "priorityScore": 1065,
       "cuisine": "咖啡",
-      "crawlableOfficialUrlCount": 0,
-      "retainedThirdPartyUrlCount": 1,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0
-    },
-    {
-      "googlePlaceId": "ChIJUSoTI3qNGGARMsnxHgH6PpI",
-      "name": "もみじ屋",
-      "lane": "retained_source_mining",
-      "nextAction": "extract_retained_dish_source",
-      "shard": 4,
-      "priorityScore": 1065,
-      "cuisine": "乌冬",
       "crawlableOfficialUrlCount": 0,
       "retainedThirdPartyUrlCount": 1,
       "sourceUrlCount": 1,
@@ -11659,6 +11617,20 @@
       "featuredDishesKnown": 0
     },
     {
+      "googlePlaceId": "ChIJ8zcFAQSMGGARjT19WihSuNk",
+      "name": "やきとり道場",
+      "lane": "official_or_retained_featured",
+      "nextAction": "collect_source_backed_featured_dishes",
+      "shard": 4,
+      "priorityScore": 720,
+      "cuisine": "居酒屋",
+      "crawlableOfficialUrlCount": 1,
+      "retainedThirdPartyUrlCount": 1,
+      "sourceUrlCount": 2,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 0
+    },
+    {
       "googlePlaceId": "ChIJjdmff6KNGGARf1NV0O_Nmug",
       "name": "Osteria NORA",
       "lane": "official_or_retained_featured",
@@ -11729,6 +11701,20 @@
       "featuredDishesKnown": 0
     },
     {
+      "googlePlaceId": "ChIJUSoTI3qNGGARMsnxHgH6PpI",
+      "name": "もみじ屋",
+      "lane": "official_or_retained_featured",
+      "nextAction": "collect_source_backed_featured_dishes",
+      "shard": 4,
+      "priorityScore": 710,
+      "cuisine": "乌冬",
+      "crawlableOfficialUrlCount": 0,
+      "retainedThirdPartyUrlCount": 1,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 0
+    },
+    {
       "googlePlaceId": "ChIJycnCZByMGGARtracwncwKPg",
       "name": "ちゃい九炉",
       "lane": "official_or_retained_featured",
@@ -11769,6 +11755,20 @@
       "sourceUrlCount": 3,
       "recommendedDishesKnown": 0,
       "featuredDishesKnown": 3
+    },
+    {
+      "googlePlaceId": "ChIJBWY0oOONGGARfDSN38wt5l0",
+      "name": "インド屋",
+      "lane": "official_crawl",
+      "nextAction": "collect_strict_recommended_dishes",
+      "shard": 5,
+      "priorityScore": 1125,
+      "cuisine": "印度菜",
+      "crawlableOfficialUrlCount": 1,
+      "retainedThirdPartyUrlCount": 1,
+      "sourceUrlCount": 2,
+      "recommendedDishesKnown": 0,
+      "featuredDishesKnown": 1
     },
     {
       "googlePlaceId": "ChIJAQAbqByMGGARv1Rpxd63ZXM",
@@ -11834,20 +11834,6 @@
       "shard": 5,
       "priorityScore": 1110,
       "cuisine": "咖啡",
-      "crawlableOfficialUrlCount": 1,
-      "retainedThirdPartyUrlCount": 1,
-      "sourceUrlCount": 2,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0
-    },
-    {
-      "googlePlaceId": "ChIJBWY0oOONGGARfDSN38wt5l0",
-      "name": "インド屋",
-      "lane": "official_crawl",
-      "nextAction": "collect_strict_recommended_dishes",
-      "shard": 5,
-      "priorityScore": 1110,
-      "cuisine": "印度菜",
       "crawlableOfficialUrlCount": 1,
       "retainedThirdPartyUrlCount": 1,
       "sourceUrlCount": 2,
@@ -12163,6 +12149,34 @@
       "featuredDishesKnown": 1
     },
     {
+      "googlePlaceId": "ChIJi_Zh7BCMGGARcHWiiqKKE64",
+      "name": "ホルモン焼肉 モリちゃん 御茶ノ水店",
+      "lane": "retained_source_mining",
+      "nextAction": "extract_retained_dish_source",
+      "shard": 5,
+      "priorityScore": 1095,
+      "cuisine": "烤肉",
+      "crawlableOfficialUrlCount": 0,
+      "retainedThirdPartyUrlCount": 2,
+      "sourceUrlCount": 2,
+      "recommendedDishesKnown": 0,
+      "featuredDishesKnown": 2
+    },
+    {
+      "googlePlaceId": "ChIJjRXSfYKNGGARjAXt0quyFcQ",
+      "name": "わさび",
+      "lane": "retained_source_mining",
+      "nextAction": "extract_retained_dish_source",
+      "shard": 5,
+      "priorityScore": 1095,
+      "cuisine": "寿司",
+      "crawlableOfficialUrlCount": 0,
+      "retainedThirdPartyUrlCount": 2,
+      "sourceUrlCount": 2,
+      "recommendedDishesKnown": 0,
+      "featuredDishesKnown": 1
+    },
+    {
       "googlePlaceId": "ChIJu556IxSMGGAR5GmHiqGpLLo",
       "name": "個室居酒屋 座楽 神保町店",
       "lane": "retained_source_mining",
@@ -12174,7 +12188,7 @@
       "retainedThirdPartyUrlCount": 2,
       "sourceUrlCount": 2,
       "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 2
+      "featuredDishesKnown": 3
     },
     {
       "googlePlaceId": "ChIJ_yy_F8uNGGARaManCg1QG_Y",
@@ -12203,34 +12217,6 @@
       "sourceUrlCount": 1,
       "recommendedDishesKnown": 0,
       "featuredDishesKnown": 2
-    },
-    {
-      "googlePlaceId": "ChIJi_Zh7BCMGGARcHWiiqKKE64",
-      "name": "ホルモン焼肉 モリちゃん 御茶ノ水店",
-      "lane": "retained_source_mining",
-      "nextAction": "extract_retained_dish_source",
-      "shard": 5,
-      "priorityScore": 1080,
-      "cuisine": "烤肉",
-      "crawlableOfficialUrlCount": 0,
-      "retainedThirdPartyUrlCount": 2,
-      "sourceUrlCount": 2,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0
-    },
-    {
-      "googlePlaceId": "ChIJjRXSfYKNGGARjAXt0quyFcQ",
-      "name": "わさび",
-      "lane": "retained_source_mining",
-      "nextAction": "extract_retained_dish_source",
-      "shard": 5,
-      "priorityScore": 1080,
-      "cuisine": "寿司",
-      "crawlableOfficialUrlCount": 0,
-      "retainedThirdPartyUrlCount": 2,
-      "sourceUrlCount": 2,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0
     },
     {
       "googlePlaceId": "ChIJQ7aufj-MGGAR-NTeQP2lniU",
@@ -12543,20 +12529,6 @@
     {
       "googlePlaceId": "ChIJOcnP6zyMGGARB38pxV-hN8o",
       "name": "へいじ",
-      "lane": "retained_source_mining",
-      "nextAction": "extract_retained_dish_source",
-      "shard": 5,
-      "priorityScore": 1065,
-      "cuisine": "酒吧",
-      "crawlableOfficialUrlCount": 0,
-      "retainedThirdPartyUrlCount": 1,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0
-    },
-    {
-      "googlePlaceId": "ChIJoYoxhsyNGGAR66ND6TKWqJk",
-      "name": "鶏ヤロー",
       "lane": "retained_source_mining",
       "nextAction": "extract_retained_dish_source",
       "shard": 5,
@@ -13885,6 +13857,20 @@
       "featuredDishesKnown": 0
     },
     {
+      "googlePlaceId": "ChIJoYoxhsyNGGAR66ND6TKWqJk",
+      "name": "鶏ヤロー",
+      "lane": "official_or_retained_featured",
+      "nextAction": "collect_source_backed_featured_dishes",
+      "shard": 5,
+      "priorityScore": 710,
+      "cuisine": "酒吧",
+      "crawlableOfficialUrlCount": 0,
+      "retainedThirdPartyUrlCount": 1,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 0
+    },
+    {
       "googlePlaceId": "ChIJvUknFPKNGGARYAMFC7Z9c2o",
       "name": "寿司の惑星 SUSHI PLANET 水道橋",
       "lane": "official_or_retained_featured",
@@ -13969,6 +13955,20 @@
       "featuredDishesKnown": 1
     },
     {
+      "googlePlaceId": "ChIJ_5AELhqMGGARx5K_W6T4VQo",
+      "name": "そば酒房 笹陣 お茶の水店",
+      "lane": "official_crawl",
+      "nextAction": "collect_strict_recommended_dishes",
+      "shard": 6,
+      "priorityScore": 1125,
+      "cuisine": "荞麦面",
+      "crawlableOfficialUrlCount": 1,
+      "retainedThirdPartyUrlCount": 1,
+      "sourceUrlCount": 2,
+      "recommendedDishesKnown": 0,
+      "featuredDishesKnown": 1
+    },
+    {
       "googlePlaceId": "ChIJIeDGY_6NGGARWCyGYme_2bA",
       "name": "グランサイファーキッチン",
       "lane": "official_crawl",
@@ -13983,6 +13983,20 @@
       "featuredDishesKnown": 4
     },
     {
+      "googlePlaceId": "ChIJyZAT2BCMGGARLI6GGHovI0c",
+      "name": "ブラッセルズ神田神保町",
+      "lane": "official_crawl",
+      "nextAction": "collect_strict_recommended_dishes",
+      "shard": 6,
+      "priorityScore": 1125,
+      "cuisine": "酒吧",
+      "crawlableOfficialUrlCount": 1,
+      "retainedThirdPartyUrlCount": 1,
+      "sourceUrlCount": 2,
+      "recommendedDishesKnown": 0,
+      "featuredDishesKnown": 1
+    },
+    {
       "googlePlaceId": "ChIJFQ415jyMGGAROEvV2vfbg_g",
       "name": "Tail's Ale House",
       "lane": "official_crawl",
@@ -13995,20 +14009,6 @@
       "sourceUrlCount": 1,
       "recommendedDishesKnown": 0,
       "featuredDishesKnown": 6
-    },
-    {
-      "googlePlaceId": "ChIJ_5AELhqMGGARx5K_W6T4VQo",
-      "name": "そば酒房 笹陣 お茶の水店",
-      "lane": "official_crawl",
-      "nextAction": "collect_strict_recommended_dishes",
-      "shard": 6,
-      "priorityScore": 1110,
-      "cuisine": "荞麦面",
-      "crawlableOfficialUrlCount": 1,
-      "retainedThirdPartyUrlCount": 1,
-      "sourceUrlCount": 2,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0
     },
     {
       "googlePlaceId": "ChIJ9TDnyQ-MGGARG-nByNz8I0E",
@@ -14046,20 +14046,6 @@
       "shard": 6,
       "priorityScore": 1110,
       "cuisine": "咖啡",
-      "crawlableOfficialUrlCount": 1,
-      "retainedThirdPartyUrlCount": 1,
-      "sourceUrlCount": 2,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0
-    },
-    {
-      "googlePlaceId": "ChIJyZAT2BCMGGARLI6GGHovI0c",
-      "name": "ブラッセルズ神田神保町",
-      "lane": "official_crawl",
-      "nextAction": "collect_strict_recommended_dishes",
-      "shard": 6,
-      "priorityScore": 1110,
-      "cuisine": "酒吧",
       "crawlableOfficialUrlCount": 1,
       "retainedThirdPartyUrlCount": 1,
       "sourceUrlCount": 2,
@@ -14277,6 +14263,20 @@
       "featuredDishesKnown": 2
     },
     {
+      "googlePlaceId": "ChIJs_zQkhCMGGARCN3rJxb_w80",
+      "name": "MAJI CURRY 神田神保町店",
+      "lane": "retained_source_mining",
+      "nextAction": "extract_retained_dish_source",
+      "shard": 6,
+      "priorityScore": 1095,
+      "cuisine": "咖喱",
+      "crawlableOfficialUrlCount": 0,
+      "retainedThirdPartyUrlCount": 2,
+      "sourceUrlCount": 2,
+      "recommendedDishesKnown": 0,
+      "featuredDishesKnown": 1
+    },
+    {
       "googlePlaceId": "ChIJV4goyRWMGGARKjwdXMoOJp0",
       "name": "海老丸らーめん",
       "lane": "retained_source_mining",
@@ -14345,20 +14345,6 @@
       "sourceUrlCount": 1,
       "recommendedDishesKnown": 0,
       "featuredDishesKnown": 2
-    },
-    {
-      "googlePlaceId": "ChIJs_zQkhCMGGARCN3rJxb_w80",
-      "name": "MAJI CURRY 神田神保町店",
-      "lane": "retained_source_mining",
-      "nextAction": "extract_retained_dish_source",
-      "shard": 6,
-      "priorityScore": 1080,
-      "cuisine": "咖喱",
-      "crawlableOfficialUrlCount": 0,
-      "retainedThirdPartyUrlCount": 2,
-      "sourceUrlCount": 2,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0
     },
     {
       "googlePlaceId": "ChIJU3-_NwWMGGARoBcetg2Ko8Y",
@@ -16178,7 +16164,7 @@
       "retainedThirdPartyUrlCount": 1,
       "sourceUrlCount": 1,
       "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 1
+      "featuredDishesKnown": 3
     },
     {
       "googlePlaceId": "ChIJs04xOgWMGGARBBNCOV1b-9o",
@@ -17746,20 +17732,6 @@
       "retainedThirdPartyUrlCount": 0,
       "sourceUrlCount": 0,
       "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0
-    },
-    {
-      "googlePlaceId": "ChIJC94crAaMGGARQ5ATOkusuPs",
-      "name": "神田 天府",
-      "lane": "official_or_retained_featured",
-      "nextAction": "collect_source_backed_featured_dishes",
-      "shard": 7,
-      "priorityScore": 720,
-      "cuisine": "中华",
-      "crawlableOfficialUrlCount": 1,
-      "retainedThirdPartyUrlCount": 1,
-      "sourceUrlCount": 2,
-      "recommendedDishesKnown": 1,
       "featuredDishesKnown": 0
     },
     {
