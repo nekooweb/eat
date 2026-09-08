@@ -128,8 +128,11 @@ const rows = [...factsById.entries()]
   .sort((a, b) => a.googlePlaceId.localeCompare(b.googlePlaceId));
 
 const dishPatch = fs.readFileSync(DISH_PATCH, 'utf8').trim();
-if (!dishPatch.includes("const POLICY = 'relaxed-zh-v2'")) {
-  throw new Error('Chinese dish runtime patch is missing its relaxed-zh-v2 marker');
+if (!dishPatch.includes("const POLICY = 'strict-source-zh-v1'")) {
+  throw new Error('Chinese dish runtime patch is missing its strict-source-zh-v1 marker');
+}
+if (!dishPatch.includes('approximateRecommendationsAllowed: false')) {
+  throw new Error('Chinese dish runtime patch must keep approximate recommendations disabled');
 }
 if (!dishPatch.includes('genericFallbackAllowed: false')) {
   throw new Error('Chinese dish runtime patch must keep generic fallback disabled');
@@ -142,7 +145,8 @@ const summary = {
   providerCounts,
   fieldCounts,
   unattachedMaintenanceRows: unattached,
-  chineseDishRuntimePatch: 'relaxed-zh-v2',
+  chineseDishRuntimePatch: 'strict-source-zh-v1',
+  approximateDishRecommendationsAllowed: false,
   genericDishFallbackAllowed: false
 };
 
@@ -153,7 +157,7 @@ const payload = {
     overwritesCanonicalCoreFields: false,
     googleResponseContentExcluded: true,
     reviewTextExcluded: true,
-    approximateDishSuggestionsRemainDisplayOnly: true,
+    approximateDishSuggestionsAllowed: false,
     genericDishFallbackAllowed: false
   },
   summary,
