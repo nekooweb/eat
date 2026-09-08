@@ -1,0 +1,122 @@
+name: Recover current Hot Pepper backed id-only identities
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/current-hotpepper-id-recovery.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: current-hotpepper-id-recovery
+  cancel-in-progress: false
+
+jobs:
+  recover:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Sync latest main
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          git reset --hard origin/main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Validate policy and syntax
+        run: |
+          set -euo pipefail
+          node scripts/audit_no_paid_apis.mjs
+          python -m py_compile \
+            scripts/database/review_id_only_currentness_sources.py \
+            scripts/database/review_id_only_currentness_sources_v2.py \
+            scripts/database/promote_reviewed_multisource_currentness.py \
+            scripts/database/audit_id_only_priority_identity_groups.py \
+            scripts/database/build_master.py
+      - name: Review and promote only fresh multi-source consensus
+        run: |
+          set -euo pipefail
+          mkdir -p _tmp
+          python scripts/database/build_master.py --output _tmp/before.sqlite --reset | tee _tmp/before.json
+          python scripts/database/validate_master.py _tmp/before.sqlite
+          python scripts/database/audit_id_only_priority_identity_groups.py \
+            --database _tmp/before.sqlite --output _tmp/priority.json | tee _tmp/priority-summary.json
+          python scripts/database/review_id_only_currentness_sources_v2.py \
+            --database _tmp/before.sqlite --output _tmp/currentness.json --workers 8 | tee _tmp/currentness-summary.json
+          python scripts/database/promote_reviewed_multisource_currentness.py \
+            --database _tmp/before.sqlite \
+            --review _tmp/currentness.json \
+            --base data/google_basic_source_matches.json \
+            --hotpepper data/hotpepper_catalog_facts.json \
+            --output _tmp/overlay.json | tee _tmp/overlay-summary.json
+          python - <<'PY'
+          import json
+          a=json.load(open('_tmp/priority.json')); r=json.load(open('_tmp/currentness.json')); o=json.load(open('_tmp/overlay.json'))
+          ready=[x for x in r['rows'] if x.get('admissionReady') is True]
+          print(json.dumps({
+            'strictIdOnly':a['summary']['strictIdOnly'],
+            'priorityCounts':a['summary']['counts'],
+            'currentnessTargets':r['summary']['targets'],
+            'currentnessCounts':r['summary']['counts'],
+            'admissionReady':len(ready),
+            'promotable':len(o['rows']),
+            'placeIds':[x['googlePlaceId'] for x in o['rows']],
+          },ensure_ascii=False,sort_keys=True))
+          assert o['policy']['newGoogleApiCalls']==0
+          assert o['policy']['proximityOnlyBindingAllowed'] is False
+          assert o['policy']['targetIdentityState']=='source_matched'
+          assert len(o['rows'])<=len(ready)
+          PY
+          python scripts/merge_basic_recovery_overlays.py \
+            data/google_basic_source_matches.json _tmp/overlay.json data/google_basic_source_matches.json \
+            | tee _tmp/merge.json
+          added=$(python - <<'PY'
+          import json
+          print(json.load(open('_tmp/merge.json')).get('added',0))
+          PY
+          )
+          if [ "$added" = "0" ]; then
+            git restore -- data/google_basic_source_matches.json
+            echo "No new still-safe current Hot Pepper backed identities"
+            exit 0
+          fi
+          node scripts/build_google_inventory_runtime.mjs | tee _tmp/runtime.json
+          node scripts/audit_google_inventory_runtime.mjs | tee _tmp/runtime-audit.json
+          python scripts/database/build_master.py --output _tmp/after.sqlite --reset | tee _tmp/after.json
+          python scripts/database/validate_master.py _tmp/after.sqlite
+          python scripts/database/validate_ingestion_plan.py _tmp/after.sqlite
+          python - <<'PY'
+          import json
+          b=json.load(open('_tmp/before.json')); a=json.load(open('_tmp/after.json')); m=json.load(open('_tmp/merge.json'))
+          n=m['added']
+          assert a['identityStates']['id_only']==b['identityStates']['id_only']-n,(b['identityStates'],a['identityStates'],n)
+          assert a['identityStates']['source_matched']==b['identityStates']['source_matched']+n
+          assert a['identityStates']['verified']==b['identityStates']['verified']
+          print(json.dumps({'added':n,'beforeStates':b['identityStates'],'afterStates':a['identityStates'],'fieldMissingBefore':b['ingestionPlan']['fieldCompletionMissingCounts'],'fieldMissingAfter':a['ingestionPlan']['fieldCompletionMissingCounts']},sort_keys=True))
+          PY
+          node scripts/audit_no_paid_apis.mjs
+          git restore -- data/google_inventory_runtime.js 2>/dev/null || true
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/google_basic_source_matches.json
+          git commit -m "Promote current multi-source Hot Pepper identities"
+          git fetch origin main
+          git rebase origin/main
+          git push origin HEAD:main
+      - name: Upload recovery audit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: current-hotpepper-id-recovery
+          path: _tmp/*.json
+          if-no-files-found: warn
+          retention-days: 3
