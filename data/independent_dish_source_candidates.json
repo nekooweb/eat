@@ -1,0 +1,1332 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-09-08T03:47:05.880Z",
+  "policy": {
+    "proposalOnly": true,
+    "identityBindingChanges": 0,
+    "networkRequests": 0,
+    "paidGoogleDataApiCalls": 0,
+    "candidateSource": "retained official_candidate_index.json only",
+    "currentQueueRestriction": "find_independent_dish_source only",
+    "nameCompatibilityRequired": true,
+    "independentHttpUrlRequired": true,
+    "socialUrlsExcluded": true,
+    "thirdPartyAggregatorUrlsExcluded": true,
+    "proximityOnlyBindingAllowed": false,
+    "dishEvidencePromotionBeforeIdentityReviewAllowed": false,
+    "centralIdentityReviewRequired": true
+  },
+  "summary": {
+    "schemaVersion": 1,
+    "catalogTotal": 2804,
+    "publicRuntimeTotal": 1415,
+    "currentIndependentDishSourceGap": 347,
+    "officialCandidateIndexRecords": 194,
+    "proposalRows": 46,
+    "proposalRowsWithExplicitMenuUrls": 27,
+    "proposalRowsPageOnly": 19,
+    "proposalCoverageOfIndependentGapPct": 13.3,
+    "explicitMenuCoverageOfIndependentGapPct": 7.8,
+    "nameMismatch": 0,
+    "invalidUrls": 0,
+    "alreadyHasSource": 0,
+    "candidateRecordsOutsideGap": 148,
+    "shards": 8,
+    "shardCounts": [
+      {
+        "shard": 0,
+        "total": 2,
+        "withMenuUrl": 1
+      },
+      {
+        "shard": 1,
+        "total": 5,
+        "withMenuUrl": 3
+      },
+      {
+        "shard": 2,
+        "total": 5,
+        "withMenuUrl": 3
+      },
+      {
+        "shard": 3,
+        "total": 7,
+        "withMenuUrl": 2
+      },
+      {
+        "shard": 4,
+        "total": 7,
+        "withMenuUrl": 6
+      },
+      {
+        "shard": 5,
+        "total": 11,
+        "withMenuUrl": 6
+      },
+      {
+        "shard": 6,
+        "total": 2,
+        "withMenuUrl": 1
+      },
+      {
+        "shard": 7,
+        "total": 7,
+        "withMenuUrl": 5
+      }
+    ]
+  },
+  "rows": [
+    {
+      "googlePlaceId": "ChIJ3y5QeBWMGGARHZnUMus6Gdo",
+      "name": "サブウェイ",
+      "distanceMeters": 454,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "https://subway.co.jp/",
+      "menuUrls": [
+        "https://subway.co.jp/menu/category/sandwich/",
+        "https://subway.co.jp/menu/grilled_chicken_cheese/",
+        "https://subway.co.jp/menu/tandoori_chicken/",
+        "https://subway.co.jp/menu/bbq-honey-mustard-chicken/",
+        "https://subway.co.jp/menu/luxury-teritama/",
+        "https://subway.co.jp/menu/prosciutto-mascarpone/",
+        "https://subway.co.jp/menu/roast-beef-sandwich/",
+        "https://subway.co.jp/menu/veggie-delight/"
+      ],
+      "candidateHosts": [
+        "subway.co.jp"
+      ],
+      "checkedAt": "2026-09-06",
+      "candidateName": "サブウェイ",
+      "nameCompatible": true,
+      "proposalState": "review_existing_official_menu_candidate",
+      "confidenceSignals": [
+        "same_frozen_google_place_id_in_retained_official_candidate_index",
+        "normalized_candidate_name_compatible_with_current_public_name",
+        "independently_fetched_http_url_retained_in_repository",
+        "candidate_index_retains_explicit_menu_url"
+      ],
+      "shard": 7,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJV92zNT6MGGAROru704vXOho",
+      "name": "サンマルクカフェ",
+      "distanceMeters": 608,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "https://www.saint-marc-hd.com/saintmarccafe/shop/491/",
+      "menuUrls": [
+        "https://www.saint-marc-hd.com/saintmarccafe/menu/saintmarccafe/",
+        "https://www.saint-marc-hd.com/saintmarccafe/shop/491/menu/",
+        "https://www.saint-marc-hd.com/saintmarccafe/shop/491/menu/category/drink/",
+        "https://www.saint-marc-hd.com/saintmarccafe/shop/491/menu/category/hotsand2/",
+        "https://www.saint-marc-hd.com/saintmarccafe/shop/491/menu/category/dessert/",
+        "https://www.saint-marc-hd.com/saintmarccafe/shop/491/menu/category/gift_at_home/",
+        "https://www.saint-marc-hd.com/saintmarccafe/shop/491/menu/category/bakery_okayama/",
+        "https://www.saint-marc-hd.com/saintmarccafe/shop/491/menu/category/morningmarc-cafe/"
+      ],
+      "candidateHosts": [
+        "saint-marc-hd.com"
+      ],
+      "checkedAt": "2026-09-06",
+      "candidateName": "サンマルクカフェ",
+      "nameCompatible": true,
+      "proposalState": "review_existing_official_menu_candidate",
+      "confidenceSignals": [
+        "same_frozen_google_place_id_in_retained_official_candidate_index",
+        "normalized_candidate_name_compatible_with_current_public_name",
+        "independently_fetched_http_url_retained_in_repository",
+        "candidate_index_retains_explicit_menu_url"
+      ],
+      "shard": 3,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJo5orgxyMGGARW6EJMAe0WOE",
+      "name": "やまや",
+      "distanceMeters": 958,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "https://restaurant-yamaya.com/brand/motsu/restaurant/ochanomizu_w",
+      "menuUrls": [
+        "https://restaurant-yamaya.com/brand/motsu/restaurant/ochanomizu_w",
+        "https://restaurant-yamaya.com/news/detail/111",
+        "https://restaurant-yamaya.com/news/detail/104",
+        "https://restaurant-yamaya.com/news/detail/102",
+        "https://restaurant-yamaya.com/news/detail/97",
+        "https://restaurant-yamaya.com/news/detail/73",
+        "https://restaurant-yamaya.com/news/detail/54",
+        "https://restaurant-yamaya.com/news/detail/53"
+      ],
+      "candidateHosts": [
+        "restaurant-yamaya.com"
+      ],
+      "checkedAt": "2026-09-06",
+      "candidateName": "やまや",
+      "nameCompatible": true,
+      "proposalState": "review_existing_official_menu_candidate",
+      "confidenceSignals": [
+        "same_frozen_google_place_id_in_retained_official_candidate_index",
+        "normalized_candidate_name_compatible_with_current_public_name",
+        "independently_fetched_http_url_retained_in_repository",
+        "candidate_index_retains_explicit_menu_url"
+      ],
+      "shard": 2,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJE0-B9UOMGGARGby_5OE_Fdo",
+      "name": "かまどか",
+      "distanceMeters": 1170,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "https://www.kamadoka.com/",
+      "menuUrls": [
+        "https://www.kamadoka.com/assets/pdf/kisetumenu.pdf",
+        "https://www.kamadoka.com/menulist/party/",
+        "https://www.kamadoka.com/menulist/",
+        "https://www.kamadoka.com/menulist/drink/",
+        "https://www.kamadoka.com/menulist/limiteds/",
+        "https://www.kamadoka.com/shoplist/",
+        "https://www.kamadoka.com/assets/pdf/kamadoka_allergy_20240724.pdf",
+        "https://www.kamadoka.com/assets/pdf/kamadoka_allergy_20250303.pdf"
+      ],
+      "candidateHosts": [
+        "kamadoka.com"
+      ],
+      "checkedAt": "2026-09-06",
+      "candidateName": "かまどか",
+      "nameCompatible": true,
+      "proposalState": "review_existing_official_menu_candidate",
+      "confidenceSignals": [
+        "same_frozen_google_place_id_in_retained_official_candidate_index",
+        "normalized_candidate_name_compatible_with_current_public_name",
+        "independently_fetched_http_url_retained_in_repository",
+        "candidate_index_retains_explicit_menu_url"
+      ],
+      "shard": 4,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJ2ZVGFQGMGGARmN1lf5qU8MU",
+      "name": "神田 木花",
+      "distanceMeters": 1195,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "https://www.kono-hana.com/",
+      "menuUrls": [
+        "https://www.kono-hana.com/food/",
+        "https://www.kono-hana.com/food/launch/",
+        "https://www.kono-hana.com/food/delivery/",
+        "https://www.kono-hana.com/edit/wp-content/uploads/2026/05/lunch-gozen-20260601.jpg",
+        "https://www.kono-hana.com/drink/",
+        "https://www.kono-hana.com/menu/menu2.pdf",
+        "https://www.kono-hana.com/menu/menu3.pdf",
+        "https://www.kono-hana.com/%e3%81%8a%e3%82%b9%e3%82%b9%e3%83%a1%e3%81%8c%e5%a4%89%e3%82%8f%e3%82%8a%e3%81%be%e3%81%99%e3%80%82%ef%bc%8d%e3%81%8a%e6%96%99%e7%90%86%e3%83%bb%e6%97%a5%e6%9c%ac%e9%85%92%e3%83%bc/"
+      ],
+      "candidateHosts": [
+        "kono-hana.com"
+      ],
+      "checkedAt": "2026-09-06",
+      "candidateName": "神田 木花",
+      "nameCompatible": true,
+      "proposalState": "review_existing_official_menu_candidate",
+      "confidenceSignals": [
+        "same_frozen_google_place_id_in_retained_official_candidate_index",
+        "normalized_candidate_name_compatible_with_current_public_name",
+        "independently_fetched_http_url_retained_in_repository",
+        "candidate_index_retains_explicit_menu_url"
+      ],
+      "shard": 7,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJp3be1AeMGGAR1V1CQhkbTJQ",
+      "name": "Le Poulet",
+      "distanceMeters": 1082,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "https://www.ukai.co.jp/lepoulet/",
+      "menuUrls": [
+        "https://www.ukai.co.jp/lepoulet/",
+        "https://www.ukai.co.jp/lepoulet/information/2023christmas_menuinfo",
+        "https://www.ukai.co.jp/lepoulet/pdf/20240507_poulet_food_lunch_WEB.pdf",
+        "https://www.ukai.co.jp/lepoulet/pdf/20240507_poulet_food_dinner_WEB.pdf",
+        "https://www.ukai.co.jp/lepoulet/pdf/20230913_lepouletmenu_dessert_s.pdf"
+      ],
+      "candidateHosts": [
+        "ukai.co.jp"
+      ],
+      "checkedAt": "2026-09-06",
+      "candidateName": "Le Poulet",
+      "nameCompatible": true,
+      "proposalState": "review_existing_official_menu_candidate",
+      "confidenceSignals": [
+        "same_frozen_google_place_id_in_retained_official_candidate_index",
+        "normalized_candidate_name_compatible_with_current_public_name",
+        "independently_fetched_http_url_retained_in_repository",
+        "candidate_index_retains_explicit_menu_url"
+      ],
+      "shard": 4,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJlwLspAOMGGARz2EN6kWhYfY",
+      "name": "海王丸",
+      "distanceMeters": 1132,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "https://kaioumaru-kanda.owst.jp/",
+      "menuUrls": [
+        "https://kaioumaru-kanda.owst.jp/",
+        "https://kaioumaru-kanda.owst.jp/courses/15133962",
+        "https://kaioumaru-kanda.owst.jp/courses/208379117",
+        "https://kaioumaru-kanda.owst.jp/courses/175030000",
+        "https://kaioumaru-kanda.owst.jp/courses/215528705"
+      ],
+      "candidateHosts": [
+        "kaioumaru-kanda.owst.jp"
+      ],
+      "checkedAt": "2026-09-06",
+      "candidateName": "海王丸",
+      "nameCompatible": true,
+      "proposalState": "review_existing_official_menu_candidate",
+      "confidenceSignals": [
+        "same_frozen_google_place_id_in_retained_official_candidate_index",
+        "normalized_candidate_name_compatible_with_current_public_name",
+        "independently_fetched_http_url_retained_in_repository",
+        "candidate_index_retains_explicit_menu_url"
+      ],
+      "shard": 2,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJxaFliBWMGGARsF0TD5NiBH0",
+      "name": "ドトールコーヒーショップ",
+      "distanceMeters": 494,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "https://www.doutor.co.jp/dcs/",
+      "menuUrls": [
+        "https://www.doutor.co.jp/dcs/menu/",
+        "https://www.doutor.co.jp/dcs/menu/season.html",
+        "https://www.doutor.co.jp/dcs/menu/list/hotdrink.html",
+        "https://www.doutor.co.jp/dcs/menu/list/icedrink.html"
+      ],
+      "candidateHosts": [
+        "doutor.co.jp"
+      ],
+      "checkedAt": "2026-09-06",
+      "candidateName": "ドトールコーヒーショップ",
+      "nameCompatible": true,
+      "proposalState": "review_existing_official_menu_candidate",
+      "confidenceSignals": [
+        "same_frozen_google_place_id_in_retained_official_candidate_index",
+        "normalized_candidate_name_compatible_with_current_public_name",
+        "independently_fetched_http_url_retained_in_repository",
+        "candidate_index_retains_explicit_menu_url"
+      ],
+      "shard": 5,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJW9bTbxqMGGARzrp71TKW5lU",
+      "name": "ドトールコーヒーショップ",
+      "distanceMeters": 546,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "https://www.doutor.co.jp/dcs/",
+      "menuUrls": [
+        "https://www.doutor.co.jp/dcs/menu/",
+        "https://www.doutor.co.jp/dcs/menu/season.html",
+        "https://www.doutor.co.jp/dcs/menu/list/hotdrink.html",
+        "https://www.doutor.co.jp/dcs/menu/list/icedrink.html"
+      ],
+      "candidateHosts": [
+        "doutor.co.jp"
+      ],
+      "checkedAt": "2026-09-06",
+      "candidateName": "ドトールコーヒーショップ",
+      "nameCompatible": true,
+      "proposalState": "review_existing_official_menu_candidate",
+      "confidenceSignals": [
+        "same_frozen_google_place_id_in_retained_official_candidate_index",
+        "normalized_candidate_name_compatible_with_current_public_name",
+        "independently_fetched_http_url_retained_in_repository",
+        "candidate_index_retains_explicit_menu_url"
+      ],
+      "shard": 0,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJz8qC-w2MGGARG3sp7CYG-ko",
+      "name": "明神丸",
+      "distanceMeters": 578,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "https://shop.myojinmaru.jp/shop/takebashi/",
+      "menuUrls": [
+        "https://shop.myojinmaru.jp/wp-content/uploads/2024/03/faa7b8f8826acc9059132f94bf4f9708.pdf",
+        "https://shop.myojinmaru.jp/wp-content/uploads/2024/03/to08.jpg",
+        "https://shop.myojinmaru.jp/wp-content/uploads/2024/03/d8debaca4112b0829776893fcbdbdf7e.pdf",
+        "https://shop.myojinmaru.jp/wp-content/uploads/2024/03/07b13be98c6fdcdb8a45560cc62e66c9.pdf"
+      ],
+      "candidateHosts": [
+        "shop.myojinmaru.jp"
+      ],
+      "checkedAt": "2026-09-06",
+      "candidateName": "明神丸",
+      "nameCompatible": true,
+      "proposalState": "review_existing_official_menu_candidate",
+      "confidenceSignals": [
+        "same_frozen_google_place_id_in_retained_official_candidate_index",
+        "normalized_candidate_name_compatible_with_current_public_name",
+        "independently_fetched_http_url_retained_in_repository",
+        "candidate_index_retains_explicit_menu_url"
+      ],
+      "shard": 1,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJJ9zW1BqMGGARfIp-qxuT1pg",
+      "name": "ドトールコーヒーショップ",
+      "distanceMeters": 683,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "https://www.doutor.co.jp/dcs/",
+      "menuUrls": [
+        "https://www.doutor.co.jp/dcs/menu/",
+        "https://www.doutor.co.jp/dcs/menu/season.html",
+        "https://www.doutor.co.jp/dcs/menu/list/hotdrink.html",
+        "https://www.doutor.co.jp/dcs/menu/list/icedrink.html"
+      ],
+      "candidateHosts": [
+        "doutor.co.jp"
+      ],
+      "checkedAt": "2026-09-06",
+      "candidateName": "ドトールコーヒーショップ",
+      "nameCompatible": true,
+      "proposalState": "review_existing_official_menu_candidate",
+      "confidenceSignals": [
+        "same_frozen_google_place_id_in_retained_official_candidate_index",
+        "normalized_candidate_name_compatible_with_current_public_name",
+        "independently_fetched_http_url_retained_in_repository",
+        "candidate_index_retains_explicit_menu_url"
+      ],
+      "shard": 5,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJ8X1X0FSNGGAR9y3HrPtiS3A",
+      "name": "est",
+      "distanceMeters": 1036,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "https://www.fourseasons.com/otemachi/dining/restaurants/est/?utm_source=google&utm_medium=organicsearch&utm_campaign=tor-ote-fab-mid-seo-na&utm_content=na-na&utm_term=na",
+      "menuUrls": [
+        "https://www.fourseasons.com/otemachi/meetings-and-events/food-and-beverage/",
+        "https://www.fourseasons.com/otemachi/dining/restaurants/est/?utm_source=google&utm_medium=organicsearch&utm_campaign=tor-ote-fab-mid-seo-na&utm_content=na-na&utm_term=na",
+        "https://www.fourseasons.com/otemachi/dining/menus/est-lunch/",
+        "https://www.fourseasons.com/otemachi/dining/menus/est-dinner/"
+      ],
+      "candidateHosts": [
+        "fourseasons.com"
+      ],
+      "checkedAt": "2026-09-06",
+      "candidateName": "est",
+      "nameCompatible": true,
+      "proposalState": "review_existing_official_menu_candidate",
+      "confidenceSignals": [
+        "same_frozen_google_place_id_in_retained_official_candidate_index",
+        "normalized_candidate_name_compatible_with_current_public_name",
+        "independently_fetched_http_url_retained_in_repository",
+        "candidate_index_retains_explicit_menu_url"
+      ],
+      "shard": 7,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJywjRNAOMGGARCM7IpPYytRQ",
+      "name": "いせ源",
+      "distanceMeters": 1047,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "https://isegen.com/",
+      "menuUrls": [
+        "https://isegen.com/menu-course/",
+        "https://isegen.com/menu-dish/",
+        "https://isegen.com/menu-drink/"
+      ],
+      "candidateHosts": [
+        "isegen.com"
+      ],
+      "checkedAt": "2026-09-06",
+      "candidateName": "いせ源",
+      "nameCompatible": true,
+      "proposalState": "review_existing_official_menu_candidate",
+      "confidenceSignals": [
+        "same_frozen_google_place_id_in_retained_official_candidate_index",
+        "normalized_candidate_name_compatible_with_current_public_name",
+        "independently_fetched_http_url_retained_in_repository",
+        "candidate_index_retains_explicit_menu_url"
+      ],
+      "shard": 4,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJeVdWHByMGGARv9enqHAlEGs",
+      "name": "神田明神下 新開花",
+      "distanceMeters": 1133,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "https://www.shinkaika.com/",
+      "menuUrls": [
+        "https://www.shinkaika.com/archives/5019",
+        "https://www.shinkaika.com/archives/4672",
+        "https://www.shinkaika.com/archives/4011"
+      ],
+      "candidateHosts": [
+        "shinkaika.com"
+      ],
+      "checkedAt": "2026-09-06",
+      "candidateName": "神田明神下 新開花",
+      "nameCompatible": true,
+      "proposalState": "review_existing_official_menu_candidate",
+      "confidenceSignals": [
+        "same_frozen_google_place_id_in_retained_official_candidate_index",
+        "normalized_candidate_name_compatible_with_current_public_name",
+        "independently_fetched_http_url_retained_in_repository",
+        "candidate_index_retains_explicit_menu_url"
+      ],
+      "shard": 1,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJ6QLp3BmMGGAR1-0MdDO-bTs",
+      "name": "洋麺屋 五右衛門",
+      "distanceMeters": 670,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "https://www.yomenya-goemon.com/",
+      "menuUrls": [
+        "https://www.yomenya-goemon.com/menu/",
+        "https://www.yomenya-goemon.com/campaign_list/"
+      ],
+      "candidateHosts": [
+        "yomenya-goemon.com"
+      ],
+      "checkedAt": "2026-09-06",
+      "candidateName": "洋麺屋 五右衛門",
+      "nameCompatible": true,
+      "proposalState": "review_existing_official_menu_candidate",
+      "confidenceSignals": [
+        "same_frozen_google_place_id_in_retained_official_candidate_index",
+        "normalized_candidate_name_compatible_with_current_public_name",
+        "independently_fetched_http_url_retained_in_repository",
+        "candidate_index_retains_explicit_menu_url"
+      ],
+      "shard": 2,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJu7qJqhyMGGARbJMAT8uPgtY",
+      "name": "Little Marco",
+      "distanceMeters": 909,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "https://daiwa-j.com/brands/trattorialittlemarco/",
+      "menuUrls": [
+        "https://daiwa-j.com/sys_cms/wp-content/themes/daiwa/assets/pdf/menu/trattorialittlemarco_food.pdf",
+        "https://daiwa-j.com/sys_cms/wp-content/themes/daiwa/assets/pdf/menu/trattorialittlemarco_drink.pdf"
+      ],
+      "candidateHosts": [
+        "daiwa-j.com"
+      ],
+      "checkedAt": "2026-09-06",
+      "candidateName": "Little Marco",
+      "nameCompatible": true,
+      "proposalState": "review_existing_official_menu_candidate",
+      "confidenceSignals": [
+        "same_frozen_google_place_id_in_retained_official_candidate_index",
+        "normalized_candidate_name_compatible_with_current_public_name",
+        "independently_fetched_http_url_retained_in_repository",
+        "candidate_index_retains_explicit_menu_url"
+      ],
+      "shard": 7,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJA3uXWgOMGGARW_LZHuzxH7o",
+      "name": "ゆで太郎",
+      "distanceMeters": 968,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "https://yudetaro.jp/area/tokyo/",
+      "menuUrls": [
+        "https://yudetaro.jp/menu",
+        "https://yudetaro.jp/menu/"
+      ],
+      "candidateHosts": [
+        "yudetaro.jp"
+      ],
+      "checkedAt": "2026-09-06",
+      "candidateName": "ゆで太郎",
+      "nameCompatible": true,
+      "proposalState": "review_existing_official_menu_candidate",
+      "confidenceSignals": [
+        "same_frozen_google_place_id_in_retained_official_candidate_index",
+        "normalized_candidate_name_compatible_with_current_public_name",
+        "independently_fetched_http_url_retained_in_repository",
+        "candidate_index_retains_explicit_menu_url"
+      ],
+      "shard": 4,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJG9GegwOMGGARwIxpKc0R34E",
+      "name": "玉寿司",
+      "distanceMeters": 993,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "https://tamasushi.co.jp/en-global",
+      "menuUrls": [
+        "https://tamasushi.co.jp/en-global/pages/sushi-noboru",
+        "https://tamasushi.co.jp/en-global/pages/sushikuro"
+      ],
+      "candidateHosts": [
+        "tamasushi.co.jp"
+      ],
+      "checkedAt": "2026-09-06",
+      "candidateName": "玉寿司",
+      "nameCompatible": true,
+      "proposalState": "review_existing_official_menu_candidate",
+      "confidenceSignals": [
+        "same_frozen_google_place_id_in_retained_official_candidate_index",
+        "normalized_candidate_name_compatible_with_current_public_name",
+        "independently_fetched_http_url_retained_in_repository",
+        "candidate_index_retains_explicit_menu_url"
+      ],
+      "shard": 4,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJryNhokOMGGAR-1vsR_Por58",
+      "name": "七宝麻辣湯",
+      "distanceMeters": 1185,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "https://maratan.com/",
+      "menuUrls": [
+        "https://maratan.com/sidemenu",
+        "https://maratan.com/drink"
+      ],
+      "candidateHosts": [
+        "maratan.com"
+      ],
+      "checkedAt": "2026-09-06",
+      "candidateName": "七宝麻辣湯",
+      "nameCompatible": true,
+      "proposalState": "review_existing_official_menu_candidate",
+      "confidenceSignals": [
+        "same_frozen_google_place_id_in_retained_official_candidate_index",
+        "normalized_candidate_name_compatible_with_current_public_name",
+        "independently_fetched_http_url_retained_in_repository",
+        "candidate_index_retains_explicit_menu_url"
+      ],
+      "shard": 5,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJZW-28RuMGGARyK-E3vgwKic",
+      "name": "泡貝",
+      "distanceMeters": 950,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "https://awashell.com/",
+      "menuUrls": [
+        "https://awashell.com/menu/"
+      ],
+      "candidateHosts": [
+        "awashell.com"
+      ],
+      "checkedAt": "2026-09-06",
+      "candidateName": "泡貝",
+      "nameCompatible": true,
+      "proposalState": "review_existing_official_menu_candidate",
+      "confidenceSignals": [
+        "same_frozen_google_place_id_in_retained_official_candidate_index",
+        "normalized_candidate_name_compatible_with_current_public_name",
+        "independently_fetched_http_url_retained_in_repository",
+        "candidate_index_retains_explicit_menu_url"
+      ],
+      "shard": 6,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJ2beQAhmMGGARZcWdx1PBwuo",
+      "name": "小川軒",
+      "distanceMeters": 991,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "https://ogawaken.com/",
+      "menuUrls": [
+        "https://ogawaken.com/menu.html"
+      ],
+      "candidateHosts": [
+        "ogawaken.com"
+      ],
+      "checkedAt": "2026-09-06",
+      "candidateName": "小川軒",
+      "nameCompatible": true,
+      "proposalState": "review_existing_official_menu_candidate",
+      "confidenceSignals": [
+        "same_frozen_google_place_id_in_retained_official_candidate_index",
+        "normalized_candidate_name_compatible_with_current_public_name",
+        "independently_fetched_http_url_retained_in_repository",
+        "candidate_index_retains_explicit_menu_url"
+      ],
+      "shard": 5,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJiTYVJhyMGGAREI-WsUbMRL4",
+      "name": "一竜",
+      "distanceMeters": 1106,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "https://gardengroup.co.jp/ichiryu/",
+      "menuUrls": [
+        "https://gardengroup.co.jp/ichiryu/menu.html"
+      ],
+      "candidateHosts": [
+        "gardengroup.co.jp"
+      ],
+      "checkedAt": "2026-09-06",
+      "candidateName": "一竜",
+      "nameCompatible": true,
+      "proposalState": "review_existing_official_menu_candidate",
+      "confidenceSignals": [
+        "same_frozen_google_place_id_in_retained_official_candidate_index",
+        "normalized_candidate_name_compatible_with_current_public_name",
+        "independently_fetched_http_url_retained_in_repository",
+        "candidate_index_retains_explicit_menu_url"
+      ],
+      "shard": 5,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJz5WQ6kOMGGARVO8iHILJSLI",
+      "name": "福でん",
+      "distanceMeters": 1127,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "https://syunmifukuden.com/",
+      "menuUrls": [
+        "https://syunmifukuden.com/menu"
+      ],
+      "candidateHosts": [
+        "syunmifukuden.com"
+      ],
+      "checkedAt": "2026-09-06",
+      "candidateName": "福でん",
+      "nameCompatible": true,
+      "proposalState": "review_existing_official_menu_candidate",
+      "confidenceSignals": [
+        "same_frozen_google_place_id_in_retained_official_candidate_index",
+        "normalized_candidate_name_compatible_with_current_public_name",
+        "independently_fetched_http_url_retained_in_repository",
+        "candidate_index_retains_explicit_menu_url"
+      ],
+      "shard": 3,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJ--CxOByMGGARJ-bOqi3ExPA",
+      "name": "アキバ絶対領域",
+      "distanceMeters": 1157,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "https://akibazettai.com/",
+      "menuUrls": [
+        "https://akibazettai.com/system/"
+      ],
+      "candidateHosts": [
+        "akibazettai.com"
+      ],
+      "checkedAt": "2026-09-06",
+      "candidateName": "アキバ絶対領域",
+      "nameCompatible": true,
+      "proposalState": "review_existing_official_menu_candidate",
+      "confidenceSignals": [
+        "same_frozen_google_place_id_in_retained_official_candidate_index",
+        "normalized_candidate_name_compatible_with_current_public_name",
+        "independently_fetched_http_url_retained_in_repository",
+        "candidate_index_retains_explicit_menu_url"
+      ],
+      "shard": 5,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJoS3oUByMGGAR6muLlZi1atY",
+      "name": "女神の中庭",
+      "distanceMeters": 1165,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "https://www.queenscourt.tv/",
+      "menuUrls": [
+        "https://www.queenscourt.tv/menu"
+      ],
+      "candidateHosts": [
+        "queenscourt.tv"
+      ],
+      "checkedAt": "2026-09-06",
+      "candidateName": "女神の中庭",
+      "nameCompatible": true,
+      "proposalState": "review_existing_official_menu_candidate",
+      "confidenceSignals": [
+        "same_frozen_google_place_id_in_retained_official_candidate_index",
+        "normalized_candidate_name_compatible_with_current_public_name",
+        "independently_fetched_http_url_retained_in_repository",
+        "candidate_index_retains_explicit_menu_url"
+      ],
+      "shard": 7,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJ10v48ByMGGAR8bOCzz_L2Bo",
+      "name": "鶏王けいすけ",
+      "distanceMeters": 1170,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "https://www.grandcuisine.co.jp/about",
+      "menuUrls": [
+        "https://www.grandcuisine.co.jp/about"
+      ],
+      "candidateHosts": [
+        "grandcuisine.co.jp"
+      ],
+      "checkedAt": "2026-09-06",
+      "candidateName": "鶏王けいすけ",
+      "nameCompatible": true,
+      "proposalState": "review_existing_official_menu_candidate",
+      "confidenceSignals": [
+        "same_frozen_google_place_id_in_retained_official_candidate_index",
+        "normalized_candidate_name_compatible_with_current_public_name",
+        "independently_fetched_http_url_retained_in_repository",
+        "candidate_index_retains_explicit_menu_url"
+      ],
+      "shard": 1,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJgf3tagGMGGARep3Pd52OyHU",
+      "name": "Himalaya Table",
+      "distanceMeters": 1186,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "https://himalaya-table.info/",
+      "menuUrls": [
+        "https://himalaya-table.info/"
+      ],
+      "candidateHosts": [
+        "himalaya-table.info"
+      ],
+      "checkedAt": "2026-09-06",
+      "candidateName": "Himalaya Table",
+      "nameCompatible": true,
+      "proposalState": "review_existing_official_menu_candidate",
+      "confidenceSignals": [
+        "same_frozen_google_place_id_in_retained_official_candidate_index",
+        "normalized_candidate_name_compatible_with_current_public_name",
+        "independently_fetched_http_url_retained_in_repository",
+        "candidate_index_retains_explicit_menu_url"
+      ],
+      "shard": 4,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJGwjljhWMGGARjLafECSEbqA",
+      "name": "吉野家",
+      "distanceMeters": 466,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "https://stores.yoshinoya.com/yoshinoya/spot/detail?code=ysn_061349",
+      "menuUrls": [],
+      "candidateHosts": [
+        "stores.yoshinoya.com"
+      ],
+      "checkedAt": "2026-09-06",
+      "candidateName": "吉野家",
+      "nameCompatible": true,
+      "proposalState": "review_existing_official_page_candidate",
+      "confidenceSignals": [
+        "same_frozen_google_place_id_in_retained_official_candidate_index",
+        "normalized_candidate_name_compatible_with_current_public_name",
+        "independently_fetched_http_url_retained_in_repository"
+      ],
+      "shard": 1,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJN0VWZhWMGGARLvOMzqiFHWI",
+      "name": "モスバーガー",
+      "distanceMeters": 471,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "https://www.mos.jp/shop/detail/?shop_cd=04923",
+      "menuUrls": [],
+      "candidateHosts": [
+        "mos.jp"
+      ],
+      "checkedAt": "2026-09-06",
+      "candidateName": "モスバーガー",
+      "nameCompatible": true,
+      "proposalState": "review_existing_official_page_candidate",
+      "confidenceSignals": [
+        "same_frozen_google_place_id_in_retained_official_candidate_index",
+        "normalized_candidate_name_compatible_with_current_public_name",
+        "independently_fetched_http_url_retained_in_repository"
+      ],
+      "shard": 5,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJZQZwfxWMGGARoD8aXy_2l3Q",
+      "name": "カフェ・ベローチェ",
+      "distanceMeters": 475,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "https://c-united.co.jp/store/detail/000245/",
+      "menuUrls": [],
+      "candidateHosts": [
+        "c-united.co.jp"
+      ],
+      "checkedAt": "2026-09-06",
+      "candidateName": "カフェ・ベローチェ",
+      "nameCompatible": true,
+      "proposalState": "review_existing_official_page_candidate",
+      "confidenceSignals": [
+        "same_frozen_google_place_id_in_retained_official_candidate_index",
+        "normalized_candidate_name_compatible_with_current_public_name",
+        "independently_fetched_http_url_retained_in_repository"
+      ],
+      "shard": 2,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJrQJoMmuMGGARJ8q86MIn6_I",
+      "name": "スターバックス",
+      "distanceMeters": 482,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "https://store.starbucks.co.jp/detail-111/?utm_source=GMB&utm_medium=organic&utm_campaign=store&utm_content=111",
+      "menuUrls": [],
+      "candidateHosts": [
+        "store.starbucks.co.jp"
+      ],
+      "checkedAt": "2026-09-06",
+      "candidateName": "スターバックス",
+      "nameCompatible": true,
+      "proposalState": "review_existing_official_page_candidate",
+      "confidenceSignals": [
+        "same_frozen_google_place_id_in_retained_official_candidate_index",
+        "normalized_candidate_name_compatible_with_current_public_name",
+        "independently_fetched_http_url_retained_in_repository"
+      ],
+      "shard": 3,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJcf2INWuMGGARteCaKYtQc1E",
+      "name": "カフェ・ド・クリエ",
+      "distanceMeters": 488,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "https://c-united.co.jp/store/detail/001597/",
+      "menuUrls": [],
+      "candidateHosts": [
+        "c-united.co.jp"
+      ],
+      "checkedAt": "2026-09-06",
+      "candidateName": "カフェ・ド・クリエ",
+      "nameCompatible": true,
+      "proposalState": "review_existing_official_page_candidate",
+      "confidenceSignals": [
+        "same_frozen_google_place_id_in_retained_official_candidate_index",
+        "normalized_candidate_name_compatible_with_current_public_name",
+        "independently_fetched_http_url_retained_in_repository"
+      ],
+      "shard": 4,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJp5cOrBqMGGARMCiyzZVc7B8",
+      "name": "スターバックス",
+      "distanceMeters": 520,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "https://store.starbucks.co.jp/detail-100/?utm_source=GMB&utm_medium=organic&utm_campaign=store&utm_content=100",
+      "menuUrls": [],
+      "candidateHosts": [
+        "store.starbucks.co.jp"
+      ],
+      "checkedAt": "2026-09-06",
+      "candidateName": "スターバックス",
+      "nameCompatible": true,
+      "proposalState": "review_existing_official_page_candidate",
+      "confidenceSignals": [
+        "same_frozen_google_place_id_in_retained_official_candidate_index",
+        "normalized_candidate_name_compatible_with_current_public_name",
+        "independently_fetched_http_url_retained_in_repository"
+      ],
+      "shard": 5,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJ4e3_CQ6MGGARgbvLFz2U9kQ",
+      "name": "スターバックス",
+      "distanceMeters": 553,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "https://store.starbucks.co.jp/detail-75/?utm_source=GMB&utm_medium=organic&utm_campaign=store&utm_content=75",
+      "menuUrls": [],
+      "candidateHosts": [
+        "store.starbucks.co.jp"
+      ],
+      "checkedAt": "2026-09-06",
+      "candidateName": "スターバックス",
+      "nameCompatible": true,
+      "proposalState": "review_existing_official_page_candidate",
+      "confidenceSignals": [
+        "same_frozen_google_place_id_in_retained_official_candidate_index",
+        "normalized_candidate_name_compatible_with_current_public_name",
+        "independently_fetched_http_url_retained_in_repository"
+      ],
+      "shard": 5,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJ67ggdxeMGGAR5uSOMBBDfHU",
+      "name": "スターバックス",
+      "distanceMeters": 611,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "https://store.starbucks.co.jp/detail-2/?utm_source=GMB&utm_medium=organic&utm_campaign=store&utm_content=2",
+      "menuUrls": [],
+      "candidateHosts": [
+        "store.starbucks.co.jp"
+      ],
+      "checkedAt": "2026-09-06",
+      "candidateName": "スターバックス",
+      "nameCompatible": true,
+      "proposalState": "review_existing_official_page_candidate",
+      "confidenceSignals": [
+        "same_frozen_google_place_id_in_retained_official_candidate_index",
+        "normalized_candidate_name_compatible_with_current_public_name",
+        "independently_fetched_http_url_retained_in_repository"
+      ],
+      "shard": 3,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJf9IQHWuMGGAR3tH7Sw31YX0",
+      "name": "スターバックス",
+      "distanceMeters": 632,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "https://store.starbucks.co.jp/detail-657/?utm_source=GMB&utm_medium=organic&utm_campaign=store&utm_content=657",
+      "menuUrls": [],
+      "candidateHosts": [
+        "store.starbucks.co.jp"
+      ],
+      "checkedAt": "2026-09-06",
+      "candidateName": "スターバックス",
+      "nameCompatible": true,
+      "proposalState": "review_existing_official_page_candidate",
+      "confidenceSignals": [
+        "same_frozen_google_place_id_in_retained_official_candidate_index",
+        "normalized_candidate_name_compatible_with_current_public_name",
+        "independently_fetched_http_url_retained_in_repository"
+      ],
+      "shard": 3,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJ38dCzRqMGGAR9Awruuaqr_A",
+      "name": "吉野家",
+      "distanceMeters": 642,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "https://stores.yoshinoya.com/yoshinoya/spot/detail?code=ysn_061453",
+      "menuUrls": [],
+      "candidateHosts": [
+        "stores.yoshinoya.com"
+      ],
+      "checkedAt": "2026-09-06",
+      "candidateName": "吉野家",
+      "nameCompatible": true,
+      "proposalState": "review_existing_official_page_candidate",
+      "confidenceSignals": [
+        "same_frozen_google_place_id_in_retained_official_candidate_index",
+        "normalized_candidate_name_compatible_with_current_public_name",
+        "independently_fetched_http_url_retained_in_repository"
+      ],
+      "shard": 7,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJVaTZmWqMGGARH0x_mvWNJuc",
+      "name": "ガスト",
+      "distanceMeters": 653,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "https://store-info.skylark.co.jp/gusto/map/018895/",
+      "menuUrls": [],
+      "candidateHosts": [
+        "store-info.skylark.co.jp"
+      ],
+      "checkedAt": "2026-09-06",
+      "candidateName": "ガスト",
+      "nameCompatible": true,
+      "proposalState": "review_existing_official_page_candidate",
+      "confidenceSignals": [
+        "same_frozen_google_place_id_in_retained_official_candidate_index",
+        "normalized_candidate_name_compatible_with_current_public_name",
+        "independently_fetched_http_url_retained_in_repository"
+      ],
+      "shard": 0,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJ6QXNGBuMGGARoa9gDeTHnEs",
+      "name": "カフェ・ベローチェ",
+      "distanceMeters": 701,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "https://c-united.co.jp/store/detail/000258/",
+      "menuUrls": [],
+      "candidateHosts": [
+        "c-united.co.jp"
+      ],
+      "checkedAt": "2026-09-06",
+      "candidateName": "カフェ・ベローチェ",
+      "nameCompatible": true,
+      "proposalState": "review_existing_official_page_candidate",
+      "confidenceSignals": [
+        "same_frozen_google_place_id_in_retained_official_candidate_index",
+        "normalized_candidate_name_compatible_with_current_public_name",
+        "independently_fetched_http_url_retained_in_repository"
+      ],
+      "shard": 3,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJ9zuhtByMGGARx4--ZNpSWJc",
+      "name": "ぼたん",
+      "distanceMeters": 1026,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "https://www.sukiyaki-botan.jp/",
+      "menuUrls": [],
+      "candidateHosts": [
+        "sukiyaki-botan.jp"
+      ],
+      "checkedAt": "2026-09-06",
+      "candidateName": "ぼたん",
+      "nameCompatible": true,
+      "proposalState": "review_existing_official_page_candidate",
+      "confidenceSignals": [
+        "same_frozen_google_place_id_in_retained_official_candidate_index",
+        "normalized_candidate_name_compatible_with_current_public_name",
+        "independently_fetched_http_url_retained_in_repository"
+      ],
+      "shard": 5,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJY9sxthyMGGARLrj2juFzCrw",
+      "name": "竹むら",
+      "distanceMeters": 1039,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "https://visit-chiyoda.tokyo/app/spot/detail/360",
+      "menuUrls": [],
+      "candidateHosts": [
+        "visit-chiyoda.tokyo"
+      ],
+      "checkedAt": "2026-09-06",
+      "candidateName": "竹むら",
+      "nameCompatible": true,
+      "proposalState": "review_existing_official_page_candidate",
+      "confidenceSignals": [
+        "same_frozen_google_place_id_in_retained_official_candidate_index",
+        "normalized_candidate_name_compatible_with_current_public_name",
+        "independently_fetched_http_url_retained_in_repository"
+      ],
+      "shard": 2,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJa5UiawCNGGARCrGQJqAnng8",
+      "name": "80's Cafe",
+      "distanceMeters": 1067,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "https://community.welearn.co.jp/ja/cafe",
+      "menuUrls": [],
+      "candidateHosts": [
+        "community.welearn.co.jp"
+      ],
+      "checkedAt": "2026-09-06",
+      "candidateName": "80's Cafe",
+      "nameCompatible": true,
+      "proposalState": "review_existing_official_page_candidate",
+      "confidenceSignals": [
+        "same_frozen_google_place_id_in_retained_official_candidate_index",
+        "normalized_candidate_name_compatible_with_current_public_name",
+        "independently_fetched_http_url_retained_in_repository"
+      ],
+      "shard": 7,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJq6pq1xyMGGAR-lolaDOLzUU",
+      "name": "RESTAURANT PLATINUM FISH マーチエキュート神田万世橋店",
+      "distanceMeters": 1131,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "https://platinumfish.jp/shoplist/manseibashi/",
+      "menuUrls": [],
+      "candidateHosts": [
+        "platinumfish.jp"
+      ],
+      "checkedAt": "2026-09-06",
+      "candidateName": "RESTAURANT PLATINUM FISH マーチエキュート神田万世橋店",
+      "nameCompatible": true,
+      "proposalState": "review_existing_official_page_candidate",
+      "confidenceSignals": [
+        "same_frozen_google_place_id_in_retained_official_candidate_index",
+        "normalized_candidate_name_compatible_with_current_public_name",
+        "independently_fetched_http_url_retained_in_repository"
+      ],
+      "shard": 1,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJX2VqZfSNGGAR2huqczaqDu4",
+      "name": "多次元秘密基地",
+      "distanceMeters": 1165,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "https://akiba-tazigen.com/",
+      "menuUrls": [],
+      "candidateHosts": [
+        "akiba-tazigen.com"
+      ],
+      "checkedAt": "2026-09-06",
+      "candidateName": "多次元秘密基地",
+      "nameCompatible": true,
+      "proposalState": "review_existing_official_page_candidate",
+      "confidenceSignals": [
+        "same_frozen_google_place_id_in_retained_official_candidate_index",
+        "normalized_candidate_name_compatible_with_current_public_name",
+        "independently_fetched_http_url_retained_in_repository"
+      ],
+      "shard": 6,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJp52jo0OMGGAR6L7VsZ1y3MY",
+      "name": "ルノアール",
+      "distanceMeters": 1179,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "https://www.ginza-renoir.co.jp/myspace/booking/shops/view/29",
+      "menuUrls": [],
+      "candidateHosts": [
+        "ginza-renoir.co.jp"
+      ],
+      "checkedAt": "2026-09-06",
+      "candidateName": "ルノアール",
+      "nameCompatible": true,
+      "proposalState": "review_existing_official_page_candidate",
+      "confidenceSignals": [
+        "same_frozen_google_place_id_in_retained_official_candidate_index",
+        "normalized_candidate_name_compatible_with_current_public_name",
+        "independently_fetched_http_url_retained_in_repository"
+      ],
+      "shard": 3,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJay-cC0SMGGARCJcjuM2PyA4",
+      "name": "大戸屋",
+      "distanceMeters": 1182,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "https://store.ootoya.com/detail/27238/",
+      "menuUrls": [],
+      "candidateHosts": [
+        "store.ootoya.com"
+      ],
+      "checkedAt": "2026-09-06",
+      "candidateName": "大戸屋",
+      "nameCompatible": true,
+      "proposalState": "review_existing_official_page_candidate",
+      "confidenceSignals": [
+        "same_frozen_google_place_id_in_retained_official_candidate_index",
+        "normalized_candidate_name_compatible_with_current_public_name",
+        "independently_fetched_http_url_retained_in_repository"
+      ],
+      "shard": 5,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    }
+  ]
+}
