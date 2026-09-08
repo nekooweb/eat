@@ -28,6 +28,7 @@ const allowedFeaturedClasses = new Set([
   'source_menu_text',
   'source_pdf_menu_text',
   'tabelog_menu_text',
+  'hotpepper_menu_text',
   'retained_source_menu_item',
   'source_recommendation_text',
   'source_pdf_recommendation_text'
@@ -68,6 +69,12 @@ for (const row of payload.rows || []) {
       }
       if (item.evidenceClass === 'tabelog_menu_text' && item.provider !== 'Tabelog') {
         throw new Error(`Tabelog menu evidence must retain the Tabelog provider: ${row.googlePlaceId}`);
+      }
+      if (item.evidenceClass === 'hotpepper_menu_text' && item.provider !== 'Hot Pepper') {
+        throw new Error(`Hot Pepper menu evidence must retain the Hot Pepper provider: ${row.googlePlaceId}`);
+      }
+      if (item.provider === 'Hot Pepper' && String(item.evidenceRule || '').startsWith('hotpepper-explicit-recommended-h3:') && item.evidenceClass !== 'source_recommendation_text') {
+        throw new Error(`Hot Pepper explicit recommendation must use strict recommendation evidence class: ${row.googlePlaceId}`);
       }
       const duplicateKey = `${kind}|${nameZh}|${item.provider}|${item.sourceUrl}|${item.evidenceClass || ''}`;
       if (localSeen.has(duplicateKey)) throw new Error(`Duplicate dish evidence item: ${row.googlePlaceId}: ${duplicateKey}`);
