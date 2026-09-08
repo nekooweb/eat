@@ -36,7 +36,8 @@ Approximate inference can still be useful during internal research or enrichment
 
 GitHub Pages run: `34178276245`
 
-Build result: **success**.
+- Build: **success**
+- Deploy: **success**
 
 Final public runtime (`1,415` named rows):
 
