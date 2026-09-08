@@ -8,6 +8,7 @@ const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, '..');
 const DATA = path.join(ROOT, 'data');
 const OUT = path.join(DATA, 'source_facts.js');
+const DISH_PATCH = path.join(HERE, 'chinese_dish_runtime_patch.js');
 
 const norm = (value) => String(value || '')
   .normalize('NFKC')
@@ -127,13 +128,19 @@ const rows = [...factsById.entries()]
   }))
   .sort((a, b) => a.googlePlaceId.localeCompare(b.googlePlaceId));
 
+const dishPatch = fs.readFileSync(DISH_PATCH, 'utf8').trim();
+if (!dishPatch.includes("dishRecommendationDisplayPolicy = 'relaxed-zh-v1'")) {
+  throw new Error('Chinese dish runtime patch is missing its relaxed-zh-v1 marker');
+}
+
 const summary = {
   productionEntities: production.length,
   rowsWithSourceFacts: rows.length,
   providerFactRecords: rows.reduce((sum, row) => sum + row.sourceFacts.length, 0),
   providerCounts,
   fieldCounts,
-  unattachedMaintenanceRows: unattached
+  unattachedMaintenanceRows: unattached,
+  chineseDishRuntimePatch: 'relaxed-zh-v1'
 };
 
 const payload = {
@@ -142,7 +149,8 @@ const payload = {
     providerFactsRemainSeparate: true,
     overwritesCanonicalCoreFields: false,
     googleResponseContentExcluded: true,
-    reviewTextExcluded: true
+    reviewTextExcluded: true,
+    approximateDishSuggestionsRemainDisplayOnly: true
   },
   summary,
   rows
@@ -158,6 +166,7 @@ const output = [
   '    if (row) row.sourceFacts=meta.sourceFacts;',
   '  }',
   '}',
+  dishPatch,
   ''
 ].join('\n');
 
