@@ -2,6 +2,11 @@ name: Collect structured Hot Pepper dish evidence
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - _ops/run-hotpepper-structured-plus-curated-once-2026-09-09.txt
 
 permissions:
   contents: write
@@ -33,6 +38,8 @@ jobs:
           node scripts/audit_no_paid_apis.mjs
           node --check scripts/collect_hotpepper_web_structured_dish_evidence.mjs
           node --check scripts/filter_hotpepper_structured_dish_evidence.mjs
+          node --check scripts/hotpepper_explicit_recommendation_normalizer.mjs
+          node --check scripts/collect_hotpepper_explicit_recommendation_normalization_evidence.mjs
       - name: Snapshot current queue and evidence
         run: |
           cp data/google_inventory_detail_queue.json /tmp/google_inventory_detail_queue.before.json
@@ -50,6 +57,15 @@ jobs:
           node scripts/filter_hotpepper_structured_dish_evidence.mjs \
             /tmp/hotpepper-structured-raw.json \
             /tmp/hotpepper-structured-filtered.json | tee /tmp/hotpepper-structured-filter-summary.json
+      - name: Collect curated explicit Hot Pepper recommendation normalization evidence
+        env:
+          HOTPEPPER_EXPLICIT_CONCURRENCY: '8'
+          HOTPEPPER_EXPLICIT_TIMEOUT_MS: '8000'
+          HOTPEPPER_EXPLICIT_LIMIT: '0'
+        run: |
+          set -euo pipefail
+          node scripts/collect_hotpepper_explicit_recommendation_normalization_evidence.mjs \
+            /tmp/hotpepper-curated-recommendations.json | tee /tmp/hotpepper-curated-recommendations-summary.json
       - name: Audit structured Hot Pepper semantic boundary
         run: |
           set -euo pipefail
@@ -75,16 +91,43 @@ jobs:
           if (failures.length) throw new Error(`Hot Pepper structured evidence contract failures: ${JSON.stringify(failures.slice(0, 5))}`);
           console.log(JSON.stringify({ policy: p, summary: x.summary }));
           NODE
+      - name: Audit curated Hot Pepper recommendation boundary
+        run: |
+          set -euo pipefail
+          node - <<'NODE'
+          const fs = require('fs');
+          const x = JSON.parse(fs.readFileSync('/tmp/hotpepper-curated-recommendations.json', 'utf8'));
+          const p = x.policy || {};
+          if (p.paidGoogleDataApiCalls !== 0 || p.hotPepperWebServiceApiCalls !== 0) throw new Error('curated pass must remain zero-paid/API-free');
+          if (p.rootIdentityRevalidationRequired !== true || p.foodPageIdentityRevalidationRequired !== true || p.guessedMenuPathsAllowed !== false) throw new Error('curated identity/menu scope mismatch');
+          if (p.genericPageTextAllowed !== false || p.courseOrDrinkInferenceAllowed !== false || p.cuisineNameBrandInferenceAllowed !== false || p.automaticTranslationOutsideCuratedRulesAllowed !== false) throw new Error('curated semantic boundary mismatch');
+          const failures = [];
+          for (const row of x.rows || []) {
+            for (const item of row.recommendedDishes || []) {
+              if (item.provider !== 'Hot Pepper' || item.evidenceClass !== 'source_recommendation_text') failures.push(['class', row.googlePlaceId, item]);
+              if (!String(item.evidenceRule || '').startsWith('hotpepper-explicit-recommended-h3:normalized-')) failures.push(['rule', row.googlePlaceId, item]);
+              if (!/^https:\/\/www\.hotpepper\.jp\/strJ\d+\/(?:food|menu)\/?/i.test(item.sourceUrl || '')) failures.push(['url', row.googlePlaceId, item.sourceUrl]);
+              if (!item.nameJa || !item.nameZh || !item.evidenceSnippet) failures.push(['fields', row.googlePlaceId, item]);
+            }
+            if ((row.featuredDishes || []).length) failures.push(['unexpected-featured', row.googlePlaceId]);
+          }
+          if (failures.length) throw new Error(`curated Hot Pepper contract failures: ${JSON.stringify(failures.slice(0,5))}`);
+          console.log(JSON.stringify({ policy: p, summary: x.summary }));
+          NODE
       - name: Merge evidence monotonically and correct known composites
         run: |
           set -euo pipefail
           node scripts/merge_google_inventory_detail_evidence.mjs \
             /tmp/google_inventory_detail_evidence.before.json \
             /tmp/hotpepper-structured-filtered.json \
-            data/google_inventory_detail_evidence.json | tee /tmp/hotpepper-structured-merge-summary.json
+            /tmp/google_inventory_detail_evidence.after-structured.json | tee /tmp/hotpepper-structured-merge-summary.json
+          node scripts/merge_google_inventory_detail_evidence.mjs \
+            /tmp/google_inventory_detail_evidence.after-structured.json \
+            /tmp/hotpepper-curated-recommendations.json \
+            data/google_inventory_detail_evidence.json | tee /tmp/hotpepper-curated-merge-summary.json
           node scripts/correct_dish_specificity_evidence.mjs \
             data/google_inventory_detail_evidence.json \
-            data/google_inventory_detail_evidence.json | tee /tmp/hotpepper-structured-specificity-summary.json
+            data/google_inventory_detail_evidence.json | tee /tmp/hotpepper-specificity-summary.json
           node scripts/audit_google_inventory_detail_evidence.mjs
       - name: Rebuild runtime and dish work plans
         run: |
@@ -117,10 +160,10 @@ jobs:
               recommendationGapWithRetainedThirdPartyOnly: after.recommendationGapWithRetainedThirdPartyOnly - before.recommendationGapWithRetainedThirdPartyOnly
             }
           };
-          fs.writeFileSync('/tmp/hotpepper-structured-net.json', JSON.stringify(report, null, 2) + '\n');
+          fs.writeFileSync('/tmp/hotpepper-structured-curated-net.json', JSON.stringify(report, null, 2) + '\n');
           console.log(JSON.stringify(report));
           NODE
-      - name: Commit structured Hot Pepper evidence and rebuilt plans
+      - name: Commit Hot Pepper evidence and rebuilt plans
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"
@@ -133,10 +176,10 @@ jobs:
             data/independent_dish_source_candidates.json \
             data/reviewed_independent_dish_sources.json
           if git diff --cached --quiet; then
-            echo 'No structured Hot Pepper evidence changes to commit.'
+            echo 'No Hot Pepper evidence changes to commit.'
             exit 0
           fi
-          git commit -m "Add structured Hot Pepper menu dish evidence"
+          git commit -m "Add structured and curated Hot Pepper dish evidence"
           git fetch origin main
           git rebase origin/main
           git push origin HEAD:main
