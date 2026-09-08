@@ -1,0 +1,134 @@
+name: Sweep reviewed official pages for strict core fields
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/current-official-core-field-sweep.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: public-web-field-evidence
+  cancel-in-progress: false
+
+jobs:
+  sweep:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Sync latest main
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          git reset --hard origin/main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Validate zero-paid and collector syntax
+        run: |
+          set -euo pipefail
+          node scripts/audit_no_paid_apis.mjs
+          python -m py_compile \
+            scripts/database/collect_official_labeled_telephone.py \
+            scripts/database/collect_official_labeled_address_hours.py \
+            scripts/database/merge_public_web_field_evidence.py \
+            scripts/database/build_master.py
+      - name: Build current baseline
+        run: |
+          set -euo pipefail
+          mkdir -p _tmp
+          cp data/source_basic_web_field_evidence.json _tmp/evidence-working.json
+          python scripts/database/build_master.py --output _tmp/master-before.sqlite --reset | tee _tmp/master-before.json
+          python scripts/database/validate_master.py _tmp/master-before.sqlite
+          python - <<'PY'
+          import json
+          m=json.load(open('_tmp/master-before.json')); p=m['ingestionPlan']
+          x={'fieldTasks':p['taskTypeCounts']['field_completion'],'missing':p['fieldCompletionMissingCounts']}
+          json.dump(x,open('_tmp/before.json','w'),sort_keys=True)
+          print(json.dumps(x,sort_keys=True))
+          PY
+      - name: Collect explicit labeled telephone
+        run: |
+          set -euo pipefail
+          python scripts/database/collect_official_labeled_telephone.py \
+            --database _tmp/master-before.sqlite \
+            --output _tmp/telephone.json \
+            --workers 10 --max-pages 250 \
+            | tee _tmp/telephone-summary.json
+          python scripts/database/merge_public_web_field_evidence.py \
+            _tmp/evidence-working.json _tmp/telephone.json _tmp/evidence-after-telephone.json \
+            | tee _tmp/telephone-merge.json
+          cp _tmp/evidence-after-telephone.json data/source_basic_web_field_evidence.json
+          python scripts/database/build_master.py --output _tmp/master-mid.sqlite --reset | tee _tmp/master-mid.json
+          python scripts/database/validate_master.py _tmp/master-mid.sqlite
+      - name: Collect explicit labeled address and hours
+        run: |
+          set -euo pipefail
+          python scripts/database/collect_official_labeled_address_hours.py \
+            --database _tmp/master-mid.sqlite \
+            --output _tmp/address-hours.json \
+            --workers 10 --max-pages 250 \
+            | tee _tmp/address-hours-summary.json
+          python scripts/database/merge_public_web_field_evidence.py \
+            _tmp/evidence-after-telephone.json _tmp/address-hours.json _tmp/evidence-final.json \
+            | tee _tmp/address-hours-merge.json
+          cp _tmp/evidence-final.json data/source_basic_web_field_evidence.json
+      - name: Validate final canonical delta
+        run: |
+          set -euo pipefail
+          python scripts/database/build_master.py --output _tmp/master-after.sqlite --reset | tee _tmp/master-after.json
+          python scripts/database/validate_master.py _tmp/master-after.sqlite
+          python scripts/database/validate_ingestion_plan.py _tmp/master-after.sqlite
+          python - <<'PY'
+          import json
+          b=json.load(open('_tmp/before.json'))
+          m=json.load(open('_tmp/master-after.json')); p=m['ingestionPlan']
+          a={'fieldTasks':p['taskTypeCounts']['field_completion'],'missing':p['fieldCompletionMissingCounts']}
+          for k,v in b['missing'].items(): assert a['missing'].get(k,0)<=v,(k,b,a)
+          assert a['fieldTasks']<=b['fieldTasks'],(b,a)
+          json.dump(a,open('_tmp/after.json','w'),sort_keys=True)
+          print(json.dumps({'before':b,'after':a},sort_keys=True))
+          PY
+          node scripts/audit_no_paid_apis.mjs
+      - name: Commit durable web evidence on latest main
+        run: |
+          set -euo pipefail
+          cp _tmp/evidence-final.json _tmp/incoming-final.json
+          git restore -- data/source_basic_web_field_evidence.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          for attempt in 1 2 3; do
+            git fetch origin main
+            git checkout -B current-official-core-fields origin/main
+            cp data/source_basic_web_field_evidence.json _tmp/latest-base.json
+            python scripts/database/merge_public_web_field_evidence.py \
+              _tmp/latest-base.json _tmp/telephone.json _tmp/latest-with-phone.json
+            python scripts/database/merge_public_web_field_evidence.py \
+              _tmp/latest-with-phone.json _tmp/address-hours.json data/source_basic_web_field_evidence.json
+            git add data/source_basic_web_field_evidence.json
+            if git diff --cached --quiet; then
+              echo "No new strict official core-field snapshots"
+              exit 0
+            fi
+            git commit -m "Add strict labeled official core-field evidence"
+            if git push origin HEAD:main; then exit 0; fi
+            git reset --hard HEAD~1
+            sleep 2
+          done
+          exit 1
+      - name: Upload sweep audit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: current-official-core-field-sweep
+          path: _tmp/*.json
+          if-no-files-found: warn
+          retention-days: 3
