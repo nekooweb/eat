@@ -54,7 +54,7 @@ function excludedIndependentHost(host) {
   if (/facebook\.com$|instagram\.com$|x\.com$|twitter\.com$|youtube\.com$|tiktok\.com$/.test(h)) return true;
   if (/gnavi\.co\.jp$|retty\.me$|tripadvisor\.[a-z.]+$|yelp\.[a-z.]+$|foursquare\.com$/.test(h)) return true;
   if (/loco\.yahoo\.co\.jp$|paypaygourmet\.yahoo\.co\.jp$|autoreserve\.com$|ekiten\.jp$/.test(h)) return true;
-  if (/restaurant\.ikyu\.com$|bar-navi\.suntory\.co\.jp$/.test(h)) return true;
+  if (/restaurant\.ikyu\.com$|bar-navi\.suntory\.co\.jp$|supleks\.jp$/.test(h)) return true;
   return false;
 }
 
@@ -148,15 +148,18 @@ const runtimeRows = Array.isArray(runtimeWindow.GOOGLE_INVENTORY_RESTAURANTS)
 const runtimeStats = runtimeWindow.GOOGLE_INVENTORY_STATS || {};
 const osmRows = loadOsmRows();
 
-if (queueDoc.summary?.catalogTotal !== 2804 || queueDoc.summary?.publicRuntimeTotal !== 1415) {
-  throw new Error('OSM source plan requires frozen 2,804 / public 1,415 queue baseline');
+if (queueDoc.summary?.catalogTotal !== 2804) {
+  throw new Error('OSM source plan requires the frozen 2,804-ID catalog');
 }
-if (runtimeStats.catalogTotal !== 2804 || runtimeRows.length !== 1415) {
-  throw new Error('OSM source plan requires frozen 2,804 / public 1,415 runtime baseline');
+if (runtimeStats.catalogTotal !== 2804 || runtimeRows.length < 1) {
+  throw new Error('OSM source plan requires a non-empty current runtime over the frozen 2,804-ID catalog');
 }
 
 const runtimeById = new Map(runtimeRows.map((row) => [row.googlePlaceId, row]));
-const targetRows = (queueDoc.rows || []).filter((row) => row.nextAction === 'find_independent_dish_source');
+// The detail queue can lag a newly admitted runtime row by one bot commit. Restrict to
+// current runtime IDs instead of requiring an obsolete exact named-row count.
+const targetRows = (queueDoc.rows || []).filter((row) =>
+  row.nextAction === 'find_independent_dish_source' && runtimeById.has(row.googlePlaceId));
 const spatial = new Map();
 let osmWebsiteRows = 0;
 let osmWebsiteValues = 0;
@@ -260,7 +263,6 @@ for (const target of targetRows) {
   });
 }
 
-// Prevent one OSM native POI from being proposed to multiple frozen Place IDs.
 const uniqueNative = new Map();
 const outputRows = [];
 for (const proposal of proposals.sort((a, b) => b.proposalScore - a.proposalScore || a.candidateDistanceMeters - b.candidateDistanceMeters)) {
@@ -287,9 +289,10 @@ const shardCounts = Array.from({ length: SHARDS }, (_, shard) => ({
 }));
 
 const summary = {
-  schemaVersion: 1,
+  schemaVersion: 2,
   catalogTotal: 2804,
-  publicRuntimeTotal: 1415,
+  publicRuntimeTotal: runtimeRows.length,
+  queueSnapshotPublicRuntimeTotal: Number(queueDoc.summary?.publicRuntimeTotal || 0),
   currentIndependentDishSourceGap: targetRows.length,
   osmRows: osmRows.length,
   osmRowsWithIndependentWebsites: osmWebsiteRows,
@@ -309,17 +312,17 @@ const summary = {
 };
 
 const payload = {
-  schemaVersion: 1,
+  schemaVersion: 2,
   generatedAt: new Date().toISOString(),
   policy: {
     proposalOnly: true,
-    source: 'retained OpenStreetMap Area1 POI website/contact:website tags',
+    source: 'minimal retained OpenStreetMap Area1 POI website/contact:website facts',
     networkRequests: 0,
     paidGoogleDataApiCalls: 0,
     identityBindingChanges: 0,
     googleDisplayPayloadUsed: false,
-    currentQueueRestriction: 'find_independent_dish_source only',
-    osmGoogleStatusMustRemainPending: true,
+    osmIdentityFieldsSerialized: false,
+    currentQueueRestriction: 'find_independent_dish_source and current runtime membership',
     maximumCandidateDistanceMeters: MAX_DISTANCE_M,
     strongNameAgreementRequired: true,
     ambiguityMarginRequired: true,
