@@ -12,6 +12,7 @@ on:
       - "data/area1_google_ids.json"
       - "data/google_basic_source_matches.json"
       - "data/hotpepper_catalog_facts.json"
+      - "data/hotpepper_catalog_practical_overlay.json"
       - "data/production_area1.js"
       - "data/source_facts.js"
       - "data/source_provenance.js"
@@ -21,11 +22,14 @@ on:
       - "data/official_meal_budget_web_evidence.json"
       - "data/official_practical_web_evidence.json"
       - "data/official_practical_detail_web_evidence.json"
+      - "data/reviewed_native_contact_runtime_overlay.json"
+      - "data/reviewed_official_practical_runtime_overlay.json"
       - "data/official_candidate_index.json"
       - "data/google_entities.generated.js"
       - "data/area1_osm.js"
       - "data/google_inventory_runtime.js"
       - "scripts/build_google_inventory_runtime.mjs"
+      - "scripts/reload_data.py"
   pull_request:
     paths:
       - "database/**"
@@ -36,6 +40,7 @@ on:
       - "data/area1_google_ids.json"
       - "data/google_basic_source_matches.json"
       - "data/hotpepper_catalog_facts.json"
+      - "data/hotpepper_catalog_practical_overlay.json"
       - "data/production_area1.js"
       - "data/source_facts.js"
       - "data/source_provenance.js"
@@ -45,11 +50,14 @@ on:
       - "data/official_meal_budget_web_evidence.json"
       - "data/official_practical_web_evidence.json"
       - "data/official_practical_detail_web_evidence.json"
+      - "data/reviewed_native_contact_runtime_overlay.json"
+      - "data/reviewed_official_practical_runtime_overlay.json"
       - "data/official_candidate_index.json"
       - "data/google_entities.generated.js"
       - "data/area1_osm.js"
       - "data/google_inventory_runtime.js"
       - "scripts/build_google_inventory_runtime.mjs"
+      - "scripts/reload_data.py"
   workflow_dispatch:
   workflow_call:
     inputs:
@@ -99,8 +107,11 @@ jobs:
             scripts/database/retained_official_identity.py \
             scripts/database/retained_osm_identity.py \
             scripts/database/import_bound_open_data_fields.py \
+            scripts/database/import_bound_overture_metadata.py \
             scripts/database/import_hotpepper_rich_metadata.py \
+            scripts/database/resolve_hotpepper_rich_reference_fields.py \
             scripts/database/resolve_hotpepper_source_fact_budgets.py \
+            scripts/database/resolve_verified_osm_native_metadata.py \
             scripts/database/resolve_dish_translation_evidence.py \
             scripts/database/import_source_basic_web_evidence.py \
             scripts/database/import_official_meal_budget_web_evidence.py \
@@ -111,6 +122,8 @@ jobs:
             scripts/database/collect_official_detail_practical_fields.py \
             scripts/database/import_official_practical_web_evidence.py \
             scripts/database/import_official_practical_detail_web_evidence.py \
+            scripts/database/export_reviewed_native_contact_runtime_overlay.py \
+            scripts/database/export_reviewed_official_practical_runtime_overlay.py \
             scripts/database/resolve_retained_fields.py \
             scripts/database/review_hotpepper_candidate_fields.py \
             scripts/database/derive_hotpepper_practical.py \
@@ -119,6 +132,7 @@ jobs:
             scripts/database/build_master.py \
             scripts/database/validate_master.py \
             scripts/database/validate_derived_practical.py \
+            scripts/database/validate_hotpepper_rich_reference_fields.py \
             scripts/database/validate_source_semantics.py \
             scripts/database/validate_official_identity.py \
             scripts/database/validate_osm_identity.py \
@@ -132,6 +146,9 @@ jobs:
             scripts/database/compare_runtime_shadow.py \
             scripts/database/diff_runtime_shadow_fields.py
           node --check scripts/build_google_inventory_runtime.mjs
+          node --check scripts/materialize_runtime_practical_fields.mjs
+          node --check scripts/materialize_runtime_official_practical_fields.mjs
+          node --check scripts/materialize_runtime_native_contact_fields.mjs
 
       - name: Legacy in-memory prototype contract (warning only)
         continue-on-error: true
@@ -145,6 +162,7 @@ jobs:
           python scripts/database/build_master.py --output _tmp/eat-master.sqlite --reset | tee _tmp/master-build-1.json
           python scripts/database/validate_master.py _tmp/eat-master.sqlite | tee _tmp/master-validate-1.json
           python scripts/database/validate_derived_practical.py _tmp/eat-master.sqlite | tee _tmp/derived-practical-validate-1.json
+          python scripts/database/validate_hotpepper_rich_reference_fields.py _tmp/eat-master.sqlite | tee _tmp/hotpepper-rich-reference-validate-1.json
           python scripts/database/validate_source_semantics.py _tmp/eat-master.sqlite | tee _tmp/source-semantics-validate-1.json
           python scripts/database/validate_official_identity.py _tmp/eat-master.sqlite | tee _tmp/official-identity-validate-1.json
           python scripts/database/validate_osm_identity.py _tmp/eat-master.sqlite | tee _tmp/osm-identity-validate-1.json
@@ -176,6 +194,7 @@ jobs:
           test "${before}" = "${after}"
           python scripts/database/validate_master.py _tmp/eat-master.sqlite | tee _tmp/master-validate-2.json
           python scripts/database/validate_derived_practical.py _tmp/eat-master.sqlite | tee _tmp/derived-practical-validate-2.json
+          python scripts/database/validate_hotpepper_rich_reference_fields.py _tmp/eat-master.sqlite | tee _tmp/hotpepper-rich-reference-validate-2.json
           python scripts/database/validate_source_semantics.py _tmp/eat-master.sqlite | tee _tmp/source-semantics-validate-2.json
           python scripts/database/validate_official_identity.py _tmp/eat-master.sqlite | tee _tmp/official-identity-validate-2.json
           python scripts/database/validate_osm_identity.py _tmp/eat-master.sqlite | tee _tmp/osm-identity-validate-2.json
@@ -198,6 +217,7 @@ jobs:
           PY
           python scripts/database/validate_master.py _tmp/eat-master-backup.sqlite | tee _tmp/master-backup-validate.json
           python scripts/database/validate_derived_practical.py _tmp/eat-master-backup.sqlite | tee _tmp/derived-practical-backup-validate.json
+          python scripts/database/validate_hotpepper_rich_reference_fields.py _tmp/eat-master-backup.sqlite | tee _tmp/hotpepper-rich-reference-backup-validate.json
           python scripts/database/validate_source_semantics.py _tmp/eat-master-backup.sqlite | tee _tmp/source-semantics-backup-validate.json
           python scripts/database/validate_official_identity.py _tmp/eat-master-backup.sqlite | tee _tmp/official-identity-backup-validate.json
           python scripts/database/validate_osm_identity.py _tmp/eat-master-backup.sqlite | tee _tmp/osm-identity-backup-validate.json
