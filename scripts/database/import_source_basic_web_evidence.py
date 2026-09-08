@@ -176,10 +176,11 @@ def import_evidence(db, id_set: set[str], conflict_places: set[str], stamp: str)
         if identity_check.get("accepted") is not True:
             counts["identity_check_not_accepted"] += 1
             continue
-        if identity_check.get("identityRule") not in ALLOWED_IDENTITY_RULES:
+        identity_rule = identity_check.get("identityRule")
+        if identity_rule not in ALLOWED_IDENTITY_RULES:
             counts["identity_rule_invalid"] += 1
             continue
-        if identity_check.get("identityRule") == "retained_multisource_currentness_page":
+        if identity_rule == "retained_multisource_currentness_page":
             if identity_check.get("preExistingSourceMatchedIdentity") is not True:
                 counts["currentness_identity_precondition_missing"] += 1
                 continue
@@ -218,7 +219,7 @@ def import_evidence(db, id_set: set[str], conflict_places: set[str], stamp: str)
             srid,
             "reviewed",
             BINDING_METHOD,
-            identity_check.get("identityRule"),
+            identity_rule,
             identity_check.get("minimumGeoDistanceMeters"),
             stamp,
         )
@@ -232,53 +233,64 @@ def import_evidence(db, id_set: set[str], conflict_places: set[str], stamp: str)
         if hours is not None:
             fields.append(("hours.raw", hours, True))
         cuisine = normalized_cuisine(claims.get("cuisineNormalized"))
-        if cuisine is not None:
+        if cuisine:
             fields.append(("cuisine", cuisine, True))
         geo = normalized_geo(claims.get("geo"))
-        if geo is not None:
+        if geo:
             fields.append(("coordinates", geo, True))
-        price = claims.get("priceRange")
-        if isinstance(price, str) and price.strip():
-            fields.append(("budget.raw.price_range", price.strip(), False))
+        price_range = claims.get("priceRange")
+        if isinstance(price_range, str) and price_range.strip():
+            fields.append(("budget.web_price_range_raw", price_range.strip(), False))
         telephone = normalized_telephone(claims.get("telephone"))
-        if telephone is not None:
+        if telephone:
             fields.append(("contact.telephone", telephone, True))
+        fields.append(("source_websites", [final_url], False))
+        fields.append(("provenance.public_web_content_hash", content_hash, False))
 
         for field_key, value, canonical in fields:
-            if canonical and not canonical_missing(known, pid, field_key):
-                counts[f"already_known_at_import:{field_key}"] += 1
-                continue
-            core.field_observation(
+            resolve_now = canonical and canonical_missing(known, pid, field_key)
+            oid = core.add_field(
                 db,
                 pid,
+                srid,
                 field_key,
                 value,
-                srid,
-                "explicit" if canonical else "raw",
-                1.0 if canonical else 0.75,
+                "reviewed",
+                "official" if canonical else "official-web",
+                retrieved_at,
                 stamp,
+                resolve_field=resolve_now,
             )
-            if canonical:
-                core.resolve_missing(db, pid, field_key, value, srid, RULE_VERSION, stamp)
+            if not canonical:
+                continue
+            if resolve_now and oid is not None:
+                counts[field_key] += 1
                 for equivalent in CANONICAL_EQUIVALENTS[field_key]:
                     known.add((pid, equivalent))
-                counts[field_key] += 1
             else:
-                counts[field_key] += 1
+                counts[f"already_known_at_import:{field_key}"] += 1
         accepted += 1
 
+    canonical_keys = tuple(CANONICAL_EQUIVALENTS)
     return {
         "inputRows": len(doc.get("rows") or []),
         "acceptedRows": accepted,
         "acceptedSnapshots": accepted,
         "uniqueSnapshotKeys": len(seen_snapshots),
-        "resolvedFields": sum(counts[key] for key in CANONICAL_EQUIVALENTS),
-        "fieldCounts": {key: counts[key] for key in CANONICAL_EQUIVALENTS if counts[key]},
-        "skipped": {key: value for key, value in sorted(counts.items()) if key not in CANONICAL_EQUIVALENTS and not key.startswith("budget.raw")},
+        "resolvedFields": sum(counts[key] for key in canonical_keys),
+        "fieldCounts": {
+            key: counts[key]
+            for key in canonical_keys
+            if counts[key]
+        },
+        "skipped": {
+            key: value for key, value in sorted(counts.items())
+            if key not in canonical_keys
+        },
         "ruleVersion": doc_version,
         "currentRuleVersion": RULE_VERSION,
         "networkRequests": 0,
         "importTimeMissingOnly": True,
-        "multiSnapshotCompatible": True,
         "telephoneCanonicalMissingOnly": True,
+        "multiSnapshotCompatible": True,
     }
