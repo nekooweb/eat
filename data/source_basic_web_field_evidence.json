@@ -1,6 +1,6 @@
 {
-  "schemaVersion": 1,
-  "ruleVersion": "source-basic-web-field-evidence-v1",
+  "schemaVersion": 2,
+  "ruleVersion": "source-basic-web-field-evidence-v2",
   "checkedAt": "2026-09-08",
   "policy": {
     "paidDataApiCalls": 0,
@@ -9,25 +9,36 @@
     "httpsExistingSourceUrlsOnly": true,
     "rawHtmlPersisted": false,
     "robotsRespected": true,
-    "restrictedAccessBypass": false
+    "restrictedAccessBypass": false,
+    "multiSnapshotEvidenceByPlaceId": true,
+    "snapshotIdentity": [
+      "googlePlaceId",
+      "finalUrl",
+      "contentHash"
+    ],
+    "crossSnapshotClaimMerge": false,
+    "canonicalResolution": "import_time_missing_only"
   },
   "summary": {
-    "rows": 57,
+    "rows": 76,
+    "places": 57,
+    "placesWithMultipleSnapshots": 19,
     "fieldCounts": {
       "address": 3,
       "cuisineNormalized": 1,
       "geo": 1,
       "openingHoursRaw": 35,
-      "priceRange": 7,
-      "telephone": 32
+      "priceRange": 8,
+      "telephone": 51
     },
     "providerCounts": {
       "Overture Maps": 17,
-      "official": 40
+      "official": 59
     },
     "lastMerge": {
-      "already_present": 6,
-      "different_page_deferred": 18
+      "snapshot_added": 19,
+      "snapshot_added_existing_place": 19,
+      "snapshot_already_present": 5
     }
   },
   "rows": [
@@ -64,6 +75,37 @@
         ]
       },
       "checkedAt": "2026-09-07"
+    },
+    {
+      "googlePlaceId": "ChIJ08lD_gOMGGAR8oYpyY0SS6w",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:f25dc12c02d763628e91",
+      "missingBefore": [
+        "address",
+        "dinner_budget",
+        "lunch_budget"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "jsonld_business_name",
+        "pageNameSimilarity": 1.0,
+        "titleNameSimilarity": 0.6
+      },
+      "webEvidence": {
+        "sourceUrl": "https://fukuhara-0303.gorp.jp/",
+        "finalUrl": "https://fukuhara-0303.gorp.jp/",
+        "retrievedAt": "2026-09-08T05:53:38Z",
+        "contentHash": "537488c12c894a7eeda0455726346845faadd53ac39d7887513d943fba715453",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06"
+      },
+      "fieldClaims": {
+        "telephone": "03-3256-6477"
+      },
+      "checkedAt": "2026-09-08"
     },
     {
       "googlePlaceId": "ChIJ08lD_gOMGGAR8oYpyY0SS6w",
@@ -162,6 +204,66 @@
         "telephone": "03-5280-1630"
       },
       "checkedAt": "2026-09-07"
+    },
+    {
+      "googlePlaceId": "ChIJ2atVJwSMGGARrwm6ahMJsfo",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:6ec2a2b019f01dbaf6cc",
+      "missingBefore": [
+        "lunch_budget"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "jsonld_business_name",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://gf14902.gorp.jp/",
+        "finalUrl": "https://gf14902.gorp.jp/",
+        "retrievedAt": "2026-09-08T05:53:33Z",
+        "contentHash": "3793cab1486f491f81195a7213729e1a5554f369459f6e8f8877acedac28a974",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06"
+      },
+      "fieldClaims": {
+        "telephone": "03-5280-1630"
+      },
+      "checkedAt": "2026-09-08"
+    },
+    {
+      "googlePlaceId": "ChIJ2yzmKgCNGGARujgyaVuRhy8",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:4dbe0208f3134e474db6",
+      "missingBefore": [
+        "address",
+        "dinner_budget",
+        "lunch_budget"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "jsonld_business_name",
+        "pageNameSimilarity": 1.0,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://gj8y401.gorp.jp/?utm_source=Google-Map&utm_medium=MEO_Adtag2",
+        "finalUrl": "https://gj8y401.gorp.jp/?utm_source=Google-Map&utm_medium=MEO_Adtag2",
+        "retrievedAt": "2026-09-08T05:53:16Z",
+        "contentHash": "6ebef516bba3b5e5d70375d511d02510829791eb2e9ac174800db1103fe9b5e3",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06"
+      },
+      "fieldClaims": {
+        "telephone": "03-5244-5888"
+      },
+      "checkedAt": "2026-09-08"
     },
     {
       "googlePlaceId": "ChIJ2yzmKgCNGGARujgyaVuRhy8",
@@ -369,6 +471,36 @@
       "checkedAt": "2026-09-07"
     },
     {
+      "googlePlaceId": "ChIJ4SygCUSMGGAR5k9kG84PJi8",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:6384803a8aeaf6306b48",
+      "missingBefore": [
+        "dinner_budget",
+        "lunch_budget"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "jsonld_business_name",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://map.reins.co.jp/onyasai/detail/353571229",
+        "finalUrl": "https://map.reins.co.jp/onyasai/detail/353571229",
+        "retrievedAt": "2026-09-08T05:53:46Z",
+        "contentHash": "74ed440bba540b842ffe2c1c2787ce263bcb719279b7f32cc72587a161af17ca",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06"
+      },
+      "fieldClaims": {
+        "telephone": "03-5357-1229"
+      },
+      "checkedAt": "2026-09-08"
+    },
+    {
       "googlePlaceId": "ChIJ4V7HsByMGGAR3-Klt48CI28",
       "sourceProvider": "official",
       "sourceProviderId": "official-index:e42a73405e439855b666",
@@ -402,6 +534,37 @@
         "telephone": "03-3252-1030"
       },
       "checkedAt": "2026-09-07"
+    },
+    {
+      "googlePlaceId": "ChIJ4V7HsByMGGAR3-Klt48CI28",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:e42a73405e439855b666",
+      "missingBefore": [
+        "address",
+        "dinner_budget",
+        "lunch_budget"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "jsonld_business_name",
+        "pageNameSimilarity": 1.0,
+        "titleNameSimilarity": 0.352941
+      },
+      "webEvidence": {
+        "sourceUrl": "https://ginban.gorp.jp/",
+        "finalUrl": "https://ginban.gorp.jp/",
+        "retrievedAt": "2026-09-08T05:53:35Z",
+        "contentHash": "e413f243c4a0a383ffad5338cb8e76d203e31da59ebdb5c98bc14e7adffbf03b",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06"
+      },
+      "fieldClaims": {
+        "telephone": "03-3252-1030"
+      },
+      "checkedAt": "2026-09-08"
     },
     {
       "googlePlaceId": "ChIJ5ZzWHQ6MGGARs0xILkJsbdI",
@@ -475,6 +638,36 @@
       "sourceProvider": "official",
       "sourceProviderId": "official-index:f137fcce9318cd17bd15",
       "missingBefore": [
+        "dinner_budget",
+        "lunch_budget"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "jsonld_business_name",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://stores.marugame.com/110630?utm_source=google_serps&utm_medium=gmb&utm_campaign=gbpwebs",
+        "finalUrl": "https://stores.marugame.com/110630?utm_source=google_serps&utm_medium=gmb&utm_campaign=gbpwebs",
+        "retrievedAt": "2026-09-08T05:53:18Z",
+        "contentHash": "05b2512488ac4b38548eb3ad2bbb418f89b0b258631e04811ccf949a19e07bcd",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06"
+      },
+      "fieldClaims": {
+        "telephone": "+81332967313"
+      },
+      "checkedAt": "2026-09-08"
+    },
+    {
+      "googlePlaceId": "ChIJ8-ZxaRCMGGARChoRjY3b720",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:f137fcce9318cd17bd15",
+      "missingBefore": [
         "address",
         "dinner_budget",
         "lunch_budget"
@@ -530,6 +723,36 @@
         "telephone": "03-3296-7177"
       },
       "checkedAt": "2026-09-07"
+    },
+    {
+      "googlePlaceId": "ChIJA7vjSxCMGGARpf4TitkGqMk",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:e03c9139ef31fb7a0127",
+      "missingBefore": [
+        "dinner_budget",
+        "lunch_budget"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "jsonld_business_name",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://shop.tullys.co.jp/detail/1000109?utm_source=google&utm_medium=gbp&utm_campaign=map",
+        "finalUrl": "https://shop.tullys.co.jp/detail/1000109?utm_source=google&utm_medium=gbp&utm_campaign=map",
+        "retrievedAt": "2026-09-08T05:53:18Z",
+        "contentHash": "b883f9cac4ef6dcad548bfcd4b9e1757b62ba6c4c37c474eefe5e78e63a7db47",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06"
+      },
+      "fieldClaims": {
+        "telephone": "03-3518-6160"
+      },
+      "checkedAt": "2026-09-08"
     },
     {
       "googlePlaceId": "ChIJA7vjSxCMGGARpf4TitkGqMk",
@@ -612,6 +835,35 @@
       "webEvidence": {
         "sourceUrl": "https://miyabi-honten.gorp.jp/",
         "finalUrl": "https://miyabi-honten.gorp.jp/",
+        "retrievedAt": "2026-09-08T05:53:45Z",
+        "contentHash": "152a87418e2a37971c24269e8f5eddd1b3772102ff42802e86e30767b73c3bb8",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06"
+      },
+      "fieldClaims": {
+        "telephone": "03-3251-0155"
+      },
+      "checkedAt": "2026-09-08"
+    },
+    {
+      "googlePlaceId": "ChIJAyADpR6MGGARWHp8EC3s12E",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:c549eff8bddfaea49c44",
+      "missingBefore": [
+        "lunch_budget"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "jsonld_business_name",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://miyabi-honten.gorp.jp/",
+        "finalUrl": "https://miyabi-honten.gorp.jp/",
         "retrievedAt": "2026-09-07T10:45:02Z",
         "contentHash": "a1f3b6eb148e2f2415189162db167ffdc529d10c3c0c6452af7a457aa271abe1",
         "parserVersion": "official-web-jsonld-v1",
@@ -622,6 +874,35 @@
         "telephone": "03-3251-0155"
       },
       "checkedAt": "2026-09-07"
+    },
+    {
+      "googlePlaceId": "ChIJBWY0oOONGGARfDSN38wt5l0",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:18d944a20fb5b668e2e7",
+      "missingBefore": [
+        "lunch_budget"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "jsonld_business_name",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://ge07111.gorp.jp/",
+        "finalUrl": "https://ge07111.gorp.jp/",
+        "retrievedAt": "2026-09-08T05:53:31Z",
+        "contentHash": "00e64063e8047c729b66e50a30364d4abb05097c9a88c8e540fd3e7792f9f3e6",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06"
+      },
+      "fieldClaims": {
+        "telephone": "03-6206-0707"
+      },
+      "checkedAt": "2026-09-08"
     },
     {
       "googlePlaceId": "ChIJBWY0oOONGGARfDSN38wt5l0",
@@ -740,6 +1021,35 @@
       "webEvidence": {
         "sourceUrl": "https://kanda-tenfu.gorp.jp/",
         "finalUrl": "https://kanda-tenfu.gorp.jp/",
+        "retrievedAt": "2026-09-08T05:53:38Z",
+        "contentHash": "22510dd0733c7da755b275932551c541bbb96d3da49f034736391056f8dbee87",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06"
+      },
+      "fieldClaims": {
+        "telephone": "03-6206-9008"
+      },
+      "checkedAt": "2026-09-08"
+    },
+    {
+      "googlePlaceId": "ChIJC94crAaMGGARQ5ATOkusuPs",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:d0fe32df972130c55ea5",
+      "missingBefore": [
+        "lunch_budget"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "jsonld_business_name",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://kanda-tenfu.gorp.jp/",
+        "finalUrl": "https://kanda-tenfu.gorp.jp/",
         "retrievedAt": "2026-09-07T10:44:53Z",
         "contentHash": "e7372e34df44f7bc41b7bdf144921e884b68591e1e2ca57c5239093715638f7d",
         "parserVersion": "official-web-jsonld-v1",
@@ -750,6 +1060,36 @@
         "telephone": "03-6206-9008"
       },
       "checkedAt": "2026-09-07"
+    },
+    {
+      "googlePlaceId": "ChIJCRf6uziMGGARPOpXUziKe7s",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:e110acba17274235999f",
+      "missingBefore": [
+        "dinner_budget",
+        "lunch_budget"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "jsonld_business_name",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://shop.tullys.co.jp/detail/1710899?utm_source=google&utm_medium=gbp&utm_campaign=map",
+        "finalUrl": "https://shop.tullys.co.jp/detail/1710899?utm_source=google&utm_medium=gbp&utm_campaign=map",
+        "retrievedAt": "2026-09-08T05:53:34Z",
+        "contentHash": "02a3cd4d8ba2f687308d5aabe8582c3ed561e5e80880a197d43e99c098ec3330",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06"
+      },
+      "fieldClaims": {
+        "telephone": "03-5840-8865"
+      },
+      "checkedAt": "2026-09-08"
     },
     {
       "googlePlaceId": "ChIJCRf6uziMGGARPOpXUziKe7s",
@@ -863,6 +1203,35 @@
       "webEvidence": {
         "sourceUrl": "https://masato-ipa.wixsite.com/8taps-website",
         "finalUrl": "https://masato-ipa.wixsite.com/8taps-website",
+        "retrievedAt": "2026-09-08T05:53:14Z",
+        "contentHash": "6a10c678ff0d44764ad76d55a99e51c91da47cee89507ed3bcd0906d07fbcc64",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06"
+      },
+      "fieldClaims": {
+        "telephone": "03-6273-7489"
+      },
+      "checkedAt": "2026-09-08"
+    },
+    {
+      "googlePlaceId": "ChIJG1HzOhGMGGARbc3MsTlAYkA",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:43048f9cfbadd037ef3a",
+      "missingBefore": [
+        "lunch_budget"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "jsonld_business_name",
+        "pageNameSimilarity": 1.0,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://masato-ipa.wixsite.com/8taps-website",
+        "finalUrl": "https://masato-ipa.wixsite.com/8taps-website",
         "retrievedAt": "2026-09-07T10:44:25Z",
         "contentHash": "80f67de8fc013a2b73006701adb525bce80739e1a3453b07b1a795aabd1848c6",
         "parserVersion": "official-web-jsonld-v1",
@@ -908,6 +1277,37 @@
         "telephone": "03-6275-0575"
       },
       "checkedAt": "2026-09-07"
+    },
+    {
+      "googlePlaceId": "ChIJH45U0y2NGGARFO8F9X8I1nA",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:d7b11cf3c0257eb693e3",
+      "missingBefore": [
+        "address",
+        "dinner_budget",
+        "lunch_budget"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "jsonld_business_name",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://g148300.gorp.jp/",
+        "finalUrl": "https://g148300.gorp.jp/",
+        "retrievedAt": "2026-09-08T05:53:34Z",
+        "contentHash": "e2337a6757f340cf1bbab0074973a0670f691839f1a512abc5ffc57ad2ed6e05",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06"
+      },
+      "fieldClaims": {
+        "telephone": "03-6275-0575"
+      },
+      "checkedAt": "2026-09-08"
     },
     {
       "googlePlaceId": "ChIJHdflUQCNGGAR1yV32-VceT0",
@@ -972,6 +1372,35 @@
         "telephone": "+81-120-192-759"
       },
       "checkedAt": "2026-09-07"
+    },
+    {
+      "googlePlaceId": "ChIJJ3jKf2mMGGARTHOMYS5IRB8",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:69f5e426b722d46088bf",
+      "missingBefore": [
+        "lunch_budget"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "jsonld_business_name",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://mumbaijapan.com/kudan/",
+        "finalUrl": "https://mumbaijapan.com/kudan/",
+        "retrievedAt": "2026-09-08T05:53:32Z",
+        "contentHash": "18ed637bd2ed53bde28a3ac1bee96b4f411514e8a7888a2aa86d679e4c198afb",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06"
+      },
+      "fieldClaims": {
+        "telephone": "03-3261-2211"
+      },
+      "checkedAt": "2026-09-08"
     },
     {
       "googlePlaceId": "ChIJJ3jKf2mMGGARTHOMYS5IRB8",
@@ -1343,6 +1772,36 @@
       "checkedAt": "2026-09-07"
     },
     {
+      "googlePlaceId": "ChIJUbftRRyMGGARi3P1XkxGJFM",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:a9dd9c1c95b09e61459c",
+      "missingBefore": [
+        "dinner_budget",
+        "lunch_budget"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "jsonld_business_name",
+        "pageNameSimilarity": 1.0,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://concafechan.com/shop/frapeco/",
+        "finalUrl": "https://concafechan.com/shop/frapeco/",
+        "retrievedAt": "2026-09-08T05:53:45Z",
+        "contentHash": "bd702fde8f023a1d7cf8ab6dcdef9f237a6f6236a9ae0141a945c0e9057c7300",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06"
+      },
+      "fieldClaims": {
+        "telephone": "03-6811-6880"
+      },
+      "checkedAt": "2026-09-08"
+    },
+    {
       "googlePlaceId": "ChIJVwXD9E6NGGARkHzeYVBeacw",
       "sourceProvider": "official",
       "sourceProviderId": "official-index:a500eaa9e6e7ac831484",
@@ -1373,6 +1832,36 @@
       "checkedAt": "2026-09-07"
     },
     {
+      "googlePlaceId": "ChIJVwXD9E6NGGARkHzeYVBeacw",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:a500eaa9e6e7ac831484",
+      "missingBefore": [
+        "dinner_budget",
+        "lunch_budget"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "jsonld_business_name",
+        "pageNameSimilarity": 1.0,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://shop.tullys.co.jp/detail/1003115?utm_source=google&utm_medium=gbp&utm_campaign=map",
+        "finalUrl": "https://shop.tullys.co.jp/detail/1003115?utm_source=google&utm_medium=gbp&utm_campaign=map",
+        "retrievedAt": "2026-09-08T05:53:43Z",
+        "contentHash": "812ece64e9cb424187950c7696705f7978718c536abf03f9d09a19506b63cb36",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06"
+      },
+      "fieldClaims": {
+        "telephone": "03-5209-2008"
+      },
+      "checkedAt": "2026-09-08"
+    },
+    {
       "googlePlaceId": "ChIJ____DxGMGGARxguBsW1lnd0",
       "sourceProvider": "official",
       "sourceProviderId": "official-index:7670f918d2e9ded4acff",
@@ -1400,6 +1889,35 @@
         "telephone": "03-3291-9221"
       },
       "checkedAt": "2026-09-07"
+    },
+    {
+      "googlePlaceId": "ChIJ____DxGMGGARxguBsW1lnd0",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:7670f918d2e9ded4acff",
+      "missingBefore": [
+        "address"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "jsonld_business_name",
+        "pageNameSimilarity": 1.0,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://gcu3400.gorp.jp/",
+        "finalUrl": "https://gcu3400.gorp.jp/",
+        "retrievedAt": "2026-09-08T05:53:17Z",
+        "contentHash": "7b29f0235f2240f4bfa54db2f0886de4c119186d0fb6592c134ba1988ce2ecc6",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06"
+      },
+      "fieldClaims": {
+        "telephone": "03-3291-9221"
+      },
+      "checkedAt": "2026-09-08"
     },
     {
       "googlePlaceId": "ChIJ_dlidcCNGGARaps03scrCg0",
@@ -1804,6 +2322,66 @@
         "telephone": "03-6261-6161"
       },
       "checkedAt": "2026-09-07"
+    },
+    {
+      "googlePlaceId": "ChIJt3xAUkGMGGARcxgjRIBAeTo",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:77875f504d78975b8002",
+      "missingBefore": [
+        "lunch_budget"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "jsonld_business_name",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://okonomiking.gorp.jp/",
+        "finalUrl": "https://okonomiking.gorp.jp/",
+        "retrievedAt": "2026-09-08T05:53:39Z",
+        "contentHash": "a15c33aa811f1d51757a7889dfa3b4befb0c9a6f47d8aed909f17757317cd3c0",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06"
+      },
+      "fieldClaims": {
+        "telephone": "03-6261-6161"
+      },
+      "checkedAt": "2026-09-08"
+    },
+    {
+      "googlePlaceId": "ChIJwVPZogOMGGARJe7b3LBQPsM",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:60ab36ed5e4c97a8c352",
+      "missingBefore": [
+        "dinner_budget",
+        "lunch_budget"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "jsonld_business_name",
+        "pageNameSimilarity": 1.0,
+        "titleNameSimilarity": 0.16
+      },
+      "webEvidence": {
+        "sourceUrl": "https://kanda-sanmasa.com/ja?utm_medium=referral&utm_source=google&utm_campaign=mm&utm_content=hp",
+        "finalUrl": "https://kanda-sanmasa.com/ja?utm_medium=referral&utm_source=google&utm_campaign=mm&utm_content=hp",
+        "retrievedAt": "2026-09-08T05:53:38Z",
+        "contentHash": "4f0a81d1fe9477c0b2c2b219c3b58f9c803aef2b864b7db66c8de3e58e78660a",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06"
+      },
+      "fieldClaims": {
+        "priceRange": "JPY 6,000",
+        "telephone": "03-3251-2518"
+      },
+      "checkedAt": "2026-09-08"
     },
     {
       "googlePlaceId": "ChIJwVPZogOMGGARJe7b3LBQPsM",
