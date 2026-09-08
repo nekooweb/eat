@@ -1,0 +1,57 @@
+name: Inspect priority id-only currentness targets
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/audit-currentness-target-details.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Build and inspect compact priority targets
+        run: |
+          set -euo pipefail
+          node scripts/audit_no_paid_apis.mjs
+          mkdir -p _tmp
+          python scripts/database/build_master.py --output _tmp/master.sqlite --reset >/dev/null
+          python scripts/database/review_id_only_currentness_sources_v2.py \
+            --database _tmp/master.sqlite --output _tmp/currentness.json --workers 8 >/dev/null
+          python - <<'PY'
+          import json
+          d=json.load(open('_tmp/currentness.json'))
+          rows=[]
+          for r in d['rows']:
+              review=r.get('currentnessReview') or {}
+              rows.append({
+                'googlePlaceId':r.get('googlePlaceId'),
+                'group':r.get('group'),
+                'expectedName':(r.get('expected') or {}).get('name'),
+                'expectedAddress':(r.get('expected') or {}).get('address'),
+                'hotpepperId':(r.get('hotpepper') or {}).get('hotpepperId'),
+                'overtureName':(r.get('overture') or {}).get('name'),
+                'overtureAddress':(r.get('overture') or {}).get('address'),
+                'overtureWebsites':(r.get('overture') or {}).get('websites'),
+                'currentnessUrl':r.get('currentnessUrl'),
+                'override':r.get('currentnessDiscoveryOverride'),
+                'hardHistory':r.get('hardHistoricalBindingGate'),
+                'hardOverture':r.get('hardDirectOvertureGate'),
+                'reviewAccepted':review.get('accepted'),
+                'reviewReason':review.get('reason'),
+                'bestCheck':review.get('bestCheck'),
+                'bestChecks':review.get('bestChecks'),
+              })
+          print('TARGET_DETAILS='+json.dumps(rows,ensure_ascii=False,separators=(',',':')))
+          PY
