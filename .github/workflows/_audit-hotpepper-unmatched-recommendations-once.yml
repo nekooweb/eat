@@ -1,0 +1,46 @@
+name: One-shot unmatched Hot Pepper recommendation audit
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - _ops/run-hotpepper-unmatched-recommendation-audit-once-2026-09-08.txt
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Enforce zero-paid policy
+        run: node scripts/audit_no_paid_apis.mjs
+      - name: Check audit syntax
+        run: node --check scripts/audit_hotpepper_unmatched_recommendation_headings.mjs
+      - name: Audit explicit but untranslated Hot Pepper recommendation headings
+        env:
+          HOTPEPPER_AUDIT_CONCURRENCY: '8'
+          HOTPEPPER_AUDIT_TIMEOUT_MS: '8000'
+          HOTPEPPER_AUDIT_LIMIT: '0'
+        run: |
+          set -euo pipefail
+          node scripts/audit_hotpepper_unmatched_recommendation_headings.mjs \
+            _audit/hotpepper_unmatched_recommendation_headings.json | tee /tmp/hotpepper-unmatched-recommendations.log
+          node - <<'NODE'
+          const fs = require('fs');
+          const x = JSON.parse(fs.readFileSync('_audit/hotpepper_unmatched_recommendation_headings.json', 'utf8'));
+          if (x.policy?.paidGoogleDataApiCalls !== 0 || x.policy?.hotPepperWebServiceApiCalls !== 0) throw new Error('audit must remain zero-paid/API-free');
+          if (x.policy?.rootIdentityRevalidationRequired !== true || x.policy?.foodPageIdentityRevalidationRequired !== true || x.policy?.guessedMenuPathsAllowed !== false) throw new Error('identity/menu scope mismatch');
+          if (x.policy?.automaticCanonicalizationPerformed !== false || x.policy?.cuisineNameBrandInferenceAllowed !== false) throw new Error('audit-only normalization boundary mismatch');
+          console.log(JSON.stringify({summary:x.summary, top:x.repeatedUnmatchedHeadings.slice(0,120)}));
+          NODE
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hotpepper-unmatched-recommendation-headings
+          path: _audit/hotpepper_unmatched_recommendation_headings.json
+          if-no-files-found: error
