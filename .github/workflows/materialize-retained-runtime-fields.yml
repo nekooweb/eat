@@ -39,6 +39,8 @@ jobs:
           node scripts/audit_no_paid_apis.mjs
           node --check scripts/build_hotpepper_catalog_practical_overlay.mjs
           node --check scripts/materialize_runtime_practical_fields.mjs
+          node --check scripts/materialize_runtime_native_contact_fields.mjs
+          python -m py_compile scripts/database/export_reviewed_native_contact_runtime_overlay.py
           python scripts/reload_data.py --public-only --outdir _audit/retained-runtime-field-materialization
       - name: Validate field coverage and identity invariants
         run: |
@@ -52,13 +54,16 @@ jobs:
           if (rs < 0 || ss < 0) throw new Error('runtime assignments missing');
           const rows=JSON.parse(text.slice(rs+rp.length,ss).replace(/^\s*/,'').replace(/;\s*$/s,'').trim());
           const stats=JSON.parse(text.slice(ss+sp.length).replace(/;\s*$/s,'').trim());
+          const native=JSON.parse(fs.readFileSync('data/reviewed_native_contact_runtime_overlay.json','utf8'));
           if (stats.catalogTotal !== 2804 || stats.inventoryTotal !== 1422 || stats.unpublishedPlaceIdOnly !== 1382) throw new Error('frozen catalog/runtime cardinality changed');
           if (rows.length !== 1422 || new Set(rows.map(r=>r.googlePlaceId)).size !== 1422) throw new Error('runtime identity uniqueness failed');
+          if (native.policy?.networkRequests !== 0 || native.policy?.paidGoogleDataApiCalls !== 0 || native.policy?.reviewedBindingsOnly !== true || native.policy?.sameCrossLayerCollisionLogicAsSQLiteMaster !== true) throw new Error('native contact overlay policy mismatch');
+          if (!Array.isArray(native.overtureRows) || !Array.isArray(native.osmRows) || native.overtureRows.length < 300) throw new Error('native contact overlay unexpectedly small');
           const requiredMinimums={
             stationKnown:470, accessReferenceKnown:470, lunchServiceKnown:470,
             courseAvailabilityKnown:430, allYouCanDrinkKnown:470, allYouCanEatKnown:470,
             privateRoomPolicyKnown:460, cardPaymentKnown:470, smokingPolicyKnown:470,
-            parkingPolicyKnown:470, telephoneKnown:100,
+            parkingPolicyKnown:470, telephoneKnown:350,
             seatingCapacityKnown:125, partyCapacityKnown:100, acceptedCreditCardsKnown:110,
             wifiKnown:95, barrierFreeKnown:120, childrenWelcomeKnown:120,
             englishMenuKnown:120, horigotatsuKnown:120, karaokeKnown:120,
@@ -68,11 +73,17 @@ jobs:
           for (const [key,min] of Object.entries(requiredMinimums)) {
             if ((stats[key] ?? 0) < min) throw new Error(`${key}=${stats[key]} below ${min}`);
           }
+          if ((stats.telephoneAppliedFromReviewedOverture ?? 0) < 300) throw new Error('reviewed Overture telephone layer was not materialized');
           if ((stats.richPracticalAppliedRows ?? 0) < 120) throw new Error('rich practical rows were not materialized');
           if ((stats.recommendedDishesKnown ?? 0) < 551 || (stats.chineseDishDisplayRows ?? 0) < 709) throw new Error('dish coverage regressed during field materialization');
           console.log(JSON.stringify({
             catalogTotal:stats.catalogTotal,inventoryTotal:stats.inventoryTotal,
-            telephoneKnown:stats.telephoneKnown,stationKnown:stats.stationKnown,
+            telephoneKnown:stats.telephoneKnown,
+            telephoneAppliedFromReviewedOverture:stats.telephoneAppliedFromReviewedOverture,
+            telephoneAppliedFromPublicWebEvidence:stats.telephoneAppliedFromPublicWebEvidence,
+            telephoneAppliedFromReviewedOsm:stats.telephoneAppliedFromReviewedOsm,
+            nativeContactSummary:native.summary,
+            stationKnown:stats.stationKnown,
             seatingCapacityKnown:stats.seatingCapacityKnown,partyCapacityKnown:stats.partyCapacityKnown,
             acceptedCreditCardsKnown:stats.acceptedCreditCardsKnown,wifiKnown:stats.wifiKnown,
             barrierFreeKnown:stats.barrierFreeKnown,childrenWelcomeKnown:stats.childrenWelcomeKnown,
@@ -91,6 +102,7 @@ jobs:
             data/source_provenance.js \
             data/source_facts.js \
             data/reviewed_official_runtime_sources.json \
+            data/reviewed_native_contact_runtime_overlay.json \
             data/reviewed_independent_dish_sources.json \
             data/google_inventory_runtime.js \
             data/google_inventory_detail_queue.json \
@@ -100,7 +112,7 @@ jobs:
             echo 'No deterministic runtime changes to commit.'
             exit 0
           fi
-          git commit -m "Materialize retained restaurant practical fields"
+          git commit -m "Materialize retained restaurant fields and contacts"
           git fetch origin main
           git rebase origin/main
           git push origin HEAD:main
