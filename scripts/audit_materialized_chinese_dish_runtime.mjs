@@ -104,9 +104,27 @@ for (const row of rows) {
 if (runtimeText.includes('招牌主菜') || runtimeText.includes('时令小菜')) throw new Error('Legacy universal filler text is present in the public runtime');
 if (stats.hoursKnown !== publicHoursKnown) throw new Error('hoursKnown stat does not match single-field public runtime');
 if (stats.hoursNormalizedRows !== publicHoursKnown) throw new Error('hoursNormalizedRows does not match single-field public runtime');
-if ((stats.hoursNormalizedRows || 0) + (stats.hoursHiddenUnparseableRows || 0) + (stats.hoursRowsWithoutSource || 0) !== rows.length) {
+if ((stats.hoursNormalizedFromEvidence || 0) + (stats.hoursNormalizedFromExistingSchedule || 0) + (stats.hoursNormalizedFromStrictRaw || 0) !== publicHoursKnown) {
+  throw new Error('Public hours normalization-source counts do not reconcile');
+}
+if (
+  (stats.hoursNormalizedRows || 0)
+  + (stats.hoursHiddenUnparseableRows || 0)
+  + (stats.hoursHiddenConflictRows || 0)
+  + (stats.hoursHiddenSemanticRows || 0)
+  + (stats.hoursRowsWithoutSource || 0)
+  !== rows.length
+) {
   throw new Error('Public hours normalized/hidden/no-source counts do not reconcile');
 }
+
+// Regression guards for two concrete failure modes found while validating the
+// actual Pages artifact: merged weekday groups and explicitly variable closure.
+for (const googlePlaceId of ['ChIJ-byfbkGMGGAReOVUQDAy6qM', 'ChIJ-Tl-7xuMGGARoFHeidLo0ns']) {
+  const row = rows.find((item) => item.googlePlaceId === googlePlaceId);
+  if (row?.hoursReference) throw new Error(`Known ambiguous schedule must remain hidden: ${googlePlaceId}`);
+}
+
 if (stats.recommendedDishesKnown !== recommendedDishesKnown) throw new Error('recommendedDishesKnown stat does not match materialized runtime');
 if (stats.chineseDishDisplayRows !== chineseDishDisplayRows) throw new Error('Chinese dish display count does not match materialized runtime');
 if (stats.approximateChineseDishRows !== approximateChineseDishRows) throw new Error('Approximate dish count does not match materialized runtime');
@@ -125,7 +143,12 @@ console.log(JSON.stringify({
   inventoryTotal: rows.length,
   hoursRuntimePolicy: stats.hoursRuntimePolicy,
   publicHoursKnown,
+  hoursNormalizedFromEvidence: stats.hoursNormalizedFromEvidence,
+  hoursNormalizedFromExistingSchedule: stats.hoursNormalizedFromExistingSchedule,
+  hoursNormalizedFromStrictRaw: stats.hoursNormalizedFromStrictRaw,
   hoursHiddenUnparseableRows: stats.hoursHiddenUnparseableRows,
+  hoursHiddenConflictRows: stats.hoursHiddenConflictRows,
+  hoursHiddenSemanticRows: stats.hoursHiddenSemanticRows,
   hoursRowsWithoutSource: stats.hoursRowsWithoutSource,
   hoursLegacyFieldsStripped: stats.hoursLegacyFieldsStripped,
   recommendedDishesKnown,
