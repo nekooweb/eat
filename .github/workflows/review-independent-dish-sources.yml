@@ -31,19 +31,21 @@ jobs:
         run: node scripts/audit_no_paid_apis.mjs
       - name: Check independent-source tooling syntax
         run: |
-          node --check scripts/review_independent_dish_source_candidates_v2.mjs
+          node --check scripts/review_independent_dish_source_candidates_v3.mjs
           node --check scripts/apply_reviewed_independent_source_overlay.mjs
           node --check scripts/audit_reviewed_independent_source_overlay.mjs
       - name: Rebuild current source runtime and queues
         run: python3 scripts/reload_data.py --public-only --outdir _audit/data-reload
-      - name: Review high-confidence Overture website proposals with bounded same-origin branch discovery
+      - name: Review high-confidence Overture website proposals with monotonic HTTPS-first branch discovery
         env:
           INDEPENDENT_SOURCE_REVIEW_TIMEOUT_MS: "7000"
           INDEPENDENT_SOURCE_REVIEW_CONCURRENCY: "6"
           INDEPENDENT_SOURCE_REVIEW_SUBPAGE_LIMIT: "4"
+          INDEPENDENT_SOURCE_REVIEW_SECOND_LEVEL_LIMIT: "6"
+          INDEPENDENT_SOURCE_REVIEW_SECOND_LEVEL_PER_PAGE_LIMIT: "2"
         run: |
           set -euo pipefail
-          node scripts/review_independent_dish_source_candidates_v2.mjs \
+          node scripts/review_independent_dish_source_candidates_v3.mjs \
             data/independent_dish_source_candidates.json \
             data/reviewed_independent_dish_sources.json | tee /tmp/independent-source-review-summary.json
           test -s data/reviewed_independent_dish_sources.json
@@ -52,13 +54,15 @@ jobs:
           const x = JSON.parse(fs.readFileSync('data/reviewed_independent_dish_sources.json', 'utf8'));
           const p = x.policy || {};
           const s = x.summary || {};
-          if (x.schemaVersion !== 2 || p.strictAutoOnly !== true || p.sourceOverlayOnly !== true) throw new Error('strict v2 review policy missing');
+          if (x.schemaVersion !== 3 || p.strictAutoOnly !== true || p.sourceOverlayOnly !== true) throw new Error('strict v3 review policy missing');
           if (p.paidGoogleDataApiCalls !== 0 || p.googleDisplayPayloadUsed !== false) throw new Error('reviewer violated zero-paid/no-Google-display policy');
           if (p.identityBindingChanges !== 0 || p.runtimeNameMutationAllowed !== false || p.runtimeCoordinateMutationAllowed !== false || p.runtimeIdentityMutationAllowed !== false) throw new Error('reviewer may not mutate identity/core runtime fields');
           if (p.dishEvidenceCreatedByReview !== false || p.genericBrandHomepageAloneAccepted !== false) throw new Error('reviewer crossed source/evidence boundary');
+          if (p.monotonicApprovedSourceRetention !== true || p.httpsUpgradeAttemptedBeforeHttp !== true || p.boundedSecondLevelSameOriginDiscovery !== true) throw new Error('v3 monotonic/HTTPS/second-level safeguards missing');
           if (p.boundedSameOriginSubpageDiscovery !== true || p.explicitLocationEvidenceRequiredUnlessExactSpecificStructured !== true || p.existingSourceResolutionConflictGuardsHonored !== true || p.httpsFinalUrlRequired !== true) throw new Error('bounded branch/location review safeguards missing');
           if (s.catalogTotal !== 2804 || s.publicRuntimeTotal !== JSON.parse(fs.readFileSync('data/google_inventory_detail_queue.json', 'utf8')).summary.publicRuntimeTotal) throw new Error('review baseline mismatch');
-          if (s.approvedRows > s.highConfidenceInputRows || s.approvedRows !== (x.rows || []).length) throw new Error('approved count mismatch');
+          if (s.newApprovedRows > s.highConfidenceInputRows) throw new Error('new approved count exceeds current review input');
+          if (s.approvedRows !== (x.rows || []).length || s.approvedRows !== s.preservedApprovedRows + s.newApprovedRows) throw new Error('monotonic approved count mismatch');
           const banned = /(?:^|\.)(?:gnavi\.co\.jp|retty\.me|tabelog\.com|hotpepper\.jp|foursquare\.com|autoreserve\.com|ekiten\.jp)$/i;
           for (const row of x.rows || []) {
             if (row.reviewState !== 'strict_auto' || !row.googlePlaceId || !Array.isArray(row.sourceWebsites) || !row.sourceWebsites.length) throw new Error('invalid reviewed source row');
