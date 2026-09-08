@@ -5,6 +5,11 @@ This stage performs no network requests and never changes identity. It only reco
 reviewed OpenStreetMap rows in google_basic_source_matches.json with their full retained
 candidate payload in data/area1_osm.js, then emits missing-only observations with native
 OSM provenance. Ambiguous native source-ID reuse is quarantined instead of promoted.
+
+Selected practical OSM tags are also eligible when their semantics are explicit and
+boolean without inference. Only `payment:credit_cards=yes/no`,
+`internet_access=wlan/no`, and `wheelchair=yes/no` are mapped automatically. Ambiguous
+values such as `wheelchair=limited` remain retained provenance only.
 """
 from __future__ import annotations
 
@@ -17,7 +22,7 @@ import retained_osm_identity as retained_osm
 
 ACQUISITION_METHOD = "bound_open_data_field_overlay_v1"
 BINDING_METHOD = "field_only_from_reviewed_basic_osm_binding"
-RULE_VERSION = "bound-open-data-fields-v1"
+RULE_VERSION = "bound-open-data-fields-v2"
 
 EQUIVALENTS = {
     "address": ("address",),
@@ -95,6 +100,34 @@ def _native_phones(candidate: dict) -> list[str]:
     return output
 
 
+def _native_practical_claims(candidate: dict) -> dict[str, bool]:
+    """Map only explicit OSM practical tags with unambiguous boolean semantics."""
+    tags = candidate.get("sourcePracticalTags") or {}
+    if not isinstance(tags, dict):
+        return {}
+    output: dict[str, bool] = {}
+
+    credit_cards = str(tags.get("payment:credit_cards") or "").strip().casefold()
+    if credit_cards == "yes":
+        output["practical.card_available"] = True
+    elif credit_cards == "no":
+        output["practical.card_available"] = False
+
+    internet_access = str(tags.get("internet_access") or "").strip().casefold()
+    if internet_access == "wlan":
+        output["practical.wifi_available"] = True
+    elif internet_access == "no":
+        output["practical.wifi_available"] = False
+
+    wheelchair = str(tags.get("wheelchair") or "").strip().casefold()
+    if wheelchair == "yes":
+        output["practical.barrier_free"] = True
+    elif wheelchair == "no":
+        output["practical.barrier_free"] = False
+
+    return output
+
+
 def import_bound_open_data_fields(db, stamp: str):
     reviewed = _reviewed_basic_osm(db)
     candidates = retained_osm.parse_osm_rows()
@@ -124,6 +157,8 @@ def import_bound_open_data_fields(db, stamp: str):
         source_url = retained_osm.osm_url(candidate)
         observed = stamp[:10]
         native_phones = _native_phones(candidate)
+        native_practical = _native_practical_claims(candidate)
+        raw_practical_tags = candidate.get("sourcePracticalTags") or {}
         payload = {
             "googlePlaceId": pid,
             "reviewedBasicBinding": {
@@ -134,11 +169,14 @@ def import_bound_open_data_fields(db, stamp: str):
             "osmNativeSourceId": native_source_id,
             "osmCandidate": candidate,
             "nativePhones": native_phones,
+            "nativePracticalClaims": native_practical,
             "policy": {
                 "identityChangeAllowed": False,
                 "networkRequests": 0,
                 "missingOnly": True,
                 "exactReviewedProviderIdOnly": True,
+                "explicitPracticalTagsOnly": True,
+                "ambiguousPracticalValuesDeferred": True,
                 "ruleVersion": RULE_VERSION,
             },
         }
@@ -174,6 +212,7 @@ def import_bound_open_data_fields(db, stamp: str):
             "cuisine": candidate.get("cuisine"),
             "hours.raw": candidate.get("openingHoursRaw"),
             "contact.telephone": native_phones[0] if native_phones else None,
+            **native_practical,
         }
         for field_key, value in task_fields.items():
             if not core.nonempty(value):
@@ -205,6 +244,7 @@ def import_bound_open_data_fields(db, stamp: str):
             "closure.days.raw": candidate.get("closedDays") or None,
             "source_websites": [source_url] if source_url else None,
             "contact.telephones.source": native_phones or None,
+            "practical.osm_source_tags": raw_practical_tags or None,
             "provenance.osm_native_source_id": native_source_id,
         }
         for field_key, value in optional_fields.items():
@@ -225,24 +265,36 @@ def import_bound_open_data_fields(db, stamp: str):
         counts["reviewed_rows_processed"] += 1
         if native_phones:
             counts["reviewed_rows_with_native_phone"] += 1
+        if raw_practical_tags:
+            counts["reviewed_rows_with_native_practical_tags"] += 1
+        if native_practical:
+            counts["reviewed_rows_with_mappable_native_practical"] += 1
 
     return {
         "ruleVersion": RULE_VERSION,
         "reviewedBasicOsmBindings": len(reviewed),
         "processed": counts["reviewed_rows_processed"],
         "reviewedRowsWithNativePhone": counts["reviewed_rows_with_native_phone"],
+        "reviewedRowsWithNativePracticalTags": counts["reviewed_rows_with_native_practical_tags"],
+        "reviewedRowsWithMappableNativePractical": counts["reviewed_rows_with_mappable_native_practical"],
         "placesWithNewTaskFields": len(place_ids),
         "resolvedTaskFields": sum(fields.values()),
         "fieldCounts": dict(sorted(fields.items())),
         "skipped": {
             key: value
             for key, value in sorted(counts.items())
-            if key not in {"reviewed_rows_processed", "reviewed_rows_with_native_phone"} and value
+            if key not in {
+                "reviewed_rows_processed",
+                "reviewed_rows_with_native_phone",
+                "reviewed_rows_with_native_practical_tags",
+                "reviewed_rows_with_mappable_native_practical",
+            } and value
         },
         "networkRequests": 0,
         "identityChanges": 0,
         "exactReviewedBindingOnly": True,
         "missingOnly": True,
+        "explicitPracticalTagsOnly": True,
     }
 
 
