@@ -7,21 +7,21 @@
     "publicRuntimeTotal": 1415,
     "unpublishedPlaceIdOnly": 1389,
     "runtimeBaselineComplete": true,
-    "recommendedDishesKnown": 253,
+    "recommendedDishesKnown": 254,
     "featuredDishesKnown": 423,
-    "recommendationGap": 1162,
-    "recommendationGapWithAnyKnownSourceUrl": 873,
-    "recommendationGapWithCrawlableOfficialUrl": 264,
+    "recommendationGap": 1161,
+    "recommendationGapWithAnyKnownSourceUrl": 872,
+    "recommendationGapWithCrawlableOfficialUrl": 263,
     "recommendationGapWithRetainedThirdPartyOnly": 597,
     "recommendationGapNeedingNewDishSource": 301,
     "actionCounts": {
-      "collect_strict_recommended_dishes": 264,
+      "collect_strict_recommended_dishes": 263,
       "extract_retained_dish_source": 597,
       "find_independent_dish_source": 301,
       "collect_source_backed_featured_dishes": 62,
       "collect_opening_hours": 79,
       "collect_dinner_budget": 32,
-      "collect_lunch_budget": 44,
+      "collect_lunch_budget": 45,
       "collect_identity_detail_fields": 2,
       "complete": 34
     },
@@ -131,24 +131,6 @@
       ],
       "nextAction": "collect_strict_recommended_dishes",
       "priorityScore": 1250
-    },
-    {
-      "googlePlaceId": "ChIJH84YJWuMGGARGPDq55n8LhE",
-      "name": "日高屋",
-      "basicInfoState": "canonical",
-      "cuisine": "面食",
-      "distanceMeters": 542,
-      "sourceUrlCount": 7,
-      "crawlableOfficialUrlCount": 6,
-      "retainedThirdPartyUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 6,
-      "gaps": [
-        "recommendedDishes",
-        "lunchBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1225
     },
     {
       "googlePlaceId": "ChIJxaFliBWMGGARsF0TD5NiBH0",
@@ -26242,6 +26224,23 @@
         "dinnerBudget"
       ],
       "nextAction": "collect_dinner_budget",
+      "priorityScore": 308
+    },
+    {
+      "googlePlaceId": "ChIJH84YJWuMGGARGPDq55n8LhE",
+      "name": "日高屋",
+      "basicInfoState": "canonical",
+      "cuisine": "面食",
+      "distanceMeters": 542,
+      "sourceUrlCount": 7,
+      "crawlableOfficialUrlCount": 6,
+      "retainedThirdPartyUrlCount": 1,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 6,
+      "gaps": [
+        "lunchBudget"
+      ],
+      "nextAction": "collect_lunch_budget",
       "priorityScore": 308
     },
     {

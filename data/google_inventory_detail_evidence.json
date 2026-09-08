@@ -72,37 +72,37 @@
   "summary": {
     "catalogTotal": 2804,
     "publicRuntimeTotal": 1415,
-    "queueEligibleIds": 356,
-    "targets": 338,
-    "uniqueOrigins": 303,
-    "sitemapFilesFetched": 873,
-    "menuUrlsDiscovered": 179,
-    "menuPagesFetched": 129,
+    "queueEligibleIds": 326,
+    "targets": 308,
+    "uniqueOrigins": 274,
+    "sitemapFilesFetched": 631,
+    "menuUrlsDiscovered": 135,
+    "menuPagesFetched": 100,
     "errorTargets": 10,
-    "evidenceRestaurants": 47,
-    "recommendationRestaurants": 14,
-    "featuredRestaurants": 44,
-    "recommendationItems": 25,
-    "featuredItems": 169,
+    "evidenceRestaurants": 32,
+    "recommendationRestaurants": 3,
+    "featuredRestaurants": 29,
+    "recommendationItems": 5,
+    "featuredItems": 113,
     "previousEvidence": {
-      "recommendationRestaurants": 226,
-      "featuredRestaurants": 411,
-      "evidenceRestaurants": 475,
-      "recommendationItems": 426,
-      "featuredItems": 989
-    },
-    "freshCrawlEvidence": {
-      "recommendationRestaurants": 14,
-      "featuredRestaurants": 44,
-      "evidenceRestaurants": 47,
-      "recommendationItems": 25,
-      "featuredItems": 169
-    },
-    "mergedEvidence": {
-      "recommendationRestaurants": 228,
+      "recommendationRestaurants": 229,
       "featuredRestaurants": 414,
       "evidenceRestaurants": 477,
-      "recommendationItems": 437,
+      "recommendationItems": 438,
+      "featuredItems": 1009
+    },
+    "freshCrawlEvidence": {
+      "recommendationRestaurants": 3,
+      "featuredRestaurants": 29,
+      "evidenceRestaurants": 32,
+      "recommendationItems": 5,
+      "featuredItems": 113
+    },
+    "mergedEvidence": {
+      "recommendationRestaurants": 229,
+      "featuredRestaurants": 414,
+      "evidenceRestaurants": 477,
+      "recommendationItems": 438,
       "featuredItems": 1009
     }
   },
@@ -7587,8 +7587,29 @@
     {
       "googlePlaceId": "ChIJH84YJWuMGGARGPDq55n8LhE",
       "name": "日高屋",
-      "recommendedDishes": [],
+      "recommendedDishes": [
+        {
+          "nameZh": "烤鸡串",
+          "nameJa": "焼鳥",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://hidakaya.hiday.co.jp/hits/menu/",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "html-block:焼き?鳥|やきとり|yakitori",
+          "evidenceSnippet": "全ての店舗 おすすめ 焼鳥日高 ロースかつ丼【店舗限定】 710 円 (税込)"
+        }
+      ],
       "featuredDishes": [
+        {
+          "nameZh": "中华拉面",
+          "nameJa": "中華そば",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://hidakaya.hiday.co.jp/hits/menu/",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "menu-page-text:中華そば",
+          "evidenceSnippet": "日高屋 中華そば"
+        },
         {
           "nameZh": "中华拉面",
           "nameJa": "中華そば",
@@ -7598,6 +7619,26 @@
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:中華そば",
           "evidenceSnippet": "「中華そば」等"
+        },
+        {
+          "nameZh": "乌冬面",
+          "nameJa": "うどん",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://hidakaya.hiday.co.jp/hits/menu/",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "menu-page-text:うどん|udon",
+          "evidenceSnippet": "焼鳥日高 肉汁うどん(そば)【店舗限定】"
+        },
+        {
+          "nameZh": "担担面",
+          "nameJa": "担担麺",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://hidakaya.hiday.co.jp/hits/menu/",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "menu-page-text:担々麺|担担麺|担担面|tantanmen",
+          "evidenceSnippet": "日高屋 冷し担担麺"
         },
         {
           "nameZh": "拉面",
@@ -7613,41 +7654,11 @@
           "nameZh": "日式炸鸡",
           "nameJa": "唐揚げ",
           "provider": "sourceWebsite",
-          "sourceUrl": "https://hidakaya.hiday.co.jp/hits/menu/origin.html",
+          "sourceUrl": "https://hidakaya.hiday.co.jp/hits/menu/",
           "checkedAt": "2026-09-08",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:唐揚げ|から揚げ|からあげ|karaage",
-          "evidenceSnippet": "唐揚げ（鶏肉・モモ肉）"
-        },
-        {
-          "nameZh": "烤鸡串",
-          "nameJa": "やきとり",
-          "provider": "sourceWebsite",
-          "sourceUrl": "https://hidakaya.hiday.co.jp/hits/menu/origin.html",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "source_menu_text",
-          "evidenceRule": "menu-page-text:焼き?鳥|やきとり|yakitori",
-          "evidenceSnippet": "やきとり"
-        },
-        {
-          "nameZh": "荞麦面",
-          "nameJa": "そば",
-          "provider": "sourceWebsite",
-          "sourceUrl": "https://hidakaya.hiday.co.jp/hits/menu/origin.html",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "source_menu_text",
-          "evidenceRule": "menu-page-text:蕎麦|そば|soba",
-          "evidenceSnippet": "「中華そば」等"
-        },
-        {
-          "nameZh": "饺子",
-          "nameJa": "餃子",
-          "provider": "sourceWebsite",
-          "sourceUrl": "https://hidakaya.hiday.co.jp/hits/menu/origin.html",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "source_menu_text",
-          "evidenceRule": "menu-page-text:餃子|饺子|gyoza",
-          "evidenceSnippet": "ニラレバ炒め、餃子"
+          "evidenceSnippet": "焼鳥日高 唐揚げ定食【店舗限定】"
         }
       ]
     },
