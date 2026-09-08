@@ -1,0 +1,191 @@
+name: Enrich telephone from reviewed official tel links
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/official-tel-link-enrichment.yml"
+      - "scripts/database/collect_official_tel_links.py"
+      - "scripts/database/collect_official_index_web_fields.py"
+      - "scripts/database/merge_public_web_field_evidence.py"
+      - "scripts/database/import_source_basic_web_evidence.py"
+      - "scripts/database/build_master.py"
+      - "data/official_candidate_index.json"
+      - "data/source_basic_web_field_evidence.json"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: public-web-field-evidence
+  cancel-in-progress: false
+
+jobs:
+  enrich:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Validate syntax and no-paid policy
+        run: |
+          set -euo pipefail
+          python -m py_compile \
+            scripts/database/collect_official_tel_links.py \
+            scripts/database/collect_official_index_web_fields.py \
+            scripts/database/import_source_basic_web_evidence.py \
+            scripts/database/build_master.py
+          node scripts/audit_no_paid_apis.mjs
+
+      - name: Build baseline master
+        run: |
+          set -euo pipefail
+          mkdir -p _tmp
+          python scripts/database/build_master.py --output _tmp/eat-master-before.sqlite --reset | tee _tmp/master-before.json
+          python scripts/database/validate_master.py _tmp/eat-master-before.sqlite | tee _tmp/master-before-validate.json
+          python - <<'PY'
+          import json
+          m=json.load(open('_tmp/master-before.json')); p=m['ingestionPlan']
+          out={'fieldTasks':p['taskTypeCounts']['field_completion'],'missing':p['fieldCompletionMissingCounts'],'telephoneKnown':m['telephoneKnown']}
+          json.dump(out,open('_tmp/tel-link-before.json','w'),sort_keys=True)
+          print(json.dumps(out,sort_keys=True))
+          PY
+
+      - name: Collect explicit tel-link telephone
+        run: |
+          set -euo pipefail
+          python scripts/database/collect_official_tel_links.py \
+            --database _tmp/eat-master-before.sqlite \
+            --output _tmp/official-tel-link-incoming.json \
+            --workers 8 --max-pages 250 \
+            | tee _tmp/official-tel-link-collection.json
+
+      - name: Validate incoming tel-link evidence
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json,re
+          d=json.load(open('_tmp/official-tel-link-incoming.json'))
+          assert d['schemaVersion']==2
+          assert d['ruleVersion']=='source-basic-web-field-evidence-v2'
+          p=d['policy']
+          assert p['paidDataApiCalls']==0
+          assert p['googleDisplayPayloadPersisted'] is False
+          assert p['sourceBackedIdentityRequired'] is True
+          assert p['reviewedOfficialBindingRequired'] is True
+          assert p['rawHtmlPersisted'] is False
+          assert p['robotsRespected'] is True
+          assert p['explicitTelHrefRequired'] is True
+          assert p['singleDistinctTelNumberRequired'] is True
+          assert p['canonicalResolution']=='import_time_missing_only'
+          snapshots=[]
+          for row in d['rows']:
+              assert row['sourceProvider']=='official'
+              assert set(row['fieldClaims'])=={'telephone'}
+              phone=str(row['fieldClaims']['telephone'])
+              digits=re.sub(r'\D','',phone)
+              assert 10 <= len(digits) <= 12
+              check=row['identityCheck']
+              assert check['accepted'] is True
+              assert check['retainedOfficialBindingReviewed'] is True
+              ev=row['webEvidence']
+              assert str(ev['sourceUrl']).startswith('https://')
+              assert str(ev['finalUrl']).startswith('https://')
+              assert re.fullmatch(r'[0-9a-f]{64}',str(ev['contentHash']))
+              assert ev['rawHtmlPersisted'] is False
+              discovery=ev.get('discovery') or {}
+              assert discovery['telephoneParserVersion']=='official-tel-link-v1'
+              assert discovery['explicitTelHrefRequired'] is True
+              assert discovery['singleDistinctTelNumberRequired'] is True
+              assert re.fullmatch(r'0\d{9,10}',str(discovery['normalizedDomesticDigits']))
+              snapshots.append((row['googlePlaceId'],ev['finalUrl'],ev['contentHash']))
+          assert len(snapshots)==len(set(snapshots))
+          print(json.dumps({'rows':len(snapshots),'places':d['summary']['places'],'fetchCounts':d['summary']['fetchCounts']},ensure_ascii=False,sort_keys=True))
+          PY
+
+      - name: Merge and validate master effect
+        run: |
+          set -euo pipefail
+          python scripts/database/merge_public_web_field_evidence.py \
+            data/source_basic_web_field_evidence.json \
+            _tmp/official-tel-link-incoming.json \
+            data/source_basic_web_field_evidence.json \
+            | tee _tmp/official-tel-link-working-merge.json
+          python scripts/database/build_master.py --output _tmp/eat-master-after.sqlite --reset | tee _tmp/master-after.json
+          python scripts/database/validate_master.py _tmp/eat-master-after.sqlite | tee _tmp/master-after-validate.json
+          python scripts/database/validate_ingestion_plan.py _tmp/eat-master-after.sqlite | tee _tmp/ingestion-plan-after.json
+          node scripts/build_google_inventory_runtime.mjs | tee _tmp/runtime-after.json
+          node scripts/audit_google_inventory_runtime.mjs | tee _tmp/runtime-after-audit.json
+          python - <<'PY'
+          import json
+          before=json.load(open('_tmp/tel-link-before.json'))
+          m=json.load(open('_tmp/master-after.json')); p=m['ingestionPlan']
+          after={'fieldTasks':p['taskTypeCounts']['field_completion'],'missing':p['fieldCompletionMissingCounts'],'telephoneKnown':m['telephoneKnown']}
+          assert after['fieldTasks'] <= before['fieldTasks'],(before,after)
+          for key,value in before['missing'].items():
+              assert after['missing'].get(key,0) <= value,(key,before,after)
+          assert after['missing'].get('telephone',0) <= before['missing'].get('telephone',0)
+          assert after['telephoneKnown'] >= before['telephoneKnown']
+          json.dump(after,open('_tmp/tel-link-after.json','w'),sort_keys=True)
+          print(json.dumps({'before':before,'after':after},sort_keys=True))
+          PY
+
+      - name: Commit tel-link evidence on latest main
+        run: |
+          set -euo pipefail
+          git restore -- data/google_inventory_runtime.js data/source_basic_web_field_evidence.json 2>/dev/null || true
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          for attempt in 1 2 3; do
+            git fetch origin main
+            git checkout -B official-tel-link origin/main
+            python scripts/database/merge_public_web_field_evidence.py \
+              data/source_basic_web_field_evidence.json \
+              _tmp/official-tel-link-incoming.json \
+              data/source_basic_web_field_evidence.json \
+              | tee _tmp/official-tel-link-latest-merge.json
+            git add data/source_basic_web_field_evidence.json
+            if git diff --cached --quiet; then
+              echo "No new explicit official tel-link evidence on latest main."
+              exit 0
+            fi
+            git commit -m "Add explicit official tel-link telephone evidence"
+            if git push origin HEAD:main; then exit 0; fi
+            git reset --hard HEAD~1
+            sleep 2
+          done
+          echo "Unable to fast-forward tel-link evidence after three attempts." >&2
+          exit 1
+
+      - name: Upload tel-link audit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: official-tel-link-enrichment
+          path: |
+            _tmp/official-tel-link-incoming.json
+            _tmp/official-tel-link-collection.json
+            _tmp/official-tel-link-working-merge.json
+            _tmp/official-tel-link-latest-merge.json
+            _tmp/tel-link-before.json
+            _tmp/tel-link-after.json
+            _tmp/master-before.json
+            _tmp/master-before-validate.json
+            _tmp/master-after.json
+            _tmp/master-after-validate.json
+            _tmp/ingestion-plan-after.json
+            _tmp/runtime-after.json
+            _tmp/runtime-after-audit.json
+          if-no-files-found: warn
+          retention-days: 2
