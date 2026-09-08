@@ -25,6 +25,7 @@ import resolve_dish_translation_evidence as dish_translation
 import resolve_hotpepper_source_fact_budgets as hotpepper_source_fact_budget
 import resolve_master as resolver
 import resolve_retained_fields as retained_field_resolver
+import resolve_verified_osm_native_metadata as verified_osm_native_metadata
 import review_hotpepper_candidate_fields as hotpepper_candidate_review
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -142,6 +143,10 @@ def build(output: Path, reset: bool = False):
         hotpepper_rich_counts = hotpepper_rich.resolve_rich_metadata(db, id_set, conflict_places, stamp)
         official_practical_counts = official_practical.import_evidence(db, id_set, conflict_places, stamp)
         official_practical_detail_counts = official_practical_detail.import_evidence(db, id_set, conflict_places, stamp)
+        # OSM native metadata is intentionally late: higher-priority retained/web
+        # sources resolve first, then exact reviewed OSM source IDs can fill only the
+        # residual telephone/practical gaps without changing identity.
+        verified_osm_native_metadata_counts = verified_osm_native_metadata.resolve_verified_osm_native_metadata(db, stamp)
         dish_translation_counts = dish_translation.resolve_source_backed_dishes(db, id_set, conflict_places, stamp)
         taskplan = planner.plan_tasks(db, stamp)
 
@@ -158,6 +163,7 @@ def build(output: Path, reset: bool = False):
             "freshOsmBoundFieldEvidence": fresh_osm_bound_counts,
             "sourceBasicWebEvidence": source_basic_web_counts, "officialMealBudgetWebEvidence": official_meal_budget_counts,
             "officialPracticalWebEvidence": official_practical_counts, "officialPracticalDetailWebEvidence": official_practical_detail_counts,
+            "verifiedOsmNativeMetadata": verified_osm_native_metadata_counts,
             "retainedFieldResolverV2": retained_field_counts, "hotPepperCandidateFieldReview": candidate_hp_counts,
             "hotPepperSourceFactBudgetResolver": source_fact_budget_counts, "hotPepperBasicPractical": derived_counts,
             "safePracticalResolver": rich, "hotPepperRichFieldResolver": hotpepper_rich_counts,
