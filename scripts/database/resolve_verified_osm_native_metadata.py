@@ -1,17 +1,19 @@
 #!/usr/bin/env python3
 """Resolve residual fields from exact reviewed historical OSM identity mappings.
 
-The repository retains a historical verified mapping from native OSM source IDs
-(`node/...`, `way/...`, `relation/...`) to frozen Google Place IDs. This resolver runs
-late in the master build and may only fill still-missing fields for bindings that are
-currently `reviewed` under `retained_verified_osm_identity_qc`.
+The repository retains historical verified mappings from OSM candidate IDs such as
+`osm-n-...` to frozen Google Place IDs. Each retained candidate row also carries its
+native OSM `sourceId` (`node/...`, `way/...`, or `relation/...`). This resolver runs late
+in the master build and may only fill still-missing fields for bindings that are currently
+`reviewed` under `retained_verified_osm_identity_qc`.
 
-No identity matching is performed here. The native provider ID must join exactly to the
-current retained OSM candidate's `sourceId`, and any provider-ID collision is deferred.
-Telephone is accepted only when the retained OSM row contains exactly one distinct valid
-source-native number. Practical fields are limited to three unambiguous OSM tag values:
-`payment:credit_cards=yes/no`, `internet_access=wlan/no`, and `wheelchair=yes/no`.
-Ambiguous values such as `wheelchair=limited` remain provenance only.
+No identity matching is performed here. The reviewed source-record provider ID must join
+byte-for-byte to the current retained OSM candidate's stable candidate `id`; candidate-ID
+and native-source-ID collisions are both deferred. Telephone is accepted only when the
+retained row contains exactly one distinct valid source-native number. Practical fields
+are limited to three unambiguous OSM tag values: `payment:credit_cards=yes/no`,
+`internet_access=wlan/no`, and `wheelchair=yes/no`. Ambiguous values such as
+`wheelchair=limited` remain provenance only.
 """
 from __future__ import annotations
 
@@ -26,7 +28,7 @@ import master_import_core as core
 import retained_osm_identity as retained_osm
 
 IDENTITY_ACQUISITION_METHOD = "retained_verified_osm_identity_qc"
-RULE_VERSION = "verified-osm-native-metadata-v1"
+RULE_VERSION = "verified-osm-native-metadata-v2"
 
 
 def _known_fields(db) -> set[tuple[str, str]]:
@@ -53,19 +55,31 @@ def _reviewed_verified_osm(db) -> list[tuple[str, str, str]]:
     ))
 
 
-def _candidate_index() -> tuple[dict[str, dict], set[str]]:
+def _candidate_indexes() -> tuple[dict[str, dict], set[str], set[str]]:
+    """Return unique candidate-ID index plus candidate/native collision sets."""
     rows = retained_osm.parse_osm_rows()
-    grouped: dict[str, list[dict]] = defaultdict(list)
+    by_candidate_id: dict[str, list[dict]] = defaultdict(list)
+    by_native_source_id: dict[str, list[dict]] = defaultdict(list)
     for row in rows:
-        native_id = str(row.get("sourceId") or "").strip()
-        if native_id:
-            grouped[native_id].append(row)
-    collisions = {native_id for native_id, values in grouped.items() if len(values) != 1}
-    return {
-        native_id: values[0]
-        for native_id, values in grouped.items()
-        if native_id not in collisions
-    }, collisions
+        candidate_id = str(row.get("id") or "").strip()
+        native_source_id = str(row.get("sourceId") or "").strip()
+        if candidate_id:
+            by_candidate_id[candidate_id].append(row)
+        if native_source_id:
+            by_native_source_id[native_source_id].append(row)
+
+    candidate_collisions = {
+        candidate_id for candidate_id, values in by_candidate_id.items() if len(values) != 1
+    }
+    native_collisions = {
+        source_id for source_id, values in by_native_source_id.items() if len(values) != 1
+    }
+    unique_candidates = {
+        candidate_id: values[0]
+        for candidate_id, values in by_candidate_id.items()
+        if candidate_id not in candidate_collisions
+    }
+    return unique_candidates, candidate_collisions, native_collisions
 
 
 def _binding_collisions(reviewed_rows: list[tuple[str, str, str]]) -> set[str]:
@@ -128,7 +142,7 @@ def _practical_claims(candidate: dict) -> dict[str, bool]:
 
 def resolve_verified_osm_native_metadata(db, stamp: str):
     reviewed_rows = _reviewed_verified_osm(db)
-    candidates, candidate_collisions = _candidate_index()
+    candidates, candidate_collisions, native_collisions = _candidate_indexes()
     binding_collisions = _binding_collisions(reviewed_rows)
     known = _known_fields(db)
 
@@ -136,24 +150,33 @@ def resolve_verified_osm_native_metadata(db, stamp: str):
     fields = Counter()
     changed_places = set()
 
-    for pid, native_provider_id, source_record_id in reviewed_rows:
+    for pid, candidate_provider_id, source_record_id in reviewed_rows:
         pid = str(pid)
-        native_provider_id = str(native_provider_id)
-        if native_provider_id in binding_collisions:
+        candidate_provider_id = str(candidate_provider_id)
+        if candidate_provider_id in binding_collisions:
             counts["reviewed_binding_provider_collision"] += 1
             continue
-        if native_provider_id in candidate_collisions:
-            counts["retained_candidate_provider_collision"] += 1
+        if candidate_provider_id in candidate_collisions:
+            counts["retained_candidate_id_collision"] += 1
             continue
-        candidate = candidates.get(native_provider_id)
+        candidate = candidates.get(candidate_provider_id)
         if candidate is None:
             counts["retained_candidate_missing"] += 1
             continue
 
-        # Exact join only: the reviewed source record provider ID and the retained
-        # candidate native source ID must be byte-for-byte identical.
-        if str(candidate.get("sourceId") or "").strip() != native_provider_id:
-            counts["native_provider_id_mismatch"] += 1
+        # Exact identity join: retained_verified_osm_identity.py stores the historical
+        # verified OSM candidate ID as source_records.provider_id. Reuse the same exact
+        # key here; never fall back to name, distance, coordinates, or fuzzy matching.
+        if str(candidate.get("id") or "").strip() != candidate_provider_id:
+            counts["candidate_provider_id_mismatch"] += 1
+            continue
+
+        native_source_id = str(candidate.get("sourceId") or "").strip()
+        if not native_source_id:
+            counts["missing_native_source_id"] += 1
+            continue
+        if native_source_id in native_collisions:
+            counts["retained_native_source_id_collision"] += 1
             continue
 
         raw_phones = _native_phones(candidate)
@@ -206,14 +229,17 @@ def resolve_verified_osm_native_metadata(db, stamp: str):
             fields[field_key] += 1
             changed_places.add(pid)
 
-        # Preserve the exact native metadata snapshot as reviewed provenance even when
-        # all mapped canonical fields were already known from higher-priority sources.
+        # Preserve the exact candidate/native IDs and source-native metadata as reviewed
+        # provenance even when all mapped canonical fields were already known from
+        # higher-priority sources.
         provenance = {
-            "sourceId": native_provider_id,
+            "candidateId": candidate_provider_id,
+            "nativeSourceId": native_source_id,
             "sourcePhones": raw_phones,
             "sourcePracticalTags": raw_practical,
             "policy": {
-                "exactReviewedNativeIdOnly": True,
+                "exactReviewedCandidateIdOnly": True,
+                "nativeSourceIdUniqueRequired": True,
                 "missingOnly": True,
                 "networkRequests": 0,
                 "identityChanges": 0,
@@ -260,7 +286,8 @@ def resolve_verified_osm_native_metadata(db, stamp: str):
         },
         "networkRequests": 0,
         "identityChanges": 0,
-        "exactReviewedNativeIdOnly": True,
+        "exactReviewedCandidateIdOnly": True,
+        "nativeSourceIdUniqueRequired": True,
         "missingOnly": True,
         "singleNativePhoneRequired": True,
         "explicitPracticalTagsOnly": True,
