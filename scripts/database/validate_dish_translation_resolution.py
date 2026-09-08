@@ -20,6 +20,7 @@ FEATURED_CLASSES = {
     "source_menu_text",
     "source_pdf_menu_text",
     "tabelog_menu_text",
+    "hotpepper_menu_text",
 }
 RULE_VERSION = "dish-source-translation-zh-v1"
 _HAN = re.compile(r"[\u3400-\u9fff]")
