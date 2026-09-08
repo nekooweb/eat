@@ -1,0 +1,62 @@
+name: Route current id-only recovery backlog
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/audit-id-only-current-round.yml"
+      - "scripts/database/audit_id_only_identity_backlog.py"
+      - "data/area1_enrichment_queue.json"
+      - "data/area1_full_collection_queue.json"
+      - "data/hotpepper_catalog_facts.json"
+      - "data/official_candidate_index.json"
+      - "data/google_basic_source_matches.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Build current strict master
+        run: |
+          set -euo pipefail
+          node scripts/audit_no_paid_apis.mjs
+          mkdir -p _tmp
+          python scripts/database/build_master.py --output _tmp/master.sqlite --reset | tee _tmp/master.json
+          python scripts/database/validate_master.py _tmp/master.sqlite
+      - name: Route identity backlog by retained source support
+        run: |
+          set -euo pipefail
+          python scripts/database/audit_id_only_identity_backlog.py \
+            --database _tmp/master.sqlite \
+            --output _tmp/id-only-routing.json \
+            --max-example-rows 500 \
+            | tee _tmp/id-only-routing-summary.json
+          python - <<'PY'
+          import json
+          d=json.load(open('_tmp/id-only-routing.json')); c=d['summary']['counts']
+          print(json.dumps({
+            'strictIdOnly':c.get('strictIdOnly',0),
+            'strongThreeSource':c.get('idOnlyStrongThreeSource',0),
+            'hotPepperHigh':c.get('idOnlyWithHotPepperHighBinding',0),
+            'officialIndex':c.get('idOnlyWithOfficialIndexRecord',0),
+            'historicalSingleOsmHigh':c.get('idOnlyHistoricalSingleOsmHighThreshold',0),
+            'overtureSupport':c.get('idOnlyWithOvertureCrossSupport',0),
+            'anySourceBinding':c.get('idOnlyWithAnySourceBinding',0),
+          },sort_keys=True))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: current-id-only-routing
+          path: _tmp/*.json
+          retention-days: 3
