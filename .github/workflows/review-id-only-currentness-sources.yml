@@ -1,0 +1,90 @@
+name: Review currentness for priority id-only candidates
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/review-id-only-currentness-sources.yml"
+      - "scripts/database/review_id_only_currentness_sources.py"
+      - "scripts/database/audit_id_only_priority_identity_groups.py"
+      - "scripts/database/collect_official_practical_fields.py"
+      - "scripts/database/build_master.py"
+      - "data/area1_enrichment_queue.json"
+      - "data/hotpepper_catalog_facts.json"
+      - "data/overture_area1_candidates.json"
+      - "data/area1_google_ids.json"
+
+permissions:
+  contents: read
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Validate syntax and no-paid policy
+        run: |
+          set -euo pipefail
+          python -m py_compile \
+            scripts/database/review_id_only_currentness_sources.py \
+            scripts/database/audit_id_only_priority_identity_groups.py \
+            scripts/database/collect_official_practical_fields.py \
+            scripts/database/build_master.py
+          node scripts/audit_no_paid_apis.mjs
+      - name: Build and validate strict master
+        run: |
+          set -euo pipefail
+          mkdir -p _tmp
+          python scripts/database/build_master.py --output _tmp/eat-master.sqlite --reset | tee _tmp/master-build.json
+          python scripts/database/validate_master.py _tmp/eat-master.sqlite | tee _tmp/master-validate.json
+      - name: Review current independent webpages
+        run: |
+          set -euo pipefail
+          python scripts/database/review_id_only_currentness_sources.py \
+            --database _tmp/eat-master.sqlite \
+            --output _tmp/id-only-currentness-review.json \
+            --workers 6 \
+            | tee _tmp/id-only-currentness-review-summary.json
+          python - <<'PY'
+          import json,re
+          d=json.load(open('_tmp/id-only-currentness-review.json'))
+          p=d['policy']
+          assert p['paidDataApiCalls']==0
+          assert p['googleDisplayPayloadPersisted'] is False
+          assert p['automaticIdentityPromotion'] is False
+          assert p['proposalOnly'] is True
+          assert p['independentHttpsOnly'] is True
+          assert p['nameAndLocationReconfirmationRequired'] is True
+          for row in d['rows']:
+              assert str(row['currentnessUrl']).startswith('https://')
+              review=row['currentnessReview']
+              if row['admissionReady']:
+                  assert row['group']=='hotpepper_high_direct_overture'
+                  assert row['hardHistoricalBindingGate'] is True
+                  assert row['hardDirectOvertureGate'] is True
+                  assert review['accepted'] is True
+                  assert re.fullmatch(r'[0-9a-f]{64}',str(review['contentHash']))
+          print(json.dumps({'summary':d['summary'],'ready':[r['googlePlaceId'] for r in d['rows'] if r['admissionReady']]},ensure_ascii=False,sort_keys=True))
+          PY
+      - name: Upload review
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: id-only-currentness-review
+          path: |
+            _tmp/id-only-currentness-review.json
+            _tmp/id-only-currentness-review-summary.json
+            _tmp/master-build.json
+            _tmp/master-validate.json
+          if-no-files-found: warn
+          retention-days: 3
