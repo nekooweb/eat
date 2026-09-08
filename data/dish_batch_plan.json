@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-08T03:01:35.511Z",
+  "generatedAt": "2026-09-08T03:05:45.762Z",
   "policy": {
     "catalogIdentityKey": "frozen Place ID only",
     "catalogTotal": 2804,
@@ -15,14 +15,14 @@
   },
   "summary": {
     "publicRuntimeTotal": 1415,
-    "recommendationGap": 1218,
-    "dishWorkRows": 1274,
+    "recommendationGap": 1213,
+    "dishWorkRows": 1268,
     "shards": 8,
     "laneCounts": {
-      "official_crawl": 225,
+      "official_crawl": 220,
       "retained_source_mining": 646,
       "independent_source_discovery": 347,
-      "official_or_retained_featured": 56
+      "official_or_retained_featured": 55
     },
     "shardCounts": [
       {
@@ -37,29 +37,29 @@
       },
       {
         "shard": 1,
-        "total": 178,
+        "total": 177,
         "lanes": {
           "official_crawl": 30,
           "retained_source_mining": 92,
           "independent_source_discovery": 46,
-          "official_or_retained_featured": 10
+          "official_or_retained_featured": 9
         }
       },
       {
         "shard": 2,
-        "total": 180,
+        "total": 179,
         "lanes": {
-          "official_crawl": 33,
+          "official_crawl": 31,
           "retained_source_mining": 92,
           "independent_source_discovery": 47,
-          "official_or_retained_featured": 8
+          "official_or_retained_featured": 9
         }
       },
       {
         "shard": 3,
-        "total": 158,
+        "total": 157,
         "lanes": {
-          "official_crawl": 19,
+          "official_crawl": 18,
           "retained_source_mining": 84,
           "independent_source_discovery": 47,
           "official_or_retained_featured": 8
@@ -67,19 +67,19 @@
       },
       {
         "shard": 4,
-        "total": 163,
+        "total": 162,
         "lanes": {
           "official_crawl": 33,
           "retained_source_mining": 76,
           "independent_source_discovery": 46,
-          "official_or_retained_featured": 8
+          "official_or_retained_featured": 7
         }
       },
       {
         "shard": 5,
-        "total": 155,
+        "total": 154,
         "lanes": {
-          "official_crawl": 29,
+          "official_crawl": 28,
           "retained_source_mining": 82,
           "independent_source_discovery": 39,
           "official_or_retained_featured": 5
@@ -87,9 +87,9 @@
       },
       {
         "shard": 6,
-        "total": 128,
+        "total": 127,
         "lanes": {
-          "official_crawl": 26,
+          "official_crawl": 25,
           "retained_source_mining": 65,
           "independent_source_discovery": 33,
           "official_or_retained_featured": 4
@@ -2377,6 +2377,20 @@
       "featuredDishesKnown": 3
     },
     {
+      "googlePlaceId": "ChIJM7WMYXSNGGAREl92sQPtPg8",
+      "name": "Point Et Ligne",
+      "lane": "official_crawl",
+      "nextAction": "collect_strict_recommended_dishes",
+      "shard": 1,
+      "priorityScore": 1115,
+      "cuisine": "面包・烘焙",
+      "crawlableOfficialUrlCount": 1,
+      "retainedThirdPartyUrlCount": 0,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 0,
+      "featuredDishesKnown": 3
+    },
+    {
       "googlePlaceId": "ChIJSwj8KxqMGGARC_XVbGCYUH8",
       "name": "誠鮨",
       "lane": "official_crawl",
@@ -2622,20 +2636,6 @@
       "shard": 1,
       "priorityScore": 1100,
       "cuisine": "咖啡",
-      "crawlableOfficialUrlCount": 1,
-      "retainedThirdPartyUrlCount": 0,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0
-    },
-    {
-      "googlePlaceId": "ChIJM7WMYXSNGGAREl92sQPtPg8",
-      "name": "Point Et Ligne",
-      "lane": "official_crawl",
-      "nextAction": "collect_strict_recommended_dishes",
-      "shard": 1,
-      "priorityScore": 1100,
-      "cuisine": "面包・烘焙",
       "crawlableOfficialUrlCount": 1,
       "retainedThirdPartyUrlCount": 0,
       "sourceUrlCount": 1,
@@ -4673,20 +4673,6 @@
       "featuredDishesKnown": 0
     },
     {
-      "googlePlaceId": "ChIJi5u1tneNGGARfvILlFasCqI",
-      "name": "横浜家系ラーメン 麺家 福増",
-      "lane": "official_or_retained_featured",
-      "nextAction": "collect_source_backed_featured_dishes",
-      "shard": 1,
-      "priorityScore": 720,
-      "cuisine": "拉面",
-      "crawlableOfficialUrlCount": 1,
-      "retainedThirdPartyUrlCount": 1,
-      "sourceUrlCount": 2,
-      "recommendedDishesKnown": 1,
-      "featuredDishesKnown": 0
-    },
-    {
       "googlePlaceId": "ChIJ08lD_gOMGGAR8oYpyY0SS6w",
       "name": "福はら",
       "lane": "official_or_retained_featured",
@@ -4897,20 +4883,6 @@
       "featuredDishesKnown": 2
     },
     {
-      "googlePlaceId": "ChIJm_L1ZwaMGGAR5L_pZa15NDk",
-      "name": "Craft Beer Market",
-      "lane": "official_crawl",
-      "nextAction": "collect_strict_recommended_dishes",
-      "shard": 2,
-      "priorityScore": 1115,
-      "cuisine": "餐厅",
-      "crawlableOfficialUrlCount": 1,
-      "retainedThirdPartyUrlCount": 0,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 4
-    },
-    {
       "googlePlaceId": "ChIJXUb7fQ2MGGARgbctV56leJ0",
       "name": "L'art et Mikuni",
       "lane": "official_crawl",
@@ -4949,20 +4921,6 @@
       "crawlableOfficialUrlCount": 1,
       "retainedThirdPartyUrlCount": 1,
       "sourceUrlCount": 2,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0
-    },
-    {
-      "googlePlaceId": "ChIJd34FSnuNGGARgax6PuL4j_E",
-      "name": "REC COFFEE 水道橋店",
-      "lane": "official_crawl",
-      "nextAction": "collect_strict_recommended_dishes",
-      "shard": 2,
-      "priorityScore": 1110,
-      "cuisine": "咖啡",
-      "crawlableOfficialUrlCount": 1,
-      "retainedThirdPartyUrlCount": 0,
-      "sourceUrlCount": 1,
       "recommendedDishesKnown": 0,
       "featuredDishesKnown": 0
     },
@@ -7249,6 +7207,20 @@
       "featuredDishesKnown": 0
     },
     {
+      "googlePlaceId": "ChIJd34FSnuNGGARgax6PuL4j_E",
+      "name": "REC COFFEE 水道橋店",
+      "lane": "official_or_retained_featured",
+      "nextAction": "collect_source_backed_featured_dishes",
+      "shard": 2,
+      "priorityScore": 710,
+      "cuisine": "咖啡",
+      "crawlableOfficialUrlCount": 1,
+      "retainedThirdPartyUrlCount": 0,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 0
+    },
+    {
       "googlePlaceId": "ChIJJ6tEexuMGGARDEcrWig0q68",
       "name": "WIZ CRAFT BEER and FOOD",
       "lane": "official_or_retained_featured",
@@ -7359,20 +7331,6 @@
       "sourceUrlCount": 1,
       "recommendedDishesKnown": 0,
       "featuredDishesKnown": 2
-    },
-    {
-      "googlePlaceId": "ChIJOTaGMgCNGGAR_Xx8beogY7w",
-      "name": "Food Stadium Tokyo",
-      "lane": "official_crawl",
-      "nextAction": "collect_strict_recommended_dishes",
-      "shard": 3,
-      "priorityScore": 1115,
-      "cuisine": "餐厅",
-      "crawlableOfficialUrlCount": 1,
-      "retainedThirdPartyUrlCount": 0,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 6
     },
     {
       "googlePlaceId": "ChIJeygUHWuMGGAR6JSkGxomd2c",
@@ -9531,6 +9489,20 @@
       "featuredDishesKnown": 0
     },
     {
+      "googlePlaceId": "ChIJ0_vaEhGMGGAR8zPLZw2iAas",
+      "name": "橘昌 文銭堂",
+      "lane": "official_crawl",
+      "nextAction": "collect_strict_recommended_dishes",
+      "shard": 4,
+      "priorityScore": 1125,
+      "cuisine": "甜品",
+      "crawlableOfficialUrlCount": 1,
+      "retainedThirdPartyUrlCount": 1,
+      "sourceUrlCount": 2,
+      "recommendedDishesKnown": 0,
+      "featuredDishesKnown": 2
+    },
+    {
       "googlePlaceId": "ChIJAe9OMzWNGGARJmv6abBeXzE",
       "name": "千代田区役所 食堂",
       "lane": "official_crawl",
@@ -9613,20 +9585,6 @@
       "sourceUrlCount": 1,
       "recommendedDishesKnown": 0,
       "featuredDishesKnown": 4
-    },
-    {
-      "googlePlaceId": "ChIJ0_vaEhGMGGAR8zPLZw2iAas",
-      "name": "橘昌 文銭堂",
-      "lane": "official_crawl",
-      "nextAction": "collect_strict_recommended_dishes",
-      "shard": 4,
-      "priorityScore": 1110,
-      "cuisine": "甜品",
-      "crawlableOfficialUrlCount": 1,
-      "retainedThirdPartyUrlCount": 1,
-      "sourceUrlCount": 2,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0
     },
     {
       "googlePlaceId": "ChIJ44VsmjyMGGARJVL9gwj7Afc",
@@ -11757,20 +11715,6 @@
       "featuredDishesKnown": 0
     },
     {
-      "googlePlaceId": "ChIJiz6kV1GNGGARtjSxujomqZA",
-      "name": "神田 タンだけ",
-      "lane": "official_or_retained_featured",
-      "nextAction": "collect_source_backed_featured_dishes",
-      "shard": 4,
-      "priorityScore": 710,
-      "cuisine": "日式",
-      "crawlableOfficialUrlCount": 1,
-      "retainedThirdPartyUrlCount": 0,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 2,
-      "featuredDishesKnown": 0
-    },
-    {
       "googlePlaceId": "ChIJN9mduz-MGGARWs6kNg-Hmq0",
       "name": "Ebrietas",
       "lane": "official_or_retained_featured",
@@ -11867,20 +11811,6 @@
       "sourceUrlCount": 1,
       "recommendedDishesKnown": 0,
       "featuredDishesKnown": 4
-    },
-    {
-      "googlePlaceId": "ChIJ2Yrt4RmMGGARLlGJseqwXLU",
-      "name": "Delifrance お茶の水カフェベーカリー店",
-      "lane": "official_crawl",
-      "nextAction": "collect_strict_recommended_dishes",
-      "shard": 5,
-      "priorityScore": 1110,
-      "cuisine": "面包・烘焙",
-      "crawlableOfficialUrlCount": 1,
-      "retainedThirdPartyUrlCount": 0,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0
     },
     {
       "googlePlaceId": "ChIJ4V7HsByMGGAR3-Klt48CI28",
@@ -14051,20 +13981,6 @@
       "sourceUrlCount": 1,
       "recommendedDishesKnown": 0,
       "featuredDishesKnown": 4
-    },
-    {
-      "googlePlaceId": "ChIJAQA0URyMGGARcHdnj-vbe6s",
-      "name": "Maidreamin Akihabara Himitsukichi",
-      "lane": "official_crawl",
-      "nextAction": "collect_strict_recommended_dishes",
-      "shard": 6,
-      "priorityScore": 1115,
-      "cuisine": "咖啡",
-      "crawlableOfficialUrlCount": 1,
-      "retainedThirdPartyUrlCount": 0,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 1
     },
     {
       "googlePlaceId": "ChIJFQ415jyMGGAROEvV2vfbg_g",

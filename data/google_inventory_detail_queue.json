@@ -7,23 +7,23 @@
     "publicRuntimeTotal": 1415,
     "unpublishedPlaceIdOnly": 1389,
     "runtimeBaselineComplete": true,
-    "recommendedDishesKnown": 197,
-    "featuredDishesKnown": 277,
-    "recommendationGap": 1218,
-    "recommendationGapWithAnyKnownSourceUrl": 883,
-    "recommendationGapWithCrawlableOfficialUrl": 225,
+    "recommendedDishesKnown": 202,
+    "featuredDishesKnown": 282,
+    "recommendationGap": 1213,
+    "recommendationGapWithAnyKnownSourceUrl": 878,
+    "recommendationGapWithCrawlableOfficialUrl": 220,
     "recommendationGapWithRetainedThirdPartyOnly": 646,
     "recommendationGapNeedingNewDishSource": 347,
     "actionCounts": {
-      "collect_strict_recommended_dishes": 225,
+      "collect_strict_recommended_dishes": 220,
       "extract_retained_dish_source": 646,
       "find_independent_dish_source": 347,
-      "collect_source_backed_featured_dishes": 56,
-      "collect_opening_hours": 58,
-      "collect_dinner_budget": 27,
+      "collect_source_backed_featured_dishes": 55,
+      "collect_opening_hours": 62,
+      "collect_dinner_budget": 28,
       "collect_lunch_budget": 25,
       "collect_identity_detail_fields": 1,
-      "complete": 30
+      "complete": 31
     },
     "priorityRule": "within named public rows: direct official recommendation extraction > retained third-party dish extraction > new independent dish-source discovery > featured dishes > hours > budgets > address/cuisine; identity recovery remains separate"
   },
@@ -250,6 +250,25 @@
       ],
       "nextAction": "collect_strict_recommended_dishes",
       "priorityScore": 1135
+    },
+    {
+      "googlePlaceId": "ChIJ0_vaEhGMGGAR8zPLZw2iAas",
+      "name": "橘昌 文銭堂",
+      "basicInfoState": "canonical",
+      "cuisine": "甜品",
+      "distanceMeters": 136,
+      "sourceUrlCount": 2,
+      "crawlableOfficialUrlCount": 1,
+      "retainedThirdPartyUrlCount": 1,
+      "recommendedDishesKnown": 0,
+      "featuredDishesKnown": 2,
+      "gaps": [
+        "recommendedDishes",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_strict_recommended_dishes",
+      "priorityScore": 1125
     },
     {
       "googlePlaceId": "ChIJVTDQnxaMGGAR2dkRFZBb7bY",
@@ -597,6 +616,26 @@
       "priorityScore": 1115
     },
     {
+      "googlePlaceId": "ChIJM7WMYXSNGGAREl92sQPtPg8",
+      "name": "Point Et Ligne",
+      "basicInfoState": "source_matched",
+      "cuisine": "面包・烘焙",
+      "distanceMeters": 623,
+      "sourceUrlCount": 1,
+      "crawlableOfficialUrlCount": 1,
+      "retainedThirdPartyUrlCount": 0,
+      "recommendedDishesKnown": 0,
+      "featuredDishesKnown": 3,
+      "gaps": [
+        "recommendedDishes",
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_strict_recommended_dishes",
+      "priorityScore": 1115
+    },
+    {
       "googlePlaceId": "ChIJXUb7fQ2MGGARgbctV56leJ0",
       "name": "L'art et Mikuni",
       "basicInfoState": "source_matched",
@@ -736,26 +775,6 @@
       "priorityScore": 1115
     },
     {
-      "googlePlaceId": "ChIJOTaGMgCNGGAR_Xx8beogY7w",
-      "name": "Food Stadium Tokyo",
-      "basicInfoState": "source_matched",
-      "cuisine": "餐厅",
-      "distanceMeters": 996,
-      "sourceUrlCount": 1,
-      "crawlableOfficialUrlCount": 1,
-      "retainedThirdPartyUrlCount": 0,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 6,
-      "gaps": [
-        "recommendedDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1115
-    },
-    {
       "googlePlaceId": "ChIJTwiumLiNGGARrinoC2mGVeo",
       "name": "PRONTO",
       "basicInfoState": "source_matched",
@@ -768,26 +787,6 @@
       "featuredDishesKnown": 1,
       "gaps": [
         "recommendedDishes",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1115
-    },
-    {
-      "googlePlaceId": "ChIJm_L1ZwaMGGAR5L_pZa15NDk",
-      "name": "Craft Beer Market",
-      "basicInfoState": "source_matched",
-      "cuisine": "餐厅",
-      "distanceMeters": 1043,
-      "sourceUrlCount": 1,
-      "crawlableOfficialUrlCount": 1,
-      "retainedThirdPartyUrlCount": 0,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 4,
-      "gaps": [
-        "recommendedDishes",
-        "openingHours",
         "lunchBudget",
         "dinnerBudget"
       ],
@@ -825,26 +824,6 @@
       "retainedThirdPartyUrlCount": 0,
       "recommendedDishesKnown": 0,
       "featuredDishesKnown": 2,
-      "gaps": [
-        "recommendedDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1115
-    },
-    {
-      "googlePlaceId": "ChIJAQA0URyMGGARcHdnj-vbe6s",
-      "name": "Maidreamin Akihabara Himitsukichi",
-      "basicInfoState": "source_matched",
-      "cuisine": "咖啡",
-      "distanceMeters": 1169,
-      "sourceUrlCount": 1,
-      "crawlableOfficialUrlCount": 1,
-      "retainedThirdPartyUrlCount": 0,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 1,
       "gaps": [
         "recommendedDishes",
         "openingHours",
@@ -913,26 +892,6 @@
       ],
       "nextAction": "collect_strict_recommended_dishes",
       "priorityScore": 1115
-    },
-    {
-      "googlePlaceId": "ChIJ0_vaEhGMGGAR8zPLZw2iAas",
-      "name": "橘昌 文銭堂",
-      "basicInfoState": "canonical",
-      "cuisine": "甜品",
-      "distanceMeters": 136,
-      "sourceUrlCount": 2,
-      "crawlableOfficialUrlCount": 1,
-      "retainedThirdPartyUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1110
     },
     {
       "googlePlaceId": "ChIJNwRqpBaMGGAR07TdHcGkY5w",
@@ -1259,26 +1218,6 @@
       "priorityScore": 1110
     },
     {
-      "googlePlaceId": "ChIJ2Yrt4RmMGGARLlGJseqwXLU",
-      "name": "Delifrance お茶の水カフェベーカリー店",
-      "basicInfoState": "canonical",
-      "cuisine": "面包・烘焙",
-      "distanceMeters": 603,
-      "sourceUrlCount": 1,
-      "crawlableOfficialUrlCount": 1,
-      "retainedThirdPartyUrlCount": 0,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1110
-    },
-    {
       "googlePlaceId": "ChIJeygUHWuMGGAR6JSkGxomd2c",
       "name": "ロイヤルホスト",
       "basicInfoState": "canonical",
@@ -1535,26 +1474,6 @@
         "lunchBudget",
         "dinnerBudget",
         "address"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1110
-    },
-    {
-      "googlePlaceId": "ChIJd34FSnuNGGARgax6PuL4j_E",
-      "name": "REC COFFEE 水道橋店",
-      "basicInfoState": "canonical",
-      "cuisine": "咖啡",
-      "distanceMeters": 885,
-      "sourceUrlCount": 1,
-      "crawlableOfficialUrlCount": 1,
-      "retainedThirdPartyUrlCount": 0,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "lunchBudget",
-        "dinnerBudget"
       ],
       "nextAction": "collect_strict_recommended_dishes",
       "priorityScore": 1110
@@ -2852,27 +2771,6 @@
       "basicInfoState": "source_matched",
       "cuisine": "意大利菜",
       "distanceMeters": 622,
-      "sourceUrlCount": 1,
-      "crawlableOfficialUrlCount": 1,
-      "retainedThirdPartyUrlCount": 0,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1100
-    },
-    {
-      "googlePlaceId": "ChIJM7WMYXSNGGAREl92sQPtPg8",
-      "name": "Point Et Ligne",
-      "basicInfoState": "source_matched",
-      "cuisine": "面包・烘焙",
-      "distanceMeters": 623,
       "sourceUrlCount": 1,
       "crawlableOfficialUrlCount": 1,
       "retainedThirdPartyUrlCount": 0,
@@ -24522,23 +24420,6 @@
       "priorityScore": 730
     },
     {
-      "googlePlaceId": "ChIJi5u1tneNGGARfvILlFasCqI",
-      "name": "横浜家系ラーメン 麺家 福増",
-      "basicInfoState": "canonical",
-      "cuisine": "拉面",
-      "distanceMeters": 73,
-      "sourceUrlCount": 2,
-      "crawlableOfficialUrlCount": 1,
-      "retainedThirdPartyUrlCount": 1,
-      "recommendedDishesKnown": 1,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "featuredDishes"
-      ],
-      "nextAction": "collect_source_backed_featured_dishes",
-      "priorityScore": 720
-    },
-    {
       "googlePlaceId": "ChIJc5NiOxGMGGARL8jOKrnIR5c",
       "name": "スマトラカレー 共栄堂",
       "basicInfoState": "canonical",
@@ -25088,6 +24969,25 @@
       "priorityScore": 710
     },
     {
+      "googlePlaceId": "ChIJd34FSnuNGGARgax6PuL4j_E",
+      "name": "REC COFFEE 水道橋店",
+      "basicInfoState": "canonical",
+      "cuisine": "咖啡",
+      "distanceMeters": 885,
+      "sourceUrlCount": 1,
+      "crawlableOfficialUrlCount": 1,
+      "retainedThirdPartyUrlCount": 0,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 0,
+      "gaps": [
+        "featuredDishes",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
       "googlePlaceId": "ChIJJ6tEexuMGGARDEcrWig0q68",
       "name": "WIZ CRAFT BEER and FOOD",
       "basicInfoState": "source_matched",
@@ -25540,26 +25440,6 @@
       "gaps": [
         "featuredDishes",
         "lunchBudget"
-      ],
-      "nextAction": "collect_source_backed_featured_dishes",
-      "priorityScore": 710
-    },
-    {
-      "googlePlaceId": "ChIJiz6kV1GNGGARtjSxujomqZA",
-      "name": "神田 タンだけ",
-      "basicInfoState": "source_matched",
-      "cuisine": "日式",
-      "distanceMeters": 1190,
-      "sourceUrlCount": 1,
-      "crawlableOfficialUrlCount": 1,
-      "retainedThirdPartyUrlCount": 0,
-      "recommendedDishesKnown": 2,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "featuredDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
       ],
       "nextAction": "collect_source_backed_featured_dishes",
       "priorityScore": 710
@@ -26406,6 +26286,25 @@
       "priorityScore": 405
     },
     {
+      "googlePlaceId": "ChIJOTaGMgCNGGAR_Xx8beogY7w",
+      "name": "Food Stadium Tokyo",
+      "basicInfoState": "source_matched",
+      "cuisine": "餐厅",
+      "distanceMeters": 996,
+      "sourceUrlCount": 1,
+      "crawlableOfficialUrlCount": 1,
+      "retainedThirdPartyUrlCount": 0,
+      "recommendedDishesKnown": 3,
+      "featuredDishesKnown": 6,
+      "gaps": [
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_opening_hours",
+      "priorityScore": 405
+    },
+    {
       "googlePlaceId": "ChIJv9PQxOSNGGARaAHELx3znPo",
       "name": "The 3rd Burger Otemachi One",
       "basicInfoState": "source_matched",
@@ -26558,6 +26457,25 @@
       "priorityScore": 405
     },
     {
+      "googlePlaceId": "ChIJm_L1ZwaMGGAR5L_pZa15NDk",
+      "name": "Craft Beer Market",
+      "basicInfoState": "source_matched",
+      "cuisine": "餐厅",
+      "distanceMeters": 1043,
+      "sourceUrlCount": 1,
+      "crawlableOfficialUrlCount": 1,
+      "retainedThirdPartyUrlCount": 0,
+      "recommendedDishesKnown": 2,
+      "featuredDishesKnown": 6,
+      "gaps": [
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_opening_hours",
+      "priorityScore": 405
+    },
+    {
       "googlePlaceId": "ChIJTSMMw0eMGGARUh1lFCWlDbg",
       "name": "TGI Fridays Tokyo Dome City",
       "basicInfoState": "source_matched",
@@ -26634,6 +26552,25 @@
       "priorityScore": 405
     },
     {
+      "googlePlaceId": "ChIJAQA0URyMGGARcHdnj-vbe6s",
+      "name": "Maidreamin Akihabara Himitsukichi",
+      "basicInfoState": "source_matched",
+      "cuisine": "咖啡",
+      "distanceMeters": 1169,
+      "sourceUrlCount": 1,
+      "crawlableOfficialUrlCount": 1,
+      "retainedThirdPartyUrlCount": 0,
+      "recommendedDishesKnown": 3,
+      "featuredDishesKnown": 3,
+      "gaps": [
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_opening_hours",
+      "priorityScore": 405
+    },
+    {
       "googlePlaceId": "ChIJc3y8okOMGGARcvEFuVzOJY8",
       "name": "Yakitori Brochette",
       "basicInfoState": "source_matched",
@@ -26663,6 +26600,25 @@
       "retainedThirdPartyUrlCount": 0,
       "recommendedDishesKnown": 1,
       "featuredDishesKnown": 3,
+      "gaps": [
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_opening_hours",
+      "priorityScore": 405
+    },
+    {
+      "googlePlaceId": "ChIJiz6kV1GNGGARtjSxujomqZA",
+      "name": "神田 タンだけ",
+      "basicInfoState": "source_matched",
+      "cuisine": "日式",
+      "distanceMeters": 1190,
+      "sourceUrlCount": 1,
+      "crawlableOfficialUrlCount": 1,
+      "retainedThirdPartyUrlCount": 0,
+      "recommendedDishesKnown": 2,
+      "featuredDishesKnown": 4,
       "gaps": [
         "openingHours",
         "lunchBudget",
@@ -26970,6 +26926,24 @@
       "retainedThirdPartyUrlCount": 0,
       "recommendedDishesKnown": 4,
       "featuredDishesKnown": 4,
+      "gaps": [
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_dinner_budget",
+      "priorityScore": 304
+    },
+    {
+      "googlePlaceId": "ChIJ2Yrt4RmMGGARLlGJseqwXLU",
+      "name": "Delifrance お茶の水カフェベーカリー店",
+      "basicInfoState": "canonical",
+      "cuisine": "面包・烘焙",
+      "distanceMeters": 603,
+      "sourceUrlCount": 1,
+      "crawlableOfficialUrlCount": 1,
+      "retainedThirdPartyUrlCount": 0,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 3,
       "gaps": [
         "lunchBudget",
         "dinnerBudget"
@@ -27609,6 +27583,21 @@
       "sourceUrlCount": 2,
       "crawlableOfficialUrlCount": 0,
       "retainedThirdPartyUrlCount": 2,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 2,
+      "gaps": [],
+      "nextAction": "complete",
+      "priorityScore": 0
+    },
+    {
+      "googlePlaceId": "ChIJi5u1tneNGGARfvILlFasCqI",
+      "name": "横浜家系ラーメン 麺家 福増",
+      "basicInfoState": "canonical",
+      "cuisine": "拉面",
+      "distanceMeters": 73,
+      "sourceUrlCount": 2,
+      "crawlableOfficialUrlCount": 1,
+      "retainedThirdPartyUrlCount": 1,
       "recommendedDishesKnown": 1,
       "featuredDishesKnown": 2,
       "gaps": [],

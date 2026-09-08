@@ -34,18 +34,29 @@
     "shardCount": 8
   },
   "summary": {
-    "shardIndex": 7,
-    "shardCount": 8,
-    "targets": 32,
-    "successfulIdentityPages": 0,
-    "menuPagesAttempted": 0,
-    "menuPagesFetched": 0,
-    "evidenceRestaurants": 0,
-    "recommendationRestaurants": 0,
-    "featuredRestaurants": 0,
-    "recommendationItems": 0,
-    "featuredItems": 0,
-    "errorTargets": 32,
+    "catalogTotal": 2804,
+    "publicRuntimeTotal": 1415,
+    "hotPepperRowsAvailable": 535,
+    "hotPepperRecommendedRestaurants": 20,
+    "hotPepperFeaturedRestaurants": 70,
+    "websiteTasks": 280,
+    "websiteHosts": 242,
+    "websitePagesVisited": 459,
+    "websiteRecommendedRestaurants": 31,
+    "websiteFeaturedMenuRestaurants": 35,
+    "websiteStructuredMenuRestaurants": 0,
+    "websitePlainMenuRestaurants": 35,
+    "websitePlainMenuItems": 139,
+    "sourceBackedRecommendationRestaurants": 51,
+    "sourceBackedFeaturedOnlyRestaurants": 100,
+    "recommendationItems": 73,
+    "featuredItems": 213,
+    "statusCounts": {
+      "no_match_with_errors": 88,
+      "recommended_match": 31,
+      "menu_match": 30,
+      "no_match": 125
+    },
     "previousEvidence": {
       "recommendationRestaurants": 171,
       "featuredRestaurants": 263,
@@ -54,18 +65,18 @@
       "featuredItems": 626
     },
     "freshCrawlEvidence": {
-      "recommendationRestaurants": 0,
-      "featuredRestaurants": 0,
-      "evidenceRestaurants": 0,
-      "recommendationItems": 0,
-      "featuredItems": 0
+      "recommendationRestaurants": 51,
+      "featuredRestaurants": 105,
+      "evidenceRestaurants": 151,
+      "recommendationItems": 73,
+      "featuredItems": 213
     },
     "mergedEvidence": {
-      "recommendationRestaurants": 171,
-      "featuredRestaurants": 263,
-      "evidenceRestaurants": 320,
-      "recommendationItems": 315,
-      "featuredItems": 626
+      "recommendationRestaurants": 176,
+      "featuredRestaurants": 268,
+      "evidenceRestaurants": 324,
+      "recommendationItems": 325,
+      "featuredItems": 644
     }
   },
   "rows": [
@@ -483,6 +494,33 @@
           "evidenceClass": "retained_source_menu_item",
           "evidenceRule": "retained:dishes:ズッパフォルテ",
           "evidenceSnippet": "ズッパフォルテ"
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJ0_vaEhGMGGAR8zPLZw2iAas",
+      "name": "橘昌 文銭堂",
+      "recommendedDishes": [],
+      "featuredDishes": [
+        {
+          "nameZh": "大福",
+          "nameJa": "大福",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://kanda-bunsendo.com/seasonal?tag=1",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "menu-page-text:大福|daifuku",
+          "evidenceSnippet": "いちご大福"
+        },
+        {
+          "nameZh": "蛋糕",
+          "nameJa": "cake",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://kanda-bunsendo.com/seasonal?tag=1",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "menu-page-text:ケーキ|cake",
+          "evidenceSnippet": "Bean paste rice cake wrapped in ...続きを読む"
         }
       ]
     },
@@ -1044,6 +1082,54 @@
           "evidenceClass": "retained_source_menu_item",
           "evidenceRule": "retained:featuredDishes:retained-nameZh",
           "evidenceSnippet": "星巴克拿铁"
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJ2Yrt4RmMGGARLlGJseqwXLU",
+      "name": "Delifrance お茶の水カフェベーカリー店",
+      "recommendedDishes": [
+        {
+          "nameZh": "三明治",
+          "nameJa": "サンド",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://shop.viedefrance.co.jp/detail/7001/shopnews/10167962/",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "html-block:サンドイッチ|サンド|sandwich",
+          "evidenceSnippet": "《ジャンボンフロマージュのホットサンド》 人気の塩パンにロースハムとチーズを挟んだシンプルなホットサンド。温めて食べるのがおすすめです。 ◎SANDWICHES 《フレンチデニッシ"
+        }
+      ],
+      "featuredDishes": [
+        {
+          "nameZh": "咖喱",
+          "nameJa": "カリー",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://shop.viedefrance.co.jp/detail/7001/shopnews/10167962/",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "menu-page-text:カレー|カリー|咖喱|curry",
+          "evidenceSnippet": "9月の新商品NEWS | Delifrance お茶の水カフェベーカリー店 ｜株式会社 ヴィ・ド・フランス"
+        },
+        {
+          "nameZh": "烤鸡",
+          "nameJa": "ローストチキン",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://shop.viedefrance.co.jp/detail/7001/shopnews/10167962/",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "menu-page-text:ローストチキン",
+          "evidenceSnippet": "ハーブレモン風味のローストチキンとカラフルな野菜をサンドしました。"
+        },
+        {
+          "nameZh": "蛋糕",
+          "nameJa": "ケーキ",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://shop.viedefrance.co.jp/detail/7001/shopnews/10167962/",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "menu-page-text:ケーキ|cake",
+          "evidenceSnippet": "ほうじ茶パウダー入りのケーキ生地に、栗フィリングと砕いた甘栗を巻き込み焼き上げました。"
         }
       ]
     },
@@ -2424,8 +2510,49 @@
     {
       "googlePlaceId": "ChIJAQA0URyMGGARcHdnj-vbe6s",
       "name": "Maidreamin Akihabara Himitsukichi",
-      "recommendedDishes": [],
+      "recommendedDishes": [
+        {
+          "nameZh": "意大利面",
+          "nameJa": "パスタ",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://maidreamin.com/joy/party.html",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "html-block:パスタ|スパゲッティ|pasta|spaghetti",
+          "evidenceSnippet": "5,800 円コース 神推し☆こだわり卵の看板オムライスを加えた贅沢コース シーザーサラダ/フライドポテト/たこ焼き/ チキンウイング(4種のスパイス)/タコちゃんウィンナー/ 山"
+        },
+        {
+          "nameZh": "牛排",
+          "nameJa": "ステーキ",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://maidreamin.com/joy/party.html",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "html-block:ステーキ|steak",
+          "evidenceSnippet": "4,700 円コース 激推し☆熟成肉・最新真空調理法を使った専門の天元豚のステーキを加えた特選コース シーザーサラダ/フライドポテト/たこ焼き/ チキンウイング(4種のスパイス)/"
+        },
+        {
+          "nameZh": "章鱼烧",
+          "nameJa": "たこ焼き",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://maidreamin.com/joy/party.html",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "html-block:たこ焼き?|takoyaki",
+          "evidenceSnippet": "3,500 円コース 1推し☆お酒のお供に選び抜かれた厳選コース シーザーサラダ/フライドポテト/たこ焼き/チキンウイング(4種のスパイス)/タコちゃんウィンナー お1人様当たりの"
+        }
+      ],
       "featuredDishes": [
+        {
+          "nameZh": "蛋包饭",
+          "nameJa": "オムライス",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://maidreamin.com/joy/party.html",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "menu-page-text:オムライス|omelette rice|omurice",
+          "evidenceSnippet": "神推し☆こだわり卵の看板オムライスを加えた贅沢コース"
+        },
         {
           "nameZh": "越南河粉",
           "nameJa": "フォー",
@@ -2435,6 +2562,16 @@
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:フォー|pho\\b",
           "evidenceSnippet": "恐れ入りますが、採用応募に関するお問い合わせを除き、その他のお問い合わせはメールまたはお問い合わせフォームよりご連絡をお願いいたします。"
+        },
+        {
+          "nameZh": "越南河粉",
+          "nameJa": "フォー",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://maidreamin.com/joy/party.html",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "menu-page-text:フォー|pho\\b",
+          "evidenceSnippet": "スペシャルパフォーマンス"
         }
       ]
     },
@@ -3875,6 +4012,23 @@
           "evidenceClass": "source_recommendation_text",
           "evidenceRule": "hotpepper-catch:ピザ|ピッツァ|pizza",
           "evidenceSnippet": "名物「薪窯ナポリピザ」 最大120名様の貸切対応"
+        }
+      ],
+      "featuredDishes": []
+    },
+    {
+      "googlePlaceId": "ChIJd34FSnuNGGARgax6PuL4j_E",
+      "name": "REC COFFEE 水道橋店",
+      "recommendedDishes": [
+        {
+          "nameZh": "拼配咖啡",
+          "nameJa": "ブレンドコーヒー",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://rec-coffee.com/collections/all-products",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "html-block:ブレンドコーヒー",
+          "evidenceSnippet": "あたり 人気の定番ブレンドコーヒー2種類のセット 【送料無料】コーヒーバッグコンプリートセット 【送料無料】コーヒーバッグコンプリートセット"
         }
       ],
       "featuredDishes": []
@@ -5874,7 +6028,28 @@
           "evidenceSnippet": "ラム ストーリー・投稿を ご確認ください。 神保町本店 新高円寺店 濃厚を極めた 最高の一杯 二〇二三年七月に創業を迎えました。 スープにこだわり、素材にこだわり 納得いくまで時間"
         }
       ],
-      "featuredDishes": []
+      "featuredDishes": [
+        {
+          "nameZh": "拉面",
+          "nameJa": "ラーメン",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://menya-fukumasu.com/shin-koenji.html",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "menu-page-text:ラーメン|らーめん|拉麺|ramen",
+          "evidenceSnippet": "横浜家系ラーメン 麺家福増 新高円寺店"
+        },
+        {
+          "nameZh": "横滨家系拉面",
+          "nameJa": "横浜家系",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://menya-fukumasu.com/shin-koenji.html",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "menu-page-text:家系(?:ラーメン|らーめん)|横浜家系",
+          "evidenceSnippet": "横浜家系ラーメン 麺家福増 新高円寺店"
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJI77jkgSMGGARa9epV2pUQmI",
@@ -6158,7 +6333,48 @@
           "evidenceSnippet": "牛タン焼肉専門店が神田に! 焼肉で人気の部位と言われる&ldquo;牛タン&rdquo;の様々な部位を使用した、 牛タン尽くしのコースが味わえる当店。 厚切りや上タンはもちろ"
         }
       ],
-      "featuredDishes": []
+      "featuredDishes": [
+        {
+          "nameZh": "厚切牛舌",
+          "nameJa": "厚切りタン",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.tandake.com/%E3%82%B3%E3%83%BC%E3%82%B9",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "menu-page-text:厚切りタン",
+          "evidenceSnippet": "厚切りタン塩"
+        },
+        {
+          "nameZh": "咖喱",
+          "nameJa": "カレー",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.tandake.com/%E3%82%B3%E3%83%BC%E3%82%B9",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "menu-page-text:カレー|カリー|咖喱|curry",
+          "evidenceSnippet": "美味しい牛タンカレーも別途ご用意してますので、是非ご注文ください。"
+        },
+        {
+          "nameZh": "拉面",
+          "nameJa": "ラーメン",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.tandake.com/%E3%82%B3%E3%83%BC%E3%82%B9",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "menu-page-text:ラーメン|らーめん|拉麺|ramen",
+          "evidenceSnippet": "​〆のラーメン"
+        },
+        {
+          "nameZh": "涮涮锅",
+          "nameJa": "しゃぶしゃぶ",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.tandake.com/%E3%82%B3%E3%83%BC%E3%82%B9",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "menu-page-text:しゃぶしゃぶ|shabu.?shabu",
+          "evidenceSnippet": "タンしゃぶしゃぶ"
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJj_lfWv2NGGARCofziNJc6j4",
@@ -6828,7 +7044,28 @@
     {
       "googlePlaceId": "ChIJm_L1ZwaMGGAR5L_pZa15NDk",
       "name": "Craft Beer Market",
-      "recommendedDishes": [],
+      "recommendedDishes": [
+        {
+          "nameZh": "意大利面",
+          "nameJa": "パスタ",
+          "provider": "sourceWebsite",
+          "sourceUrl": "http://www.craftbeermarket.jp/partyplan",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "html-block:パスタ|スパゲッティ|pasta|spaghetti",
+          "evidenceSnippet": "・フレンチフライ ・名物ローストチキン＆ローストポーク ・パスタ ＊仕入れ状況等によりフード内容が異なる場合がございます。"
+        },
+        {
+          "nameZh": "烤鸡",
+          "nameJa": "ローストチキン",
+          "provider": "sourceWebsite",
+          "sourceUrl": "http://www.craftbeermarket.jp/partyplan",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "html-block:ローストチキン",
+          "evidenceSnippet": "・フレンチフライ ・名物ローストチキン 【飲み放題120分】お腹いっぱい！ 名物肉盛り喰らえコース"
+        }
+      ],
       "featuredDishes": [
         {
           "nameZh": "披萨",
@@ -6851,6 +7088,16 @@
           "evidenceSnippet": "ピザメニュー"
         },
         {
+          "nameZh": "日式炸鸡",
+          "nameJa": "唐揚げ",
+          "provider": "sourceWebsite",
+          "sourceUrl": "http://www.craftbeermarket.jp/partyplan",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "menu-page-text:唐揚げ|から揚げ|からあげ|karaage",
+          "evidenceSnippet": "・ビール屋の唐揚げ"
+        },
+        {
           "nameZh": "牛排",
           "nameJa": "ステーキ",
           "provider": "sourceWebsite",
@@ -6869,6 +7116,16 @@
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:ステーキ|steak",
           "evidenceSnippet": "［自家醸造ビールとステーキと音楽ライブ］ お問合せはお電話で！"
+        },
+        {
+          "nameZh": "肉豆腐",
+          "nameJa": "肉豆腐",
+          "provider": "sourceWebsite",
+          "sourceUrl": "http://www.craftbeermarket.jp/partyplan",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "menu-page-text:(?:YEBISU BAR[^\\s]*)?肉豆富|肉豆腐",
+          "evidenceSnippet": "・季節のお浸し ・肉豆腐 ・パリパリサラダ"
         }
       ]
     },
@@ -7039,6 +7296,43 @@
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:ケーキ|cake",
           "evidenceSnippet": "・エンゼルフードケーキ ショコラ"
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJM7WMYXSNGGAREl92sQPtPg8",
+      "name": "Point Et Ligne",
+      "recommendedDishes": [],
+      "featuredDishes": [
+        {
+          "nameZh": "三明治",
+          "nameJa": "サンドイッチ",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.point-et-ligne.com/news/%e5%a4%8f%e5%ad%a3%e9%99%90%e5%ae%9a%e5%95%86%e5%93%81-2/",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "menu-page-text:サンドイッチ|サンド|sandwich",
+          "evidenceSnippet": "新サンドイッチ"
+        },
+        {
+          "nameZh": "三明治",
+          "nameJa": "サンドイッチ",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.point-et-ligne.com/news/%e5%ad%a3%e7%af%80%e9%99%90%e5%ae%9a%e6%96%b0%e5%95%86%e5%93%81/",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "menu-page-text:サンドイッチ|サンド|sandwich",
+          "evidenceSnippet": "新サンドイッチ"
+        },
+        {
+          "nameZh": "三明治",
+          "nameJa": "サンドイッチ",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.point-et-ligne.com/news/%e7%a5%9e%e6%a5%bd%e5%9d%82%e9%99%90%e5%ae%9a%e6%96%b0%e5%95%86%e5%93%81/",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "menu-page-text:サンドイッチ|サンド|sandwich",
+          "evidenceSnippet": "新サンドイッチ"
         }
       ]
     },
@@ -7619,7 +7913,38 @@
     {
       "googlePlaceId": "ChIJOTaGMgCNGGAR_Xx8beogY7w",
       "name": "Food Stadium Tokyo",
-      "recommendedDishes": [],
+      "recommendedDishes": [
+        {
+          "nameZh": "冷面",
+          "nameJa": "冷麺",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.tokyo-dome.co.jp/feature/gofun/",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "html-block:冷麺|冷面",
+          "evidenceSnippet": "店舗詳細 韓国定番人気のメニューや韓流スイーツを チヂミ・冷麺・野菜たっぷりビビンバ・スンドゥブ・キンパはもちろん、SNSで話題の韓流スイーツ「チーズハットグ」「かき氷」も楽しんで"
+        },
+        {
+          "nameZh": "石锅拌饭",
+          "nameJa": "ビビンバ",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.tokyo-dome.co.jp/feature/gofun/",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "html-block:ビビンバ|bibimbap",
+          "evidenceSnippet": "店舗詳細 韓国定番人気のメニューや韓流スイーツを チヂミ・冷麺・野菜たっぷりビビンバ・スンドゥブ・キンパはもちろん、SNSで話題の韓流スイーツ「チーズハットグ」「かき氷」も楽しんで"
+        },
+        {
+          "nameZh": "韩式煎饼",
+          "nameJa": "チヂミ",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.tokyo-dome.co.jp/feature/gofun/",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "html-block:チヂミ|jeon\\b",
+          "evidenceSnippet": "店舗詳細 韓国定番人気のメニューや韓流スイーツを チヂミ・冷麺・野菜たっぷりビビンバ・スンドゥブ・キンパはもちろん、SNSで話題の韓流スイーツ「チーズハットグ」「かき氷」も楽しんで"
+        }
+      ],
       "featuredDishes": [
         {
           "nameZh": "咖喱",
