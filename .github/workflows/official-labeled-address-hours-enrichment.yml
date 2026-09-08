@@ -1,0 +1,209 @@
+name: Enrich labeled address and hours from reviewed official pages
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/official-labeled-address-hours-enrichment.yml"
+      - "scripts/database/collect_official_labeled_address_hours.py"
+      - "scripts/database/collect_official_index_web_fields.py"
+      - "scripts/database/collect_official_practical_fields.py"
+      - "scripts/database/merge_public_web_field_evidence.py"
+      - "scripts/database/import_source_basic_web_evidence.py"
+      - "scripts/database/build_master.py"
+      - "data/official_candidate_index.json"
+      - "data/source_basic_web_field_evidence.json"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: public-web-field-evidence
+  cancel-in-progress: false
+
+jobs:
+  enrich:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Validate syntax and no-paid policy
+        run: |
+          set -euo pipefail
+          python -m py_compile \
+            scripts/database/collect_official_labeled_address_hours.py \
+            scripts/database/collect_official_index_web_fields.py \
+            scripts/database/collect_official_practical_fields.py \
+            scripts/database/import_source_basic_web_evidence.py \
+            scripts/database/build_master.py
+          node scripts/audit_no_paid_apis.mjs
+
+      - name: Build baseline master
+        run: |
+          set -euo pipefail
+          mkdir -p _tmp
+          python scripts/database/build_master.py --output _tmp/eat-master-before.sqlite --reset | tee _tmp/master-before.json
+          python scripts/database/validate_master.py _tmp/eat-master-before.sqlite | tee _tmp/master-before-validate.json
+          python - <<'PY'
+          import json
+          m=json.load(open('_tmp/master-before.json')); p=m['ingestionPlan']
+          out={'fieldTasks':p['taskTypeCounts']['field_completion'],'missing':p['fieldCompletionMissingCounts']}
+          json.dump(out,open('_tmp/address-hours-before.json','w'),sort_keys=True)
+          print(json.dumps(out,sort_keys=True))
+          PY
+
+      - name: Collect explicit labeled address and hours
+        run: |
+          set -euo pipefail
+          python scripts/database/collect_official_labeled_address_hours.py \
+            --database _tmp/eat-master-before.sqlite \
+            --output _tmp/official-labeled-address-hours-incoming.json \
+            --workers 8 --max-pages 250 \
+            | tee _tmp/official-labeled-address-hours-collection.json
+
+      - name: Validate incoming labeled core evidence
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json,re
+          d=json.load(open('_tmp/official-labeled-address-hours-incoming.json'))
+          assert d['schemaVersion']==2
+          assert d['ruleVersion']=='source-basic-web-field-evidence-v2'
+          p=d['policy']
+          assert p['paidDataApiCalls']==0
+          assert p['googleDisplayPayloadPersisted'] is False
+          assert p['sourceBackedIdentityRequired'] is True
+          assert p['reviewedOfficialBindingRequired'] is True
+          assert p['rawHtmlPersisted'] is False
+          assert p['robotsRespected'] is True
+          assert p['explicitAddressOrHoursLabelRequired'] is True
+          assert p['singleDistinctCandidateRequired'] is True
+          assert p['corporateAddressContextRejected'] is True
+          assert p['area1TokyoWardRequiredForVisibleAddress'] is True
+          assert p['concreteTimeRequiredForVisibleHours'] is True
+          assert p['canonicalResolution']=='import_time_missing_only'
+          snapshots=[]; fields={}
+          forbidden_address=re.compile(r'(?:電話|TEL|FAX|営業時間|営業日時|定休日|お問い合わせ)',re.I)
+          forbidden_hours=re.compile(r'(?:住所|所在地|店舗所在地|電話|TEL|FAX|お問い合わせ)',re.I)
+          ward=re.compile(r'(?:千代田区|文京区|中央区|新宿区|台東区)')
+          time=re.compile(r'(?:[0-2]?\d\s*[：:]\s*[0-5]\d|24\s*(?:時間|hours?|h\b))',re.I)
+          for row in d['rows']:
+              assert row['sourceProvider']=='official'
+              claims=row['fieldClaims']
+              assert claims and set(claims).issubset({'address','openingHoursRaw'})
+              check=row['identityCheck']
+              assert check['accepted'] is True
+              assert check['retainedOfficialBindingReviewed'] is True
+              if 'address' in claims:
+                  value=str(claims['address'])
+                  assert ward.search(value),value
+                  assert not forbidden_address.search(value),value
+                  fields['address']=fields.get('address',0)+1
+              if 'openingHoursRaw' in claims:
+                  values=claims['openingHoursRaw']
+                  assert isinstance(values,list) and len(values)==1
+                  value=str(values[0])
+                  assert time.search(value),value
+                  assert not forbidden_hours.search(value),value
+                  fields['openingHoursRaw']=fields.get('openingHoursRaw',0)+1
+              ev=row['webEvidence']
+              assert str(ev['sourceUrl']).startswith('https://')
+              assert str(ev['finalUrl']).startswith('https://')
+              assert re.fullmatch(r'[0-9a-f]{64}',str(ev['contentHash']))
+              assert ev['rawHtmlPersisted'] is False
+              discovery=ev.get('discovery') or {}
+              assert discovery['fieldParserVersion']=='official-labeled-address-hours-v1'
+              assert discovery['explicitLabelRequired'] is True
+              assert discovery['singleDistinctCandidateRequired'] is True
+              snapshots.append((row['googlePlaceId'],ev['finalUrl'],ev['contentHash']))
+          assert len(snapshots)==len(set(snapshots))
+          print(json.dumps({'rows':len(snapshots),'places':d['summary']['places'],'fields':fields,'fetchCounts':d['summary']['fetchCounts']},ensure_ascii=False,sort_keys=True))
+          PY
+
+      - name: Merge and validate master effect
+        run: |
+          set -euo pipefail
+          python scripts/database/merge_public_web_field_evidence.py \
+            data/source_basic_web_field_evidence.json \
+            _tmp/official-labeled-address-hours-incoming.json \
+            data/source_basic_web_field_evidence.json \
+            | tee _tmp/official-labeled-address-hours-working-merge.json
+          python scripts/database/build_master.py --output _tmp/eat-master-after.sqlite --reset | tee _tmp/master-after.json
+          python scripts/database/validate_master.py _tmp/eat-master-after.sqlite | tee _tmp/master-after-validate.json
+          python scripts/database/validate_ingestion_plan.py _tmp/eat-master-after.sqlite | tee _tmp/ingestion-plan-after.json
+          node scripts/build_google_inventory_runtime.mjs | tee _tmp/runtime-after.json
+          node scripts/audit_google_inventory_runtime.mjs | tee _tmp/runtime-after-audit.json
+          python - <<'PY'
+          import json
+          before=json.load(open('_tmp/address-hours-before.json'))
+          m=json.load(open('_tmp/master-after.json')); p=m['ingestionPlan']
+          after={'fieldTasks':p['taskTypeCounts']['field_completion'],'missing':p['fieldCompletionMissingCounts']}
+          assert after['fieldTasks'] <= before['fieldTasks'],(before,after)
+          for key,value in before['missing'].items():
+              assert after['missing'].get(key,0) <= value,(key,before,after)
+          assert after['missing'].get('address',0) <= before['missing'].get('address',0)
+          assert after['missing'].get('hours',0) <= before['missing'].get('hours',0)
+          json.dump(after,open('_tmp/address-hours-after.json','w'),sort_keys=True)
+          print(json.dumps({'before':before,'after':after},sort_keys=True))
+          PY
+
+      - name: Commit labeled address and hours evidence on latest main
+        run: |
+          set -euo pipefail
+          git restore -- data/google_inventory_runtime.js data/source_basic_web_field_evidence.json 2>/dev/null || true
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          for attempt in 1 2 3; do
+            git fetch origin main
+            git checkout -B official-labeled-address-hours origin/main
+            python scripts/database/merge_public_web_field_evidence.py \
+              data/source_basic_web_field_evidence.json \
+              _tmp/official-labeled-address-hours-incoming.json \
+              data/source_basic_web_field_evidence.json \
+              | tee _tmp/official-labeled-address-hours-latest-merge.json
+            git add data/source_basic_web_field_evidence.json
+            if git diff --cached --quiet; then
+              echo "No new labeled official address/hours evidence on latest main."
+              exit 0
+            fi
+            git commit -m "Add explicit labeled official address and hours evidence"
+            if git push origin HEAD:main; then exit 0; fi
+            git reset --hard HEAD~1
+            sleep 2
+          done
+          echo "Unable to fast-forward labeled address/hours evidence after three attempts." >&2
+          exit 1
+
+      - name: Upload labeled address-hours audit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: official-labeled-address-hours-enrichment
+          path: |
+            _tmp/official-labeled-address-hours-incoming.json
+            _tmp/official-labeled-address-hours-collection.json
+            _tmp/official-labeled-address-hours-working-merge.json
+            _tmp/official-labeled-address-hours-latest-merge.json
+            _tmp/address-hours-before.json
+            _tmp/address-hours-after.json
+            _tmp/master-before.json
+            _tmp/master-before-validate.json
+            _tmp/master-after.json
+            _tmp/master-after-validate.json
+            _tmp/ingestion-plan-after.json
+            _tmp/runtime-after.json
+            _tmp/runtime-after-audit.json
+          if-no-files-found: warn
+          retention-days: 2
