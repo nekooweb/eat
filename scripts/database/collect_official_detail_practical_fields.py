@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Collect explicit practical facts from a tiny same-origin official detail-page set."""
+"""Collect explicit practical facts from a bounded same-origin official detail-page set."""
 from __future__ import annotations
 
 import argparse
@@ -23,7 +23,10 @@ ROOT = Path(__file__).resolve().parents[2]
 DATA = ROOT / "data"
 RULE_VERSION = practical.RULE_VERSION
 PARSER_VERSION = practical.PARSER_VERSION
-MAX_DETAIL_LINKS = 2
+# Four remains a deliberately small per-restaurant bound. Only links that pass the
+# existing high-signal practical-page filter are eligible, so this expands coverage
+# without turning the worker into a general website crawler.
+MAX_DETAIL_LINKS = 4
 PRACTICAL_HINT = re.compile(r"(?:店舗情報|shop|info|facility|設備|サービス|service|access|アクセス|faq|よくある|guide|ご案内|利用案内)", re.I)
 EXCLUDE_HINT = re.compile(r"(?:menu|メニュー|お品書き|course|コース|recruit|求人|privacy|policy|採用|予約|reserve|instagram|facebook|twitter|x\.com)", re.I)
 
