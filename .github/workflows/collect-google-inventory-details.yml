@@ -1,10 +1,12 @@
-name: Collect Google inventory detailed recommendations
+name: Collect source-backed recommended dishes
 
 on:
   push:
     branches: ["main"]
     paths:
       - ".github/workflows/collect-google-inventory-details.yml"
+      - "scripts/recommended_dish_extractor.mjs"
+      - "scripts/build_retained_dish_evidence.mjs"
       - "scripts/collect_google_inventory_recommendations.mjs"
       - "scripts/merge_google_inventory_detail_evidence.mjs"
       - "scripts/build_google_inventory_detail_queue.mjs"
@@ -16,7 +18,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: collect-google-inventory-details
+  group: collect-source-backed-recommended-dishes
   cancel-in-progress: false
 
 jobs:
@@ -33,7 +35,7 @@ jobs:
           node-version: '22'
       - name: Enforce no-paid-data-API policy
         run: node scripts/audit_no_paid_apis.mjs
-      - name: Build current exact inventory runtime and queue
+      - name: Build current published runtime and dish queue
         run: |
           set -euo pipefail
           node scripts/build_hotpepper_rich_core_fallback.mjs
@@ -49,22 +51,34 @@ jobs:
           if [ -s data/google_inventory_detail_evidence.json ]; then
             cp data/google_inventory_detail_evidence.json /tmp/google_inventory_detail_evidence.previous.json
           else
-            printf '{"schemaVersion":1,"rows":[],"summary":{}}\n' > /tmp/google_inventory_detail_evidence.previous.json
+            printf '{"schemaVersion":1,"policy":{"paidGoogleDataApiCalls":0},"rows":[],"summary":{}}\n' > /tmp/google_inventory_detail_evidence.previous.json
           fi
-      - name: Collect source-backed recommendations
+      - name: Mine retained official and third-party dish facts
+        run: |
+          set -euo pipefail
+          node scripts/build_retained_dish_evidence.mjs /tmp/retained-dish-evidence.json | tee /tmp/retained-dish-summary.json
+          test -s /tmp/retained-dish-evidence.json
+      - name: Collect current official-site and retained Hot Pepper evidence
         env:
           INVENTORY_DETAIL_FETCH_TIMEOUT_MS: "7000"
           INVENTORY_DETAIL_HOST_WORKERS: "20"
         run: |
           set -euo pipefail
-          node scripts/collect_google_inventory_recommendations.mjs data/google_inventory_detail_evidence.json | tee /tmp/inventory-detail-summary.json
-          test -s data/google_inventory_detail_evidence.json
+          node scripts/collect_google_inventory_recommendations.mjs /tmp/fresh-dish-evidence.json | tee /tmp/fresh-dish-summary.json
+          test -s /tmp/fresh-dish-evidence.json
+      - name: Merge evidence monotonically
+        run: |
+          set -euo pipefail
           node scripts/merge_google_inventory_detail_evidence.mjs \
             /tmp/google_inventory_detail_evidence.previous.json \
-            data/google_inventory_detail_evidence.json \
-            data/google_inventory_detail_evidence.json | tee /tmp/inventory-detail-merge-summary.json
+            /tmp/retained-dish-evidence.json \
+            /tmp/dish-evidence-retained-merged.json | tee /tmp/retained-merge-summary.json
+          node scripts/merge_google_inventory_detail_evidence.mjs \
+            /tmp/dish-evidence-retained-merged.json \
+            /tmp/fresh-dish-evidence.json \
+            data/google_inventory_detail_evidence.json | tee /tmp/fresh-merge-summary.json
           node scripts/audit_google_inventory_detail_evidence.mjs
-      - name: Rebuild runtime and detail queue
+      - name: Rebuild runtime and recommendation-first detail queue
         run: |
           set -euo pipefail
           node scripts/build_google_inventory_runtime.mjs
@@ -73,15 +87,15 @@ jobs:
           node - <<'NODE'
           const fs = require('fs');
           const q = JSON.parse(fs.readFileSync('data/google_inventory_detail_queue.json', 'utf8'));
-          if (q.summary.inventoryTotal !== 2804 || !q.summary.runtimeBaselineComplete) {
-            throw new Error('exact 2804 Place-ID runtime baseline must remain complete');
+          if (q.summary.catalogTotal !== 2804 || !q.summary.runtimeBaselineComplete) {
+            throw new Error('frozen 2,804 Place-ID catalog baseline must remain complete');
           }
-          if (q.summary.placeIdOnly > 0 && q.rows[0]?.nextAction !== 'resolve_basic_source_identity') {
-            throw new Error('unresolved basic source identities must remain highest queue priority');
+          if (q.summary.publicRuntimeTotal <= 0 || q.summary.publicRuntimeTotal + q.summary.unpublishedPlaceIdOnly !== 2804) {
+            throw new Error('named public + unpublished Place-ID-only counts must reconcile');
           }
-          const namedGap = q.rows.find((row) => row.name && row.recommendedDishesKnown === 0);
-          if (namedGap && namedGap.nextAction !== 'collect_strict_recommended_dishes') {
-            throw new Error('strict recommendation collection must remain highest detailed-field priority');
+          const namedGap = q.rows.find((row) => row.recommendedDishesKnown === 0);
+          if (namedGap && !['collect_strict_recommended_dishes', 'find_independent_dish_source'].includes(namedGap.nextAction)) {
+            throw new Error('source-backed recommendation collection must remain highest detailed-field priority');
           }
           console.log(JSON.stringify(q.summary));
           NODE
@@ -95,7 +109,7 @@ jobs:
             echo "No inventory detail changes to commit."
             exit 0
           fi
-          git commit -m "Update Google inventory detailed enrichment"
+          git commit -m "Update source-backed recommended dish evidence"
           git fetch origin main
           git rebase origin/main
           git push origin HEAD:main
