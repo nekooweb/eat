@@ -7,6 +7,10 @@ const DATA = path.join(ROOT, 'data');
 const inventory = JSON.parse(fs.readFileSync(path.join(DATA, 'area1_google_ids.json'), 'utf8'));
 const runtimeText = fs.readFileSync(path.join(DATA, 'google_inventory_runtime.js'), 'utf8');
 const dishPatchText = fs.readFileSync(path.join(ROOT, 'scripts', 'chinese_dish_runtime_patch.js'), 'utf8');
+const reviewedOfficialOverlayPath = path.join(DATA, 'reviewed_official_runtime_sources.json');
+const reviewedOfficialOverlay = fs.existsSync(reviewedOfficialOverlayPath)
+  ? JSON.parse(fs.readFileSync(reviewedOfficialOverlayPath, 'utf8'))
+  : null;
 
 function parseAssignment(name) {
   const prefix = `window.${name}=`;
@@ -39,6 +43,43 @@ if (expectedPublishedOrder.length !== ids.length || expectedPublishedOrder.some(
   throw new Error('Published runtime order must preserve frozen catalog order');
 }
 
+const overlayById = new Map();
+const overlayConflictIds = new Set();
+if (reviewedOfficialOverlay) {
+  const policy = reviewedOfficialOverlay.policy || {};
+  const summary = reviewedOfficialOverlay.summary || {};
+  if (policy.sameCollisionLogicAsSQLiteMaster !== true || policy.reviewedRowsOnly !== true || policy.conflictRowsPublished !== false) {
+    throw new Error('Reviewed official overlay does not preserve SQLite collision/review semantics');
+  }
+  if ((policy.paidGoogleDataApiCalls ?? 0) !== 0 || policy.googleDisplayPayloadPersisted === true) {
+    throw new Error('Reviewed official overlay violates zero-paid/no-Google-display policy');
+  }
+  if (policy.runtimeNameMutationAllowed !== false || policy.runtimeCoordinateMutationAllowed !== false || policy.runtimeIdentityMutationAllowed !== false) {
+    throw new Error('Reviewed official overlay must remain source-URL-only');
+  }
+  if (policy.dishEvidencePromotionByOverlayAllowed !== false) {
+    throw new Error('Reviewed official overlay must not directly promote dish evidence');
+  }
+  if (summary.officialCandidateIndexRows !== 194 || summary.reviewedRows !== 193 || summary.conflictDeferredRows !== 1) {
+    throw new Error(`Unexpected reviewed official overlay baseline: ${JSON.stringify(summary)}`);
+  }
+  if ((reviewedOfficialOverlay.rows || []).length !== summary.reviewedRows) {
+    throw new Error('Reviewed official overlay row count does not match summary');
+  }
+  for (const item of reviewedOfficialOverlay.conflictDeferred || []) overlayConflictIds.add(item.googlePlaceId);
+  for (const item of reviewedOfficialOverlay.rows || []) {
+    if (overlayById.has(item.googlePlaceId)) throw new Error(`Duplicate reviewed official overlay row: ${item.googlePlaceId}`);
+    if (overlayConflictIds.has(item.googlePlaceId)) throw new Error(`Conflict Place ID leaked into reviewed official overlay: ${item.googlePlaceId}`);
+    if (item.reviewState !== 'reviewed' || !Array.isArray(item.sourceWebsites) || !item.sourceWebsites.length) {
+      throw new Error(`Invalid reviewed official overlay row: ${item.googlePlaceId}`);
+    }
+    if (item.sourceWebsites.some((url) => !String(url || '').startsWith('https://'))) {
+      throw new Error(`Non-HTTPS reviewed official URL: ${item.googlePlaceId}`);
+    }
+    overlayById.set(item.googlePlaceId, item);
+  }
+}
+
 for (const row of rows) {
   if (!row.googlePlaceId || row.inventoryWithinRadius !== true) throw new Error('Missing frozen-inventory identity marker');
   if (!['canonical', 'source_matched'].includes(row.basicInfoState)) {
@@ -58,6 +99,16 @@ for (const row of rows) {
       throw new Error(`Source-matched row lacks independent source: ${row.googlePlaceId}`);
     }
   }
+
+  if (row.reviewedOfficialSourceOverlay) {
+    const source = overlayById.get(row.googlePlaceId);
+    if (!source) throw new Error(`Runtime overlay marker lacks reviewed source row: ${row.googlePlaceId}`);
+    if (overlayConflictIds.has(row.googlePlaceId)) throw new Error(`Runtime applied official overlay to conflict row: ${row.googlePlaceId}`);
+    const websites = new Set((row.sourceWebsites || []).map((url) => String(url || '').trim()));
+    for (const url of source.sourceWebsites) {
+      if (!websites.has(url)) throw new Error(`Runtime failed to materialize reviewed official URL for ${row.googlePlaceId}: ${url}`);
+    }
+  }
 }
 
 if (stats.catalogTotal !== 2804) throw new Error('Runtime stats lost the full frozen catalog count');
@@ -67,6 +118,25 @@ if (stats.placeIdOnly !== 0) throw new Error('Public runtime must not report pub
 if (stats.unpublishedPlaceIdOnly !== 2804 - rows.length) throw new Error('Held ID-only count does not reconcile with catalog');
 if (stats.catalogPlaceIdOnly !== stats.unpublishedPlaceIdOnly) throw new Error('Catalog/public ID-only counters diverged');
 if (rows.length < 3) throw new Error('Published recommendation runtime has fewer than 3 rows');
+
+if (reviewedOfficialOverlay) {
+  const applied = rows.filter((row) => row.reviewedOfficialSourceOverlay).length;
+  const appliedWithMenu = rows.filter((row) => {
+    if (!row.reviewedOfficialSourceOverlay) return false;
+    const source = overlayById.get(row.googlePlaceId);
+    return Array.isArray(source?.menuUrls) && source.menuUrls.length > 0;
+  }).length;
+  if (stats.reviewedOfficialOverlayRows !== reviewedOfficialOverlay.summary.reviewedRows) {
+    throw new Error('Runtime reviewed-official overlay total diverged from source document');
+  }
+  if (stats.reviewedOfficialOverlayConflictDeferredRows !== reviewedOfficialOverlay.summary.conflictDeferredRows) {
+    throw new Error('Runtime reviewed-official conflict counter diverged from source document');
+  }
+  if (stats.reviewedOfficialOverlayAppliedRows !== applied || stats.reviewedOfficialOverlayAppliedRowsWithMenuUrl !== appliedWithMenu) {
+    throw new Error('Runtime reviewed-official applied counters diverged from rows');
+  }
+  if (applied > reviewedOfficialOverlay.summary.reviewedRows) throw new Error('Runtime applied more reviewed official overlays than exist');
+}
 
 // Dish review strict-source-zh-v1: runtime patch may sanitize/translate already
 // retained dish evidence, but it must not synthesize restaurant recommendations
