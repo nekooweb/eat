@@ -13,6 +13,7 @@ on:
       - "scripts/merge_google_inventory_detail_evidence.mjs"
       - "scripts/build_google_inventory_detail_queue.mjs"
       - "scripts/build_dish_batch_plan.mjs"
+      - "scripts/build_independent_dish_source_candidate_plan.mjs"
       - "scripts/audit_google_inventory_detail_evidence.mjs"
       - "scripts/build_google_inventory_runtime.mjs"
       - "scripts/database/export_reviewed_official_runtime_sources.py"
@@ -46,10 +47,6 @@ jobs:
       - name: Sync latest main after serialized wait
         run: |
           set -euo pipefail
-          # A queued workflow run is checked out at the historical event SHA even
-          # when an earlier serialized dish run has already pushed newer data.
-          # Always start extraction from the latest main so stale generated JSON
-          # cannot be replayed over newer evidence during the final rebase.
           git fetch origin main
           git reset --hard origin/main
           echo "DISH_BATCH_BASE_SHA=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
@@ -193,17 +190,19 @@ jobs:
             /tmp/official-sitemap-dish-evidence.json \
             data/google_inventory_detail_evidence.json | tee /tmp/official-sitemap-merge-summary.json
           node scripts/audit_google_inventory_detail_evidence.mjs
-      - name: Rebuild runtime, queue and deterministic bulk plan
+      - name: Rebuild runtime, queue and deterministic bulk plans
         run: |
           set -euo pipefail
           node scripts/build_google_inventory_runtime.mjs
           node scripts/audit_google_inventory_runtime.mjs
           node scripts/build_google_inventory_detail_queue.mjs data/google_inventory_detail_queue.json
           node scripts/build_dish_batch_plan.mjs data/dish_batch_plan.json 8 | tee /tmp/dish-batch-plan-summary.json
+          node scripts/build_independent_dish_source_candidate_plan.mjs data/independent_dish_source_candidates.json 8 | tee /tmp/independent-dish-source-candidate-summary.json
           node - <<'NODE'
           const fs = require('fs');
           const q = JSON.parse(fs.readFileSync('data/google_inventory_detail_queue.json', 'utf8'));
           const plan = JSON.parse(fs.readFileSync('data/dish_batch_plan.json', 'utf8'));
+          const candidates = JSON.parse(fs.readFileSync('data/independent_dish_source_candidates.json', 'utf8'));
           if (q.summary.catalogTotal !== 2804 || !q.summary.runtimeBaselineComplete) {
             throw new Error('frozen 2,804 Place-ID catalog baseline must remain complete');
           }
@@ -225,9 +224,18 @@ jobs:
           if ((plan.rows || []).some((row) => row.shard < 0 || row.shard >= 8 || !row.googlePlaceId || !row.lane)) {
             throw new Error('invalid dish bulk plan row');
           }
-          console.log(JSON.stringify({ queue: q.summary, batchPlan: plan.summary }));
+          if (candidates.policy?.proposalOnly !== true || candidates.policy?.identityBindingChanges !== 0 || candidates.policy?.networkRequests !== 0) {
+            throw new Error('independent dish source plan must remain proposal-only and network-free');
+          }
+          if (candidates.policy?.proximityOnlyBindingAllowed !== false || candidates.policy?.dishEvidencePromotionBeforeIdentityReviewAllowed !== false) {
+            throw new Error('independent dish source candidate identity boundary failed');
+          }
+          if (candidates.summary?.currentIndependentDishSourceGap !== q.summary.recommendationGapNeedingNewDishSource || candidates.summary?.shards !== 8) {
+            throw new Error('independent dish source candidate plan is stale relative to rebuilt queue');
+          }
+          console.log(JSON.stringify({ queue: q.summary, batchPlan: plan.summary, independentCandidates: candidates.summary }));
           NODE
-      - name: Commit detailed evidence, reviewed source overlay, queue and bulk plan
+      - name: Commit detailed evidence, reviewed source overlay, queue and bulk plans
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"
@@ -238,22 +246,18 @@ jobs:
             data/google_inventory_detail_queue.json \
             data/google_inventory_runtime.js \
             data/dish_translation_pending.json \
-            data/dish_batch_plan.json
+            data/dish_batch_plan.json \
+            data/independent_dish_source_candidates.json
           if git diff --cached --quiet; then
-            echo "No inventory detail/source-overlay changes to commit."
+            echo "No inventory detail/source-overlay/plan changes to commit."
             exit 0
           fi
           git commit -m "Update source-backed recommended dish evidence"
-          # Build helpers may rewrite tracked derivative files that are deliberately
-          # not part of this evidence commit. Reset only the runner worktree to the
-          # just-created commit before rebasing; staged targets are already in HEAD.
           git reset --hard HEAD
           git fetch origin main
           git rebase origin/main
           git push origin HEAD:main
 
-  # The reusable contract explicitly fetches latest main so any bot-generated
-  # evidence commit created above is included in SQLite validation.
   validate_database:
     needs: collect
     permissions:
