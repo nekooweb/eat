@@ -9,14 +9,20 @@ if (!previousPath || !currentPath) {
 const previous = fs.existsSync(previousPath) ? JSON.parse(fs.readFileSync(previousPath, 'utf8')) : { rows: [], summary: {} };
 const current = JSON.parse(fs.readFileSync(currentPath, 'utf8'));
 
+// Public dish identity is the Chinese label + provider + source page + evidence
+// class. Source-native spellings remain metadata; they must not create duplicate
+// public evidence rows for the same dish on the same source page.
 function itemKey(item) {
   return [
-    item?.nameZh || '',
-    item?.nameJa || '',
+    String(item?.nameZh || '').trim(),
     item?.provider || '',
     item?.sourceUrl || '',
     item?.evidenceClass || ''
   ].join('|');
+}
+
+function itemRichness(item) {
+  return [item?.evidenceRule, item?.evidenceSnippet, item?.nameJa].filter(Boolean).length;
 }
 
 function mergeItems(oldItems = [], newItems = []) {
@@ -25,9 +31,15 @@ function mergeItems(oldItems = [], newItems = []) {
     if (!item?.nameZh || !item?.sourceUrl) continue;
     const key = itemKey(item);
     const existing = map.get(key);
-    if (!existing || String(item.checkedAt || '') >= String(existing.checkedAt || '')) map.set(key, item);
+    const itemDate = String(item.checkedAt || '');
+    const existingDate = String(existing?.checkedAt || '');
+    if (!existing || itemDate > existingDate || (itemDate === existingDate && itemRichness(item) > itemRichness(existing))) {
+      map.set(key, item);
+    }
   }
-  return [...map.values()].sort((a, b) => String(b.checkedAt || '').localeCompare(String(a.checkedAt || '')) || itemKey(a).localeCompare(itemKey(b))).slice(0, 6);
+  return [...map.values()]
+    .sort((a, b) => String(b.checkedAt || '').localeCompare(String(a.checkedAt || '')) || itemKey(a).localeCompare(itemKey(b)))
+    .slice(0, 6);
 }
 
 const byId = new Map();
@@ -71,12 +83,13 @@ if (mergedCounts.recommendationRestaurants < before.recommendationRestaurants ||
 }
 
 const payload = {
-  schemaVersion: Math.max(Number(previous.schemaVersion || 1), Number(current.schemaVersion || 1), 2),
+  schemaVersion: Math.max(Number(previous.schemaVersion || 1), Number(current.schemaVersion || 1), 3),
   checkedAt: [previous.checkedAt, current.checkedAt].filter(Boolean).sort().at(-1) || new Date().toISOString().slice(0, 10),
   policy: {
     ...(previous.policy || {}),
     ...(current.policy || {}),
-    evidenceRetention: 'monotonic union; previously verified source-backed evidence is retained when later crawls fail or return no match'
+    evidenceRetention: 'monotonic union; previously verified source-backed evidence is retained when later crawls fail or return no match',
+    dishEvidenceDedupeKey: 'nameZh + provider + sourceUrl + evidenceClass; source-native spelling is metadata only'
   },
   summary: {
     ...(current.summary || {}),
