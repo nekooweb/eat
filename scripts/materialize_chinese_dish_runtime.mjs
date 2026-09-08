@@ -6,27 +6,37 @@ import { materializePublicHours, PUBLIC_HOURS_POLICY } from './public_hours_runt
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
 const DATA = path.join(ROOT, 'data');
 const runtimePath = path.join(DATA, 'google_inventory_runtime.js');
+const sourceFactsPath = path.join(DATA, 'source_facts.js');
 const patchPath = path.join(ROOT, 'scripts', 'chinese_dish_runtime_patch.js');
 
 const runtimeText = fs.readFileSync(runtimePath, 'utf8');
+const sourceFactsText = fs.existsSync(sourceFactsPath) ? fs.readFileSync(sourceFactsPath, 'utf8') : '';
 const patchText = fs.readFileSync(patchPath, 'utf8');
 
-function parseAssignment(name) {
+function parseAssignment(text, name) {
   const prefix = `window.${name}=`;
-  const start = runtimeText.indexOf(prefix);
+  const start = text.indexOf(prefix);
   if (start < 0) throw new Error(`Missing ${name}`);
   const valueStart = start + prefix.length;
-  const end = runtimeText.indexOf(';\n', valueStart);
+  const end = text.indexOf(';\n', valueStart);
   if (end < 0) throw new Error(`Cannot parse ${name}`);
-  return JSON.parse(runtimeText.slice(valueStart, end));
+  return JSON.parse(text.slice(valueStart, end));
 }
 
-const rows = parseAssignment('GOOGLE_INVENTORY_RESTAURANTS');
-const stats = parseAssignment('GOOGLE_INVENTORY_STATS');
+const rows = parseAssignment(runtimeText, 'GOOGLE_INVENTORY_RESTAURANTS');
+const stats = parseAssignment(runtimeText, 'GOOGLE_INVENTORY_STATS');
+const sourceFactsDoc = sourceFactsText ? parseAssignment(sourceFactsText, 'SOURCE_FACTS') : { rows: [] };
+const sourceFactsById = new Map(
+  (sourceFactsDoc.rows || [])
+    .filter((row) => row?.googlePlaceId)
+    .map((row) => [row.googlePlaceId, Array.isArray(row.sourceFacts) ? row.sourceFacts : []])
+);
 
-// Public Pages exposes one schedule field only. Any source prose or legacy
-// schedule object must be normalized to a stable Chinese string or hidden.
-const hoursStats = materializePublicHours(rows);
+// Public Pages exposes one schedule field only. Canonical rows with maintained
+// provider facts are re-derived from strict raw evidence at this boundary;
+// conflicting or ambiguous schedules are hidden instead of preserving a
+// potentially wrong older normalization.
+const hoursStats = materializePublicHours(rows, sourceFactsById);
 
 const sandbox = {
   window: {
@@ -95,7 +105,12 @@ const finalStats = {
   hoursKnown: rows.filter((row) => typeof row.hoursReference === 'string' && row.hoursReference.trim()).length,
   hoursRuntimePolicy: PUBLIC_HOURS_POLICY,
   hoursNormalizedRows: hoursStats.normalized,
+  hoursNormalizedFromEvidence: hoursStats.normalizedFromEvidence,
+  hoursNormalizedFromExistingSchedule: hoursStats.normalizedFromExistingSchedule,
+  hoursNormalizedFromStrictRaw: hoursStats.normalizedFromStrictRaw,
   hoursHiddenUnparseableRows: hoursStats.hiddenUnparseable,
+  hoursHiddenConflictRows: hoursStats.hiddenConflict,
+  hoursHiddenSemanticRows: hoursStats.hiddenSemantic,
   hoursRowsWithoutSource: hoursStats.noScheduleSource,
   hoursLegacyFieldsStripped: hoursStats.strippedLegacyFields,
   recommendedDishesKnown: rows.filter((row) => Array.isArray(row.recommendedDishes) && row.recommendedDishes.length > 0).length,
@@ -112,7 +127,7 @@ const finalStats = {
 
 fs.writeFileSync(
   runtimePath,
-  `// Generated public runtime. Public opening hours use one normalized Chinese field (hoursReference) or are hidden. Approximate Chinese dish hints are materialized only at this display boundary; they are not source evidence.\n` +
+  `// Generated public runtime. Public opening hours use one semantically validated Chinese field (hoursReference) or are hidden. Approximate Chinese dish hints are materialized only at this display boundary; they are not source evidence.\n` +
   `window.GOOGLE_INVENTORY_RESTAURANTS=${JSON.stringify(rows)};\n` +
   `window.GOOGLE_INVENTORY_STATS=${JSON.stringify(finalStats)};\n`,
   'utf8'
