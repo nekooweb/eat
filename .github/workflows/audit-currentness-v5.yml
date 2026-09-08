@@ -1,0 +1,66 @@
+name: Audit strict branch-body currentness v5
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/audit-currentness-v5.yml"
+      - "scripts/database/review_id_only_currentness_sources_v5.py"
+      - "data/id_only_currentness_source_overrides.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Build master and audit v5
+        run: |
+          set -euo pipefail
+          mkdir -p _tmp
+          node scripts/audit_no_paid_apis.mjs
+          python -m py_compile scripts/database/review_id_only_currentness_sources_v5.py
+          python scripts/database/build_master.py --output _tmp/master.sqlite --reset | tee _tmp/master.json
+          python scripts/database/validate_master.py _tmp/master.sqlite
+          python scripts/database/review_id_only_currentness_sources_v5.py \
+            --database _tmp/master.sqlite --output _tmp/review-v5.json --workers 8 | tee _tmp/review-v5-summary.json
+          python - <<'PY'
+          import json
+          d=json.load(open('_tmp/review-v5.json')); p=d['policy']
+          assert d['ruleVersion']=='id-only-currentness-review-v5'
+          assert p['paidDataApiCalls']==0 and p['googleDisplayPayloadPersisted'] is False
+          assert p['proximityOnlyAdmissionAllowed'] is False
+          assert p['branchBodyFallbackEnabled'] is True
+          assert p['branchBodyFallbackRequiresBranchSpecificUrl'] is True
+          assert p['branchBodyFallbackRequiresDistinctiveNameComponent'] is True
+          assert p['branchBodyFallbackRequiresAddressDerivedLocality'] is True
+          assert p['v4HotPepperGateUnchanged'] is True and p['v4OvertureGatesUnchanged'] is True
+          ready=[]
+          for r in d['rows']:
+            if not r.get('admissionReady'): continue
+            check=(r.get('currentnessReview') or {}).get('bestCheck') or {}
+            body=check.get('branchBodyEvidence')
+            if body:
+              assert check['method']=='visible_branch_body_brand_locality_plus_strong_location'
+              assert body['branchSpecificUrl'] is True
+              assert body['matchedDistinctiveNameComponents'] and body['matchedLocalityFragments']
+              assert check['locationConfirmed'] is True
+            ready.append({'googlePlaceId':r['googlePlaceId'],'name':(r.get('expected') or {}).get('name'),'url':r.get('currentnessUrl'),'overtureGate':r.get('overtureGateV4'),'check':check})
+          print('V5_READY='+json.dumps(ready,ensure_ascii=False,separators=(',',':')))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: audit-currentness-v5
+          path: _tmp/*.json
+          if-no-files-found: warn
+          retention-days: 3
