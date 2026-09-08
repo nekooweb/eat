@@ -36,22 +36,26 @@
     "concreteTimeRequiredForVisibleHours": true
   },
   "summary": {
-    "rows": 146,
+    "rows": 149,
     "places": 120,
-    "placesWithMultipleSnapshots": 26,
+    "placesWithMultipleSnapshots": 28,
     "fieldCounts": {
       "address": 3,
       "cuisineNormalized": 1,
       "geo": 1,
       "openingHoursRaw": 38,
-      "priceRange": 9,
+      "priceRange": 12,
       "telephone": 123
     },
     "providerCounts": {
       "Overture Maps": 18,
-      "official": 128
+      "official": 131
     },
-    "lastMerge": {}
+    "lastMerge": {
+      "snapshot_added": 3,
+      "snapshot_added_existing_place": 3,
+      "snapshot_already_present": 1
+    }
   },
   "rows": [
     {
@@ -2054,6 +2058,35 @@
       "webEvidence": {
         "sourceUrl": "https://yakiniku-ittou.foodre.jp/",
         "finalUrl": "https://yakiniku-ittou.foodre.jp/",
+        "retrievedAt": "2026-09-08T09:14:49Z",
+        "contentHash": "cfb1a5657c400bf4386999b62ffe3e5396b6fd60036ea0c171b8826e38565743",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06"
+      },
+      "fieldClaims": {
+        "priceRange": "ランチ予算: 営業時間外 ディナー予算: 〜8,000円"
+      },
+      "checkedAt": "2026-09-08"
+    },
+    {
+      "googlePlaceId": "ChIJCzypNAWMGGAR_z5GQlqWIjE",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:60ae8cdd30f73f2d12a8",
+      "missingBefore": [
+        "lunch_budget"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "jsonld_business_name",
+        "pageNameSimilarity": 1.0,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://yakiniku-ittou.foodre.jp/",
+        "finalUrl": "https://yakiniku-ittou.foodre.jp/",
         "retrievedAt": "2026-09-07T10:44:30Z",
         "contentHash": "e0983cfbfcee27b3267b560cd932f5cf18e300cf0e4a78413f1af4c6a20bebb0",
         "parserVersion": "official-web-jsonld-v1",
@@ -2260,6 +2293,36 @@
         "telephone": "03-3291-9933"
       },
       "checkedAt": "2026-09-07"
+    },
+    {
+      "googlePlaceId": "ChIJIeDGY_6NGGARWCyGYme_2bA",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:7e78f798b5b447fce306",
+      "missingBefore": [
+        "dinner_budget",
+        "lunch_budget"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "jsonld_business_name",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://www.pasela.co.jp/paselabo_shop/grandcypher-kitchen/",
+        "finalUrl": "https://paselabo.pasela.co.jp/grandcypher-kitchen/",
+        "retrievedAt": "2026-09-08T09:15:13Z",
+        "contentHash": "1103b640ff6c09d1b2296522f37d4bff61533fd38e32ffb3c4ca15249523e2ab",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06"
+      },
+      "fieldClaims": {
+        "priceRange": "770～"
+      },
+      "checkedAt": "2026-09-08"
     },
     {
       "googlePlaceId": "ChIJIeDGY_6NGGARWCyGYme_2bA",
@@ -4732,6 +4795,36 @@
       },
       "fieldClaims": {
         "telephone": "03-3258-8928"
+      },
+      "checkedAt": "2026-09-08"
+    },
+    {
+      "googlePlaceId": "ChIJwVPZogOMGGARJe7b3LBQPsM",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:60ab36ed5e4c97a8c352",
+      "missingBefore": [
+        "dinner_budget",
+        "lunch_budget"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "jsonld_business_name",
+        "pageNameSimilarity": 1.0,
+        "titleNameSimilarity": 0.16
+      },
+      "webEvidence": {
+        "sourceUrl": "https://kanda-sanmasa.com/ja?utm_medium=referral&utm_source=google&utm_campaign=mm&utm_content=hp",
+        "finalUrl": "https://kanda-sanmasa.com/ja?utm_medium=referral&utm_source=google&utm_campaign=mm&utm_content=hp",
+        "retrievedAt": "2026-09-08T09:15:05Z",
+        "contentHash": "4c1d51ed5aabc25ed478b62611c13e3582778ffd8211bc4eb3d76fdee0227473",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06"
+      },
+      "fieldClaims": {
+        "priceRange": "JPY 6,000"
       },
       "checkedAt": "2026-09-08"
     },
