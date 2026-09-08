@@ -11,9 +11,9 @@ No identity matching is performed here. The reviewed source-record provider ID m
 byte-for-byte to the current retained OSM candidate's stable candidate `id`; candidate-ID
 and native-source-ID collisions are both deferred. Telephone is accepted only when the
 retained row contains exactly one distinct valid source-native number. Practical fields
-are limited to three unambiguous OSM tag values: `payment:credit_cards=yes/no`,
-`internet_access=wlan/no`, and `wheelchair=yes/no`. Ambiguous values such as
-`wheelchair=limited` remain provenance only.
+use only unambiguous native tags: explicit credit-card support, Wi-Fi/no internet,
+wheelchair yes/no, and recognized OSM smoking-policy values. Ambiguous or internally
+contradictory tags remain provenance only.
 """
 from __future__ import annotations
 
@@ -28,7 +28,15 @@ import master_import_core as core
 import retained_osm_identity as retained_osm
 
 IDENTITY_ACQUISITION_METHOD = "retained_verified_osm_identity_qc"
-RULE_VERSION = "verified-osm-native-metadata-v2"
+RULE_VERSION = "verified-osm-native-metadata-v3"
+CARD_SCHEME_TAGS = (
+    "payment:visa",
+    "payment:mastercard",
+    "payment:jcb",
+    "payment:american_express",
+    "payment:diners_club",
+)
+SMOKING_POLICIES = {"no", "yes", "separated", "isolated", "outside", "dedicated"}
 
 
 def _known_fields(db) -> set[tuple[str, str]]:
@@ -113,17 +121,25 @@ def _native_phones(candidate: dict) -> list[str]:
     return output
 
 
-def _practical_claims(candidate: dict) -> dict[str, bool]:
+def _practical_claims(candidate: dict) -> dict[str, object]:
     tags = candidate.get("sourcePracticalTags") or {}
     if not isinstance(tags, dict):
         return {}
-    output: dict[str, bool] = {}
+    output: dict[str, object] = {}
 
     credit_cards = str(tags.get("payment:credit_cards") or "").strip().casefold()
-    if credit_cards == "yes":
-        output["practical.card_available"] = True
-    elif credit_cards == "no":
-        output["practical.card_available"] = False
+    scheme_yes = any(
+        str(tags.get(key) or "").strip().casefold() == "yes"
+        for key in CARD_SCHEME_TAGS
+    )
+    # A named credit-card scheme=yes is an explicit positive signal. If OSM also says
+    # payment:credit_cards=no, treat the source tags as contradictory and defer card
+    # resolution rather than guessing which tag is stale.
+    if not (credit_cards == "no" and scheme_yes):
+        if credit_cards == "yes" or scheme_yes:
+            output["practical.card_available"] = True
+        elif credit_cards == "no":
+            output["practical.card_available"] = False
 
     internet_access = str(tags.get("internet_access") or "").strip().casefold()
     if internet_access == "wlan":
@@ -136,6 +152,10 @@ def _practical_claims(candidate: dict) -> dict[str, bool]:
         output["practical.barrier_free"] = True
     elif wheelchair == "no":
         output["practical.barrier_free"] = False
+
+    smoking = str(tags.get("smoking") or "").strip().casefold()
+    if smoking in SMOKING_POLICIES:
+        output["practical.smoking_policy"] = smoking
 
     return output
 
@@ -245,6 +265,7 @@ def resolve_verified_osm_native_metadata(db, stamp: str):
                 "identityChanges": 0,
                 "singleNativePhoneRequired": True,
                 "explicitPracticalTagsOnly": True,
+                "contradictoryCardTagsDeferred": True,
                 "ruleVersion": RULE_VERSION,
             },
         }
@@ -291,6 +312,7 @@ def resolve_verified_osm_native_metadata(db, stamp: str):
         "missingOnly": True,
         "singleNativePhoneRequired": True,
         "explicitPracticalTagsOnly": True,
+        "contradictoryCardTagsDeferred": True,
     }
 
 
