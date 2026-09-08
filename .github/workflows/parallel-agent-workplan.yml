@@ -45,6 +45,7 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p _tmp
+          python scripts/reload_data.py --public-only --outdir _tmp/reload
           python scripts/database/build_master.py --output _tmp/eat-master.sqlite --reset | tee _tmp/master-build.json
           python scripts/database/validate_master.py _tmp/eat-master.sqlite | tee _tmp/master-validate.json
           python scripts/database/validate_ingestion_plan.py _tmp/eat-master.sqlite | tee _tmp/ingestion-plan-validate.json

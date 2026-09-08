@@ -141,6 +141,7 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p _tmp
+          python scripts/reload_data.py --public-only --outdir _tmp/reload
           python scripts/database/build_master.py --output _tmp/eat-master.sqlite --reset | tee _tmp/master-build-1.json
           python scripts/database/validate_master.py _tmp/eat-master.sqlite | tee _tmp/master-validate-1.json
           python scripts/database/validate_derived_practical.py _tmp/eat-master.sqlite | tee _tmp/derived-practical-validate-1.json

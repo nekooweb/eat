@@ -56,7 +56,9 @@ def main():
     catalog = db.execute("SELECT count(*) FROM catalog_entries").fetchone()[0]
     unique_catalog = db.execute("SELECT count(DISTINCT place_id) FROM catalog_entries").fetchone()[0]
     expect(catalog == 2804 and unique_catalog == 2804, f"catalog={catalog}, unique={unique_catalog}")
-    expect([r[0] for r in db.execute("SELECT version FROM schema_migrations ORDER BY version")] == [1], "schema migration version mismatch")
+    migration_dir = Path(__file__).resolve().parents[2] / "database/migrations"
+    expected_versions = sorted(int(p.name.split("_", 1)[0]) for p in migration_dir.glob("*.sql"))
+    expect([r[0] for r in db.execute("SELECT version FROM schema_migrations ORDER BY version")] == expected_versions, "schema migration version mismatch")
 
     legacy_records = db.execute("SELECT count(*) FROM source_records WHERE acquisition_method='retained_legacy_canonical_snapshot'").fetchone()[0]
     exceptions = db.execute("SELECT count(*) FROM retained_exceptions WHERE exception_type='legacy_core_outside_frozen_catalog'").fetchone()[0]

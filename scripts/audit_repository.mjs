@@ -36,9 +36,9 @@ const productionSource = read('data/production_area1.js');
 if (!/leaflet@1\.9\.4/i.test(index)) fail('Leaflet 1.9.4 is not loaded by the public page');
 if (!/overview-map/.test(app)) fail('three-result overview map is missing');
 if (!/store-map-/.test(app)) fail('Leaflet per-store fallback is missing');
-if (!/google-store-map/.test(app)) fail('Google per-store embed rendering is missing');
-if (!/www\.google\.com\/maps\/embed\/v1\/place/.test(app)) fail('Google Maps Embed place endpoint is missing');
-if (!/google-maps-embed-key/.test(index)) fail('Google Maps Embed key placeholder is missing');
+if (!/L\.map\(/.test(app)) fail('Leaflet map rendering is missing');
+if (/maps\/embed\/v1/.test(app)) fail('Retired Google Embed rendering returned');
+if (/google-maps-embed-key/.test(index)) fail('Google Embed key must not be present');
 if (/<iframe\b/i.test(index)) fail('static iframe markup should not be present in index.html');
 if (/<iframe\b/i.test(app) && !/referrerpolicy="no-referrer-when-downgrade"/.test(app)) {
   fail('Google Maps iframe must carry the required referrer policy');
@@ -99,7 +99,7 @@ if (/身份已核验/.test(app)) fail('generic verification badge should not app
 if (/googleBusinessStatus|googlePrimaryType|googleDisplayName|googleTypes/.test(app)) {
   fail('Google Places response-content runtime logic reappeared');
 }
-if (!/translate="no">Google Maps</.test(index)) fail('Google Maps text attribution is missing');
+if (!/OpenStreetMap/.test(index)) fail('OpenStreetMap attribution is missing');
 if (!/OpenStreetMap contributors/.test(index)) fail('OpenStreetMap attribution is missing');
 if (/开放扩展|参考菜品|open_public_catalog|PUBLIC_OPEN_RESTAURANTS/.test(index + app)) fail('open expansion or inferred reference-dish runtime logic remains');
 
@@ -214,7 +214,7 @@ if (!process.exitCode) {
     enrichmentRecords: enrichmentRows.length,
     publicRuntimeLayers: runtimePaths,
     awards: stats.awards,
-    resultViews: ['overview-map', 'google-store-maps-with-leaflet-fallback', 'comparison-table'],
+    resultViews: ['overview-map', 'leaflet-store-maps', 'comparison-table'],
     uiFeedback: [
       `${voiceFiles.length}-voice-random-pool-45pct-max-2s`,
       `${mascotFiles.length}-mascot-random-pool`,
