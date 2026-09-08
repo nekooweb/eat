@@ -22,81 +22,19 @@
   "summary": {
     "catalogTotal": 2804,
     "publicRuntimeTotal": 1415,
-    "proposalRows": 36,
-    "highConfidenceInputRows": 24,
-    "reviewedRows": 24,
-    "approvedRows": 3,
-    "rejectedRows": 21,
-    "fetchErrorRows": 4,
+    "proposalRows": 32,
+    "highConfidenceInputRows": 20,
+    "reviewedRows": 20,
+    "approvedRows": 0,
+    "rejectedRows": 20,
+    "fetchErrorRows": 5,
     "reasonCounts": {
-      "no_strong_page_name_evidence": 15,
-      "fetch_failed": 4,
-      "generic_root_missing_location_confirmation": 1,
-      "specific_page_missing_location_or_exact_structured_confirmation": 1,
-      "approved": 3
+      "no_strong_page_name_evidence": 14,
+      "fetch_failed": 5,
+      "generic_root_missing_location_confirmation": 1
     }
   },
-  "rows": [
-    {
-      "googlePlaceId": "ChIJK3MqvAOMGGARMcQcSnbnTq8",
-      "name": "宿場",
-      "reviewState": "strict_auto",
-      "sourceWebsites": [
-        "https://r.gnavi.co.jp/g777100/"
-      ],
-      "checkedAt": "2026-09-08",
-      "candidateProvider": "Overture Maps",
-      "candidateProviderId": "ad7bdec2-3951-4f89-8de1-daa9898ca32f",
-      "reviewSignals": [
-        "structured_name_similarity_1.000",
-        "path_specific_page",
-        "structured_geo_8m",
-        "exact_specific_structured_exception"
-      ],
-      "proposalDistanceMeters": 8.6,
-      "proposalNameSimilarity": 1,
-      "pageTitle": "楽天ぐるなび - 宿場 （神田/刺身）"
-    },
-    {
-      "googlePlaceId": "ChIJs5tCVxyMGGARJswUvIj4drc",
-      "name": "丸五",
-      "reviewState": "strict_auto",
-      "sourceWebsites": [
-        "https://r.gnavi.co.jp/jdggw3d00000/"
-      ],
-      "checkedAt": "2026-09-08",
-      "candidateProvider": "Overture Maps",
-      "candidateProviderId": "33b4d7e4-cc99-4df7-87aa-a77f1aa8f020",
-      "reviewSignals": [
-        "structured_name_similarity_1.000",
-        "path_specific_page",
-        "structured_geo_32m"
-      ],
-      "proposalDistanceMeters": 32.2,
-      "proposalNameSimilarity": 1,
-      "pageTitle": "楽天ぐるなび - 丸五 （秋葉原/とんかつ（トンカツ））"
-    },
-    {
-      "googlePlaceId": "ChIJU9NtWQOMGGARIOyGVUhXqxs",
-      "name": "Kitchen Ishigaki",
-      "reviewState": "strict_auto",
-      "sourceWebsites": [
-        "https://r.gnavi.co.jp/a860900/"
-      ],
-      "checkedAt": "2026-09-08",
-      "candidateProvider": "Overture Maps",
-      "candidateProviderId": "9230193e-6227-45bb-8d3a-2ce9b5c9af3f",
-      "reviewSignals": [
-        "structured_name_similarity_1.000",
-        "path_specific_page",
-        "structured_geo_5m",
-        "exact_specific_structured_exception"
-      ],
-      "proposalDistanceMeters": 5,
-      "proposalNameSimilarity": 1,
-      "pageTitle": "楽天ぐるなび - KITCHEN ISHIGAKI(キッチンイシガキ) （神田/イタリアン（イタリア料理））"
-    }
-  ],
+  "rows": [],
   "audit": [
     {
       "googlePlaceId": "ChIJ0eXw4hiMGGARGOrfnjnLzHk",
@@ -174,15 +112,17 @@
       "proposalDistanceMeters": 5.1,
       "proposalScore": 0.9907,
       "approved": false,
-      "reason": "no_strong_page_name_evidence",
-      "finalUrl": "http://dodongadon1010.blog.fc2.com/",
-      "title": "ど丼がぁドンと子育て ～日々のこと～",
+      "reason": "fetch_failed",
+      "finalUrl": null,
+      "title": null,
       "structuredFacts": 0,
-      "titleNameSimilarity": 0.86,
+      "titleNameSimilarity": 0,
       "structuredNameSimilarity": 0,
       "locationSignals": [],
       "reviewSignals": [],
-      "errors": []
+      "errors": [
+        "http://dodongadon1010.blog.fc2.com/: HTTP 403"
+      ]
     },
     {
       "googlePlaceId": "ChIJb6ihORmMGGARKiW5-SjV83o",
@@ -204,29 +144,6 @@
       "locationSignals": [],
       "reviewSignals": [],
       "errors": []
-    },
-    {
-      "googlePlaceId": "ChIJc9lS6QSMGGARxttX09XUAkM",
-      "name": "Jazz Bar Gugan",
-      "proposalState": "review_high_confidence_overture_website_candidate",
-      "candidateProvider": "Overture Maps",
-      "candidateProviderId": "a4294a24-5203-4a68-802a-e3a3ef2687d3",
-      "proposalPageUrl": "http://bar-navi.suntory.co.jp/shop/0X00111275/index.html",
-      "proposalNameSimilarity": 1,
-      "proposalDistanceMeters": 3.1,
-      "proposalScore": 0.9943,
-      "approved": false,
-      "reason": "fetch_failed",
-      "finalUrl": null,
-      "title": null,
-      "structuredFacts": 0,
-      "titleNameSimilarity": 0,
-      "structuredNameSimilarity": 0,
-      "locationSignals": [],
-      "reviewSignals": [],
-      "errors": [
-        "http://bar-navi.suntory.co.jp/shop/0X00111275/index.html: HTTP 403"
-      ]
     },
     {
       "googlePlaceId": "ChIJeU_ZETyMGGAREFmYhJXabSs",
@@ -348,18 +265,17 @@
       "proposalDistanceMeters": 2.8,
       "proposalScore": 0.9949,
       "approved": false,
-      "reason": "specific_page_missing_location_or_exact_structured_confirmation",
-      "finalUrl": "https://www.cancemi.jp/cantina/",
-      "title": "La Cantina Cancemi",
+      "reason": "fetch_failed",
+      "finalUrl": null,
+      "title": null,
       "structuredFacts": 0,
-      "titleNameSimilarity": 1,
+      "titleNameSimilarity": 0,
       "structuredNameSimilarity": 0,
       "locationSignals": [],
-      "reviewSignals": [
-        "title_name_similarity_1.000",
-        "path_specific_page"
-      ],
-      "errors": []
+      "reviewSignals": [],
+      "errors": [
+        "http://www.cancemi.jp/cantina/: The operation was aborted due to timeout"
+      ]
     },
     {
       "googlePlaceId": "ChIJiWFVAT-MGGARfA-dnOR9DFk",
@@ -380,34 +296,6 @@
       "structuredNameSimilarity": 0,
       "locationSignals": [],
       "reviewSignals": [],
-      "errors": []
-    },
-    {
-      "googlePlaceId": "ChIJK3MqvAOMGGARMcQcSnbnTq8",
-      "name": "宿場",
-      "proposalState": "review_high_confidence_overture_website_candidate",
-      "candidateProvider": "Overture Maps",
-      "candidateProviderId": "ad7bdec2-3951-4f89-8de1-daa9898ca32f",
-      "proposalPageUrl": "http://r.gnavi.co.jp/g777100/",
-      "proposalNameSimilarity": 1,
-      "proposalDistanceMeters": 8.6,
-      "proposalScore": 0.9842,
-      "approved": true,
-      "reason": "approved",
-      "finalUrl": "https://r.gnavi.co.jp/g777100/",
-      "title": "楽天ぐるなび - 宿場 （神田/刺身）",
-      "structuredFacts": 1,
-      "titleNameSimilarity": 0.167,
-      "structuredNameSimilarity": 1,
-      "locationSignals": [
-        "structured_geo_8m"
-      ],
-      "reviewSignals": [
-        "structured_name_similarity_1.000",
-        "path_specific_page",
-        "structured_geo_8m",
-        "exact_specific_structured_exception"
-      ],
       "errors": []
     },
     {
@@ -474,33 +362,6 @@
       "errors": []
     },
     {
-      "googlePlaceId": "ChIJs5tCVxyMGGARJswUvIj4drc",
-      "name": "丸五",
-      "proposalState": "review_high_confidence_overture_website_candidate",
-      "candidateProvider": "Overture Maps",
-      "candidateProviderId": "33b4d7e4-cc99-4df7-87aa-a77f1aa8f020",
-      "proposalPageUrl": "http://r.gnavi.co.jp/jdggw3d00000/",
-      "proposalNameSimilarity": 1,
-      "proposalDistanceMeters": 32.2,
-      "proposalScore": 0.941,
-      "approved": true,
-      "reason": "approved",
-      "finalUrl": "https://r.gnavi.co.jp/jdggw3d00000/",
-      "title": "楽天ぐるなび - 丸五 （秋葉原/とんかつ（トンカツ））",
-      "structuredFacts": 1,
-      "titleNameSimilarity": 0.105,
-      "structuredNameSimilarity": 1,
-      "locationSignals": [
-        "structured_geo_32m"
-      ],
-      "reviewSignals": [
-        "structured_name_similarity_1.000",
-        "path_specific_page",
-        "structured_geo_32m"
-      ],
-      "errors": []
-    },
-    {
       "googlePlaceId": "ChIJswfCsA-MGGARIz1Zn1TprVs",
       "name": "Tully's Coffee",
       "proposalState": "review_high_confidence_overture_website_candidate",
@@ -541,36 +402,8 @@
       "locationSignals": [],
       "reviewSignals": [],
       "errors": [
-        "https://tokyomamehana.jbplt.jp/: fetch failed"
+        "https://tokyomamehana.jbplt.jp/: The operation was aborted due to timeout"
       ]
-    },
-    {
-      "googlePlaceId": "ChIJU9NtWQOMGGARIOyGVUhXqxs",
-      "name": "Kitchen Ishigaki",
-      "proposalState": "review_high_confidence_overture_website_candidate",
-      "candidateProvider": "Overture Maps",
-      "candidateProviderId": "9230193e-6227-45bb-8d3a-2ce9b5c9af3f",
-      "proposalPageUrl": "http://r.gnavi.co.jp/a860900/",
-      "proposalNameSimilarity": 1,
-      "proposalDistanceMeters": 5,
-      "proposalScore": 0.9909,
-      "approved": true,
-      "reason": "approved",
-      "finalUrl": "https://r.gnavi.co.jp/a860900/",
-      "title": "楽天ぐるなび - KITCHEN ISHIGAKI(キッチンイシガキ) （神田/イタリアン（イタリア料理））",
-      "structuredFacts": 1,
-      "titleNameSimilarity": 0.86,
-      "structuredNameSimilarity": 1,
-      "locationSignals": [
-        "structured_geo_5m"
-      ],
-      "reviewSignals": [
-        "structured_name_similarity_1.000",
-        "path_specific_page",
-        "structured_geo_5m",
-        "exact_specific_structured_exception"
-      ],
-      "errors": []
     },
     {
       "googlePlaceId": "ChIJv855zzyMGGARpguW0WEh-UQ",
