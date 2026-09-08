@@ -214,6 +214,8 @@ jobs:
           git rebase origin/main
           git push origin HEAD:main
 
+  # The reusable contract explicitly fetches latest main so any bot-generated
+  # evidence commit created above is included in SQLite validation.
   validate_database:
     needs: collect
     permissions:
