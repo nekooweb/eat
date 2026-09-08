@@ -1,0 +1,131 @@
+name: Review weak nearby independent sources
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: review-weak-nearby-independent-sources
+  cancel-in-progress: false
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Sync latest main
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          git reset --hard origin/main
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Enforce no-paid-data-API policy
+        run: node scripts/audit_no_paid_apis.mjs
+      - name: Check weak-source tooling syntax
+        run: |
+          node --check scripts/build_weak_nearby_independent_source_candidates.mjs
+          node --check scripts/review_independent_dish_source_candidates_v3.mjs
+          node --check scripts/review_independent_dish_source_candidates_extended.mjs
+      - name: Rebuild current runtime and standard source plan
+        run: python scripts/reload_data.py --public-only --outdir _audit/weak-source-pre
+      - name: Build tight proximity-only Overture candidates for page review
+        env:
+          WEAK_SOURCE_MAX_DISTANCE_M: "15"
+          WEAK_SOURCE_AMBIGUITY_GAP_M: "6"
+        run: |
+          set -euo pipefail
+          node scripts/build_weak_nearby_independent_source_candidates.mjs /tmp/weak-independent-source-candidates.json | tee /tmp/weak-source-plan-summary.json
+          node - <<'NODE'
+          const fs=require('fs');
+          const x=JSON.parse(fs.readFileSync('/tmp/weak-independent-source-candidates.json','utf8'));
+          const p=x.policy||{}, s=x.summary||{};
+          if (p.proposalOnly!==true || p.networkRequests!==0 || p.paidGoogleDataApiCalls!==0 || p.identityBindingChanges!==0) throw new Error('weak source plan must be offline proposal-only');
+          if (p.proximityOnlyBindingAllowed!==false || p.finalPageNameAndLocationReviewRequired!==true || p.dishEvidencePromotionBeforeIdentityReviewAllowed!==false) throw new Error('weak candidate plan crossed identity boundary');
+          if (s.catalogTotal!==2804 || s.publicRuntimeTotal<=0 || s.maximumCandidateDistanceMeters!==15) throw new Error('weak source plan baseline mismatch');
+          if (s.proposalRows > 120) throw new Error(`weak review batch too large: ${s.proposalRows}`);
+          console.log(JSON.stringify(s));
+          NODE
+      - name: Strictly review weak candidates using unchanged v3 page identity criteria
+        env:
+          INDEPENDENT_SOURCE_REVIEW_TIMEOUT_MS: "7000"
+          INDEPENDENT_SOURCE_REVIEW_CONCURRENCY: "6"
+          INDEPENDENT_SOURCE_REVIEW_SUBPAGE_LIMIT: "4"
+          INDEPENDENT_SOURCE_REVIEW_SECOND_LEVEL_LIMIT: "6"
+          INDEPENDENT_SOURCE_REVIEW_SECOND_LEVEL_PER_PAGE_LIMIT: "2"
+        run: |
+          set -euo pipefail
+          node scripts/review_independent_dish_source_candidates_extended.mjs \
+            /tmp/weak-independent-source-candidates.json \
+            data/reviewed_independent_dish_sources.json | tee /tmp/weak-source-review-summary.json
+          node - <<'NODE'
+          const fs=require('fs');
+          const x=JSON.parse(fs.readFileSync('data/reviewed_independent_dish_sources.json','utf8'));
+          const p=x.policy||{}, s=x.summary||{};
+          if (x.schemaVersion!==4 || p.strictAutoOnly!==true || p.sourceOverlayOnly!==true) throw new Error('strict weak review output policy missing');
+          if (p.finalStrictPageNameAndLocationCriteriaUnchangedFromV3!==true || p.candidateInputPromotionChangesIdentityThreshold!==false) throw new Error('weak review changed final identity criteria');
+          if (p.proximityOnlyBindingAllowed!==false || p.dishEvidencePromotionBeforeIdentityReviewAllowed!==false || p.paidGoogleDataApiCalls!==0) throw new Error('weak review violated strict boundary');
+          if (s.approvedRows!==(x.rows||[]).length || s.approvedRows!==s.preservedApprovedRows+s.newApprovedRows) throw new Error('weak review monotonic approval mismatch');
+          console.log(JSON.stringify(s));
+          NODE
+      - name: Apply strict approvals and rebuild normal queue
+        run: |
+          set -euo pipefail
+          node scripts/apply_reviewed_independent_source_overlay.mjs
+          node scripts/audit_reviewed_independent_source_overlay.mjs
+          node scripts/audit_google_inventory_runtime.mjs
+          node scripts/build_google_inventory_detail_queue.mjs data/google_inventory_detail_queue.json
+          node scripts/build_dish_batch_plan.mjs data/dish_batch_plan.json 8
+          node scripts/build_independent_dish_source_candidate_plan.mjs data/independent_dish_source_candidates.json 8
+          node - <<'NODE'
+          const fs=require('fs');
+          const r=JSON.parse(fs.readFileSync('data/reviewed_independent_dish_sources.json','utf8'));
+          const q=JSON.parse(fs.readFileSync('data/google_inventory_detail_queue.json','utf8'));
+          const c=JSON.parse(fs.readFileSync('data/independent_dish_source_candidates.json','utf8'));
+          const ids=new Set((r.rows||[]).map(x=>x.googlePlaceId));
+          for (const row of q.rows||[]) if(ids.has(row.googlePlaceId)&&row.recommendedDishesKnown===0&&row.crawlableOfficialUrlCount<1) throw new Error(`strict approved source not crawlable: ${row.googlePlaceId}`);
+          if(c.summary.currentIndependentDishSourceGap!==q.summary.recommendationGapNeedingNewDishSource) throw new Error('normal source plan stale after weak-source approvals');
+          console.log(JSON.stringify({reviewed:r.summary,queue:q.summary,candidates:c.summary}));
+          NODE
+      - name: Re-check no-paid-data-API policy
+        run: node scripts/audit_no_paid_apis.mjs
+      - name: Commit strict weak-source approvals and rebuilt plans
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            data/reviewed_independent_dish_sources.json \
+            data/google_inventory_runtime.js \
+            data/google_inventory_detail_queue.json \
+            data/dish_batch_plan.json \
+            data/independent_dish_source_candidates.json
+          if git diff --cached --quiet; then
+            echo "No new strict weak-source approvals."
+            exit 0
+          fi
+          git commit -m "Review strict nearby independent dish sources"
+          git reset --hard HEAD
+          git fetch origin main
+          git rebase origin/main
+          git push origin HEAD:main
+
+  validate_database:
+    needs: review
+    permissions:
+      contents: read
+    uses: ./.github/workflows/database-contract.yml
+    with:
+      sync_main: true
