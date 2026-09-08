@@ -1,12 +1,14 @@
 # 主数据库输入、处理与输出流程
 
-更新日期：2026-09-07。
+更新日期：2026-09-08。
 
 ## 数据方向
 
 公开 / retained source → versioned source record → identity binding → field observation → resolver → field resolution → SQLite master → catalog/recommendation export → Pages。
 
-2,804 frozen Place ID 始终保留。`id_only` 只下架、不删除；没有真实独立来源名称时不能进入 recommendation。
+2,804 frozen Place ID 始终保留。`id_only` 只下架、不删除；没有真实独立来源名称时不能进入 recommendation。当前 public named runtime 为 **1,415**，另有 **1,389** frozen Place-ID-only 不公开展示。
+
+`recommendedDishes` 作为重要 detail field 采用独立 source-backed evidence path；它不允许通过 cuisine/name/brand inference 自动生成。
 
 ## 当前 master 与 task planner
 
@@ -144,6 +146,124 @@ landing + same-origin detail 已落库：
 
 absence 从不解释成 false；只接受明确局部 label + positive/negative phrase。复杂 smoking policy 继续不做简单二值化。
 
+## Recommended-dish evidence pipeline
+
+推荐菜详细契约见 `RECOMMENDED_DISH_PIPELINE.md`。核心是把菜品事实分成 R/F/C 三层，而不是把所有可识别菜名都写进 `recommendedDishes`。
+
+### R — strict recommendation
+
+```text
+retained recommendedDishes + exact sourceRef claim
+OR
+bound official / retained Hot Pepper local text block
+  + concrete dish term
+  + explicit recommendation/signature marker
+      ↓
+source_recommendation_text
+      ↓
+recommendedDishes
+```
+
+推荐 marker 包括 `おすすめ / 名物 / 看板 / 自慢 / 一押し / 一番人気 / 売れ筋 / 必食 / signature / specialty / recommended / best seller / must try / most popular / house special` 等。菜名与 marker 必须出现在局部上下文，不做整页跨模块拼接。
+
+### F — source-backed featured/menu dish
+
+```text
+retained dishes / featuredDishes + exact sourceRef
+OR retained Hot Pepper concrete dish text without recommendation marker
+OR bound official JSON-LD MenuItem
+      ↓
+retained_source_menu_item / provider_promotional_dish_text / structured_menu_item
+      ↓
+featuredDishes
+```
+
+F 只证明“来源中存在该菜品/菜单项”，不能自动升级为推荐菜。
+
+### C — candidate only
+
+`cuisine -> dish`、`restaurant name -> dish`、`brand -> fixed menu` 等推断只能留在内部 candidate/enrichment 层，禁止写入 public recommendation/featured fields。
+
+### Retained-first extraction
+
+`scripts/build_retained_dish_evidence.mjs` 无网络读取 `source_enrichment*.js`：
+
+- 40 source shards；
+- 584 source rows scanned；
+- 110 rows 声明 dish-related fields；
+- 100 retained dish values 可中文规范化；
+- 136 featured evidence items；
+- 覆盖 99 家；
+- provider items：Tabelog 63 / official 37。
+
+Tabelog live access 受限，因此只消费 retained + exact provenance，不绕过 403/access restriction。
+
+### Official / Hot Pepper extraction
+
+`scripts/collect_google_inventory_recommendations.mjs` 只对当前 1,415 个 named public rows 工作；2,804 是 frozen catalog baseline，不再错误要求 runtime 本身有 2,804 行。
+
+- Hot Pepper 从已保存 `hotpepper_catalog_facts.json` 读取，不新增付费 API call；
+- 官网只访问已经绑定的 independent official URL；
+- Google/Tabelog/Hot Pepper/social URL 不作为 direct crawl target；
+- 官网最多跟随少量 same-origin menu/food links；
+- raw HTML 不 durable；
+- JSON-LD `MenuItem` 只能进入 F。
+
+本轮有效 fresh collector 曾识别 Hot Pepper strict recommendation 18 家、官网 strict recommendation 7 家、Hot Pepper featured 68 家。monotonic merge 后当前 detail evidence：
+
+- evidence restaurants **277**；
+- recommendation evidence restaurants **165**；
+- featured evidence restaurants **163**；
+- recommendation items **236**；
+- featured items **214**。
+
+### Merge/QC
+
+`merge_google_inventory_detail_evidence.mjs` 使用 monotonic union；短期 crawl 失败不能删除以前已验证证据。
+
+semantic dedupe key：
+
+`nameZh + provider + sourceUrl + evidenceClass`
+
+`nameJa/nameOriginal` 只是 metadata。这样同一来源页同一中文菜名不会因为原词写法不同重复计数。
+
+`audit_google_inventory_detail_evidence.mjs` 要求 recommendation item 必须是 `source_recommendation_text`；普通 `retained_source_menu_item` / `provider_promotional_dish_text` / `structured_menu_item` 不能越级进入 R。
+
+public materialized audit 继续强制：
+
+- `approximateRecommendationsAllowed=false`；
+- `genericFallbackAllowed=false`；
+- 无 legacy approximate metadata；
+- 中文 recommendation display；
+- 同一双菜组合 >=20 家或同一单菜 >=60 家时 blocking review。
+
+当前最大重复值为三明治 14、咖喱 13、意大利面 7、刺身 6；没有此前 100+ 家相同固定双菜组合。
+
+### Public result
+
+批处理前 strict baseline：185 recommendation / 291 any-dish display / 20.6%。
+
+当前：
+
+- `recommendedDishes` **192**（+7）；
+- `featuredDishes` known **188**；
+- featured-only display **108**；
+- any Chinese dish display **300 / 1,415 = 21.2%**（+9 rows）；
+- unfilled **1,115**；
+- approximate recommendation **0**。
+
+### Recommendation-first detail queue
+
+当前 recommendation gap = **1,223**，按“来源是否真的可访问/可继续抽取”拆为三路：
+
+- **229** `collect_strict_recommended_dishes`：已有 crawlable bound official URL；
+- **647** `extract_retained_dish_source`：没有可直接访问官网，但有 retained Tabelog/Hot Pepper 等第三方来源；
+- **347** `find_independent_dish_source`：需要寻找新的免费独立 dish source。
+
+229 + 647 + 347 = 1,223。`sourceUrlCount` 不再直接等同于“可抓官网”。
+
+连续批处理 workflow 采用同一 concurrency group，并在实际 extraction 开始前重新 `fetch/reset origin/main`；原因是 GitHub queued run 会 checkout 触发时的历史 event SHA，若不二次同步会与上一轮 bot evidence commit 在 rebase 时产生冲突。
+
 ## Budget semantics
 
 ### Official web meal budgets
@@ -204,7 +324,9 @@ reviewed Hot Pepper 且 lunch 未解析：432：
 
 ## Unified tasks
 
-priority：identity conflict review > identity recovery > field completion > dish semantic review。每次 accepted recovery/resolver 后重新 planner。Identity recovery 成功会从 identity task 转成 field task，因此以 task 类型与 field missing 变化衡量真实进度，而不是单独看 source row 数。
+SQLite master priority 仍为 identity conflict review > identity recovery > field completion > master dish semantic review。Public named-runtime detail enrichment 另有 recommendation-first queue；两者属于不同层次，不直接相加。
+
+每次 accepted recovery/resolver 后重新 planner。Identity recovery 成功会从 identity task 转成 field task，因此以 task 类型与 field missing 变化衡量真实进度，而不是单独看 source row 数。
 
 ## Map/display path
 
@@ -222,13 +344,14 @@ priority：identity conflict review > identity recovery > field completion > dis
 
 只有 retained evidence 用尽后才访问新的免费公开来源。原则：
 
-1. identity evidence first；
+1. identity / field semantic evidence first；
 2. 一次已确认来源尽量提取全部支持字段；
-3. 不恢复付费 Google Places/Text/Nearby API；
-4. 不做 proximity-only binding；
-5. 不绕过 login/CAPTCHA/robots/access restriction；
-6. public endpoint 出现 restricted access 时停止，不做镜像轮询规避；
-7. diagnostic 先量化收益，再决定 durable importer/promotion。
+3. recommendation 先吃 retained dish facts，再访问已绑定官网，再寻找新独立来源；
+4. 不恢复付费 Google Places/Text/Nearby API；
+5. 不做 proximity-only binding；
+6. 不绕过 login/CAPTCHA/robots/access restriction；
+7. public endpoint 出现 restricted access 时停止，不做镜像轮询规避；
+8. diagnostic 先量化收益，再决定 durable importer/promotion。
 
 ## Export / cutover
 
@@ -236,4 +359,4 @@ Catalog 始终 2,804；recommendation 只包含 eligibility 通过项。Shadow-o
 
 当前 Pages 仍走 generated runtime；SQLite recommendation export 在完成回归比较前保持 shadow-only。
 
-每批实际开发同步更新 `DEVELOPMENT.md`、本文件和当天 `logs/`。
+每批实际开发同步更新 `DEVELOPMENT.md`、本文件、`RECOMMENDED_DISH_PIPELINE.md` 和当天 `logs/`。
