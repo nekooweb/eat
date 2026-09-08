@@ -22,6 +22,7 @@ const allowedFeaturedClasses = new Set([
   'provider_promotional_dish_text',
   'structured_menu_item',
   'source_menu_text',
+  'tabelog_menu_text',
   'retained_source_menu_item',
   'source_recommendation_text'
 ]);
@@ -54,6 +55,9 @@ for (const row of payload.rows || []) {
       }
       if (item.evidenceClass === 'source_menu_text' && item.provider !== 'sourceWebsite') {
         throw new Error(`Plain menu text evidence must come from an already-bound source website: ${row.googlePlaceId}`);
+      }
+      if (item.evidenceClass === 'tabelog_menu_text' && item.provider !== 'Tabelog') {
+        throw new Error(`Tabelog menu evidence must retain the Tabelog provider: ${row.googlePlaceId}`);
       }
       const duplicateKey = `${kind}|${nameZh}|${item.provider}|${item.sourceUrl}|${item.evidenceClass || ''}`;
       if (localSeen.has(duplicateKey)) throw new Error(`Duplicate dish evidence item: ${row.googlePlaceId}: ${duplicateKey}`);
