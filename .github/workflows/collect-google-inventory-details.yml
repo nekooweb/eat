@@ -93,9 +93,14 @@ jobs:
           if (q.summary.publicRuntimeTotal <= 0 || q.summary.publicRuntimeTotal + q.summary.unpublishedPlaceIdOnly !== 2804) {
             throw new Error('named public + unpublished Place-ID-only counts must reconcile');
           }
-          const namedGap = q.rows.find((row) => row.recommendedDishesKnown === 0);
-          if (namedGap && !['collect_strict_recommended_dishes', 'find_independent_dish_source'].includes(namedGap.nextAction)) {
-            throw new Error('source-backed recommendation collection must remain highest detailed-field priority');
+          const allowedRecommendationActions = new Set([
+            'collect_strict_recommended_dishes',
+            'extract_retained_dish_source',
+            'find_independent_dish_source'
+          ]);
+          const invalidRecommendationTask = q.rows.find((row) => row.recommendedDishesKnown === 0 && !allowedRecommendationActions.has(row.nextAction));
+          if (invalidRecommendationTask) {
+            throw new Error(`recommendation gap lost recommendation-first priority: ${invalidRecommendationTask.googlePlaceId}: ${invalidRecommendationTask.nextAction}`);
           }
           console.log(JSON.stringify(q.summary));
           NODE
