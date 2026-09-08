@@ -45,12 +45,18 @@ def main():
         ('source-facts',['node','scripts/build_source_facts.mjs']),
         ('official-overlay',[sys.executable,'scripts/database/export_reviewed_official_runtime_sources.py']),
         ('native-contact-overlay',[sys.executable,'scripts/database/export_reviewed_native_contact_runtime_overlay.py']),
+        ('official-practical-overlay',[sys.executable,'scripts/database/export_reviewed_official_practical_runtime_overlay.py']),
         ('practical-overlay',['node','scripts/build_hotpepper_catalog_practical_overlay.mjs','data/hotpepper_catalog_practical_overlay.json']),
         ('runtime-raw',['node','scripts/build_google_inventory_runtime.mjs']),
         ('independent-source-overlay',['node','scripts/apply_reviewed_independent_source_overlay.mjs']),
         ('independent-source-overlay-audit',['node','scripts/audit_reviewed_independent_source_overlay.mjs']),
         ('runtime-native-contact-overture',['node','scripts/materialize_runtime_native_contact_fields.mjs','overture']),
+        # SQLite precedence: reviewed basic OSM practical fields exist before retained/Hot Pepper.
+        ('runtime-basic-osm-practical',['node','scripts/materialize_runtime_native_contact_fields.mjs','osm-basic-practical']),
         ('runtime-practical-contact',['node','scripts/materialize_runtime_practical_fields.mjs']),
+        # Reviewed official web practical facts resolve after retained/Hot Pepper sources.
+        ('runtime-official-practical',['node','scripts/materialize_runtime_official_practical_fields.mjs']),
+        # Historical verified OSM metadata is deliberately last and missing-only.
         ('runtime-native-contact-osm',['node','scripts/materialize_runtime_native_contact_fields.mjs','osm']),
         ('runtime-identity',['node','scripts/audit_google_inventory_runtime.mjs']),
         ('runtime-materialize',['node','scripts/materialize_chinese_dish_runtime.mjs']),
@@ -84,7 +90,8 @@ def main():
         raise RuntimeError('Runtime/queue identity sets diverged after reload')
     files={}
     for name in ['production_area1.js','source_provenance.js','source_facts.js','reviewed_official_runtime_sources.json',
-                 'reviewed_native_contact_runtime_overlay.json','reviewed_independent_dish_sources.json','hotpepper_catalog_practical_overlay.json',
+                 'reviewed_native_contact_runtime_overlay.json','reviewed_official_practical_runtime_overlay.json',
+                 'reviewed_independent_dish_sources.json','hotpepper_catalog_practical_overlay.json',
                  'google_inventory_runtime.js','google_inventory_detail_queue.json',
                  'dish_batch_plan.json','independent_dish_source_candidates.json']:
         raw=(DATA/name).read_bytes()
@@ -111,6 +118,9 @@ def main():
               'liveShowRows':stats.get('liveShowKnown',0),'petAllowedRows':stats.get('petAllowedKnown',0),
               'tatamiRows':stats.get('tatamiKnown',0),'tvProjectorRows':stats.get('tvProjectorKnown',0),
               'charterRows':stats.get('charterKnown',0),'bandPerformanceRows':stats.get('bandPerformanceKnown',0),
+              'officialPracticalRowsApplied':stats.get('officialPracticalAppliedRows',0),
+              'practicalFromReviewedBasicOsmRows':stats.get('practicalAppliedFromReviewedBasicOsmRows',0),
+              'practicalFromReviewedHistoricalOsmRows':stats.get('practicalAppliedFromReviewedHistoricalOsmRows',0),
               'queueRows':len(queue_ids),'database':None if args.public_only else str(database),'outputs':files}
     (out/'reload-manifest.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n')
     print(json.dumps({'status':'pass',**manifest},ensure_ascii=False),flush=True)
