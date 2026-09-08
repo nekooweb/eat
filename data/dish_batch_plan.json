@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-08T11:28:50.382Z",
+  "generatedAt": "2026-09-08T11:35:31.041Z",
   "policy": {
     "catalogIdentityKey": "frozen Place ID only",
     "catalogTotal": 2804,
@@ -19,9 +19,9 @@
     "dishWorkRows": 1225,
     "shards": 8,
     "laneCounts": {
-      "official_crawl": 267,
+      "official_crawl": 268,
       "retained_source_mining": 597,
-      "independent_source_discovery": 299,
+      "independent_source_discovery": 298,
       "official_or_retained_featured": 62
     },
     "shardCounts": [
@@ -29,9 +29,9 @@
         "shard": 0,
         "total": 155,
         "lanes": {
-          "official_crawl": 33,
+          "official_crawl": 34,
           "retained_source_mining": 75,
-          "independent_source_discovery": 42,
+          "independent_source_discovery": 41,
           "official_or_retained_featured": 5
         }
       },
@@ -405,6 +405,20 @@
     {
       "googlePlaceId": "ChIJpUFH6e6LGGARgE1aRQA_EoM",
       "name": "Low Non Bar",
+      "lane": "official_crawl",
+      "nextAction": "collect_strict_recommended_dishes",
+      "shard": 0,
+      "priorityScore": 1140,
+      "cuisine": "餐厅",
+      "crawlableOfficialUrlCount": 1,
+      "retainedThirdPartyUrlCount": 0,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 0,
+      "featuredDishesKnown": 0
+    },
+    {
+      "googlePlaceId": "ChIJSfmdGQCNGGARGjTO9iLmYvg",
+      "name": "和風居酒屋「一喜一笑」",
       "lane": "official_crawl",
       "nextAction": "collect_strict_recommended_dishes",
       "shard": 0,
@@ -2062,20 +2076,6 @@
       "shard": 0,
       "priorityScore": 1040,
       "cuisine": "意大利菜",
-      "crawlableOfficialUrlCount": 0,
-      "retainedThirdPartyUrlCount": 0,
-      "sourceUrlCount": 0,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0
-    },
-    {
-      "googlePlaceId": "ChIJSfmdGQCNGGARGjTO9iLmYvg",
-      "name": "和風居酒屋「一喜一笑」",
-      "lane": "independent_source_discovery",
-      "nextAction": "find_independent_dish_source",
-      "shard": 0,
-      "priorityScore": 1040,
-      "cuisine": "餐厅",
       "crawlableOfficialUrlCount": 0,
       "retainedThirdPartyUrlCount": 0,
       "sourceUrlCount": 0,

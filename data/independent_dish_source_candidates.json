@@ -1,6 +1,6 @@
 {
   "schemaVersion": 3,
-  "generatedAt": "2026-09-08T11:28:50.572Z",
+  "generatedAt": "2026-09-08T11:35:31.275Z",
   "policy": {
     "proposalOnly": true,
     "identityBindingChanges": 0,
@@ -43,20 +43,20 @@
     "schemaVersion": 3,
     "catalogTotal": 2804,
     "publicRuntimeTotal": 1422,
-    "currentIndependentDishSourceGap": 299,
+    "currentIndependentDishSourceGap": 298,
     "officialCandidateIndexRecords": 194,
     "overtureSnapshotRows": 3908,
     "overtureRowsWithIndependentUrls": 2411,
-    "proposalRows": 30,
+    "proposalRows": 29,
     "retainedIndexProposalRows": 0,
-    "overtureProposalRows": 30,
+    "overtureProposalRows": 29,
     "highConfidenceOvertureProposalRows": 18,
     "proposalRowsWithExplicitMenuUrls": 0,
-    "proposalRowsPageOnly": 30,
-    "proposalCoverageOfIndependentGapPct": 10,
+    "proposalRowsPageOnly": 29,
+    "proposalCoverageOfIndependentGapPct": 9.7,
     "explicitMenuCoverageOfIndependentGapPct": 0,
     "overtureTargetsWithoutCoordinates": 0,
-    "overtureTargetsWithNearbyCandidates": 299,
+    "overtureTargetsWithNearbyCandidates": 298,
     "overtureRejectedName": 257,
     "overtureRejectedWeak": 12,
     "overtureRejectedAmbiguous": 0,
@@ -69,9 +69,9 @@
     "shardCounts": [
       {
         "shard": 0,
-        "total": 7,
+        "total": 6,
         "withMenuUrl": 0,
-        "overture": 7
+        "overture": 6
       },
       {
         "shard": 1,
@@ -745,41 +745,6 @@
         "http://konakara.com/"
       ],
       "shard": 7,
-      "reviewRequiredBeforeBinding": true,
-      "mayWriteDishEvidenceBeforeIdentityReview": false
-    },
-    {
-      "googlePlaceId": "ChIJSfmdGQCNGGARGjTO9iLmYvg",
-      "name": "和風居酒屋「一喜一笑」",
-      "distanceMeters": 1109,
-      "currentAction": "find_independent_dish_source",
-      "currentSourceUrlCount": 0,
-      "pageUrl": "https://www.ikki-issho.com/",
-      "menuUrls": [],
-      "candidateHosts": [
-        "ikki-issho.com"
-      ],
-      "checkedAt": "2026-08-19.0",
-      "candidateName": "一喜一笑",
-      "candidateProvider": "Overture Maps",
-      "candidateProviderId": "98258d6c-db34-44be-b6a4-193c337fa6ac",
-      "candidateDistanceMeters": 1.5,
-      "nameSimilarity": 0.84,
-      "candidateMargin": 0.3991,
-      "proposalScore": 0.8724,
-      "overtureConfidence": 0.77,
-      "proposalState": "review_overture_website_candidate",
-      "confidenceSignals": [
-        "current_public_identity_has_independent_name_and_coordinates",
-        "retained_overture_candidate_with_independent_http_url",
-        "normalized_name_similarity_above_proposal_threshold",
-        "candidate_within_bounded_coordinate_distance",
-        "best_candidate_margin_above_ambiguity_threshold"
-      ],
-      "candidateUrls": [
-        "https://www.ikki-issho.com/"
-      ],
-      "shard": 0,
       "reviewRequiredBeforeBinding": true,
       "mayWriteDishEvidenceBeforeIdentityReview": false
     },

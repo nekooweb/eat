@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 3,
+  "schemaVersion": 4,
   "checkedAt": "2026-09-08",
   "policy": {
     "strictAutoOnly": true,
@@ -10,8 +10,8 @@
     "httpsUpgradeAttemptedBeforeHttp": true,
     "boundedSameOriginSubpageDiscovery": true,
     "boundedSecondLevelSameOriginDiscovery": true,
-    "maximumSameOriginSubpagesPerRoot": 4,
-    "maximumSecondLevelSubpagesTotalPerCandidate": 6,
+    "maximumSameOriginSubpagesPerRoot": 6,
+    "maximumSecondLevelSubpagesTotalPerCandidate": 12,
     "pageMapCoordinateIdentityEvidenceAllowed": true,
     "pageMapCoordinateMaximumDistanceMeters": 120,
     "paidGoogleDataApiCalls": 0,
@@ -27,35 +27,50 @@
     "existingSourceResolutionConflictGuardsHonored": true,
     "crossSiteRedirectAllowed": false,
     "httpsFinalUrlRequired": true,
-    "onlyHighConfidenceProposalStateReviewed": true
+    "onlyHighConfidenceProposalStateReviewed": false,
+    "reviewedProposalStates": [
+      "review_high_confidence_overture_website_candidate",
+      "review_overture_website_candidate"
+    ],
+    "mediumConfidenceRowsTemporarilyRoutedThroughSameStrictReviewer": true,
+    "candidateInputPromotionChangesIdentityThreshold": false,
+    "finalStrictPageNameAndLocationCriteriaUnchangedFromV3": true,
+    "proximityOnlyBindingAllowed": false,
+    "dishEvidencePromotionBeforeIdentityReviewAllowed": false
   },
   "summary": {
     "catalogTotal": 2804,
     "publicRuntimeTotal": 1422,
-    "proposalRows": 31,
-    "existingApprovedRows": 1,
-    "preservedApprovedRows": 1,
-    "highConfidenceInputRows": 19,
-    "reviewedRows": 19,
+    "proposalRows": 30,
+    "existingApprovedRows": 2,
+    "preservedApprovedRows": 2,
+    "highConfidenceInputRows": 30,
+    "reviewedRows": 30,
     "newApprovedRows": 1,
-    "approvedRows": 2,
-    "rejectedRows": 18,
-    "sourceResolutionBlockedRows": 1,
-    "rowsWithDiscoveredSubpages": 6,
-    "discoveredSubpages": 19,
-    "secondLevelSubpages": 7,
-    "rowsWithMapCoordinateCandidates": 2,
+    "approvedRows": 3,
+    "rejectedRows": 29,
+    "sourceResolutionBlockedRows": 2,
+    "rowsWithDiscoveredSubpages": 11,
+    "discoveredSubpages": 43,
+    "secondLevelSubpages": 21,
+    "rowsWithMapCoordinateCandidates": 1,
     "rowsWithAcceptedLocationSignals": 2,
-    "fetchErrorRows": 7,
+    "fetchErrorRows": 14,
     "reasonCounts": {
+      "specific_page_missing_location_or_exact_structured_confirmation": 3,
       "non_https_final_url": 6,
-      "no_strong_page_name_evidence": 5,
-      "approved": 1,
-      "generic_root_missing_location_confirmation": 2,
+      "no_strong_page_name_evidence": 8,
+      "fetch_failed": 7,
+      "generic_root_missing_location_confirmation": 3,
+      "blocked_by_source_resolution_listing_hold": 1,
       "blocked_by_source_resolution_ambiguous": 1,
-      "specific_page_missing_location_or_exact_structured_confirmation": 1,
-      "fetch_failed": 3
-    }
+      "approved": 1
+    },
+    "extendedReviewInputRows": 30,
+    "extendedReviewHighConfidenceRows": 18,
+    "extendedReviewMediumConfidenceRows": 12,
+    "mediumRowsPromotedForReview": 12,
+    "originalProposalRows": 30
   },
   "rows": [
     {
@@ -76,7 +91,8 @@
       ],
       "proposalDistanceMeters": 5.7,
       "proposalNameSimilarity": 1,
-      "pageTitle": "アラブ地中海料理 神田ＡＬ ＭＩＮＡ（アルミーナ） access"
+      "pageTitle": "アラブ地中海料理 神田ＡＬ ＭＩＮＡ（アルミーナ） access",
+      "preservedFromPreviousReview": true
     },
     {
       "googlePlaceId": "ChIJI1W-PkKMGGARSpB6s8XZQKU",
@@ -98,9 +114,116 @@
       "proposalNameSimilarity": 1,
       "pageTitle": "La Cantina Cancemi",
       "preservedFromPreviousReview": true
+    },
+    {
+      "googlePlaceId": "ChIJSfmdGQCNGGARGjTO9iLmYvg",
+      "name": "和風居酒屋「一喜一笑」",
+      "reviewState": "strict_auto",
+      "sourceWebsites": [
+        "https://www.ikki-issho.com/"
+      ],
+      "checkedAt": "2026-09-08",
+      "candidateProvider": "Overture Maps",
+      "candidateProviderId": "98258d6c-db34-44be-b6a4-193c337fa6ac",
+      "reviewSignals": [
+        "full_normalized_runtime_name_in_title",
+        "visible_address_agreement"
+      ],
+      "proposalDistanceMeters": 1.5,
+      "proposalNameSimilarity": 0.84,
+      "pageTitle": "一喜一笑｜東京 「神田駅」徒歩3分の和風居酒屋「一喜一笑」"
     }
   ],
   "audit": [
+    {
+      "googlePlaceId": "ChIJ0aDTMWuMGGARh6ta_oeDieo",
+      "name": "ターリー屋",
+      "proposalState": "review_overture_website_candidate",
+      "candidateProvider": "Overture Maps",
+      "candidateProviderId": "92fa8a1a-4c16-43ef-bf4c-348965d34bf7",
+      "proposalPageUrl": "http://www.thali-ya.com/",
+      "proposalNameSimilarity": 0.84,
+      "proposalDistanceMeters": 9.9,
+      "proposalScore": 0.857,
+      "approved": false,
+      "reason": "specific_page_missing_location_or_exact_structured_confirmation",
+      "finalUrl": "https://www.thali-ya.com/shop/ageo.html",
+      "title": "インド定食ターリー屋（アリオ上尾店店）【公式】",
+      "structuredFacts": 0,
+      "mapCoordinateCandidates": 0,
+      "titleNameSimilarity": 0.86,
+      "structuredNameSimilarity": 0,
+      "exactTitleContainment": true,
+      "locationSignals": [],
+      "reviewSignals": [
+        "full_normalized_runtime_name_in_title",
+        "path_specific_page",
+        "bounded_same_origin_subpage"
+      ],
+      "discoveredSubpages": [
+        {
+          "url": "http://www.thali-ya.com/shop/spice/",
+          "label": "スパイスカレーハウス ターリー屋 中野サンモール店",
+          "score": 270,
+          "level": 1,
+          "nameSimilarity": 0.86
+        },
+        {
+          "url": "http://www.thali-ya.com/shop/w-m/",
+          "label": "ターリー屋 早稲田大学前店",
+          "score": 270,
+          "level": 1,
+          "nameSimilarity": 0.86
+        },
+        {
+          "url": "http://www.thali-ya.com/shop/ageo.html",
+          "label": "《2018 9/14》 アリオ上尾店が本日オープンしました。",
+          "score": 35,
+          "level": 1,
+          "nameSimilarity": 0
+        },
+        {
+          "url": "http://www.thali-ya.com/shop/atsugi.html",
+          "label": "",
+          "score": 35,
+          "level": 1,
+          "nameSimilarity": 0
+        },
+        {
+          "url": "http://www.thali-ya.com/shop/blowdway.html",
+          "label": "《2018 5/11》 中野ブロードウェイ店が５月１９日にオープンします。",
+          "score": 35,
+          "level": 1,
+          "nameSimilarity": 0
+        },
+        {
+          "url": "http://www.thali-ya.com/shop/e_info",
+          "label": "《2020 4/11》 コロナウィルスの影響により 4月11日〜5月6日の間、営業時間が変更となります。 営業時間変更一覧》》》",
+          "score": 35,
+          "level": 1,
+          "nameSimilarity": 0
+        },
+        {
+          "url": "http://www.thali-ya.com/shop/center_bld.html",
+          "label": "新宿センタービル店",
+          "score": 35,
+          "level": 2,
+          "nameSimilarity": 0.167
+        },
+        {
+          "url": "http://www.thali-ya.com/shop/egotaten.html",
+          "label": "江古田店",
+          "score": 35,
+          "level": 2,
+          "nameSimilarity": 0
+        }
+      ],
+      "errors": [
+        "http://www.thali-ya.com/shop/spice/: HTTP 404",
+        "http://www.thali-ya.com/shop/w-m/: HTTP 404"
+      ],
+      "sourceResolution": null
+    },
     {
       "googlePlaceId": "ChIJ0eXw4hiMGGARGOrfnjnLzHk",
       "name": "こなから本店",
@@ -127,6 +250,64 @@
       "sourceResolution": null
     },
     {
+      "googlePlaceId": "ChIJ37FZ_uqNGGARpT-BPIXUtLU",
+      "name": "バーエデン神田",
+      "proposalState": "review_overture_website_candidate",
+      "candidateProvider": "Overture Maps",
+      "candidateProviderId": "fb43ec69-9d45-4069-8193-98574c1df2f5",
+      "proposalPageUrl": "https://eventbareden.com/",
+      "proposalNameSimilarity": 0.84,
+      "proposalDistanceMeters": 2.9,
+      "proposalScore": 0.8698,
+      "approved": false,
+      "reason": "specific_page_missing_location_or_exact_structured_confirmation",
+      "finalUrl": "https://eventbareden.com/bar-list/kanda/",
+      "title": "イベントバーエデン神田",
+      "structuredFacts": 0,
+      "mapCoordinateCandidates": 0,
+      "titleNameSimilarity": 0.86,
+      "structuredNameSimilarity": 0,
+      "exactTitleContainment": true,
+      "locationSignals": [],
+      "reviewSignals": [
+        "full_normalized_runtime_name_in_title",
+        "path_specific_page",
+        "bounded_same_origin_subpage"
+      ],
+      "discoveredSubpages": [
+        {
+          "url": "https://eventbareden.com/bar-list/kanda/",
+          "label": "イベントバーエデン神田",
+          "score": 245,
+          "level": 1,
+          "nameSimilarity": 0.86
+        },
+        {
+          "url": "https://eventbareden.com/bar-list/kobe/",
+          "label": "イベントバーエデン神戸",
+          "score": 45,
+          "level": 2,
+          "nameSimilarity": 0.625
+        },
+        {
+          "url": "https://eventbareden.com/bar-list/",
+          "label": "店舗一覧",
+          "score": 35,
+          "level": 2,
+          "nameSimilarity": 0
+        },
+        {
+          "url": "https://eventbareden.com/bar-list/toshima/",
+          "label": "イベントバーエデン本店",
+          "score": 35,
+          "level": 2,
+          "nameSimilarity": 0.5
+        }
+      ],
+      "errors": [],
+      "sourceResolution": null
+    },
+    {
       "googlePlaceId": "ChIJ3dbqYxyMGGARb2P34SniXRw",
       "name": "まぐろ亭",
       "proposalState": "review_high_confidence_overture_website_candidate",
@@ -149,6 +330,69 @@
       "reviewSignals": [],
       "discoveredSubpages": [],
       "errors": [],
+      "sourceResolution": null
+    },
+    {
+      "googlePlaceId": "ChIJ6d6PdwSMGGARG1HSFYkX8f0",
+      "name": "食鳥肉専門店 若どり屋",
+      "proposalState": "review_overture_website_candidate",
+      "candidateProvider": "Overture Maps",
+      "candidateProviderId": "a473bb5d-ec52-4745-a0b7-b30825ff7a45",
+      "proposalPageUrl": "http://www.apcompany.jp/news/2016/01/-126open-1.php",
+      "proposalNameSimilarity": 0.84,
+      "proposalDistanceMeters": 20.4,
+      "proposalScore": 0.8378,
+      "approved": false,
+      "reason": "fetch_failed",
+      "finalUrl": null,
+      "title": null,
+      "structuredFacts": 0,
+      "mapCoordinateCandidates": 0,
+      "titleNameSimilarity": 0,
+      "structuredNameSimilarity": 0,
+      "exactTitleContainment": false,
+      "locationSignals": [],
+      "reviewSignals": [],
+      "discoveredSubpages": [],
+      "errors": [
+        "https://www.apcompany.jp/news/2016/01/-126open-1.php: fetch failed",
+        "http://www.apcompany.jp/news/2016/01/-126open-1.php: cross-site redirect"
+      ],
+      "sourceResolution": null
+    },
+    {
+      "googlePlaceId": "ChIJAQAMfyKMGGARY6BdWr8lUR0",
+      "name": "ホンカトリー",
+      "proposalState": "review_overture_website_candidate",
+      "candidateProvider": "Overture Maps",
+      "candidateProviderId": "32688af1-6b36-4205-9de3-f0d7395d1dca",
+      "proposalPageUrl": "http://www.koya.co.jp/",
+      "proposalNameSimilarity": 0.84,
+      "proposalDistanceMeters": 4.9,
+      "proposalScore": 0.8663,
+      "approved": false,
+      "reason": "no_strong_page_name_evidence",
+      "finalUrl": "https://www.koya.co.jp/",
+      "title": "担々麺･点心・中国茶の店 香家 香港Dining",
+      "structuredFacts": 0,
+      "mapCoordinateCandidates": 0,
+      "titleNameSimilarity": 0,
+      "structuredNameSimilarity": 0,
+      "exactTitleContainment": false,
+      "locationSignals": [],
+      "reviewSignals": [],
+      "discoveredSubpages": [
+        {
+          "url": "https://www.koya.co.jp/store/",
+          "label": "店舗のご紹介",
+          "score": 35,
+          "level": 1,
+          "nameSimilarity": 0
+        }
+      ],
+      "errors": [
+        "https://www.koya.co.jp/store/: HTTP 404"
+      ],
       "sourceResolution": null
     },
     {
@@ -191,18 +435,18 @@
           "nameSimilarity": 0
         },
         {
-          "url": "https://hinoya.jp/category/%e5%ba%97%e8%88%97/",
+          "url": "https://hinoya.jp/2024/10/18/machida-open/",
           "label": "店舗",
           "score": 35,
-          "level": 1,
+          "level": 2,
           "nameSimilarity": 0
         },
         {
-          "url": "https://hinoya.jp/2024/10/18/machida-open/",
-          "label": "東京都町田市に初の日乃屋カレーが誕生です！今後ともよろしくお願いいたします！ https://hinoya.jp/shops/machida/",
+          "url": "https://hinoya.jp/category/%e5%ba%97%e8%88%97/",
+          "label": "店舗",
           "score": 35,
           "level": 2,
-          "nameSimilarity": 0.063
+          "nameSimilarity": 0
         },
         {
           "url": "https://hinoya.jp/shops/",
@@ -214,6 +458,20 @@
         {
           "url": "https://hinoya.jp/shops//nagoya-fushimi/",
           "label": "名古屋伏見",
+          "score": 35,
+          "level": 2,
+          "nameSimilarity": 0
+        },
+        {
+          "url": "https://hinoya.jp/shops/advancemall-matsuzaka/",
+          "label": "アドバンスモール松阪",
+          "score": 35,
+          "level": 2,
+          "nameSimilarity": 0
+        },
+        {
+          "url": "https://hinoya.jp/shops/aeonmall-ayagawa/",
+          "label": "イオンモール綾川",
           "score": 35,
           "level": 2,
           "nameSimilarity": 0
@@ -233,9 +491,37 @@
       "proposalDistanceMeters": 5.1,
       "proposalScore": 0.9907,
       "approved": false,
-      "reason": "non_https_final_url",
-      "finalUrl": "http://dodongadon1010.blog.fc2.com/",
-      "title": "ど丼がぁドンと子育て ～日々のこと～",
+      "reason": "fetch_failed",
+      "finalUrl": null,
+      "title": null,
+      "structuredFacts": 0,
+      "mapCoordinateCandidates": 0,
+      "titleNameSimilarity": 0,
+      "structuredNameSimilarity": 0,
+      "exactTitleContainment": false,
+      "locationSignals": [],
+      "reviewSignals": [],
+      "discoveredSubpages": [],
+      "errors": [
+        "https://dodongadon1010.blog.fc2.com/: HTTP 403",
+        "http://dodongadon1010.blog.fc2.com/: HTTP 403"
+      ],
+      "sourceResolution": null
+    },
+    {
+      "googlePlaceId": "ChIJb4EjHQSMGGAROEMMNBy38mM",
+      "name": "Bosco",
+      "proposalState": "review_overture_website_candidate",
+      "candidateProvider": "Overture Maps",
+      "candidateProviderId": "e6e55be9-4673-442a-8b77-eccdc64f6134",
+      "proposalPageUrl": "https://nikubar-bosco.com/",
+      "proposalNameSimilarity": 0.84,
+      "proposalDistanceMeters": 7.1,
+      "proposalScore": 0.8622,
+      "approved": false,
+      "reason": "generic_root_missing_location_confirmation",
+      "finalUrl": "https://nikubar-bosco.com/",
+      "title": "=BOSCO= – お肉が接客するお店",
       "structuredFacts": 0,
       "mapCoordinateCandidates": 0,
       "titleNameSimilarity": 0.86,
@@ -281,6 +567,37 @@
       "sourceResolution": null
     },
     {
+      "googlePlaceId": "ChIJd8Cn8nONGGARfEd-8dsiXdc",
+      "name": "目利きの銀次",
+      "proposalState": "review_overture_website_candidate",
+      "candidateProvider": "Overture Maps",
+      "candidateProviderId": "bbc72f44-cdb7-414f-95c1-d36dac28c3ba",
+      "proposalPageUrl": "https://www.monteroza.co.jp/shop.html?shop=855244",
+      "proposalNameSimilarity": 0.84,
+      "proposalDistanceMeters": 1.7,
+      "proposalScore": 0.8721,
+      "approved": false,
+      "reason": "blocked_by_source_resolution_listing_hold",
+      "finalUrl": null,
+      "title": null,
+      "structuredFacts": 0,
+      "mapCoordinateCandidates": 0,
+      "titleNameSimilarity": 0,
+      "structuredNameSimilarity": 0,
+      "exactTitleContainment": false,
+      "locationSignals": [],
+      "reviewSignals": [
+        "existing_source_resolution_guard"
+      ],
+      "discoveredSubpages": [],
+      "errors": [],
+      "sourceResolution": {
+        "status": "listing_hold",
+        "source": "source_resolution_outer6.js",
+        "reason": "The exact Tabelog branch is currently listing-hold / operation unconfirmed. Monte Rosa has a historical official opening announcement for the same branch, but current exact-branch official-store evidence was not found. Do not promote historical opening facts to current durable hours/status while Google QC remains operational."
+      }
+    },
+    {
       "googlePlaceId": "ChIJeU_ZETyMGGAREFmYhJXabSs",
       "name": "くんぺい",
       "proposalState": "review_high_confidence_overture_website_candidate",
@@ -310,50 +627,77 @@
       "sourceResolution": null
     },
     {
-      "googlePlaceId": "ChIJF3IItgOMGGAR_1EfWn8cjb0",
-      "name": "Al Mina",
-      "proposalState": "review_high_confidence_overture_website_candidate",
+      "googlePlaceId": "ChIJezJbYeaNGGARDfInD9fBX3o",
+      "name": "MOTTO",
+      "proposalState": "review_overture_website_candidate",
       "candidateProvider": "Overture Maps",
-      "candidateProviderId": "b5139968-f545-4798-a826-075020e17fb3",
-      "proposalPageUrl": "http://www.almina-restaurant.com/",
-      "proposalNameSimilarity": 1,
-      "proposalDistanceMeters": 5.7,
-      "proposalScore": 0.9896,
-      "approved": true,
-      "reason": "approved",
-      "finalUrl": "https://www.almina-restaurant.com/access.html",
-      "title": "アラブ地中海料理 神田ＡＬ ＭＩＮＡ（アルミーナ） access",
+      "candidateProviderId": "3d1c2657-c8a8-4ebd-8d4d-84827e572842",
+      "proposalPageUrl": "http://cien-foodservice.co.jp/bar-motto-%e4%b8%8a%e9%87%8e%e5%ba%97/",
+      "proposalNameSimilarity": 0.84,
+      "proposalDistanceMeters": 4.4,
+      "proposalScore": 0.8672,
+      "approved": false,
+      "reason": "non_https_final_url",
+      "finalUrl": "http://cien-foodservice.co.jp/552-2/bar-motto-%e6%8e%a1%e7%94%a8%e6%83%85%e5%a0%b1/",
+      "title": "Bar Motto 採用情報",
       "structuredFacts": 0,
-      "mapCoordinateCandidates": 1,
+      "mapCoordinateCandidates": 0,
       "titleNameSimilarity": 0.86,
       "structuredNameSimilarity": 0,
       "exactTitleContainment": true,
-      "locationSignals": [
-        "map_query_latlng_43m"
-      ],
+      "locationSignals": [],
       "reviewSignals": [
         "full_normalized_runtime_name_in_title",
         "path_specific_page",
-        "bounded_same_origin_second_level",
-        "map_query_latlng_43m"
+        "bounded_same_origin_subpage"
       ],
       "discoveredSubpages": [
         {
-          "url": "https://www.almina-restaurant.com/index.html",
-          "label": "AL MINA Restaurant",
-          "score": 235,
+          "url": "http://cien-foodservice.co.jp/552-2/bar-motto-%e6%8e%a1%e7%94%a8%e6%83%85%e5%a0%b1/",
+          "label": "Bar Motto 採用情報",
+          "score": 245,
           "level": 1,
           "nameSimilarity": 0.86
         },
         {
-          "url": "https://www.almina-restaurant.com/access.html",
-          "label": "Access",
-          "score": 35,
+          "url": "http://cien-foodservice.co.jp/bar-motto-%e8%b5%a4%e7%be%bd%e5%ba%97-3/",
+          "label": "Bar Motto 赤羽店",
+          "score": 245,
           "level": 2,
+          "nameSimilarity": 0.86
+        },
+        {
+          "url": "http://cien-foodservice.co.jp/bar-motto%e3%80%80%e7%a5%9e%e6%a5%bd%e5%9d%82%e5%ba%97/",
+          "label": "Bar Motto 神楽坂店",
+          "score": 245,
+          "level": 2,
+          "nameSimilarity": 0.86
+        },
+        {
+          "url": "http://cien-foodservice.co.jp/bar-motto%e3%80%80%e7%a7%8b%e8%91%89%e5%8e%9f%e5%ba%97/",
+          "label": "Bar MINI Motto 秋葉原店",
+          "score": 245,
+          "level": 1,
+          "nameSimilarity": 0.86
+        },
+        {
+          "url": "http://cien-foodservice.co.jp/2022/01/06/bar-mini-motto%e7%a7%8b%e8%91%89%e5%8e%9f%e5%ba%97%e9%96%8b%e5%ba%97%e3%81%ae%e5%91%8a%e7%9f%a5/",
+          "label": "Bar MINI Motto秋葉原店1/12(水)18時NEWOPEN！",
+          "score": 245,
+          "level": 2,
+          "nameSimilarity": 0.86
+        },
+        {
+          "url": "http://cien-foodservice.co.jp/552-2/1623-2-2/",
+          "label": "店舗情報",
+          "score": 35,
+          "level": 1,
           "nameSimilarity": 0
         }
       ],
-      "errors": [],
+      "errors": [
+        "https://cien-foodservice.co.jp/bar-motto-%e4%b8%8a%e9%87%8e%e5%ba%97/: fetch failed"
+      ],
       "sourceResolution": null
     },
     {
@@ -536,17 +880,17 @@
           "nameSimilarity": 0.86
         },
         {
-          "url": "https://sultan.co.jp/?page_id=151",
-          "label": "アクセス",
+          "url": "https://sultan.co.jp/?p=406",
+          "label": "新店舗開店のお知らせ",
           "score": 25,
           "level": 2,
           "nameSimilarity": 0
         },
         {
-          "url": "https://sultan.co.jp/?p=406",
-          "label": "新店舗開店のお知らせ",
+          "url": "https://sultan.co.jp/?page_id=151",
+          "label": "アクセス",
           "score": 25,
-          "level": 1,
+          "level": 2,
           "nameSimilarity": 0
         }
       ],
@@ -578,6 +922,86 @@
       "errors": [
         "https://kanda-matsuya.jp/: fetch failed"
       ],
+      "sourceResolution": null
+    },
+    {
+      "googlePlaceId": "ChIJr_AmLxmMGGARsJ6hMCyVNI4",
+      "name": "Cafe IMASA",
+      "proposalState": "review_overture_website_candidate",
+      "candidateProvider": "Overture Maps",
+      "candidateProviderId": "aa8d8638-f1c7-46cf-be21-84f04e79ae74",
+      "proposalPageUrl": "http://www.kanda-imasa.co.jp/cafe/",
+      "proposalNameSimilarity": 0.84,
+      "proposalDistanceMeters": 6.3,
+      "proposalScore": 0.8637,
+      "approved": false,
+      "reason": "no_strong_page_name_evidence",
+      "finalUrl": "https://www.kanda-imasa.co.jp/access/",
+      "title": "井政 - IMASA",
+      "structuredFacts": 0,
+      "mapCoordinateCandidates": 0,
+      "titleNameSimilarity": 0.571,
+      "structuredNameSimilarity": 0,
+      "exactTitleContainment": false,
+      "locationSignals": [],
+      "reviewSignals": [
+        "path_specific_page",
+        "bounded_same_origin_subpage"
+      ],
+      "discoveredSubpages": [
+        {
+          "url": "https://www.kanda-imasa.co.jp/access",
+          "label": "ACCESS",
+          "score": 35,
+          "level": 1,
+          "nameSimilarity": 0
+        },
+        {
+          "url": "https://www.kanda-imasa.co.jp/cafe",
+          "label": "CAFE",
+          "score": 125,
+          "level": 2,
+          "nameSimilarity": 0.86
+        },
+        {
+          "url": "https://www.kanda-imasa.co.jp/imasa",
+          "label": "IMASA",
+          "score": 125,
+          "level": 2,
+          "nameSimilarity": 0.86
+        }
+      ],
+      "errors": [],
+      "sourceResolution": null
+    },
+    {
+      "googlePlaceId": "ChIJSfmdGQCNGGARGjTO9iLmYvg",
+      "name": "和風居酒屋「一喜一笑」",
+      "proposalState": "review_overture_website_candidate",
+      "candidateProvider": "Overture Maps",
+      "candidateProviderId": "98258d6c-db34-44be-b6a4-193c337fa6ac",
+      "proposalPageUrl": "https://www.ikki-issho.com/",
+      "proposalNameSimilarity": 0.84,
+      "proposalDistanceMeters": 1.5,
+      "proposalScore": 0.8724,
+      "approved": true,
+      "reason": "approved",
+      "finalUrl": "https://www.ikki-issho.com/",
+      "title": "一喜一笑｜東京 「神田駅」徒歩3分の和風居酒屋「一喜一笑」",
+      "structuredFacts": 0,
+      "mapCoordinateCandidates": 0,
+      "titleNameSimilarity": 0.86,
+      "structuredNameSimilarity": 0,
+      "exactTitleContainment": true,
+      "locationSignals": [
+        "visible_address_agreement"
+      ],
+      "reviewSignals": [
+        "full_normalized_runtime_name_in_title",
+        "visible_address_agreement"
+      ],
+      "discoveredSubpages": [],
+      "errors": [],
       "sourceResolution": null
     },
     {
@@ -628,6 +1052,13 @@
           "nameSimilarity": 0
         },
         {
+          "url": "https://shop.tullys.co.jp/",
+          "label": "店舗情報",
+          "score": 25,
+          "level": 2,
+          "nameSimilarity": 0
+        },
+        {
           "url": "https://www.tullys.co.jp/information/2024/05/post-13.html",
           "label": "24/05/30 【重要】「タリーズ オンラインストア」不正アクセスによるシステム侵害発生のお詫びとお知らせ",
           "score": 35,
@@ -668,7 +1099,70 @@
       "reviewSignals": [],
       "discoveredSubpages": [],
       "errors": [
-        "https://tokyomamehana.jbplt.jp/: The operation was aborted due to timeout"
+        "https://tokyomamehana.jbplt.jp/: fetch failed"
+      ],
+      "sourceResolution": null
+    },
+    {
+      "googlePlaceId": "ChIJU4sI4gaMGGARPBBnRO9pbpw",
+      "name": "GREEN BROTHERS 大手町店",
+      "proposalState": "review_overture_website_candidate",
+      "candidateProvider": "Overture Maps",
+      "candidateProviderId": "bf3992b2-230b-4406-8adc-a71d8449aa72",
+      "proposalPageUrl": "https://g-brothers.jp/",
+      "proposalNameSimilarity": 0.84,
+      "proposalDistanceMeters": 22.2,
+      "proposalScore": 0.8345,
+      "approved": false,
+      "reason": "no_strong_page_name_evidence",
+      "finalUrl": "https://g-brothers.jp/location/",
+      "title": "Our Locations | 東京 サラダ専門店 GREEN BROTHERS",
+      "structuredFacts": 0,
+      "mapCoordinateCandidates": 0,
+      "titleNameSimilarity": 0.49,
+      "structuredNameSimilarity": 0,
+      "exactTitleContainment": false,
+      "locationSignals": [],
+      "reviewSignals": [
+        "path_specific_page",
+        "bounded_same_origin_subpage"
+      ],
+      "discoveredSubpages": [
+        {
+          "url": "https://g-brothers.jp/location/",
+          "label": "OUR LOCATIONS",
+          "score": 35,
+          "level": 1,
+          "nameSimilarity": 0
+        }
+      ],
+      "errors": [],
+      "sourceResolution": null
+    },
+    {
+      "googlePlaceId": "ChIJue2Wnx6MGGARtsk7v0lFNZc",
+      "name": "Sevens",
+      "proposalState": "review_overture_website_candidate",
+      "candidateProvider": "Overture Maps",
+      "candidateProviderId": "d8ca09e1-8f5c-4dec-b7f1-370ecf4412ac",
+      "proposalPageUrl": "https://sevens.owst.jp/",
+      "proposalNameSimilarity": 0.84,
+      "proposalDistanceMeters": 7.7,
+      "proposalScore": 0.861,
+      "approved": false,
+      "reason": "fetch_failed",
+      "finalUrl": null,
+      "title": null,
+      "structuredFacts": 0,
+      "mapCoordinateCandidates": 0,
+      "titleNameSimilarity": 0,
+      "structuredNameSimilarity": 0,
+      "exactTitleContainment": false,
+      "locationSignals": [],
+      "reviewSignals": [],
+      "discoveredSubpages": [],
+      "errors": [
+        "https://sevens.owst.jp/: HTTP 404"
       ],
       "sourceResolution": null
     },
@@ -768,6 +1262,34 @@
       "errors": [
         "https://www.hopscotchtokyo.com/: cross-site redirect",
         "http://www.hopscotchtokyo.com/: cross-site redirect"
+      ],
+      "sourceResolution": null
+    },
+    {
+      "googlePlaceId": "ChIJzSPNNxmMGGARGfKxijmqoZc",
+      "name": "明神そば きやり",
+      "proposalState": "review_overture_website_candidate",
+      "candidateProvider": "Overture Maps",
+      "candidateProviderId": "fa37ff69-4583-4f5e-bc39-0b95bbdd0644",
+      "proposalPageUrl": "http://www.juraku.com/",
+      "proposalNameSimilarity": 0.84,
+      "proposalDistanceMeters": 6.7,
+      "proposalScore": 0.863,
+      "approved": false,
+      "reason": "fetch_failed",
+      "finalUrl": null,
+      "title": null,
+      "structuredFacts": 0,
+      "mapCoordinateCandidates": 0,
+      "titleNameSimilarity": 0,
+      "structuredNameSimilarity": 0,
+      "exactTitleContainment": false,
+      "locationSignals": [],
+      "reviewSignals": [],
+      "discoveredSubpages": [],
+      "errors": [
+        "https://www.juraku.com/: fetch failed",
+        "http://www.juraku.com/: fetch failed"
       ],
       "sourceResolution": null
     }
