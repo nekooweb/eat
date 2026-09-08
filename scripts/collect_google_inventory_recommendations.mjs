@@ -24,6 +24,7 @@ const MAX_HTML_CHARS = 1_200_000;
 const CHECKED_AT = new Date().toISOString().slice(0, 10);
 const USER_AGENT = 'eat-data-maintenance/2.1 (+https://github.com/nekooweb/eat)';
 const NON_MENU_BLOCK = /営業時間|アクセス|店舗情報|会社概要|採用情報|プライバシ|予約(?:する|はこちら)?|電話番号|住所|copyright|instagram|facebook/i;
+const NON_HTML_MENU_ASSET = /\.(?:jpe?g|png|gif|webp|avif|svg|css|js|mjs|pdf|xml)(?:$|[?#])/i;
 
 function loadWindowFile(filename) {
   const sandbox = { window: {}, console };
@@ -136,6 +137,7 @@ function candidateUrls(row) {
 }
 
 function menuLinks(html, baseUrl, limit = MENU_LINK_LIMIT) {
+  if (limit <= 0) return [];
   const output = [];
   const seen = new Set();
   const linkPattern = /<a\b[^>]*href=["']([^"']+)["'][^>]*>([\s\S]*?)<\/a>/gi;
@@ -155,6 +157,76 @@ function menuLinks(html, baseUrl, limit = MENU_LINK_LIMIT) {
       if (output.length >= limit) break;
     } catch {
       // malformed links are not evidence
+    }
+  }
+  return output;
+}
+
+function walkJson(value, visit) {
+  if (Array.isArray(value)) {
+    for (const item of value) walkJson(item, visit);
+    return;
+  }
+  if (!value || typeof value !== 'object') return;
+  visit(value);
+  for (const item of Object.values(value)) walkJson(item, visit);
+}
+
+function structuredMenuLinks(html, baseUrl, limit = MENU_LINK_LIMIT) {
+  if (limit <= 0) return [];
+  const output = [];
+  const seen = new Set();
+  const candidates = [];
+  const scriptRe = /<script\b[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi;
+  let match;
+
+  function collectMenuReference(value) {
+    if (Array.isArray(value)) {
+      for (const item of value) collectMenuReference(item);
+      return;
+    }
+    if (typeof value === 'string') {
+      candidates.push(value);
+      return;
+    }
+    if (!value || typeof value !== 'object') return;
+    for (const key of ['url', '@id']) {
+      if (typeof value[key] === 'string') candidates.push(value[key]);
+    }
+  }
+
+  while ((match = scriptRe.exec(String(html || '')))) {
+    try {
+      const data = JSON.parse(match[1].trim());
+      walkJson(data, (obj) => {
+        for (const key of ['hasMenu', 'menu']) {
+          if (Object.prototype.hasOwnProperty.call(obj, key)) collectMenuReference(obj[key]);
+        }
+      });
+    } catch {
+      // Invalid JSON-LD is ignored; it is not a usable structured menu relation.
+    }
+  }
+
+  let base;
+  try {
+    base = new URL(baseUrl);
+  } catch {
+    return [];
+  }
+
+  for (const raw of candidates) {
+    try {
+      const url = new URL(raw, baseUrl);
+      if (!['http:', 'https:'].includes(url.protocol) || url.hostname !== base.hostname) continue;
+      url.hash = '';
+      const key = url.toString();
+      if (key === baseUrl || NON_HTML_MENU_ASSET.test(key) || seen.has(key)) continue;
+      seen.add(key);
+      output.push(key);
+      if (output.length >= limit) break;
+    } catch {
+      // malformed structured menu references are ignored
     }
   }
   return output;
@@ -203,6 +275,7 @@ async function inspectWebsite(rootUrl) {
   const featuredDishes = [];
   const visited = new Set();
   let plainMenuItemCount = 0;
+  let structuredMenuLinksDiscovered = 0;
   for (let index = 0; index < urls.length && index < SITE_PAGE_LIMIT; index += 1) {
     const url = urls[index];
     if (visited.has(url)) continue;
@@ -222,7 +295,13 @@ async function inspectWebsite(rootUrl) {
           featuredDishes.push(sourceItem(match, url, 'sourceWebsite', 'source_menu_text', `menu-page-text:${match.rule}`, match.evidenceSnippet));
         }
       }
-      if (index === 0) urls.push(...menuLinks(html, url, MENU_LINK_LIMIT));
+      if (index === 0) {
+        const structured = structuredMenuLinks(html, url, MENU_LINK_LIMIT);
+        structuredMenuLinksDiscovered += structured.length;
+        const remaining = Math.max(0, MENU_LINK_LIMIT - structured.length);
+        const anchors = menuLinks(html, url, remaining).filter((candidate) => !structured.includes(candidate));
+        urls.push(...structured, ...anchors);
+      }
     } catch (error) {
       errors.push(`${url}: ${error?.message || error}`);
     }
@@ -235,6 +314,7 @@ async function inspectWebsite(rootUrl) {
     recommendedDishes: recommended,
     featuredDishes: featured,
     plainMenuItemCount,
+    structuredMenuLinksDiscovered,
     errors: errors.slice(0, 2),
     visitedUrls: [...visited].slice(0, SITE_PAGE_LIMIT)
   };
@@ -342,6 +422,7 @@ async function main() {
       publicNamedRuntimeOnly: true,
       paidGoogleDataApiCalls: 0,
       websiteEligibility: 'already-bound independent official/provider websites only; Google/Tabelog/Hot Pepper/social URLs excluded from direct crawl',
+      structuredMenuDiscoveryRule: 'homepage schema.org hasMenu/menu URL only; same-origin http(s), bounded by existing menu-link and site-page limits; no guessed menu paths',
       strictRecommendationRule: 'concrete dish term in a local HTML/text block carrying explicit recommendation/signature wording',
       featuredRule: 'retained Hot Pepper promotional text, schema.org MenuItem, or concrete dish text on an already-bound same-origin menu page; never promoted to recommended without recommendation wording',
       plainMenuTextRule: 'only menu-context pages discovered from the bound source; source-native text is normalized to zh-CN while original text and URL remain evidence',
@@ -359,6 +440,8 @@ async function main() {
       websiteTasks: crawlTasks.length,
       websiteHosts: hostEntries.length,
       websitePagesVisited: crawlResults.reduce((sum, result) => sum + result.visitedUrls.length, 0),
+      websiteStructuredMenuLinksDiscovered: crawlResults.reduce((sum, result) => sum + Number(result.structuredMenuLinksDiscovered || 0), 0),
+      websiteStructuredMenuLinkRestaurants: new Set(crawlResults.filter((result) => Number(result.structuredMenuLinksDiscovered || 0) > 0).map((result) => result.googlePlaceId)).size,
       websiteRecommendedRestaurants: new Set(crawlResults.filter((result) => result.recommendedDishes.length).map((result) => result.googlePlaceId)).size,
       websiteFeaturedMenuRestaurants: new Set(websiteFeaturedResults.map((result) => result.googlePlaceId)).size,
       websiteStructuredMenuRestaurants: new Set(websiteFeaturedResults.filter((result) => result.featuredDishes.some((item) => item.evidenceClass === 'structured_menu_item')).map((result) => result.googlePlaceId)).size,
