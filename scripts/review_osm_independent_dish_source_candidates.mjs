@@ -13,7 +13,7 @@ const TIMEOUT_MS = Math.max(2000, Math.min(15000, Number(process.env.OSM_SOURCE_
 const CONCURRENCY = Math.max(1, Math.min(16, Number(process.env.OSM_SOURCE_REVIEW_CONCURRENCY || 8)));
 const MAX_HTML_CHARS = 1_200_000;
 const CHECKED_AT = new Date().toISOString().slice(0, 10);
-const USER_AGENT = 'eat-osm-source-review/1.0 (+https://github.com/nekooweb/eat)';
+const USER_AGENT = 'eat-osm-source-review/1.1 (+https://github.com/nekooweb/eat)';
 const FOOD_TYPES = new Set([
   'restaurant', 'foodestablishment', 'cafeorcoffeeshop', 'bakery', 'barorpub',
   'fastfoodrestaurant', 'icecreamshop', 'localbusiness'
@@ -67,7 +67,7 @@ function excludedHost(host) {
   if (/facebook\.com$|instagram\.com$|x\.com$|twitter\.com$|youtube\.com$|tiktok\.com$/.test(h)) return true;
   if (/gnavi\.co\.jp$|retty\.me$|tripadvisor\.[a-z.]+$|yelp\.[a-z.]+$|foursquare\.com$/.test(h)) return true;
   if (/loco\.yahoo\.co\.jp$|paypaygourmet\.yahoo\.co\.jp$|autoreserve\.com$|ekiten\.jp$/.test(h)) return true;
-  if (/restaurant\.ikyu\.com$|bar-navi\.suntory\.co\.jp$/.test(h)) return true;
+  if (/restaurant\.ikyu\.com$|bar-navi\.suntory\.co\.jp$|supleks\.jp$/.test(h)) return true;
   return false;
 }
 
@@ -303,11 +303,12 @@ async function main() {
   const runtimeRows = Array.isArray(runtimeWindow.GOOGLE_INVENTORY_RESTAURANTS)
     ? runtimeWindow.GOOGLE_INVENTORY_RESTAURANTS : [];
   const runtimeStats = runtimeWindow.GOOGLE_INVENTORY_STATS || {};
-  if (runtimeStats.catalogTotal !== 2804 || runtimeRows.length !== 1415) {
-    throw new Error('OSM strict review requires frozen 2,804 / public 1,415 baseline');
+  if (runtimeStats.catalogTotal !== 2804 || runtimeRows.length < 1) {
+    throw new Error('OSM strict review requires a non-empty current runtime over the frozen 2,804-ID catalog');
   }
-  if (candidates.policy?.proposalOnly !== true || candidates.policy?.identityBindingChanges !== 0) {
-    throw new Error('OSM candidate input must remain proposal-only');
+  if (candidates.policy?.proposalOnly !== true || candidates.policy?.identityBindingChanges !== 0
+    || candidates.policy?.osmIdentityFieldsSerialized !== false) {
+    throw new Error('OSM candidate input must remain minimal and proposal-only');
   }
   const runtimeById = new Map(runtimeRows.map((row) => [row.googlePlaceId, row]));
   const targets = (candidates.rows || []).filter((row) =>
@@ -381,7 +382,7 @@ async function main() {
   for (const row of audit) reasonCounts[row.reason] = (reasonCounts[row.reason] || 0) + 1;
   const summary = {
     catalogTotal: 2804,
-    publicRuntimeTotal: 1415,
+    publicRuntimeTotal: runtimeRows.length,
     proposalRows: Number(candidates.summary?.proposalRows || 0),
     highConfidenceInputRows: targets.length,
     reviewedRows: audit.length,
@@ -392,7 +393,7 @@ async function main() {
   };
 
   const payload = {
-    schemaVersion: 1,
+    schemaVersion: 2,
     checkedAt: CHECKED_AT,
     policy: {
       strictAutoOnly: true,
