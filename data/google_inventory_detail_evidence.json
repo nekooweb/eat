@@ -68,7 +68,12 @@
     "genericServiceBooleansAreDishEvidence": false,
     "allYouCanEatRequiresConcreteAvailabilityWording": true,
     "promotionalSpecificRulesBeforeBroadDishFamilyRules": true,
-    "structuredMenuDiscoveryRule": "homepage schema.org hasMenu/menu URL only; same-origin http(s), bounded by existing menu-link and site-page limits; no guessed menu paths"
+    "structuredMenuDiscoveryRule": "homepage schema.org hasMenu/menu URL only; same-origin http(s), bounded by existing menu-link and site-page limits; no guessed menu paths",
+    "dishSpecificityCorrection": "source-native-composite-v1",
+    "dishSpecificityCorrectionUsesSourceNativeEvidenceOnly": true,
+    "dishSpecificityCorrectionCuisineInferenceAllowed": false,
+    "dishSpecificityCorrectionBrandInferenceAllowed": false,
+    "dishSpecificityCorrectionPaidGoogleDataApiCalls": 0
   },
   "summary": {
     "catalogTotal": 2804,
@@ -76,7 +81,7 @@
     "queueEligibleIds": 325,
     "targets": 307,
     "uniqueOrigins": 273,
-    "sitemapFilesFetched": 629,
+    "sitemapFilesFetched": 625,
     "menuUrlsDiscovered": 133,
     "menuPagesFetched": 98,
     "errorTargets": 10,
@@ -105,6 +110,17 @@
       "evidenceRestaurants": 477,
       "recommendationItems": 438,
       "featuredItems": 1009
+    },
+    "specificityCorrection": {
+      "correctedRestaurants": 9,
+      "correctedItems": 9,
+      "duplicateItemsRemoved": 3,
+      "ruleCounts": {
+        "meat-sushi-over-sushi": 5,
+        "yakisoba-over-soba": 4
+      },
+      "recommendationItemsAfterCorrection": 438,
+      "featuredItemsAfterCorrection": 1006
     }
   },
   "rows": [
@@ -880,14 +896,19 @@
       "recommendedDishes": [],
       "featuredDishes": [
         {
-          "nameZh": "寿司",
+          "nameZh": "肉寿司",
           "nameJa": "寿司",
           "provider": "Hot Pepper",
           "sourceUrl": "https://www.hotpepper.jp/strJ001103764/?vos=nhppalsa000016",
           "checkedAt": "2026-09-08",
           "evidenceClass": "provider_promotional_dish_text",
-          "evidenceRule": "hotpepper-catch-menu:寿司|すし|鮨|sushi",
-          "evidenceSnippet": "鮮度が命！馬肉料理専門店 肉食女子必見☆馬肉寿司"
+          "evidenceRule": "specificity:meat-sushi-over-sushi:hotpepper-catch-menu:寿司|すし|鮨|sushi",
+          "evidenceSnippet": "鮮度が命！馬肉料理専門店 肉食女子必見☆馬肉寿司",
+          "specificityCorrection": {
+            "rule": "meat-sushi-over-sushi",
+            "previousNameZh": "寿司",
+            "sourceNativeCompositeRequired": true
+          }
         }
       ]
     },
@@ -6252,14 +6273,19 @@
       ],
       "featuredDishes": [
         {
-          "nameZh": "寿司",
+          "nameZh": "肉寿司",
           "nameJa": "寿司",
           "provider": "sourceWebsite",
           "sourceUrl": "https://keijo-suidobashi.com/menu/",
           "checkedAt": "2026-09-08",
           "evidenceClass": "source_menu_text",
-          "evidenceRule": "menu-page-text:寿司|すし|鮨|sushi",
-          "evidenceSnippet": "★松阪牛肉寿司 一貫480円"
+          "evidenceRule": "specificity:meat-sushi-over-sushi:menu-page-text:寿司|すし|鮨|sushi",
+          "evidenceSnippet": "★松阪牛肉寿司 一貫480円",
+          "specificityCorrection": {
+            "rule": "meat-sushi-over-sushi",
+            "previousNameZh": "寿司",
+            "sourceNativeCompositeRequired": true
+          }
         },
         {
           "nameZh": "牛舌",
@@ -8860,14 +8886,19 @@
           "evidenceSnippet": "マグロステーキ丼"
         },
         {
-          "nameZh": "荞麦面",
+          "nameZh": "炒面",
           "nameJa": "そば",
           "provider": "sourceWebsite",
           "sourceUrl": "https://adirondackcafejp.wordpress.com/food/",
           "checkedAt": "2026-09-08",
           "evidenceClass": "source_menu_text",
-          "evidenceRule": "menu-page-text:蕎麦|そば|soba",
-          "evidenceSnippet": "焼きそば Fried Noodle （税込み１４３０）"
+          "evidenceRule": "specificity:yakisoba-over-soba:menu-page-text:蕎麦|そば|soba",
+          "evidenceSnippet": "焼きそば Fried Noodle （税込み１４３０）",
+          "specificityCorrection": {
+            "rule": "yakisoba-over-soba",
+            "previousNameZh": "荞麦面",
+            "sourceNativeCompositeRequired": true
+          }
         }
       ]
     },
@@ -10134,14 +10165,19 @@
       "recommendedDishes": [],
       "featuredDishes": [
         {
-          "nameZh": "荞麦面",
+          "nameZh": "炒面",
           "nameJa": "そば",
           "provider": "Hot Pepper",
           "sourceUrl": "https://www.hotpepper.jp/strJ001195210/?vos=nhppalsa000016",
           "checkedAt": "2026-09-08",
           "evidenceClass": "provider_promotional_dish_text",
-          "evidenceRule": "hotpepper-catch-menu:蕎麦|そば|soba",
-          "evidenceSnippet": "焼きそばのっけ盛♪ オリジナルサワー"
+          "evidenceRule": "specificity:yakisoba-over-soba:hotpepper-catch-menu:蕎麦|そば|soba",
+          "evidenceSnippet": "焼きそばのっけ盛♪ オリジナルサワー",
+          "specificityCorrection": {
+            "rule": "yakisoba-over-soba",
+            "previousNameZh": "荞麦面",
+            "sourceNativeCompositeRequired": true
+          }
         }
       ]
     },
@@ -12407,14 +12443,19 @@
           "evidenceSnippet": "ツナマヨピザ 阪神甲子園球場店 3階1塁側内野 /3階3塁側内野 /3階レフト側外野"
         },
         {
-          "nameZh": "荞麦面",
+          "nameZh": "炒面",
           "nameJa": "そば",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.gindaco.com/menu",
           "checkedAt": "2026-09-08",
           "evidenceClass": "source_menu_text",
-          "evidenceRule": "menu-page-text:蕎麦|そば|soba",
-          "evidenceSnippet": "群馬県は炭水化物の街！伊藤琉偉の炭水化物(たこ焼)×炭水化物(焼きそば)のたこ焼そば 【TOKYO STADIUM店限定】"
+          "evidenceRule": "specificity:yakisoba-over-soba:menu-page-text:蕎麦|そば|soba",
+          "evidenceSnippet": "群馬県は炭水化物の街！伊藤琉偉の炭水化物(たこ焼)×炭水化物(焼きそば)のたこ焼そば 【TOKYO STADIUM店限定】",
+          "specificityCorrection": {
+            "rule": "yakisoba-over-soba",
+            "previousNameZh": "荞麦面",
+            "sourceNativeCompositeRequired": true
+          }
         },
         {
           "nameZh": "章鱼烧",
@@ -13763,13 +13804,13 @@
           "evidenceSnippet": "喫煙席あり飛騨牛 お刺身 2名-40名様モダン個室空間"
         },
         {
-          "nameZh": "寿司",
-          "nameJa": "寿司",
+          "nameZh": "肉寿司",
+          "nameJa": "肉寿司",
           "provider": "Hot Pepper",
           "sourceUrl": "https://www.hotpepper.jp/strJ001171178/?vos=nhppalsa000016",
           "checkedAt": "2026-09-06",
           "evidenceClass": "provider_promotional_dish_text",
-          "evidenceRule": "hotpepper-rich-specialFeatureTitle:寿司|すし|鮨|sushi",
+          "evidenceRule": "hotpepper-retained-richSpecialFeatureTitle:promotional-specific:肉寿司",
           "evidenceSnippet": "飛騨牛 肉寿司コー3H飲み放題付3000円～"
         },
         {
@@ -13791,16 +13832,6 @@
           "evidenceClass": "provider_promotional_dish_text",
           "evidenceRule": "hotpepper-rich-genreCatch:焼き?鳥|やきとり|yakitori",
           "evidenceSnippet": "神田 居酒屋 個室 鮮魚 肉 焼鳥"
-        },
-        {
-          "nameZh": "肉寿司",
-          "nameJa": "肉寿司",
-          "provider": "Hot Pepper",
-          "sourceUrl": "https://www.hotpepper.jp/strJ001171178/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-06",
-          "evidenceClass": "provider_promotional_dish_text",
-          "evidenceRule": "hotpepper-retained-richSpecialFeatureTitle:promotional-specific:肉寿司",
-          "evidenceSnippet": "飛騨牛 肉寿司コー3H飲み放題付3000円～"
         }
       ]
     },
@@ -13988,14 +14019,19 @@
           "evidenceSnippet": "鉄板出汁巻き玉子"
         },
         {
-          "nameZh": "荞麦面",
+          "nameZh": "炒面",
           "nameJa": "茶水ブラック焼きそば",
           "provider": "Tabelog",
           "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13283082/",
           "checkedAt": "2026-09-05",
           "evidenceClass": "retained_source_menu_item",
-          "evidenceRule": "retained:dishes:蕎麦|そば|soba",
-          "evidenceSnippet": "茶水ブラック焼きそば"
+          "evidenceRule": "specificity:yakisoba-over-soba:retained:dishes:蕎麦|そば|soba",
+          "evidenceSnippet": "茶水ブラック焼きそば",
+          "specificityCorrection": {
+            "rule": "yakisoba-over-soba",
+            "previousNameZh": "荞麦面",
+            "sourceNativeCompositeRequired": true
+          }
         }
       ]
     },
@@ -14787,16 +14823,6 @@
       "name": "個室居酒屋 座楽 神保町店",
       "recommendedDishes": [],
       "featuredDishes": [
-        {
-          "nameZh": "寿司",
-          "nameJa": "寿司",
-          "provider": "Hot Pepper",
-          "sourceUrl": "https://www.hotpepper.jp/strJ001128905/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-06",
-          "evidenceClass": "provider_promotional_dish_text",
-          "evidenceRule": "hotpepper-rich-specialFeatureTitle:寿司|すし|鮨|sushi",
-          "evidenceSnippet": "【3H飲み放題付】特選牛や馬肉寿司、直送鮮魚など絶品を堪能！"
-        },
         {
           "nameZh": "肉寿司",
           "nameJa": "肉寿司",
@@ -16071,16 +16097,6 @@
       "name": "シュラスコ×肉寿司　個室居酒屋　肉丸酒場　水道橋店",
       "recommendedDishes": [],
       "featuredDishes": [
-        {
-          "nameZh": "寿司",
-          "nameJa": "寿司",
-          "provider": "Hot Pepper",
-          "sourceUrl": "https://www.hotpepper.jp/strJ003474367/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-06",
-          "evidenceClass": "provider_promotional_dish_text",
-          "evidenceRule": "hotpepper-retained-catalogGenreCatch:寿司|すし|鮨|sushi",
-          "evidenceSnippet": "東京ドーム近く♪シュラスコx肉寿司♪"
-        },
         {
           "nameZh": "肉寿司",
           "nameJa": "肉寿司",
