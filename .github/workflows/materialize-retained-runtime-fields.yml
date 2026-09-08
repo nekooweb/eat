@@ -1,0 +1,106 @@
+name: Materialize retained runtime fields
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - _ops/run-retained-runtime-field-materialization-once-2026-09-09.txt
+
+permissions:
+  contents: write
+
+concurrency:
+  group: materialize-retained-runtime-fields
+  cancel-in-progress: false
+
+jobs:
+  materialize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Sync latest main
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          git reset --hard origin/main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Offline reload with retained field materialization
+        run: |
+          set -euo pipefail
+          node scripts/audit_no_paid_apis.mjs
+          node --check scripts/build_hotpepper_catalog_practical_overlay.mjs
+          node --check scripts/materialize_runtime_practical_fields.mjs
+          python scripts/reload_data.py --public-only --outdir _audit/retained-runtime-field-materialization
+      - name: Validate field coverage and identity invariants
+        run: |
+          set -euo pipefail
+          node - <<'NODE'
+          const fs = require('fs');
+          const text = fs.readFileSync('data/google_inventory_runtime.js','utf8');
+          const rp='window.GOOGLE_INVENTORY_RESTAURANTS=';
+          const sp='window.GOOGLE_INVENTORY_STATS=';
+          const rs=text.indexOf(rp), ss=text.indexOf(sp);
+          if (rs < 0 || ss < 0) throw new Error('runtime assignments missing');
+          const rows=JSON.parse(text.slice(rs+rp.length,ss).replace(/^\s*/,'').replace(/;\s*$/s,'').trim());
+          const stats=JSON.parse(text.slice(ss+sp.length).replace(/;\s*$/s,'').trim());
+          if (stats.catalogTotal !== 2804 || stats.inventoryTotal !== 1422 || stats.unpublishedPlaceIdOnly !== 1382) throw new Error('frozen catalog/runtime cardinality changed');
+          if (rows.length !== 1422 || new Set(rows.map(r=>r.googlePlaceId)).size !== 1422) throw new Error('runtime identity uniqueness failed');
+          const requiredMinimums={
+            stationKnown:470, accessReferenceKnown:470, lunchServiceKnown:470,
+            courseAvailabilityKnown:430, allYouCanDrinkKnown:470, allYouCanEatKnown:470,
+            privateRoomPolicyKnown:460, cardPaymentKnown:470, smokingPolicyKnown:470,
+            parkingPolicyKnown:470, telephoneKnown:100,
+            seatingCapacityKnown:125, partyCapacityKnown:100, acceptedCreditCardsKnown:110,
+            wifiKnown:95, barrierFreeKnown:120, childrenWelcomeKnown:120,
+            englishMenuKnown:120, horigotatsuKnown:120, karaokeKnown:120,
+            lateNightAfter23Known:120, liveShowKnown:120, petAllowedKnown:120,
+            tatamiKnown:120, tvProjectorKnown:120, charterKnown:120, bandPerformanceKnown:120
+          };
+          for (const [key,min] of Object.entries(requiredMinimums)) {
+            if ((stats[key] ?? 0) < min) throw new Error(`${key}=${stats[key]} below ${min}`);
+          }
+          if ((stats.richPracticalAppliedRows ?? 0) < 120) throw new Error('rich practical rows were not materialized');
+          if ((stats.recommendedDishesKnown ?? 0) < 551 || (stats.chineseDishDisplayRows ?? 0) < 709) throw new Error('dish coverage regressed during field materialization');
+          console.log(JSON.stringify({
+            catalogTotal:stats.catalogTotal,inventoryTotal:stats.inventoryTotal,
+            telephoneKnown:stats.telephoneKnown,stationKnown:stats.stationKnown,
+            seatingCapacityKnown:stats.seatingCapacityKnown,partyCapacityKnown:stats.partyCapacityKnown,
+            acceptedCreditCardsKnown:stats.acceptedCreditCardsKnown,wifiKnown:stats.wifiKnown,
+            barrierFreeKnown:stats.barrierFreeKnown,childrenWelcomeKnown:stats.childrenWelcomeKnown,
+            richPracticalAppliedRows:stats.richPracticalAppliedRows,
+            recommendedDishesKnown:stats.recommendedDishesKnown,chineseDishDisplayRows:stats.chineseDishDisplayRows
+          }));
+          NODE
+      - name: Commit deterministic runtime outputs
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            data/hotpepper_catalog_practical_overlay.json \
+            data/production_area1.js \
+            data/source_provenance.js \
+            data/source_facts.js \
+            data/reviewed_official_runtime_sources.json \
+            data/reviewed_independent_dish_sources.json \
+            data/google_inventory_runtime.js \
+            data/google_inventory_detail_queue.json \
+            data/dish_batch_plan.json \
+            data/independent_dish_source_candidates.json
+          if git diff --cached --quiet; then
+            echo 'No deterministic runtime changes to commit.'
+            exit 0
+          fi
+          git commit -m "Materialize retained restaurant practical fields"
+          git fetch origin main
+          git rebase origin/main
+          git push origin HEAD:main
