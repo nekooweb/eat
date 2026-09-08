@@ -21,17 +21,18 @@
   },
   "summary": {
     "catalogTotal": 2804,
-    "publicRuntimeTotal": 1415,
+    "publicRuntimeTotal": 1422,
     "proposalRows": 32,
     "highConfidenceInputRows": 20,
     "reviewedRows": 20,
     "approvedRows": 0,
     "rejectedRows": 20,
-    "fetchErrorRows": 5,
+    "fetchErrorRows": 3,
     "reasonCounts": {
-      "no_strong_page_name_evidence": 14,
-      "fetch_failed": 5,
-      "generic_root_missing_location_confirmation": 1
+      "no_strong_page_name_evidence": 15,
+      "generic_root_missing_location_confirmation": 1,
+      "specific_page_missing_location_or_exact_structured_confirmation": 1,
+      "fetch_failed": 3
     }
   },
   "rows": [],
@@ -112,17 +113,15 @@
       "proposalDistanceMeters": 5.1,
       "proposalScore": 0.9907,
       "approved": false,
-      "reason": "fetch_failed",
-      "finalUrl": null,
-      "title": null,
+      "reason": "no_strong_page_name_evidence",
+      "finalUrl": "http://dodongadon1010.blog.fc2.com/",
+      "title": "ど丼がぁドンと子育て ～日々のこと～",
       "structuredFacts": 0,
-      "titleNameSimilarity": 0,
+      "titleNameSimilarity": 0.86,
       "structuredNameSimilarity": 0,
       "locationSignals": [],
       "reviewSignals": [],
-      "errors": [
-        "http://dodongadon1010.blog.fc2.com/: HTTP 403"
-      ]
+      "errors": []
     },
     {
       "googlePlaceId": "ChIJb6ihORmMGGARKiW5-SjV83o",
@@ -265,17 +264,18 @@
       "proposalDistanceMeters": 2.8,
       "proposalScore": 0.9949,
       "approved": false,
-      "reason": "fetch_failed",
-      "finalUrl": null,
-      "title": null,
+      "reason": "specific_page_missing_location_or_exact_structured_confirmation",
+      "finalUrl": "https://www.cancemi.jp/cantina/",
+      "title": "La Cantina Cancemi",
       "structuredFacts": 0,
-      "titleNameSimilarity": 0,
+      "titleNameSimilarity": 1,
       "structuredNameSimilarity": 0,
       "locationSignals": [],
-      "reviewSignals": [],
-      "errors": [
-        "http://www.cancemi.jp/cantina/: The operation was aborted due to timeout"
-      ]
+      "reviewSignals": [
+        "title_name_similarity_1.000",
+        "path_specific_page"
+      ],
+      "errors": []
     },
     {
       "googlePlaceId": "ChIJiWFVAT-MGGARfA-dnOR9DFk",
