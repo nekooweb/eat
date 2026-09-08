@@ -29,8 +29,8 @@
     "singleDistinctLabeledNumberRequired": true
   },
   "summary": {
-    "rows": 142,
-    "places": 116,
+    "rows": 143,
+    "places": 117,
     "placesWithMultipleSnapshots": 26,
     "fieldCounts": {
       "address": 3,
@@ -38,17 +38,15 @@
       "geo": 1,
       "openingHoursRaw": 38,
       "priceRange": 9,
-      "telephone": 119
+      "telephone": 120
     },
     "providerCounts": {
       "Overture Maps": 18,
-      "official": 124
+      "official": 125
     },
     "lastMerge": {
-      "same_snapshot_claims_extended": 6,
-      "snapshot_added": 55,
-      "snapshot_added_existing_place": 6,
-      "snapshot_added_new_place": 49
+      "snapshot_added": 1,
+      "snapshot_added_new_place": 1
     }
   },
   "rows": [
@@ -3568,6 +3566,48 @@
         ]
       },
       "checkedAt": "2026-09-07"
+    },
+    {
+      "googlePlaceId": "ChIJc5NiOxGMGGAR0PMWjP7od20",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:f15c4247dc9f378eb8f6",
+      "missingBefore": [
+        "telephone"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "strong_page_title",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://www.luncheon.jp/access.html",
+        "finalUrl": "https://www.luncheon.jp/access.html",
+        "retrievedAt": "2026-09-08T06:34:36Z",
+        "contentHash": "2ab79f6693acfb65c342baadaf01d027f830710be495d69afe1b460d69e8323d",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06",
+        "discovery": {
+          "method": "explicit_labeled_telephone",
+          "telephoneParserVersion": "official-labeled-telephone-v1",
+          "labelRequired": true,
+          "singleDistinctLabeledNumberRequired": true,
+          "evidenceSnippet": "TEL 03-3233-0866 （お問い合わせの際はホームページを見たとお伝えください）",
+          "sameOriginDetailPage": true,
+          "parentSourceUrl": "https://www.luncheon.jp/",
+          "rootIdentityReconfirmedBeforeDiscovery": true,
+          "detailIdentityReconfirmedIndependently": true,
+          "anchorText": "アクセス",
+          "linkScore": 3
+        }
+      },
+      "fieldClaims": {
+        "telephone": "03-3233-0866"
+      },
+      "checkedAt": "2026-09-08"
     },
     {
       "googlePlaceId": "ChIJc5NiOxGMGGARL8jOKrnIR5c",
