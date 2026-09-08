@@ -1,0 +1,67 @@
+name: Report remaining priority identity rows
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/report-remaining-priority-identities.yml"
+      - "data/google_basic_source_matches.json"
+      - "data/hotpepper_catalog_facts.json"
+      - "data/overture_area1_candidates.json"
+      - "scripts/database/audit_id_only_priority_identity_groups.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Build strict current master and report compact remaining rows
+        run: |
+          set -euo pipefail
+          mkdir -p _tmp
+          node scripts/audit_no_paid_apis.mjs
+          python scripts/database/build_master.py --output _tmp/master.sqlite --reset >/dev/null
+          python scripts/database/validate_master.py _tmp/master.sqlite >/dev/null
+          python scripts/database/audit_id_only_priority_identity_groups.py --database _tmp/master.sqlite --output _tmp/priority.json >/dev/null
+          python - <<'PY'
+          import json
+          d=json.load(open('_tmp/priority.json'))
+          rows=[]
+          for r in d.get('hotPepperHighIdOnly',[]):
+            hp=r.get('hotpepper') or {}; facts=hp.get('facts') or {}; binding=hp.get('binding') or {}
+            direct=r.get('directOverture') or {}; best=direct.get('best') or {}; runner=direct.get('runner') or {}
+            rows.append({
+              'googlePlaceId':r.get('googlePlaceId'),
+              'hpId':hp.get('hotpepperId'),
+              'hpName':facts.get('name'),
+              'hpAddress':facts.get('address'),
+              'hpLat':facts.get('lat'),'hpLng':facts.get('lng'),
+              'hpDistance':binding.get('distanceMeters'),'hpNameSimilarity':binding.get('nameSimilarity'),'hpCombinedScore':binding.get('combinedScore'),'hpSeed':binding.get('seedSource'),
+              'overtureStatus':direct.get('status'),'overtureStrong':direct.get('strongReviewCandidate'),
+              'overtureId':best.get('overtureId'),'overtureName':best.get('name'),'overtureAddress':best.get('address'),'overtureDistance':best.get('distanceMeters'),'overtureNameSimilarity':best.get('nameSimilarity'),'overtureAddressSimilarity':best.get('addressSimilarity'),'overturePostal':best.get('postalMatch'),'overtureMargin':best.get('margin'),'overtureWebsites':best.get('websites'),'overturePhones':best.get('phones'),
+              'runnerId':runner.get('overtureId'),'runnerName':runner.get('name'),'runnerDistance':runner.get('distanceMeters'),'runnerScore':runner.get('score'),
+              'existingOpenCandidate':r.get('existingOpenCandidate'),'existingOvertureSupport':r.get('existingOvertureSupport'),
+            })
+          print('REMAINING_HP_HIGH='+json.dumps(rows,ensure_ascii=False,separators=(',',':')))
+          cross=[]
+          for r in d.get('crossPriorityIdOnly',[])[:30]:
+            o=r.get('overtureSupport') or {}
+            cross.append({'googlePlaceId':r.get('googlePlaceId'),'candidateName':r.get('candidateName'),'queue':r.get('queue'),'triage':o.get('triage'),'overtureName':o.get('name'),'distance':o.get('distanceToOsmMeters'),'combinedScore':o.get('combinedScore'),'websites':o.get('websites'),'hotpepper':bool(r.get('hotpepper'))})
+          print('TOP_CROSS_PRIORITY='+json.dumps(cross,ensure_ascii=False,separators=(',',':')))
+          print('SUMMARY='+json.dumps(d.get('summary'),ensure_ascii=False,separators=(',',':')))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: remaining-priority-identities
+          path: _tmp/priority.json
+          retention-days: 3
