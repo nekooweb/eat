@@ -18,27 +18,32 @@
     ],
     "crossSnapshotClaimMerge": false,
     "canonicalResolution": "import_time_missing_only",
-    "telephoneIncludedInCompletionTargets": true
+    "telephoneIncludedInCompletionTargets": true,
+    "sameOriginDetailTraversal": true,
+    "rootIdentityGateRequiredBeforeDetailDiscovery": true,
+    "detailIdentityReconfirmationRequired": true,
+    "maxExplicitDetailLinksPerRoot": 6,
+    "genericPriceRangeMealInference": false
   },
   "summary": {
-    "rows": 84,
-    "places": 64,
+    "rows": 87,
+    "places": 67,
     "placesWithMultipleSnapshots": 20,
     "fieldCounts": {
       "address": 3,
       "cuisineNormalized": 1,
       "geo": 1,
-      "openingHoursRaw": 35,
+      "openingHoursRaw": 38,
       "priceRange": 9,
       "telephone": 58
     },
     "providerCounts": {
       "Overture Maps": 18,
-      "official": 66
+      "official": 69
     },
     "lastMerge": {
-      "snapshot_added": 7,
-      "snapshot_added_new_place": 7,
+      "snapshot_added": 3,
+      "snapshot_added_new_place": 3,
       "snapshot_already_present": 4
     }
   },
@@ -205,6 +210,49 @@
         ]
       },
       "checkedAt": "2026-09-07"
+    },
+    {
+      "googlePlaceId": "ChIJ2ZVGFQGMGGARmN1lf5qU8MU",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:3de980bdc6dd60d55977",
+      "missingBefore": [
+        "address",
+        "dinner_budget",
+        "hours",
+        "lunch_budget",
+        "telephone"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "strong_page_title",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://www.kono-hana.com/locations/access/",
+        "finalUrl": "https://www.kono-hana.com/locations/access/",
+        "retrievedAt": "2026-09-08T06:17:48Z",
+        "contentHash": "35fd2de129651f90c2389a37551eba85fbd5b6352cf5dd2a49bbb2a11a22b7b8",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06",
+        "discovery": {
+          "method": "same_origin_explicit_detail_link",
+          "parentSourceUrl": "https://www.kono-hana.com/",
+          "anchorText": "アクセス",
+          "linkScore": 3,
+          "rootIdentityReconfirmedBeforeDiscovery": true,
+          "detailIdentityReconfirmedIndependently": true
+        }
+      },
+      "fieldClaims": {
+        "openingHoursRaw": [
+          "営業時間 昼の部 平日 11：30~14：00 夜の部 平日 17：00~22：00 ラストオーダー：お料理LO 21:00 ドリンクLO 21:20"
+        ]
+      },
+      "checkedAt": "2026-09-08"
     },
     {
       "googlePlaceId": "ChIJ2atVJwSMGGARrwm6ahMJsfo",
@@ -629,6 +677,49 @@
         ]
       },
       "checkedAt": "2026-09-07"
+    },
+    {
+      "googlePlaceId": "ChIJ6QLp3BmMGGAR1-0MdDO-bTs",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:20ede07a6a7cccedf64e",
+      "missingBefore": [
+        "address",
+        "dinner_budget",
+        "hours",
+        "lunch_budget",
+        "telephone"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "strong_page_title",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://www.yomenya-goemon.com/store/kanto/",
+        "finalUrl": "https://www.yomenya-goemon.com/store/kanto/",
+        "retrievedAt": "2026-09-08T06:17:29Z",
+        "contentHash": "ff216a06262d98a8402c24b8397eed256a0601585e1ad3eeb3b9ec9eb0fce5ed",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06",
+        "discovery": {
+          "method": "same_origin_explicit_detail_link",
+          "parentSourceUrl": "https://www.yomenya-goemon.com/",
+          "anchorText": "2026.08.27 \n洋麺屋五右衛門 金町店が8月27日にオープン",
+          "linkScore": 1,
+          "rootIdentityReconfirmedBeforeDiscovery": true,
+          "detailIdentityReconfirmedIndependently": true
+        }
+      },
+      "fieldClaims": {
+        "openingHoursRaw": [
+          "営業時間が変更となっている場合がございます。詳しくは直接店舗に"
+        ]
+      },
+      "checkedAt": "2026-09-08"
     },
     {
       "googlePlaceId": "ChIJ6eEHmziMGGARZb0rRUApRm0",
@@ -2321,6 +2412,49 @@
         "priceRange": "¥1,000〜¥3,000"
       },
       "checkedAt": "2026-09-07"
+    },
+    {
+      "googlePlaceId": "ChIJmXw7jBqMGGARZUMVX_vrOE8",
+      "sourceProvider": "official",
+      "sourceProviderId": "official-index:ba091b662b049f9c2234",
+      "missingBefore": [
+        "address",
+        "dinner_budget",
+        "hours",
+        "lunch_budget",
+        "telephone"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_verified_official_page",
+        "retainedOfficialBindingReviewed": true,
+        "pageNameMatchMethod": "strong_page_title",
+        "pageNameSimilarity": 0.88,
+        "titleNameSimilarity": 0.88
+      },
+      "webEvidence": {
+        "sourceUrl": "https://queueleuleu.com/access/",
+        "finalUrl": "https://queueleuleu.com/access",
+        "retrievedAt": "2026-09-08T06:17:26Z",
+        "contentHash": "faaea7639a2c59888cda73a1a4afb291874051b7d11fc4f3166b41f8e6fdd9b3",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false,
+        "retainedOfficialIndexCheckedAt": "2026-09-06",
+        "discovery": {
+          "method": "same_origin_explicit_detail_link",
+          "parentSourceUrl": "https://queueleuleu.com/",
+          "anchorText": "",
+          "linkScore": 1,
+          "rootIdentityReconfirmedBeforeDiscovery": true,
+          "detailIdentityReconfirmedIndependently": true
+        }
+      },
+      "fieldClaims": {
+        "openingHoursRaw": [
+          "営業時間について ▲▲ 通常、18:00開店（ラストオーダー22:00） 23:00閉店とさせて頂いておりましたが、 感染症対策と致しまして、しばらくは 22:00閉店とさせて頂きます。 お1人でお食事が出来る方（中学生以上）に 限らせて頂きます。 ◎ 営業時間 開店 18:00 食事のラストオーダー 20:00 お酒のラストオーダー 21:30 閉店 22:00（これより早く閉店する場合あり） ＊お食後のご滞在は30分程度でお願いしております。 ★ ランチタイム 月～金（祝日を除く） １１：３０～１３：３０（L.O） １４：００閉店 ★ ディナータイム 月～土（祝日休みの場合あり） １８：００～２２：００（食事のL.O ２０：００） お休み：日曜日、祝日は不定休 ★ ☆ ★ 旬の食材と美味しいワインをご用意してお待ちしてます ★ ☆ ★ 新御茶ノ水駅 B３出口より 徒歩２分 B３b出口より 徒歩１分 丸ノ内線 淡路町 B３出口より 徒歩２分 都営新宿線 小川町 B３出口より 徒歩２分 JR 御茶ノ水駅 聖橋出口より 徒歩５分 都営三田線 神保町駅より 徒歩７分 千代田区神田駿河台3-7-3 Tel. 03-5577-6682 ・メニュー （ アラカルト 、 パーティプラン 、 コース ） ・ワイン （ スパークリング 、 白ワイン 、 赤ワイン ブルゴーニュ 、 赤ワイン ボルド"
+        ]
+      },
+      "checkedAt": "2026-09-08"
     },
     {
       "googlePlaceId": "ChIJnYWupOGNGGARbJXrXzGrfL4",
