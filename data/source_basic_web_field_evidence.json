@@ -18,7 +18,7 @@
     ],
     "crossSnapshotClaimMerge": false,
     "canonicalResolution": "import_time_missing_only",
-    "telephoneIncludedInCompletionTargets": true,
+    "telephoneIncludedInCompletionTargets": false,
     "sameOriginDetailTraversal": true,
     "rootIdentityGateRequiredBeforeDetailDiscovery": true,
     "detailIdentityReconfirmationRequired": true,
@@ -35,10 +35,11 @@
     "area1TokyoWardRequiredForVisibleAddress": true,
     "concreteTimeRequiredForVisibleHours": true,
     "retainedMultisourceCurrentnessPageOnly": true,
-    "freshNameAndLocationReconfirmationRequired": true
+    "freshNameAndLocationReconfirmationRequired": true,
+    "telephoneCollectionEnabled": false
   },
   "summary": {
-    "rows": 151,
+    "rows": 152,
     "places": 122,
     "placesWithMultipleSnapshots": 28,
     "fieldCounts": {
@@ -46,16 +47,17 @@
       "cuisineNormalized": 1,
       "geo": 1,
       "openingHoursRaw": 38,
-      "priceRange": 12,
+      "priceRange": 13,
       "telephone": 125
     },
     "providerCounts": {
-      "Overture Maps": 18,
+      "Overture Maps": 19,
       "official": 133
     },
     "lastMerge": {
       "snapshot_added": 1,
-      "snapshot_added_new_place": 1
+      "snapshot_added_existing_place": 1,
+      "snapshot_already_present": 151
     }
   },
   "rows": [
@@ -4456,6 +4458,38 @@
         "telephone": "03-6826-2334"
       },
       "checkedAt": "2026-09-07"
+    },
+    {
+      "googlePlaceId": "ChIJnYWupOGNGGARbJXrXzGrfL4",
+      "sourceProvider": "Overture Maps",
+      "sourceProviderId": "516e682b-3800-4957-943c-a7304c1ef093",
+      "missingBefore": [
+        "dinner_budget",
+        "hours",
+        "lunch_budget"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "official_name_plus_structured_address",
+        "score": 0.832629,
+        "maxSourceNameSimilarity": 0.88,
+        "addressSupportingMembers": 1,
+        "phoneSupportingMembers": 1,
+        "minimumGeoDistanceMeters": 0.823,
+        "pageAddress": "101-0054 東京都 千代田区 神田錦町1-21-2 大手町モダンビルディング 1F"
+      },
+      "webEvidence": {
+        "sourceUrl": "https://www.tablecheck.com/ja/storiare-tokyo/",
+        "finalUrl": "https://www.tablecheck.com/ja/storiare-tokyo",
+        "retrievedAt": "2026-09-08T09:56:39Z",
+        "contentHash": "cdbfa74c40d307f1f8798e629eb83ca6ec16338f6d1a0afa86e86c4a28f999bc",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false
+      },
+      "fieldClaims": {
+        "priceRange": "¥4500 - ¥17500"
+      },
+      "checkedAt": "2026-09-08"
     },
     {
       "googlePlaceId": "ChIJnedLWAiNGGAR70nVeNdvT58",
