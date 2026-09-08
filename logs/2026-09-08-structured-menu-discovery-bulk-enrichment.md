@@ -132,6 +132,130 @@ The code-path change itself is in the workflow push trigger list. After merge to
 9. commit generated changes if any;
 10. validate the latest generated main state through the reusable SQLite database contract.
 
-## Follow-up interpretation
+## Validated batch result
 
-If the structured-link counters are high but R/F growth is low, the bottleneck is extraction semantics/website content rather than URL discovery. If counters are near zero, the 263 crawlable targets are already largely covered by anchors/sitemaps and the next higher-value lane is retained third-party extraction plus independent-source discovery for the remaining 301 source-less recommendation targets.
+Implementation commit:
+
+`6bec53f9a63873e90329fc6cdcfc2129052d6d76` — `Discover structured same-origin menu links in official crawl`
+
+Collector workflow run:
+
+`34187494460` — **success**
+
+Generated-data commit:
+
+`7c3f1fca4bdece71b3e60db723cacdf82da8f3a6` — `Update source-backed recommended dish evidence`
+
+The same workflow also completed the reusable SQLite database contract successfully after syncing the generated main state.
+
+### Structured-menu discovery diagnostics
+
+The new JSON-LD path found:
+
+- structured menu URLs: **2**;
+- restaurants exposing those structured menu URLs: **2**.
+
+This is a valid discovery path, but its current marginal yield is small. The result confirms that the existing anchor + bounded sitemap discovery already covers most crawlable official-menu URL exposure in this Area1 snapshot.
+
+### Official/source crawl diagnostics
+
+The same batch processed:
+
+- website tasks: **428**;
+- unique website hosts: **272**;
+- website pages visited: **561**;
+- website recommendation restaurants found in this fresh pass: **33**;
+- website featured/menu restaurants found in this fresh pass: **44**;
+- plain-menu items extracted in this fresh pass: **177**.
+
+Fresh collector result before monotonic merge:
+
+- source-backed recommendation restaurants: **53**;
+- source-backed featured-only restaurants: **114**;
+- recommendation items: **83**;
+- featured items: **251**.
+
+The previous evidence set already contained these accepted rows, so the final monotonic merge remained stable rather than duplicating evidence.
+
+### Retained-source diagnostics
+
+Retained official/Tabelog source mining remained stable:
+
+- source files: **40**;
+- source rows scanned: **584**;
+- rows with claimed dish fields: **110**;
+- normalized retained values: **151**;
+- untranslated source-backed values: **2**;
+- retained featured items: **174**;
+- retained featured restaurants: **110**.
+
+Retained Hot Pepper promotional mining scanned:
+
+- Hot Pepper catalog rows: **535**;
+- eligible catalog rows: **506**;
+- reviewed rich rows: **135**;
+- promotional texts scanned: **650**;
+- evidence restaurants: **166**;
+- recommendation restaurants: **18**;
+- featured restaurants: **148**;
+- recommendation items: **20**;
+- featured items: **177**.
+
+### Current merged evidence/runtime state
+
+Validated merged detail evidence:
+
+- evidence restaurants: **477**;
+- recommendation evidence restaurants: **229**;
+- featured evidence restaurants: **414**;
+- recommendation items: **438**;
+- featured items: **1,009**;
+- `source_recommendation_text`: **438**;
+- `retained_source_menu_item`: **167**;
+- `provider_promotional_dish_text`: **222**;
+- `source_menu_text`: **620**.
+
+Current public runtime remains:
+
+- named restaurants: **1,415**;
+- strict `recommendedDishes` known: **254**;
+- source-backed `featuredDishes` known: **423**;
+- restaurants with a Chinese-normalized public dish value: **485 / 1,415 = 34.3%**;
+- unfilled public dish rows: **930**;
+- approximate Chinese dish rows: **0**;
+- generic fallback: **false**.
+
+Current recommendation-first queue:
+
+- recommendation gap: **1,161**;
+- crawlable official/source targets: **263**;
+- retained third-party-only targets: **597**;
+- targets needing a new independent dish source: **301**;
+- featured-only completion targets: **62**;
+- total deterministic dish work rows: **1,223** across 8 stable shards.
+
+The independent-source proposal plan currently has **0 proposal rows** because all 194 retained `official_candidate_index` records are outside the current 301-row independent-source gap. This means repeating the existing candidate index cannot reduce that lane further.
+
+## Interpretation / next bulk direction
+
+The structured-link counters are near zero, so the limiting factor is no longer ordinary official-menu URL discovery.
+
+The next higher-value work should therefore be:
+
+1. deepen **retained third-party extraction** for the 597 source-known recommendation gaps, but only from source-native text/fields that carry concrete menu or recommendation semantics;
+2. expand **free independent-source discovery** for the 301 source-less recommendation targets using new public/open-data candidate inputs rather than recycling the exhausted 194-row official candidate index;
+3. keep identity review separate from dish promotion — a newly discovered URL is proposal/evidence input until identity binding passes the existing collision/review rules;
+4. continue deterministic zh-CN normalization while preserving original source text;
+5. keep official crawl depth bounded because the current structured-menu experiment shows low marginal gain from further URL-discovery expansion.
+
+## No-paid-API / validation result
+
+The completed run confirms:
+
+- paid-data-API audit: **pass**;
+- files scanned by policy audit: **206**;
+- paid API hits: **0**;
+- map mode: **Leaflet + OpenStreetMap**;
+- Google Maps use: **external navigation only**;
+- collector job: **success**;
+- reusable SQLite database validation: **success**.
