@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-08T03:23:04.205Z",
+  "generatedAt": "2026-09-08T03:25:59.682Z",
   "policy": {
     "catalogIdentityKey": "frozen Place ID only",
     "catalogTotal": 2804,
@@ -15,14 +15,14 @@
   },
   "summary": {
     "publicRuntimeTotal": 1415,
-    "recommendationGap": 1199,
-    "dishWorkRows": 1256,
+    "recommendationGap": 1198,
+    "dishWorkRows": 1254,
     "shards": 8,
     "laneCounts": {
-      "official_crawl": 219,
+      "official_crawl": 218,
       "retained_source_mining": 633,
       "independent_source_discovery": 347,
-      "official_or_retained_featured": 57
+      "official_or_retained_featured": 56
     },
     "shardCounts": [
       {
@@ -87,9 +87,9 @@
       },
       {
         "shard": 6,
-        "total": 127,
+        "total": 126,
         "lanes": {
-          "official_crawl": 25,
+          "official_crawl": 24,
           "retained_source_mining": 65,
           "independent_source_discovery": 33,
           "official_or_retained_featured": 4
@@ -97,17 +97,31 @@
       },
       {
         "shard": 7,
-        "total": 153,
+        "total": 152,
         "lanes": {
           "official_crawl": 27,
           "retained_source_mining": 74,
           "independent_source_discovery": 45,
-          "official_or_retained_featured": 7
+          "official_or_retained_featured": 6
         }
       }
     ]
   },
   "rows": [
+    {
+      "googlePlaceId": "ChIJ3by20D6MGGARC1Rvg3N9tMw",
+      "name": "Bar A6",
+      "lane": "official_crawl",
+      "nextAction": "collect_strict_recommended_dishes",
+      "shard": 0,
+      "priorityScore": 1135,
+      "cuisine": "酒吧",
+      "crawlableOfficialUrlCount": 2,
+      "retainedThirdPartyUrlCount": 0,
+      "sourceUrlCount": 2,
+      "recommendedDishesKnown": 0,
+      "featuredDishesKnown": 3
+    },
     {
       "googlePlaceId": "ChIJqXSOQkyNGGAReQvdGPm8ERI",
       "name": "Jimbocho",
@@ -121,6 +135,20 @@
       "sourceUrlCount": 2,
       "recommendedDishesKnown": 0,
       "featuredDishesKnown": 3
+    },
+    {
+      "googlePlaceId": "ChIJA4cmnRyMGGARWf4uYcSUjNI",
+      "name": "越後屋三十郎",
+      "lane": "official_crawl",
+      "nextAction": "collect_strict_recommended_dishes",
+      "shard": 0,
+      "priorityScore": 1125,
+      "cuisine": "日式",
+      "crawlableOfficialUrlCount": 1,
+      "retainedThirdPartyUrlCount": 1,
+      "sourceUrlCount": 2,
+      "recommendedDishesKnown": 0,
+      "featuredDishesKnown": 1
     },
     {
       "googlePlaceId": "ChIJVSfB8NCNGGARrfeHyHk0p94",
@@ -137,18 +165,32 @@
       "featuredDishesKnown": 2
     },
     {
-      "googlePlaceId": "ChIJ3by20D6MGGARC1Rvg3N9tMw",
-      "name": "Bar A6",
+      "googlePlaceId": "ChIJC-fH9HuNGGARVlh7vQw84LU",
+      "name": "naoto.K",
       "lane": "official_crawl",
       "nextAction": "collect_strict_recommended_dishes",
       "shard": 0,
-      "priorityScore": 1120,
-      "cuisine": "酒吧",
-      "crawlableOfficialUrlCount": 2,
+      "priorityScore": 1115,
+      "cuisine": "法餐",
+      "crawlableOfficialUrlCount": 1,
       "retainedThirdPartyUrlCount": 0,
-      "sourceUrlCount": 2,
+      "sourceUrlCount": 1,
       "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0
+      "featuredDishesKnown": 4
+    },
+    {
+      "googlePlaceId": "ChIJc7yGGRuMGGAR3QASOGBqRus",
+      "name": "Restaurant 1899 Ochanomizu",
+      "lane": "official_crawl",
+      "nextAction": "collect_strict_recommended_dishes",
+      "shard": 0,
+      "priorityScore": 1115,
+      "cuisine": "日式",
+      "crawlableOfficialUrlCount": 1,
+      "retainedThirdPartyUrlCount": 0,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 0,
+      "featuredDishesKnown": 6
     },
     {
       "googlePlaceId": "ChIJTwiumLiNGGARrinoC2mGVeo",
@@ -177,20 +219,6 @@
       "sourceUrlCount": 1,
       "recommendedDishesKnown": 0,
       "featuredDishesKnown": 2
-    },
-    {
-      "googlePlaceId": "ChIJA4cmnRyMGGARWf4uYcSUjNI",
-      "name": "越後屋三十郎",
-      "lane": "official_crawl",
-      "nextAction": "collect_strict_recommended_dishes",
-      "shard": 0,
-      "priorityScore": 1110,
-      "cuisine": "日式",
-      "crawlableOfficialUrlCount": 1,
-      "retainedThirdPartyUrlCount": 1,
-      "sourceUrlCount": 2,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0
     },
     {
       "googlePlaceId": "ChIJDxYKIhCMGGARScnqzc-T-TU",
@@ -312,34 +340,6 @@
       "shard": 0,
       "priorityScore": 1100,
       "cuisine": "酒吧",
-      "crawlableOfficialUrlCount": 1,
-      "retainedThirdPartyUrlCount": 0,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0
-    },
-    {
-      "googlePlaceId": "ChIJC-fH9HuNGGARVlh7vQw84LU",
-      "name": "naoto.K",
-      "lane": "official_crawl",
-      "nextAction": "collect_strict_recommended_dishes",
-      "shard": 0,
-      "priorityScore": 1100,
-      "cuisine": "法餐",
-      "crawlableOfficialUrlCount": 1,
-      "retainedThirdPartyUrlCount": 0,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0
-    },
-    {
-      "googlePlaceId": "ChIJc7yGGRuMGGAR3QASOGBqRus",
-      "name": "Restaurant 1899 Ochanomizu",
-      "lane": "official_crawl",
-      "nextAction": "collect_strict_recommended_dishes",
-      "shard": 0,
-      "priorityScore": 1100,
-      "cuisine": "日式",
       "crawlableOfficialUrlCount": 1,
       "retainedThirdPartyUrlCount": 0,
       "sourceUrlCount": 1,
@@ -2360,7 +2360,7 @@
       "retainedThirdPartyUrlCount": 0,
       "sourceUrlCount": 1,
       "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 3
+      "featuredDishesKnown": 6
     },
     {
       "googlePlaceId": "ChIJM7WMYXSNGGAREl92sQPtPg8",
@@ -4796,7 +4796,7 @@
       "retainedThirdPartyUrlCount": 1,
       "sourceUrlCount": 2,
       "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 1
+      "featuredDishesKnown": 6
     },
     {
       "googlePlaceId": "ChIJVTDQnxaMGGAR2dkRFZBb7bY",
@@ -9303,7 +9303,7 @@
       "crawlableOfficialUrlCount": 1,
       "retainedThirdPartyUrlCount": 1,
       "sourceUrlCount": 2,
-      "recommendedDishesKnown": 1,
+      "recommendedDishesKnown": 2,
       "featuredDishesKnown": 0
     },
     {
@@ -14109,20 +14109,6 @@
       "featuredDishesKnown": 0
     },
     {
-      "googlePlaceId": "ChIJVf9NMpmNGGARtjTt0XzQmPM",
-      "name": "タイ料理研究所　東京ドームシティ店",
-      "lane": "official_crawl",
-      "nextAction": "collect_strict_recommended_dishes",
-      "shard": 6,
-      "priorityScore": 1100,
-      "cuisine": "泰国菜",
-      "crawlableOfficialUrlCount": 1,
-      "retainedThirdPartyUrlCount": 0,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0
-    },
-    {
       "googlePlaceId": "ChIJ4ymkbRGMGGARIv2mv2Uyrhw",
       "name": "中華料理 餃子の店 三幸園 白山通り店",
       "lane": "retained_source_mining",
@@ -15579,6 +15565,20 @@
       "featuredDishesKnown": 2
     },
     {
+      "googlePlaceId": "ChIJq7Cosb2NGGARKNrijY_We80",
+      "name": "A destra Salvatore",
+      "lane": "official_crawl",
+      "nextAction": "collect_strict_recommended_dishes",
+      "shard": 7,
+      "priorityScore": 1135,
+      "cuisine": "意大利菜",
+      "crawlableOfficialUrlCount": 2,
+      "retainedThirdPartyUrlCount": 0,
+      "sourceUrlCount": 2,
+      "recommendedDishesKnown": 0,
+      "featuredDishesKnown": 3
+    },
+    {
       "googlePlaceId": "ChIJK-zPABCMGGARny83K5PNya0",
       "name": "まぐろ市場",
       "lane": "official_crawl",
@@ -15607,18 +15607,18 @@
       "featuredDishesKnown": 3
     },
     {
-      "googlePlaceId": "ChIJq7Cosb2NGGARKNrijY_We80",
-      "name": "A destra Salvatore",
+      "googlePlaceId": "ChIJRRGtFQCNGGARsxmE_-rP-Aw",
+      "name": "日比谷 Bar 神保町 別邸",
       "lane": "official_crawl",
       "nextAction": "collect_strict_recommended_dishes",
       "shard": 7,
-      "priorityScore": 1120,
-      "cuisine": "意大利菜",
-      "crawlableOfficialUrlCount": 2,
+      "priorityScore": 1115,
+      "cuisine": "餐厅",
+      "crawlableOfficialUrlCount": 1,
       "retainedThirdPartyUrlCount": 0,
-      "sourceUrlCount": 2,
+      "sourceUrlCount": 1,
       "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0
+      "featuredDishesKnown": 6
     },
     {
       "googlePlaceId": "ChIJ691AFxGMGGARcy68k9PycGc",
@@ -15852,20 +15852,6 @@
       "shard": 7,
       "priorityScore": 1100,
       "cuisine": "咖啡",
-      "crawlableOfficialUrlCount": 1,
-      "retainedThirdPartyUrlCount": 0,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0
-    },
-    {
-      "googlePlaceId": "ChIJRRGtFQCNGGARsxmE_-rP-Aw",
-      "name": "日比谷 Bar 神保町 別邸",
-      "lane": "official_crawl",
-      "nextAction": "collect_strict_recommended_dishes",
-      "shard": 7,
-      "priorityScore": 1100,
-      "cuisine": "餐厅",
       "crawlableOfficialUrlCount": 1,
       "retainedThirdPartyUrlCount": 0,
       "sourceUrlCount": 1,
@@ -17653,20 +17639,6 @@
     {
       "googlePlaceId": "ChIJoeT3YD-NGGAR3eHpfh3C_Jw",
       "name": "GARB Cheers OTEMACHI",
-      "lane": "official_or_retained_featured",
-      "nextAction": "collect_source_backed_featured_dishes",
-      "shard": 7,
-      "priorityScore": 710,
-      "cuisine": "餐厅",
-      "crawlableOfficialUrlCount": 1,
-      "retainedThirdPartyUrlCount": 0,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 2,
-      "featuredDishesKnown": 0
-    },
-    {
-      "googlePlaceId": "ChIJQfrauD6NGGARfDcOJANiPEY",
-      "name": "Hanoi Kanda",
       "lane": "official_or_retained_featured",
       "nextAction": "collect_source_backed_featured_dishes",
       "shard": 7,

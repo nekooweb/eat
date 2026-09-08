@@ -32,7 +32,7 @@
     "ordinaryMenuDishBecomesFeaturedOnly": true,
     "shardIndex": 7,
     "shardCount": 8,
-    "source": "retained Hot Pepper catalog facts plus reviewed rich metadata only",
+    "source": "already-bound independent official/source websites only",
     "eligibleBindings": [
       "strict_auto",
       "manual_exact"
@@ -54,32 +54,31 @@
       "manual_exact"
     ],
     "basicFactsCatchExcludedBecauseMainCollectorAlreadyConsumesIt": true,
-    "richSourceCatchExcludedAsDuplicateOfCatalogFactsCatch": true
+    "richSourceCatchExcludedAsDuplicateOfCatalogFactsCatch": true,
+    "discovery": "same-origin public sitemap.xml/wp-sitemap.xml with bounded child sitemap traversal",
+    "maximumChildSitemaps": 3,
+    "maximumMenuPagesPerRestaurant": 3,
+    "pathScopedForMultiSegmentRootUrls": true,
+    "crossOriginUrlsAllowed": false,
+    "excludedNewsBlogCompanyRecruitPages": true,
+    "ordinaryMenuItemsAreFeaturedOnly": true,
+    "rawHtmlPersisted": false
   },
   "summary": {
     "catalogTotal": 2804,
     "publicRuntimeTotal": 1415,
-    "hotPepperRowsAvailable": 535,
-    "hotPepperRecommendedRestaurants": 20,
-    "hotPepperFeaturedRestaurants": 70,
-    "websiteTasks": 273,
-    "websiteHosts": 236,
-    "websitePagesVisited": 443,
-    "websiteRecommendedRestaurants": 25,
-    "websiteFeaturedMenuRestaurants": 31,
-    "websiteStructuredMenuRestaurants": 0,
-    "websitePlainMenuRestaurants": 31,
-    "websitePlainMenuItems": 121,
-    "sourceBackedRecommendationRestaurants": 45,
-    "sourceBackedFeaturedOnlyRestaurants": 101,
-    "recommendationItems": 61,
-    "featuredItems": 195,
-    "statusCounts": {
-      "no_match_with_errors": 84,
-      "menu_match": 31,
-      "recommended_match": 25,
-      "no_match": 127
-    },
+    "queueEligibleIds": 276,
+    "targets": 257,
+    "uniqueOrigins": 236,
+    "sitemapFilesFetched": 306,
+    "menuUrlsDiscovered": 82,
+    "menuPagesFetched": 69,
+    "errorTargets": 10,
+    "evidenceRestaurants": 24,
+    "recommendationRestaurants": 4,
+    "featuredRestaurants": 21,
+    "recommendationItems": 9,
+    "featuredItems": 91,
     "previousEvidence": {
       "recommendationRestaurants": 191,
       "featuredRestaurants": 365,
@@ -88,18 +87,18 @@
       "featuredItems": 783
     },
     "freshCrawlEvidence": {
-      "recommendationRestaurants": 45,
-      "featuredRestaurants": 101,
-      "evidenceRestaurants": 146,
-      "recommendationItems": 61,
-      "featuredItems": 195
+      "recommendationRestaurants": 4,
+      "featuredRestaurants": 21,
+      "evidenceRestaurants": 24,
+      "recommendationItems": 9,
+      "featuredItems": 91
     },
     "mergedEvidence": {
-      "recommendationRestaurants": 191,
-      "featuredRestaurants": 365,
-      "evidenceRestaurants": 423,
-      "recommendationItems": 344,
-      "featuredItems": 783
+      "recommendationRestaurants": 192,
+      "featuredRestaurants": 373,
+      "evidenceRestaurants": 430,
+      "recommendationItems": 349,
+      "featuredItems": 826
     }
   },
   "rows": [
@@ -1444,6 +1443,43 @@
       ]
     },
     {
+      "googlePlaceId": "ChIJ3by20D6MGGARC1Rvg3N9tMw",
+      "name": "Bar A6",
+      "recommendedDishes": [],
+      "featuredDishes": [
+        {
+          "nameZh": "塔可",
+          "nameJa": "Taco",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://food96.com/place/hcseafood",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "sitemap-menu-text:タコス|tacos?",
+          "evidenceSnippet": "Taco Bell Menu"
+        },
+        {
+          "nameZh": "披萨",
+          "nameJa": "Pizza",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://food96.com/place/hcseafood",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "sitemap-menu-text:ピザ|ピッツァ|pizza",
+          "evidenceSnippet": "Pizza Hut Menu"
+        },
+        {
+          "nameZh": "汉堡",
+          "nameJa": "Burger",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://food96.com/place/hcseafood",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "sitemap-menu-text:ハンバーガー|バーガー|burger",
+          "evidenceSnippet": "🍔 Burgers"
+        }
+      ]
+    },
+    {
       "googlePlaceId": "ChIJ3w9Ixj-MGGARx_3nnSIeg3M",
       "name": "杉乃屋 総本店",
       "recommendedDishes": [],
@@ -2270,6 +2306,16 @@
           "evidenceSnippet": "写真はカレーうどん"
         },
         {
+          "nameZh": "乌冬面",
+          "nameJa": "うどん",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.ichibanya.co.jp/menu/detail.html?id=1163",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "sitemap-menu-text:うどん|udon",
+          "evidenceSnippet": "写真はカレーうどん"
+        },
+        {
           "nameZh": "咖喱",
           "nameJa": "カレー",
           "provider": "sourceWebsite",
@@ -2277,6 +2323,16 @@
           "checkedAt": "2026-09-08",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:カレー|カリー|咖喱|curry",
+          "evidenceSnippet": "ココイチのメニュー | カレーハウスCoCo壱番屋"
+        },
+        {
+          "nameZh": "咖喱",
+          "nameJa": "カレー",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.ichibanya.co.jp/menu/detail.html?id=1163",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "sitemap-menu-text:カレー|カリー|咖喱|curry",
           "evidenceSnippet": "ココイチのメニュー | カレーハウスCoCo壱番屋"
         },
         {
@@ -2298,26 +2354,6 @@
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:カレー|カリー|咖喱|curry",
           "evidenceSnippet": "ココイチの楽しみ方 | ココイチのメニュー | カレーハウスCoCo壱番屋"
-        },
-        {
-          "nameZh": "焗饭",
-          "nameJa": "ドリア",
-          "provider": "sourceWebsite",
-          "sourceUrl": "https://www.ichibanya.co.jp/menu/order.html",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "source_menu_text",
-          "evidenceRule": "menu-page-text:ドリア",
-          "evidenceSnippet": "お子さまカレー、カレードリア以外のカレーメニューに甘さをプラスすることができます。"
-        },
-        {
-          "nameZh": "黄油鸡咖喱",
-          "nameJa": "バターチキンカレー",
-          "provider": "sourceWebsite",
-          "sourceUrl": "https://www.ichibanya.co.jp/menu/",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "source_menu_text",
-          "evidenceRule": "menu-page-text:バターチキン(?:カレー)?|butter chicken",
-          "evidenceSnippet": "写真はバターチキンカレー"
         }
       ]
     },
@@ -2774,6 +2810,23 @@
           "evidenceClass": "retained_source_menu_item",
           "evidenceRule": "retained:dishes:牡蠣フライ|カキフライ",
           "evidenceSnippet": "カキフライ"
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJA4cmnRyMGGARWf4uYcSUjNI",
+      "name": "越後屋三十郎",
+      "recommendedDishes": [],
+      "featuredDishes": [
+        {
+          "nameZh": "刺身",
+          "nameJa": "sashimi",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://echigoya-sanjurou.owst.jp/en/foods",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "sitemap-menu-text:刺身|お造り|sashimi",
+          "evidenceSnippet": "Seared octopus sashimi"
         }
       ]
     },
@@ -4156,6 +4209,53 @@
       ]
     },
     {
+      "googlePlaceId": "ChIJC-fH9HuNGGARVlh7vQw84LU",
+      "name": "naoto.K",
+      "recommendedDishes": [],
+      "featuredDishes": [
+        {
+          "nameZh": "蛋糕",
+          "nameJa": "Cake",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://naotok.tokyo/umito-atami-bettei-qrmenu-b",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "sitemap-menu-text:ケーキ|cake",
+          "evidenceSnippet": "Banana Cake"
+        },
+        {
+          "nameZh": "蛋糕",
+          "nameJa": "Cake",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://naotok.tokyo/umito-atami-bettei-qrmenu",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "sitemap-menu-text:ケーキ|cake",
+          "evidenceSnippet": "Banana Cake"
+        },
+        {
+          "nameZh": "鳗鱼",
+          "nameJa": "うなぎ",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://naotok.tokyo/umito-atami-bettei-qrmenu-b",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "sitemap-menu-text:うなぎ|鰻|鳗鱼|unagi",
+          "evidenceSnippet": "うなぎのパイ包み"
+        },
+        {
+          "nameZh": "鳗鱼",
+          "nameJa": "うなぎ",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://naotok.tokyo/umito-atami-bettei-qrmenu",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "sitemap-menu-text:うなぎ|鰻|鳗鱼|unagi",
+          "evidenceSnippet": "でしこうなぎのパイ包み"
+        }
+      ]
+    },
+    {
       "googlePlaceId": "ChIJC2yhZOeNGGAR-4zyNEEEQoc",
       "name": "居酒屋 破竹",
       "recommendedDishes": [
@@ -4397,6 +4497,73 @@
       "featuredDishes": []
     },
     {
+      "googlePlaceId": "ChIJc7yGGRuMGGAR3QASOGBqRus",
+      "name": "Restaurant 1899 Ochanomizu",
+      "recommendedDishes": [],
+      "featuredDishes": [
+        {
+          "nameZh": "布丁",
+          "nameJa": "pudding",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://1899.jp/ochanomizu/en/menu/cafe/",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "sitemap-menu-text:プリン|pudding|flan",
+          "evidenceSnippet": "This parfait is full of matcha green tea, including dark green tea ice cream and homemade"
+        },
+        {
+          "nameZh": "意式冰淇淋",
+          "nameJa": "Gelato",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://1899.jp/ochanomizu/en/menu/cafe/",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "sitemap-menu-text:ジェラート|gelato",
+          "evidenceSnippet": "Rich Matcha Gelato &yen; 700"
+        },
+        {
+          "nameZh": "松饼",
+          "nameJa": "Pancake",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://1899.jp/ochanomizu/en/menu/cafe/",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "sitemap-menu-text:パンケーキ|pancake",
+          "evidenceSnippet": "Dorayaki (Green Tea Pancake with Bean Paste) along with ice cream &yen; 1,000"
+        },
+        {
+          "nameZh": "芭菲",
+          "nameJa": "parfait",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://1899.jp/ochanomizu/en/menu/cafe/",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "sitemap-menu-text:パフェ|parfait",
+          "evidenceSnippet": "Hojicha autumn-colored parfait &yen;1,900"
+        },
+        {
+          "nameZh": "蛋糕",
+          "nameJa": "cake",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://1899.jp/ochanomizu/en/menu/cafe/",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "sitemap-menu-text:ケーキ|cake",
+          "evidenceSnippet": "Dorayaki (Green Tea Pancake with Bean Paste) along with ice cream &yen; 1,000"
+        },
+        {
+          "nameZh": "铜锣烧",
+          "nameJa": "Dorayaki",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://1899.jp/ochanomizu/en/menu/cafe/",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "sitemap-menu-text:どら焼き|どら焼|dorayaki",
+          "evidenceSnippet": "Dorayaki (Green Tea Pancake with Bean Paste) along with ice cream &yen; 1,000"
+        }
+      ]
+    },
+    {
       "googlePlaceId": "ChIJC94crAaMGGARQ5ATOkusuPs",
       "name": "神田 天府",
       "recommendedDishes": [
@@ -4543,6 +4710,26 @@
           "nameZh": "三明治",
           "nameJa": "サンドイッチ",
           "provider": "sourceWebsite",
+          "sourceUrl": "https://www.tullys.co.jp/menu/drink/coffee/iced.html",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "sitemap-menu-text:サンドイッチ|サンド|sandwich",
+          "evidenceSnippet": "サンドイッチ"
+        },
+        {
+          "nameZh": "三明治",
+          "nameJa": "サンドイッチ",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.tullys.co.jp/menu/drink/coffee/todays.html",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "sitemap-menu-text:サンドイッチ|サンド|sandwich",
+          "evidenceSnippet": "サンドイッチ"
+        },
+        {
+          "nameZh": "三明治",
+          "nameJa": "サンドイッチ",
+          "provider": "sourceWebsite",
           "sourceUrl": "https://www.tullys.co.jp/menu/seasonal_lineup/",
           "checkedAt": "2026-09-08",
           "evidenceClass": "source_menu_text",
@@ -4563,31 +4750,11 @@
           "nameZh": "意大利面",
           "nameJa": "パスタ",
           "provider": "sourceWebsite",
-          "sourceUrl": "https://www.tullys.co.jp/menu/seasonal_lineup/",
+          "sourceUrl": "https://www.tullys.co.jp/menu/drink/coffee/iced.html",
           "checkedAt": "2026-09-08",
           "evidenceClass": "source_menu_text",
-          "evidenceRule": "menu-page-text:パスタ|スパゲッティ|pasta|spaghetti",
+          "evidenceRule": "sitemap-menu-text:パスタ|スパゲッティ|pasta|spaghetti",
           "evidenceSnippet": "パスタ"
-        },
-        {
-          "nameZh": "蒙布朗蛋糕",
-          "nameJa": "モンブラン",
-          "provider": "sourceWebsite",
-          "sourceUrl": "https://www.tullys.co.jp/menu/seasonal_lineup/",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "source_menu_text",
-          "evidenceRule": "menu-page-text:モンブラン|mont blanc",
-          "evidenceSnippet": "モンブランタルト"
-        },
-        {
-          "nameZh": "蜂蜜牛奶拿铁",
-          "nameJa": "ハニーミルクラテ",
-          "provider": "sourceWebsite",
-          "sourceUrl": "https://www.tullys.co.jp/menu/drink/coffee/honey_m.html",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "source_menu_text",
-          "evidenceRule": "menu-page-text:ハニーミルクラテ",
-          "evidenceSnippet": "ハニーミルクラテ|コーヒー／エスプレッソ|ドリンク|商品情報|TULLY'S COFFEE - タリーズコーヒー"
         }
       ]
     },
@@ -6333,6 +6500,16 @@
           "evidenceClass": "source_recommendation_text",
           "evidenceRule": "html-block:刺身|お造り|sashimi",
           "evidenceSnippet": "当店のこだわり かぶき本店 おすすめ料理 鮮度抜群な旬のネタをふんだんに使用した御造りの盛り合わせは、まさに海のごちそう。四季折々、様々なお刺身をご堪能いただけます。新鮮で引き締ま"
+        },
+        {
+          "nameZh": "刺身",
+          "nameJa": "刺身",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.iwashi-kabuki-honten.com/menu",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "sitemap-menu-html:刺身|お造り|sashimi",
+          "evidenceSnippet": "￥2,079 おすすめ 今だけ特別いわしセット 中生ビール(サッポロ生ビール黒ラベル)・いわし刺身・いわしなめろう・つみれポン酢・いわし丸干し"
         }
       ],
       "featuredDishes": []
@@ -6517,6 +6694,26 @@
           "nameZh": "三明治",
           "nameJa": "サンドイッチ",
           "provider": "sourceWebsite",
+          "sourceUrl": "https://www.tullys.co.jp/menu/drink/coffee/iced.html",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "sitemap-menu-text:サンドイッチ|サンド|sandwich",
+          "evidenceSnippet": "サンドイッチ"
+        },
+        {
+          "nameZh": "三明治",
+          "nameJa": "サンドイッチ",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.tullys.co.jp/menu/drink/coffee/todays.html",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "sitemap-menu-text:サンドイッチ|サンド|sandwich",
+          "evidenceSnippet": "サンドイッチ"
+        },
+        {
+          "nameZh": "三明治",
+          "nameJa": "サンドイッチ",
+          "provider": "sourceWebsite",
           "sourceUrl": "https://www.tullys.co.jp/menu/seasonal_lineup/",
           "checkedAt": "2026-09-08",
           "evidenceClass": "source_menu_text",
@@ -6537,31 +6734,11 @@
           "nameZh": "意大利面",
           "nameJa": "パスタ",
           "provider": "sourceWebsite",
-          "sourceUrl": "https://www.tullys.co.jp/menu/seasonal_lineup/",
+          "sourceUrl": "https://www.tullys.co.jp/menu/drink/coffee/iced.html",
           "checkedAt": "2026-09-08",
           "evidenceClass": "source_menu_text",
-          "evidenceRule": "menu-page-text:パスタ|スパゲッティ|pasta|spaghetti",
+          "evidenceRule": "sitemap-menu-text:パスタ|スパゲッティ|pasta|spaghetti",
           "evidenceSnippet": "パスタ"
-        },
-        {
-          "nameZh": "蒙布朗蛋糕",
-          "nameJa": "モンブラン",
-          "provider": "sourceWebsite",
-          "sourceUrl": "https://www.tullys.co.jp/menu/seasonal_lineup/",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "source_menu_text",
-          "evidenceRule": "menu-page-text:モンブラン|mont blanc",
-          "evidenceSnippet": "モンブランタルト"
-        },
-        {
-          "nameZh": "蜂蜜牛奶拿铁",
-          "nameJa": "ハニーミルクラテ",
-          "provider": "sourceWebsite",
-          "sourceUrl": "https://www.tullys.co.jp/menu/drink/coffee/honey_m.html",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "source_menu_text",
-          "evidenceRule": "menu-page-text:ハニーミルクラテ",
-          "evidenceSnippet": "ハニーミルクラテ|コーヒー／エスプレッソ|ドリンク|商品情報|TULLY'S COFFEE - タリーズコーヒー"
         }
       ]
     },
@@ -6584,6 +6761,26 @@
           "nameZh": "三明治",
           "nameJa": "サンドイッチ",
           "provider": "sourceWebsite",
+          "sourceUrl": "https://www.tullys.co.jp/menu/drink/coffee/iced.html",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "sitemap-menu-text:サンドイッチ|サンド|sandwich",
+          "evidenceSnippet": "サンドイッチ"
+        },
+        {
+          "nameZh": "三明治",
+          "nameJa": "サンドイッチ",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.tullys.co.jp/menu/drink/coffee/todays.html",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "sitemap-menu-text:サンドイッチ|サンド|sandwich",
+          "evidenceSnippet": "サンドイッチ"
+        },
+        {
+          "nameZh": "三明治",
+          "nameJa": "サンドイッチ",
+          "provider": "sourceWebsite",
           "sourceUrl": "https://www.tullys.co.jp/menu/seasonal_lineup/",
           "checkedAt": "2026-09-08",
           "evidenceClass": "source_menu_text",
@@ -6604,31 +6801,11 @@
           "nameZh": "意大利面",
           "nameJa": "パスタ",
           "provider": "sourceWebsite",
-          "sourceUrl": "https://www.tullys.co.jp/menu/seasonal_lineup/",
+          "sourceUrl": "https://www.tullys.co.jp/menu/drink/coffee/iced.html",
           "checkedAt": "2026-09-08",
           "evidenceClass": "source_menu_text",
-          "evidenceRule": "menu-page-text:パスタ|スパゲッティ|pasta|spaghetti",
+          "evidenceRule": "sitemap-menu-text:パスタ|スパゲッティ|pasta|spaghetti",
           "evidenceSnippet": "パスタ"
-        },
-        {
-          "nameZh": "蒙布朗蛋糕",
-          "nameJa": "モンブラン",
-          "provider": "sourceWebsite",
-          "sourceUrl": "https://www.tullys.co.jp/menu/seasonal_lineup/",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "source_menu_text",
-          "evidenceRule": "menu-page-text:モンブラン|mont blanc",
-          "evidenceSnippet": "モンブランタルト"
-        },
-        {
-          "nameZh": "蜂蜜牛奶拿铁",
-          "nameJa": "ハニーミルクラテ",
-          "provider": "sourceWebsite",
-          "sourceUrl": "https://www.tullys.co.jp/menu/drink/coffee/honey_m.html",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "source_menu_text",
-          "evidenceRule": "menu-page-text:ハニーミルクラテ",
-          "evidenceSnippet": "ハニーミルクラテ|コーヒー／エスプレッソ|ドリンク|商品情報|TULLY'S COFFEE - タリーズコーヒー"
         }
       ]
     },
@@ -8152,6 +8329,26 @@
           "evidenceSnippet": "アンチョビクロワッサン"
         },
         {
+          "nameZh": "可颂",
+          "nameJa": "クロワッサン",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://sombreuil.jp/restaurant/menu/",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "sitemap-menu-text:クロワッサン|croissant",
+          "evidenceSnippet": "アンチョビクロワッサン"
+        },
+        {
+          "nameZh": "咖喱",
+          "nameJa": "カレー",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://sombreuil.jp/wedding/cuisine/",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "sitemap-menu-text:カレー|カリー|咖喱|curry",
+          "evidenceSnippet": "タラバガニのグリエ 各種香味野菜とトリュフ カレー風味のソース"
+        },
+        {
           "nameZh": "提拉米苏",
           "nameJa": "Tiramisu",
           "provider": "sourceWebsite",
@@ -8159,6 +8356,16 @@
           "checkedAt": "2026-09-08",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:ティラミス|tiramisu",
+          "evidenceSnippet": "Tiramisu aux figue,s cassis, crème double, gelée de sangria"
+        },
+        {
+          "nameZh": "提拉米苏",
+          "nameJa": "Tiramisu",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://sombreuil.jp/restaurant/menu/",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "sitemap-menu-text:ティラミス|tiramisu",
           "evidenceSnippet": "Tiramisu aux figue,s cassis, crème double, gelée de sangria"
         },
         {
@@ -8415,6 +8622,26 @@
           "nameZh": "三明治",
           "nameJa": "サンドイッチ",
           "provider": "sourceWebsite",
+          "sourceUrl": "https://www.tullys.co.jp/menu/drink/coffee/iced.html",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "sitemap-menu-text:サンドイッチ|サンド|sandwich",
+          "evidenceSnippet": "サンドイッチ"
+        },
+        {
+          "nameZh": "三明治",
+          "nameJa": "サンドイッチ",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.tullys.co.jp/menu/drink/coffee/todays.html",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "sitemap-menu-text:サンドイッチ|サンド|sandwich",
+          "evidenceSnippet": "サンドイッチ"
+        },
+        {
+          "nameZh": "三明治",
+          "nameJa": "サンドイッチ",
+          "provider": "sourceWebsite",
           "sourceUrl": "https://www.tullys.co.jp/menu/seasonal_lineup/",
           "checkedAt": "2026-09-08",
           "evidenceClass": "source_menu_text",
@@ -8435,31 +8662,11 @@
           "nameZh": "意大利面",
           "nameJa": "パスタ",
           "provider": "sourceWebsite",
-          "sourceUrl": "https://www.tullys.co.jp/menu/seasonal_lineup/",
+          "sourceUrl": "https://www.tullys.co.jp/menu/drink/coffee/iced.html",
           "checkedAt": "2026-09-08",
           "evidenceClass": "source_menu_text",
-          "evidenceRule": "menu-page-text:パスタ|スパゲッティ|pasta|spaghetti",
+          "evidenceRule": "sitemap-menu-text:パスタ|スパゲッティ|pasta|spaghetti",
           "evidenceSnippet": "パスタ"
-        },
-        {
-          "nameZh": "蒙布朗蛋糕",
-          "nameJa": "モンブラン",
-          "provider": "sourceWebsite",
-          "sourceUrl": "https://www.tullys.co.jp/menu/seasonal_lineup/",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "source_menu_text",
-          "evidenceRule": "menu-page-text:モンブラン|mont blanc",
-          "evidenceSnippet": "モンブランタルト"
-        },
-        {
-          "nameZh": "蜂蜜牛奶拿铁",
-          "nameJa": "ハニーミルクラテ",
-          "provider": "sourceWebsite",
-          "sourceUrl": "https://www.tullys.co.jp/menu/drink/coffee/honey_m.html",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "source_menu_text",
-          "evidenceRule": "menu-page-text:ハニーミルクラテ",
-          "evidenceSnippet": "ハニーミルクラテ|コーヒー／エスプレッソ|ドリンク|商品情報|TULLY'S COFFEE - タリーズコーヒー"
         }
       ]
     },
@@ -10252,10 +10459,67 @@
       ]
     },
     {
+      "googlePlaceId": "ChIJq7Cosb2NGGARKNrijY_We80",
+      "name": "A destra Salvatore",
+      "recommendedDishes": [],
+      "featuredDishes": [
+        {
+          "nameZh": "意大利面",
+          "nameJa": "Spaghetti",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.salvatore.jp/restaurant/recommendmenu/",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "sitemap-menu-text:パスタ|スパゲッティ|pasta|spaghetti",
+          "evidenceSnippet": "Spaghetti Peperoncino"
+        },
+        {
+          "nameZh": "披萨",
+          "nameJa": "PIZZA",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.salvatore.jp/restaurant/recommendmenu/",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "sitemap-menu-text:ピザ|ピッツァ|pizza",
+          "evidenceSnippet": "�f���o���[�s�b�c�@ PIZZA DELIVERY"
+        },
+        {
+          "nameZh": "蒜香辣椒意大利面",
+          "nameJa": "Peperoncino",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.salvatore.jp/restaurant/recommendmenu/",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "sitemap-menu-text:ペペロンチーノ|aglio.*olio|peperoncino",
+          "evidenceSnippet": "Spaghetti Peperoncino"
+        }
+      ]
+    },
+    {
       "googlePlaceId": "ChIJqctn6o6NGGAR6ePlEjHoyrs",
       "name": "こんぺいとう",
       "recommendedDishes": [],
       "featuredDishes": [
+        {
+          "nameZh": "乌冬面",
+          "nameJa": "うどん",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://nitarimushitarikonpeitou.owst.jp/foods",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "sitemap-menu-text:うどん|udon",
+          "evidenceSnippet": "大盛焼うどん"
+        },
+        {
+          "nameZh": "口水鸡",
+          "nameJa": "よだれ鶏",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://nitarimushitarikonpeitou.owst.jp/foods",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "sitemap-menu-text:よだれ鶏|口水鶏",
+          "evidenceSnippet": "よだれ鶏などにお好みで"
+        },
         {
           "nameZh": "口水鸡",
           "nameJa": "よだれ鶏",
@@ -10265,6 +10529,36 @@
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:よだれ鶏|口水鶏",
           "evidenceSnippet": "よだれ鶏"
+        },
+        {
+          "nameZh": "姜烧猪肉",
+          "nameJa": "生姜焼き",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://nitarimushitarikonpeitou.owst.jp/lunches",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "sitemap-menu-text:生姜焼き|しょうが焼き",
+          "evidenceSnippet": "【月・水・金】生姜焼き定食"
+        },
+        {
+          "nameZh": "布丁",
+          "nameJa": "プリン",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://nitarimushitarikonpeitou.owst.jp/lunches",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "sitemap-menu-text:プリン|pudding|flan",
+          "evidenceSnippet": "プレート内容：豆乳とオカラを使用したドーナッツ/シーザーサラダ/生春巻き/フルーツ/プリン/アールグレイ"
+        },
+        {
+          "nameZh": "每日午餐套餐",
+          "nameJa": "日替わりランチ",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://nitarimushitarikonpeitou.owst.jp/lunches",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "sitemap-menu-text:日替わりランチ",
+          "evidenceSnippet": "■日替わりランチ■ ご飯と味噌汁おかわり無料！"
         }
       ]
     },
@@ -10320,7 +10614,68 @@
           "evidenceSnippet": "対応時間: 11:00~22:00 営業時間内でのデリバリーとテイクアウト販売を行っています。 人気のフォー・バインミー等この機会にご家庭でご賞味ください。 ウーバーイーツ 注文"
         }
       ],
-      "featuredDishes": []
+      "featuredDishes": [
+        {
+          "nameZh": "日式炸鸡",
+          "nameJa": "唐揚げ",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://hanoi-kanda.com/menu/food",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "sitemap-menu-text:唐揚げ|から揚げ|からあげ|karaage",
+          "evidenceSnippet": "唐揚げ (495)"
+        },
+        {
+          "nameZh": "烤串",
+          "nameJa": "串焼き",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://hanoi-kanda.com/menu/food",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "sitemap-menu-text:串焼き",
+          "evidenceSnippet": "豚肉の串焼き (198)"
+        },
+        {
+          "nameZh": "烤肉",
+          "nameJa": "焼肉",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://hanoi-kanda.com/menu/food",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "sitemap-menu-text:焼肉|yakiniku",
+          "evidenceSnippet": "焼肉ビーフン（ブン・チャー） (946)"
+        },
+        {
+          "nameZh": "烤鸡串",
+          "nameJa": "焼き鳥",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://hanoi-kanda.com/menu/food",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "sitemap-menu-text:焼き?鳥|やきとり|yakitori",
+          "evidenceSnippet": "ベトナム風照り焼き鳥定食 (946)"
+        },
+        {
+          "nameZh": "越南河粉",
+          "nameJa": "フォー",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://hanoi-kanda.com/menu/food",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "sitemap-menu-text:フォー|pho\\b",
+          "evidenceSnippet": "鶏肉のフォー(フォー・ガー) (946)"
+        },
+        {
+          "nameZh": "越南法棍三明治",
+          "nameJa": "バインミー",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://hanoi-kanda.com/menu/food",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "sitemap-menu-text:バインミー|banh mi",
+          "evidenceSnippet": "バインミーとビーフシチュー (946)"
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJqxsi-ECMGGAR9MgoPJ4JWHw",
@@ -10341,6 +10696,26 @@
           "nameZh": "三明治",
           "nameJa": "サンドイッチ",
           "provider": "sourceWebsite",
+          "sourceUrl": "https://www.tullys.co.jp/menu/drink/coffee/iced.html",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "sitemap-menu-text:サンドイッチ|サンド|sandwich",
+          "evidenceSnippet": "サンドイッチ"
+        },
+        {
+          "nameZh": "三明治",
+          "nameJa": "サンドイッチ",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.tullys.co.jp/menu/drink/coffee/todays.html",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "sitemap-menu-text:サンドイッチ|サンド|sandwich",
+          "evidenceSnippet": "サンドイッチ"
+        },
+        {
+          "nameZh": "三明治",
+          "nameJa": "サンドイッチ",
+          "provider": "sourceWebsite",
           "sourceUrl": "https://www.tullys.co.jp/menu/seasonal_lineup/",
           "checkedAt": "2026-09-08",
           "evidenceClass": "source_menu_text",
@@ -10361,31 +10736,11 @@
           "nameZh": "意大利面",
           "nameJa": "パスタ",
           "provider": "sourceWebsite",
-          "sourceUrl": "https://www.tullys.co.jp/menu/seasonal_lineup/",
+          "sourceUrl": "https://www.tullys.co.jp/menu/drink/coffee/iced.html",
           "checkedAt": "2026-09-08",
           "evidenceClass": "source_menu_text",
-          "evidenceRule": "menu-page-text:パスタ|スパゲッティ|pasta|spaghetti",
+          "evidenceRule": "sitemap-menu-text:パスタ|スパゲッティ|pasta|spaghetti",
           "evidenceSnippet": "パスタ"
-        },
-        {
-          "nameZh": "蒙布朗蛋糕",
-          "nameJa": "モンブラン",
-          "provider": "sourceWebsite",
-          "sourceUrl": "https://www.tullys.co.jp/menu/seasonal_lineup/",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "source_menu_text",
-          "evidenceRule": "menu-page-text:モンブラン|mont blanc",
-          "evidenceSnippet": "モンブランタルト"
-        },
-        {
-          "nameZh": "蜂蜜牛奶拿铁",
-          "nameJa": "ハニーミルクラテ",
-          "provider": "sourceWebsite",
-          "sourceUrl": "https://www.tullys.co.jp/menu/drink/coffee/honey_m.html",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "source_menu_text",
-          "evidenceRule": "menu-page-text:ハニーミルクラテ",
-          "evidenceSnippet": "ハニーミルクラテ|コーヒー／エスプレッソ|ドリンク|商品情報|TULLY'S COFFEE - タリーズコーヒー"
         }
       ]
     },
@@ -10774,6 +11129,73 @@
           "evidenceClass": "provider_promotional_dish_text",
           "evidenceRule": "hotpepper-retained-catalogGenreCatch:カレー|カリー|咖喱|curry",
           "evidenceSnippet": "本格欧風カレー&タコライス専門店"
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJRRGtFQCNGGARsxmE_-rP-Aw",
+      "name": "日比谷 Bar 神保町 別邸",
+      "recommendedDishes": [],
+      "featuredDishes": [
+        {
+          "nameZh": "意大利面",
+          "nameJa": "パスタ",
+          "provider": "sourceWebsite",
+          "sourceUrl": "http://www.hibiya-bar.com/my-memorial-bar/foodstyle/",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "sitemap-menu-text:パスタ|スパゲッティ|pasta|spaghetti",
+          "evidenceSnippet": "7.バジルの香りとオリーブオイルの風味が絶妙シェフ特製カップパスタ"
+        },
+        {
+          "nameZh": "烟熏料理",
+          "nameJa": "燻製",
+          "provider": "sourceWebsite",
+          "sourceUrl": "http://www.hibiya-bar.com/my-memorial-bar/foodstyle/",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "sitemap-menu-text:燻製|smoked",
+          "evidenceSnippet": "3.【肉料理】オーストラリア産ローストビーフ 燻製バルサミコソース"
+        },
+        {
+          "nameZh": "烤牛肉",
+          "nameJa": "ローストビーフ",
+          "provider": "sourceWebsite",
+          "sourceUrl": "http://www.hibiya-bar.com/my-memorial-bar/foodstyle/",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "sitemap-menu-text:ローストビーフ|roast beef",
+          "evidenceSnippet": "3.【肉料理】オーストラリア産ローストビーフ 燻製バルサミコソース"
+        },
+        {
+          "nameZh": "牛排",
+          "nameJa": "ステーキ",
+          "provider": "sourceWebsite",
+          "sourceUrl": "http://www.hibiya-bar.com/my-memorial-bar/foodstyle/",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "sitemap-menu-text:ステーキ|steak",
+          "evidenceSnippet": "5.鳥取県産大山鳥のグリルステーキ～さわやかな酸味と味わい豊かなバジルソース～"
+        },
+        {
+          "nameZh": "蛋包饭",
+          "nameJa": "オムライス",
+          "provider": "sourceWebsite",
+          "sourceUrl": "http://www.hibiya-bar.com/my-memorial-bar/foodstyle/",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "sitemap-menu-text:オムライス|omelette rice|omurice",
+          "evidenceSnippet": "8.トマトソースが香るカップオムライス"
+        },
+        {
+          "nameZh": "越南河粉",
+          "nameJa": "フォー",
+          "provider": "sourceWebsite",
+          "sourceUrl": "http://www.hibiya-bar.com/my-memorial-bar/foodstyle/",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "sitemap-menu-text:フォー|pho\\b",
+          "evidenceSnippet": "貸切申し込みフォーム"
         }
       ]
     },
@@ -12366,6 +12788,114 @@
       ]
     },
     {
+      "googlePlaceId": "ChIJVf9NMpmNGGARtjTt0XzQmPM",
+      "name": "タイ料理研究所　東京ドームシティ店",
+      "recommendedDishes": [
+        {
+          "nameZh": "咖喱",
+          "nameJa": "カレー",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.sscy.co.jp/business_restaurant/thaifoodlabo/",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "sitemap-menu-html:カレー|カリー|咖喱|curry",
+          "evidenceSnippet": "¥ 2,000 (税込) 当店自慢の一品。タイでは高級料理店でしか扱わないようです。カレー粉を使用し、ふわふわな卵でとじた仕上がりはインド料理や中華料理を思わせます。食のモザイク、"
+        },
+        {
+          "nameZh": "咖喱",
+          "nameJa": "カレー",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.sscy.co.jp/business_restaurant/thaistreetfood/",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "sitemap-menu-html:カレー|カリー|咖喱|curry",
+          "evidenceSnippet": "¥ 2,000 (税込) 当店自慢の一品。タイでは高級料理店でしか扱わないようです。カレー粉を使用し、ふわふわな卵でとじた仕上がりはインド料理や中華料理を思わせます。食のモザイク、"
+        },
+        {
+          "nameZh": "烤饼",
+          "nameJa": "ナン",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.sscy.co.jp/business_restaurant/thaistreetfood/",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "sitemap-menu-html:ナン|naan",
+          "evidenceSnippet": "2026-06-19 期間限定＆店舗限定！ タイフェスで人気だったナンガイトードを販売中！ お知らせ クルン・サイアム"
+        },
+        {
+          "nameZh": "烤饼",
+          "nameJa": "ナン",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.sscy.co.jp/th/business_restaurant/thaistreetfood/",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "sitemap-menu-html:ナン|naan",
+          "evidenceSnippet": "2026-06-19 期間限定＆店舗限定！ タイフェスで人気だったナンガイトードを販売中！ お知らせ クルン・サイアム"
+        }
+      ],
+      "featuredDishes": [
+        {
+          "nameZh": "冬阴功汤",
+          "nameJa": "トムヤムクン",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.sscy.co.jp/business_restaurant/thaifoodlabo/",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "sitemap-menu-text:トムヤムクン|tom yum",
+          "evidenceSnippet": "世界3大スープのひとつとして有名なトムヤムクンスープ。レモングラス、コブミカンの葉、タイのショウガなどのハーブをふんだんに使い、甘くて辛くて酸っぱい、タイ料理を象徴するスープです。"
+        },
+        {
+          "nameZh": "打抛饭",
+          "nameJa": "ガパオ",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.sscy.co.jp/business_restaurant/thaifoodlabo/",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "sitemap-menu-text:ガパオ|gapao",
+          "evidenceSnippet": "ガイ・パット・バイガパオ・ラート・カオ"
+        },
+        {
+          "nameZh": "打抛饭",
+          "nameJa": "ガパオ",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.sscy.co.jp/business_restaurant/thaistreetfood/",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "sitemap-menu-text:ガパオ|gapao",
+          "evidenceSnippet": "ガイ・パット・バイガパオ・ラート・カオ"
+        },
+        {
+          "nameZh": "泰式炒河粉",
+          "nameJa": "パッタイ",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.sscy.co.jp/business_restaurant/thaifoodlabo/",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "sitemap-menu-text:パッタイ|pad thai",
+          "evidenceSnippet": "2. パッタイ"
+        },
+        {
+          "nameZh": "泰式绿咖喱",
+          "nameJa": "グリーンカレー",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.sscy.co.jp/business_restaurant/thaifoodlabo/",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "sitemap-menu-text:グリーンカレー|green curry",
+          "evidenceSnippet": "鶏肉入りグリーンカレー"
+        },
+        {
+          "nameZh": "越南河粉",
+          "nameJa": "フォー",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.sscy.co.jp/business_restaurant/thaifoodlabo/",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "sitemap-menu-text:フォー|pho\\b",
+          "evidenceSnippet": "ご質問、お見積もり、取材依頼などございましたらお気軽にフォームよりお問い合せください。お客様からのお問い合わせは担当部署にて確認し、2営業日以内にご返答させていただきます。"
+        }
+      ]
+    },
+    {
       "googlePlaceId": "ChIJVSfB8NCNGGARrfeHyHk0p94",
       "name": "鉄板ダイニング ロドリゲス 九段下店",
       "recommendedDishes": [],
@@ -12524,6 +13054,26 @@
           "nameZh": "三明治",
           "nameJa": "サンドイッチ",
           "provider": "sourceWebsite",
+          "sourceUrl": "https://www.tullys.co.jp/menu/drink/coffee/iced.html",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "sitemap-menu-text:サンドイッチ|サンド|sandwich",
+          "evidenceSnippet": "サンドイッチ"
+        },
+        {
+          "nameZh": "三明治",
+          "nameJa": "サンドイッチ",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.tullys.co.jp/menu/drink/coffee/todays.html",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "sitemap-menu-text:サンドイッチ|サンド|sandwich",
+          "evidenceSnippet": "サンドイッチ"
+        },
+        {
+          "nameZh": "三明治",
+          "nameJa": "サンドイッチ",
+          "provider": "sourceWebsite",
           "sourceUrl": "https://www.tullys.co.jp/menu/seasonal_lineup/",
           "checkedAt": "2026-09-08",
           "evidenceClass": "source_menu_text",
@@ -12544,31 +13094,11 @@
           "nameZh": "意大利面",
           "nameJa": "パスタ",
           "provider": "sourceWebsite",
-          "sourceUrl": "https://www.tullys.co.jp/menu/seasonal_lineup/",
+          "sourceUrl": "https://www.tullys.co.jp/menu/drink/coffee/iced.html",
           "checkedAt": "2026-09-08",
           "evidenceClass": "source_menu_text",
-          "evidenceRule": "menu-page-text:パスタ|スパゲッティ|pasta|spaghetti",
+          "evidenceRule": "sitemap-menu-text:パスタ|スパゲッティ|pasta|spaghetti",
           "evidenceSnippet": "パスタ"
-        },
-        {
-          "nameZh": "蒙布朗蛋糕",
-          "nameJa": "モンブラン",
-          "provider": "sourceWebsite",
-          "sourceUrl": "https://www.tullys.co.jp/menu/seasonal_lineup/",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "source_menu_text",
-          "evidenceRule": "menu-page-text:モンブラン|mont blanc",
-          "evidenceSnippet": "モンブランタルト"
-        },
-        {
-          "nameZh": "蜂蜜牛奶拿铁",
-          "nameJa": "ハニーミルクラテ",
-          "provider": "sourceWebsite",
-          "sourceUrl": "https://www.tullys.co.jp/menu/drink/coffee/honey_m.html",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "source_menu_text",
-          "evidenceRule": "menu-page-text:ハニーミルクラテ",
-          "evidenceSnippet": "ハニーミルクラテ|コーヒー／エスプレッソ|ドリンク|商品情報|TULLY'S COFFEE - タリーズコーヒー"
         }
       ]
     },
