@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Resolve retained source-native dish evidence into canonical Chinese dish fields.
+"""Resolve retained/source-backed dish evidence into canonical Chinese dish fields.
 
-Source pages are NOT required to contain Chinese. The retained evidence layer keeps
+Source pages are NOT required to contain Chinese. The evidence layer keeps
 source-native dish text (normally Japanese) together with provenance; this resolver
 accepts only already-source-backed semantic evidence whose `nameZh` translation has
 passed the deterministic dish normalizer, and materializes Chinese arrays in SQLite.
@@ -26,6 +26,7 @@ FEATURED_CLASSES = {
     "provider_promotional_dish_text",
     "structured_menu_item",
     "source_menu_text",
+    "tabelog_menu_text",
 }
 
 _HAN = re.compile(r"[\u3400-\u9fff]")
@@ -86,13 +87,7 @@ def _dedupe(items: list[dict], limit: int = 6) -> list[dict]:
 
 
 def _resolve_canonical(db, place_id: str, field_key: str, observation_id: str, stamp: str):
-    """Prefer validated source-backed translations over the legacy snapshot.
-
-    The normal core resolver assigns priority by source provider. This derived field is
-    an aggregate over already validated evidence from multiple providers, so it uses a
-    fixed priority above the legacy snapshot while remaining below direct official
-    identity fields. It cannot affect identity because it only writes dish field keys.
-    """
+    """Prefer validated source-backed translations over the legacy snapshot."""
     db.execute(
         """
         INSERT INTO field_resolutions(
@@ -184,7 +179,7 @@ def resolve_source_backed_dishes(
                 None,
                 observed,
                 "derived_dish_translation_resolution",
-                "deterministic translation/normalization derived solely from retained source-backed dish evidence",
+                "deterministic translation/normalization derived solely from retained/source-backed dish evidence",
                 stamp,
             )
             core.upsert_binding(
