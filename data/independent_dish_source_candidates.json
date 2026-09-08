@@ -1,6 +1,6 @@
 {
-  "schemaVersion": 2,
-  "generatedAt": "2026-09-08T04:42:12.296Z",
+  "schemaVersion": 3,
+  "generatedAt": "2026-09-08T04:46:32.403Z",
   "policy": {
     "proposalOnly": true,
     "identityBindingChanges": 0,
@@ -18,6 +18,18 @@
     "independentHttpUrlRequired": true,
     "socialUrlsExcluded": true,
     "thirdPartyAggregatorUrlsExcluded": true,
+    "excludedAggregatorFamilies": [
+      "Gurunavi",
+      "Retty",
+      "Tripadvisor",
+      "Yelp",
+      "Foursquare",
+      "Yahoo Loco/PayPay Gourmet",
+      "AutoReserve",
+      "Ekiten",
+      "Ikyu Restaurant",
+      "Suntory Bar-Navi"
+    ],
     "proximityOnlyBindingAllowed": false,
     "dishEvidencePromotionBeforeIdentityReviewAllowed": false,
     "centralIdentityReviewRequired": true,
@@ -28,26 +40,27 @@
     "googleDisplayPayloadUsed": false
   },
   "summary": {
-    "schemaVersion": 2,
+    "schemaVersion": 3,
     "catalogTotal": 2804,
     "publicRuntimeTotal": 1415,
     "currentIndependentDishSourceGap": 301,
     "officialCandidateIndexRecords": 194,
     "overtureSnapshotRows": 3908,
-    "overtureRowsWithIndependentUrls": 2516,
-    "proposalRows": 36,
+    "overtureRowsWithIndependentUrls": 2411,
+    "proposalRows": 32,
     "retainedIndexProposalRows": 0,
-    "overtureProposalRows": 36,
-    "highConfidenceOvertureProposalRows": 24,
+    "overtureProposalRows": 32,
+    "highConfidenceOvertureProposalRows": 20,
     "proposalRowsWithExplicitMenuUrls": 0,
-    "proposalRowsPageOnly": 36,
-    "proposalCoverageOfIndependentGapPct": 12,
+    "proposalRowsPageOnly": 32,
+    "proposalCoverageOfIndependentGapPct": 10.6,
     "explicitMenuCoverageOfIndependentGapPct": 0,
     "overtureTargetsWithoutCoordinates": 0,
     "overtureTargetsWithNearbyCandidates": 301,
-    "overtureRejectedName": 252,
-    "overtureRejectedWeak": 13,
+    "overtureRejectedName": 257,
+    "overtureRejectedWeak": 12,
     "overtureRejectedAmbiguous": 0,
+    "excludedAggregatorUrls": 328,
     "nameMismatch": 0,
     "invalidUrls": 0,
     "alreadyHasSource": 0,
@@ -56,15 +69,15 @@
     "shardCounts": [
       {
         "shard": 0,
-        "total": 8,
+        "total": 7,
         "withMenuUrl": 0,
-        "overture": 8
+        "overture": 7
       },
       {
         "shard": 1,
-        "total": 6,
+        "total": 4,
         "withMenuUrl": 0,
-        "overture": 6
+        "overture": 4
       },
       {
         "shard": 2,
@@ -98,9 +111,9 @@
       },
       {
         "shard": 7,
-        "total": 4,
+        "total": 3,
         "withMenuUrl": 0,
-        "overture": 4
+        "overture": 3
       }
     ]
   },
@@ -351,41 +364,6 @@
       "mayWriteDishEvidenceBeforeIdentityReview": false
     },
     {
-      "googlePlaceId": "ChIJc9lS6QSMGGARxttX09XUAkM",
-      "name": "Jazz Bar Gugan",
-      "distanceMeters": 862,
-      "currentAction": "find_independent_dish_source",
-      "currentSourceUrlCount": 0,
-      "pageUrl": "http://bar-navi.suntory.co.jp/shop/0X00111275/index.html",
-      "menuUrls": [],
-      "candidateHosts": [
-        "bar-navi.suntory.co.jp"
-      ],
-      "checkedAt": "2026-08-19.0",
-      "candidateName": "Jazz Bar Gugan",
-      "candidateProvider": "Overture Maps",
-      "candidateProviderId": "a4294a24-5203-4a68-802a-e3a3ef2687d3",
-      "candidateDistanceMeters": 3.1,
-      "nameSimilarity": 1,
-      "candidateMargin": 0.7051,
-      "proposalScore": 0.9943,
-      "overtureConfidence": 0.7812314033508301,
-      "proposalState": "review_high_confidence_overture_website_candidate",
-      "confidenceSignals": [
-        "current_public_identity_has_independent_name_and_coordinates",
-        "retained_overture_candidate_with_independent_http_url",
-        "normalized_name_similarity_above_proposal_threshold",
-        "candidate_within_bounded_coordinate_distance",
-        "best_candidate_margin_above_ambiguity_threshold"
-      ],
-      "candidateUrls": [
-        "http://bar-navi.suntory.co.jp/shop/0X00111275/index.html"
-      ],
-      "shard": 7,
-      "reviewRequiredBeforeBinding": true,
-      "mayWriteDishEvidenceBeforeIdentityReview": false
-    },
-    {
       "googlePlaceId": "ChIJKSq4ewOMGGARvdJFWODrifw",
       "name": "巴里の介",
       "distanceMeters": 1004,
@@ -487,41 +465,6 @@
         "http://www.hongo-kunpei.com/index.html"
       ],
       "shard": 0,
-      "reviewRequiredBeforeBinding": true,
-      "mayWriteDishEvidenceBeforeIdentityReview": false
-    },
-    {
-      "googlePlaceId": "ChIJU9NtWQOMGGARIOyGVUhXqxs",
-      "name": "Kitchen Ishigaki",
-      "distanceMeters": 946,
-      "currentAction": "find_independent_dish_source",
-      "currentSourceUrlCount": 0,
-      "pageUrl": "http://r.gnavi.co.jp/a860900/",
-      "menuUrls": [],
-      "candidateHosts": [
-        "r.gnavi.co.jp"
-      ],
-      "checkedAt": "2026-08-19.0",
-      "candidateName": "Kitchen Ishigaki",
-      "candidateProvider": "Overture Maps",
-      "candidateProviderId": "9230193e-6227-45bb-8d3a-2ce9b5c9af3f",
-      "candidateDistanceMeters": 5,
-      "nameSimilarity": 1,
-      "candidateMargin": 0.6381,
-      "proposalScore": 0.9909,
-      "overtureConfidence": 0.9933913946151733,
-      "proposalState": "review_high_confidence_overture_website_candidate",
-      "confidenceSignals": [
-        "current_public_identity_has_independent_name_and_coordinates",
-        "retained_overture_candidate_with_independent_http_url",
-        "normalized_name_similarity_above_proposal_threshold",
-        "candidate_within_bounded_coordinate_distance",
-        "best_candidate_margin_above_ambiguity_threshold"
-      ],
-      "candidateUrls": [
-        "http://r.gnavi.co.jp/a860900/"
-      ],
-      "shard": 1,
       "reviewRequiredBeforeBinding": true,
       "mayWriteDishEvidenceBeforeIdentityReview": false
     },
@@ -771,41 +714,6 @@
       "mayWriteDishEvidenceBeforeIdentityReview": false
     },
     {
-      "googlePlaceId": "ChIJK3MqvAOMGGARMcQcSnbnTq8",
-      "name": "宿場",
-      "distanceMeters": 1097,
-      "currentAction": "find_independent_dish_source",
-      "currentSourceUrlCount": 0,
-      "pageUrl": "http://r.gnavi.co.jp/g777100/",
-      "menuUrls": [],
-      "candidateHosts": [
-        "r.gnavi.co.jp"
-      ],
-      "checkedAt": "2026-08-19.0",
-      "candidateName": "宿場",
-      "candidateProvider": "Overture Maps",
-      "candidateProviderId": "ad7bdec2-3951-4f89-8de1-daa9898ca32f",
-      "candidateDistanceMeters": 8.6,
-      "nameSimilarity": 1,
-      "candidateMargin": 0.77,
-      "proposalScore": 0.9842,
-      "overtureConfidence": 0.9819726943969727,
-      "proposalState": "review_high_confidence_overture_website_candidate",
-      "confidenceSignals": [
-        "current_public_identity_has_independent_name_and_coordinates",
-        "retained_overture_candidate_with_independent_http_url",
-        "normalized_name_similarity_above_proposal_threshold",
-        "candidate_within_bounded_coordinate_distance",
-        "best_candidate_margin_above_ambiguity_threshold"
-      ],
-      "candidateUrls": [
-        "http://r.gnavi.co.jp/g777100/"
-      ],
-      "shard": 1,
-      "reviewRequiredBeforeBinding": true,
-      "mayWriteDishEvidenceBeforeIdentityReview": false
-    },
-    {
       "googlePlaceId": "ChIJHR3eZRyMGGARgb3K60lZKb4",
       "name": "味の萬楽",
       "distanceMeters": 1066,
@@ -892,7 +800,7 @@
       "candidateProviderId": "b0539af3-64ab-4d6c-80f6-e21606dfc7d9",
       "candidateDistanceMeters": 14.6,
       "nameSimilarity": 1,
-      "candidateMargin": 0.6315,
+      "candidateMargin": 0.7875,
       "proposalScore": 0.9732,
       "overtureConfidence": 0.9978433853387833,
       "proposalState": "review_high_confidence_overture_website_candidate",
@@ -907,41 +815,6 @@
         "http://konakara.com/"
       ],
       "shard": 7,
-      "reviewRequiredBeforeBinding": true,
-      "mayWriteDishEvidenceBeforeIdentityReview": false
-    },
-    {
-      "googlePlaceId": "ChIJs5tCVxyMGGARJswUvIj4drc",
-      "name": "丸五",
-      "distanceMeters": 1144,
-      "currentAction": "find_independent_dish_source",
-      "currentSourceUrlCount": 0,
-      "pageUrl": "http://r.gnavi.co.jp/jdggw3d00000/",
-      "menuUrls": [],
-      "candidateHosts": [
-        "r.gnavi.co.jp"
-      ],
-      "checkedAt": "2026-08-19.0",
-      "candidateName": "丸五",
-      "candidateProvider": "Overture Maps",
-      "candidateProviderId": "33b4d7e4-cc99-4df7-87aa-a77f1aa8f020",
-      "candidateDistanceMeters": 32.2,
-      "nameSimilarity": 1,
-      "candidateMargin": 0.7589,
-      "proposalScore": 0.941,
-      "overtureConfidence": 0.986944854259491,
-      "proposalState": "review_high_confidence_overture_website_candidate",
-      "confidenceSignals": [
-        "current_public_identity_has_independent_name_and_coordinates",
-        "retained_overture_candidate_with_independent_http_url",
-        "normalized_name_similarity_above_proposal_threshold",
-        "candidate_within_bounded_coordinate_distance",
-        "best_candidate_margin_above_ambiguity_threshold"
-      ],
-      "candidateUrls": [
-        "http://r.gnavi.co.jp/jdggw3d00000/"
-      ],
-      "shard": 0,
       "reviewRequiredBeforeBinding": true,
       "mayWriteDishEvidenceBeforeIdentityReview": false
     },
