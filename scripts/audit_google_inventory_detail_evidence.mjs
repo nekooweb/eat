@@ -18,13 +18,19 @@ let featuredItems = 0;
 const HAN_RE = /[\u3400-\u9fff]/u;
 const KANA_RE = /[\u3040-\u30ff]/u;
 const allowedProviders = new Set(['Hot Pepper', 'sourceWebsite', 'Tabelog', 'official']);
+const allowedRecommendationClasses = new Set([
+  'source_recommendation_text',
+  'source_pdf_recommendation_text'
+]);
 const allowedFeaturedClasses = new Set([
   'provider_promotional_dish_text',
   'structured_menu_item',
   'source_menu_text',
+  'source_pdf_menu_text',
   'tabelog_menu_text',
   'retained_source_menu_item',
-  'source_recommendation_text'
+  'source_recommendation_text',
+  'source_pdf_recommendation_text'
 ]);
 
 if (inventory.count !== 2804 || frozen.size !== 2804) throw new Error('Frozen Google inventory mismatch');
@@ -46,15 +52,19 @@ for (const row of payload.rows || []) {
       }
       if (!/^\d{4}-\d{2}-\d{2}$/.test(item.checkedAt || '')) throw new Error(`Missing ISO check date for ${row.googlePlaceId}`);
       if (!allowedProviders.has(item.provider)) throw new Error(`Unsupported detail provider: ${item.provider}`);
-      if (String(item.evidenceSnippet || '').length > 90) throw new Error(`Evidence snippet too long: ${row.googlePlaceId}`);
-      if (kind === 'recommended' && item.evidenceClass !== 'source_recommendation_text') {
+      const snippetLimit = String(item.evidenceClass || '').startsWith('source_pdf_') ? 120 : 90;
+      if (String(item.evidenceSnippet || '').length > snippetLimit) throw new Error(`Evidence snippet too long: ${row.googlePlaceId}`);
+      if (kind === 'recommended' && !allowedRecommendationClasses.has(item.evidenceClass)) {
         throw new Error(`Recommendation lacks strict recommendation evidence: ${row.googlePlaceId}`);
       }
       if (kind === 'featured' && item.evidenceClass && !allowedFeaturedClasses.has(item.evidenceClass)) {
         throw new Error(`Unsupported featured evidence class: ${row.googlePlaceId}: ${item.evidenceClass}`);
       }
-      if (item.evidenceClass === 'source_menu_text' && item.provider !== 'sourceWebsite') {
-        throw new Error(`Plain menu text evidence must come from an already-bound source website: ${row.googlePlaceId}`);
+      if ((item.evidenceClass === 'source_menu_text' || item.evidenceClass === 'source_pdf_menu_text') && item.provider !== 'sourceWebsite') {
+        throw new Error(`Plain menu evidence must come from an already-bound source website: ${row.googlePlaceId}`);
+      }
+      if (item.evidenceClass === 'source_pdf_recommendation_text' && item.provider !== 'sourceWebsite') {
+        throw new Error(`PDF recommendation evidence must come from an already-bound source website: ${row.googlePlaceId}`);
       }
       if (item.evidenceClass === 'tabelog_menu_text' && item.provider !== 'Tabelog') {
         throw new Error(`Tabelog menu evidence must retain the Tabelog provider: ${row.googlePlaceId}`);
