@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-08T11:40:03.975Z",
+  "generatedAt": "2026-09-08T11:45:45.173Z",
   "policy": {
     "catalogIdentityKey": "frozen Place ID only",
     "catalogTotal": 2804,
@@ -16,13 +16,13 @@
   "summary": {
     "publicRuntimeTotal": 1422,
     "recommendationGap": 1163,
-    "dishWorkRows": 1225,
+    "dishWorkRows": 1221,
     "shards": 8,
     "laneCounts": {
       "official_crawl": 268,
       "retained_source_mining": 597,
       "independent_source_discovery": 298,
-      "official_or_retained_featured": 62
+      "official_or_retained_featured": 58
     },
     "shardCounts": [
       {
@@ -47,12 +47,12 @@
       },
       {
         "shard": 2,
-        "total": 173,
+        "total": 172,
         "lanes": {
           "official_crawl": 33,
           "retained_source_mining": 86,
           "independent_source_discovery": 42,
-          "official_or_retained_featured": 12
+          "official_or_retained_featured": 11
         }
       },
       {
@@ -67,12 +67,12 @@
       },
       {
         "shard": 4,
-        "total": 153,
+        "total": 152,
         "lanes": {
           "official_crawl": 37,
           "retained_source_mining": 72,
           "independent_source_discovery": 38,
-          "official_or_retained_featured": 6
+          "official_or_retained_featured": 5
         }
       },
       {
@@ -97,12 +97,12 @@
       },
       {
         "shard": 7,
-        "total": 151,
+        "total": 149,
         "lanes": {
           "official_crawl": 35,
           "retained_source_mining": 71,
           "independent_source_discovery": 38,
-          "official_or_retained_featured": 7
+          "official_or_retained_featured": 5
         }
       }
     ]
@@ -2363,20 +2363,6 @@
       "featuredDishesKnown": 0
     },
     {
-      "googlePlaceId": "ChIJAWkjMjeNGGARFZUitfRPUvo",
-      "name": "ARBOL",
-      "lane": "official_crawl",
-      "nextAction": "collect_strict_recommended_dishes",
-      "shard": 1,
-      "priorityScore": 1150,
-      "cuisine": "中华",
-      "crawlableOfficialUrlCount": 1,
-      "retainedThirdPartyUrlCount": 1,
-      "sourceUrlCount": 2,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0
-    },
-    {
       "googlePlaceId": "ChIJCabBDR6NGGARgIhOTt5XEIs",
       "name": "ターリー屋",
       "lane": "official_crawl",
@@ -2697,6 +2683,20 @@
       "sourceUrlCount": 1,
       "recommendedDishesKnown": 0,
       "featuredDishesKnown": 0
+    },
+    {
+      "googlePlaceId": "ChIJAWkjMjeNGGARFZUitfRPUvo",
+      "name": "ARBOL",
+      "lane": "official_crawl",
+      "nextAction": "collect_strict_recommended_dishes",
+      "shard": 1,
+      "priorityScore": 1125,
+      "cuisine": "中华",
+      "crawlableOfficialUrlCount": 1,
+      "retainedThirdPartyUrlCount": 1,
+      "sourceUrlCount": 2,
+      "recommendedDishesKnown": 0,
+      "featuredDishesKnown": 6
     },
     {
       "googlePlaceId": "ChIJAyFF7RCMGGAR4GWsDukH454",
@@ -7011,20 +7011,6 @@
       "featuredDishesKnown": 0
     },
     {
-      "googlePlaceId": "ChIJJ6tEexuMGGARDEcrWig0q68",
-      "name": "WIZ CRAFT BEER and FOOD",
-      "lane": "official_or_retained_featured",
-      "nextAction": "collect_source_backed_featured_dishes",
-      "shard": 2,
-      "priorityScore": 710,
-      "cuisine": "餐厅",
-      "crawlableOfficialUrlCount": 1,
-      "retainedThirdPartyUrlCount": 0,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 3,
-      "featuredDishesKnown": 0
-    },
-    {
       "googlePlaceId": "ChIJM-SSCwCNGGARaHvoZLneFj0",
       "name": "フジオ軒 お茶の水ワテラス店",
       "lane": "official_or_retained_featured",
@@ -7158,20 +7144,6 @@
       "shard": 3,
       "priorityScore": 1150,
       "cuisine": "咖啡",
-      "crawlableOfficialUrlCount": 1,
-      "retainedThirdPartyUrlCount": 0,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0
-    },
-    {
-      "googlePlaceId": "ChIJeygUHWuMGGAR6JSkGxomd2c",
-      "name": "ロイヤルホスト",
-      "lane": "official_crawl",
-      "nextAction": "collect_strict_recommended_dishes",
-      "shard": 3,
-      "priorityScore": 1150,
-      "cuisine": "日式",
       "crawlableOfficialUrlCount": 1,
       "retainedThirdPartyUrlCount": 0,
       "sourceUrlCount": 1,
@@ -7429,6 +7401,20 @@
       "sourceUrlCount": 2,
       "recommendedDishesKnown": 0,
       "featuredDishesKnown": 1
+    },
+    {
+      "googlePlaceId": "ChIJeygUHWuMGGAR6JSkGxomd2c",
+      "name": "ロイヤルホスト",
+      "lane": "official_crawl",
+      "nextAction": "collect_strict_recommended_dishes",
+      "shard": 3,
+      "priorityScore": 1125,
+      "cuisine": "日式",
+      "crawlableOfficialUrlCount": 1,
+      "retainedThirdPartyUrlCount": 0,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 0,
+      "featuredDishesKnown": 4
     },
     {
       "googlePlaceId": "ChIJeyhzHCqNGGAR0xIHxa7pEM0",
@@ -9335,20 +9321,6 @@
       "featuredDishesKnown": 0
     },
     {
-      "googlePlaceId": "ChIJI1W-PkKMGGARSpB6s8XZQKU",
-      "name": "la cantina cancemi",
-      "lane": "official_crawl",
-      "nextAction": "collect_strict_recommended_dishes",
-      "shard": 4,
-      "priorityScore": 1150,
-      "cuisine": "餐厅",
-      "crawlableOfficialUrlCount": 1,
-      "retainedThirdPartyUrlCount": 0,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0
-    },
-    {
       "googlePlaceId": "ChIJIQy99i2NGGAR4Udb7j8D-pg",
       "name": "ovgo Baker Cookie Factory Shop",
       "lane": "official_crawl",
@@ -9697,6 +9669,20 @@
       "sourceUrlCount": 1,
       "recommendedDishesKnown": 0,
       "featuredDishesKnown": 1
+    },
+    {
+      "googlePlaceId": "ChIJI1W-PkKMGGARSpB6s8XZQKU",
+      "name": "la cantina cancemi",
+      "lane": "official_crawl",
+      "nextAction": "collect_strict_recommended_dishes",
+      "shard": 4,
+      "priorityScore": 1125,
+      "cuisine": "餐厅",
+      "crawlableOfficialUrlCount": 1,
+      "retainedThirdPartyUrlCount": 0,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 0,
+      "featuredDishesKnown": 4
     },
     {
       "googlePlaceId": "ChIJIYKmMACNGGARv6barwuJRws",
@@ -11307,20 +11293,6 @@
       "sourceUrlCount": 0,
       "recommendedDishesKnown": 0,
       "featuredDishesKnown": 2
-    },
-    {
-      "googlePlaceId": "ChIJjdmff6KNGGARf1NV0O_Nmug",
-      "name": "Osteria NORA",
-      "lane": "official_or_retained_featured",
-      "nextAction": "collect_source_backed_featured_dishes",
-      "shard": 4,
-      "priorityScore": 760,
-      "cuisine": "意大利菜",
-      "crawlableOfficialUrlCount": 5,
-      "retainedThirdPartyUrlCount": 1,
-      "sourceUrlCount": 6,
-      "recommendedDishesKnown": 2,
-      "featuredDishesKnown": 0
     },
     {
       "googlePlaceId": "ChIJ8zcFAQSMGGARjT19WihSuNk",
@@ -13428,13 +13400,13 @@
       "lane": "official_crawl",
       "nextAction": "collect_strict_recommended_dishes",
       "shard": 6,
-      "priorityScore": 1290,
+      "priorityScore": 1265,
       "cuisine": "餐厅",
       "crawlableOfficialUrlCount": 8,
       "retainedThirdPartyUrlCount": 1,
       "sourceUrlCount": 9,
       "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0
+      "featuredDishesKnown": 6
     },
     {
       "googlePlaceId": "ChIJIeDGY_6NGGARWCyGYme_2bA",
@@ -17161,20 +17133,6 @@
       "featuredDishesKnown": 0
     },
     {
-      "googlePlaceId": "ChIJu7qJqhyMGGARbJMAT8uPgtY",
-      "name": "Little Marco",
-      "lane": "official_or_retained_featured",
-      "nextAction": "collect_source_backed_featured_dishes",
-      "shard": 7,
-      "priorityScore": 730,
-      "cuisine": "意大利菜",
-      "crawlableOfficialUrlCount": 3,
-      "retainedThirdPartyUrlCount": 0,
-      "sourceUrlCount": 3,
-      "recommendedDishesKnown": 3,
-      "featuredDishesKnown": 0
-    },
-    {
       "googlePlaceId": "ChIJk8bIIBGMGGARU0MztWZkDEc",
       "name": "大衆酒場 けいちゃん 神保町店",
       "lane": "official_or_retained_featured",
@@ -17228,20 +17186,6 @@
       "retainedThirdPartyUrlCount": 0,
       "sourceUrlCount": 1,
       "recommendedDishesKnown": 1,
-      "featuredDishesKnown": 0
-    },
-    {
-      "googlePlaceId": "ChIJoeT3YD-NGGAR3eHpfh3C_Jw",
-      "name": "GARB Cheers OTEMACHI",
-      "lane": "official_or_retained_featured",
-      "nextAction": "collect_source_backed_featured_dishes",
-      "shard": 7,
-      "priorityScore": 710,
-      "cuisine": "餐厅",
-      "crawlableOfficialUrlCount": 1,
-      "retainedThirdPartyUrlCount": 0,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 2,
       "featuredDishesKnown": 0
     },
     {

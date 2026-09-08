@@ -73,54 +73,70 @@
     "dishSpecificityCorrectionUsesSourceNativeEvidenceOnly": true,
     "dishSpecificityCorrectionCuisineInferenceAllowed": false,
     "dishSpecificityCorrectionBrandInferenceAllowed": false,
-    "dishSpecificityCorrectionPaidGoogleDataApiCalls": 0
+    "dishSpecificityCorrectionPaidGoogleDataApiCalls": 0,
+    "pdfDiscovery": "direct bound PDF or same-origin menu-labelled PDF link from an already-bound source page",
+    "boundedConcurrentSourcePageDiscovery": true,
+    "maximumSourceRootsPerRestaurant": 4,
+    "crossOriginPdfUrlsAllowed": false,
+    "maximumPdfLinksPerRestaurant": 4,
+    "maximumPdfBytes": 15000000,
+    "recommendationRequiresExplicitMarkerOnSameExtractedPdfLine": true,
+    "ordinaryPdfMenuItemsAreFeaturedOnly": true,
+    "rawPdfPersisted": false,
+    "rawExtractedTextPersisted": false,
+    "identityChanges": 0,
+    "extractor": "pdftotext + source-native DISH_RULES"
   },
   "summary": {
     "catalogTotal": 2804,
     "publicRuntimeTotal": 1422,
-    "queueEligibleIds": 329,
-    "targets": 311,
-    "uniqueOrigins": 277,
-    "sitemapFilesFetched": 647,
-    "menuUrlsDiscovered": 133,
-    "menuPagesFetched": 98,
-    "errorTargets": 10,
-    "evidenceRestaurants": 32,
-    "recommendationRestaurants": 3,
-    "featuredRestaurants": 29,
-    "recommendationItems": 5,
-    "featuredItems": 113,
+    "queueTargetRows": 330,
+    "rootJobs": 394,
+    "discoveryWorkers": 16,
+    "rootHtmlFetched": 314,
+    "rootHtmlErrors": 80,
+    "directPdfUrls": 15,
+    "discoveredPdfUrls": 37,
+    "pdfTasks": 51,
+    "pdfWorkers": 8,
+    "pdfFetched": 49,
+    "pdfTextExtracted": 34,
+    "pdfErrorRows": 17,
+    "pdfRecommendationPages": 1,
+    "pdfFeaturedPages": 27,
+    "evidenceRestaurants": 13,
+    "recommendationRestaurants": 1,
+    "featuredRestaurants": 13,
+    "recommendationItems": 1,
+    "featuredItems": 68,
     "previousEvidence": {
       "recommendationRestaurants": 234,
       "featuredRestaurants": 420,
       "evidenceRestaurants": 483,
       "recommendationItems": 450,
-      "featuredItems": 1029
+      "featuredItems": 1026
     },
     "freshCrawlEvidence": {
-      "recommendationRestaurants": 3,
-      "featuredRestaurants": 29,
-      "evidenceRestaurants": 32,
-      "recommendationItems": 5,
-      "featuredItems": 113
+      "recommendationRestaurants": 1,
+      "featuredRestaurants": 13,
+      "evidenceRestaurants": 13,
+      "recommendationItems": 1,
+      "featuredItems": 68
     },
     "mergedEvidence": {
       "recommendationRestaurants": 234,
-      "featuredRestaurants": 420,
-      "evidenceRestaurants": 483,
-      "recommendationItems": 450,
-      "featuredItems": 1029
+      "featuredRestaurants": 428,
+      "evidenceRestaurants": 487,
+      "recommendationItems": 451,
+      "featuredItems": 1064
     },
     "specificityCorrection": {
-      "correctedRestaurants": 3,
-      "correctedItems": 3,
-      "duplicateItemsRemoved": 3,
-      "ruleCounts": {
-        "meat-sushi-over-sushi": 1,
-        "yakisoba-over-soba": 2
-      },
-      "recommendationItemsAfterCorrection": 450,
-      "featuredItemsAfterCorrection": 1026
+      "correctedRestaurants": 0,
+      "correctedItems": 0,
+      "duplicateItemsRemoved": 0,
+      "ruleCounts": {},
+      "recommendationItemsAfterCorrection": 451,
+      "featuredItemsAfterCorrection": 1064
     }
   },
   "rows": [
@@ -2804,6 +2820,16 @@
           "evidenceSnippet": "写真はカレーうどん"
         },
         {
+          "nameZh": "南蛮鸡",
+          "nameJa": "チキン南蛮",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.ichibanya.co.jp/menu/pdf/nutrition.pdf",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_pdf_menu_text",
+          "evidenceRule": "pdf-menu-line:チキン南蛮",
+          "evidenceSnippet": "手仕込チキン南蛮カツカレー"
+        },
+        {
           "nameZh": "咖喱",
           "nameJa": "カレー",
           "provider": "sourceWebsite",
@@ -2832,16 +2858,6 @@
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:カレー|カリー|咖喱|curry",
           "evidenceSnippet": "ポークカレー | ココイチのメニュー | カレーハウスCoCo壱番屋"
-        },
-        {
-          "nameZh": "咖喱",
-          "nameJa": "カレー",
-          "provider": "sourceWebsite",
-          "sourceUrl": "https://www.ichibanya.co.jp/menu/order.html",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "source_menu_text",
-          "evidenceRule": "menu-page-text:カレー|カリー|咖喱|curry",
-          "evidenceSnippet": "ココイチの楽しみ方 | ココイチのメニュー | カレーハウスCoCo壱番屋"
         }
       ]
     },
@@ -4192,6 +4208,73 @@
           "evidenceClass": "provider_promotional_dish_text",
           "evidenceRule": "hotpepper-retained-catalogGenreCatch:カオマンガイ|khao man gai",
           "evidenceSnippet": "カオマンガイが楽しめる♪"
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJAWkjMjeNGGARFZUitfRPUvo",
+      "name": "ARBOL",
+      "recommendedDishes": [],
+      "featuredDishes": [
+        {
+          "nameZh": "口水鸡",
+          "nameJa": "よだれ鶏",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.cardenas.co.jp/wp/wp-content/uploads/2020/06/202502_ALL.pdf",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_pdf_menu_text",
+          "evidenceRule": "pdf-menu-line:よだれ鶏|口水鶏",
+          "evidenceSnippet": "山梨県 美桜鶏のよだれ鶏 1500"
+        },
+        {
+          "nameZh": "小笼包",
+          "nameJa": "小籠包",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.cardenas.co.jp/wp/wp-content/uploads/2020/06/202502_ALL.pdf",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_pdf_menu_text",
+          "evidenceRule": "pdf-menu-line:小籠包|小笼包|xiaolongbao",
+          "evidenceSnippet": "小籠包 (２個） 900"
+        },
+        {
+          "nameZh": "糖醋猪肉",
+          "nameJa": "酢豚",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.cardenas.co.jp/wp/wp-content/uploads/2020/06/202412_L_course.pdf",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_pdf_menu_text",
+          "evidenceRule": "pdf-menu-line:酢豚",
+          "evidenceSnippet": "ヨコ井の真黒酢酢豚"
+        },
+        {
+          "nameZh": "糖醋猪肉",
+          "nameJa": "酢豚",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.cardenas.co.jp/wp/wp-content/uploads/2020/06/202605_dinner_course.pdf",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_pdf_menu_text",
+          "evidenceRule": "pdf-menu-line:酢豚",
+          "evidenceSnippet": "＜雅コース＞ 鹿児島県 六白黒豚 ヨコ井の真黒酢豚"
+        },
+        {
+          "nameZh": "芝士蛋糕",
+          "nameJa": "チーズケーキ",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.cardenas.co.jp/wp/wp-content/uploads/2020/06/202605_dinner_course.pdf",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_pdf_menu_text",
+          "evidenceRule": "pdf-menu-line:チーズケーキ|cheesecake",
+          "evidenceSnippet": "バスクチーズケーキ"
+        },
+        {
+          "nameZh": "蛋糕",
+          "nameJa": "ケーキ",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.cardenas.co.jp/wp/wp-content/uploads/2020/06/202605_dinner_course.pdf",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_pdf_menu_text",
+          "evidenceRule": "pdf-menu-line:ケーキ|cake",
+          "evidenceSnippet": "バスクチーズケーキ"
         }
       ]
     },
@@ -5725,6 +5808,73 @@
       ]
     },
     {
+      "googlePlaceId": "ChIJD4tLmA-MGGARqHJvbMa-yNs",
+      "name": "鹿屋アスリート食堂",
+      "recommendedDishes": [],
+      "featuredDishes": [
+        {
+          "nameZh": "口水鸡",
+          "nameJa": "よだれ鶏",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://asushoku.com/menu/lunch.pdf",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_pdf_menu_text",
+          "evidenceRule": "pdf-menu-line:よだれ鶏|口水鶏",
+          "evidenceSnippet": "牛ステーキ定食 ¥1680 よだれ鶏定食 〜ピリ辛中華ダレ〜 ¥1280"
+        },
+        {
+          "nameZh": "天妇罗",
+          "nameJa": "天ぷら",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://asushoku.com/menu/menu_sakaba.pdf",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_pdf_menu_text",
+          "evidenceRule": "pdf-menu-line:天ぷら|天麩羅|tempura",
+          "evidenceSnippet": "カマンベールチーズの天ぷら 580 円 ご飯セット"
+        },
+        {
+          "nameZh": "日式炸鸡",
+          "nameJa": "から揚げ",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://asushoku.com/menu/menu_sakaba.pdf",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_pdf_menu_text",
+          "evidenceRule": "pdf-menu-line:唐揚げ|から揚げ|からあげ|karaage",
+          "evidenceSnippet": "鶏のから揚げ 580 円"
+        },
+        {
+          "nameZh": "牛排",
+          "nameJa": "ステーキ",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://asushoku.com/menu/lunch.pdf",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_pdf_menu_text",
+          "evidenceRule": "pdf-menu-line:ステーキ|steak",
+          "evidenceSnippet": "牛ステーキ定食 ¥1680 よだれ鶏定食 〜ピリ辛中華ダレ〜 ¥1280"
+        },
+        {
+          "nameZh": "牛杂锅",
+          "nameJa": "もつ鍋",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://asushoku.com/menu/menu_sakaba.pdf",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_pdf_menu_text",
+          "evidenceRule": "pdf-menu-line:もつ鍋",
+          "evidenceSnippet": "白出汁もつ鍋"
+        },
+        {
+          "nameZh": "荞麦面",
+          "nameJa": "そば",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://asushoku.com/menu/drink_sakaba.pdf",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_pdf_menu_text",
+          "evidenceRule": "pdf-menu-line:蕎麦|そば|soba",
+          "evidenceSnippet": "十割 ︿そば﹀ 600 円"
+        }
+      ]
+    },
+    {
       "googlePlaceId": "ChIJd50aRRyMGGARvomrfrvV6ZY",
       "name": "ドトールコーヒーショップ",
       "recommendedDishes": [
@@ -6282,6 +6432,16 @@
           "nameZh": "乌冬面",
           "nameJa": "うどん",
           "provider": "sourceWebsite",
+          "sourceUrl": "https://www.kamadoka.com/assets/pdf/kamadoka_allergy_20250303.pdf",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_pdf_menu_text",
+          "evidenceRule": "pdf-menu-line:うどん|udon",
+          "evidenceSnippet": "15 楽コース 〆のうどん - - ● - - - - - - - - - - - - - - - - - - - - - - - - -"
+        },
+        {
+          "nameZh": "乌冬面",
+          "nameJa": "うどん",
+          "provider": "sourceWebsite",
           "sourceUrl": "https://www.kamadoka.com/menulist/party/",
           "checkedAt": "2026-09-08",
           "evidenceClass": "source_menu_text",
@@ -6312,31 +6472,21 @@
           "nameZh": "寿喜烧",
           "nameJa": "すき焼き",
           "provider": "sourceWebsite",
+          "sourceUrl": "https://www.kamadoka.com/assets/pdf/kamadoka_allergy_20250303.pdf",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_pdf_menu_text",
+          "evidenceRule": "pdf-menu-line:すき焼き|すきやき|sukiyaki",
+          "evidenceSnippet": "30 凛コース 国産牛のすき焼き - - ● - ● - - - - - - - - ● - - - ● - - - - - - - - - -"
+        },
+        {
+          "nameZh": "寿喜烧",
+          "nameJa": "すき焼き",
+          "provider": "sourceWebsite",
           "sourceUrl": "https://www.kamadoka.com/menulist/party/",
           "checkedAt": "2026-09-08",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:すき焼き|すきやき|sukiyaki",
           "evidenceSnippet": "国産牛のすき焼き"
-        },
-        {
-          "nameZh": "日式高汤玉子烧",
-          "nameJa": "出汁巻き玉子",
-          "provider": "sourceWebsite",
-          "sourceUrl": "https://www.kamadoka.com/menulist/party/",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "source_menu_text",
-          "evidenceRule": "menu-page-text:だし巻き(?:玉子|卵)|出汁巻き(?:玉子|卵)",
-          "evidenceSnippet": "店仕込みの出汁巻き玉子"
-        },
-        {
-          "nameZh": "鸡肉水炊锅",
-          "nameJa": "水炊き",
-          "provider": "sourceWebsite",
-          "sourceUrl": "https://www.kamadoka.com/menulist/party/",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "source_menu_text",
-          "evidenceRule": "menu-page-text:水炊き|水炊",
-          "evidenceSnippet": "鶏と牛もつの博多風水炊き"
         }
       ]
     },
@@ -6989,6 +7139,53 @@
         }
       ],
       "featuredDishes": []
+    },
+    {
+      "googlePlaceId": "ChIJeygUHWuMGGAR6JSkGxomd2c",
+      "name": "ロイヤルホスト",
+      "recommendedDishes": [],
+      "featuredDishes": [
+        {
+          "nameZh": "日式蜜豆凉粉",
+          "nameJa": "あんみつ",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.royalhost.jp/_menugallery/images/mango-2026-7.pdf",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_pdf_menu_text",
+          "evidenceRule": "pdf-menu-line:あんみつ",
+          "evidenceSnippet": "「マンゴー&豆花（トウファ）のあんみつ仕立て」 、「マンゴーのパフェ」 のみ販売、"
+        },
+        {
+          "nameZh": "松饼",
+          "nameJa": "パンケーキ",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.royalhost.jp/_menugallery/images/mango-2026-7.pdf",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_pdf_menu_text",
+          "evidenceRule": "pdf-menu-line:パンケーキ|pancake",
+          "evidenceSnippet": "パンケーキ 皮付きマンゴー"
+        },
+        {
+          "nameZh": "芭菲",
+          "nameJa": "パフェ",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.royalhost.jp/_menugallery/images/mango-2026-7.pdf",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_pdf_menu_text",
+          "evidenceRule": "pdf-menu-line:パフェ|parfait",
+          "evidenceSnippet": "「マンゴー&豆花（トウファ）のあんみつ仕立て」 、「マンゴーのパフェ」 のみ販売、"
+        },
+        {
+          "nameZh": "蛋糕",
+          "nameJa": "ケーキ",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.royalhost.jp/_menugallery/images/mango-2026-7.pdf",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_pdf_menu_text",
+          "evidenceRule": "pdf-menu-line:ケーキ|cake",
+          "evidenceSnippet": "パンケーキ 皮付きマンゴー"
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJeyhzHCqNGGAR0xIHxa7pEM0",
@@ -8527,6 +8724,53 @@
       ]
     },
     {
+      "googlePlaceId": "ChIJI1W-PkKMGGARSpB6s8XZQKU",
+      "name": "la cantina cancemi",
+      "recommendedDishes": [],
+      "featuredDishes": [
+        {
+          "nameZh": "意大利面",
+          "nameJa": "パスタ",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.cancemi.jp/cantina/lunch_set_menu2025_dec.pdf",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_pdf_menu_text",
+          "evidenceRule": "pdf-menu-line:パスタ|スパゲッティ|pasta|spaghetti",
+          "evidenceSnippet": "パスタセット / Pasta Set ¥2860 本日のカルパッチョ Today’s Carpaccio ¥1650"
+        },
+        {
+          "nameZh": "披萨",
+          "nameJa": "ピッツァ",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.cancemi.jp/cantina/lunch_set_menu2025_dec.pdf",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_pdf_menu_text",
+          "evidenceRule": "pdf-menu-line:ピザ|ピッツァ|pizza",
+          "evidenceSnippet": "Pasta of your choice, salad, drink, grissini ピッツァブレッド Pizza Bread ¥ 330"
+        },
+        {
+          "nameZh": "玛格丽特披萨",
+          "nameJa": "マルゲリータ",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.cancemi.jp/cantina/lunch_set_menu2025_dec.pdf",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_pdf_menu_text",
+          "evidenceRule": "pdf-menu-line:マルゲリータ|margherita",
+          "evidenceSnippet": "種 類: マルゲリータ、 ロマーナ、 鎌倉ベーコン、 クアトロフォルマッジ 辛口ジンジャーエール Ginger Ale (Dry) ¥440"
+        },
+        {
+          "nameZh": "蛋糕",
+          "nameJa": "Cake",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.cancemi.jp/cantina/lunch_set_menu2025_dec.pdf",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_pdf_menu_text",
+          "evidenceRule": "pdf-menu-line:ケーキ|cake",
+          "evidenceSnippet": "ガトーショコラ Chocolate Cake ¥660"
+        }
+      ]
+    },
+    {
       "googlePlaceId": "ChIJi5u1tneNGGARfvILlFasCqI",
       "name": "横浜家系ラーメン 麺家 福増",
       "recommendedDishes": [
@@ -9236,7 +9480,38 @@
           "evidenceSnippet": "日々ラインナップが変わるクラフトビールと樽生レモンサワーをオンタップ。 淡路町駅・小川町駅・御茶ノ水駅・秋葉原駅からもアクセスしやすく、デートや友人との食事、会社宴会にもおすすめで"
         }
       ],
-      "featuredDishes": []
+      "featuredDishes": [
+        {
+          "nameZh": "意大利面",
+          "nameJa": "PASTA",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://wiz-craft.com/pdf/WIZ_dinner.pdf",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_pdf_menu_text",
+          "evidenceRule": "pdf-menu-line:パスタ|スパゲッティ|pasta|spaghetti",
+          "evidenceSnippet": "PASTA & MEAL"
+        },
+        {
+          "nameZh": "汉堡",
+          "nameJa": "Burger",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://wiz-craft.com/pdf/WIZ_lunch.pdf",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_pdf_menu_text",
+          "evidenceRule": "pdf-menu-line:ハンバーガー|バーガー|burger",
+          "evidenceSnippet": "Burger JA PA N ES E BU R G E R"
+        },
+        {
+          "nameZh": "饺子",
+          "nameJa": "GYOZA",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://wiz-craft.com/pdf/WIZ_dinner.pdf",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_pdf_menu_text",
+          "evidenceRule": "pdf-menu-line:餃子|饺子|gyoza",
+          "evidenceSnippet": "SUI GYOZA"
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJJ79JSlWNGGARaLE-ShZPpQo",
@@ -9408,6 +9683,16 @@
           "nameZh": "三明治",
           "nameJa": "サンド",
           "provider": "sourceWebsite",
+          "sourceUrl": "https://www.doutor.co.jp/dcs/menu/gmpdf/stand.pdf",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_pdf_menu_text",
+          "evidenceRule": "pdf-menu-line:サンドイッチ|サンド|sandwich",
+          "evidenceSnippet": "ミラノサンド"
+        },
+        {
+          "nameZh": "三明治",
+          "nameJa": "サンド",
+          "provider": "sourceWebsite",
           "sourceUrl": "https://www.doutor.co.jp/dcs/menu/list/hotdrink.html",
           "checkedAt": "2026-09-08",
           "evidenceClass": "source_menu_text",
@@ -9435,24 +9720,14 @@
           "evidenceSnippet": "果実を食べる 白桃ミルクレープ"
         },
         {
-          "nameZh": "拼配咖啡",
-          "nameJa": "ブレンドコーヒー",
+          "nameZh": "咖喱",
+          "nameJa": "カレー",
           "provider": "sourceWebsite",
-          "sourceUrl": "https://www.doutor.co.jp/col/menu/list/blend.html",
+          "sourceUrl": "https://www.doutor.co.jp/dcs/menu/gmpdf/kitchen.pdf",
           "checkedAt": "2026-09-08",
-          "evidenceClass": "source_menu_text",
-          "evidenceRule": "sitemap-menu-text:ブレンドコーヒー",
-          "evidenceSnippet": "ブレンドコーヒー｜メニュー｜カフェ コロラド"
-        },
-        {
-          "nameZh": "拼配咖啡",
-          "nameJa": "ブレンドコーヒー",
-          "provider": "sourceWebsite",
-          "sourceUrl": "https://www.doutor.co.jp/dcs/menu/list/hotdrink.html",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "source_menu_text",
-          "evidenceRule": "menu-page-text:ブレンドコーヒー",
-          "evidenceSnippet": "ブレンドコーヒー"
+          "evidenceClass": "source_pdf_menu_text",
+          "evidenceRule": "pdf-menu-line:カレー|カリー|咖喱|curry",
+          "evidenceSnippet": "2種のあいがけカレー タコとエビの"
         }
       ]
     },
@@ -9646,7 +9921,58 @@
           "evidenceSnippet": "りのお肉を 心行くまでお楽しみください。 LUNCH MENU / DRINK PARTY PLAN --> ー MENU ー DINNER 豪快な炭火焼きや旬の鮮魚を 丸ごと一匹"
         }
       ],
-      "featuredDishes": []
+      "featuredDishes": [
+        {
+          "nameZh": "意大利面",
+          "nameJa": "パスタ",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://osteria-nora.com/wp-content/themes/wp-theme-nora/pdf/dinner-menu.pdf?v01",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_pdf_menu_text",
+          "evidenceRule": "pdf-menu-line:パスタ|スパゲッティ|pasta|spaghetti",
+          "evidenceSnippet": "Primo Piatto ～パスタ～"
+        },
+        {
+          "nameZh": "提拉米苏",
+          "nameJa": "ティラミス",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://osteria-nora.com/wp-content/themes/wp-theme-nora/pdf/dinner-menu.pdf?v01",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_pdf_menu_text",
+          "evidenceRule": "pdf-menu-line:ティラミス|tiramisu",
+          "evidenceSnippet": "ティラミス ¥500"
+        },
+        {
+          "nameZh": "烟熏料理",
+          "nameJa": "燻製",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://osteria-nora.com/wp-content/themes/wp-theme-nora/pdf/dinner-menu.pdf?v01",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_pdf_menu_text",
+          "evidenceRule": "pdf-menu-line:燻製|smoked",
+          "evidenceSnippet": "燻製メカジキとオレンジ、ルーコラのカルパッチョ仕立て ¥900"
+        },
+        {
+          "nameZh": "焗烤",
+          "nameJa": "gratin",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://osteria-nora.com/wp-content/themes/wp-theme-nora/pdf/dinner-menu.pdf?v01",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_pdf_menu_text",
+          "evidenceRule": "pdf-menu-line:グラタン|gratin",
+          "evidenceSnippet": "Eggplant gratin Parma style"
+        },
+        {
+          "nameZh": "蒜香辣椒意大利面",
+          "nameJa": "ペペロンチーノ",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://osteria-nora.com/wp-content/themes/wp-theme-nora/pdf/dinner-menu.pdf?v01",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_pdf_menu_text",
+          "evidenceRule": "pdf-menu-line:ペペロンチーノ|aglio.*olio|peperoncino",
+          "evidenceSnippet": "カラスミとルーコラのペペロンチーノ スパゲッティ ¥1,800"
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJJQSHr_SNGGAReh3uT1gsFbE",
@@ -11708,7 +12034,48 @@
           "evidenceSnippet": "ク ・デザート1種 HIGH 7,000 （税込/お1人様） チアーズハイ しっかり満足したいあなたに ・ 前菜6種 &サラダ盛り合わせプレート ・フライドポテト＆ポップコーンシュ"
         }
       ],
-      "featuredDishes": []
+      "featuredDishes": [
+        {
+          "nameZh": "披萨",
+          "nameJa": "ピザ",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://cheers.garb.jp/dinner.pdf",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_pdf_menu_text",
+          "evidenceRule": "pdf-menu-line:ピザ|ピッツァ|pizza",
+          "evidenceSnippet": "おつまみピザ 700 (¥770)"
+        },
+        {
+          "nameZh": "日式炸鸡",
+          "nameJa": "唐揚げ",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://cheers.garb.jp/dinner.pdf",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_pdf_menu_text",
+          "evidenceRule": "pdf-menu-line:唐揚げ|から揚げ|からあげ|karaage",
+          "evidenceSnippet": "鶏の唐揚げ 600 (¥660)"
+        },
+        {
+          "nameZh": "日式炸鸡",
+          "nameJa": "唐揚げ",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://cheers.garb.jp/lunch_next.pdf",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_pdf_menu_text",
+          "evidenceRule": "pdf-menu-line:唐揚げ|から揚げ|からあげ|karaage",
+          "evidenceSnippet": "若鶏唐揚げの"
+        },
+        {
+          "nameZh": "日式炸鸡",
+          "nameJa": "唐揚げ",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://cheers.garb.jp/lunch.pdf",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_pdf_menu_text",
+          "evidenceRule": "pdf-menu-line:唐揚げ|から揚げ|からあげ|karaage",
+          "evidenceSnippet": "若鶏唐揚げの"
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJoS3oUByMGGAR6muLlZi1atY",
@@ -15235,6 +15602,16 @@
       "name": "Little Marco",
       "recommendedDishes": [
         {
+          "nameZh": "卡邦尼意大利面",
+          "nameJa": "カルボナーラ",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://daiwa-j.com/sys_cms/wp-content/themes/daiwa/assets/pdf/menu/trattorialittlemarco_food.pdf",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_pdf_recommendation_text",
+          "evidenceRule": "pdf-line:カルボナーラ|carbonara",
+          "evidenceSnippet": "自家漬け オリーブ 550 お一人様、一皿の逸品です！ご好評の特製ソースと共にバケットもおすすめ！！ お月見！濃厚カルボナーラ 1550"
+        },
+        {
           "nameZh": "意大利面",
           "nameJa": "パスタ",
           "provider": "sourceWebsite",
@@ -15265,7 +15642,68 @@
           "evidenceSnippet": "料理長が自信を持ってお届けする本格イタリアンはボリューム満点。 「US産サーロインステーキ」は当店自慢の逸品料理です。伝統的なイタリア料理や旬食材を使用したオリジナル料理を豊富なド"
         }
       ],
-      "featuredDishes": []
+      "featuredDishes": [
+        {
+          "nameZh": "三明治",
+          "nameJa": "サンド",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://daiwa-j.com/sys_cms/wp-content/themes/daiwa/assets/pdf/menu/trattorialittlemarco_food.pdf",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_pdf_menu_text",
+          "evidenceRule": "pdf-menu-line:サンドイッチ|サンド|sandwich",
+          "evidenceSnippet": "POPオーバーのバーガーチキンサンド 980"
+        },
+        {
+          "nameZh": "卡邦尼意大利面",
+          "nameJa": "カルボナーラ",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://daiwa-j.com/sys_cms/wp-content/themes/daiwa/assets/pdf/menu/trattorialittlemarco_food.pdf",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_pdf_menu_text",
+          "evidenceRule": "pdf-menu-line:カルボナーラ|carbonara",
+          "evidenceSnippet": "自家漬け オリーブ 550 お一人様、一皿の逸品です！ご好評の特製ソースと共にバケットもおすすめ！！ お月見！濃厚カルボナーラ 1550"
+        },
+        {
+          "nameZh": "咖喱",
+          "nameJa": "カレー",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://daiwa-j.com/sys_cms/wp-content/themes/daiwa/assets/pdf/menu/trattorialittlemarco_food.pdf",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_pdf_menu_text",
+          "evidenceRule": "pdf-menu-line:カレー|カリー|咖喱|curry",
+          "evidenceSnippet": "フライドポテト（チーズカレーフレーバー） 580"
+        },
+        {
+          "nameZh": "意大利面",
+          "nameJa": "スパゲッティ",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://daiwa-j.com/sys_cms/wp-content/themes/daiwa/assets/pdf/menu/trattorialittlemarco_food.pdf",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_pdf_menu_text",
+          "evidenceRule": "pdf-menu-line:パスタ|スパゲッティ|pasta|spaghetti",
+          "evidenceSnippet": "牛ほほ肉の柔らか赤ワイン煮 1人前 730 濃厚！タラバ蟹のトマトクリームスパゲッティー 2500"
+        },
+        {
+          "nameZh": "牛排",
+          "nameJa": "ステーキ",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://daiwa-j.com/sys_cms/wp-content/themes/daiwa/assets/pdf/menu/trattorialittlemarco_food.pdf",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_pdf_menu_text",
+          "evidenceRule": "pdf-menu-line:ステーキ|steak",
+          "evidenceSnippet": "【Hot】 サーロインステーキ160ｇ 1980 ペンネ ゴルゴンゾーラ 1550"
+        },
+        {
+          "nameZh": "蒜香辣椒意大利面",
+          "nameJa": "ペペロンチーノ",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://daiwa-j.com/sys_cms/wp-content/themes/daiwa/assets/pdf/menu/trattorialittlemarco_food.pdf",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_pdf_menu_text",
+          "evidenceRule": "pdf-menu-line:ペペロンチーノ|aglio.*olio|peperoncino",
+          "evidenceSnippet": "ラムチョップ（1本） 780 タコとルッコラのペペロンチーノ 1550"
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJUdOuFReNGGARLaWPEDMUWMc",
@@ -16334,24 +16772,24 @@
           "evidenceSnippet": "果実を食べる 白桃ミルクレープ"
         },
         {
-          "nameZh": "拼配咖啡",
-          "nameJa": "ブレンドコーヒー",
+          "nameZh": "咖喱",
+          "nameJa": "カレー",
           "provider": "sourceWebsite",
-          "sourceUrl": "https://www.doutor.co.jp/col/menu/list/blend.html",
+          "sourceUrl": "https://www.doutor.co.jp/dcs/menu/gmpdf/kitchen.pdf",
           "checkedAt": "2026-09-08",
-          "evidenceClass": "source_menu_text",
-          "evidenceRule": "sitemap-menu-text:ブレンドコーヒー",
-          "evidenceSnippet": "ブレンドコーヒー｜メニュー｜カフェ コロラド"
+          "evidenceClass": "source_pdf_menu_text",
+          "evidenceRule": "pdf-menu-line:カレー|カリー|咖喱|curry",
+          "evidenceSnippet": "2種のあいがけカレー タコとエビの"
         },
         {
-          "nameZh": "拼配咖啡",
-          "nameJa": "ブレンドコーヒー",
+          "nameZh": "意大利面",
+          "nameJa": "PASTA",
           "provider": "sourceWebsite",
-          "sourceUrl": "https://www.doutor.co.jp/dcs/menu/list/hotdrink.html",
+          "sourceUrl": "https://www.doutor.co.jp/dcs/menu/gmpdf/kitchen.pdf",
           "checkedAt": "2026-09-08",
-          "evidenceClass": "source_menu_text",
-          "evidenceRule": "menu-page-text:ブレンドコーヒー",
-          "evidenceSnippet": "ブレンドコーヒー"
+          "evidenceClass": "source_pdf_menu_text",
+          "evidenceRule": "pdf-menu-line:パスタ|スパゲッティ|pasta|spaghetti",
+          "evidenceSnippet": "北海道生乳 マンゴーラッシー いちごラッシー RICE PASTA"
         }
       ]
     },
@@ -16794,24 +17232,24 @@
           "evidenceSnippet": "果実を食べる 白桃ミルクレープ"
         },
         {
-          "nameZh": "拼配咖啡",
-          "nameJa": "ブレンドコーヒー",
+          "nameZh": "咖喱",
+          "nameJa": "カレー",
           "provider": "sourceWebsite",
-          "sourceUrl": "https://www.doutor.co.jp/col/menu/list/blend.html",
+          "sourceUrl": "https://www.doutor.co.jp/dcs/menu/gmpdf/kitchen.pdf",
           "checkedAt": "2026-09-08",
-          "evidenceClass": "source_menu_text",
-          "evidenceRule": "sitemap-menu-text:ブレンドコーヒー",
-          "evidenceSnippet": "ブレンドコーヒー｜メニュー｜カフェ コロラド"
+          "evidenceClass": "source_pdf_menu_text",
+          "evidenceRule": "pdf-menu-line:カレー|カリー|咖喱|curry",
+          "evidenceSnippet": "2種のあいがけカレー タコとエビの"
         },
         {
-          "nameZh": "拼配咖啡",
-          "nameJa": "ブレンドコーヒー",
+          "nameZh": "意大利面",
+          "nameJa": "PASTA",
           "provider": "sourceWebsite",
-          "sourceUrl": "https://www.doutor.co.jp/dcs/menu/list/hotdrink.html",
+          "sourceUrl": "https://www.doutor.co.jp/dcs/menu/gmpdf/kitchen.pdf",
           "checkedAt": "2026-09-08",
-          "evidenceClass": "source_menu_text",
-          "evidenceRule": "menu-page-text:ブレンドコーヒー",
-          "evidenceSnippet": "ブレンドコーヒー"
+          "evidenceClass": "source_pdf_menu_text",
+          "evidenceRule": "pdf-menu-line:パスタ|スパゲッティ|pasta|spaghetti",
+          "evidenceSnippet": "北海道生乳 マンゴーラッシー いちごラッシー RICE PASTA"
         }
       ]
     },
