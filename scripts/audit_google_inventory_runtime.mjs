@@ -78,10 +78,8 @@ if (stats.unpublishedPlaceIdOnly !== 2804 - rows.length) throw new Error('Held I
 if (stats.catalogPlaceIdOnly !== stats.unpublishedPlaceIdOnly) throw new Error('Catalog/public ID-only counters diverged');
 if (rows.length < 3) throw new Error('Published recommendation runtime has fewer than 3 rows');
 
-// Dish review is intentionally permissive. Approximate recommendations are allowed
-// without source-level recommendation semantics, but the public display must remain
-// Chinese, short, non-empty and bounded. The patch is evaluated only in memory here;
-// it does not alter the durable evidence/runtime artifact audited above.
+// Dish review v2: approximate suggestions are allowed, but only when a concrete
+// brand/dish/cuisine rule fires. Meaningless universal fallbacks are forbidden.
 const dishSandbox = {
   window: {
     GOOGLE_INVENTORY_RESTAURANTS: rows,
@@ -105,20 +103,30 @@ const featuredZh = (item) => {
   return isChineseDish(value) ? value : '';
 };
 
+const bannedGenericExact = new Set(['招牌主菜', '时令小菜', '推荐菜', '特色菜', '主菜']);
+const allowedTiers = new Set(['brand', 'dish-keyword', 'cuisine']);
 let approximateChineseDishRows = 0;
 let sourceBackedOrExistingChineseDishRows = 0;
-let genericApproximateRows = 0;
+let chineseDishDisplayRows = 0;
+let unfilledDishRows = 0;
+const tierCounts = {};
+const unfilledCuisineCounts = {};
+const unfilledSamples = [];
+
 for (const row of rows) {
   const recommended = Array.isArray(row.recommendedDishes) ? row.recommendedDishes.filter(isChineseDish) : [];
   const featured = Array.isArray(row.featuredDishes) ? row.featuredDishes.map(featuredZh).filter(Boolean) : [];
-  if (!recommended.length && !featured.length) {
-    throw new Error(`Published row has no Chinese dish display after relaxed fallback: ${row.googlePlaceId}`);
-  }
+  const hasDish = recommended.length > 0 || featured.length > 0;
+  if (hasDish) chineseDishDisplayRows += 1;
 
   if (row.dishRecommendationConfidence === 'approximate') {
     approximateChineseDishRows += 1;
-    if (row.dishRecommendationLanguage !== 'zh-CN' || row.dishRecommendationDisplayPolicy !== 'relaxed-zh-v1') {
+    const tier = String(row.dishRecommendationQualityTier || '');
+    if (row.dishRecommendationLanguage !== 'zh-CN' || row.dishRecommendationDisplayPolicy !== 'relaxed-zh-v2') {
       throw new Error(`Approximate dish metadata is incomplete: ${row.googlePlaceId}`);
+    }
+    if (!allowedTiers.has(tier)) {
+      throw new Error(`Approximate dish tier is not allowed: ${row.googlePlaceId}: ${tier}`);
     }
     if (!Array.isArray(row.recommendedDishes) || row.recommendedDishes.length < 1 || row.recommendedDishes.length > 2) {
       throw new Error(`Approximate dish count must be 1-2: ${row.googlePlaceId}`);
@@ -126,24 +134,59 @@ for (const row of rows) {
     if (row.recommendedDishes.some((dish) => !isChineseDish(dish))) {
       throw new Error(`Approximate recommendation is not Chinese: ${row.googlePlaceId}`);
     }
-    if (row.dishRecommendationBasis === 'generic-restaurant') genericApproximateRows += 1;
-  } else {
+    if (row.recommendedDishes.some((dish) => bannedGenericExact.has(String(dish).trim()))) {
+      throw new Error(`Meaningless generic dish fallback is forbidden: ${row.googlePlaceId}`);
+    }
+    if (!row.dishRecommendationBasis || /generic/i.test(String(row.dishRecommendationBasis))) {
+      throw new Error(`Approximate recommendation lacks a specific basis: ${row.googlePlaceId}`);
+    }
+    tierCounts[tier] = (tierCounts[tier] || 0) + 1;
+  } else if (hasDish) {
     sourceBackedOrExistingChineseDishRows += 1;
+  } else {
+    unfilledDishRows += 1;
+    const cuisine = String(row.cuisine || '未分类');
+    unfilledCuisineCounts[cuisine] = (unfilledCuisineCounts[cuisine] || 0) + 1;
+    if (unfilledSamples.length < 80) {
+      unfilledSamples.push({
+        googlePlaceId: row.googlePlaceId,
+        name: row.name,
+        cuisine
+      });
+    }
   }
 }
 
 const dishPatchStats = dishSandbox.window.CHINESE_DISH_FALLBACK_STATS?.inventory || {};
+const patchPolicy = dishSandbox.window.CHINESE_DISH_FALLBACK_STATS?.policy;
+if (patchPolicy !== 'relaxed-zh-v2') throw new Error(`Unexpected Chinese dish patch policy: ${patchPolicy}`);
+if (dishSandbox.window.CHINESE_DISH_FALLBACK_STATS?.genericFallbackAllowed !== false) {
+  throw new Error('Generic dish fallback must remain disabled');
+}
 if (dishPatchStats.total !== rows.length) throw new Error('Chinese dish patch did not scan the full public runtime');
 if ((dishPatchStats.patchedApproximate || 0) !== approximateChineseDishRows) {
   throw new Error('Chinese dish patch/audit approximate counts diverged');
 }
+if ((dishPatchStats.unfilledNoSpecificSignal || 0) !== unfilledDishRows) {
+  throw new Error('Chinese dish patch/audit unfilled counts diverged');
+}
+
+const topUnfilledCuisines = Object.entries(unfilledCuisineCounts)
+  .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], 'zh-CN'))
+  .slice(0, 30)
+  .map(([cuisine, count]) => ({ cuisine, count }));
 
 console.log(JSON.stringify({
   status: 'pass',
   ...stats,
-  chineseDishDisplayCoverage: rows.length,
+  chineseDishDisplayRows,
+  chineseDishDisplayCoveragePct: Number(((chineseDishDisplayRows / rows.length) * 100).toFixed(1)),
   approximateChineseDishRows,
   sourceBackedOrExistingChineseDishRows,
-  genericApproximateRows,
-  dishReviewPolicy: 'relaxed-zh-v1'
+  unfilledDishRows,
+  approximateTierCounts: tierCounts,
+  topUnfilledCuisines,
+  unfilledSamples,
+  dishReviewPolicy: 'relaxed-zh-v2',
+  genericFallbackAllowed: false
 }));
