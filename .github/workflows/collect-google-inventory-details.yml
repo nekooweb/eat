@@ -9,6 +9,7 @@ on:
       - "scripts/build_retained_dish_evidence.mjs"
       - "scripts/build_retained_hotpepper_promotional_dish_evidence.mjs"
       - "scripts/collect_google_inventory_recommendations.mjs"
+      - "scripts/collect_official_sitemap_dish_evidence.mjs"
       - "scripts/merge_google_inventory_detail_evidence.mjs"
       - "scripts/build_google_inventory_detail_queue.mjs"
       - "scripts/build_dish_batch_plan.mjs"
@@ -113,6 +114,28 @@ jobs:
           set -euo pipefail
           node scripts/collect_google_inventory_recommendations.mjs /tmp/fresh-dish-evidence.json | tee /tmp/fresh-dish-summary.json
           test -s /tmp/fresh-dish-evidence.json
+      - name: Collect bounded official sitemap menu evidence
+        env:
+          OFFICIAL_SITEMAP_FETCH_TIMEOUT_MS: "7000"
+          OFFICIAL_SITEMAP_WORKERS: "16"
+          OFFICIAL_SITEMAP_CHILD_LIMIT: "3"
+          OFFICIAL_SITEMAP_MENU_PAGE_LIMIT: "3"
+        run: |
+          set -euo pipefail
+          node scripts/collect_official_sitemap_dish_evidence.mjs \
+            /tmp/official-sitemap-dish-evidence.json | tee /tmp/official-sitemap-dish-summary.json
+          test -s /tmp/official-sitemap-dish-evidence.json
+          node - <<'NODE'
+          const fs = require('fs');
+          const x = JSON.parse(fs.readFileSync('/tmp/official-sitemap-dish-evidence.json', 'utf8'));
+          if (x.policy?.paidGoogleDataApiCalls !== 0 || x.policy?.crossOriginUrlsAllowed !== false) {
+            throw new Error('official sitemap pass violated source boundary');
+          }
+          if (x.policy?.recommendationRequiresExplicitMarker !== true || x.policy?.ordinaryMenuItemsAreFeaturedOnly !== true) {
+            throw new Error('official sitemap dish semantic policy mismatch');
+          }
+          console.log(JSON.stringify(x.summary));
+          NODE
       - name: Merge evidence monotonically
         run: |
           set -euo pipefail
@@ -127,7 +150,11 @@ jobs:
           node scripts/merge_google_inventory_detail_evidence.mjs \
             /tmp/dish-evidence-retained-promotional-merged.json \
             /tmp/fresh-dish-evidence.json \
-            data/google_inventory_detail_evidence.json | tee /tmp/fresh-merge-summary.json
+            /tmp/dish-evidence-fresh-merged.json | tee /tmp/fresh-merge-summary.json
+          node scripts/merge_google_inventory_detail_evidence.mjs \
+            /tmp/dish-evidence-fresh-merged.json \
+            /tmp/official-sitemap-dish-evidence.json \
+            data/google_inventory_detail_evidence.json | tee /tmp/official-sitemap-merge-summary.json
           node scripts/audit_google_inventory_detail_evidence.mjs
       - name: Rebuild runtime, queue and deterministic bulk plan
         run: |
