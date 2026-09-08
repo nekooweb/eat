@@ -20,6 +20,7 @@ import plan_ingestion_tasks as planner
 import retained_official_identity as official_identity
 import retained_osm_identity as osm_identity
 import retained_phase2 as phase2
+import resolve_dish_translation_evidence as dish_translation
 import resolve_hotpepper_source_fact_budgets as hotpepper_source_fact_budget
 import resolve_master as resolver
 import resolve_retained_fields as retained_field_resolver
@@ -139,6 +140,7 @@ def build(output: Path, reset: bool = False):
         hotpepper_rich_counts = hotpepper_rich.resolve_rich_metadata(db, id_set, conflict_places, stamp)
         official_practical_counts = official_practical.import_evidence(db, id_set, conflict_places, stamp)
         official_practical_detail_counts = official_practical_detail.import_evidence(db, id_set, conflict_places, stamp)
+        dish_translation_counts = dish_translation.resolve_source_backed_dishes(db, id_set, conflict_places, stamp)
         taskplan = planner.plan_tasks(db, stamp)
 
         summary = {
@@ -155,11 +157,14 @@ def build(output: Path, reset: bool = False):
             "officialPracticalWebEvidence": official_practical_counts, "officialPracticalDetailWebEvidence": official_practical_detail_counts,
             "retainedFieldResolverV2": retained_field_counts, "hotPepperCandidateFieldReview": candidate_hp_counts,
             "hotPepperSourceFactBudgetResolver": source_fact_budget_counts, "hotPepperBasicPractical": derived_counts,
-            "safePracticalResolver": rich, "hotPepperRichFieldResolver": hotpepper_rich_counts, "ingestionPlan": taskplan,
+            "safePracticalResolver": rich, "hotPepperRichFieldResolver": hotpepper_rich_counts,
+            "dishTranslationResolver": dict(dish_translation_counts), "ingestionPlan": taskplan,
             "basicConflictSourceKeys": len(basic_conflicts), "allRetainedConflictSourceKeys": len(conflict_keys), "allRetainedConflictPlaces": len(conflict_places),
             "hoursRawObserved": db.execute("SELECT count(*) FROM field_observations WHERE field_key='hours.raw' AND value_json IS NOT NULL").fetchone()[0],
             "closuresRawObserved": db.execute("SELECT count(*) FROM field_observations WHERE field_key='closure.raw' AND value_json IS NOT NULL").fetchone()[0],
             "budgetRangesKnown": db.execute("SELECT count(*) FROM field_resolutions WHERE field_key='budget.dinner.range' AND resolution_state='known'").fetchone()[0],
+            "recommendedDishesZhKnown": db.execute("SELECT count(*) FROM field_resolutions WHERE field_key='recommended_dishes.zh' AND resolution_state='known'").fetchone()[0],
+            "featuredDishesZhKnown": db.execute("SELECT count(*) FROM field_resolutions WHERE field_key='featured_dishes.zh' AND resolution_state='known'").fetchone()[0],
             "exceptions": db.execute("SELECT count(*) FROM retained_exceptions").fetchone()[0],
         }
         db.execute("UPDATE ingestion_runs SET completed_at=?,status='succeeded',summary_json=? WHERE run_id=?", (core.now_iso(), core.canonical_json(summary), run_id))
