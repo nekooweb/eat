@@ -1,32 +1,53 @@
 {
-  "schemaVersion": 1,
-  "generatedAt": "2026-09-08T04:36:42.626Z",
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-08T04:42:12.296Z",
   "policy": {
     "proposalOnly": true,
     "identityBindingChanges": 0,
     "networkRequests": 0,
     "paidGoogleDataApiCalls": 0,
-    "candidateSource": "retained official_candidate_index.json only",
+    "candidateSources": [
+      "retained official_candidate_index.json",
+      "retained Overture Maps area snapshot"
+    ],
     "currentQueueRestriction": "find_independent_dish_source only",
     "nameCompatibilityRequired": true,
+    "boundedCoordinateAgreementRequiredForOverture": true,
+    "overtureMaximumDistanceMeters": 120,
+    "candidateAmbiguityMarginRequired": true,
     "independentHttpUrlRequired": true,
     "socialUrlsExcluded": true,
     "thirdPartyAggregatorUrlsExcluded": true,
     "proximityOnlyBindingAllowed": false,
     "dishEvidencePromotionBeforeIdentityReviewAllowed": false,
-    "centralIdentityReviewRequired": true
+    "centralIdentityReviewRequired": true,
+    "currentPublicRuntimeFieldsUsedForMatching": [
+      "independent-source name",
+      "independent-source coordinates"
+    ],
+    "googleDisplayPayloadUsed": false
   },
   "summary": {
-    "schemaVersion": 1,
+    "schemaVersion": 2,
     "catalogTotal": 2804,
     "publicRuntimeTotal": 1415,
     "currentIndependentDishSourceGap": 301,
     "officialCandidateIndexRecords": 194,
-    "proposalRows": 0,
+    "overtureSnapshotRows": 3908,
+    "overtureRowsWithIndependentUrls": 2516,
+    "proposalRows": 36,
+    "retainedIndexProposalRows": 0,
+    "overtureProposalRows": 36,
+    "highConfidenceOvertureProposalRows": 24,
     "proposalRowsWithExplicitMenuUrls": 0,
-    "proposalRowsPageOnly": 0,
-    "proposalCoverageOfIndependentGapPct": 0,
+    "proposalRowsPageOnly": 36,
+    "proposalCoverageOfIndependentGapPct": 12,
     "explicitMenuCoverageOfIndependentGapPct": 0,
+    "overtureTargetsWithoutCoordinates": 0,
+    "overtureTargetsWithNearbyCandidates": 301,
+    "overtureRejectedName": 252,
+    "overtureRejectedWeak": 13,
+    "overtureRejectedAmbiguous": 0,
     "nameMismatch": 0,
     "invalidUrls": 0,
     "alreadyHasSource": 0,
@@ -35,45 +56,1314 @@
     "shardCounts": [
       {
         "shard": 0,
-        "total": 0,
-        "withMenuUrl": 0
+        "total": 8,
+        "withMenuUrl": 0,
+        "overture": 8
       },
       {
         "shard": 1,
-        "total": 0,
-        "withMenuUrl": 0
+        "total": 6,
+        "withMenuUrl": 0,
+        "overture": 6
       },
       {
         "shard": 2,
-        "total": 0,
-        "withMenuUrl": 0
+        "total": 6,
+        "withMenuUrl": 0,
+        "overture": 6
       },
       {
         "shard": 3,
-        "total": 0,
-        "withMenuUrl": 0
+        "total": 3,
+        "withMenuUrl": 0,
+        "overture": 3
       },
       {
         "shard": 4,
-        "total": 0,
-        "withMenuUrl": 0
+        "total": 3,
+        "withMenuUrl": 0,
+        "overture": 3
       },
       {
         "shard": 5,
-        "total": 0,
-        "withMenuUrl": 0
+        "total": 4,
+        "withMenuUrl": 0,
+        "overture": 4
       },
       {
         "shard": 6,
-        "total": 0,
-        "withMenuUrl": 0
+        "total": 2,
+        "withMenuUrl": 0,
+        "overture": 2
       },
       {
         "shard": 7,
-        "total": 0,
-        "withMenuUrl": 0
+        "total": 4,
+        "withMenuUrl": 0,
+        "overture": 4
       }
     ]
   },
-  "rows": []
+  "rows": [
+    {
+      "googlePlaceId": "ChIJswfCsA-MGGARIz1Zn1TprVs",
+      "name": "Tully's Coffee",
+      "distanceMeters": 549,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "http://www.tullys.co.jp/",
+      "menuUrls": [],
+      "candidateHosts": [
+        "tullys.co.jp"
+      ],
+      "checkedAt": "2026-08-19.0",
+      "candidateName": "Tully's Coffee",
+      "candidateProvider": "Overture Maps",
+      "candidateProviderId": "4ac1e72b-be43-4856-b732-2488312fe8ec",
+      "candidateDistanceMeters": 0,
+      "nameSimilarity": 1,
+      "candidateMargin": 0.8148,
+      "proposalScore": 1,
+      "overtureConfidence": 0.9414534085988998,
+      "proposalState": "review_high_confidence_overture_website_candidate",
+      "confidenceSignals": [
+        "current_public_identity_has_independent_name_and_coordinates",
+        "retained_overture_candidate_with_independent_http_url",
+        "normalized_name_similarity_above_proposal_threshold",
+        "candidate_within_bounded_coordinate_distance",
+        "best_candidate_margin_above_ambiguity_threshold"
+      ],
+      "candidateUrls": [
+        "http://www.tullys.co.jp/"
+      ],
+      "shard": 7,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJiWFVAT-MGGARfA-dnOR9DFk",
+      "name": "マクドナルド",
+      "distanceMeters": 755,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "http://www.mcdonalds.co.jp/",
+      "menuUrls": [],
+      "candidateHosts": [
+        "mcdonalds.co.jp"
+      ],
+      "checkedAt": "2026-08-19.0",
+      "candidateName": "マクドナルド",
+      "candidateProvider": "Overture Maps",
+      "candidateProviderId": "720939ad-b3b9-4f21-9d1f-18657231cfdb",
+      "candidateDistanceMeters": 0.7,
+      "nameSimilarity": 1,
+      "candidateMargin": 0.8102,
+      "proposalScore": 0.9987,
+      "overtureConfidence": 0.9980420160293579,
+      "proposalState": "review_high_confidence_overture_website_candidate",
+      "confidenceSignals": [
+        "current_public_identity_has_independent_name_and_coordinates",
+        "retained_overture_candidate_with_independent_http_url",
+        "normalized_name_similarity_above_proposal_threshold",
+        "candidate_within_bounded_coordinate_distance",
+        "best_candidate_margin_above_ambiguity_threshold"
+      ],
+      "candidateUrls": [
+        "http://www.mcdonalds.co.jp/"
+      ],
+      "shard": 4,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJz-BTvUOMGGAR_Ln6HwlP9SA",
+      "name": "Hop-Scotch Tokyo",
+      "distanceMeters": 1164,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "http://www.hopscotchtokyo.com/",
+      "menuUrls": [],
+      "candidateHosts": [
+        "hopscotchtokyo.com"
+      ],
+      "checkedAt": "2026-08-19.0",
+      "candidateName": "Hop-Scotch Tokyo",
+      "candidateProvider": "Overture Maps",
+      "candidateProviderId": "c7a96808-e049-41b5-91d6-f70cdba3a356",
+      "candidateDistanceMeters": 1.1,
+      "nameSimilarity": 1,
+      "candidateMargin": 0.6905,
+      "proposalScore": 0.998,
+      "overtureConfidence": 0.9977662444114686,
+      "proposalState": "review_high_confidence_overture_website_candidate",
+      "confidenceSignals": [
+        "current_public_identity_has_independent_name_and_coordinates",
+        "retained_overture_candidate_with_independent_http_url",
+        "normalized_name_similarity_above_proposal_threshold",
+        "candidate_within_bounded_coordinate_distance",
+        "best_candidate_margin_above_ambiguity_threshold"
+      ],
+      "candidateUrls": [
+        "http://www.hopscotchtokyo.com/"
+      ],
+      "shard": 3,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJO1mZHv2NGGARyXRyYyzgBn0",
+      "name": "スルターン",
+      "distanceMeters": 940,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "http://sultan.co.jp/",
+      "menuUrls": [],
+      "candidateHosts": [
+        "sultan.co.jp"
+      ],
+      "checkedAt": "2026-08-19.0",
+      "candidateName": "スルターン",
+      "candidateProvider": "Overture Maps",
+      "candidateProviderId": "b28009c9-3493-43e4-b678-9ea63bbe4652",
+      "candidateDistanceMeters": 1.2,
+      "nameSimilarity": 1,
+      "candidateMargin": 0.8201,
+      "proposalScore": 0.9977,
+      "overtureConfidence": 0.9957342314720153,
+      "proposalState": "review_high_confidence_overture_website_candidate",
+      "confidenceSignals": [
+        "current_public_identity_has_independent_name_and_coordinates",
+        "retained_overture_candidate_with_independent_http_url",
+        "normalized_name_similarity_above_proposal_threshold",
+        "candidate_within_bounded_coordinate_distance",
+        "best_candidate_margin_above_ambiguity_threshold"
+      ],
+      "candidateUrls": [
+        "http://sultan.co.jp/"
+      ],
+      "shard": 0,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJv855zzyMGGARpguW0WEh-UQ",
+      "name": "長崎らーめん琴海",
+      "distanceMeters": 1168,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "http://kinkai-ramen.com/wordpress",
+      "menuUrls": [],
+      "candidateHosts": [
+        "kinkai-ramen.com"
+      ],
+      "checkedAt": "2026-08-19.0",
+      "candidateName": "長崎らーめん 琴海",
+      "candidateProvider": "Overture Maps",
+      "candidateProviderId": "e4c83939-8da3-4dad-aec1-b2d073e0bae1",
+      "candidateDistanceMeters": 2.1,
+      "nameSimilarity": 1,
+      "candidateMargin": 0.8121,
+      "proposalScore": 0.9962,
+      "overtureConfidence": 0.77,
+      "proposalState": "review_high_confidence_overture_website_candidate",
+      "confidenceSignals": [
+        "current_public_identity_has_independent_name_and_coordinates",
+        "retained_overture_candidate_with_independent_http_url",
+        "normalized_name_similarity_above_proposal_threshold",
+        "candidate_within_bounded_coordinate_distance",
+        "best_candidate_margin_above_ambiguity_threshold"
+      ],
+      "candidateUrls": [
+        "http://kinkai-ramen.com/wordpress"
+      ],
+      "shard": 0,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJAQBEjBiMGGARYUv2a_TphXI",
+      "name": "日乃屋本店",
+      "distanceMeters": 1090,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "http://hinoya.jp/",
+      "menuUrls": [],
+      "candidateHosts": [
+        "hinoya.jp"
+      ],
+      "checkedAt": "2026-08-19.0",
+      "candidateName": "日乃屋本店",
+      "candidateProvider": "Overture Maps",
+      "candidateProviderId": "5fdec843-7fc7-40ea-b664-710bdfe31998",
+      "candidateDistanceMeters": 2.2,
+      "nameSimilarity": 1,
+      "candidateMargin": 0.8862,
+      "proposalScore": 0.996,
+      "overtureConfidence": 0.9962641280889512,
+      "proposalState": "review_high_confidence_overture_website_candidate",
+      "confidenceSignals": [
+        "current_public_identity_has_independent_name_and_coordinates",
+        "retained_overture_candidate_with_independent_http_url",
+        "normalized_name_similarity_above_proposal_threshold",
+        "candidate_within_bounded_coordinate_distance",
+        "best_candidate_margin_above_ambiguity_threshold"
+      ],
+      "candidateUrls": [
+        "http://hinoya.jp/"
+      ],
+      "shard": 2,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJI1W-PkKMGGARSpB6s8XZQKU",
+      "name": "la cantina cancemi",
+      "distanceMeters": 1041,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "http://www.cancemi.jp/cantina/",
+      "menuUrls": [],
+      "candidateHosts": [
+        "cancemi.jp"
+      ],
+      "checkedAt": "2026-08-19.0",
+      "candidateName": "La Cantina Cancemi",
+      "candidateProvider": "Overture Maps",
+      "candidateProviderId": "f2824d46-89e1-4646-83e2-c43ac3c570e6",
+      "candidateDistanceMeters": 2.8,
+      "nameSimilarity": 1,
+      "candidateMargin": 0.9737,
+      "proposalScore": 0.9949,
+      "overtureConfidence": 0.9987486499547958,
+      "proposalState": "review_high_confidence_overture_website_candidate",
+      "confidenceSignals": [
+        "current_public_identity_has_independent_name_and_coordinates",
+        "retained_overture_candidate_with_independent_http_url",
+        "normalized_name_similarity_above_proposal_threshold",
+        "candidate_within_bounded_coordinate_distance",
+        "best_candidate_margin_above_ambiguity_threshold"
+      ],
+      "candidateUrls": [
+        "http://www.cancemi.jp/cantina/"
+      ],
+      "shard": 4,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJc9lS6QSMGGARxttX09XUAkM",
+      "name": "Jazz Bar Gugan",
+      "distanceMeters": 862,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "http://bar-navi.suntory.co.jp/shop/0X00111275/index.html",
+      "menuUrls": [],
+      "candidateHosts": [
+        "bar-navi.suntory.co.jp"
+      ],
+      "checkedAt": "2026-08-19.0",
+      "candidateName": "Jazz Bar Gugan",
+      "candidateProvider": "Overture Maps",
+      "candidateProviderId": "a4294a24-5203-4a68-802a-e3a3ef2687d3",
+      "candidateDistanceMeters": 3.1,
+      "nameSimilarity": 1,
+      "candidateMargin": 0.7051,
+      "proposalScore": 0.9943,
+      "overtureConfidence": 0.7812314033508301,
+      "proposalState": "review_high_confidence_overture_website_candidate",
+      "confidenceSignals": [
+        "current_public_identity_has_independent_name_and_coordinates",
+        "retained_overture_candidate_with_independent_http_url",
+        "normalized_name_similarity_above_proposal_threshold",
+        "candidate_within_bounded_coordinate_distance",
+        "best_candidate_margin_above_ambiguity_threshold"
+      ],
+      "candidateUrls": [
+        "http://bar-navi.suntory.co.jp/shop/0X00111275/index.html"
+      ],
+      "shard": 7,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJKSq4ewOMGGARvdJFWODrifw",
+      "name": "巴里の介",
+      "distanceMeters": 1004,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "https://www.parinosuke.com/",
+      "menuUrls": [],
+      "candidateHosts": [
+        "parinosuke.com"
+      ],
+      "checkedAt": "2026-08-19.0",
+      "candidateName": "巴里の介",
+      "candidateProvider": "Overture Maps",
+      "candidateProviderId": "8531ff96-c89a-4681-9230-8749a3c80ca4",
+      "candidateDistanceMeters": 3.6,
+      "nameSimilarity": 1,
+      "candidateMargin": 0.8086,
+      "proposalScore": 0.9933,
+      "overtureConfidence": 0.9981440526247024,
+      "proposalState": "review_high_confidence_overture_website_candidate",
+      "confidenceSignals": [
+        "current_public_identity_has_independent_name_and_coordinates",
+        "retained_overture_candidate_with_independent_http_url",
+        "normalized_name_similarity_above_proposal_threshold",
+        "candidate_within_bounded_coordinate_distance",
+        "best_candidate_margin_above_ambiguity_threshold"
+      ],
+      "candidateUrls": [
+        "https://www.parinosuke.com/"
+      ],
+      "shard": 7,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJ3dbqYxyMGGARb2P34SniXRw",
+      "name": "まぐろ亭",
+      "distanceMeters": 1046,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "http://www.magurotei.jp/",
+      "menuUrls": [],
+      "candidateHosts": [
+        "magurotei.jp"
+      ],
+      "checkedAt": "2026-08-19.0",
+      "candidateName": "まぐろ亭",
+      "candidateProvider": "Overture Maps",
+      "candidateProviderId": "a462a098-6674-4a2f-bd0a-89df555911b9",
+      "candidateDistanceMeters": 4.6,
+      "nameSimilarity": 1,
+      "candidateMargin": 0.7968,
+      "proposalScore": 0.9915,
+      "overtureConfidence": 0.9948983347415924,
+      "proposalState": "review_high_confidence_overture_website_candidate",
+      "confidenceSignals": [
+        "current_public_identity_has_independent_name_and_coordinates",
+        "retained_overture_candidate_with_independent_http_url",
+        "normalized_name_similarity_above_proposal_threshold",
+        "candidate_within_bounded_coordinate_distance",
+        "best_candidate_margin_above_ambiguity_threshold"
+      ],
+      "candidateUrls": [
+        "http://www.magurotei.jp/"
+      ],
+      "shard": 3,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJeU_ZETyMGGAREFmYhJXabSs",
+      "name": "くんぺい",
+      "distanceMeters": 1041,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "http://www.hongo-kunpei.com/index.html",
+      "menuUrls": [],
+      "candidateHosts": [
+        "hongo-kunpei.com"
+      ],
+      "checkedAt": "2026-08-19.0",
+      "candidateName": "くんぺい",
+      "candidateProvider": "Overture Maps",
+      "candidateProviderId": "cf2a65bf-f70d-4bc0-adbb-b954a3cd4566",
+      "candidateDistanceMeters": 4.8,
+      "nameSimilarity": 1,
+      "candidateMargin": 0.1217,
+      "proposalScore": 0.9913,
+      "overtureConfidence": 0.9829144018888474,
+      "proposalState": "review_high_confidence_overture_website_candidate",
+      "confidenceSignals": [
+        "current_public_identity_has_independent_name_and_coordinates",
+        "retained_overture_candidate_with_independent_http_url",
+        "normalized_name_similarity_above_proposal_threshold",
+        "candidate_within_bounded_coordinate_distance",
+        "best_candidate_margin_above_ambiguity_threshold"
+      ],
+      "candidateUrls": [
+        "http://www.hongo-kunpei.com/index.html"
+      ],
+      "shard": 0,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJU9NtWQOMGGARIOyGVUhXqxs",
+      "name": "Kitchen Ishigaki",
+      "distanceMeters": 946,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "http://r.gnavi.co.jp/a860900/",
+      "menuUrls": [],
+      "candidateHosts": [
+        "r.gnavi.co.jp"
+      ],
+      "checkedAt": "2026-08-19.0",
+      "candidateName": "Kitchen Ishigaki",
+      "candidateProvider": "Overture Maps",
+      "candidateProviderId": "9230193e-6227-45bb-8d3a-2ce9b5c9af3f",
+      "candidateDistanceMeters": 5,
+      "nameSimilarity": 1,
+      "candidateMargin": 0.6381,
+      "proposalScore": 0.9909,
+      "overtureConfidence": 0.9933913946151733,
+      "proposalState": "review_high_confidence_overture_website_candidate",
+      "confidenceSignals": [
+        "current_public_identity_has_independent_name_and_coordinates",
+        "retained_overture_candidate_with_independent_http_url",
+        "normalized_name_similarity_above_proposal_threshold",
+        "candidate_within_bounded_coordinate_distance",
+        "best_candidate_margin_above_ambiguity_threshold"
+      ],
+      "candidateUrls": [
+        "http://r.gnavi.co.jp/a860900/"
+      ],
+      "shard": 1,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJb0Y8nQaMGGARyZhC2p1tRuM",
+      "name": "ど丼がぁドン",
+      "distanceMeters": 962,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "http://dodongadon1010.blog.fc2.com/",
+      "menuUrls": [],
+      "candidateHosts": [
+        "dodongadon1010.blog.fc2.com"
+      ],
+      "checkedAt": "2026-08-19.0",
+      "candidateName": "ど丼がぁドン",
+      "candidateProvider": "Overture Maps",
+      "candidateProviderId": "6a5682db-a9be-4cce-829f-96cd08a5407d",
+      "candidateDistanceMeters": 5.1,
+      "nameSimilarity": 1,
+      "candidateMargin": 0.7946,
+      "proposalScore": 0.9907,
+      "overtureConfidence": 0.995061582326889,
+      "proposalState": "review_high_confidence_overture_website_candidate",
+      "confidenceSignals": [
+        "current_public_identity_has_independent_name_and_coordinates",
+        "retained_overture_candidate_with_independent_http_url",
+        "normalized_name_similarity_above_proposal_threshold",
+        "candidate_within_bounded_coordinate_distance",
+        "best_candidate_margin_above_ambiguity_threshold"
+      ],
+      "candidateUrls": [
+        "http://dodongadon1010.blog.fc2.com/"
+      ],
+      "shard": 3,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJFyJLpEOMGGARDeh7k8QydZE",
+      "name": "Yamituki Curry",
+      "distanceMeters": 1175,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "http://syokushindou.jp/",
+      "menuUrls": [],
+      "candidateHosts": [
+        "syokushindou.jp"
+      ],
+      "checkedAt": "2026-08-19.0",
+      "candidateName": "Yamituki Curry",
+      "candidateProvider": "Overture Maps",
+      "candidateProviderId": "f549e494-aa03-4aa4-9a48-f4a8b23be96d",
+      "candidateDistanceMeters": 5.6,
+      "nameSimilarity": 1,
+      "candidateMargin": 0.685,
+      "proposalScore": 0.9897,
+      "overtureConfidence": 0.9974928033351899,
+      "proposalState": "review_high_confidence_overture_website_candidate",
+      "confidenceSignals": [
+        "current_public_identity_has_independent_name_and_coordinates",
+        "retained_overture_candidate_with_independent_http_url",
+        "normalized_name_similarity_above_proposal_threshold",
+        "candidate_within_bounded_coordinate_distance",
+        "best_candidate_margin_above_ambiguity_threshold"
+      ],
+      "candidateUrls": [
+        "http://syokushindou.jp/"
+      ],
+      "shard": 0,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJF3IItgOMGGAR_1EfWn8cjb0",
+      "name": "Al Mina",
+      "distanceMeters": 1114,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "http://www.almina-restaurant.com/",
+      "menuUrls": [],
+      "candidateHosts": [
+        "almina-restaurant.com"
+      ],
+      "checkedAt": "2026-08-19.0",
+      "candidateName": "Al Mina",
+      "candidateProvider": "Overture Maps",
+      "candidateProviderId": "b5139968-f545-4798-a826-075020e17fb3",
+      "candidateDistanceMeters": 5.7,
+      "nameSimilarity": 1,
+      "candidateMargin": 0.1461,
+      "proposalScore": 0.9896,
+      "overtureConfidence": 0.9952440857887268,
+      "proposalState": "review_high_confidence_overture_website_candidate",
+      "confidenceSignals": [
+        "current_public_identity_has_independent_name_and_coordinates",
+        "retained_overture_candidate_with_independent_http_url",
+        "normalized_name_similarity_above_proposal_threshold",
+        "candidate_within_bounded_coordinate_distance",
+        "best_candidate_margin_above_ambiguity_threshold"
+      ],
+      "candidateUrls": [
+        "http://www.almina-restaurant.com/"
+      ],
+      "shard": 5,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJb6ihORmMGGARKiW5-SjV83o",
+      "name": "聖橋亭",
+      "distanceMeters": 1048,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "http://www.nakatomi-co.com/",
+      "menuUrls": [],
+      "candidateHosts": [
+        "nakatomi-co.com"
+      ],
+      "checkedAt": "2026-08-19.0",
+      "candidateName": "聖橋亭",
+      "candidateProvider": "Overture Maps",
+      "candidateProviderId": "f6cc80ed-3db1-40f8-9bd4-b90c7c3fbf41",
+      "candidateDistanceMeters": 5.9,
+      "nameSimilarity": 1,
+      "candidateMargin": 0.8044,
+      "proposalScore": 0.9892,
+      "overtureConfidence": 0.9409181654453278,
+      "proposalState": "review_high_confidence_overture_website_candidate",
+      "confidenceSignals": [
+        "current_public_identity_has_independent_name_and_coordinates",
+        "retained_overture_candidate_with_independent_http_url",
+        "normalized_name_similarity_above_proposal_threshold",
+        "candidate_within_bounded_coordinate_distance",
+        "best_candidate_margin_above_ambiguity_threshold"
+      ],
+      "candidateUrls": [
+        "http://www.nakatomi-co.com/"
+      ],
+      "shard": 0,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJQ3MESwOMGGARX99d47o0V6k",
+      "name": "神田まつや",
+      "distanceMeters": 1010,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "http://kanda-matsuya.jp/",
+      "menuUrls": [],
+      "candidateHosts": [
+        "kanda-matsuya.jp"
+      ],
+      "checkedAt": "2026-08-19.0",
+      "candidateName": "神田まつや",
+      "candidateProvider": "Overture Maps",
+      "candidateProviderId": "39a9febe-4157-4d66-aaf9-9e4220798061",
+      "candidateDistanceMeters": 6.3,
+      "nameSimilarity": 1,
+      "candidateMargin": 0.6557,
+      "proposalScore": 0.9885,
+      "overtureConfidence": 0.9978013944625854,
+      "proposalState": "review_high_confidence_overture_website_candidate",
+      "confidenceSignals": [
+        "current_public_identity_has_independent_name_and_coordinates",
+        "retained_overture_candidate_with_independent_http_url",
+        "normalized_name_similarity_above_proposal_threshold",
+        "candidate_within_bounded_coordinate_distance",
+        "best_candidate_margin_above_ambiguity_threshold"
+      ],
+      "candidateUrls": [
+        "http://kanda-matsuya.jp/"
+      ],
+      "shard": 5,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJg4bPQAGMGGAR9FTVISBu8sE",
+      "name": "お食事処 あい津",
+      "distanceMeters": 1169,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "http://www.kanda-aizu.com/",
+      "menuUrls": [],
+      "candidateHosts": [
+        "kanda-aizu.com"
+      ],
+      "checkedAt": "2026-08-19.0",
+      "candidateName": "お食事処 あい津",
+      "candidateProvider": "Overture Maps",
+      "candidateProviderId": "a8f096e7-183b-4d11-930b-9c5d10a381ec",
+      "candidateDistanceMeters": 6.3,
+      "nameSimilarity": 1,
+      "candidateMargin": 0.7799,
+      "proposalScore": 0.9884,
+      "overtureConfidence": 0.9736140370368958,
+      "proposalState": "review_high_confidence_overture_website_candidate",
+      "confidenceSignals": [
+        "current_public_identity_has_independent_name_and_coordinates",
+        "retained_overture_candidate_with_independent_http_url",
+        "normalized_name_similarity_above_proposal_threshold",
+        "candidate_within_bounded_coordinate_distance",
+        "best_candidate_margin_above_ambiguity_threshold"
+      ],
+      "candidateUrls": [
+        "http://www.kanda-aizu.com/"
+      ],
+      "shard": 1,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJY5FgPTWNGGARv0BQVJaGjYQ",
+      "name": "魚伸",
+      "distanceMeters": 1186,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "http://www.sushiyauoshin.com/",
+      "menuUrls": [],
+      "candidateHosts": [
+        "sushiyauoshin.com"
+      ],
+      "checkedAt": "2026-08-19.0",
+      "candidateName": "魚伸",
+      "candidateProvider": "Overture Maps",
+      "candidateProviderId": "4cf229c2-ad3b-4ab1-8b47-03098dca9141",
+      "candidateDistanceMeters": 7.3,
+      "nameSimilarity": 1,
+      "candidateMargin": 0.7819,
+      "proposalScore": 0.9865,
+      "overtureConfidence": 0.77,
+      "proposalState": "review_high_confidence_overture_website_candidate",
+      "confidenceSignals": [
+        "current_public_identity_has_independent_name_and_coordinates",
+        "retained_overture_candidate_with_independent_http_url",
+        "normalized_name_similarity_above_proposal_threshold",
+        "candidate_within_bounded_coordinate_distance",
+        "best_candidate_margin_above_ambiguity_threshold"
+      ],
+      "candidateUrls": [
+        "http://www.sushiyauoshin.com/"
+      ],
+      "shard": 1,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJK3MqvAOMGGARMcQcSnbnTq8",
+      "name": "宿場",
+      "distanceMeters": 1097,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "http://r.gnavi.co.jp/g777100/",
+      "menuUrls": [],
+      "candidateHosts": [
+        "r.gnavi.co.jp"
+      ],
+      "checkedAt": "2026-08-19.0",
+      "candidateName": "宿場",
+      "candidateProvider": "Overture Maps",
+      "candidateProviderId": "ad7bdec2-3951-4f89-8de1-daa9898ca32f",
+      "candidateDistanceMeters": 8.6,
+      "nameSimilarity": 1,
+      "candidateMargin": 0.77,
+      "proposalScore": 0.9842,
+      "overtureConfidence": 0.9819726943969727,
+      "proposalState": "review_high_confidence_overture_website_candidate",
+      "confidenceSignals": [
+        "current_public_identity_has_independent_name_and_coordinates",
+        "retained_overture_candidate_with_independent_http_url",
+        "normalized_name_similarity_above_proposal_threshold",
+        "candidate_within_bounded_coordinate_distance",
+        "best_candidate_margin_above_ambiguity_threshold"
+      ],
+      "candidateUrls": [
+        "http://r.gnavi.co.jp/g777100/"
+      ],
+      "shard": 1,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJHR3eZRyMGGARgb3K60lZKb4",
+      "name": "味の萬楽",
+      "distanceMeters": 1066,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "http://manraku.tokyo/",
+      "menuUrls": [],
+      "candidateHosts": [
+        "manraku.tokyo"
+      ],
+      "checkedAt": "2026-08-19.0",
+      "candidateName": "味の萬楽",
+      "candidateProvider": "Overture Maps",
+      "candidateProviderId": "0718d346-63ed-41dc-94d2-3fb3d5f2676f",
+      "candidateDistanceMeters": 9.9,
+      "nameSimilarity": 1,
+      "candidateMargin": 0.8123,
+      "proposalScore": 0.9818,
+      "overtureConfidence": 0.9975527942180633,
+      "proposalState": "review_high_confidence_overture_website_candidate",
+      "confidenceSignals": [
+        "current_public_identity_has_independent_name_and_coordinates",
+        "retained_overture_candidate_with_independent_http_url",
+        "normalized_name_similarity_above_proposal_threshold",
+        "candidate_within_bounded_coordinate_distance",
+        "best_candidate_margin_above_ambiguity_threshold"
+      ],
+      "candidateUrls": [
+        "http://manraku.tokyo/"
+      ],
+      "shard": 6,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJT9HCuRyMGGARqIt735A6L1k",
+      "name": "東京豆花工房",
+      "distanceMeters": 1017,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "https://tokyomamehana.jbplt.jp/",
+      "menuUrls": [],
+      "candidateHosts": [
+        "tokyomamehana.jbplt.jp"
+      ],
+      "checkedAt": "2026-08-19.0",
+      "candidateName": "東京豆花工房",
+      "candidateProvider": "Overture Maps",
+      "candidateProviderId": "9b570bfb-c1c9-4fdf-9a6d-8b27119f1090",
+      "candidateDistanceMeters": 12.3,
+      "nameSimilarity": 1,
+      "candidateMargin": 0.7798,
+      "proposalScore": 0.9774,
+      "overtureConfidence": 0.9971486645936966,
+      "proposalState": "review_high_confidence_overture_website_candidate",
+      "confidenceSignals": [
+        "current_public_identity_has_independent_name_and_coordinates",
+        "retained_overture_candidate_with_independent_http_url",
+        "normalized_name_similarity_above_proposal_threshold",
+        "candidate_within_bounded_coordinate_distance",
+        "best_candidate_margin_above_ambiguity_threshold"
+      ],
+      "candidateUrls": [
+        "https://tokyomamehana.jbplt.jp/"
+      ],
+      "shard": 1,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJ0eXw4hiMGGARGOrfnjnLzHk",
+      "name": "こなから本店",
+      "distanceMeters": 1030,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "http://konakara.com/",
+      "menuUrls": [],
+      "candidateHosts": [
+        "konakara.com"
+      ],
+      "checkedAt": "2026-08-19.0",
+      "candidateName": "こなから 本店",
+      "candidateProvider": "Overture Maps",
+      "candidateProviderId": "b0539af3-64ab-4d6c-80f6-e21606dfc7d9",
+      "candidateDistanceMeters": 14.6,
+      "nameSimilarity": 1,
+      "candidateMargin": 0.6315,
+      "proposalScore": 0.9732,
+      "overtureConfidence": 0.9978433853387833,
+      "proposalState": "review_high_confidence_overture_website_candidate",
+      "confidenceSignals": [
+        "current_public_identity_has_independent_name_and_coordinates",
+        "retained_overture_candidate_with_independent_http_url",
+        "normalized_name_similarity_above_proposal_threshold",
+        "candidate_within_bounded_coordinate_distance",
+        "best_candidate_margin_above_ambiguity_threshold"
+      ],
+      "candidateUrls": [
+        "http://konakara.com/"
+      ],
+      "shard": 7,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJs5tCVxyMGGARJswUvIj4drc",
+      "name": "丸五",
+      "distanceMeters": 1144,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "http://r.gnavi.co.jp/jdggw3d00000/",
+      "menuUrls": [],
+      "candidateHosts": [
+        "r.gnavi.co.jp"
+      ],
+      "checkedAt": "2026-08-19.0",
+      "candidateName": "丸五",
+      "candidateProvider": "Overture Maps",
+      "candidateProviderId": "33b4d7e4-cc99-4df7-87aa-a77f1aa8f020",
+      "candidateDistanceMeters": 32.2,
+      "nameSimilarity": 1,
+      "candidateMargin": 0.7589,
+      "proposalScore": 0.941,
+      "overtureConfidence": 0.986944854259491,
+      "proposalState": "review_high_confidence_overture_website_candidate",
+      "confidenceSignals": [
+        "current_public_identity_has_independent_name_and_coordinates",
+        "retained_overture_candidate_with_independent_http_url",
+        "normalized_name_similarity_above_proposal_threshold",
+        "candidate_within_bounded_coordinate_distance",
+        "best_candidate_margin_above_ambiguity_threshold"
+      ],
+      "candidateUrls": [
+        "http://r.gnavi.co.jp/jdggw3d00000/"
+      ],
+      "shard": 0,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJSfmdGQCNGGARGjTO9iLmYvg",
+      "name": "和風居酒屋「一喜一笑」",
+      "distanceMeters": 1109,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "https://www.ikki-issho.com/",
+      "menuUrls": [],
+      "candidateHosts": [
+        "ikki-issho.com"
+      ],
+      "checkedAt": "2026-08-19.0",
+      "candidateName": "一喜一笑",
+      "candidateProvider": "Overture Maps",
+      "candidateProviderId": "98258d6c-db34-44be-b6a4-193c337fa6ac",
+      "candidateDistanceMeters": 1.5,
+      "nameSimilarity": 0.84,
+      "candidateMargin": 0.3991,
+      "proposalScore": 0.8724,
+      "overtureConfidence": 0.77,
+      "proposalState": "review_overture_website_candidate",
+      "confidenceSignals": [
+        "current_public_identity_has_independent_name_and_coordinates",
+        "retained_overture_candidate_with_independent_http_url",
+        "normalized_name_similarity_above_proposal_threshold",
+        "candidate_within_bounded_coordinate_distance",
+        "best_candidate_margin_above_ambiguity_threshold"
+      ],
+      "candidateUrls": [
+        "https://www.ikki-issho.com/"
+      ],
+      "shard": 0,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJd8Cn8nONGGARfEd-8dsiXdc",
+      "name": "目利きの銀次",
+      "distanceMeters": 366,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "https://www.monteroza.co.jp/shop.html?shop=855244",
+      "menuUrls": [],
+      "candidateHosts": [
+        "monteroza.co.jp"
+      ],
+      "checkedAt": "2026-08-19.0",
+      "candidateName": "目利きの銀次神保町駿河台下店",
+      "candidateProvider": "Overture Maps",
+      "candidateProviderId": "bbc72f44-cdb7-414f-95c1-d36dac28c3ba",
+      "candidateDistanceMeters": 1.7,
+      "nameSimilarity": 0.84,
+      "candidateMargin": 0.5687,
+      "proposalScore": 0.8721,
+      "overtureConfidence": 0.949487566947937,
+      "proposalState": "review_overture_website_candidate",
+      "confidenceSignals": [
+        "current_public_identity_has_independent_name_and_coordinates",
+        "retained_overture_candidate_with_independent_http_url",
+        "normalized_name_similarity_above_proposal_threshold",
+        "candidate_within_bounded_coordinate_distance",
+        "best_candidate_margin_above_ambiguity_threshold"
+      ],
+      "candidateUrls": [
+        "https://www.monteroza.co.jp/shop.html?shop=855244"
+      ],
+      "shard": 5,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJ37FZ_uqNGGARpT-BPIXUtLU",
+      "name": "バーエデン神田",
+      "distanceMeters": 1030,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "https://eventbareden.com/",
+      "menuUrls": [],
+      "candidateHosts": [
+        "eventbareden.com"
+      ],
+      "checkedAt": "2026-08-19.0",
+      "candidateName": "エデン神田",
+      "candidateProvider": "Overture Maps",
+      "candidateProviderId": "fb43ec69-9d45-4069-8193-98574c1df2f5",
+      "candidateDistanceMeters": 2.9,
+      "nameSimilarity": 0.84,
+      "candidateMargin": 0.6579,
+      "proposalScore": 0.8698,
+      "overtureConfidence": 0.77,
+      "proposalState": "review_overture_website_candidate",
+      "confidenceSignals": [
+        "current_public_identity_has_independent_name_and_coordinates",
+        "retained_overture_candidate_with_independent_http_url",
+        "normalized_name_similarity_above_proposal_threshold",
+        "candidate_within_bounded_coordinate_distance",
+        "best_candidate_margin_above_ambiguity_threshold"
+      ],
+      "candidateUrls": [
+        "https://eventbareden.com/"
+      ],
+      "shard": 1,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJezJbYeaNGGARDfInD9fBX3o",
+      "name": "MOTTO",
+      "distanceMeters": 1165,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "http://cien-foodservice.co.jp/bar-motto-%e4%b8%8a%e9%87%8e%e5%ba%97/",
+      "menuUrls": [],
+      "candidateHosts": [
+        "cien-foodservice.co.jp"
+      ],
+      "checkedAt": "2026-08-19.0",
+      "candidateName": "Kakurega Bar Karaoke Bar Bar Mini Motto Akihabara Store",
+      "candidateProvider": "Overture Maps",
+      "candidateProviderId": "3d1c2657-c8a8-4ebd-8d4d-84827e572842",
+      "candidateDistanceMeters": 4.4,
+      "nameSimilarity": 0.84,
+      "candidateMargin": 0.5954,
+      "proposalScore": 0.8672,
+      "overtureConfidence": 0.9369285702705383,
+      "proposalState": "review_overture_website_candidate",
+      "confidenceSignals": [
+        "current_public_identity_has_independent_name_and_coordinates",
+        "retained_overture_candidate_with_independent_http_url",
+        "normalized_name_similarity_above_proposal_threshold",
+        "candidate_within_bounded_coordinate_distance",
+        "best_candidate_margin_above_ambiguity_threshold"
+      ],
+      "candidateUrls": [
+        "http://cien-foodservice.co.jp/bar-motto-%e4%b8%8a%e9%87%8e%e5%ba%97/"
+      ],
+      "shard": 2,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJAQAMfyKMGGARY6BdWr8lUR0",
+      "name": "ホンカトリー",
+      "distanceMeters": 1158,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "http://www.koya.co.jp/",
+      "menuUrls": [],
+      "candidateHosts": [
+        "koya.co.jp"
+      ],
+      "checkedAt": "2026-08-19.0",
+      "candidateName": "ホンカトリー カレーアンドスパイス",
+      "candidateProvider": "Overture Maps",
+      "candidateProviderId": "32688af1-6b36-4205-9de3-f0d7395d1dca",
+      "candidateDistanceMeters": 4.9,
+      "nameSimilarity": 0.84,
+      "candidateMargin": 0.7954,
+      "proposalScore": 0.8663,
+      "overtureConfidence": 0.9888147711753845,
+      "proposalState": "review_overture_website_candidate",
+      "confidenceSignals": [
+        "current_public_identity_has_independent_name_and_coordinates",
+        "retained_overture_candidate_with_independent_http_url",
+        "normalized_name_similarity_above_proposal_threshold",
+        "candidate_within_bounded_coordinate_distance",
+        "best_candidate_margin_above_ambiguity_threshold"
+      ],
+      "candidateUrls": [
+        "http://www.koya.co.jp/"
+      ],
+      "shard": 2,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJr_AmLxmMGGARsJ6hMCyVNI4",
+      "name": "Cafe IMASA",
+      "distanceMeters": 1121,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "http://www.kanda-imasa.co.jp/cafe/",
+      "menuUrls": [],
+      "candidateHosts": [
+        "kanda-imasa.co.jp"
+      ],
+      "checkedAt": "2026-08-19.0",
+      "candidateName": "IMASA",
+      "candidateProvider": "Overture Maps",
+      "candidateProviderId": "aa8d8638-f1c7-46cf-be21-84f04e79ae74",
+      "candidateDistanceMeters": 6.3,
+      "nameSimilarity": 0.84,
+      "candidateMargin": 0.4399,
+      "proposalScore": 0.8637,
+      "overtureConfidence": 0.9876792353391647,
+      "proposalState": "review_overture_website_candidate",
+      "confidenceSignals": [
+        "current_public_identity_has_independent_name_and_coordinates",
+        "retained_overture_candidate_with_independent_http_url",
+        "normalized_name_similarity_above_proposal_threshold",
+        "candidate_within_bounded_coordinate_distance",
+        "best_candidate_margin_above_ambiguity_threshold"
+      ],
+      "candidateUrls": [
+        "http://www.kanda-imasa.co.jp/cafe/"
+      ],
+      "shard": 2,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJzSPNNxmMGGARGfKxijmqoZc",
+      "name": "明神そば きやり",
+      "distanceMeters": 1068,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "http://www.juraku.com/",
+      "menuUrls": [],
+      "candidateHosts": [
+        "juraku.com"
+      ],
+      "checkedAt": "2026-08-19.0",
+      "candidateName": "明神そば きやり 神田明神前店",
+      "candidateProvider": "Overture Maps",
+      "candidateProviderId": "fa37ff69-4583-4f5e-bc39-0b95bbdd0644",
+      "candidateDistanceMeters": 6.7,
+      "nameSimilarity": 0.84,
+      "candidateMargin": 0.5805,
+      "proposalScore": 0.863,
+      "overtureConfidence": 0.77,
+      "proposalState": "review_overture_website_candidate",
+      "confidenceSignals": [
+        "current_public_identity_has_independent_name_and_coordinates",
+        "retained_overture_candidate_with_independent_http_url",
+        "normalized_name_similarity_above_proposal_threshold",
+        "candidate_within_bounded_coordinate_distance",
+        "best_candidate_margin_above_ambiguity_threshold"
+      ],
+      "candidateUrls": [
+        "http://www.juraku.com/"
+      ],
+      "shard": 4,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJb4EjHQSMGGAROEMMNBy38mM",
+      "name": "Bosco",
+      "distanceMeters": 1025,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "https://nikubar-bosco.com/",
+      "menuUrls": [],
+      "candidateHosts": [
+        "nikubar-bosco.com"
+      ],
+      "checkedAt": "2026-08-19.0",
+      "candidateName": "Niku Bar Bosco",
+      "candidateProvider": "Overture Maps",
+      "candidateProviderId": "e6e55be9-4673-442a-8b77-eccdc64f6134",
+      "candidateDistanceMeters": 7.1,
+      "nameSimilarity": 0.84,
+      "candidateMargin": 0.6492,
+      "proposalScore": 0.8622,
+      "overtureConfidence": 0.9889106750488281,
+      "proposalState": "review_overture_website_candidate",
+      "confidenceSignals": [
+        "current_public_identity_has_independent_name_and_coordinates",
+        "retained_overture_candidate_with_independent_http_url",
+        "normalized_name_similarity_above_proposal_threshold",
+        "candidate_within_bounded_coordinate_distance",
+        "best_candidate_margin_above_ambiguity_threshold"
+      ],
+      "candidateUrls": [
+        "https://nikubar-bosco.com/"
+      ],
+      "shard": 2,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJue2Wnx6MGGARtsk7v0lFNZc",
+      "name": "Sevens",
+      "distanceMeters": 1182,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "https://sevens.owst.jp/",
+      "menuUrls": [],
+      "candidateHosts": [
+        "sevens.owst.jp"
+      ],
+      "checkedAt": "2026-08-19.0",
+      "candidateName": "Games and Bar Sevens",
+      "candidateProvider": "Overture Maps",
+      "candidateProviderId": "d8ca09e1-8f5c-4dec-b7f1-370ecf4412ac",
+      "candidateDistanceMeters": 7.7,
+      "nameSimilarity": 0.84,
+      "candidateMargin": 0.7222,
+      "proposalScore": 0.861,
+      "overtureConfidence": 0.5765055418014526,
+      "proposalState": "review_overture_website_candidate",
+      "confidenceSignals": [
+        "current_public_identity_has_independent_name_and_coordinates",
+        "retained_overture_candidate_with_independent_http_url",
+        "normalized_name_similarity_above_proposal_threshold",
+        "candidate_within_bounded_coordinate_distance",
+        "best_candidate_margin_above_ambiguity_threshold"
+      ],
+      "candidateUrls": [
+        "https://sevens.owst.jp/"
+      ],
+      "shard": 2,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJ0aDTMWuMGGARh6ta_oeDieo",
+      "name": "ターリー屋",
+      "distanceMeters": 539,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "http://www.thali-ya.com/",
+      "menuUrls": [],
+      "candidateHosts": [
+        "thali-ya.com"
+      ],
+      "checkedAt": "2026-08-19.0",
+      "candidateName": "ターリー屋九段下店",
+      "candidateProvider": "Overture Maps",
+      "candidateProviderId": "92fa8a1a-4c16-43ef-bf4c-348965d34bf7",
+      "candidateDistanceMeters": 9.9,
+      "nameSimilarity": 0.84,
+      "candidateMargin": 0.5717,
+      "proposalScore": 0.857,
+      "overtureConfidence": 0.9952205115556717,
+      "proposalState": "review_overture_website_candidate",
+      "confidenceSignals": [
+        "current_public_identity_has_independent_name_and_coordinates",
+        "retained_overture_candidate_with_independent_http_url",
+        "normalized_name_similarity_above_proposal_threshold",
+        "candidate_within_bounded_coordinate_distance",
+        "best_candidate_margin_above_ambiguity_threshold"
+      ],
+      "candidateUrls": [
+        "http://www.thali-ya.com/"
+      ],
+      "shard": 6,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJ6d6PdwSMGGARG1HSFYkX8f0",
+      "name": "食鳥肉専門店 若どり屋",
+      "distanceMeters": 967,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "http://www.apcompany.jp/news/2016/01/-126open-1.php",
+      "menuUrls": [],
+      "candidateHosts": [
+        "apcompany.jp"
+      ],
+      "checkedAt": "2026-08-19.0",
+      "candidateName": "若どり屋",
+      "candidateProvider": "Overture Maps",
+      "candidateProviderId": "a473bb5d-ec52-4745-a0b7-b30825ff7a45",
+      "candidateDistanceMeters": 20.4,
+      "nameSimilarity": 0.84,
+      "candidateMargin": 0.5706,
+      "proposalScore": 0.8378,
+      "overtureConfidence": 0.77,
+      "proposalState": "review_overture_website_candidate",
+      "confidenceSignals": [
+        "current_public_identity_has_independent_name_and_coordinates",
+        "retained_overture_candidate_with_independent_http_url",
+        "normalized_name_similarity_above_proposal_threshold",
+        "candidate_within_bounded_coordinate_distance",
+        "best_candidate_margin_above_ambiguity_threshold"
+      ],
+      "candidateUrls": [
+        "http://www.apcompany.jp/news/2016/01/-126open-1.php"
+      ],
+      "shard": 0,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
+    {
+      "googlePlaceId": "ChIJU4sI4gaMGGARPBBnRO9pbpw",
+      "name": "GREEN BROTHERS 大手町店",
+      "distanceMeters": 1129,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "https://g-brothers.jp/",
+      "menuUrls": [],
+      "candidateHosts": [
+        "g-brothers.jp"
+      ],
+      "checkedAt": "2026-08-19.0",
+      "candidateName": "Green Brothers",
+      "candidateProvider": "Overture Maps",
+      "candidateProviderId": "bf3992b2-230b-4406-8adc-a71d8449aa72",
+      "candidateDistanceMeters": 22.2,
+      "nameSimilarity": 0.84,
+      "candidateMargin": 0.4381,
+      "proposalScore": 0.8345,
+      "overtureConfidence": 0.9981331539154052,
+      "proposalState": "review_overture_website_candidate",
+      "confidenceSignals": [
+        "current_public_identity_has_independent_name_and_coordinates",
+        "retained_overture_candidate_with_independent_http_url",
+        "normalized_name_similarity_above_proposal_threshold",
+        "candidate_within_bounded_coordinate_distance",
+        "best_candidate_margin_above_ambiguity_threshold"
+      ],
+      "candidateUrls": [
+        "https://g-brothers.jp/"
+      ],
+      "shard": 5,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    }
+  ]
 }
