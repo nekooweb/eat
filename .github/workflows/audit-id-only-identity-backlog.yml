@@ -1,0 +1,84 @@
+name: Audit strict id-only identity backlog
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/audit-id-only-identity-backlog.yml"
+      - "scripts/database/audit_id_only_identity_backlog.py"
+      - "scripts/database/build_master.py"
+      - "scripts/audit_no_paid_apis.mjs"
+      - "data/area1_enrichment_queue.json"
+      - "data/area1_full_collection_queue.json"
+      - "data/hotpepper_catalog_facts.json"
+      - "data/official_candidate_index.json"
+      - "data/google_basic_source_matches.json"
+      - "data/google_entities.generated.js"
+      - "data/area1_google_ids.json"
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Enforce no-paid-data-API policy
+        run: node scripts/audit_no_paid_apis.mjs
+
+      - name: Validate audit syntax
+        run: python -m py_compile scripts/database/audit_id_only_identity_backlog.py scripts/database/build_master.py
+
+      - name: Build and validate current strict master
+        run: |
+          set -euo pipefail
+          mkdir -p _tmp
+          python scripts/database/build_master.py --output _tmp/eat-master.sqlite --reset | tee _tmp/master-build.json
+          python scripts/database/validate_master.py _tmp/eat-master.sqlite | tee _tmp/master-validate.json
+          python scripts/database/validate_ingestion_plan.py _tmp/eat-master.sqlite | tee _tmp/master-plan-validate.json
+
+      - name: Audit strict id-only backlog
+        run: |
+          set -euo pipefail
+          python scripts/database/audit_id_only_identity_backlog.py \
+            --database _tmp/eat-master.sqlite \
+            --output _tmp/id-only-identity-backlog.json \
+            --max-example-rows 200 \
+            | tee _tmp/id-only-identity-backlog-summary.json
+          python - <<'PY'
+          import json
+          d=json.load(open('_tmp/id-only-identity-backlog.json'))
+          p=d['policy']; c=d['summary']['counts']
+          assert p['readOnly'] is True
+          assert p['paidDataApiCalls']==0
+          assert p['automaticIdentityPromotion'] is False
+          assert c['strictIdOnly'] >= 1000
+          assert c['queueStrongThreeSourceAlsoStrictIdOnly'] == c['idOnlyStrongThreeSource']
+          print(json.dumps({'strictIdOnly':c['strictIdOnly'],'strongThreeSource':c['idOnlyStrongThreeSource'],'historicalSingleOsmHigh':c['idOnlyHistoricalSingleOsmHighThreshold'],'hotPepperHigh':c['idOnlyWithHotPepperHighBinding'],'officialIndex':c['idOnlyWithOfficialIndexRecord'],'anyBinding':c['idOnlyWithAnySourceBinding']},sort_keys=True))
+          PY
+
+      - name: Upload audit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: id-only-identity-backlog-audit
+          path: |
+            _tmp/id-only-identity-backlog.json
+            _tmp/id-only-identity-backlog-summary.json
+            _tmp/master-build.json
+            _tmp/master-validate.json
+            _tmp/master-plan-validate.json
+          if-no-files-found: warn
+          retention-days: 3
