@@ -12,7 +12,7 @@
     "pass2Rule": "strict geospatial + name/address match against transient retained Google sweep; durable fields are independent-source only",
     "structuredAddressConsensusV2Overlay": true,
     "structuredAddressConsensusV2Rule": "private-address-consensus-v2",
-    "lastIdentityRecoveryOverlayRule": "private-multisource-consensus-v3",
+    "lastIdentityRecoveryOverlayRule": "reviewed-multisource-currentness-v1",
     "multiSourceConsensusV3Overlay": true,
     "multiSourceConsensusV3Rule": "private-multisource-consensus-v3",
     "privateOfficialWebConsensusV4Overlay": true,
@@ -30,20 +30,20 @@
   },
   "summary": {
     "productionBacked": 651,
-    "sourceMatchedInventoryOnly": 766,
-    "basicReadyTotal": 1417,
-    "identityOnlyRemaining": 1387,
+    "sourceMatchedInventoryOnly": 768,
+    "basicReadyTotal": 1419,
+    "identityOnlyRemaining": 1385,
     "providers": {
-      "Hot Pepper": 360,
+      "Hot Pepper": 362,
       "OpenStreetMap": 11,
       "Overture Maps": 395
     },
     "pass2NewMatches": 27,
     "structuredAddressConsensusV2Rows": 1,
     "structuredAddressConsensusV2AddedThisMerge": 0,
-    "lastIdentityRecoveryOverlayRule": "private-multisource-consensus-v3",
-    "lastIdentityRecoveryOverlayRows": 0,
-    "lastIdentityRecoveryOverlayAddedThisMerge": 0,
+    "lastIdentityRecoveryOverlayRule": "reviewed-multisource-currentness-v1",
+    "lastIdentityRecoveryOverlayRows": 2,
+    "lastIdentityRecoveryOverlayAddedThisMerge": 2,
     "multiSourceConsensusV3Rows": 0,
     "multiSourceConsensusV3AddedThisMerge": 0,
     "privateOfficialWebConsensusV4Rows": 2,
@@ -56,8 +56,8 @@
       "websitesAdded": 0,
       "rejectedWebsiteValues": 0
     },
-    "reviewedMultisourceCurrentnessV1Rows": 1,
-    "reviewedMultisourceCurrentnessV1AddedThisMerge": 1
+    "reviewedMultisourceCurrentnessV1Rows": 2,
+    "reviewedMultisourceCurrentnessV1AddedThisMerge": 2
   },
   "rows": [
     {
@@ -1593,6 +1593,72 @@
       "matchLevel": "strong"
     },
     {
+      "googlePlaceId": "ChIJ5UbSQ0GMGGAR7gACA_oeNxY",
+      "provider": "Hot Pepper",
+      "providerId": "J001258016",
+      "name": "飯田橋 あらた",
+      "address": "東京都千代田区飯田橋３-2-6 フィルパーク飯田橋 2F",
+      "lat": 35.7007921802,
+      "lng": 139.7482311386,
+      "distanceMeters": 1006,
+      "cuisine": "居酒屋",
+      "websites": [
+        "https://www.hotpepper.jp/strJ001258016/?vos=nhppalsa000016",
+        "https://iidabashi-arata.com/"
+      ],
+      "sourceCheckedAt": "2026-09-08",
+      "verification": "reviewed_hotpepper_overture_currentness_consensus",
+      "matchLevel": "reviewed-multisource-currentness-v1",
+      "identityConsensus": {
+        "historicalHotPepperReview": {
+          "hotpepperId": "J001258016",
+          "distanceMeters": 1.3,
+          "nameSimilarity": 0.6154,
+          "addressSimilarity": null,
+          "combinedScore": 0.7569,
+          "confidence": "high",
+          "seedSource": "transient_full_sweep"
+        },
+        "overtureSupport": {
+          "overtureId": "9842417b-6cab-481c-812f-4637272d84e9",
+          "name": "飯田橋 あらた",
+          "address": "千代田区飯田橋3丁目2-6",
+          "lat": 35.700818,
+          "lng": 139.7482413,
+          "distanceMeters": 3.0,
+          "nameSimilarity": 1.0,
+          "addressSimilarity": 0.5556,
+          "postalMatch": false,
+          "margin": 0.4336
+        },
+        "currentIndependentPage": {
+          "url": "https://iidabashi-arata.com/",
+          "retrievedAt": "2026-09-08T09:24:25Z",
+          "contentHash": "5e0a125f32368276c515c6cdfd7b23466f7018d15d73dd87d8c02b0aea15981a",
+          "matchedExpectedName": "飯田橋 あらた",
+          "pageName": "あらた　｜　飯田橋　/　うどん　/　天ぷら",
+          "pageAddress": "〒160-0004 東京都千代田区飯田橋3−2−6",
+          "nameSimilarity": 0.98,
+          "addressSimilarity": 0.5532,
+          "postalMatch": false,
+          "geoDistanceMeters": null,
+          "locationConfirmed": true
+        },
+        "policy": {
+          "legacyVerifiedStateCreated": false,
+          "sourceMatchedOnly": true,
+          "independentSources": [
+            "Hot Pepper",
+            "Overture Maps",
+            "current official page"
+          ],
+          "currentnessRequired": true,
+          "providerReuseForbidden": true,
+          "ruleVersion": "reviewed-multisource-currentness-v1"
+        }
+      }
+    },
+    {
       "googlePlaceId": "ChIJ5UbSQ0GMGGARpLFZbQuB02Y",
       "provider": "Overture Maps",
       "providerId": "cf04eede-2c56-49cb-93ed-48326ffb0863",
@@ -1806,6 +1872,72 @@
       "sourceCheckedAt": "2026-09-06",
       "verification": "existing_high_confidence_binding",
       "matchLevel": "strong"
+    },
+    {
+      "googlePlaceId": "ChIJ6UMX1wOMGGARw2s2FRWiRv8",
+      "provider": "Hot Pepper",
+      "providerId": "J000687203",
+      "name": "なんで、や 総本店 神田店",
+      "address": "東京都千代田区内神田３-17-8　小山第1ビル1F",
+      "lat": 35.6922659404,
+      "lng": 139.7697957661,
+      "distanceMeters": 1173,
+      "cuisine": "居酒屋",
+      "websites": [
+        "https://www.hotpepper.jp/strJ000687203/?vos=nhppalsa000016",
+        "https://shop.gyro.holdings/detail/tks003/"
+      ],
+      "sourceCheckedAt": "2026-09-08",
+      "verification": "reviewed_hotpepper_overture_currentness_consensus",
+      "matchLevel": "reviewed-multisource-currentness-v1",
+      "identityConsensus": {
+        "historicalHotPepperReview": {
+          "hotpepperId": "J000687203",
+          "distanceMeters": 5.3,
+          "nameSimilarity": 0.6486,
+          "addressSimilarity": null,
+          "combinedScore": 0.7706,
+          "confidence": "high",
+          "seedSource": "transient_full_sweep"
+        },
+        "overtureSupport": {
+          "overtureId": "738f3ee8-b18d-41d9-baae-3562d2f29ec9",
+          "name": "なんでや総本店",
+          "address": "千代田区内神田3丁目17-8",
+          "lat": 35.6922921,
+          "lng": 139.7698418,
+          "distanceMeters": 5.1,
+          "nameSimilarity": 0.7778,
+          "addressSimilarity": 0.6286,
+          "postalMatch": false,
+          "margin": 0.2416
+        },
+        "currentIndependentPage": {
+          "url": "https://shop.gyro.holdings/detail/tks003/",
+          "retrievedAt": "2026-09-08T09:24:25Z",
+          "contentHash": "789788ebb2d5a313e21582f83acfdf43e85916db8552353ec8e089bbf9793570",
+          "matchedExpectedName": "なんで、や 総本店 神田店",
+          "pageName": "【公式】なんで、や 神田総本店｜GYRO HOLDINGS株式会社",
+          "pageAddress": "101-0047 東京都千代田区内神田３丁目１７−８ 小山第1ビル 1F",
+          "nameSimilarity": 0.98,
+          "addressSimilarity": 0.8148,
+          "postalMatch": false,
+          "geoDistanceMeters": null,
+          "locationConfirmed": true
+        },
+        "policy": {
+          "legacyVerifiedStateCreated": false,
+          "sourceMatchedOnly": true,
+          "independentSources": [
+            "Hot Pepper",
+            "Overture Maps",
+            "current official page"
+          ],
+          "currentnessRequired": true,
+          "providerReuseForbidden": true,
+          "ruleVersion": "reviewed-multisource-currentness-v1"
+        }
+      }
     },
     {
       "googlePlaceId": "ChIJ6VL6ORuMGGARnJJ9p68hF7A",
