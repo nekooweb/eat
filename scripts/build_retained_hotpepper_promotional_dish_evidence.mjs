@@ -120,13 +120,15 @@ function main() {
   // Aggregate retained promotional text by frozen Place ID. The basic provider
   // catch is intentionally excluded because collect_google_inventory_recommendations.mjs
   // already consumes facts.catch. This pass adds the previously-unused
-  // facts.genre.catch at all retained catalog bindings, reviewed rich
-  // special-feature titles, and concrete all-you-can-eat provider text when that
-  // field names an actual dish. Generic service booleans are not dish evidence.
+  // facts.genre.catch and concrete facts.freeFood text at all retained catalog
+  // bindings, reviewed rich special-feature titles, and concrete all-you-can-eat
+  // provider text when those fields name an actual dish. Generic service booleans
+  // are not dish evidence.
   const retainedById = new Map();
   let eligibleCatalogRows = 0;
   let eligibleRichRows = 0;
   let catalogGenreCatchTexts = 0;
+  let catalogFreeFoodTexts = 0;
   let richSpecialFeatureTitleTexts = 0;
   let richAllYouCanEatTexts = 0;
 
@@ -154,6 +156,12 @@ function main() {
     if (genreCatch) {
       addText(googlePlaceId, sourceUrl, catalogCheckedAt, 'catalogGenreCatch', genreCatch);
       catalogGenreCatchTexts += 1;
+    }
+
+    const freeFood = cleanText(catalogRow.facts?.freeFood);
+    if (freeFood && /食べ放題|食放|ビュッフェ|バイキング/i.test(freeFood) && featuredMatchesFromText(freeFood, 1).length) {
+      addText(googlePlaceId, sourceUrl, catalogCheckedAt, 'catalogFreeFood', freeFood);
+      catalogFreeFoodTexts += 1;
     }
   }
 
@@ -186,7 +194,12 @@ function main() {
   let featuredTextHits = 0;
   const recommendationPlaceIds = new Set();
   const featuredPlaceIds = new Set();
-  const providerItemCounts = { catalogGenreCatch: 0, richSpecialFeatureTitle: 0, richAllYouCanEat: 0 };
+  const providerItemCounts = {
+    catalogGenreCatch: 0,
+    catalogFreeFood: 0,
+    richSpecialFeatureTitle: 0,
+    richAllYouCanEat: 0
+  };
 
   for (const retained of retainedById.values()) {
     const recommendedDishes = [];
@@ -256,6 +269,7 @@ function main() {
     richMetadataRows: richRows.length,
     eligibleReviewedRichRows: eligibleRichRows,
     catalogGenreCatchTexts,
+    catalogFreeFoodTexts,
     richSpecialFeatureTitleTexts,
     richAllYouCanEatTexts,
     promotionalTextsScanned,
@@ -271,7 +285,7 @@ function main() {
   };
 
   const payload = {
-    schemaVersion: 3,
+    schemaVersion: 4,
     checkedAt: richCheckedAt,
     policy: {
       source: 'retained Hot Pepper catalog facts plus reviewed rich metadata only',
@@ -279,7 +293,12 @@ function main() {
       paidGoogleDataApiCalls: 0,
       catalogBindingTrustMatchesExistingRetainedCatchCollector: true,
       richEligibleBindings: ['strict_auto', 'manual_exact'],
-      textFields: ['facts.genre.catch', 'specialFeatures[].title', 'sourceServiceText.allYouCanEat (concrete dish text only)'],
+      textFields: [
+        'facts.genre.catch',
+        'facts.freeFood (concrete dish text only)',
+        'specialFeatures[].title',
+        'sourceServiceText.allYouCanEat (concrete dish text only)'
+      ],
       basicFactsCatchExcludedBecauseMainCollectorAlreadyConsumesIt: true,
       richSourceCatchExcludedAsDuplicateOfCatalogFactsCatch: true,
       shopDetailExcludedBecauseKeywordListsAreNotStableMenuEvidence: true,
@@ -290,6 +309,7 @@ function main() {
       recommendationRequiresExplicitMarker: true,
       featuredRequiresConcreteDishTermInRetainedProviderText: true,
       allYouCanEatRequiresConcreteAvailabilityWording: true,
+      catalogFreeFoodRequiresConcreteAvailabilityWording: true,
       promotionalSpecificRulesBeforeBroadDishFamilyRules: true,
       targetLanguage: 'zh-CN',
       preserveSourceOriginal: true
