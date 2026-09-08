@@ -1,15 +1,17 @@
 # Eat 开发状态与批量补齐计划
 
-更新日期：2026-09-07。
+更新日期：2026-09-08。
 
 ## 当前线上与发布边界
 
 - frozen catalog：**2,804 Place ID** 全部保留。
 - Pages 继续使用 generated runtime；未命名 Place-ID-only 不展示。SQLite recommendation export 尚未切换成线上唯一数据源。
+- 当前公开命名 runtime：**1,415 家**；其余 **1,389** 条 frozen Place-ID-only 保留但不公开展示。
 - no-paid-data-API、catalog 完整性、Google display payload 泄漏、数据库契约和 Pages 可部署性均保持 blocking。
 - 页面内地图统一使用 **Leaflet + OpenStreetMap**；不注入 Google Maps API key、不使用 Google Embed iframe。Google Maps 只保留普通外部导航链接。
 - 历史 Google Places 结果仅允许在短期私有 Actions artifact 中作为 linkage/navigation hint；不得作为 durable restaurant display source。
 - identity 仍禁止 proximity-only / postcode-only 绑定；冲突或模糊结果必须留在 candidate/deferred。
+- `recommendedDishes` 现在是公开 detail enrichment 的高优先级字段，但必须满足 strict source semantics；不再通过菜系、店名、品牌模板补覆盖率。
 
 ## 当前已验证 SQLite master
 
@@ -204,6 +206,49 @@ Workflow run `34126682698`：success。
 
 详细记录：`logs/2026-09-07-hotpepper-lunch-gap-audit.md`。
 
+## 推荐菜：source-backed evidence pipeline v2
+
+`recommendedDishes` 现在明确作为重要产品字段保留，但“推荐菜”必须代表来源自身表达出的推荐/招牌/人气语义。此前 category/name/brand approximate templates 已彻底退出 public runtime。
+
+详细契约见 `RECOMMENDED_DISH_PIPELINE.md`。当前分三层：
+
+- **R / strict recommendation**：具体菜名 + 推荐/名物/看板/一番人気/signature/recommended 等明确局部语义，才能进入 `recommendedDishes`；
+- **F / source-backed featured/menu dish**：来源明确出现的普通菜单菜品进入 `featuredDishes`，不冒充推荐菜；
+- **C / candidate only**：菜系、店名、品牌常识推断只用于内部候选，不进入公开菜品字段。
+
+新增共享 extractor `scripts/recommended_dish_extractor.mjs`，使用 block-aware 局部推荐上下文和 specific-first 中文菜名标准化；新建 `scripts/build_retained_dish_evidence.mjs`，优先无网络地消化 repo 已保存的 source facts；官网 collector 只访问已绑定 independent official URLs，最多少量 same-origin menu links；Tabelog 继续 retained-only；Hot Pepper 读取已保存 facts，不增加付费 API 使用。
+
+本轮 retained 事实批处理：40 shards / 584 source rows；110 rows 有 dish claims；100 个 retained dish values 可规范化；形成 136 条 featured evidence、覆盖 99 家（Tabelog 63 items / official 37 items）。普通 `dishes` 没有被升级为推荐菜。
+
+本轮合并后的 detail evidence：
+
+- evidence restaurants：**277**（此前 211）；
+- recommendation evidence restaurants：**165**；
+- featured evidence restaurants：**163**；
+- recommendation items：**236**；
+- featured items：**214**。
+
+公开 runtime 的真实增量：
+
+- `recommendedDishes`：**185 → 192（+7）**；
+- `featuredDishes` known：**188**；
+- any Chinese dish display：**291 → 300（+9）**；
+- coverage：**20.6% → 21.2%**；
+- unfilled：**1,115**；
+- approximate recommendations：**0**。
+
+新增 evidence 比公开新增数量大，是因为大量 F/retained evidence 与原有 canonical/public dishes 重叠；开发统计必须分别报告“证据覆盖”和“公开字段覆盖”。
+
+推荐菜 detail queue 已修正旧的 2,804-runtime 假设：2,804 是 frozen catalog，detail queue 只处理 1,415 个公开命名实体。当前 1,223 个 recommendation gap 拆为：
+
+- **229**：已有允许直接访问的绑定官网 → `collect_strict_recommended_dishes`；
+- **647**：只有 retained Tabelog / Hot Pepper 等第三方来源 → `extract_retained_dish_source`；
+- **347**：缺少可用 dish source → `find_independent_dish_source`。
+
+merge key 已修复为 `nameZh + provider + sourceUrl + evidenceClass`，避免同一页同一中文菜品因日文原词写法差异重复计数。public materialized audit 新增重复聚类门禁：同一双菜组合 >=20 家或同一单菜 >=60 家时阻止发布并要求审查。
+
+工作流还修复了连续 Actions run 的 stale-event-SHA 问题：serialized run 开始时先 `fetch/reset` 到最新 `main`，避免上一轮 bot 数据提交与下一轮历史 checkout 在最终 rebase 时互相覆盖。
+
 ## Open data 当前状态
 
 ### Overture Maps
@@ -240,13 +285,15 @@ Workflow run `34126682698`：success。
 
 ## 下一阶段优先级
 
-1. **Fresh OSM rich tags**：先量化现有 OSM native rows 新增 phone/domain/structured-address 的覆盖，再决定是否构建 v7 identity consensus；
-2. **Identity new-source coverage**：只有新独立来源才能继续推进剩余 1,388 ID-only；v2–v6.1 阈值保持冻结；
-3. **Field completion**：hours / practical 继续走独立网页或 structured source；budget 只接受语义明确的 lunch/dinner evidence；
-4. **Overture refresh**：当前已是 2026-08-19.0，等下一公开 release 后再 diff，而不是重复下载同版本；
-5. **Dish semantic review**：211 个任务保持独立低优先级队列；
-6. **Conflict review**：20 个 collision/conflict tasks 保持严格人工/证据式处理。
+1. **推荐菜 source coverage**：先处理 229 个已有 crawlable official URL 的 strict extraction，再批量消化 647 个 retained third-party 任务；347 个无 dish source 实体进入新独立来源搜索，不降低 R 语义门槛；
+2. **Fresh OSM rich tags**：量化现有 OSM native rows 新增 phone/domain/structured-address 的覆盖，再决定是否构建 v7 identity consensus；
+3. **Identity new-source coverage**：只有新独立来源才能继续推进剩余 id-only；v2–v6.1 阈值保持冻结；
+4. **Field completion**：hours / practical 继续走独立网页或 structured source；budget 只接受语义明确的 lunch/dinner evidence；
+5. **Overture refresh**：当前已是 2026-08-19.0，等下一公开 release 后再 diff，而不是重复下载同版本；
+6. **Conflict review**：collision/conflict tasks 保持严格人工/证据式处理。
+
+SQLite master 的 `dish-semantic-review` 211 tasks 与新的 public detail recommendation queue 是两个层次：前者属于 master proposal workplan，后者用于公开命名实体的 source-backed detail enrichment；不得简单相加或互相替代。
 
 ## 开发纪律
 
-每批开发完成同步更新 `DEVELOPMENT.md`、`DATA_PIPELINE.md` 和 `logs/`。只有 CI/数据验证实际通过才写“完成”；代码已提交但验证未结束统一标记为“已实现/待验证”。任何来源访问继续遵守其公开访问条件，不绕过登录、CAPTCHA、robots/access restriction，也不恢复付费 Google Places/Text/Nearby API。
+每批开发完成同步更新 `DEVELOPMENT.md`、`DATA_PIPELINE.md`、`RECOMMENDED_DISH_PIPELINE.md` 和 `logs/`。只有 CI/数据验证实际通过才写“完成”；代码已提交但验证未结束统一标记为“已实现/待验证”。任何来源访问继续遵守其公开访问条件，不绕过登录、CAPTCHA、robots/access restriction，也不恢复付费 Google Places/Text/Nearby API。
