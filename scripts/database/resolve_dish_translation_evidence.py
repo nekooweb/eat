@@ -25,6 +25,7 @@ FEATURED_CLASSES = {
     "retained_source_menu_item",
     "provider_promotional_dish_text",
     "structured_menu_item",
+    "source_menu_text",
 }
 
 _HAN = re.compile(r"[\u3400-\u9fff]")
