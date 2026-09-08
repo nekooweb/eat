@@ -8,6 +8,7 @@ on:
       - "scripts/build_area1_osm.py"
       - "scripts/build_osm_independent_dish_source_candidate_plan.mjs"
       - "scripts/review_osm_independent_dish_source_candidates.mjs"
+      - "scripts/refresh_bound_osm_source_websites.mjs"
       - ".github/workflows/refresh-area1.yml"
 
 permissions:
@@ -40,8 +41,25 @@ jobs:
         run: |
           node --check scripts/build_osm_independent_dish_source_candidate_plan.mjs
           node --check scripts/review_osm_independent_dish_source_candidates.mjs
+          node --check scripts/refresh_bound_osm_source_websites.mjs
       - name: Generate expanded Area 1 food POI dataset
         run: python3 scripts/build_area1_osm.py | tee /tmp/area1-osm-summary.json
+      - name: Backfill websites on already-bound OSM source rows
+        run: |
+          set -euo pipefail
+          node scripts/refresh_bound_osm_source_websites.mjs | tee /tmp/bound-osm-website-summary.json
+          node - <<'NODE'
+          const fs = require('fs');
+          const x = JSON.parse(fs.readFileSync('data/google_basic_source_matches.json', 'utf8'));
+          const p = x.policy || {};
+          const s = x.summary?.retainedOsmWebsiteOverlay || {};
+          if (x.inventoryCount !== 2804 || x.summary?.basicReadyTotal !== 1415) throw new Error('bound OSM website overlay baseline mismatch');
+          if (p.retainedOsmWebsiteOverlay !== true || p.retainedOsmWebsiteOverlayExistingBindingsOnly !== true) throw new Error('bound OSM website overlay policy missing');
+          if (p.retainedOsmWebsiteOverlayIdentityChanges !== 0 || p.retainedOsmWebsiteOverlayPaidApiCalls !== 0 || p.retainedOsmWebsiteOverlayGoogleDisplayPayloadUsed !== false) throw new Error('bound OSM website overlay crossed identity/API boundary');
+          if ((x.rows || []).some((row) => row.provider === 'OpenStreetMap' && (row.websites || []).some((url) => !String(url).startsWith('https://')))) throw new Error('bound OSM runtime websites must be HTTPS');
+          if (s.rowsChanged > s.boundOsmRows || s.websitesAdded < s.rowsChanged) throw new Error('invalid bound OSM website overlay counts');
+          console.log(JSON.stringify(s));
+          NODE
       - name: Build proposal-only OSM independent source plan
         run: |
           set -euo pipefail
@@ -99,6 +117,7 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add \
             data/area1_osm.js \
+            data/google_basic_source_matches.json \
             data/osm_independent_dish_source_candidates.json \
             data/reviewed_osm_independent_dish_sources.json
           if git diff --cached --quiet; then
