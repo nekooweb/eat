@@ -90,51 +90,47 @@
   "summary": {
     "catalogTotal": 2804,
     "publicRuntimeTotal": 1422,
-    "queueTargetRows": 330,
-    "rootJobs": 394,
-    "discoveryWorkers": 16,
-    "rootHtmlFetched": 314,
-    "rootHtmlErrors": 80,
-    "directPdfUrls": 15,
-    "discoveredPdfUrls": 37,
-    "pdfTasks": 51,
-    "pdfWorkers": 8,
-    "pdfFetched": 49,
-    "pdfTextExtracted": 34,
-    "pdfErrorRows": 17,
-    "pdfRecommendationPages": 1,
-    "pdfFeaturedPages": 27,
-    "evidenceRestaurants": 13,
-    "recommendationRestaurants": 1,
-    "featuredRestaurants": 13,
-    "recommendationItems": 1,
-    "featuredItems": 68,
+    "queueEligibleIds": 326,
+    "targets": 308,
+    "uniqueOrigins": 274,
+    "sitemapFilesFetched": 618,
+    "menuUrlsDiscovered": 130,
+    "menuPagesFetched": 96,
+    "errorTargets": 9,
+    "evidenceRestaurants": 32,
+    "recommendationRestaurants": 3,
+    "featuredRestaurants": 29,
+    "recommendationItems": 5,
+    "featuredItems": 113,
     "previousEvidence": {
       "recommendationRestaurants": 234,
-      "featuredRestaurants": 420,
-      "evidenceRestaurants": 483,
-      "recommendationItems": 450,
-      "featuredItems": 1026
+      "featuredRestaurants": 428,
+      "evidenceRestaurants": 487,
+      "recommendationItems": 451,
+      "featuredItems": 1067
     },
     "freshCrawlEvidence": {
-      "recommendationRestaurants": 1,
-      "featuredRestaurants": 13,
-      "evidenceRestaurants": 13,
-      "recommendationItems": 1,
-      "featuredItems": 68
+      "recommendationRestaurants": 3,
+      "featuredRestaurants": 29,
+      "evidenceRestaurants": 32,
+      "recommendationItems": 5,
+      "featuredItems": 113
     },
     "mergedEvidence": {
       "recommendationRestaurants": 234,
       "featuredRestaurants": 428,
       "evidenceRestaurants": 487,
       "recommendationItems": 451,
-      "featuredItems": 1064
+      "featuredItems": 1067
     },
     "specificityCorrection": {
-      "correctedRestaurants": 0,
-      "correctedItems": 0,
-      "duplicateItemsRemoved": 0,
-      "ruleCounts": {},
+      "correctedRestaurants": 3,
+      "correctedItems": 3,
+      "duplicateItemsRemoved": 3,
+      "ruleCounts": {
+        "meat-sushi-over-sushi": 1,
+        "yakisoba-over-soba": 2
+      },
       "recommendationItemsAfterCorrection": 451,
       "featuredItemsAfterCorrection": 1064
     }
