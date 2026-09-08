@@ -12,7 +12,7 @@
     "pass2Rule": "strict geospatial + name/address match against transient retained Google sweep; durable fields are independent-source only",
     "structuredAddressConsensusV2Overlay": true,
     "structuredAddressConsensusV2Rule": "private-address-consensus-v2",
-    "lastIdentityRecoveryOverlayRule": "private-multisource-consensus-v3",
+    "lastIdentityRecoveryOverlayRule": "reviewed-multisource-currentness-v1",
     "multiSourceConsensusV3Overlay": true,
     "multiSourceConsensusV3Rule": "private-multisource-consensus-v3",
     "privateOfficialWebConsensusV4Overlay": true,
@@ -23,24 +23,26 @@
     "retainedOsmWebsiteOverlayPaidApiCalls": 0,
     "retainedOsmWebsiteOverlayGoogleDisplayPayloadUsed": false,
     "retainedOsmWebsiteOverlayExistingBindingsOnly": true,
-    "retainedOsmWebsiteOverlayIndependentHttpsOnly": true
+    "retainedOsmWebsiteOverlayIndependentHttpsOnly": true,
+    "reviewedMultisourceCurrentnessV1Overlay": true,
+    "reviewedMultisourceCurrentnessV1Rule": "reviewed-multisource-currentness-v1"
   },
   "summary": {
     "productionBacked": 651,
-    "sourceMatchedInventoryOnly": 764,
-    "basicReadyTotal": 1415,
-    "identityOnlyRemaining": 1389,
+    "sourceMatchedInventoryOnly": 765,
+    "basicReadyTotal": 1416,
+    "identityOnlyRemaining": 1388,
     "providers": {
-      "Hot Pepper": 358,
+      "Hot Pepper": 359,
       "OpenStreetMap": 11,
       "Overture Maps": 395
     },
     "pass2NewMatches": 27,
     "structuredAddressConsensusV2Rows": 1,
     "structuredAddressConsensusV2AddedThisMerge": 0,
-    "lastIdentityRecoveryOverlayRule": "private-multisource-consensus-v3",
-    "lastIdentityRecoveryOverlayRows": 0,
-    "lastIdentityRecoveryOverlayAddedThisMerge": 0,
+    "lastIdentityRecoveryOverlayRule": "reviewed-multisource-currentness-v1",
+    "lastIdentityRecoveryOverlayRows": 1,
+    "lastIdentityRecoveryOverlayAddedThisMerge": 1,
     "multiSourceConsensusV3Rows": 0,
     "multiSourceConsensusV3AddedThisMerge": 0,
     "privateOfficialWebConsensusV4Rows": 2,
@@ -52,7 +54,9 @@
       "rowsChanged": 0,
       "websitesAdded": 0,
       "rejectedWebsiteValues": 1
-    }
+    },
+    "reviewedMultisourceCurrentnessV1Rows": 1,
+    "reviewedMultisourceCurrentnessV1AddedThisMerge": 1
   },
   "rows": [
     {
@@ -2493,6 +2497,72 @@
       "sourceCheckedAt": "2026-09-06",
       "verification": "existing_high_confidence_binding",
       "matchLevel": "strong"
+    },
+    {
+      "googlePlaceId": "ChIJ9zKc6xOMGGARgCXKBgpzUqM",
+      "provider": "Hot Pepper",
+      "providerId": "J001040271",
+      "name": "サクラカフェ SAKURA CAFE &ダイニング 神保町",
+      "address": "東京都千代田区神田神保町２－２１－４",
+      "lat": 35.6949625004,
+      "lng": 139.7564329009,
+      "distanceMeters": 148,
+      "cuisine": "居酒屋",
+      "websites": [
+        "https://www.hotpepper.jp/strJ001040271/?vos=nhppalsa000016",
+        "https://www.sakura-cafe.asia/jimbocho/"
+      ],
+      "sourceCheckedAt": "2026-09-08",
+      "verification": "reviewed_hotpepper_overture_currentness_consensus",
+      "matchLevel": "reviewed-multisource-currentness-v1",
+      "identityConsensus": {
+        "historicalHotPepperReview": {
+          "hotpepperId": "J001040271",
+          "distanceMeters": 4.1,
+          "nameSimilarity": 0.6071,
+          "addressSimilarity": null,
+          "combinedScore": 0.7477,
+          "confidence": "high",
+          "seedSource": "transient_full_sweep"
+        },
+        "overtureSupport": {
+          "overtureId": "4fbf4ea3-a5f9-4afc-810d-1457436e560c",
+          "name": "サクラカフェ",
+          "address": "東京都千代田区神田神保町2-21-4",
+          "lat": 35.694918,
+          "lng": 139.756448,
+          "distanceMeters": 5.1,
+          "nameSimilarity": 0.82,
+          "addressSimilarity": 1.0,
+          "postalMatch": false,
+          "margin": 0.4103
+        },
+        "currentIndependentPage": {
+          "url": "https://www.sakura-cafe.asia/jimbocho/",
+          "retrievedAt": "2026-09-08T07:12:14Z",
+          "contentHash": "01b5b9d27a868b8cfc31fe5d95724b0357f3172ac2a12fabfc09d49f45a5376d",
+          "matchedExpectedName": "サクラカフェ",
+          "pageName": "サクラカフェ神保町 - サクラカフェ Sakura Cafe | 24時間いつでも世界の味を - 池袋 / 幡ヶ谷 / 神保町 / 日暮里 / 浅草",
+          "pageAddress": "東京都千代田区神田神保町2-21-4",
+          "nameSimilarity": 0.82,
+          "addressSimilarity": 1.0,
+          "postalMatch": false,
+          "geoDistanceMeters": null,
+          "locationConfirmed": true
+        },
+        "policy": {
+          "legacyVerifiedStateCreated": false,
+          "sourceMatchedOnly": true,
+          "independentSources": [
+            "Hot Pepper",
+            "Overture Maps",
+            "current official page"
+          ],
+          "currentnessRequired": true,
+          "providerReuseForbidden": true,
+          "ruleVersion": "reviewed-multisource-currentness-v1"
+        }
+      }
     },
     {
       "googlePlaceId": "ChIJ9zUsyD6MGGARVKVocMwPAGw",
