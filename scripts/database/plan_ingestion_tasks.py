@@ -4,7 +4,7 @@ import argparse,json,sqlite3
 from collections import Counter,defaultdict
 from datetime import datetime,timezone
 from pathlib import Path
-PLANNER_VERSION='master-plan-v4'
+PLANNER_VERSION='master-plan-v5-no-telephone'
 FIELD_REQUIREMENTS={
     'address':('address',),
     'coordinates':('coordinates',),
@@ -12,9 +12,8 @@ FIELD_REQUIREMENTS={
     'hours':('hours.raw','hours.reference.legacy','hours.normalized.legacy'),
     'dinner_budget':('budget.dinner.range','budget.dinner.legacy_range'),
     'lunch_budget':('budget.lunch.range','budget.lunch.legacy_range'),
-    'telephone':('contact.telephone',),
 }
-FIELD_WEIGHTS={'address':60,'coordinates':70,'cuisine':60,'hours':80,'dinner_budget':70,'lunch_budget':30,'telephone':35,'practical':20}
+FIELD_WEIGHTS={'address':60,'coordinates':70,'cuisine':60,'hours':80,'dinner_budget':70,'lunch_budget':30,'practical':20}
 def now_iso(): return datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace('+00:00','Z')
 def canonical_json(v): return json.dumps(v,ensure_ascii=False,sort_keys=True,separators=(',',':'))
 def known_resolution_set(db): return {(p,f) for p,f in db.execute("SELECT place_id,field_key FROM field_resolutions WHERE resolution_state='known'")}
@@ -45,15 +44,11 @@ def compute_desired_tasks(db):
         if p not in practical_places: missing.append('practical')
         if not missing: continue
         priority=500+sum(FIELD_WEIGHTS[f] for f in missing)
-        desired[task_id('field_completion',p)]={'placeId':p,'taskType':'field_completion','provider':'source-orchestrator','status':'pending','priority':priority,'fieldKeys':missing,'sourceHint':'reuse_retained_evidence_then_bound_official_or_public_provider_pages','payload':{'name':names[p],'missingFields':missing,'existingSourceRecords':source_counts.get(p,0),'existingObservations':obs_counts.get(p,0),'collectionRule':'one_confirmed_source_visit_extract_all_supported_fields'}}
+        desired[task_id('field_completion',p)]={'placeId':p,'taskType':'field_completion','provider':'source-orchestrator','status':'pending','priority':priority,'fieldKeys':missing,'sourceHint':'reuse_retained_evidence_then_bound_official_or_public_provider_pages','payload':{'name':names[p],'missingFields':missing,'existingSourceRecords':source_counts.get(p,0),'existingObservations':obs_counts.get(p,0),'collectionRule':'one_confirmed_source_visit_extract_all_supported_non_telephone_fields'}}
     dish=defaultdict(lambda:{'recommendationEvidence':0,'featuredEvidence':0})
     for p,f,c in db.execute("SELECT o.place_id,o.field_key,count(*) FROM field_observations o JOIN source_records sr ON sr.source_record_id=o.source_record_id WHERE sr.acquisition_method='retained_dish_evidence' AND o.field_key IN ('dish.recommendation.evidence','dish.featured.evidence') GROUP BY o.place_id,o.field_key"):
         dish[p]['recommendationEvidence' if f=='dish.recommendation.evidence' else 'featuredEvidence']=c
     for p,counts in sorted(dish.items()):
-        # Dish semantics/translation are only actionable after identity is publishable.
-        # An id-only/conflict restaurant stays in the identity queue; when identity
-        # later becomes publishable, the planner will create a dish review only if
-        # validated source evidence still lacks a canonical zh field.
         if identities.get(p) not in ('verified','source_matched') or p in conflict_places or p not in names:
             continue
         missing_semantics=[]
@@ -76,7 +71,7 @@ def plan_tasks(db,stamp=None):
     types=Counter(t['taskType'] for t in desired.values()); missing=Counter()
     for t in desired.values():
         if t['taskType']=='field_completion': missing.update(t['fieldKeys'])
-    return {'plannerVersion':PLANNER_VERSION,'activeTasks':len(desired),'taskTypeCounts':dict(sorted(types.items())),'fieldCompletionMissingCounts':dict(sorted(missing.items())),'staleTasksDeactivated':len(stale)}
+    return {'plannerVersion':PLANNER_VERSION,'activeTasks':len(desired),'taskTypeCounts':dict(sorted(types.items())),'fieldCompletionMissingCounts':dict(sorted(missing.items())),'excludedFieldCompletionTargets':['telephone'],'telephoneCollectionEnabled':False,'staleTasksDeactivated':len(stale)}
 def main():
     a=argparse.ArgumentParser(); a.add_argument('database',type=Path); args=a.parse_args(); db=sqlite3.connect(args.database); db.execute('PRAGMA foreign_keys=ON')
     try: db.execute('BEGIN IMMEDIATE'); s=plan_tasks(db); db.commit()
