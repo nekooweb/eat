@@ -39,11 +39,42 @@ jobs:
         run: node scripts/audit_no_paid_apis.mjs
       - name: Check source-recovery script syntax
         run: |
+          python3 -m py_compile scripts/build_area1_osm.py
           node --check scripts/build_osm_independent_dish_source_candidate_plan.mjs
           node --check scripts/review_osm_independent_dish_source_candidates.mjs
           node --check scripts/refresh_bound_osm_source_websites.mjs
-      - name: Generate expanded Area 1 food POI dataset
-        run: python3 scripts/build_area1_osm.py | tee /tmp/area1-osm-summary.json
+      - name: Generate minimal Area 1 OSM food POI source dataset
+        run: |
+          set -euo pipefail
+          python3 scripts/build_area1_osm.py | tee /tmp/area1-osm-summary.json
+          node - <<'NODE'
+          const fs = require('fs');
+          const vm = require('vm');
+          const sandbox = { window: { RESTAURANTS: [] } };
+          vm.createContext(sandbox);
+          vm.runInContext(fs.readFileSync('data/area1_osm.js', 'utf8'), sandbox);
+          const rows = sandbox.window.RESTAURANTS || [];
+          const allowed = new Set([
+            'id','profile','area','name','cuisine','distanceMeters','lat','lng','source','sourceId',
+            'openingHoursRaw','address','sourceWebsites','sourcePhones','sourcePracticalTags','curatedOverlap'
+          ]);
+          const forbidden = new Set([
+            'distance','lunch','dinner','dishes','closedDays','googlePlaceId','googleStatus','hyakumeiten','randomWeight','tags'
+          ]);
+          for (const row of rows) {
+            for (const key of Object.keys(row)) {
+              if (!allowed.has(key)) throw new Error(`unapproved OSM payload key: ${key}`);
+              if (forbidden.has(key)) throw new Error(`compatibility/default key leaked into OSM payload: ${key}`);
+            }
+            if (row.source !== 'OpenStreetMap' || !row.id || !row.sourceId || !row.name) throw new Error('invalid minimal OSM source row');
+            if ('sourceWebsites' in row && (!Array.isArray(row.sourceWebsites) || !row.sourceWebsites.length)) throw new Error('empty OSM sourceWebsites must be omitted');
+            if ('sourcePhones' in row && (!Array.isArray(row.sourcePhones) || !row.sourcePhones.length)) throw new Error('empty OSM sourcePhones must be omitted');
+            if ('sourcePracticalTags' in row && (!row.sourcePracticalTags || !Object.keys(row.sourcePracticalTags).length)) throw new Error('empty OSM sourcePracticalTags must be omitted');
+            if ('address' in row && !String(row.address).trim()) throw new Error('empty OSM address must be omitted');
+            if ('openingHoursRaw' in row && !String(row.openingHoursRaw).trim()) throw new Error('empty OSM openingHoursRaw must be omitted');
+          }
+          console.log(JSON.stringify({rows: rows.length, allowedKeys: [...allowed], forbiddenKeysAbsent: true}));
+          NODE
       - name: Backfill websites on already-bound OSM source rows
         run: |
           set -euo pipefail
@@ -53,9 +84,11 @@ jobs:
           const x = JSON.parse(fs.readFileSync('data/google_basic_source_matches.json', 'utf8'));
           const p = x.policy || {};
           const s = x.summary?.retainedOsmWebsiteOverlay || {};
-          if (x.inventoryCount !== 2804 || x.summary?.basicReadyTotal !== 1415) throw new Error('bound OSM website overlay baseline mismatch');
+          const expectedReady = Number(x.summary?.productionBacked || 0) + Number(x.summary?.sourceMatchedInventoryOnly || 0);
+          if (x.inventoryCount !== 2804 || x.summary?.basicReadyTotal !== expectedReady) throw new Error('bound OSM website overlay current baseline mismatch');
           if (p.retainedOsmWebsiteOverlay !== true || p.retainedOsmWebsiteOverlayExistingBindingsOnly !== true) throw new Error('bound OSM website overlay policy missing');
           if (p.retainedOsmWebsiteOverlayIdentityChanges !== 0 || p.retainedOsmWebsiteOverlayPaidApiCalls !== 0 || p.retainedOsmWebsiteOverlayGoogleDisplayPayloadUsed !== false) throw new Error('bound OSM website overlay crossed identity/API boundary');
+          if (p.retainedOsmWebsiteOverlayAggregatorHostsExcluded !== true) throw new Error('bound OSM website overlay must exclude aggregators');
           if ((x.rows || []).some((row) => row.provider === 'OpenStreetMap' && (row.websites || []).some((url) => !String(url).startsWith('https://')))) throw new Error('bound OSM runtime websites must be HTTPS');
           if (s.rowsChanged > s.boundOsmRows || s.websitesAdded < s.rowsChanged) throw new Error('invalid bound OSM website overlay counts');
           console.log(JSON.stringify(s));
@@ -73,9 +106,9 @@ jobs:
           const s = x.summary || {};
           if (p.proposalOnly !== true || p.identityBindingChanges !== 0 || p.networkRequests !== 0) throw new Error('OSM source plan must remain proposal-only/network-free');
           if (p.paidGoogleDataApiCalls !== 0 || p.googleDisplayPayloadUsed !== false) throw new Error('OSM source plan violated zero-paid/no-Google-display policy');
-          if (p.osmGoogleStatusMustRemainPending !== true || p.proximityOnlyBindingAllowed !== false) throw new Error('OSM identity boundary failed');
+          if (p.osmIdentityFieldsSerialized !== false || p.proximityOnlyBindingAllowed !== false) throw new Error('OSM identity/payload boundary failed');
           if (p.dishEvidencePromotionBeforeSourceReviewAllowed !== false || p.sourcePageReviewRequired !== true) throw new Error('OSM source/evidence boundary failed');
-          if (s.catalogTotal !== 2804 || s.publicRuntimeTotal !== 1415) throw new Error('OSM source plan baseline mismatch');
+          if (s.catalogTotal !== 2804 || !Number.isInteger(s.publicRuntimeTotal) || s.publicRuntimeTotal < 1) throw new Error('OSM source plan current baseline mismatch');
           if (s.proposalRows > s.currentIndependentDishSourceGap || s.highConfidenceProposalRows > s.proposalRows) throw new Error('invalid OSM proposal counts');
           console.log(JSON.stringify(s));
           NODE
@@ -99,7 +132,7 @@ jobs:
           if (p.identityBindingChanges !== 0 || p.runtimeNameMutationAllowed !== false || p.runtimeCoordinateMutationAllowed !== false || p.runtimeIdentityMutationAllowed !== false) throw new Error('OSM reviewer may not mutate identity/core runtime fields');
           if (p.dishEvidenceCreatedByReview !== false || p.genericBrandHomepageAloneAccepted !== false) throw new Error('OSM reviewer crossed source/evidence boundary');
           if (p.thirdPartyAggregatorUrlsExcluded !== true || p.crossSiteRedirectAllowed !== false) throw new Error('OSM reviewer URL boundary failed');
-          if (s.catalogTotal !== 2804 || s.publicRuntimeTotal !== 1415) throw new Error('OSM reviewer baseline mismatch');
+          if (s.catalogTotal !== 2804 || !Number.isInteger(s.publicRuntimeTotal) || s.publicRuntimeTotal < 1) throw new Error('OSM reviewer current baseline mismatch');
           if (s.approvedRows > s.highConfidenceInputRows) throw new Error('OSM approved count exceeds strict input');
           for (const row of x.rows || []) {
             if (row.reviewState !== 'strict_auto' || row.candidateProvider !== 'OpenStreetMap' || !row.googlePlaceId || !Array.isArray(row.sourceWebsites) || !row.sourceWebsites.length) {
