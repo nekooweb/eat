@@ -7,6 +7,7 @@ on:
     paths:
       - ".github/workflows/review-id-only-currentness-sources.yml"
       - "scripts/database/review_id_only_currentness_sources.py"
+      - "scripts/database/review_id_only_currentness_sources_v2.py"
       - "scripts/database/audit_id_only_priority_identity_groups.py"
       - "scripts/database/collect_official_practical_fields.py"
       - "scripts/database/build_master.py"
@@ -37,6 +38,7 @@ jobs:
           set -euo pipefail
           python -m py_compile \
             scripts/database/review_id_only_currentness_sources.py \
+            scripts/database/review_id_only_currentness_sources_v2.py \
             scripts/database/audit_id_only_priority_identity_groups.py \
             scripts/database/collect_official_practical_fields.py \
             scripts/database/build_master.py
@@ -50,7 +52,7 @@ jobs:
       - name: Review current independent webpages
         run: |
           set -euo pipefail
-          python scripts/database/review_id_only_currentness_sources.py \
+          python scripts/database/review_id_only_currentness_sources_v2.py \
             --database _tmp/eat-master.sqlite \
             --output _tmp/id-only-currentness-review.json \
             --workers 6 \
@@ -59,12 +61,15 @@ jobs:
           import json,re
           d=json.load(open('_tmp/id-only-currentness-review.json'))
           p=d['policy']
+          assert d['ruleVersion']=='id-only-currentness-review-v2'
           assert p['paidDataApiCalls']==0
           assert p['googleDisplayPayloadPersisted'] is False
           assert p['automaticIdentityPromotion'] is False
           assert p['proposalOnly'] is True
           assert p['independentHttpsOnly'] is True
+          assert p['independentSourceAliasesAllowed'] is True
           assert p['nameAndLocationReconfirmationRequired'] is True
+          assert p['locationThresholdsUnchangedFromV1'] is True
           for row in d['rows']:
               assert str(row['currentnessUrl']).startswith('https://')
               review=row['currentnessReview']
@@ -74,6 +79,9 @@ jobs:
                   assert row['hardDirectOvertureGate'] is True
                   assert review['accepted'] is True
                   assert re.fullmatch(r'[0-9a-f]{64}',str(review['contentHash']))
+                  check=review['bestCheck']
+                  assert check['locationConfirmed'] is True
+                  assert check['nameSimilarity'] >= 0.72
           print(json.dumps({'summary':d['summary'],'ready':[r['googlePlaceId'] for r in d['rows'] if r['admissionReady']]},ensure_ascii=False,sort_keys=True))
           PY
       - name: Upload review
