@@ -36,8 +36,14 @@ CUISINE_MAP = {
 }
 PRACTICAL_SOURCE_TAGS = (
     'payment:credit_cards',
+    'payment:visa',
+    'payment:mastercard',
+    'payment:jcb',
+    'payment:american_express',
+    'payment:diners_club',
     'internet_access',
     'wheelchair',
+    'smoking',
 )
 
 
@@ -158,11 +164,12 @@ def source_phones(tags):
 
 
 def source_practical_tags(tags):
-    """Retain only explicit OSM practical tags that have conservative boolean semantics.
+    """Retain explicit OSM practical tags for later exact-binding resolution.
 
-    Mapping to canonical fields happens later and only for exact reviewed OSM bindings.
-    Ambiguous values such as wheelchair=limited remain retained source text but are not
-    automatically converted to booleans.
+    This serializer does not itself map tags to canonical values. Downstream resolvers
+    accept only conservative semantics: explicit credit-card support, Wi-Fi/no internet,
+    wheelchair yes/no, and recognized smoking-policy values. Ambiguous values remain
+    retained provenance and are never promoted automatically.
     """
     output = {}
     for key in PRACTICAL_SOURCE_TAGS:
