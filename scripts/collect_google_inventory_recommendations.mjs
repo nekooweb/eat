@@ -3,6 +3,14 @@ import fs from 'node:fs';
 import path from 'node:path';
 import vm from 'node:vm';
 import { fileURLToPath } from 'node:url';
+import {
+  DISH_RULES,
+  MENU_LINK_MARKER,
+  extractStrictRecommendationsFromHtml,
+  extractStrictRecommendationsFromText,
+  extractStructuredMenuItems,
+  htmlToTextBlocks
+} from './recommended_dish_extractor.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, '..');
@@ -12,7 +20,7 @@ const TIMEOUT_MS = Number(process.env.INVENTORY_DETAIL_FETCH_TIMEOUT_MS || 7000)
 const HOST_WORKERS = Math.max(1, Math.min(32, Number(process.env.INVENTORY_DETAIL_HOST_WORKERS || 20)));
 const MAX_HTML_CHARS = 1_200_000;
 const CHECKED_AT = new Date().toISOString().slice(0, 10);
-const USER_AGENT = 'eat-data-maintenance/1.0 (+https://github.com/nekooweb/eat)';
+const USER_AGENT = 'eat-data-maintenance/2.0 (+https://github.com/nekooweb/eat)';
 
 function loadWindowFile(filename) {
   const sandbox = { window: {}, console };
@@ -25,7 +33,15 @@ const runtimeWindow = loadWindowFile('google_inventory_runtime.js');
 const runtimeRows = Array.isArray(runtimeWindow.GOOGLE_INVENTORY_RESTAURANTS)
   ? runtimeWindow.GOOGLE_INVENTORY_RESTAURANTS
   : [];
-if (runtimeRows.length !== 2804) throw new Error('Expected exact 2,804 Google inventory runtime');
+const runtimeStats = runtimeWindow.GOOGLE_INVENTORY_STATS || {};
+if (runtimeStats.catalogTotal !== 2804) throw new Error(`Frozen catalog mismatch: ${runtimeStats.catalogTotal}`);
+if (runtimeStats.inventoryTotal !== runtimeRows.length) throw new Error('Published runtime/stat count mismatch');
+if (runtimeRows.length + Number(runtimeStats.unpublishedPlaceIdOnly || 0) !== 2804) {
+  throw new Error('Published + unpublished Place-ID-only rows must reconcile to 2,804');
+}
+if (runtimeRows.some((row) => !row.googlePlaceId || !row.nameKnown || !String(row.name || '').trim())) {
+  throw new Error('Recommendation collector may only crawl named/publishable rows');
+}
 
 const provenanceWindow = fs.existsSync(path.join(DATA, 'source_provenance.js'))
   ? loadWindowFile('source_provenance.js')
@@ -36,22 +52,6 @@ const hotPepperDoc = fs.existsSync(path.join(DATA, 'hotpepper_catalog_facts.json
   ? JSON.parse(fs.readFileSync(path.join(DATA, 'hotpepper_catalog_facts.json'), 'utf8'))
   : { rows: [] };
 const hotPepperById = new Map((hotPepperDoc.rows || []).filter((row) => row.googlePlaceId).map((row) => [row.googlePlaceId, row]));
-
-function normalizeWhitespace(value) {
-  return String(value || '')
-    .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, ' ')
-    .replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, ' ')
-    .replace(/<svg\b[^>]*>[\s\S]*?<\/svg>/gi, ' ')
-    .replace(/<[^>]+>/g, ' ')
-    .replace(/&nbsp;|&#160;/gi, ' ')
-    .replace(/&amp;/gi, '&')
-    .replace(/&quot;|&#34;/gi, '"')
-    .replace(/&#39;|&apos;/gi, "'")
-    .replace(/&lt;/gi, '<')
-    .replace(/&gt;/gi, '>')
-    .replace(/\s+/g, ' ')
-    .trim();
-}
 
 function safeUrl(value) {
   try {
@@ -76,111 +76,31 @@ function eligibleWebsite(value) {
   return true;
 }
 
-const SIGNATURE_MARKER = /おすすめ|オススメ|お勧め|名物|看板|自慢|人気|絶品|イチオシ|一押し|推し|こだわり|スペシャリテ|シグネチャー|signature|specialt(?:y|ies)|recommended|recommendation|popular|best[ -]?seller|must[ -]?try|featured/i;
-const MENU_LINK_MARKER = /menu|food|dish|cuisine|lunch|dinner|料理|お品書|御品書|メニュー|食事|おすすめ|名物/i;
+function sourceItem(match, sourceUrl, provider, evidenceClass, evidenceRule, snippet = '') {
+  return {
+    nameZh: match.nameZh,
+    nameJa: String(match.nameOriginal || match.nameJa || match.nameZh).slice(0, 80),
+    provider,
+    sourceUrl,
+    checkedAt: CHECKED_AT,
+    evidenceClass,
+    evidenceRule,
+    evidenceSnippet: String(snippet || match.evidenceSnippet || match.nameOriginal || '').replace(/\s+/g, ' ').trim().slice(0, 90)
+  };
+}
 
-const DISH_RULES = [
-  [/ビリヤニ|biryani/i, ['印度香饭', 'ビリヤニ']],
-  [/焼き?鳥|やきとり|yakitori/i, ['烤鸡串', '焼き鳥']],
-  [/串揚げ|串カツ|kushiage/i, ['炸串', '串揚げ']],
-  [/唐揚げ|から揚げ|からあげ|karaage/i, ['炸鸡块', '唐揚げ']],
-  [/チキン南蛮/i, ['南蛮鸡', 'チキン南蛮']],
-  [/ラーメン|らーめん|ramen/i, ['拉面', 'ラーメン']],
-  [/中華そば/i, ['中华拉面', '中華そば']],
-  [/つけ麺|tsukemen/i, ['蘸面', 'つけ麺']],
-  [/担々麺|担担麺|tantanmen/i, ['担担面', '担々麺']],
-  [/油そば/i, ['油拌面', '油そば']],
-  [/蕎麦|そば|soba/i, ['荞麦面', 'そば']],
-  [/うどん|udon/i, ['乌冬面', 'うどん']],
-  [/カレー|curry/i, ['咖喱', 'カレー']],
-  [/ナン|naan/i, ['烤饼', 'ナン']],
-  [/ステーキ|steak/i, ['牛排', 'ステーキ']],
-  [/ハンバーグ|hamburg steak/i, ['汉堡排', 'ハンバーグ']],
-  [/寿司|すし|鮨|sushi/i, ['寿司', '寿司']],
-  [/刺身|お造り|sashimi/i, ['刺身', '刺身']],
-  [/海鮮丼/i, ['海鲜丼', '海鮮丼']],
-  [/うなぎ|鰻|unagi/i, ['鳗鱼', '鰻']],
-  [/天ぷら|天麩羅|tempura/i, ['天妇罗', '天ぷら']],
-  [/とんかつ|豚カツ|tonkatsu/i, ['炸猪排', 'とんかつ']],
-  [/牛カツ/i, ['炸牛排', '牛カツ']],
-  [/牛タン|gyutan/i, ['牛舌', '牛タン']],
-  [/焼肉|yakiniku/i, ['烤肉', '焼肉']],
-  [/ホルモン/i, ['烤内脏', 'ホルモン']],
-  [/しゃぶしゃぶ|shabu.?shabu/i, ['涮涮锅', 'しゃぶしゃぶ']],
-  [/すき焼き|すきやき|sukiyaki/i, ['寿喜烧', 'すき焼き']],
-  [/もつ鍋/i, ['牛杂锅', 'もつ鍋']],
-  [/餃子|gyoza/i, ['饺子', '餃子']],
-  [/小籠包|xiaolongbao/i, ['小笼包', '小籠包']],
-  [/麻婆豆腐|mapo/i, ['麻婆豆腐', '麻婆豆腐']],
-  [/炒飯|チャーハン|fried rice/i, ['炒饭', '炒飯']],
-  [/回鍋肉/i, ['回锅肉', '回鍋肉']],
-  [/青椒肉絲/i, ['青椒肉丝', '青椒肉絲']],
-  [/酢豚/i, ['糖醋猪肉', '酢豚']],
-  [/パスタ|スパゲッティ|pasta|spaghetti/i, ['意大利面', 'パスタ']],
-  [/ピザ|ピッツァ|pizza/i, ['披萨', 'ピザ']],
-  [/オムライス|omelette rice|omurice/i, ['蛋包饭', 'オムライス']],
-  [/ドリア/i, ['焗饭', 'ドリア']],
-  [/グラタン|gratin/i, ['焗烤', 'グラタン']],
-  [/サンドイッチ|サンド|sandwich/i, ['三明治', 'サンドイッチ']],
-  [/ハンバーガー|バーガー|burger/i, ['汉堡', 'ハンバーガー']],
-  [/タコス|tacos?/i, ['塔可', 'タコス']],
-  [/ケバブ|kebab/i, ['烤肉卷', 'ケバブ']],
-  [/フォー|pho\b/i, ['越南河粉', 'フォー']],
-  [/ガパオ|gapao/i, ['打抛饭', 'ガパオ']],
-  [/パッタイ|pad thai/i, ['泰式炒河粉', 'パッタイ']],
-  [/サムギョプサル|samgyeopsal/i, ['韩式烤五花肉', 'サムギョプサル']],
-  [/チヂミ|jeon\b/i, ['韩式煎饼', 'チヂミ']],
-  [/冷麺/i, ['冷面', '冷麺']],
-  [/ビビンバ|bibimbap/i, ['石锅拌饭', 'ビビンバ']],
-  [/お好み焼き?|okonomiyaki/i, ['御好烧', 'お好み焼']],
-  [/もんじゃ|monjayaki/i, ['文字烧', 'もんじゃ']],
-  [/たこ焼き?|takoyaki/i, ['章鱼烧', 'たこ焼']],
-  [/おでん|oden\b/i, ['关东煮', 'おでん']],
-  [/親子丼|oyakodon/i, ['亲子丼', '親子丼']],
-  [/牛丼|gyudon/i, ['牛肉饭', '牛丼']],
-  [/天丼|tendon\b/i, ['天妇罗丼', '天丼']],
-  [/カツ丼|katsudon/i, ['炸猪排丼', 'カツ丼']],
-  [/ローストビーフ|roast beef/i, ['烤牛肉', 'ローストビーフ']],
-  [/燻製|smoked/i, ['烟熏料理', '燻製']],
-  [/クロワッサン|croissant/i, ['可颂', 'クロワッサン']],
-  [/パンケーキ|pancake/i, ['松饼', 'パンケーキ']],
-  [/フレンチトースト|french toast/i, ['法式吐司', 'フレンチトースト']],
-  [/ケーキ|cake/i, ['蛋糕', 'ケーキ']],
-  [/パフェ|parfait/i, ['芭菲', 'パフェ']],
-  [/プリン|pudding|flan/i, ['布丁', 'プリン']],
-  [/クレープ|crepe/i, ['可丽饼', 'クレープ']],
-  [/ジェラート|gelato/i, ['意式冰淇淋', 'ジェラート']]
-];
-
-function dishMatches(value, sourceUrl, provider, requireMarker) {
-  const pageText = normalizeWhitespace(value);
-  if (!pageText) return [];
-  const dishes = [];
+function featuredMatchesFromText(value, limit = 3) {
+  const text = String(value || '').replace(/\s+/g, ' ').trim();
+  const output = [];
   const seen = new Set();
-  for (const [pattern, [nameZh, fallbackJa]] of DISH_RULES) {
-    const flags = pattern.flags.includes('i') ? 'ig' : 'g';
-    const matches = [...pageText.matchAll(new RegExp(pattern.source, flags))];
-    for (const match of matches) {
-      const start = Math.max(0, match.index - 110);
-      const end = Math.min(pageText.length, match.index + match[0].length + 110);
-      const nearby = pageText.slice(start, end);
-      if (requireMarker && !SIGNATURE_MARKER.test(nearby)) continue;
-      if (seen.has(nameZh)) break;
-      seen.add(nameZh);
-      dishes.push({
-        nameZh,
-        nameJa: /[\u3040-\u30ff\u3400-\u9fff]/.test(match[0]) ? match[0] : fallbackJa,
-        provider,
-        sourceUrl,
-        checkedAt: CHECKED_AT,
-        evidenceClass: requireMarker ? 'source_recommendation_text' : 'provider_promotional_dish_text',
-        evidenceSnippet: nearby.slice(0, 90)
-      });
-      break;
-    }
-    if (dishes.length >= 2) break;
+  for (const [pattern, nameZh] of DISH_RULES) {
+    const match = text.match(pattern);
+    if (!match || seen.has(nameZh)) continue;
+    seen.add(nameZh);
+    output.push({ nameZh, nameOriginal: match[0], rule: pattern.source, evidenceSnippet: text.slice(0, 90) });
+    if (output.length >= limit) break;
   }
-  return dishes;
+  return output;
 }
 
 function candidateUrls(row) {
@@ -202,7 +122,7 @@ function menuLinks(html, baseUrl) {
   const linkPattern = /<a\b[^>]*href=["']([^"']+)["'][^>]*>([\s\S]*?)<\/a>/gi;
   let match;
   while ((match = linkPattern.exec(html))) {
-    const label = normalizeWhitespace(match[2]);
+    const label = htmlToTextBlocks(match[2]).join(' ');
     if (!MENU_LINK_MARKER.test(`${match[1]} ${label}`)) continue;
     try {
       const url = new URL(match[1], baseUrl);
@@ -215,7 +135,7 @@ function menuLinks(html, baseUrl) {
       output.push(key);
       if (output.length >= 2) break;
     } catch {
-      // Ignore malformed links.
+      // malformed links are not evidence
     }
   }
   return output;
@@ -236,31 +156,50 @@ async function fetchHtml(url) {
   return (await response.text()).slice(0, MAX_HTML_CHARS);
 }
 
-async function inspectWebsite(row, rootUrl) {
+function dedupeDishes(items, limit = 6) {
+  const map = new Map();
+  for (const item of items || []) {
+    if (!item?.nameZh || !item?.sourceUrl) continue;
+    const key = `${item.nameZh}|${item.provider}|${item.sourceUrl}|${item.evidenceClass}`;
+    const old = map.get(key);
+    if (!old || String(item.checkedAt || '') >= String(old.checkedAt || '')) map.set(key, item);
+  }
+  return [...map.values()].slice(0, limit);
+}
+
+async function inspectWebsite(rootUrl) {
   const urls = [rootUrl];
   const errors = [];
+  const recommendedDishes = [];
+  const featuredDishes = [];
+  const visited = new Set();
   for (let index = 0; index < urls.length && index < 3; index += 1) {
     const url = urls[index];
+    if (visited.has(url)) continue;
+    visited.add(url);
     try {
       const html = await fetchHtml(url);
-      const dishes = dishMatches(html, url, 'sourceWebsite', true);
-      if (dishes.length) return { status: 'matched', dishes, checkedUrl: url };
+      for (const match of extractStrictRecommendationsFromHtml(html, 3)) {
+        recommendedDishes.push(sourceItem(match, url, 'sourceWebsite', 'source_recommendation_text', `html-block:${match.rule}`));
+      }
+      for (const match of extractStructuredMenuItems(html, 3)) {
+        featuredDishes.push(sourceItem(match, url, 'sourceWebsite', 'structured_menu_item', `jsonld-menuitem:${match.rule}`));
+      }
       if (index === 0) urls.push(...menuLinks(html, url));
+      if (dedupeDishes(recommendedDishes, 3).length >= 3) break;
     } catch (error) {
       errors.push(`${url}: ${error?.message || error}`);
     }
   }
-  return { status: errors.length ? 'no_match_with_errors' : 'no_match', dishes: [], errors: errors.slice(0, 2) };
-}
-
-function dedupeDishes(items) {
-  const seen = new Set();
-  return items.filter((item) => {
-    const key = `${item.nameZh || ''}|${item.nameJa || ''}`;
-    if (!item.nameZh || seen.has(key)) return false;
-    seen.add(key);
-    return true;
-  }).slice(0, 3);
+  const recommended = dedupeDishes(recommendedDishes, 3);
+  const featured = dedupeDishes(featuredDishes, 3);
+  return {
+    status: recommended.length ? 'recommended_match' : featured.length ? 'menu_match' : errors.length ? 'no_match_with_errors' : 'no_match',
+    recommendedDishes: recommended,
+    featuredDishes: featured,
+    errors: errors.slice(0, 2),
+    visitedUrls: [...visited].slice(0, 3)
+  };
 }
 
 async function main() {
@@ -268,31 +207,37 @@ async function main() {
   let hotPepperRecommendedRestaurants = 0;
   let hotPepperFeaturedRestaurants = 0;
 
+  // Hot Pepper is consumed from the already-retained provider artifact. No live
+  // Hot Pepper request is made here. Catch copy with explicit recommendation
+  // wording becomes recommended; otherwise concrete dish mentions are featured.
   for (const row of runtimeRows) {
-    if (!row.googlePlaceId) continue;
     const hp = hotPepperById.get(row.googlePlaceId);
     const facts = hp?.facts || {};
     const catchText = String(facts.catch || '').trim();
     if (!catchText) continue;
     const sourceUrl = facts.urls?.pc || facts.urls?.mobile || '';
     if (!/^https:\/\//.test(sourceUrl)) continue;
-    const recommended = dishMatches(catchText, sourceUrl, 'Hot Pepper', true);
-    const featured = recommended.length ? [] : dishMatches(catchText, sourceUrl, 'Hot Pepper', false);
-    if (recommended.length) hotPepperRecommendedRestaurants += 1;
+    const strict = extractStrictRecommendationsFromText(catchText, 3)
+      .map((match) => sourceItem(match, sourceUrl, 'Hot Pepper', 'source_recommendation_text', `hotpepper-catch:${match.rule}`, catchText));
+    const featured = strict.length ? [] : featuredMatchesFromText(catchText, 3)
+      .map((match) => sourceItem(match, sourceUrl, 'Hot Pepper', 'provider_promotional_dish_text', `hotpepper-catch-menu:${match.rule}`, catchText));
+    if (strict.length) hotPepperRecommendedRestaurants += 1;
     if (featured.length) hotPepperFeaturedRestaurants += 1;
-    if (recommended.length || featured.length) {
+    if (strict.length || featured.length) {
       evidenceById.set(row.googlePlaceId, {
         googlePlaceId: row.googlePlaceId,
-        name: row.nameKnown === false ? null : row.name,
-        recommendedDishes: recommended,
+        name: row.name,
+        recommendedDishes: strict,
         featuredDishes: featured
       });
     }
   }
 
+  // Official pages are crawled only for named public rows that still lack a
+  // retained recommendation. Tabelog/Hot Pepper/social/Google pages are not
+  // fetched here; Tabelog is retained-evidence-only because live access is restricted.
   const crawlTasks = [];
   for (const row of runtimeRows) {
-    if (row.nameKnown === false || row.basicInfoState === 'google_place_id_only') continue;
     if (Array.isArray(row.recommendedDishes) && row.recommendedDishes.length) continue;
     for (const url of candidateUrls(row)) crawlTasks.push({ row, url });
   }
@@ -317,18 +262,18 @@ async function main() {
       for (const task of tasks) {
         if (seenPlaceIds.has(task.row.googlePlaceId)) continue;
         seenPlaceIds.add(task.row.googlePlaceId);
-        const result = await inspectWebsite(task.row, task.url);
+        const result = await inspectWebsite(task.url);
         crawlResults.push({ googlePlaceId: task.row.googlePlaceId, name: task.row.name, rootUrl: task.url, ...result });
-        if (result.status === 'matched') {
-          const existing = evidenceById.get(task.row.googlePlaceId) || {
-            googlePlaceId: task.row.googlePlaceId,
-            name: task.row.name,
-            recommendedDishes: [],
-            featuredDishes: []
-          };
-          existing.recommendedDishes = dedupeDishes([...(existing.recommendedDishes || []), ...result.dishes]);
-          evidenceById.set(task.row.googlePlaceId, existing);
-        }
+        if (!result.recommendedDishes.length && !result.featuredDishes.length) continue;
+        const existing = evidenceById.get(task.row.googlePlaceId) || {
+          googlePlaceId: task.row.googlePlaceId,
+          name: task.row.name,
+          recommendedDishes: [],
+          featuredDishes: []
+        };
+        existing.recommendedDishes = dedupeDishes([...(existing.recommendedDishes || []), ...result.recommendedDishes], 6);
+        existing.featuredDishes = dedupeDishes([...(existing.featuredDishes || []), ...result.featuredDishes], 6);
+        evidenceById.set(task.row.googlePlaceId, existing);
       }
     }
   }
@@ -338,8 +283,8 @@ async function main() {
   const rows = [...evidenceById.values()]
     .map((row) => ({
       ...row,
-      recommendedDishes: dedupeDishes(row.recommendedDishes || []),
-      featuredDishes: dedupeDishes(row.featuredDishes || [])
+      recommendedDishes: dedupeDishes(row.recommendedDishes || [], 6),
+      featuredDishes: dedupeDishes(row.featuredDishes || [], 6)
     }))
     .filter((row) => row.recommendedDishes.length || row.featuredDishes.length)
     .sort((a, b) => a.googlePlaceId.localeCompare(b.googlePlaceId));
@@ -347,24 +292,30 @@ async function main() {
   const statusCounts = {};
   for (const result of crawlResults) statusCounts[result.status] = (statusCounts[result.status] || 0) + 1;
   const payload = {
-    schemaVersion: 1,
+    schemaVersion: 3,
     checkedAt: CHECKED_AT,
     policy: {
-      googleIdentityKey: 'frozen Place ID only',
+      catalogIdentityKey: 'frozen Place ID only',
+      catalogTotal: 2804,
+      publicNamedRuntimeOnly: true,
       paidGoogleDataApiCalls: 0,
       websiteEligibility: 'already-bound independent official/provider websites only; Google/Tabelog/Hot Pepper/social URLs excluded from direct crawl',
-      strictRecommendationRule: 'concrete dish term within 110 characters of explicit recommendation/signature wording',
+      strictRecommendationRule: 'concrete dish term in a local HTML/text block carrying explicit recommendation/signature wording',
+      featuredRule: 'retained Hot Pepper promotional dish text or schema.org MenuItem; never promoted to recommended without recommendation wording',
+      cuisineNameBrandInferenceAllowed: false,
       maxSameHostMenuLinksFollowed: 2,
       maxEvidenceSnippetChars: 90
     },
     summary: {
-      inventoryTotal: runtimeRows.length,
+      catalogTotal: 2804,
+      publicRuntimeTotal: runtimeRows.length,
       hotPepperRowsAvailable: hotPepperById.size,
       hotPepperRecommendedRestaurants,
       hotPepperFeaturedRestaurants,
       websiteTasks: crawlTasks.length,
       websiteHosts: hostEntries.length,
-      websiteMatchedRestaurants: new Set(crawlResults.filter((result) => result.status === 'matched').map((result) => result.googlePlaceId)).size,
+      websiteRecommendedRestaurants: new Set(crawlResults.filter((result) => result.recommendedDishes.length).map((result) => result.googlePlaceId)).size,
+      websiteStructuredMenuRestaurants: new Set(crawlResults.filter((result) => result.featuredDishes.length).map((result) => result.googlePlaceId)).size,
       sourceBackedRecommendationRestaurants: rows.filter((row) => row.recommendedDishes.length).length,
       sourceBackedFeaturedOnlyRestaurants: rows.filter((row) => !row.recommendedDishes.length && row.featuredDishes.length).length,
       recommendationItems: rows.reduce((sum, row) => sum + row.recommendedDishes.length, 0),
