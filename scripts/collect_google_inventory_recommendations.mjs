@@ -18,9 +18,12 @@ const DATA = path.join(ROOT, 'data');
 const OUTPUT = process.argv[2] || path.join(DATA, 'google_inventory_detail_evidence.json');
 const TIMEOUT_MS = Number(process.env.INVENTORY_DETAIL_FETCH_TIMEOUT_MS || 7000);
 const HOST_WORKERS = Math.max(1, Math.min(32, Number(process.env.INVENTORY_DETAIL_HOST_WORKERS || 20)));
+const SITE_PAGE_LIMIT = Math.max(2, Math.min(6, Number(process.env.INVENTORY_DETAIL_SITE_PAGE_LIMIT || 5)));
+const MENU_LINK_LIMIT = Math.max(1, Math.min(5, Number(process.env.INVENTORY_DETAIL_MENU_LINK_LIMIT || 4)));
 const MAX_HTML_CHARS = 1_200_000;
 const CHECKED_AT = new Date().toISOString().slice(0, 10);
-const USER_AGENT = 'eat-data-maintenance/2.0 (+https://github.com/nekooweb/eat)';
+const USER_AGENT = 'eat-data-maintenance/2.1 (+https://github.com/nekooweb/eat)';
+const NON_MENU_BLOCK = /営業時間|アクセス|店舗情報|会社概要|採用情報|プライバシ|予約(?:する|はこちら)?|電話番号|住所|copyright|instagram|facebook/i;
 
 function loadWindowFile(filename) {
   const sandbox = { window: {}, console };
@@ -103,6 +106,22 @@ function featuredMatchesFromText(value, limit = 3) {
   return output;
 }
 
+function plainMenuMatchesFromHtml(html, limit = 6) {
+  const output = [];
+  const seen = new Set();
+  for (const rawBlock of htmlToTextBlocks(html)) {
+    const block = String(rawBlock || '').replace(/\s+/g, ' ').trim();
+    if (block.length < 2 || block.length > 180 || NON_MENU_BLOCK.test(block)) continue;
+    for (const match of featuredMatchesFromText(block, 3)) {
+      if (seen.has(match.nameZh)) continue;
+      seen.add(match.nameZh);
+      output.push({ ...match, evidenceSnippet: block.slice(0, 90) });
+      if (output.length >= limit) return output;
+    }
+  }
+  return output;
+}
+
 function candidateUrls(row) {
   const urls = new Set();
   for (const raw of row.sourceWebsites || []) {
@@ -116,7 +135,7 @@ function candidateUrls(row) {
   return [...urls];
 }
 
-function menuLinks(html, baseUrl) {
+function menuLinks(html, baseUrl, limit = MENU_LINK_LIMIT) {
   const output = [];
   const seen = new Set();
   const linkPattern = /<a\b[^>]*href=["']([^"']+)["'][^>]*>([\s\S]*?)<\/a>/gi;
@@ -133,12 +152,22 @@ function menuLinks(html, baseUrl) {
       if (seen.has(key) || key === baseUrl) continue;
       seen.add(key);
       output.push(key);
-      if (output.length >= 2) break;
+      if (output.length >= limit) break;
     } catch {
       // malformed links are not evidence
     }
   }
   return output;
+}
+
+function isMenuContextPage(url, index) {
+  if (index > 0) return true;
+  try {
+    const parsed = new URL(url);
+    return MENU_LINK_MARKER.test(`${parsed.pathname} ${parsed.search}`);
+  } catch {
+    return false;
+  }
 }
 
 async function fetchHtml(url) {
@@ -173,7 +202,8 @@ async function inspectWebsite(rootUrl) {
   const recommendedDishes = [];
   const featuredDishes = [];
   const visited = new Set();
-  for (let index = 0; index < urls.length && index < 3; index += 1) {
+  let plainMenuItemCount = 0;
+  for (let index = 0; index < urls.length && index < SITE_PAGE_LIMIT; index += 1) {
     const url = urls[index];
     if (visited.has(url)) continue;
     visited.add(url);
@@ -182,23 +212,31 @@ async function inspectWebsite(rootUrl) {
       for (const match of extractStrictRecommendationsFromHtml(html, 3)) {
         recommendedDishes.push(sourceItem(match, url, 'sourceWebsite', 'source_recommendation_text', `html-block:${match.rule}`));
       }
-      for (const match of extractStructuredMenuItems(html, 3)) {
+      for (const match of extractStructuredMenuItems(html, 6)) {
         featuredDishes.push(sourceItem(match, url, 'sourceWebsite', 'structured_menu_item', `jsonld-menuitem:${match.rule}`));
       }
-      if (index === 0) urls.push(...menuLinks(html, url));
-      if (dedupeDishes(recommendedDishes, 3).length >= 3) break;
+      if (isMenuContextPage(url, index)) {
+        const plain = plainMenuMatchesFromHtml(html, 6);
+        plainMenuItemCount += plain.length;
+        for (const match of plain) {
+          featuredDishes.push(sourceItem(match, url, 'sourceWebsite', 'source_menu_text', `menu-page-text:${match.rule}`, match.evidenceSnippet));
+        }
+      }
+      if (index === 0) urls.push(...menuLinks(html, url, MENU_LINK_LIMIT));
     } catch (error) {
       errors.push(`${url}: ${error?.message || error}`);
     }
   }
   const recommended = dedupeDishes(recommendedDishes, 3);
-  const featured = dedupeDishes(featuredDishes, 3);
+  const recommendedNames = new Set(recommended.map((item) => item.nameZh));
+  const featured = dedupeDishes(featuredDishes, 8).filter((item) => !recommendedNames.has(item.nameZh)).slice(0, 6);
   return {
     status: recommended.length ? 'recommended_match' : featured.length ? 'menu_match' : errors.length ? 'no_match_with_errors' : 'no_match',
     recommendedDishes: recommended,
     featuredDishes: featured,
+    plainMenuItemCount,
     errors: errors.slice(0, 2),
-    visitedUrls: [...visited].slice(0, 3)
+    visitedUrls: [...visited].slice(0, SITE_PAGE_LIMIT)
   };
 }
 
@@ -233,12 +271,15 @@ async function main() {
     }
   }
 
-  // Official pages are crawled only for named public rows that still lack a
-  // retained recommendation. Tabelog/Hot Pepper/social/Google pages are not
-  // fetched here; Tabelog is retained-evidence-only because live access is restricted.
+  // Official pages are crawled for named public rows missing either strict
+  // recommendations or source-backed featured/menu dishes. Tabelog/Hot Pepper/
+  // social/Google pages are not fetched here; retained provider artifacts remain
+  // the only path for those sources.
   const crawlTasks = [];
   for (const row of runtimeRows) {
-    if (Array.isArray(row.recommendedDishes) && row.recommendedDishes.length) continue;
+    const hasRecommended = Array.isArray(row.recommendedDishes) && row.recommendedDishes.length > 0;
+    const hasFeatured = Array.isArray(row.featuredDishes) && row.featuredDishes.length > 0;
+    if (hasRecommended && hasFeatured) continue;
     for (const url of candidateUrls(row)) crawlTasks.push({ row, url });
   }
 
@@ -291,8 +332,9 @@ async function main() {
 
   const statusCounts = {};
   for (const result of crawlResults) statusCounts[result.status] = (statusCounts[result.status] || 0) + 1;
+  const websiteFeaturedResults = crawlResults.filter((result) => result.featuredDishes.length);
   const payload = {
-    schemaVersion: 3,
+    schemaVersion: 4,
     checkedAt: CHECKED_AT,
     policy: {
       catalogIdentityKey: 'frozen Place ID only',
@@ -301,9 +343,11 @@ async function main() {
       paidGoogleDataApiCalls: 0,
       websiteEligibility: 'already-bound independent official/provider websites only; Google/Tabelog/Hot Pepper/social URLs excluded from direct crawl',
       strictRecommendationRule: 'concrete dish term in a local HTML/text block carrying explicit recommendation/signature wording',
-      featuredRule: 'retained Hot Pepper promotional dish text or schema.org MenuItem; never promoted to recommended without recommendation wording',
+      featuredRule: 'retained Hot Pepper promotional text, schema.org MenuItem, or concrete dish text on an already-bound same-origin menu page; never promoted to recommended without recommendation wording',
+      plainMenuTextRule: 'only menu-context pages discovered from the bound source; source-native text is normalized to zh-CN while original text and URL remain evidence',
       cuisineNameBrandInferenceAllowed: false,
-      maxSameHostMenuLinksFollowed: 2,
+      maxSameHostMenuLinksFollowed: MENU_LINK_LIMIT,
+      maxSitePagesVisited: SITE_PAGE_LIMIT,
       maxEvidenceSnippetChars: 90
     },
     summary: {
@@ -314,8 +358,12 @@ async function main() {
       hotPepperFeaturedRestaurants,
       websiteTasks: crawlTasks.length,
       websiteHosts: hostEntries.length,
+      websitePagesVisited: crawlResults.reduce((sum, result) => sum + result.visitedUrls.length, 0),
       websiteRecommendedRestaurants: new Set(crawlResults.filter((result) => result.recommendedDishes.length).map((result) => result.googlePlaceId)).size,
-      websiteStructuredMenuRestaurants: new Set(crawlResults.filter((result) => result.featuredDishes.length).map((result) => result.googlePlaceId)).size,
+      websiteFeaturedMenuRestaurants: new Set(websiteFeaturedResults.map((result) => result.googlePlaceId)).size,
+      websiteStructuredMenuRestaurants: new Set(websiteFeaturedResults.filter((result) => result.featuredDishes.some((item) => item.evidenceClass === 'structured_menu_item')).map((result) => result.googlePlaceId)).size,
+      websitePlainMenuRestaurants: new Set(websiteFeaturedResults.filter((result) => result.featuredDishes.some((item) => item.evidenceClass === 'source_menu_text')).map((result) => result.googlePlaceId)).size,
+      websitePlainMenuItems: websiteFeaturedResults.reduce((sum, result) => sum + result.featuredDishes.filter((item) => item.evidenceClass === 'source_menu_text').length, 0),
       sourceBackedRecommendationRestaurants: rows.filter((row) => row.recommendedDishes.length).length,
       sourceBackedFeaturedOnlyRestaurants: rows.filter((row) => !row.recommendedDishes.length && row.featuredDishes.length).length,
       recommendationItems: rows.reduce((sum, row) => sum + row.recommendedDishes.length, 0),
