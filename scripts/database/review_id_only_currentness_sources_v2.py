@@ -7,9 +7,15 @@ short canonical name. V2 keeps every location and admission gate unchanged while
 page-name similarity to use the best of independent retained aliases (Hot Pepper,
 Overture, and, for audit-only open candidates, OSM).
 
-A page still cannot pass on name alone. It must independently reconfirm either address /
-postcode or structured geo within 80 m. This means brand homepages and corporate pages
-remain rejected even when they contain a matching brand token.
+A small proposal-only discovery overlay may replace a stale Overture brand/corporate URL
+with a more specific independently discovered branch URL. The overlay itself is never
+identity evidence: every replacement URL must pass the same independent-host filter and
+is fetched/revalidated from scratch in this run. Name plus address/postcode/structured
+geo is still mandatory, and all historical Hot Pepper + direct Overture hard gates remain
+unchanged.
+
+A page can never pass on name alone. Brand homepages and corporate pages remain rejected
+even when they contain a matching brand token.
 """
 from __future__ import annotations
 
@@ -23,7 +29,10 @@ import audit_id_only_priority_identity_groups as priority
 import collect_official_practical_fields as practical
 import review_id_only_currentness_sources as v1
 
+ROOT = Path(__file__).resolve().parents[2]
+DATA = ROOT / "data"
 RULE_VERSION = "id-only-currentness-review-v2"
+OVERRIDE_PATH = DATA / "id_only_currentness_source_overrides.json"
 
 
 def aliases_for(target: dict):
@@ -47,6 +56,59 @@ def best_name_match(page_name: str, aliases: list[str]):
         return 0.0, None
     scored.sort(key=lambda item: (-item[0], len(item[1])))
     return scored[0]
+
+
+def apply_reviewed_discovery_overrides(targets: list[dict], counts: Counter):
+    if not OVERRIDE_PATH.exists():
+        return targets
+    doc = json.loads(OVERRIDE_PATH.read_text(encoding="utf-8"))
+    policy = doc.get("policy") or {}
+    if policy.get("paidDataApiCalls") != 0 or policy.get("googleDisplayPayloadPersisted") is not False:
+        raise RuntimeError("currentness discovery overlay violates zero-paid/no-Google-display policy")
+    if policy.get("proposalOnly") is not True or policy.get("identityPromotionByThisFile") is not False:
+        raise RuntimeError("currentness discovery overlay must remain proposal-only")
+    if policy.get("currentPageRevalidationRequired") is not True or policy.get("nameAndLocationReconfirmationRequired") is not True:
+        raise RuntimeError("currentness discovery overlay does not require strict revalidation")
+
+    rows = {
+        str(row.get("googlePlaceId") or "").strip(): row
+        for row in doc.get("rows") or []
+        if row.get("googlePlaceId")
+    }
+    output = []
+    for target in targets:
+        row = rows.get(str(target.get("googlePlaceId") or ""))
+        if not row or target.get("group") != "hotpepper_high_direct_overture":
+            output.append(target)
+            continue
+        replacement, reason = v1.independent_https_url(row.get("url"))
+        if not replacement:
+            counts[f"currentness_override_rejected_{reason}"] += 1
+            output.append(target)
+            continue
+        candidate_name = str(row.get("candidateName") or "").strip()
+        if candidate_name:
+            # Discovery metadata should at least refer to one retained source alias. This
+            # is not the admission check; it simply prevents an accidental PID/URL typo.
+            if max((priority.similarity(candidate_name, alias) for alias in aliases_for(target)), default=0.0) < 0.55:
+                counts["currentness_override_candidate_name_mismatch"] += 1
+                output.append(target)
+                continue
+        updated = dict(target)
+        updated["retainedOvertureCurrentnessUrl"] = target.get("currentnessUrl")
+        updated["currentnessUrl"] = replacement
+        updated["currentnessDiscoveryOverride"] = {
+            "checkedAt": doc.get("checkedAt"),
+            "candidateName": candidate_name,
+            "url": replacement,
+            "discoveryClass": row.get("discoveryClass"),
+            "reason": row.get("reason"),
+            "proposalOnly": True,
+            "requiresFreshPageRevalidation": True,
+        }
+        counts["currentness_discovery_override_used"] += 1
+        output.append(updated)
+    return output
 
 
 def currentness_check(page: dict, target: dict):
@@ -160,6 +222,7 @@ def main():
     args = ap.parse_args()
 
     targets, counts = v1.build_targets(args.database)
+    targets = apply_reviewed_discovery_overrides(targets, counts)
     pages = {}
     with concurrent.futures.ThreadPoolExecutor(max_workers=max(1, min(10, args.workers))) as pool:
         futures = {pool.submit(practical.fetch_visible_page, t["currentnessUrl"]): t for t in targets}
@@ -208,8 +271,12 @@ def main():
             "independentHttpsOnly": True,
             "aggregatorAndSocialCurrentnessExcluded": True,
             "independentSourceAliasesAllowed": True,
+            "reviewedDiscoveryOverrideAllowed": True,
+            "discoveryOverrideIsNeverIdentityEvidence": True,
+            "discoveryOverrideRequiresFreshFetch": True,
             "nameAndLocationReconfirmationRequired": True,
             "locationThresholdsUnchangedFromV1": True,
+            "historicalHotPepperAndOvertureHardGatesUnchanged": True,
             "openOsmOvertureGroupAdmissionReadyDisabled": True,
             "rawHtmlPersisted": False,
         },
