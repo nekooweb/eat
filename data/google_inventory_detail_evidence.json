@@ -39,7 +39,8 @@
     ],
     "textFields": [
       "facts.genre.catch",
-      "specialFeatures[].title"
+      "specialFeatures[].title",
+      "sourceServiceText.allYouCanEat (concrete dish text only)"
     ],
     "sourceCatchExcludedAsDuplicateOfCatalogFactsCatch": true,
     "restaurantNameInferenceAllowed": false,
@@ -62,7 +63,11 @@
     "crossOriginUrlsAllowed": false,
     "excludedNewsBlogCompanyRecruitPages": true,
     "ordinaryMenuItemsAreFeaturedOnly": true,
-    "rawHtmlPersisted": false
+    "rawHtmlPersisted": false,
+    "shopDetailExcludedBecauseKeywordListsAreNotStableMenuEvidence": true,
+    "genericServiceBooleansAreDishEvidence": false,
+    "allYouCanEatRequiresConcreteAvailabilityWording": true,
+    "promotionalSpecificRulesBeforeBroadDishFamilyRules": true
   },
   "summary": {
     "catalogTotal": 2804,
@@ -71,34 +76,34 @@
     "targets": 255,
     "uniqueOrigins": 234,
     "sitemapFilesFetched": 305,
-    "menuUrlsDiscovered": 79,
-    "menuPagesFetched": 68,
+    "menuUrlsDiscovered": 80,
+    "menuPagesFetched": 69,
     "errorTargets": 9,
-    "evidenceRestaurants": 22,
+    "evidenceRestaurants": 23,
     "recommendationRestaurants": 3,
-    "featuredRestaurants": 19,
+    "featuredRestaurants": 20,
     "recommendationItems": 5,
-    "featuredItems": 82,
+    "featuredItems": 85,
     "previousEvidence": {
       "recommendationRestaurants": 192,
-      "featuredRestaurants": 373,
-      "evidenceRestaurants": 430,
+      "featuredRestaurants": 375,
+      "evidenceRestaurants": 432,
       "recommendationItems": 349,
-      "featuredItems": 829
+      "featuredItems": 835
     },
     "freshCrawlEvidence": {
       "recommendationRestaurants": 3,
-      "featuredRestaurants": 19,
-      "evidenceRestaurants": 22,
+      "featuredRestaurants": 20,
+      "evidenceRestaurants": 23,
       "recommendationItems": 5,
-      "featuredItems": 82
+      "featuredItems": 85
     },
     "mergedEvidence": {
       "recommendationRestaurants": 192,
-      "featuredRestaurants": 373,
-      "evidenceRestaurants": 430,
+      "featuredRestaurants": 376,
+      "evidenceRestaurants": 433,
       "recommendationItems": 349,
-      "featuredItems": 829
+      "featuredItems": 838
     }
   },
   "rows": [
@@ -5756,6 +5761,23 @@
       ]
     },
     {
+      "googlePlaceId": "ChIJE4dDNz2MGGARGZHEIOrFjGw",
+      "name": "ノダジ",
+      "recommendedDishes": [],
+      "featuredDishes": [
+        {
+          "nameZh": "韩式烤五花肉",
+          "nameJa": "サムギョプサル",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001154327/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-retained-richAllYouCanEat:サムギョプサル|samgyeopsal",
+          "evidenceSnippet": "あり ：サムギョプサル食べ放題2178円(税込)～"
+        }
+      ]
+    },
+    {
       "googlePlaceId": "ChIJe4ebpD-MGGARksrpQ0_0cLs",
       "name": "焼肉京城",
       "recommendedDishes": [
@@ -6233,6 +6255,43 @@
           "evidenceClass": "provider_promotional_dish_text",
           "evidenceRule": "hotpepper-catch-menu:焼肉|yakiniku",
           "evidenceSnippet": "話題の黒毛和牛ハンバーグ 肉屋が通う焼肉屋さん♪"
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJfy1MgfyNGGARPtRC8Q1Dymg",
+      "name": "立ち飲み日本酒",
+      "recommendedDishes": [],
+      "featuredDishes": [
+        {
+          "nameZh": "越南河粉",
+          "nameJa": "フォー",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://jp.sake-times.com/special/press/press_chinjunomori-french-dinner",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "sitemap-menu-text:フォー|pho\\b",
+          "evidenceSnippet": "SAKETIMES PRESS 申請フォーム"
+        },
+        {
+          "nameZh": "越南河粉",
+          "nameJa": "フォー",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://jp.sake-times.com/special/press/press_hakobune_hakkaisan_dinner",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "sitemap-menu-text:フォー|pho\\b",
+          "evidenceSnippet": "SAKETIMES PRESS 申請フォーム"
+        },
+        {
+          "nameZh": "越南河粉",
+          "nameJa": "フォー",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://jp.sake-times.com/special/press/press_makers_dinner",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "sitemap-menu-text:フォー|pho\\b",
+          "evidenceSnippet": "SAKETIMES PRESS 申請フォーム"
         }
       ]
     },
@@ -11570,6 +11629,16 @@
           "evidenceClass": "provider_promotional_dish_text",
           "evidenceRule": "hotpepper-rich-genreCatch:焼き?鳥|やきとり|yakitori",
           "evidenceSnippet": "神田 居酒屋 個室 鮮魚 肉 焼鳥"
+        },
+        {
+          "nameZh": "肉寿司",
+          "nameJa": "肉寿司",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001171178/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-retained-richSpecialFeatureTitle:promotional-specific:肉寿司",
+          "evidenceSnippet": "飛騨牛 肉寿司コー3H飲み放題付3000円～"
         }
       ]
     },
@@ -12460,6 +12529,33 @@
       ]
     },
     {
+      "googlePlaceId": "ChIJU502rBaMGGAR4hZgBJHS7Ys",
+      "name": "大金星 神保町店",
+      "recommendedDishes": [],
+      "featuredDishes": [
+        {
+          "nameZh": "炒面",
+          "nameJa": "焼そば",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ000821880/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-retained-richAllYouCanEat:promotional-specific:焼きそば|焼そば",
+          "evidenceSnippet": "あり ：コース利用で鉄板焼そば食べ放題"
+        },
+        {
+          "nameZh": "铁板炒面",
+          "nameJa": "鉄板焼そば",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ000821880/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-retained-richAllYouCanEat:promotional-specific:鉄板焼(?:き)?そば",
+          "evidenceSnippet": "あり ：コース利用で鉄板焼そば食べ放題"
+        }
+      ]
+    },
+    {
       "googlePlaceId": "ChIJu556IxSMGGAR5GmHiqGpLLo",
       "name": "個室居酒屋 座楽 神保町店",
       "recommendedDishes": [],
@@ -12472,6 +12568,16 @@
           "checkedAt": "2026-09-06",
           "evidenceClass": "provider_promotional_dish_text",
           "evidenceRule": "hotpepper-rich-specialFeatureTitle:寿司|すし|鮨|sushi",
+          "evidenceSnippet": "【3H飲み放題付】特選牛や馬肉寿司、直送鮮魚など絶品を堪能！"
+        },
+        {
+          "nameZh": "肉寿司",
+          "nameJa": "肉寿司",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001128905/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-retained-richSpecialFeatureTitle:promotional-specific:肉寿司",
           "evidenceSnippet": "【3H飲み放題付】特選牛や馬肉寿司、直送鮮魚など絶品を堪能！"
         },
         {
@@ -13443,6 +13549,16 @@
           "checkedAt": "2026-09-06",
           "evidenceClass": "provider_promotional_dish_text",
           "evidenceRule": "hotpepper-retained-catalogGenreCatch:寿司|すし|鮨|sushi",
+          "evidenceSnippet": "東京ドーム近く♪シュラスコx肉寿司♪"
+        },
+        {
+          "nameZh": "肉寿司",
+          "nameJa": "肉寿司",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ003474367/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-retained-catalogGenreCatch:promotional-specific:肉寿司",
           "evidenceSnippet": "東京ドーム近く♪シュラスコx肉寿司♪"
         }
       ]
