@@ -18,7 +18,13 @@ let featuredItems = 0;
 const HAN_RE = /[\u3400-\u9fff]/u;
 const KANA_RE = /[\u3040-\u30ff]/u;
 const allowedProviders = new Set(['Hot Pepper', 'sourceWebsite', 'Tabelog', 'official']);
-const allowedFeaturedClasses = new Set(['provider_promotional_dish_text', 'structured_menu_item', 'retained_source_menu_item', 'source_recommendation_text']);
+const allowedFeaturedClasses = new Set([
+  'provider_promotional_dish_text',
+  'structured_menu_item',
+  'source_menu_text',
+  'retained_source_menu_item',
+  'source_recommendation_text'
+]);
 
 if (inventory.count !== 2804 || frozen.size !== 2804) throw new Error('Frozen Google inventory mismatch');
 if (payload.policy?.paidGoogleDataApiCalls !== 0) throw new Error('Detail evidence policy must declare zero paid Google data API calls');
@@ -45,6 +51,9 @@ for (const row of payload.rows || []) {
       }
       if (kind === 'featured' && item.evidenceClass && !allowedFeaturedClasses.has(item.evidenceClass)) {
         throw new Error(`Unsupported featured evidence class: ${row.googlePlaceId}: ${item.evidenceClass}`);
+      }
+      if (item.evidenceClass === 'source_menu_text' && item.provider !== 'sourceWebsite') {
+        throw new Error(`Plain menu text evidence must come from an already-bound source website: ${row.googlePlaceId}`);
       }
       const duplicateKey = `${kind}|${nameZh}|${item.provider}|${item.sourceUrl}|${item.evidenceClass || ''}`;
       if (localSeen.has(duplicateKey)) throw new Error(`Duplicate dish evidence item: ${row.googlePlaceId}: ${duplicateKey}`);
