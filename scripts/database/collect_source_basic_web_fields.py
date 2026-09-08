@@ -5,6 +5,11 @@ No Google display data or Google API is used. The restaurant name/address/coordi
 used for page verification come from the independent source row already stored in
 `google_basic_source_matches.json`. Public-page access and parsing reuse the v4
 robots-aware official-web collector. Raw HTML is never written to disk.
+
+Evidence is append-only at the verified page snapshot level. A Place ID may retain
+multiple snapshots when the final URL or content hash changes. Claims are merged only
+inside the exact same `(Place ID, final URL, content hash)` snapshot, while SQLite
+canonical resolution remains import-time missing-only.
 """
 from __future__ import annotations
 
@@ -12,7 +17,7 @@ import argparse
 import concurrent.futures
 import json
 import sqlite3
-from collections import Counter
+from collections import Counter, defaultdict
 from pathlib import Path
 
 import reconcile_private_google_hints as base
@@ -20,7 +25,8 @@ import reconcile_private_official_web_consensus_v4 as web
 
 ROOT = Path(__file__).resolve().parents[2]
 DATA = ROOT / "data"
-RULE_VERSION = "source-basic-web-field-evidence-v1"
+RULE_VERSION = "source-basic-web-field-evidence-v2"
+LEGACY_RULE_VERSION = "source-basic-web-field-evidence-v1"
 
 
 def load_json(path: Path):
@@ -87,6 +93,30 @@ def normalize_cuisine(fact, page):
     return label or page.get("visibleCuisine") or None
 
 
+def snapshot_key(row: dict) -> tuple[str, str, str]:
+    pid = str(row.get("googlePlaceId") or "").strip()
+    evidence = row.get("webEvidence") or {}
+    final_url = str(evidence.get("finalUrl") or evidence.get("sourceUrl") or "").strip()
+    content_hash = str(evidence.get("contentHash") or "").strip()
+    return pid, final_url, content_hash
+
+
+def merge_same_snapshot(current: dict, incoming: dict) -> int:
+    current_claims = dict(current.get("fieldClaims") or {})
+    incoming_claims = dict(incoming.get("fieldClaims") or {})
+    added = 0
+    for key, value in incoming_claims.items():
+        if key not in current_claims and value not in (None, "", [], {}):
+            current_claims[key] = value
+            added += 1
+    if added:
+        current["fieldClaims"] = current_claims
+        current["missingBefore"] = sorted(
+            set(current.get("missingBefore") or []) | set(incoming.get("missingBefore") or [])
+        )
+    return added
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--database", type=Path, required=True)
@@ -98,11 +128,14 @@ def main():
 
     basics = load_json(DATA / "google_basic_source_matches.json")
     existing_doc = load_json(args.existing) if args.existing.exists() else {"rows": []}
-    existing_rows = {
-        str(row.get("googlePlaceId")): row
-        for row in existing_doc.get("rows") or []
-        if row.get("googlePlaceId")
-    }
+    existing_version = str(existing_doc.get("ruleVersion") or "")
+    if existing_version and existing_version not in {LEGACY_RULE_VERSION, RULE_VERSION}:
+        raise RuntimeError(f"unsupported existing source-basic web evidence version: {existing_version}")
+    existing_rows = [dict(row) for row in (existing_doc.get("rows") or []) if row.get("googlePlaceId")]
+    existing_by_pid = defaultdict(list)
+    for row in existing_rows:
+        existing_by_pid[str(row["googlePlaceId"])].append(row)
+
     overture_by_id = {
         str(row.get("providerId")): row
         for row in base.overture_rows()
@@ -121,15 +154,11 @@ def main():
 
     targets = []
     counts = Counter()
+    counts["existing_evidence_rows"] = len(existing_rows)
+    counts["places_with_existing_evidence"] = len(existing_by_pid)
     for row in basics.get("rows") or []:
         pid = str(row.get("googlePlaceId") or "")
         if states.get(pid) not in ("verified", "source_matched") or pid in conflicts:
-            continue
-        if pid in existing_rows:
-            # The current evidence schema deliberately retains one page/content
-            # hash per Place ID. Existing rows are left stable here; missing-field
-            # extension across a changed page requires a provenance-schema upgrade.
-            counts["reused_existing_evidence"] += 1
             continue
         missing = [
             kind for kind in (
@@ -146,6 +175,8 @@ def main():
         urls = web.candidate_urls(member)
         if not urls:
             continue
+        if pid in existing_by_pid:
+            counts["rescan_targets_with_existing_evidence"] += 1
         targets.append({"pid": pid, "basic": row, "member": member, "missing": missing, "urls": urls})
 
     unique_urls = []
@@ -173,8 +204,17 @@ def main():
         if not page.get("ok"):
             counts[f"page_skip_{page.get('blocked') or 'unknown'}"] += 1
 
-    collected = dict(existing_rows)
-    field_counts = Counter()
+    collected = [dict(row) for row in existing_rows]
+    snapshot_index = {}
+    for index, row in enumerate(collected):
+        key = snapshot_key(row)
+        if not all(key):
+            raise RuntimeError(f"existing source-basic web evidence has incomplete snapshot key: {key}")
+        if key in snapshot_index:
+            raise RuntimeError(f"duplicate existing source-basic web snapshot: {key}")
+        snapshot_index[key] = index
+
+    new_field_counts = Counter()
     for target in targets:
         member = target["member"]
         page_matches = []
@@ -201,26 +241,27 @@ def main():
         claims = {}
         if "address" in missing and address:
             claims["address"] = address
-            field_counts["address"] += 1
+            new_field_counts["address"] += 1
         if "hours" in missing and opening:
             claims["openingHoursRaw"] = opening
-            field_counts["hours.raw"] += 1
+            new_field_counts["hours.raw"] += 1
         if "cuisine" in missing and cuisine:
             claims["cuisineNormalized"] = cuisine
-            field_counts["cuisine"] += 1
+            new_field_counts["cuisine"] += 1
         if "coordinates" in missing and isinstance(fact.get("geo"), dict):
             claims["geo"] = fact["geo"]
-            field_counts["coordinates"] += 1
+            new_field_counts["coordinates"] += 1
         if ("lunch_budget" in missing or "dinner_budget" in missing) and str(fact.get("priceRange") or "").strip():
             claims["priceRange"] = str(fact.get("priceRange")).strip()
-            field_counts["budget.web_price_range_raw"] += 1
+            new_field_counts["budget.web_price_range_raw"] += 1
         if "telephone" in missing and str(fact.get("telephone") or "").strip():
             claims["telephone"] = str(fact.get("telephone")).strip()
-            field_counts["contact.telephone"] += 1
+            new_field_counts["contact.telephone"] += 1
         if not claims:
             counts["verified_page_without_missing_field_claim"] += 1
             continue
-        collected[target["pid"]] = {
+
+        incoming = {
             "googlePlaceId": target["pid"],
             "sourceProvider": target["basic"].get("provider"),
             "sourceProviderId": target["basic"].get("providerId"),
@@ -237,11 +278,40 @@ def main():
             "fieldClaims": claims,
             "checkedAt": (page.get("retrievedAt") or web.utc_now())[:10],
         }
-        counts["new_evidence_rows"] += 1
+        key = snapshot_key(incoming)
+        current_index = snapshot_index.get(key)
+        if current_index is not None:
+            added = merge_same_snapshot(collected[current_index], incoming)
+            if added:
+                counts["same_snapshot_claims_extended"] += added
+            else:
+                counts["same_snapshot_already_present"] += 1
+            continue
 
-    rows = sorted(collected.values(), key=lambda row: row["googlePlaceId"])
+        had_prior_place = target["pid"] in existing_by_pid
+        collected.append(incoming)
+        snapshot_index[key] = len(collected) - 1
+        counts["new_snapshot_rows"] += 1
+        counts["new_snapshot_for_existing_place" if had_prior_place else "new_snapshot_for_new_place"] += 1
+
+    rows = sorted(
+        collected,
+        key=lambda row: (
+            str(row.get("googlePlaceId") or ""),
+            str((row.get("webEvidence") or {}).get("retrievedAt") or row.get("checkedAt") or ""),
+            str((row.get("webEvidence") or {}).get("finalUrl") or ""),
+            str((row.get("webEvidence") or {}).get("contentHash") or ""),
+        ),
+    )
+    durable_field_counts = Counter()
+    durable_places = set()
+    for row in rows:
+        durable_places.add(str(row.get("googlePlaceId") or ""))
+        for key in (row.get("fieldClaims") or {}):
+            durable_field_counts[key] += 1
+
     payload = {
-        "schemaVersion": 1,
+        "schemaVersion": 2,
         "ruleVersion": RULE_VERSION,
         "checkedAt": web.utc_now()[:10],
         "policy": {
@@ -253,11 +323,16 @@ def main():
             "robotsRespected": True,
             "restrictedAccessBypass": False,
             "telephoneIncludedInCompletionTargets": True,
-            "existingSinglePageEvidenceNotRewrittenAcrossContentHashes": True,
+            "multiSnapshotEvidenceByPlaceId": True,
+            "snapshotIdentity": ["googlePlaceId", "finalUrl", "contentHash"],
+            "crossSnapshotClaimMerge": False,
+            "canonicalResolution": "import_time_missing_only",
         },
         "summary": {
             "rows": len(rows),
-            "fieldCounts": dict(sorted(field_counts.items())),
+            "places": len(durable_places),
+            "fieldCounts": dict(sorted(durable_field_counts.items())),
+            "newFieldClaims": dict(sorted(new_field_counts.items())),
             "fetchCounts": dict(sorted(counts.items())),
         },
         "rows": rows,
