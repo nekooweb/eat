@@ -75,6 +75,17 @@ function positiveInteger(value) {
   return Number.isInteger(value) && value > 0 && value <= 10000 ? value : null;
 }
 
+function compactText(value, limit = 1200) {
+  if (!nonempty(value)) return null;
+  const text = String(value).replace(/\s+/g, ' ').trim();
+  return text && text.length <= limit ? text : null;
+}
+
+function validHttps(value) {
+  const text = compactText(value, 500);
+  return text && /^https:\/\/[^\s]+$/i.test(text) ? text : null;
+}
+
 const practicalDoc = readJson(PRACTICAL, { rows: [], policy: {}, summary: {} });
 const pp = practicalDoc.policy || {};
 if (
@@ -182,7 +193,7 @@ const richReferenceMap = {
 };
 
 // Rich metadata is retained reviewed data. It never creates a runtime identity and
-// only adds optional operational/amenity fields to already-published named rows.
+// only adds optional operational/reference fields to already-published named rows.
 for (const item of richDoc.rows || []) {
   const row = byId.get(item.googlePlaceId);
   if (!row || row.nameKnown !== true || !String(row.name || '').trim()) continue;
@@ -203,7 +214,24 @@ for (const item of richDoc.rows || []) {
     if (cards.length) set('acceptedCreditCards', cards);
   }
   if (typeof item.mobileCouponAvailable === 'boolean') set('mobileCouponAvailable', item.mobileCouponAvailable);
-  if (nonempty(item.budgetMemo)) set('budgetMemo', String(item.budgetMemo).trim());
+  if (compactText(item.budgetMemo)) set('budgetMemo', compactText(item.budgetMemo));
+
+  // Provider-native reference fields are kept distinct from canonical cuisine/budget/hours.
+  // They are useful for future UI/debugging but cannot overwrite normalized core fields.
+  if (compactText(item.nameKana, 240)) set('nameKana', compactText(item.nameKana, 240));
+  if (validHttps(item.couponUrl)) set('couponUrl', validHttps(item.couponUrl));
+  if (compactText(item.mobileAccessText)) set('mobileAccessReference', compactText(item.mobileAccessText));
+  if (compactText(item.hotpepperOpeningHoursText)) set('hotPepperOpeningHoursReference', compactText(item.hotpepperOpeningHoursText));
+  if (compactText(item.hotpepperClosedText)) set('hotPepperClosureReference', compactText(item.hotpepperClosedText));
+  if (compactText(item.sourceCatch)) set('hotPepperSourceCatch', compactText(item.sourceCatch));
+  if (compactText(item.hotpepperKtaiCouponRaw, 300)) set('hotPepperMobileCouponReference', compactText(item.hotpepperKtaiCouponRaw, 300));
+
+  const referenceMetadata = {};
+  if (item.hotpepperArea && typeof item.hotpepperArea === 'object') referenceMetadata.area = item.hotpepperArea;
+  if (item.hotpepperGenre && typeof item.hotpepperGenre === 'object') referenceMetadata.genre = item.hotpepperGenre;
+  if (item.hotpepperBudget && typeof item.hotpepperBudget === 'object') referenceMetadata.budget = item.hotpepperBudget;
+  if (Array.isArray(item.specialFeatures) && item.specialFeatures.length) referenceMetadata.specialFeatures = item.specialFeatures;
+  if (Object.keys(referenceMetadata).length) set('hotPepperReferenceMetadata', referenceMetadata);
 
   const amenities = item.amenities && typeof item.amenities === 'object' ? item.amenities : {};
   for (const [sourceKey, outputKey] of Object.entries(richAmenityMap)) {
@@ -211,11 +239,11 @@ for (const item of richDoc.rows || []) {
   }
   const sourceServiceText = item.sourceServiceText && typeof item.sourceServiceText === 'object' ? item.sourceServiceText : {};
   for (const [sourceKey, outputKey] of Object.entries(richReferenceMap)) {
-    if (nonempty(sourceServiceText[sourceKey])) set(outputKey, String(sourceServiceText[sourceKey]).trim());
+    if (compactText(sourceServiceText[sourceKey])) set(outputKey, compactText(sourceServiceText[sourceKey]));
   }
 
-  if (!nonempty(row.stationName) && nonempty(item.nearestStation)) set('stationName', String(item.nearestStation).trim());
-  if (!nonempty(row.accessReference) && nonempty(item.accessText)) set('accessReference', String(item.accessText).trim());
+  if (!nonempty(row.stationName) && compactText(item.nearestStation, 240)) set('stationName', compactText(item.nearestStation, 240));
+  if (!nonempty(row.accessReference) && compactText(item.accessText)) set('accessReference', compactText(item.accessText));
 
   if (changed) {
     row.richPracticalSource = 'Hot Pepper';
@@ -266,6 +294,13 @@ Object.assign(stats, {
   acceptedCreditCardsKnown: rows.filter((r) => Array.isArray(r.acceptedCreditCards) && r.acceptedCreditCards.length).length,
   mobileCouponAvailabilityKnown: rows.filter((r) => typeof r.mobileCouponAvailable === 'boolean').length,
   budgetMemoKnown: rows.filter((r) => nonempty(r.budgetMemo)).length,
+  nameKanaKnown: rows.filter((r) => nonempty(r.nameKana)).length,
+  couponUrlKnown: rows.filter((r) => validHttps(r.couponUrl)).length,
+  mobileAccessReferenceKnown: rows.filter((r) => nonempty(r.mobileAccessReference)).length,
+  hotPepperOpeningHoursReferenceKnown: rows.filter((r) => nonempty(r.hotPepperOpeningHoursReference)).length,
+  hotPepperClosureReferenceKnown: rows.filter((r) => nonempty(r.hotPepperClosureReference)).length,
+  hotPepperSourceCatchKnown: rows.filter((r) => nonempty(r.hotPepperSourceCatch)).length,
+  hotPepperReferenceMetadataKnown: rows.filter((r) => r.hotPepperReferenceMetadata && typeof r.hotPepperReferenceMetadata === 'object').length,
   wifiKnown: rows.filter((r) => typeof r.wifiAvailable === 'boolean').length,
   barrierFreeKnown: rows.filter((r) => typeof r.barrierFree === 'boolean').length,
   childrenWelcomeKnown: rows.filter((r) => typeof r.childrenWelcome === 'boolean').length,
@@ -313,6 +348,13 @@ console.log(JSON.stringify({
   acceptedCreditCardsKnown: stats.acceptedCreditCardsKnown,
   mobileCouponAvailabilityKnown: stats.mobileCouponAvailabilityKnown,
   budgetMemoKnown: stats.budgetMemoKnown,
+  nameKanaKnown: stats.nameKanaKnown,
+  couponUrlKnown: stats.couponUrlKnown,
+  mobileAccessReferenceKnown: stats.mobileAccessReferenceKnown,
+  hotPepperOpeningHoursReferenceKnown: stats.hotPepperOpeningHoursReferenceKnown,
+  hotPepperClosureReferenceKnown: stats.hotPepperClosureReferenceKnown,
+  hotPepperSourceCatchKnown: stats.hotPepperSourceCatchKnown,
+  hotPepperReferenceMetadataKnown: stats.hotPepperReferenceMetadataKnown,
   wifiKnown: stats.wifiKnown,
   barrierFreeKnown: stats.barrierFreeKnown,
   childrenWelcomeKnown: stats.childrenWelcomeKnown,
