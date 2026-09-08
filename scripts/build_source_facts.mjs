@@ -16,7 +16,6 @@ const norm = (value) => String(value || '')
   .replace(/[\s　・･’'"\-—_()（）\[\]【】「」『』&＆]+/g, '');
 const unique = (values) => [...new Set(values.filter((value) => value != null && value !== ''))];
 const clone = (value) => JSON.parse(JSON.stringify(value));
-const nonEmptyArray = (value) => Array.isArray(value) && value.length > 0;
 const validDate = (value) => /^\d{4}-\d{2}-\d{2}$/.test(String(value || ''));
 
 const maintenanceSandbox = { window: { RESTAURANTS: [] }, console };
@@ -129,8 +128,11 @@ const rows = [...factsById.entries()]
   .sort((a, b) => a.googlePlaceId.localeCompare(b.googlePlaceId));
 
 const dishPatch = fs.readFileSync(DISH_PATCH, 'utf8').trim();
-if (!dishPatch.includes("dishRecommendationDisplayPolicy = 'relaxed-zh-v1'")) {
-  throw new Error('Chinese dish runtime patch is missing its relaxed-zh-v1 marker');
+if (!dishPatch.includes("const POLICY = 'relaxed-zh-v2'")) {
+  throw new Error('Chinese dish runtime patch is missing its relaxed-zh-v2 marker');
+}
+if (!dishPatch.includes('genericFallbackAllowed: false')) {
+  throw new Error('Chinese dish runtime patch must keep generic fallback disabled');
 }
 
 const summary = {
@@ -140,7 +142,8 @@ const summary = {
   providerCounts,
   fieldCounts,
   unattachedMaintenanceRows: unattached,
-  chineseDishRuntimePatch: 'relaxed-zh-v1'
+  chineseDishRuntimePatch: 'relaxed-zh-v2',
+  genericDishFallbackAllowed: false
 };
 
 const payload = {
@@ -150,7 +153,8 @@ const payload = {
     overwritesCanonicalCoreFields: false,
     googleResponseContentExcluded: true,
     reviewTextExcluded: true,
-    approximateDishSuggestionsRemainDisplayOnly: true
+    approximateDishSuggestionsRemainDisplayOnly: true,
+    genericDishFallbackAllowed: false
   },
   summary,
   rows
