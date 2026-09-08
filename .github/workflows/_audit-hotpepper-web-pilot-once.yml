@@ -1,11 +1,11 @@
-name: One-shot exact-bound Hot Pepper web dish pilot
+name: One-shot structured Hot Pepper web dish pilot
 
 on:
   push:
     branches:
       - main
     paths:
-      - _ops/run-hotpepper-web-pilot-once-2026-09-08.txt
+      - _ops/run-hotpepper-web-structured-pilot-once-2026-09-08.txt
 
 permissions:
   contents: read
@@ -20,25 +20,34 @@ jobs:
           node-version: '22'
       - name: Enforce zero-paid policy
         run: node scripts/audit_no_paid_apis.mjs
-      - name: Check pilot syntax
-        run: node --check scripts/collect_hotpepper_web_dish_evidence.mjs
-      - name: Run bounded exact-bound Hot Pepper web pilot
+      - name: Check structured pilot syntax
+        run: node --check scripts/collect_hotpepper_web_structured_dish_evidence.mjs
+      - name: Run bounded structure-scoped Hot Pepper web pilot
         env:
           HOTPEPPER_WEB_LIMIT: '64'
           HOTPEPPER_WEB_CONCURRENCY: '8'
           HOTPEPPER_WEB_TIMEOUT_MS: '8000'
-          HOTPEPPER_WEB_MENU_PAGE_LIMIT: '4'
+          HOTPEPPER_WEB_FOOD_PAGE_LIMIT: '1'
         run: |
-          node scripts/collect_hotpepper_web_dish_evidence.mjs _audit/hotpepper_web_dish_pilot.json | tee /tmp/hotpepper-web-pilot-summary.json
+          node scripts/collect_hotpepper_web_structured_dish_evidence.mjs _audit/hotpepper_web_structured_pilot.json | tee /tmp/hotpepper-web-structured-summary.json
           node - <<'NODE'
           const fs = require('fs');
-          const x = JSON.parse(fs.readFileSync('_audit/hotpepper_web_dish_pilot.json', 'utf8'));
+          const x = JSON.parse(fs.readFileSync('_audit/hotpepper_web_structured_pilot.json', 'utf8'));
           if (x.policy?.paidGoogleDataApiCalls !== 0 || x.policy?.hotPepperWebServiceApiCalls !== 0) throw new Error('pilot must remain zero-paid/API-free');
-          if (x.policy?.rootIdentityRevalidationRequired !== true || x.policy?.guessedMenuPathsAllowed !== false) throw new Error('identity/menu discovery policy mismatch');
-          console.log(JSON.stringify({ summary: x.summary, evidenceRows: (x.rows || []).map(r => ({ googlePlaceId: r.googlePlaceId, name: r.name, recommended: r.recommendedDishes.map(d => [d.nameZh, d.nameJa, d.sourceUrl]), featured: r.featuredDishes.map(d => [d.nameZh, d.nameJa, d.sourceUrl]) })) }));
+          if (x.policy?.rootIdentityRevalidationRequired !== true || x.policy?.foodPageIdentityRevalidationRequired !== true) throw new Error('identity policy mismatch');
+          if (x.policy?.guessedMenuPathsAllowed !== false || x.policy?.relatedKeywordFooterAllowed !== false || x.policy?.coursePageOrdinaryDishExtractionAllowed !== false) throw new Error('scope policy mismatch');
+          console.log(JSON.stringify({
+            summary: x.summary,
+            evidenceRows: (x.rows || []).map(r => ({
+              googlePlaceId: r.googlePlaceId,
+              name: r.name,
+              recommended: r.recommendedDishes.map(d => [d.nameZh, d.nameJa, d.evidenceSnippet, d.sourceUrl]),
+              featured: r.featuredDishes.map(d => [d.nameZh, d.nameJa, d.evidenceSnippet, d.sourceUrl])
+            }))
+          }));
           NODE
       - uses: actions/upload-artifact@v4
         with:
-          name: hotpepper-web-dish-pilot
-          path: _audit/hotpepper_web_dish_pilot.json
+          name: hotpepper-web-structured-dish-pilot
+          path: _audit/hotpepper_web_structured_pilot.json
           if-no-files-found: error
