@@ -39,6 +39,7 @@
     ],
     "textFields": [
       "facts.genre.catch",
+      "facts.freeFood (concrete dish text only)",
       "specialFeatures[].title",
       "sourceServiceText.allYouCanEat (concrete dish text only)"
     ],
@@ -85,7 +86,8 @@
     "rawPdfPersisted": false,
     "rawExtractedTextPersisted": false,
     "identityChanges": 0,
-    "extractor": "pdftotext + source-native DISH_RULES"
+    "extractor": "pdftotext + source-native DISH_RULES",
+    "catalogFreeFoodRequiresConcreteAvailabilityWording": true
   },
   "summary": {
     "catalogTotal": 2804,
@@ -93,7 +95,7 @@
     "queueEligibleIds": 326,
     "targets": 308,
     "uniqueOrigins": 274,
-    "sitemapFilesFetched": 618,
+    "sitemapFilesFetched": 628,
     "menuUrlsDiscovered": 130,
     "menuPagesFetched": 96,
     "errorTargets": 9,
@@ -104,10 +106,10 @@
     "featuredItems": 113,
     "previousEvidence": {
       "recommendationRestaurants": 234,
-      "featuredRestaurants": 428,
-      "evidenceRestaurants": 487,
+      "featuredRestaurants": 430,
+      "evidenceRestaurants": 489,
       "recommendationItems": 451,
-      "featuredItems": 1067
+      "featuredItems": 1072
     },
     "freshCrawlEvidence": {
       "recommendationRestaurants": 3,
@@ -118,10 +120,10 @@
     },
     "mergedEvidence": {
       "recommendationRestaurants": 234,
-      "featuredRestaurants": 428,
-      "evidenceRestaurants": 487,
+      "featuredRestaurants": 430,
+      "evidenceRestaurants": 489,
       "recommendationItems": 451,
-      "featuredItems": 1067
+      "featuredItems": 1072
     },
     "specificityCorrection": {
       "correctedRestaurants": 3,
@@ -132,7 +134,7 @@
         "yakisoba-over-soba": 2
       },
       "recommendationItemsAfterCorrection": 451,
-      "featuredItemsAfterCorrection": 1064
+      "featuredItemsAfterCorrection": 1069
     }
   },
   "rows": [
@@ -572,6 +574,16 @@
           "evidenceClass": "provider_promotional_dish_text",
           "evidenceRule": "hotpepper-catch-menu:焼き?鳥|やきとり|yakitori",
           "evidenceSnippet": "【焼鳥】信長秘伝のタレ 飲み放題付コース多数"
+        },
+        {
+          "nameZh": "日式炸鸡",
+          "nameJa": "唐揚げ",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001186753/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-retained-catalogFreeFood:唐揚げ|から揚げ|からあげ|karaage",
+          "evidenceSnippet": "あり ：唐揚げ・ポテト食べ放題2時間飲み放題付きのコースをご用意しております！"
         },
         {
           "nameZh": "炸串",
@@ -2047,6 +2059,33 @@
           "evidenceClass": "retained_source_menu_item",
           "evidenceRule": "retained:dishes:餃子|饺子|gyoza",
           "evidenceSnippet": "餃子"
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJ52qDXwCNGGAR20E2eShkMuA",
+      "name": "粋 神保町本店",
+      "recommendedDishes": [],
+      "featuredDishes": [
+        {
+          "nameZh": "烤鸡串",
+          "nameJa": "焼き鳥",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ003872713/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-retained-catalogFreeFood:焼き?鳥|やきとり|yakitori",
+          "evidenceSnippet": "あり ：肉寿司や焼き鳥など食べ放題&飲み放題付きコース３５00円～！"
+        },
+        {
+          "nameZh": "肉寿司",
+          "nameJa": "肉寿司",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ003872713/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-retained-catalogFreeFood:promotional-specific:肉寿司",
+          "evidenceSnippet": "あり ：肉寿司や焼き鳥など食べ放題&飲み放題付きコース３５00円～！"
         }
       ]
     },
@@ -9138,6 +9177,23 @@
           "evidenceClass": "source_menu_text",
           "evidenceRule": "sitemap-menu-text:油そば",
           "evidenceSnippet": "だるまのめ | 油そば総本店 | 壱角堂 | 品川製麺所 | 株式会社ガーデン"
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJIV7nCwCNGGARDRcAKBErPIg",
+      "name": "個室居酒屋 つるよし 神保町店",
+      "recommendedDishes": [],
+      "featuredDishes": [
+        {
+          "nameZh": "肉寿司",
+          "nameJa": "肉寿司",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ003941185/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-retained-catalogFreeFood:promotional-specific:肉寿司",
+          "evidenceSnippet": "あり ：肉寿司や国産マグロなど食べ放題&飲み放題付きコース3480円～！"
         }
       ]
     },
@@ -16899,6 +16955,16 @@
       "name": "シュラスコ×肉寿司　個室居酒屋　肉丸酒場　水道橋店",
       "recommendedDishes": [],
       "featuredDishes": [
+        {
+          "nameZh": "牛排",
+          "nameJa": "ステーキ",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ003474367/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-retained-catalogFreeFood:ステーキ|steak",
+          "evidenceSnippet": "あり ：肉寿司・ステーキ・チーズフォンデュ食べ放題"
+        },
         {
           "nameZh": "肉寿司",
           "nameJa": "肉寿司",
