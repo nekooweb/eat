@@ -13,8 +13,11 @@ mandatory, and promotion remains a separate collision-checked step.
 """
 from __future__ import annotations
 
+import json
 import re
+import sys
 import unicodedata
+from pathlib import Path
 
 import audit_id_only_priority_identity_groups as priority
 import review_id_only_currentness_sources_v2 as v2
@@ -36,8 +39,6 @@ def name_components(value: str):
         normalized = priority.normalize_name(part)
         if not normalized:
             continue
-        # Strip only generic branch suffixes. Location tokens such as 神田店 become 神田,
-        # while a distinctive restaurant token is otherwise preserved.
         normalized = re.sub(r"(?:総本店|本店|支店|店舗)$", "", normalized)
         if normalized.endswith("店") and len(normalized) >= 3:
             normalized = normalized[:-1]
@@ -59,8 +60,6 @@ def component_similarity(alias: str, page_name: str):
         total = sum(len(token) for token in components)
         covered = sum(len(token) for token in matched)
         coverage = covered / total if total else 0.0
-        # Two independent retained name components must survive. The score only affects
-        # the name gate; v2 still independently requires location confirmation.
         component_score = min(0.98, 0.72 + 0.26 * coverage)
         return max(baseline, component_score)
     if len(components) == 1 and len(components[0]) >= 6 and components[0] in page_norm:
@@ -76,13 +75,34 @@ def best_name_match(page_name: str, aliases: list[str]):
     return scored[0]
 
 
+def output_path_from_argv():
+    for index, value in enumerate(sys.argv[:-1]):
+        if value == "--output":
+            return Path(sys.argv[index + 1])
+    return None
+
+
 def main():
     # v2's currentness_check resolves this global at runtime, so replace only the name
     # comparator and rule label. All location and admission gates remain v2 code paths.
     v2.best_name_match = best_name_match
     v2.RULE_VERSION = RULE_VERSION
-    original_main = v2.main
-    original_main()
+    v2.main()
+
+    # Mark the persisted review explicitly so a promotion consumer can distinguish this
+    # comparator fix from any threshold relaxation.
+    output = output_path_from_argv()
+    if output and output.exists():
+        doc = json.loads(output.read_text(encoding="utf-8"))
+        doc["policy"] = {
+            **(doc.get("policy") or {}),
+            "orderInsensitiveRetainedNameComponents": True,
+            "genericBranchSuffixNormalizationOnly": True,
+            "minimumMatchedRetainedNameComponents": 2,
+            "locationThresholdsUnchangedFromV2": True,
+            "admissionThresholdsUnchangedFromV2": True,
+        }
+        output.write_text(json.dumps(doc, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
 if __name__ == "__main__":
