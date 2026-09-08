@@ -7,12 +7,15 @@ on:
       - ".github/workflows/collect-google-inventory-details.yml"
       - "scripts/recommended_dish_extractor.mjs"
       - "scripts/build_retained_dish_evidence.mjs"
+      - "scripts/build_retained_hotpepper_promotional_dish_evidence.mjs"
       - "scripts/collect_google_inventory_recommendations.mjs"
       - "scripts/merge_google_inventory_detail_evidence.mjs"
       - "scripts/build_google_inventory_detail_queue.mjs"
       - "scripts/build_dish_batch_plan.mjs"
       - "scripts/audit_google_inventory_detail_evidence.mjs"
       - "scripts/build_google_inventory_runtime.mjs"
+      - "data/hotpepper_catalog_facts.json"
+      - "data/hotpepper_rich_metadata.js"
   workflow_dispatch:
 
 permissions:
@@ -83,6 +86,23 @@ jobs:
           }
           console.log(JSON.stringify(q.summary));
           NODE
+      - name: Mine retained Hot Pepper promotional dish text
+        run: |
+          set -euo pipefail
+          node scripts/build_retained_hotpepper_promotional_dish_evidence.mjs \
+            /tmp/retained-hotpepper-promotional-dish-evidence.json | tee /tmp/retained-hotpepper-promotional-dish-summary.json
+          test -s /tmp/retained-hotpepper-promotional-dish-evidence.json
+          node - <<'NODE'
+          const fs = require('fs');
+          const x = JSON.parse(fs.readFileSync('/tmp/retained-hotpepper-promotional-dish-evidence.json', 'utf8'));
+          if (x.policy?.networkRequests !== 0 || x.policy?.paidGoogleDataApiCalls !== 0) {
+            throw new Error('retained Hot Pepper promotional mining must be network-free');
+          }
+          if (x.policy?.recommendationRequiresExplicitMarker !== true || x.policy?.genericFallbackAllowed !== false) {
+            throw new Error('retained Hot Pepper promotional mining semantic policy mismatch');
+          }
+          console.log(JSON.stringify(x.summary));
+          NODE
       - name: Collect current official-site and retained Hot Pepper evidence
         env:
           INVENTORY_DETAIL_FETCH_TIMEOUT_MS: "7000"
@@ -102,6 +122,10 @@ jobs:
             /tmp/dish-evidence-retained-merged.json | tee /tmp/retained-merge-summary.json
           node scripts/merge_google_inventory_detail_evidence.mjs \
             /tmp/dish-evidence-retained-merged.json \
+            /tmp/retained-hotpepper-promotional-dish-evidence.json \
+            /tmp/dish-evidence-retained-promotional-merged.json | tee /tmp/retained-hotpepper-promotional-merge-summary.json
+          node scripts/merge_google_inventory_detail_evidence.mjs \
+            /tmp/dish-evidence-retained-promotional-merged.json \
             /tmp/fresh-dish-evidence.json \
             data/google_inventory_detail_evidence.json | tee /tmp/fresh-merge-summary.json
           node scripts/audit_google_inventory_detail_evidence.mjs
