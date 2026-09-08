@@ -6,6 +6,8 @@ on:
     paths:
       - ".github/workflows/currentness-page-phone-enrichment.yml"
       - "scripts/database/collect_currentness_labeled_telephone.py"
+      - "scripts/database/import_source_basic_web_evidence.py"
+      - "scripts/database/merge_public_web_field_evidence.py"
   workflow_dispatch:
 
 permissions:
