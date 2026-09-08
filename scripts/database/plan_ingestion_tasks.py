@@ -4,9 +4,17 @@ import argparse,json,sqlite3
 from collections import Counter,defaultdict
 from datetime import datetime,timezone
 from pathlib import Path
-PLANNER_VERSION='master-plan-v3'
-FIELD_REQUIREMENTS={'address':('address',),'coordinates':('coordinates',),'cuisine':('cuisine',),'hours':('hours.raw','hours.reference.legacy','hours.normalized.legacy'),'dinner_budget':('budget.dinner.range','budget.dinner.legacy_range'),'lunch_budget':('budget.lunch.range','budget.lunch.legacy_range')}
-FIELD_WEIGHTS={'address':60,'coordinates':70,'cuisine':60,'hours':80,'dinner_budget':70,'lunch_budget':30,'practical':20}
+PLANNER_VERSION='master-plan-v4'
+FIELD_REQUIREMENTS={
+    'address':('address',),
+    'coordinates':('coordinates',),
+    'cuisine':('cuisine',),
+    'hours':('hours.raw','hours.reference.legacy','hours.normalized.legacy'),
+    'dinner_budget':('budget.dinner.range','budget.dinner.legacy_range'),
+    'lunch_budget':('budget.lunch.range','budget.lunch.legacy_range'),
+    'telephone':('contact.telephone',),
+}
+FIELD_WEIGHTS={'address':60,'coordinates':70,'cuisine':60,'hours':80,'dinner_budget':70,'lunch_budget':30,'telephone':35,'practical':20}
 def now_iso(): return datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace('+00:00','Z')
 def canonical_json(v): return json.dumps(v,ensure_ascii=False,sort_keys=True,separators=(',',':'))
 def known_resolution_set(db): return {(p,f) for p,f in db.execute("SELECT place_id,field_key FROM field_resolutions WHERE resolution_state='known'")}
