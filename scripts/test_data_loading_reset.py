@@ -91,5 +91,67 @@ class DataLoadingRegression(unittest.TestCase):
                 if not line.lstrip().startswith('//'):
                     self.assertNotRegex(line,r'\b1415\b|named 1,415|public 1,415')
 
+    def test_validator_rejection_preserves_previous_database(self):
+        from safe_reset import rebuild_database
+        with tempfile.TemporaryDirectory() as td:
+            output=Path(td)/'main.sqlite'
+            db=sqlite3.connect(output)
+            db.execute('create table sentinel(value text)')
+            db.execute("insert into sentinel values ('intact')")
+            db.commit();db.close()
+            def builder(path):
+                db=sqlite3.connect(path)
+                db.execute('create table catalog_entries(place_id text primary key)')
+                db.executemany('insert into catalog_entries values (?)',[(str(i),) for i in range(2804)])
+                db.commit();db.close()
+                return {}
+            def reject(_):
+                raise RuntimeError('business validation rejected')
+            with self.assertRaisesRegex(RuntimeError,'business validation rejected'):
+                rebuild_database(output,builder,reject)
+            db=sqlite3.connect(output)
+            self.assertEqual(db.execute('select value from sentinel').fetchone()[0],'intact')
+            db.close()
+
+    def test_schema_upgrade_retains_existing_task_history(self):
+        db=sqlite3.connect(':memory:')
+        db.executescript((ROOT/'database/migrations/001_initial.sql').read_text())
+        db.execute('insert into catalog_entries values (?,?,?,?,?,?)',('p','area1','{}','id_only','now','now'))
+        db.execute('insert into ingestion_tasks values (?,?,?,?,?,?,?)',('task','p','source','failed',3,None,'network_error'))
+        db.execute('insert into ingestion_task_details values (?,?,?,?,?,?,?,?,?,?)',('task','identity_recovery',900,'[]','{}',None,'test',1,'now','now'))
+        db.commit()
+        master.core.apply_migrations(db)
+        master.core.apply_migrations(db)
+        self.assertEqual(db.execute('select status,attempts from ingestion_tasks').fetchone(),('failed',3))
+        self.assertEqual(db.execute('select task_type,active from ingestion_task_details').fetchone(),('identity_recovery',1))
+        self.assertEqual(list(db.execute('select version from schema_migrations order by version')),[(1,),(2,)])
+        db.execute("update ingestion_task_details set task_type='dish_source_acquisition'")
+        tasks=workplan.active_tasks(db)
+        self.assertEqual(tasks[0]['agentType'],'dish-source-acquisition')
+        db.close()
+
+    def test_oversized_hash_bucket_is_split_without_task_loss(self):
+        tasks=[{'taskId':str(i),'placeId':str(i),'agentType':'dish-source-acquisition','priority':1} for i in range(601)]
+        with patch.object(workplan,'stable_bucket',return_value=0):
+            shards=workplan.make_shards(tasks,8,6,2)
+        summary=workplan.validate_shards(tasks,shards)
+        self.assertEqual(summary['taskCount'],601)
+        self.assertLessEqual(summary['maxShardSize'],250)
+        self.assertTrue(all(s['taskCount']>0 for s in shards))
+
+    def test_candidate_plan_rejects_same_count_wrong_queue_identity(self):
+        p=ROOT/'data/google_inventory_detail_queue.json'
+        original=p.read_bytes()
+        queue=json.loads(original)
+        queue['rows'][0]['googlePlaceId']='not-in-the-current-runtime'
+        try:
+            p.write_text(json.dumps(queue))
+            with tempfile.TemporaryDirectory() as td:
+                r=subprocess.run(['node','scripts/build_independent_dish_source_candidate_plan.mjs',str(Path(td)/'bad.json'),'8'],cwd=ROOT,capture_output=True,text=True)
+                self.assertNotEqual(r.returncode,0)
+                self.assertIn('same complete ID set',r.stderr)
+        finally:
+            p.write_bytes(original)
+
 if __name__=='__main__':
     unittest.main(verbosity=2)
