@@ -29,6 +29,16 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - name: Sync latest main after serialized wait
+        run: |
+          set -euo pipefail
+          # A queued workflow run is checked out at the historical event SHA even
+          # when an earlier serialized dish run has already pushed newer data.
+          # Always start extraction from the latest main so stale generated JSON
+          # cannot be replayed over newer evidence during the final rebase.
+          git fetch origin main
+          git reset --hard origin/main
+          echo "DISH_BATCH_BASE_SHA=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
