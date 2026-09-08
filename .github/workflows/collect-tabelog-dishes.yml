@@ -1,0 +1,132 @@
+name: Collect exact-bound Tabelog menu dishes
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/collect-tabelog-dishes.yml"
+      - "scripts/collect_tabelog_dish_evidence.mjs"
+      - "scripts/recommended_dish_extractor.mjs"
+      - "scripts/audit_google_inventory_detail_evidence.mjs"
+      - "scripts/database/resolve_dish_translation_evidence.py"
+      - "scripts/database/validate_dish_translation_resolution.py"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: dish-evidence-main-writer
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5, 6, 7]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Enforce no-paid-data-API policy
+        run: node scripts/audit_no_paid_apis.mjs
+      - name: Check collector syntax
+        run: node --check scripts/collect_tabelog_dish_evidence.mjs
+      - name: Collect exact-bound Tabelog menu evidence shard
+        env:
+          TABELOG_DISH_CONCURRENCY: "3"
+          TABELOG_DISH_TIMEOUT_MS: "12000"
+          TABELOG_DISH_MENU_PAGE_LIMIT: "2"
+        run: |
+          set -euo pipefail
+          mkdir -p _tmp/tabelog
+          node scripts/collect_tabelog_dish_evidence.mjs \
+            "_tmp/tabelog/tabelog-dish-${{ matrix.shard }}.json" \
+            "${{ matrix.shard }}" 8 | tee "_tmp/tabelog/tabelog-dish-${{ matrix.shard }}-summary.json"
+          test -s "_tmp/tabelog/tabelog-dish-${{ matrix.shard }}.json"
+      - name: Upload shard evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: tabelog-dish-${{ matrix.shard }}
+          path: _tmp/tabelog/tabelog-dish-${{ matrix.shard }}.json
+          if-no-files-found: error
+          retention-days: 3
+
+  merge:
+    needs: collect
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout latest main
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Sync latest main before central merge
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          git reset --hard origin/main
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Download all Tabelog dish shards
+        uses: actions/download-artifact@v4
+        with:
+          pattern: tabelog-dish-*
+          path: _tmp/tabelog-shards
+          merge-multiple: true
+      - name: Merge shard evidence centrally
+        run: |
+          set -euo pipefail
+          cp data/google_inventory_detail_evidence.json /tmp/tabelog-merged-current.json
+          count=0
+          for shard in $(find _tmp/tabelog-shards -type f -name 'tabelog-dish-*.json' | sort); do
+            node scripts/merge_google_inventory_detail_evidence.mjs \
+              /tmp/tabelog-merged-current.json "$shard" /tmp/tabelog-merged-next.json
+            mv /tmp/tabelog-merged-next.json /tmp/tabelog-merged-current.json
+            count=$((count + 1))
+          done
+          test "$count" -eq 8
+          cp /tmp/tabelog-merged-current.json data/google_inventory_detail_evidence.json
+          node scripts/audit_google_inventory_detail_evidence.mjs
+      - name: Rebuild runtime, queue and bulk plan
+        run: |
+          set -euo pipefail
+          node scripts/build_google_inventory_runtime.mjs
+          node scripts/audit_google_inventory_runtime.mjs
+          node scripts/build_google_inventory_detail_queue.mjs data/google_inventory_detail_queue.json
+          node scripts/build_dish_batch_plan.mjs data/dish_batch_plan.json 8 | tee /tmp/tabelog-batch-plan-summary.json
+          node - <<'NODE'
+          const fs = require('fs');
+          const q = JSON.parse(fs.readFileSync('data/google_inventory_detail_queue.json', 'utf8'));
+          const plan = JSON.parse(fs.readFileSync('data/dish_batch_plan.json', 'utf8'));
+          if (q.summary?.catalogTotal !== 2804 || !q.summary?.runtimeBaselineComplete) throw new Error('frozen catalog contract failed');
+          if (plan.policy?.paidGoogleDataApiCalls !== 0 || plan.summary?.shards !== 8) throw new Error('bulk plan contract failed');
+          console.log(JSON.stringify({queue:q.summary,batchPlan:plan.summary}));
+          NODE
+      - name: Enforce no-paid-data-API policy after rebuild
+        run: node scripts/audit_no_paid_apis.mjs
+      - name: Commit centrally merged dish evidence
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            data/google_inventory_detail_evidence.json \
+            data/google_inventory_detail_queue.json \
+            data/google_inventory_runtime.js \
+            data/dish_batch_plan.json
+          if git diff --cached --quiet; then
+            echo "No new exact-bound Tabelog dish evidence."
+            exit 0
+          fi
+          git commit -m "Update exact-bound Tabelog menu dish evidence"
+          git reset --hard HEAD
+          git fetch origin main
+          git rebase origin/main
+          git push origin HEAD:main
