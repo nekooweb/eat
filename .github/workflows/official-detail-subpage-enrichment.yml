@@ -6,6 +6,7 @@ on:
     paths:
       - ".github/workflows/official-detail-subpage-enrichment.yml"
       - "scripts/database/collect_official_index_web_fields.py"
+      - "scripts/database/collect_official_index_web_fields_no_telephone.py"
       - "scripts/database/import_source_basic_web_evidence.py"
       - "scripts/database/merge_public_web_field_evidence.py"
       - "data/official_candidate_index.json"
@@ -39,7 +40,7 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p _tmp
-          python -m py_compile scripts/database/collect_official_index_web_fields.py scripts/database/merge_public_web_field_evidence.py
+          python -m py_compile scripts/database/collect_official_index_web_fields.py scripts/database/collect_official_index_web_fields_no_telephone.py scripts/database/merge_public_web_field_evidence.py
           python scripts/database/build_master.py --output _tmp/master-before.sqlite --reset | tee _tmp/master-before.json
           python scripts/database/validate_master.py _tmp/master-before.sqlite
           python - <<'PY'
@@ -50,10 +51,10 @@ jobs:
           json.dump(out,open('_tmp/before.json','w'),sort_keys=True)
           print(json.dumps(out,sort_keys=True))
           PY
-      - name: Collect reviewed official roots and explicit same-host detail pages
+      - name: Collect reviewed official roots and explicit same-host detail pages without telephone
         run: |
           set -euo pipefail
-          python scripts/database/collect_official_index_web_fields.py \
+          python scripts/database/collect_official_index_web_fields_no_telephone.py \
             --database _tmp/master-before.sqlite \
             --output _tmp/incoming.json \
             --workers 10 \
@@ -65,10 +66,14 @@ jobs:
           p=d['policy']; s=d['summary']
           assert d['schemaVersion']==2
           assert p['paidDataApiCalls']==0 and p['rawHtmlPersisted'] is False and p['robotsRespected'] is True
+          assert p['telephoneIncludedInCompletionTargets'] is False
+          assert p['telephoneCollectionEnabled'] is False
           assert p['sameOriginDetailTraversal'] is True
           assert p['rootIdentityGateRequiredBeforeDetailDiscovery'] is True
           assert p['detailIdentityReconfirmationRequired'] is True
           assert p['genericPriceRangeMealInference'] is False
+          assert s.get('newFieldClaims',{}).get('contact.telephone',0)==0
+          assert s.get('newFieldClaims',{}).get('telephone',0)==0
           keys=[]
           for row in d['rows']:
             ev=row['webEvidence']; check=row['identityCheck']
@@ -76,6 +81,7 @@ jobs:
             assert str(ev['finalUrl']).startswith('https://')
             assert re.fullmatch(r'[0-9a-f]{64}',str(ev['contentHash']))
             assert row['fieldClaims']
+            assert 'telephone' not in row['fieldClaims']
             if 'discovery' in ev:
               q=ev['discovery']
               assert q['method']=='same_origin_explicit_detail_link'
@@ -83,7 +89,7 @@ jobs:
               assert q['detailIdentityReconfirmedIndependently'] is True
             keys.append((row['googlePlaceId'],ev['finalUrl'],ev['contentHash']))
           assert len(keys)==len(set(keys))
-          print(json.dumps({'rows':len(keys),'places':s['places'],'fieldCounts':s['fieldCounts'],'fetchCounts':s['fetchCounts']},ensure_ascii=False,sort_keys=True))
+          print(json.dumps({'rows':len(keys),'places':s['places'],'fieldCounts':s['fieldCounts'],'fetchCounts':s['fetchCounts'],'telephoneCollectionEnabled':False},ensure_ascii=False,sort_keys=True))
           PY
       - name: Merge and verify canonical delta
         run: |
@@ -99,6 +105,7 @@ jobs:
           m=json.load(open('_tmp/master-after.json'))
           p=m['ingestionPlan']; a={'fieldTasks':p['taskTypeCounts']['field_completion'],'missing':p['fieldCompletionMissingCounts']}
           for k,v in b['missing'].items(): assert a['missing'].get(k,0)<=v,(k,b,a)
+          assert a['missing'].get('telephone') == b['missing'].get('telephone')
           assert a['fieldTasks']<=b['fieldTasks'],(b,a)
           json.dump(a,open('_tmp/after.json','w'),sort_keys=True)
           print(json.dumps({'before':b,'after':a},sort_keys=True))
