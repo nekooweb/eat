@@ -118,12 +118,16 @@ if (
   throw new Error('Public hours normalized/hidden/no-source counts do not reconcile');
 }
 
-// Regression guards for two concrete failure modes found while validating the
-// actual Pages artifact: merged weekday groups and explicitly variable closure.
-for (const googlePlaceId of ['ChIJ-byfbkGMGGAReOVUQDAy6qM', 'ChIJ-Tl-7xuMGGARoFHeidLo0ns']) {
-  const row = rows.find((item) => item.googlePlaceId === googlePlaceId);
-  if (row?.hoursReference) throw new Error(`Known ambiguous schedule must remain hidden: ${googlePlaceId}`);
+// Regression guards for the two failure modes found while validating the
+// actual Pages artifact: merged weekday groups must be rebuilt correctly,
+// while explicitly variable closure schedules must remain hidden.
+const apaCurry = rows.find((item) => item.googlePlaceId === 'ChIJ-byfbkGMGGAReOVUQDAy6qM');
+const expectedApaHours = '周一、周二、周三、周四、周五 11:00–15:00、18:00–22:00；周六 11:00–18:00；周日、节假日 休息';
+if (apaCurry?.hoursReference !== expectedApaHours) {
+  throw new Error(`Merged weekday schedule was not corrected: ${apaCurry?.hoursReference || 'hidden'}`);
 }
+const barNozawa = rows.find((item) => item.googlePlaceId === 'ChIJ-Tl-7xuMGGARoFHeidLo0ns');
+if (barNozawa?.hoursReference) throw new Error('Variable closure schedule must remain hidden: Bar野澤');
 
 if (stats.recommendedDishesKnown !== recommendedDishesKnown) throw new Error('recommendedDishesKnown stat does not match materialized runtime');
 if (stats.chineseDishDisplayRows !== chineseDishDisplayRows) throw new Error('Chinese dish display count does not match materialized runtime');
