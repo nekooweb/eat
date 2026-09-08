@@ -3,6 +3,8 @@ from __future__ import annotations
 
 import argparse
 import os
+import subprocess
+import sys
 import uuid
 from collections import defaultdict
 from pathlib import Path
@@ -27,6 +29,7 @@ import resolve_master as resolver
 import resolve_retained_fields as retained_field_resolver
 import resolve_verified_osm_native_metadata as verified_osm_native_metadata
 import review_hotpepper_candidate_fields as hotpepper_candidate_review
+from safe_reset import rebuild_database
 
 ROOT = Path(__file__).resolve().parents[2]
 DATA = ROOT / "data"
@@ -89,13 +92,15 @@ def retained_conflict_index(basics, hotpepper, phase2_inputs, extra_identity_row
 
 
 def build(output: Path, reset: bool = False):
-    if reset and output.exists():
-        output.unlink()
     if reset:
-        for suffix in ("-wal", "-shm"):
-            sidecar = Path(str(output) + suffix)
-            if sidecar.exists():
-                sidecar.unlink()
+        def validate_rebuilt(temporary):
+            check=subprocess.run(
+                [sys.executable,str(ROOT/'scripts/database/validate_master.py'),str(temporary)],
+                capture_output=True,text=True
+            )
+            if check.returncode:
+                raise RuntimeError('Reset validation failed: '+check.stdout+' '+check.stderr)
+        return rebuild_database(output,lambda temporary: build(temporary,False),validate_rebuilt)
 
     inventory = core.read_json(DATA / "area1_google_ids.json")
     basics = core.read_json(DATA / "google_basic_source_matches.json")

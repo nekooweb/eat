@@ -2,21 +2,6 @@ name: Diagnose shared official listing identity consensus v6.1
 
 on:
   workflow_dispatch:
-  push:
-    branches: ["main"]
-    paths:
-      - ".github/workflows/private-official-listing-consensus-v6-1.yml"
-      - "scripts/database/diagnose_private_official_listing_consensus_v6_1.py"
-      - "scripts/database/diagnose_private_official_detail_consensus_v6.py"
-      - "scripts/database/reconcile_private_google_hints.py"
-      - "scripts/database/reconcile_private_address_consensus_v2.py"
-      - "scripts/database/reconcile_private_multisource_consensus_v3.py"
-      - "scripts/database/reconcile_private_official_web_consensus_v4.py"
-      - "scripts/database/build_master.py"
-      - "data/google_basic_source_matches.json"
-      - "data/hotpepper_catalog_facts.json"
-      - "data/overture_area1_candidates.json"
-      - "data/area1_osm.js"
 
 permissions:
   actions: read

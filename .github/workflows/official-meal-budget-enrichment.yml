@@ -2,18 +2,6 @@ name: Enrich explicit meal budgets from retained official pages
 
 on:
   workflow_dispatch:
-  push:
-    branches: ["main"]
-    paths:
-      - ".github/workflows/official-meal-budget-enrichment.yml"
-      - "scripts/database/collect_official_meal_budgets.py"
-      - "scripts/database/collect_official_detail_meal_budgets.py"
-      - "scripts/database/import_official_meal_budget_web_evidence.py"
-      - "scripts/database/merge_official_meal_budget_evidence.py"
-      - "scripts/database/import_source_basic_web_evidence.py"
-      - "scripts/database/reconcile_private_official_web_consensus_v4.py"
-      - "scripts/database/collect_official_index_web_fields.py"
-      - "data/official_candidate_index.json"
 
 permissions:
   contents: write

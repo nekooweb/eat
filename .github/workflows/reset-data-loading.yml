@@ -1,0 +1,71 @@
+name: Reset and validate data loading
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: reset-data-loading-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  reset:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      EAT_REFACTOR_MODE: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Preserve all source inputs before cleanup
+        run: |
+          python - <<'PY'
+          import hashlib,json,os,shutil
+          from pathlib import Path
+          dst=Path('_tmp/reset-source-backup')
+          entries=[]
+          for folder in ('data','database'):
+              for p in sorted(Path(folder).rglob('*')):
+                  if not p.is_file(): continue
+                  target=dst/p
+                  target.parent.mkdir(parents=True,exist_ok=True)
+                  shutil.copy2(p,target)
+                  raw=target.read_bytes()
+                  entries.append({'path':str(p),'bytes':len(raw),'sha256':hashlib.sha256(raw).hexdigest()})
+          (dst/'manifest.json').write_text(json.dumps({'sourceCommit':os.environ['GITHUB_SHA'],'files':entries},indent=2)+'\n')
+          PY
+      - name: Upload source backup
+        uses: actions/upload-artifact@v4
+        with:
+          name: data-loading-input-backup-${{ github.run_id }}
+          path: _tmp/reset-source-backup
+          retention-days: 30
+      - name: Reset and validate the complete data-loading graph without network
+        run: |
+          set -euo pipefail
+          python scripts/reload_data.py --outdir _tmp/reset-result --database _tmp/reset-result/eat-master.sqlite --reset
+          python scripts/reload_data.py --outdir _tmp/reset-result --database _tmp/reset-result/eat-master.sqlite
+      - name: Run loading regressions
+        run: python scripts/test_data_loading_reset.py
+      - name: Preserve complete rebuilt database and outputs
+        uses: actions/upload-artifact@v4
+        with:
+          name: data-loading-reset-result-${{ github.run_id }}
+          path: |
+            _tmp/reset-result
+            data/google_inventory_runtime.js
+            data/google_inventory_detail_queue.json
+            data/source_provenance.js
+            data/reviewed_official_runtime_sources.json
+            data/source_facts.js
+            data/production_area1.js
+            data/independent_dish_source_candidates.json
+            data/dish_batch_plan.json
+          retention-days: 30

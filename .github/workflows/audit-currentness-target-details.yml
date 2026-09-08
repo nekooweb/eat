@@ -1,10 +1,6 @@
 name: Inspect priority id-only currentness targets
 
 on:
-  push:
-    branches: ["main"]
-    paths:
-      - ".github/workflows/audit-currentness-target-details.yml"
   workflow_dispatch:
 
 permissions:

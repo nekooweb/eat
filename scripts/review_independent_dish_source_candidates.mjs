@@ -295,8 +295,11 @@ async function main() {
   const runtimeRows = Array.isArray(runtimeWindow.GOOGLE_INVENTORY_RESTAURANTS)
     ? runtimeWindow.GOOGLE_INVENTORY_RESTAURANTS : [];
   const runtimeStats = runtimeWindow.GOOGLE_INVENTORY_STATS || {};
-  if (runtimeStats.catalogTotal !== 2804 || runtimeRows.length !== 1415) {
-    throw new Error('Strict review requires frozen 2,804 / public 1,415 baseline');
+  if (runtimeStats.catalogTotal !== 2804 || runtimeStats.inventoryTotal !== runtimeRows.length
+    || candidates.summary?.publicRuntimeTotal !== runtimeRows.length
+    || runtimeRows.length < 3
+    || new Set(runtimeRows.map((row) => row.googlePlaceId)).size !== runtimeRows.length) {
+    throw new Error('Strict review requires candidate plan and current runtime from the same catalog build');
   }
   if (candidates.policy?.proposalOnly !== true || candidates.policy?.identityBindingChanges !== 0) {
     throw new Error('Candidate input is not proposal-only');
@@ -374,7 +377,7 @@ async function main() {
   for (const row of reviews) reasonCounts[row.reason] = (reasonCounts[row.reason] || 0) + 1;
   const summary = {
     catalogTotal: 2804,
-    publicRuntimeTotal: 1415,
+    publicRuntimeTotal: runtimeRows.length,
     proposalRows: Number(candidates.summary?.proposalRows || 0),
     highConfidenceInputRows: targets.length,
     reviewedRows: reviews.length,

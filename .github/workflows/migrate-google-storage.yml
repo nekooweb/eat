@@ -1,10 +1,7 @@
 name: Migrate Google Storage
 
 on:
-  push:
-    branches: ["main"]
-    paths:
-      - '.github/run-google-storage-migration'
+  workflow_dispatch:
 
 permissions:
   contents: write

@@ -1,12 +1,6 @@
 name: Promote full-range high-confidence OSM matches
 
 on:
-  push:
-    branches:
-      - full-area1-collection
-    paths:
-      - 'scripts/promote_full_high_confidence_osm.py'
-      - '.github/workflows/promote-full-high-confidence-osm.yml'
   workflow_dispatch:
 
 concurrency:

@@ -2,18 +2,6 @@ name: Audit retained Hot Pepper lunch gaps
 
 on:
   workflow_dispatch:
-  push:
-    branches: ["main"]
-    paths:
-      - ".github/workflows/hotpepper-lunch-gap-audit.yml"
-      - "scripts/database/audit_hotpepper_lunch_gaps.py"
-      - "scripts/database/import_hotpepper_rich_metadata.py"
-      - "scripts/database/resolve_hotpepper_source_fact_budgets.py"
-      - "scripts/database/build_master.py"
-      - "data/hotpepper_catalog_facts.json"
-      - "data/hotpepper_rich_metadata.js"
-      - "data/source_facts.js"
-      - "data/source_provenance.js"
 
 permissions:
   contents: read

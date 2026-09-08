@@ -1,13 +1,6 @@
 name: Bulk enrichment pass 2
 
 on:
-  push:
-    branches:
-      - bulk-enrichment-pass2
-    paths:
-      - 'data/source_enrichment_zchainmenus.js'
-      - 'scripts/build_locator_hours_enrichment.mjs'
-      - '.github/workflows/bulk-enrichment-pass2.yml'
   workflow_dispatch:
 
 permissions:

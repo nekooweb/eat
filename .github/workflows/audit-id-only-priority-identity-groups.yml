@@ -2,16 +2,6 @@ name: Audit priority id-only identity groups
 
 on:
   workflow_dispatch:
-  push:
-    branches: ["main"]
-    paths:
-      - ".github/workflows/audit-id-only-priority-identity-groups.yml"
-      - "scripts/database/audit_id_only_priority_identity_groups.py"
-      - "scripts/database/build_master.py"
-      - "data/area1_enrichment_queue.json"
-      - "data/hotpepper_catalog_facts.json"
-      - "data/overture_area1_candidates.json"
-      - "data/area1_google_ids.json"
 
 permissions:
   contents: read

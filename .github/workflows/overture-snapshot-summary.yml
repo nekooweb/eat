@@ -2,12 +2,6 @@ name: Summarize retained Overture snapshot
 
 on:
   workflow_dispatch:
-  push:
-    branches: ["main"]
-    paths:
-      - ".github/workflows/overture-snapshot-summary.yml"
-      - "scripts/database/summarize_overture_snapshot.py"
-      - "data/overture_area1_candidates.json"
 
 permissions:
   contents: read

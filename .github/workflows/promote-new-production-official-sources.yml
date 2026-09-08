@@ -1,12 +1,6 @@
 name: Promote new production official sources
 
 on:
-  push:
-    branches:
-      - continue-full-field-enrichment
-    paths:
-      - 'scripts/promote_new_production_sources.mjs'
-      - '.github/workflows/promote-new-production-official-sources.yml'
   workflow_dispatch:
 
 concurrency:

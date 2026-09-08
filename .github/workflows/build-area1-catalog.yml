@@ -2,34 +2,6 @@ name: Build Area1 full catalog
 
 on:
   workflow_dispatch:
-  push:
-    branches: ["main"]
-    paths:
-      - ".github/workflows/build-area1-catalog.yml"
-      - "scripts/build_area1_catalog.mjs"
-      - "scripts/apply_catalog_admission_state.mjs"
-      - "scripts/build_catalog_enrichment_queue.mjs"
-      - "scripts/apply_queue_admission_state.mjs"
-      - "scripts/audit_loaded_hotpepper_lunch_candidates.mjs"
-      - "scripts/audit_multisource_admission_candidates.mjs"
-      - "scripts/audit_unparsed_source_hours.mjs"
-      - "scripts/build_production_dataset.mjs"
-      - "scripts/build_source_provenance.mjs"
-      - "scripts/build_source_facts.mjs"
-      - "data/catalog_admissions.json"
-      - "data/area1_google_ids.json"
-      - "data/area1_full_collection_queue.json"
-      - "data/hotpepper_bindings.json"
-      - "data/hotpepper_catalog_facts.json"
-      - "data/hotpepper_rich_metadata.js"
-      - "data/overture_area1_candidates.json"
-      - "data/open_identity_reconciliation.json"
-      - "data/source_enrichment*.js"
-      - "data/source_resolution*.js"
-      - "data/featured_dishes.js"
-      - "data/recommended_dishes.js"
-      - "data/google_entities*.js"
-      - "data/area1_*.js"
 
 permissions:
   contents: write

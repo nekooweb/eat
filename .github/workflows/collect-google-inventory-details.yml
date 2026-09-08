@@ -1,33 +1,6 @@
 name: Collect source-backed recommended dishes
 
 on:
-  push:
-    branches: ["main"]
-    paths:
-      - ".github/workflows/collect-google-inventory-details.yml"
-      - "scripts/recommended_dish_extractor.mjs"
-      - "scripts/correct_dish_specificity_evidence.mjs"
-      - "scripts/build_retained_dish_evidence.mjs"
-      - "scripts/build_retained_hotpepper_promotional_dish_evidence.mjs"
-      - "scripts/collect_google_inventory_recommendations.mjs"
-      - "scripts/collect_official_sitemap_dish_evidence.mjs"
-      - "scripts/merge_google_inventory_detail_evidence.mjs"
-      - "scripts/build_google_inventory_detail_queue.mjs"
-      - "scripts/build_dish_batch_plan.mjs"
-      - "scripts/build_independent_dish_source_candidate_plan.mjs"
-      - "scripts/audit_google_inventory_detail_evidence.mjs"
-      - "scripts/build_google_inventory_runtime.mjs"
-      - "scripts/database/export_reviewed_official_runtime_sources.py"
-      - "scripts/database/retained_official_identity.py"
-      - "scripts/database/retained_osm_identity.py"
-      - "scripts/database/retained_phase2.py"
-      - "scripts/database/build_master.py"
-      - "data/official_candidate_index.json"
-      - "data/google_basic_source_matches.json"
-      - "data/area1_osm.js"
-      - "data/source_enrichment*.js"
-      - "data/hotpepper_catalog_facts.json"
-      - "data/hotpepper_rich_metadata.js"
   workflow_dispatch:
 
 permissions:

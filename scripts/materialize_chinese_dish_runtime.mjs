@@ -76,6 +76,9 @@ let chineseDishDisplayRows = 0;
 let unfilledDishRows = 0;
 
 for (const row of rows) {
+  // Maintenance values remain in source records, not in the public package.
+  delete row.dishes;
+  delete row.priceReference;
   for (const field of [
     'dishRecommendationConfidence',
     'dishRecommendationBasis',
@@ -127,6 +130,11 @@ const finalStats = {
   genericFallbackAllowed: false,
   dishRuntimeMaterialized: true
 };
+
+// Detailed crawl reports remain in source/audit records only.
+for (const field of ['detailEvidenceSummary', 'publicWebFieldEvidenceSummary', 'reviewedOfficialOverlaySummary', 'sourceBasicProviders']) {
+  delete finalStats[field];
+}
 
 fs.writeFileSync(
   runtimePath,

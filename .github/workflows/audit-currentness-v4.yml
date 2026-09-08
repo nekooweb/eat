@@ -1,12 +1,6 @@
 name: Audit branch-address currentness v4
 
 on:
-  push:
-    branches: ["main"]
-    paths:
-      - ".github/workflows/audit-currentness-v4.yml"
-      - "scripts/database/review_id_only_currentness_sources_v4.py"
-      - "data/id_only_currentness_source_overrides.json"
   workflow_dispatch:
 
 permissions:

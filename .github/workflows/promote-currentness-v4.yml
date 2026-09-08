@@ -1,11 +1,6 @@
 name: Promote strict currentness v4 identities
 
 on:
-  push:
-    branches: ["main"]
-    paths:
-      - ".github/workflows/promote-currentness-v4.yml"
-      - "scripts/database/promote_reviewed_multisource_currentness_v4.py"
   workflow_dispatch:
 
 permissions:

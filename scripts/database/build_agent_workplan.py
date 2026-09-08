@@ -89,7 +89,7 @@ def active_tasks(db: sqlite3.Connection) -> list[dict]:
                d.task_payload_json, d.source_hint
         FROM ingestion_tasks t
         JOIN ingestion_task_details d ON d.task_id = t.task_id
-        WHERE d.active = 1 AND t.status IN ('pending','partial','review_required','blocked')
+        WHERE d.active = 1 AND t.status IN ('pending','partial','review_required','blocked','failed')
         ORDER BY d.priority DESC, d.task_type, t.task_id
         """
     ).fetchall()
@@ -107,6 +107,8 @@ def active_tasks(db: sqlite3.Connection) -> list[dict]:
             agent_type = route_field_agent(source)
         elif task_type == 'dish_semantic_review':
             agent_type = 'dish-semantic-review'
+        elif task_type in ('dish_source_acquisition', 'featured_dish_source_acquisition'):
+            agent_type = 'dish-source-acquisition'
         else:
             agent_type = 'unclassified-review'
         tasks.append({
@@ -132,7 +134,7 @@ def shard_count(agent_type: str, task_count: int, identity_shards: int, field_sh
         desired = identity_shards
     elif agent_type.startswith('field-'):
         desired = field_shards
-    elif agent_type == 'dish-semantic-review':
+    elif agent_type in ('dish-semantic-review','dish-source-acquisition'):
         desired = dish_shards
     else:
         desired = 1
@@ -151,9 +153,13 @@ def make_shards(tasks: list[dict], identity_shards: int, field_shards: int, dish
         buckets = [[] for _ in range(count)]
         for task in agent_tasks:
             buckets[stable_bucket(task['taskId'], count)].append(task)
-        for index, bucket in enumerate(buckets, start=1):
+        bounded = []
+        for bucket in buckets:
             bucket.sort(key=lambda item: (-item['priority'], item['taskId']))
-            shard_id = f'{agent_type}-{index:02d}-of-{count:02d}'
+            bounded.extend(bucket[offset:offset + MAX_TASKS_PER_SHARD]
+                           for offset in range(0, len(bucket), MAX_TASKS_PER_SHARD))
+        for index, bucket in enumerate(bounded, start=1):
+            shard_id = f'{agent_type}-{index:02d}-of-{len(bounded):02d}'
             shards.append({
                 'schemaVersion': 1,
                 'plannerVersion': PLANNER_VERSION,

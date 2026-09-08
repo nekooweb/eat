@@ -2,6 +2,14 @@
 
 This file records product/architecture decisions and meaningful implementation milestones. It is not a replacement for Git history.
 
+## 2026-09-08 — 修复并重置数据载入，清除冗余派生资料
+
+- 修复公开数量写死、dish-first schema 缺失、failed task 遗漏和 reset 先删库问题。
+- 统一离线 reload 命令、源版本追踪、动态 queue/runtime 校验及 Pages 缓存版本。
+- 清理 14 个过期生成文件/旧入口，44 个维护 workflow 改为手动，去掉公开 runtime 无用字段和嵌套诊断。
+- 完整目录 2,804；验证后的公开 runtime 1,422；保留原始来源、旧库备份和回滚路径。
+- [根因、测试和备份记录](logs/2026-09-08-data-loading-reset.md)。这次不发起新网络采集，不宣称 SQLite shadow 已切成唯一网页数据源。
+
 ## 2026-09-07 — 主数据库来源及导入契约验证
 
 - 确认目标为全量 Place ID 目录、本地 SQLite 主库及单一网页导出。

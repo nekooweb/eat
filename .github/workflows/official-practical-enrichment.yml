@@ -2,18 +2,6 @@ name: Enrich explicit practical fields from retained official pages
 
 on:
   workflow_dispatch:
-  push:
-    branches: ["main"]
-    paths:
-      - ".github/workflows/official-practical-enrichment.yml"
-      - "scripts/database/collect_official_practical_fields.py"
-      - "scripts/database/collect_official_detail_practical_fields.py"
-      - "scripts/database/import_official_practical_web_evidence.py"
-      - "scripts/database/import_official_practical_detail_web_evidence.py"
-      - "scripts/database/build_master.py"
-      - "data/official_candidate_index.json"
-      - "data/official_practical_web_evidence.json"
-      - "data/official_practical_detail_web_evidence.json"
 
 permissions:
   contents: write

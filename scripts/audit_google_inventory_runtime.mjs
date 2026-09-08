@@ -60,7 +60,11 @@ if (reviewedOfficialOverlay) {
   if (policy.dishEvidencePromotionByOverlayAllowed !== false) {
     throw new Error('Reviewed official overlay must not directly promote dish evidence');
   }
-  if (summary.officialCandidateIndexRows !== 194 || summary.reviewedRows !== 193 || summary.conflictDeferredRows !== 1) {
+  const officialIndex = JSON.parse(fs.readFileSync(path.join(DATA, 'official_candidate_index.json'), 'utf8'));
+  if (summary.officialCandidateIndexRows !== (officialIndex.records || []).length
+    || summary.reviewedRows !== (reviewedOfficialOverlay.rows || []).length
+    || summary.conflictDeferredRows !== (reviewedOfficialOverlay.conflictDeferred || []).length
+    || summary.reviewedRows + summary.conflictDeferredRows + (summary.outsideCatalogRows || 0) !== summary.officialCandidateIndexRows) {
     throw new Error(`Unexpected reviewed official overlay baseline: ${JSON.stringify(summary)}`);
   }
   if ((reviewedOfficialOverlay.rows || []).length !== summary.reviewedRows) {
