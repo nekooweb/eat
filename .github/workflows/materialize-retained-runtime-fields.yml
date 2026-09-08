@@ -43,7 +43,9 @@ jobs:
           node --check scripts/materialize_runtime_native_contact_fields.mjs
           python -m py_compile \
             scripts/database/export_reviewed_native_contact_runtime_overlay.py \
-            scripts/database/export_reviewed_official_practical_runtime_overlay.py
+            scripts/database/export_reviewed_official_practical_runtime_overlay.py \
+            scripts/database/resolve_hotpepper_rich_reference_fields.py \
+            scripts/database/validate_hotpepper_rich_reference_fields.py
           python scripts/reload_data.py --public-only --outdir _audit/retained-runtime-field-materialization
       - name: Validate field coverage and identity invariants
         run: |
@@ -71,6 +73,9 @@ jobs:
             privateRoomPolicyKnown:460, cardPaymentKnown:480, smokingPolicyKnown:490,
             parkingPolicyKnown:470, telephoneKnown:500,
             seatingCapacityKnown:125, partyCapacityKnown:100, acceptedCreditCardsKnown:110,
+            nameKanaKnown:130, couponUrlKnown:130, mobileAccessReferenceKnown:130,
+            hotPepperOpeningHoursReferenceKnown:130, hotPepperClosureReferenceKnown:130,
+            hotPepperSourceCatchKnown:110, hotPepperReferenceMetadataKnown:130,
             wifiKnown:115, barrierFreeKnown:160, childrenWelcomeKnown:120,
             englishMenuKnown:120, horigotatsuKnown:120, karaokeKnown:120,
             lateNightAfter23Known:120, liveShowKnown:120, petAllowedKnown:120,
@@ -100,6 +105,12 @@ jobs:
             stationKnown:stats.stationKnown,
             seatingCapacityKnown:stats.seatingCapacityKnown,partyCapacityKnown:stats.partyCapacityKnown,
             acceptedCreditCardsKnown:stats.acceptedCreditCardsKnown,childrenWelcomeKnown:stats.childrenWelcomeKnown,
+            nameKanaKnown:stats.nameKanaKnown,couponUrlKnown:stats.couponUrlKnown,
+            mobileAccessReferenceKnown:stats.mobileAccessReferenceKnown,
+            hotPepperOpeningHoursReferenceKnown:stats.hotPepperOpeningHoursReferenceKnown,
+            hotPepperClosureReferenceKnown:stats.hotPepperClosureReferenceKnown,
+            hotPepperSourceCatchKnown:stats.hotPepperSourceCatchKnown,
+            hotPepperReferenceMetadataKnown:stats.hotPepperReferenceMetadataKnown,
             richPracticalAppliedRows:stats.richPracticalAppliedRows,
             recommendedDishesKnown:stats.recommendedDishesKnown,chineseDishDisplayRows:stats.chineseDishDisplayRows
           }));
@@ -130,3 +141,11 @@ jobs:
           git fetch origin main
           git rebase origin/main
           git push origin HEAD:main
+
+  validate_database:
+    needs: materialize
+    permissions:
+      contents: read
+    uses: ./.github/workflows/database-contract.yml
+    with:
+      sync_main: true
