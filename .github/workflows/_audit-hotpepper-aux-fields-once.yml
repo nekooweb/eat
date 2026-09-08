@@ -1,0 +1,47 @@
+name: One-shot retained Hot Pepper auxiliary field audit
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - _ops/run-hotpepper-aux-field-audit-once-2026-09-09.txt
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Audit retained auxiliary fields
+        run: |
+          set -euo pipefail
+          node scripts/audit_no_paid_apis.mjs
+          node - <<'NODE'
+          const fs = require('fs');
+          const doc = JSON.parse(fs.readFileSync('data/hotpepper_catalog_facts.json', 'utf8'));
+          const fields = ['stationName','access','lunchAvailabilityText','course','freeDrink','freeFood','privateRoom','card','nonSmoking','parking'];
+          const result = { rows: (doc.rows || []).length, checkedAt: doc.checkedAt || null, fields: {} };
+          for (const field of fields) {
+            const values = new Map();
+            let present = 0;
+            for (const row of doc.rows || []) {
+              const value = row?.facts?.[field];
+              if (value === null || value === undefined || String(value).trim() === '') continue;
+              present += 1;
+              const key = String(value).trim();
+              values.set(key, (values.get(key) || 0) + 1);
+            }
+            result.fields[field] = {
+              present,
+              unique: values.size,
+              top: [...values.entries()].sort((a,b) => b[1]-a[1] || a[0].localeCompare(b[0])).slice(0,80).map(([value,count]) => ({value,count}))
+            };
+          }
+          console.log(JSON.stringify(result, null, 2));
+          NODE
