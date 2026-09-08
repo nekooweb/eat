@@ -14,6 +14,7 @@ FEATURED_CLASSES = {
     "retained_source_menu_item",
     "provider_promotional_dish_text",
     "structured_menu_item",
+    "source_menu_text",
 }
 RULE_VERSION = "dish-source-translation-zh-v1"
 _HAN = re.compile(r"[\u3400-\u9fff]")
@@ -106,6 +107,7 @@ def main():
             "status": "fail" if failures else "pass",
             "acceptedEvidenceItems": accepted_evidence,
             "acceptedEvidenceWithSourceOriginal": source_original,
+            "featuredEvidenceClasses": sorted(FEATURED_CLASSES),
             "recommendedCanonicalPlaces": sum(1 for x in resolved.values() if x.get("recommended")),
             "featuredCanonicalPlaces": sum(1 for x in resolved.values() if x.get("featured")),
             "policy": "source language may be Japanese; database canonical dish labels must be Chinese",
