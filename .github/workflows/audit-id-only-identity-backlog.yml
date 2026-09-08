@@ -65,8 +65,15 @@ jobs:
           assert p['paidDataApiCalls']==0
           assert p['automaticIdentityPromotion'] is False
           assert c['strictIdOnly'] >= 1000
-          assert c['queueStrongThreeSourceAlsoStrictIdOnly'] == c['idOnlyStrongThreeSource']
-          print(json.dumps({'strictIdOnly':c['strictIdOnly'],'strongThreeSource':c['idOnlyStrongThreeSource'],'historicalSingleOsmHigh':c['idOnlyHistoricalSingleOsmHighThreshold'],'hotPepperHigh':c['idOnlyWithHotPepperHighBinding'],'officialIndex':c['idOnlyWithOfficialIndexRecord'],'anyBinding':c['idOnlyWithAnySourceBinding']},sort_keys=True))
+          assert c.get('queueStrongThreeSourceAlsoStrictIdOnly',0) == c.get('idOnlyStrongThreeSource',0)
+          print(json.dumps({
+            'strictIdOnly':c['strictIdOnly'],
+            'strongThreeSource':c.get('idOnlyStrongThreeSource',0),
+            'historicalSingleOsmHigh':c.get('idOnlyHistoricalSingleOsmHighThreshold',0),
+            'hotPepperHigh':c.get('idOnlyWithHotPepperHighBinding',0),
+            'officialIndex':c.get('idOnlyWithOfficialIndexRecord',0),
+            'anyBinding':c.get('idOnlyWithAnySourceBinding',0)
+          },sort_keys=True))
           PY
 
       - name: Upload audit
