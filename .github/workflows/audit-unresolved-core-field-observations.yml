@@ -1,0 +1,76 @@
+name: Audit unresolved core field observations
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/audit-unresolved-core-field-observations.yml"
+      - "scripts/database/audit_unresolved_core_field_observations.py"
+      - "scripts/database/build_master.py"
+      - "scripts/database/plan_ingestion_tasks.py"
+      - "scripts/database/import_bound_open_data_fields.py"
+      - "scripts/database/import_source_basic_web_evidence.py"
+      - "scripts/database/import_bound_overture_metadata.py"
+      - "scripts/database/import_hotpepper_rich_metadata.py"
+      - "data/google_basic_source_matches.json"
+      - "data/source_basic_web_field_evidence.json"
+      - "data/hotpepper_rich_metadata.js"
+      - "data/area1_osm.js"
+      - "data/overture_area1_candidates.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Sync latest main
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          git reset --hard origin/main
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check syntax
+        run: python -m py_compile scripts/database/audit_unresolved_core_field_observations.py
+      - name: Enforce no paid data API policy
+        run: node scripts/audit_no_paid_apis.mjs
+      - name: Build current SQLite master
+        run: |
+          set -euo pipefail
+          mkdir -p _tmp
+          python scripts/database/build_master.py --output _tmp/eat-master.sqlite --reset > /tmp/master-build.json
+      - name: Audit unresolved core field observations
+        run: |
+          set -euo pipefail
+          python scripts/database/audit_unresolved_core_field_observations.py \
+            _tmp/eat-master.sqlite \
+            --output _tmp/unresolved-core-field-observations.json \
+            | tee /tmp/unresolved-core-field-summary.json
+          test -s _tmp/unresolved-core-field-observations.json
+          python - <<'PY'
+          import json
+          x=json.load(open('_tmp/unresolved-core-field-observations.json',encoding='utf-8'))
+          p=x.get('policy') or {}; s=x.get('summary') or {}
+          assert p.get('networkRequests') == 0
+          assert p.get('databaseWrites') == 0
+          assert p.get('identityChanges') == 0
+          assert p.get('fieldResolutionChanges') == 0
+          assert p.get('publishableNonConflictOnly') is True
+          assert s.get('publishableNonConflictPlaces') > 0
+          print(json.dumps(s,ensure_ascii=False,sort_keys=True))
+          PY
+      - name: Upload audit artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: unresolved-core-field-observation-audit
+          path: _tmp/unresolved-core-field-observations.json
+          retention-days: 3
