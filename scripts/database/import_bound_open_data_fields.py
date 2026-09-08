@@ -6,10 +6,12 @@ reviewed OpenStreetMap rows in google_basic_source_matches.json with their full 
 candidate payload in data/area1_osm.js, then emits missing-only observations with native
 OSM provenance. Ambiguous native source-ID reuse is quarantined instead of promoted.
 
-Selected practical OSM tags are also eligible when their semantics are explicit and
-boolean without inference. Only `payment:credit_cards=yes/no`,
-`internet_access=wlan/no`, and `wheelchair=yes/no` are mapped automatically. Ambiguous
-values such as `wheelchair=limited` remain retained provenance only.
+Selected practical OSM tags are eligible only when their semantics are explicit. Credit
+cards accept `payment:credit_cards=yes/no` plus a positive named-card-scheme signal;
+brand-level `no` values alone never imply that cards are unavailable. Wi-Fi accepts only
+`internet_access=wlan/no`, wheelchair accepts only `yes/no`, and smoking accepts only a
+small recognized OSM policy vocabulary. Contradictory or ambiguous values are retained
+as provenance but never resolved automatically.
 """
 from __future__ import annotations
 
@@ -22,7 +24,15 @@ import retained_osm_identity as retained_osm
 
 ACQUISITION_METHOD = "bound_open_data_field_overlay_v1"
 BINDING_METHOD = "field_only_from_reviewed_basic_osm_binding"
-RULE_VERSION = "bound-open-data-fields-v2"
+RULE_VERSION = "bound-open-data-fields-v3"
+CARD_SCHEME_TAGS = (
+    "payment:visa",
+    "payment:mastercard",
+    "payment:jcb",
+    "payment:american_express",
+    "payment:diners_club",
+)
+SMOKING_POLICIES = {"no", "yes", "separated", "isolated", "outside", "dedicated"}
 
 EQUIVALENTS = {
     "address": ("address",),
@@ -100,18 +110,26 @@ def _native_phones(candidate: dict) -> list[str]:
     return output
 
 
-def _native_practical_claims(candidate: dict) -> dict[str, bool]:
-    """Map only explicit OSM practical tags with unambiguous boolean semantics."""
+def _native_practical_claims(candidate: dict) -> dict[str, object]:
+    """Map only explicit OSM practical tags with conservative semantics."""
     tags = candidate.get("sourcePracticalTags") or {}
     if not isinstance(tags, dict):
         return {}
-    output: dict[str, bool] = {}
+    output: dict[str, object] = {}
 
     credit_cards = str(tags.get("payment:credit_cards") or "").strip().casefold()
-    if credit_cards == "yes":
-        output["practical.card_available"] = True
-    elif credit_cards == "no":
-        output["practical.card_available"] = False
+    scheme_yes = any(
+        str(tags.get(key) or "").strip().casefold() == "yes"
+        for key in CARD_SCHEME_TAGS
+    )
+    # A named scheme=yes is explicit positive card evidence. If the generic tag says
+    # no at the same time, the source is internally contradictory and card resolution
+    # is deferred rather than choosing one tag over another.
+    if not (credit_cards == "no" and scheme_yes):
+        if credit_cards == "yes" or scheme_yes:
+            output["practical.card_available"] = True
+        elif credit_cards == "no":
+            output["practical.card_available"] = False
 
     internet_access = str(tags.get("internet_access") or "").strip().casefold()
     if internet_access == "wlan":
@@ -124,6 +142,10 @@ def _native_practical_claims(candidate: dict) -> dict[str, bool]:
         output["practical.barrier_free"] = True
     elif wheelchair == "no":
         output["practical.barrier_free"] = False
+
+    smoking = str(tags.get("smoking") or "").strip().casefold()
+    if smoking in SMOKING_POLICIES:
+        output["practical.smoking_policy"] = smoking
 
     return output
 
@@ -177,6 +199,7 @@ def import_bound_open_data_fields(db, stamp: str):
                 "exactReviewedProviderIdOnly": True,
                 "explicitPracticalTagsOnly": True,
                 "ambiguousPracticalValuesDeferred": True,
+                "contradictoryCardTagsDeferred": True,
                 "ruleVersion": RULE_VERSION,
             },
         }
@@ -295,6 +318,7 @@ def import_bound_open_data_fields(db, stamp: str):
         "exactReviewedBindingOnly": True,
         "missingOnly": True,
         "explicitPracticalTagsOnly": True,
+        "contradictoryCardTagsDeferred": True,
     }
 
 
