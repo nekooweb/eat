@@ -38,8 +38,8 @@
     "freshNameAndLocationReconfirmationRequired": true
   },
   "summary": {
-    "rows": 150,
-    "places": 121,
+    "rows": 151,
+    "places": 122,
     "placesWithMultipleSnapshots": 28,
     "fieldCounts": {
       "address": 3,
@@ -47,11 +47,11 @@
       "geo": 1,
       "openingHoursRaw": 38,
       "priceRange": 12,
-      "telephone": 124
+      "telephone": 125
     },
     "providerCounts": {
       "Overture Maps": 18,
-      "official": 132
+      "official": 133
     },
     "lastMerge": {
       "snapshot_added": 1,
@@ -2665,6 +2665,69 @@
         "telephone": "03-3525-7125"
       },
       "checkedAt": "2026-09-07"
+    },
+    {
+      "googlePlaceId": "ChIJN8DWpLSNGGARJLws0udg_08",
+      "sourceProvider": "official",
+      "sourceProviderId": "currentness-page:9a5ebfbcc7f178ffb8be",
+      "missingBefore": [
+        "telephone"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "retained_multisource_currentness_page",
+        "preExistingSourceMatchedIdentity": true,
+        "freshNameAndLocationReconfirmed": true,
+        "proximityOnlyBindingAllowed": false,
+        "retainedConsensusRule": "reviewed-multisource-currentness-v5",
+        "retainedVerification": "reviewed_hotpepper_overture_branch_address_currentness_consensus",
+        "currentnessReason": "current_branch_body_reconfirmed_brand_locality_and_strong_location",
+        "currentnessMethod": "visible_branch_body_brand_locality_plus_strong_location",
+        "pageName": "alegria + 神田神保町 + 田神保町",
+        "pageAddress": "東京都千代田区神田神保町１丁目８ ファンデス神保町 4F",
+        "matchedExpectedName": "alegria",
+        "pageNameSimilarity": 0.94,
+        "pageAddressSimilarity": 0.96,
+        "postalMatch": false,
+        "minimumGeoDistanceMeters": null,
+        "locationConfirmed": true,
+        "branchBodyEvidence": {
+          "branchSpecificUrl": true,
+          "matchedDistinctiveNameComponents": [
+            "alegria"
+          ],
+          "matchedLocalityFragments": [
+            "神田神保町",
+            "田神保町",
+            "神保町"
+          ],
+          "minimumDistinctiveNameComponentsRequired": 1,
+          "minimumLocalityFragmentsRequired": 1,
+          "strongLocationThreshold": "postcode OR addressSimilarity>=0.78 OR structuredGeo<=30m"
+        }
+      },
+      "webEvidence": {
+        "sourceUrl": "https://alegria.hapyres.com/restaurant/jinnbocho",
+        "finalUrl": "https://alegria.hapyres.com/restaurant/jinnbocho",
+        "retrievedAt": "2026-09-08T09:50:51Z",
+        "contentHash": "cdc2711ab8234ac898f23152408d2f5fce1366e453f67be4a7ad09eb6b7e94e1",
+        "parserVersion": "retained-currentness-labeled-telephone-v2",
+        "rawHtmlPersisted": false,
+        "discovery": {
+          "method": "retained_multisource_currentness_page",
+          "retainedConsensusRule": "reviewed-multisource-currentness-v5",
+          "currentPageFetchedAgain": true,
+          "nameAndLocationReconfirmedAgain": true,
+          "telephoneParserVersion": "official-labeled-telephone-v1",
+          "labelRequired": true,
+          "singleDistinctLabeledNumberRequired": true,
+          "evidenceSnippet": "TEL 03-5577-2088"
+        }
+      },
+      "fieldClaims": {
+        "telephone": "03-5577-2088"
+      },
+      "checkedAt": "2026-09-08"
     },
     {
       "googlePlaceId": "ChIJN_idkH-NGGARJHR6WDhPbnM",
