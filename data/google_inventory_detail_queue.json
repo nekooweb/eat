@@ -29,6 +29,26 @@
   },
   "rows": [
     {
+      "googlePlaceId": "ChIJ2ZVGFQGMGGARmN1lf5qU8MU",
+      "name": "神田 木花",
+      "basicInfoState": "canonical",
+      "cuisine": "日式",
+      "distanceMeters": 1195,
+      "sourceUrlCount": 10,
+      "crawlableOfficialUrlCount": 10,
+      "retainedThirdPartyUrlCount": 0,
+      "recommendedDishesKnown": 0,
+      "featuredDishesKnown": 3,
+      "gaps": [
+        "recommendedDishes",
+        "lunchBudget",
+        "dinnerBudget",
+        "address"
+      ],
+      "nextAction": "collect_strict_recommended_dishes",
+      "priorityScore": 1305
+    },
+    {
       "googlePlaceId": "ChIJ3y5QeBWMGGARHZnUMus6Gdo",
       "name": "サブウェイ",
       "basicInfoState": "canonical",
@@ -79,27 +99,6 @@
       "retainedThirdPartyUrlCount": 0,
       "recommendedDishesKnown": 0,
       "featuredDishesKnown": 6,
-      "gaps": [
-        "recommendedDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget",
-        "address"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1285
-    },
-    {
-      "googlePlaceId": "ChIJ2ZVGFQGMGGARmN1lf5qU8MU",
-      "name": "神田 木花",
-      "basicInfoState": "canonical",
-      "cuisine": "日式",
-      "distanceMeters": 1195,
-      "sourceUrlCount": 9,
-      "crawlableOfficialUrlCount": 9,
-      "retainedThirdPartyUrlCount": 0,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 3,
       "gaps": [
         "recommendedDishes",
         "openingHours",
@@ -231,6 +230,26 @@
       "priorityScore": 1190
     },
     {
+      "googlePlaceId": "ChIJA3uXWgOMGGARW_LZHuzxH7o",
+      "name": "ゆで太郎",
+      "basicInfoState": "canonical",
+      "cuisine": "面食",
+      "distanceMeters": 968,
+      "sourceUrlCount": 4,
+      "crawlableOfficialUrlCount": 4,
+      "retainedThirdPartyUrlCount": 0,
+      "recommendedDishesKnown": 0,
+      "featuredDishesKnown": 2,
+      "gaps": [
+        "recommendedDishes",
+        "lunchBudget",
+        "dinnerBudget",
+        "address"
+      ],
+      "nextAction": "collect_strict_recommended_dishes",
+      "priorityScore": 1185
+    },
+    {
       "googlePlaceId": "ChIJay-cC0SMGGARrFB7svEbbs0",
       "name": "築地食堂源ちゃん",
       "basicInfoState": "canonical",
@@ -283,26 +302,6 @@
       "gaps": [
         "recommendedDishes",
         "lunchBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1165
-    },
-    {
-      "googlePlaceId": "ChIJA3uXWgOMGGARW_LZHuzxH7o",
-      "name": "ゆで太郎",
-      "basicInfoState": "canonical",
-      "cuisine": "面食",
-      "distanceMeters": 968,
-      "sourceUrlCount": 3,
-      "crawlableOfficialUrlCount": 3,
-      "retainedThirdPartyUrlCount": 0,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 2,
-      "gaps": [
-        "recommendedDishes",
-        "lunchBudget",
-        "dinnerBudget",
-        "address"
       ],
       "nextAction": "collect_strict_recommended_dishes",
       "priorityScore": 1165
@@ -2023,6 +2022,7 @@
       "gaps": [
         "recommendedDishes",
         "featuredDishes",
+        "openingHours",
         "lunchBudget",
         "dinnerBudget",
         "address"
@@ -2427,6 +2427,7 @@
       "gaps": [
         "recommendedDishes",
         "featuredDishes",
+        "openingHours",
         "lunchBudget",
         "dinnerBudget",
         "address"
@@ -2593,8 +2594,10 @@
       "gaps": [
         "recommendedDishes",
         "featuredDishes",
+        "openingHours",
         "lunchBudget",
-        "dinnerBudget"
+        "dinnerBudget",
+        "address"
       ],
       "nextAction": "collect_strict_recommended_dishes",
       "priorityScore": 1110
@@ -2635,6 +2638,7 @@
       "gaps": [
         "recommendedDishes",
         "featuredDishes",
+        "openingHours",
         "lunchBudget",
         "dinnerBudget",
         "address"
@@ -24515,26 +24519,6 @@
       "priorityScore": 435
     },
     {
-      "googlePlaceId": "ChIJmXw7jBqMGGARZUMVX_vrOE8",
-      "name": "ビストロクルル",
-      "basicInfoState": "canonical",
-      "cuisine": "法餐",
-      "distanceMeters": 546,
-      "sourceUrlCount": 6,
-      "crawlableOfficialUrlCount": 5,
-      "retainedThirdPartyUrlCount": 1,
-      "recommendedDishesKnown": 1,
-      "featuredDishesKnown": 3,
-      "gaps": [
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget",
-        "address"
-      ],
-      "nextAction": "collect_opening_hours",
-      "priorityScore": 430
-    },
-    {
       "googlePlaceId": "ChIJp3be1AeMGGAR1V1CQhkbTJQ",
       "name": "Le Poulet",
       "basicInfoState": "canonical",
@@ -24569,6 +24553,25 @@
         "openingHours",
         "dinnerBudget",
         "address"
+      ],
+      "nextAction": "collect_opening_hours",
+      "priorityScore": 420
+    },
+    {
+      "googlePlaceId": "ChIJ6eEHmziMGGARZb0rRUApRm0",
+      "name": "Shake Shack",
+      "basicInfoState": "canonical",
+      "cuisine": "汉堡",
+      "distanceMeters": 1114,
+      "sourceUrlCount": 4,
+      "crawlableOfficialUrlCount": 4,
+      "retainedThirdPartyUrlCount": 0,
+      "recommendedDishesKnown": 4,
+      "featuredDishesKnown": 2,
+      "gaps": [
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
       ],
       "nextAction": "collect_opening_hours",
       "priorityScore": 420
@@ -24624,26 +24627,6 @@
       "retainedThirdPartyUrlCount": 1,
       "recommendedDishesKnown": 3,
       "featuredDishesKnown": 5,
-      "gaps": [
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget",
-        "address"
-      ],
-      "nextAction": "collect_opening_hours",
-      "priorityScore": 415
-    },
-    {
-      "googlePlaceId": "ChIJ6QLp3BmMGGAR1-0MdDO-bTs",
-      "name": "洋麺屋 五右衛門",
-      "basicInfoState": "canonical",
-      "cuisine": "面食",
-      "distanceMeters": 670,
-      "sourceUrlCount": 3,
-      "crawlableOfficialUrlCount": 3,
-      "retainedThirdPartyUrlCount": 0,
-      "recommendedDishesKnown": 2,
-      "featuredDishesKnown": 1,
       "gaps": [
         "openingHours",
         "lunchBudget",
@@ -25652,6 +25635,26 @@
       "priorityScore": 405
     },
     {
+      "googlePlaceId": "ChIJH45U0y2NGGARFO8F9X8I1nA",
+      "name": "海上菜館",
+      "basicInfoState": "canonical",
+      "cuisine": "中华",
+      "distanceMeters": 1000,
+      "sourceUrlCount": 1,
+      "crawlableOfficialUrlCount": 1,
+      "retainedThirdPartyUrlCount": 0,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 1,
+      "gaps": [
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget",
+        "address"
+      ],
+      "nextAction": "collect_opening_hours",
+      "priorityScore": 405
+    },
+    {
       "googlePlaceId": "ChIJaWTGbgCNGGARtQOwZEga_oM",
       "name": "台湾点心とビール 恒久飯店",
       "basicInfoState": "source_matched",
@@ -25974,6 +25977,25 @@
       "priorityScore": 340
     },
     {
+      "googlePlaceId": "ChIJmXw7jBqMGGARZUMVX_vrOE8",
+      "name": "ビストロクルル",
+      "basicInfoState": "canonical",
+      "cuisine": "法餐",
+      "distanceMeters": 546,
+      "sourceUrlCount": 7,
+      "crawlableOfficialUrlCount": 6,
+      "retainedThirdPartyUrlCount": 1,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 3,
+      "gaps": [
+        "lunchBudget",
+        "dinnerBudget",
+        "address"
+      ],
+      "nextAction": "collect_dinner_budget",
+      "priorityScore": 328
+    },
+    {
       "googlePlaceId": "ChIJj2u4pwSMGGARkTHj4PP1MEA",
       "name": "ドトールコーヒーショップ",
       "basicInfoState": "canonical",
@@ -26033,8 +26055,8 @@
       "basicInfoState": "canonical",
       "cuisine": "居酒屋",
       "distanceMeters": 673,
-      "sourceUrlCount": 11,
-      "crawlableOfficialUrlCount": 9,
+      "sourceUrlCount": 12,
+      "crawlableOfficialUrlCount": 10,
       "retainedThirdPartyUrlCount": 2,
       "recommendedDishesKnown": 3,
       "featuredDishesKnown": 1,
@@ -26081,6 +26103,25 @@
       "priorityScore": 316
     },
     {
+      "googlePlaceId": "ChIJ6QLp3BmMGGAR1-0MdDO-bTs",
+      "name": "洋麺屋 五右衛門",
+      "basicInfoState": "canonical",
+      "cuisine": "面食",
+      "distanceMeters": 670,
+      "sourceUrlCount": 4,
+      "crawlableOfficialUrlCount": 4,
+      "retainedThirdPartyUrlCount": 0,
+      "recommendedDishesKnown": 2,
+      "featuredDishesKnown": 1,
+      "gaps": [
+        "lunchBudget",
+        "dinnerBudget",
+        "address"
+      ],
+      "nextAction": "collect_dinner_budget",
+      "priorityScore": 316
+    },
+    {
       "googlePlaceId": "ChIJywjRNAOMGGARCM7IpPYytRQ",
       "name": "いせ源",
       "basicInfoState": "canonical",
@@ -26095,24 +26136,6 @@
         "lunchBudget",
         "dinnerBudget",
         "address"
-      ],
-      "nextAction": "collect_dinner_budget",
-      "priorityScore": 316
-    },
-    {
-      "googlePlaceId": "ChIJ6eEHmziMGGARZb0rRUApRm0",
-      "name": "Shake Shack",
-      "basicInfoState": "canonical",
-      "cuisine": "汉堡",
-      "distanceMeters": 1114,
-      "sourceUrlCount": 4,
-      "crawlableOfficialUrlCount": 4,
-      "retainedThirdPartyUrlCount": 0,
-      "recommendedDishesKnown": 4,
-      "featuredDishesKnown": 2,
-      "gaps": [
-        "lunchBudget",
-        "dinnerBudget"
       ],
       "nextAction": "collect_dinner_budget",
       "priorityScore": 316
@@ -26506,25 +26529,6 @@
       "gaps": [
         "lunchBudget",
         "dinnerBudget"
-      ],
-      "nextAction": "collect_dinner_budget",
-      "priorityScore": 304
-    },
-    {
-      "googlePlaceId": "ChIJH45U0y2NGGARFO8F9X8I1nA",
-      "name": "海上菜館",
-      "basicInfoState": "canonical",
-      "cuisine": "中华",
-      "distanceMeters": 1000,
-      "sourceUrlCount": 1,
-      "crawlableOfficialUrlCount": 1,
-      "retainedThirdPartyUrlCount": 0,
-      "recommendedDishesKnown": 1,
-      "featuredDishesKnown": 1,
-      "gaps": [
-        "lunchBudget",
-        "dinnerBudget",
-        "address"
       ],
       "nextAction": "collect_dinner_budget",
       "priorityScore": 304
