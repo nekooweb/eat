@@ -66,6 +66,8 @@ jobs:
           node scripts/build_source_provenance.mjs
           node scripts/build_source_facts.mjs
           node scripts/build_google_inventory_runtime.mjs
+          node scripts/apply_reviewed_independent_source_overlay.mjs
+          node scripts/audit_reviewed_independent_source_overlay.mjs
           node scripts/audit_google_inventory_runtime.mjs
           node scripts/build_google_inventory_detail_queue.mjs data/google_inventory_detail_queue.json
       - name: Snapshot existing verified detail evidence
@@ -192,6 +194,8 @@ jobs:
         run: |
           set -euo pipefail
           node scripts/build_google_inventory_runtime.mjs
+          node scripts/apply_reviewed_independent_source_overlay.mjs
+          node scripts/audit_reviewed_independent_source_overlay.mjs
           node scripts/audit_google_inventory_runtime.mjs
           node scripts/build_google_inventory_detail_queue.mjs data/google_inventory_detail_queue.json
           node scripts/build_dish_batch_plan.mjs data/dish_batch_plan.json 8 | tee /tmp/dish-batch-plan-summary.json
@@ -233,13 +237,14 @@ jobs:
           }
           console.log(JSON.stringify({ queue: q.summary, batchPlan: plan.summary, independentCandidates: candidates.summary }));
           NODE
-      - name: Commit detailed evidence, reviewed source overlay, queue and bulk plans
+      - name: Commit detailed evidence, reviewed source overlays, queue and bulk plans
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add \
             data/reviewed_official_runtime_sources.json \
+            data/reviewed_independent_dish_sources.json \
             data/google_inventory_detail_evidence.json \
             data/google_inventory_detail_queue.json \
             data/google_inventory_runtime.js \
