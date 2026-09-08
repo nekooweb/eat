@@ -95,6 +95,15 @@ def main():
               'allYouCanDrinkRows':stats.get('allYouCanDrinkKnown',0),'allYouCanEatRows':stats.get('allYouCanEatKnown',0),
               'privateRoomPolicyRows':stats.get('privateRoomPolicyKnown',0),'cardPaymentRows':stats.get('cardPaymentKnown',0),
               'smokingPolicyRows':stats.get('smokingPolicyKnown',0),'parkingPolicyRows':stats.get('parkingPolicyKnown',0),
+              'seatingCapacityRows':stats.get('seatingCapacityKnown',0),'partyCapacityRows':stats.get('partyCapacityKnown',0),
+              'acceptedCreditCardsRows':stats.get('acceptedCreditCardsKnown',0),'mobileCouponAvailabilityRows':stats.get('mobileCouponAvailabilityKnown',0),
+              'budgetMemoRows':stats.get('budgetMemoKnown',0),'wifiRows':stats.get('wifiKnown',0),
+              'barrierFreeRows':stats.get('barrierFreeKnown',0),'childrenWelcomeRows':stats.get('childrenWelcomeKnown',0),
+              'englishMenuRows':stats.get('englishMenuKnown',0),'horigotatsuRows':stats.get('horigotatsuKnown',0),
+              'karaokeRows':stats.get('karaokeKnown',0),'lateNightAfter23Rows':stats.get('lateNightAfter23Known',0),
+              'liveShowRows':stats.get('liveShowKnown',0),'petAllowedRows':stats.get('petAllowedKnown',0),
+              'tatamiRows':stats.get('tatamiKnown',0),'tvProjectorRows':stats.get('tvProjectorKnown',0),
+              'charterRows':stats.get('charterKnown',0),'bandPerformanceRows':stats.get('bandPerformanceKnown',0),
               'queueRows':len(queue_ids),'database':None if args.public_only else str(database),'outputs':files}
     (out/'reload-manifest.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n')
     print(json.dumps({'status':'pass',**manifest},ensure_ascii=False),flush=True)
