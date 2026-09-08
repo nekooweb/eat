@@ -57,14 +57,14 @@ def main():
         unresolved = publishable - known_hours
 
         source_bindings = defaultdict(list)
-        for source_record_id, pid, state, method, rule in db.execute(
+        for source_record_id, pid, state, method in db.execute(
             """
-            SELECT source_record_id,place_id,binding_state,binding_method,coalesce(match_rule,'')
+            SELECT source_record_id,place_id,binding_state,binding_method
             FROM source_bindings
             ORDER BY place_id,source_record_id
             """
         ):
-            source_bindings[(source_record_id, pid)].append((state, method, rule))
+            source_bindings[(source_record_id, pid)].append((state, method))
 
         rows = []
         grouping = Counter()
@@ -86,8 +86,8 @@ def main():
             if pid not in unresolved or not nonempty_hours(value_json):
                 continue
             unresolved_with_any_hours.add(pid)
-            bindings = source_bindings.get((srid, pid)) or [("unbound", "", "")]
-            for binding_state, binding_method, match_rule in bindings:
+            bindings = source_bindings.get((srid, pid)) or [("unbound", "")]
+            for binding_state, binding_method in bindings:
                 key = f"{acquisition}|{provider}|{binding_state}"
                 grouping[key] += 1
                 reviewed = binding_state == "reviewed"
@@ -115,7 +115,6 @@ def main():
                     "fieldState": field_state,
                     "bindingState": binding_state,
                     "bindingMethod": binding_method,
-                    "matchRule": match_rule,
                     "hasHttpsSourceUrl": source_url.startswith("https://"),
                     "observedAt": observed_at,
                     "reviewedBinding": reviewed,
