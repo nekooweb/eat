@@ -136,18 +136,27 @@ R/F evidence
 
 `merge_google_inventory_detail_evidence.mjs` 保持 monotonic union：新的网页访问失败或暂时找不到菜名时，不删除以前已经通过验证的来源证据。
 
-去重 key 同时包含菜名、provider、source URL 和 evidence class，避免把不同来源的独立佐证互相覆盖。
+去重使用 `nameZh + provider + sourceUrl + evidenceClass`。原始日文/英文菜名属于 metadata，不再因为写法不同把同一页的同一中文菜品重复计数。
 
 ## Recommendation-first queue
 
 `build_google_inventory_detail_queue.mjs` 已与当前架构重新对齐：
 
 - frozen catalog = 2,804；
-- detail queue = 当前公开命名 runtime，而不是错误要求 runtime 本身有 2,804 rows；
+- detail queue = 当前公开命名 runtime 1,415，而不是错误要求 runtime 本身有 2,804 rows；
 - identity recovery 不再混入 detail queue；
 - 对公开命名餐厅，缺 `recommendedDishes` 是 detail enrichment 的第一优先级；
-- 有已知 source URL：`collect_strict_recommended_dishes`；
-- 没有可用 source URL：`find_independent_dish_source`。
+- `collect_strict_recommended_dishes`：已有允许直接访问的绑定官网；
+- `extract_retained_dish_source`：没有可直接抓取官网，但有 retained Tabelog / Hot Pepper 等第三方来源；
+- `find_independent_dish_source`：现有来源不足，需要新增免费的独立来源。
+
+当前 1,223 个 recommendation gap 已拆成：
+
+- crawlable official：**229**；
+- retained third-party only：**647**；
+- need new independent dish source：**347**。
+
+这三个数字之和精确等于 1,223，避免把“有来源 URL”错误理解为“URL 可以直接抓取”。
 
 ## 防止模板回归
 
@@ -159,17 +168,50 @@ R/F evidence
 - 推荐菜中文展示；
 - recommendation evidence audit 不允许 featured/menu-only evidence 升级成 recommendation。
 
-同时持续输出 `topRepeatedRecommendedPairs`，用于发现异常的批量固定组合。大规模重复应首先视为数据生成逻辑异常，而不是正常覆盖增长。
+同时持续输出 `topRepeatedRecommendedPairs`。新的 blocking guard 要求：同一双菜组合达到 20 家、或同一单菜达到 60 家时必须停下来审查，而不是静默发布。这个阈值用于抓批量模板异常，不代表小于阈值就自动真实。
 
-## 基线与衡量方式
+## 本轮批量补全结果
 
-strict-source-v1 修正后的批处理前基线：
+strict-source-v1 批处理前：
 
 - public named restaurants：1,415；
 - `recommendedDishes`：185 restaurants；
-- featured-only：106 restaurants；
+- featured-only display：106 restaurants；
 - any Chinese dish display：291 / 1,415 = 20.6%；
 - approximate recommendation：0。
+
+本轮 retained facts 挖掘：
+
+- 40 个 source enrichment shards；
+- 扫描 584 个 source rows；
+- 110 rows 声明了 dish-related source fields；
+- 可规范化 100 个 retained dish values；
+- 形成 136 条 featured evidence，覆盖 99 家；
+- provider item：Tabelog 63 / official 37；
+- 这些普通 `dishes` 不被错误升级成 recommendation。
+
+本轮 fresh/retained-web collector 的有效批次曾识别：Hot Pepper strict recommendation 18 家、官网 strict recommendation 7 家、Hot Pepper featured 68 家。monotonic merge 后 detail evidence 达到：
+
+- evidence restaurants：**277**；
+- recommendation evidence restaurants：**165**；
+- featured evidence restaurants：**163**；
+- recommendation evidence items：**236**；
+- featured evidence items：**214**。
+
+最终公开 runtime：
+
+- `recommendedDishes`：**192**（185 → 192，+7）；
+- `featuredDishes` known：**188**；
+- featured-only display：**108**；
+- any Chinese dish display：**300 / 1,415 = 21.2%**（291 → 300，+9）；
+- unfilled dish display：**1,115**；
+- approximate recommendation：**0**。
+
+证据层从 211 家扩到 277 家，但公开 display 只增加 9 家，是因为大量新整理的 retained/F evidence 与原有 canonical/public 菜品已经重叠。这里按“新增独立证据”和“新增公开覆盖”分别计数，不能混为一谈。
+
+当前最大重复推荐值仍是普通单菜：`三明治` 14、`咖喱` 13、`意大利面` 7、`刺身` 6；没有再次出现几十到上百家的固定双菜模板。
+
+## 衡量方式
 
 后续不以“推荐菜覆盖率越高越好”单独作为成功指标，而同时报告：
 
@@ -179,6 +221,6 @@ strict-source-v1 修正后的批处理前基线：
 4. evidence class 分布；
 5. fresh-vs-retained 增量；
 6. top repeated recommendation values；
-7. remaining recommendation gap with/without known source URL。
+7. recommendation gap 的 official / retained-third-party / new-source 三路分布。
 
 这样可以区分真实来源覆盖增长与错误模板填充。
