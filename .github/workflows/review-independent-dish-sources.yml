@@ -1,0 +1,80 @@
+name: Review independent dish source candidates
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/review-independent-dish-sources.yml"
+      - "scripts/review_independent_dish_source_candidates.mjs"
+      - "data/independent_dish_source_candidates.json"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: review-independent-dish-sources
+  cancel-in-progress: false
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Sync latest main
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          git reset --hard origin/main
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Enforce no-paid-data-API policy
+        run: node scripts/audit_no_paid_apis.mjs
+      - name: Check reviewer syntax
+        run: node --check scripts/review_independent_dish_source_candidates.mjs
+      - name: Review high-confidence Overture website proposals
+        env:
+          INDEPENDENT_SOURCE_REVIEW_TIMEOUT_MS: "7000"
+          INDEPENDENT_SOURCE_REVIEW_CONCURRENCY: "8"
+        run: |
+          set -euo pipefail
+          node scripts/review_independent_dish_source_candidates.mjs \
+            data/independent_dish_source_candidates.json \
+            data/reviewed_independent_dish_sources.json | tee /tmp/independent-source-review-summary.json
+          test -s data/reviewed_independent_dish_sources.json
+          node - <<'NODE'
+          const fs = require('fs');
+          const x = JSON.parse(fs.readFileSync('data/reviewed_independent_dish_sources.json', 'utf8'));
+          const p = x.policy || {};
+          const s = x.summary || {};
+          if (p.strictAutoOnly !== true || p.sourceOverlayOnly !== true) throw new Error('strict review policy missing');
+          if (p.paidGoogleDataApiCalls !== 0 || p.googleDisplayPayloadUsed !== false) throw new Error('reviewer violated zero-paid/no-Google-display policy');
+          if (p.identityBindingChanges !== 0 || p.runtimeNameMutationAllowed !== false || p.runtimeCoordinateMutationAllowed !== false || p.runtimeIdentityMutationAllowed !== false) throw new Error('reviewer may not mutate identity/core runtime fields');
+          if (p.dishEvidenceCreatedByReview !== false || p.genericBrandHomepageAloneAccepted !== false) throw new Error('reviewer crossed source/evidence boundary');
+          if (s.catalogTotal !== 2804 || s.publicRuntimeTotal !== 1415) throw new Error('review baseline mismatch');
+          if (s.approvedRows > s.highConfidenceInputRows) throw new Error('approved count exceeds strict-review input');
+          if ((x.rows || []).some((row) => row.reviewState !== 'strict_auto' || !row.googlePlaceId || !Array.isArray(row.sourceWebsites) || !row.sourceWebsites.length)) throw new Error('invalid reviewed source row');
+          console.log(JSON.stringify(s));
+          NODE
+      - name: Re-check no-paid-data-API policy
+        run: node scripts/audit_no_paid_apis.mjs
+      - name: Commit strict reviewed source overlay
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/reviewed_independent_dish_sources.json
+          if git diff --cached --quiet; then
+            echo "No strict independent-source review changes."
+            exit 0
+          fi
+          git commit -m "Update strict reviewed independent dish sources"
+          git reset --hard HEAD
+          git fetch origin main
+          git rebase origin/main
+          git push origin HEAD:main
