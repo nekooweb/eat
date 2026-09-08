@@ -83,13 +83,13 @@
     "uniqueOrigins": 273,
     "sitemapFilesFetched": 625,
     "menuUrlsDiscovered": 133,
-    "menuPagesFetched": 98,
-    "errorTargets": 10,
-    "evidenceRestaurants": 32,
+    "menuPagesFetched": 95,
+    "errorTargets": 11,
+    "evidenceRestaurants": 31,
     "recommendationRestaurants": 3,
-    "featuredRestaurants": 29,
+    "featuredRestaurants": 28,
     "recommendationItems": 5,
-    "featuredItems": 113,
+    "featuredItems": 107,
     "previousEvidence": {
       "recommendationRestaurants": 229,
       "featuredRestaurants": 414,
@@ -99,10 +99,10 @@
     },
     "freshCrawlEvidence": {
       "recommendationRestaurants": 3,
-      "featuredRestaurants": 29,
-      "evidenceRestaurants": 32,
+      "featuredRestaurants": 28,
+      "evidenceRestaurants": 31,
       "recommendationItems": 5,
-      "featuredItems": 113
+      "featuredItems": 107
     },
     "mergedEvidence": {
       "recommendationRestaurants": 229,
@@ -112,12 +112,12 @@
       "featuredItems": 1009
     },
     "specificityCorrection": {
-      "correctedRestaurants": 9,
-      "correctedItems": 9,
+      "correctedRestaurants": 3,
+      "correctedItems": 3,
       "duplicateItemsRemoved": 3,
       "ruleCounts": {
-        "meat-sushi-over-sushi": 5,
-        "yakisoba-over-soba": 4
+        "meat-sushi-over-sushi": 1,
+        "yakisoba-over-soba": 2
       },
       "recommendationItemsAfterCorrection": 438,
       "featuredItemsAfterCorrection": 1006
@@ -6273,6 +6273,16 @@
       ],
       "featuredDishes": [
         {
+          "nameZh": "牛舌",
+          "nameJa": "牛タン",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://keijo-suidobashi.com/menu/",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "menu-page-text:牛タン|gyutan",
+          "evidenceSnippet": "特選和牛タン"
+        },
+        {
           "nameZh": "肉寿司",
           "nameJa": "寿司",
           "provider": "sourceWebsite",
@@ -6286,16 +6296,6 @@
             "previousNameZh": "寿司",
             "sourceNativeCompositeRequired": true
           }
-        },
-        {
-          "nameZh": "牛舌",
-          "nameJa": "牛タン",
-          "provider": "sourceWebsite",
-          "sourceUrl": "https://keijo-suidobashi.com/menu/",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "source_menu_text",
-          "evidenceRule": "menu-page-text:牛タン|gyutan",
-          "evidenceSnippet": "特選和牛タン"
         },
         {
           "nameZh": "韩式煎饼",
@@ -8866,6 +8866,21 @@
           "evidenceSnippet": "アディロンダックバーガー"
         },
         {
+          "nameZh": "炒面",
+          "nameJa": "そば",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://adirondackcafejp.wordpress.com/food/",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "specificity:yakisoba-over-soba:menu-page-text:蕎麦|そば|soba",
+          "evidenceSnippet": "焼きそば Fried Noodle （税込み１４３０）",
+          "specificityCorrection": {
+            "rule": "yakisoba-over-soba",
+            "previousNameZh": "荞麦面",
+            "sourceNativeCompositeRequired": true
+          }
+        },
+        {
           "nameZh": "炒饭",
           "nameJa": "チャーハン",
           "provider": "sourceWebsite",
@@ -8884,21 +8899,6 @@
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:ステーキ|steak",
           "evidenceSnippet": "マグロステーキ丼"
-        },
-        {
-          "nameZh": "炒面",
-          "nameJa": "そば",
-          "provider": "sourceWebsite",
-          "sourceUrl": "https://adirondackcafejp.wordpress.com/food/",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "source_menu_text",
-          "evidenceRule": "specificity:yakisoba-over-soba:menu-page-text:蕎麦|そば|soba",
-          "evidenceSnippet": "焼きそば Fried Noodle （税込み１４３０）",
-          "specificityCorrection": {
-            "rule": "yakisoba-over-soba",
-            "previousNameZh": "荞麦面",
-            "sourceNativeCompositeRequired": true
-          }
         }
       ]
     },
@@ -13804,16 +13804,6 @@
           "evidenceSnippet": "喫煙席あり飛騨牛 お刺身 2名-40名様モダン個室空間"
         },
         {
-          "nameZh": "肉寿司",
-          "nameJa": "肉寿司",
-          "provider": "Hot Pepper",
-          "sourceUrl": "https://www.hotpepper.jp/strJ001171178/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-06",
-          "evidenceClass": "provider_promotional_dish_text",
-          "evidenceRule": "hotpepper-retained-richSpecialFeatureTitle:promotional-specific:肉寿司",
-          "evidenceSnippet": "飛騨牛 肉寿司コー3H飲み放題付3000円～"
-        },
-        {
           "nameZh": "涮涮锅",
           "nameJa": "しゃぶしゃぶ",
           "provider": "Hot Pepper",
@@ -13832,6 +13822,16 @@
           "evidenceClass": "provider_promotional_dish_text",
           "evidenceRule": "hotpepper-rich-genreCatch:焼き?鳥|やきとり|yakitori",
           "evidenceSnippet": "神田 居酒屋 個室 鮮魚 肉 焼鳥"
+        },
+        {
+          "nameZh": "肉寿司",
+          "nameJa": "肉寿司",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001171178/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-retained-richSpecialFeatureTitle:promotional-specific:肉寿司",
+          "evidenceSnippet": "飛騨牛 肉寿司コー3H飲み放題付3000円～"
         }
       ]
     },
