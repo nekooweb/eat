@@ -4,12 +4,12 @@
 
 ## 核心目标
 
-`recommendedDishes` 是推荐页面的重要高优先级字段。这里的“中文菜品”指**最终写入数据库/公开 runtime 的规范化中文字段**，并不要求餐厅官网、Tabelog、Hot Pepper 或其他来源本身提供中文。
+`recommendedDishes` 是推荐页面的重要高优先级字段。这里的“中文菜品”指**最终写入数据库 / public runtime 的规范化中文字段**，并不要求餐厅官网、Tabelog、Hot Pepper 或其他来源本身提供中文。
 
 标准流程是：
 
 ```text
-日文/其他 source-native 菜名
+日文 / 其他 source-native 菜名
         ↓
 保留原文 + provider + source URL + checkedAt + 语义证据
         ↓
@@ -19,7 +19,7 @@ R/F 语义审计
         ↓
 SQLite canonical zh field
         ↓
-recommendation/public export
+recommendation / public export
 ```
 
 因此：
@@ -107,6 +107,9 @@ F 表示来源中确实存在该菜品，但没有足够推荐语义，因此进
 - `宇和島流鯛めし` → `宇和岛式鲷鱼饭`
 - `スターバックス ラテ` → `星巴克拿铁`
 - `ハニーミルクラテ` → `蜂蜜牛奶拿铁`
+- `ズッパフォルテ` → `那不勒斯辣味炖猪杂`
+- `神経〆活魚` → `神经处理鲜鱼`
+- `釣り魚` → `钓获鲜鱼`
 
 这个词典只翻译来源中已经存在的菜名，不根据餐厅菜系创造菜品。
 
@@ -124,31 +127,41 @@ F 表示来源中确实存在该菜品，但没有足够推荐语义，因此进
 
 `status = needs_zh_normalization`
 
-而不是丢弃。
+而不是丢弃。这类记录代表“**有菜品证据，但中文规范化尚未完成**”，不能计入 no-dish gap。
 
-这类记录代表“**有菜品证据，但中文规范化尚未完成**”，不能计入 no-dish gap。
-
-本轮建立 pending queue 时的首个基线为：
+首个 translation-pending 基线：
 
 - pending items：53；
 - pending restaurants：47；
 - Japanese-language hint：52 / 53。
 
-随后已经针对其中含义明确的日文菜名批量扩充词典；品牌自造名或含义不稳定的少数项继续保留 pending，避免硬翻。
+在批量扩充日文→中文规则并针对含义明确的少数菜名核对来源后，当前已降为：
+
+- pending items：**2**；
+- pending restaurants：**2**；
+- Japanese-language hint：**2 / 2**。
+
+当前仅保留：
+
+- `えびず焼き`：品牌/店铺自造菜名，现有来源没有足够清晰的菜品构成说明；
+- `ソルベージュ®エスプレッソ`：商标产品名，继续保留原文，避免在未固定产品命名策略前强行创造中文商品名。
+
+这两条都已经有 source evidence；它们不是“缺菜品”。
 
 ## Retained-first 数据采集
 
 `scripts/build_retained_dish_evidence.mjs` 不进行网络请求，先消化仓库已经保存并带 provenance 的 source facts。
 
-在建立 source-native translation queue 前的 retained pass：
+当前 retained normalization batch：
 
 - 40 source enrichment shards；
 - 584 source rows scanned；
 - 110 rows 声明 dish-related fields；
-- 100 retained dish values 已可中文规范化；
-- 136 条 featured evidence；
-- 覆盖 99 家；
-- provider item：Tabelog 63 / official 37。
+- **151** retained dish values 已完成中文规范化；
+- skipped/untranslated：**2**；
+- **174** featured evidence items；
+- 覆盖 **110 家**；
+- provider item：Tabelog **79** / official **72**。
 
 普通 `dishes` 即使已经成功翻译，也只进入 F，不能因为“已经有中文”就升级成推荐菜。
 
@@ -162,6 +175,17 @@ F 表示来源中确实存在该菜品，但没有足够推荐语义，因此进
 - 官网最多跟随少量 same-origin menu/food links；
 - raw HTML 不 durable；
 - JSON-LD `MenuItem` 只证明 F，除非另有明确推荐语义。
+
+最新 source-backed detail evidence：
+
+- evidence restaurants：**292**；
+- recommendation evidence restaurants：**170**；
+- featured evidence restaurants：**176**；
+- recommendation evidence items：**241**；
+- featured evidence items：**255**；
+- evidence class：`source_recommendation_text` 241 / `retained_source_menu_item` 175 / `provider_promotional_dish_text` 80。
+
+最新 collector 本轮还从官网识别到 3 家新的 strict recommendation，说明日文官网文本可以直接作为推荐语义输入，再转换成中文 canonical dish value。
 
 ## SQLite canonicalization
 
@@ -186,24 +210,22 @@ F 表示来源中确实存在该菜品，但没有足够推荐语义，因此进
 
 `export_master_core.py` 现在优先使用 `*.zh`，只有 canonical zh 不存在时才 fallback 到历史 `*.legacy`。
 
+数据库级语言契约另见 `docs/database/dish_language_contract.md`。
+
 ## SQLite 当前验证结果
 
-Database contract run `34180159419` 已完整 success。
+Database contract run `34180836433` 已在最新 detail evidence 上完整验证。
 
-已检查的 retained dish evidence：
+- retained dish evidence observations：**496**；
+- accepted semantic + translation items：**480**；
+- 保留 source-original：**480 / 480**；
+- canonical `recommended_dishes.zh`：**164 家 / 232 items**；
+- canonical `featured_dishes.zh`：**171 家 / 243 items**；
+- identity-conflict evidence：6；
+- identity-not-publishable evidence：10；
+- translation/canonical validator failures：**0**。
 
-- evidence observations：450；
-- accepted semantic + translation items：**436**；
-- 其中保留 source-original：**436 / 436**；
-- canonical `recommended_dishes.zh`：**159 家 / 227 items**；
-- canonical `featured_dishes.zh`：**158 家 / 204 items**；
-- identity conflict evidence：4；
-- identity not publishable：10；
-- translation/canonical validator failures：0。
-
-这证明当前数据库逻辑不是“来源必须有中文”，而是“来源原文可以是日文，最终 canonical field 必须规范成中文”。
-
-旧 planner 中的 211 个 dish semantic review tasks 也已重新解释：已经有合法 source-native evidence + 中文规范化的记录不需要人工 review。planner `master-plan-v3` 下当前这类可执行 dish semantic review 已降为 **0**；identity 尚未 publishable 的菜品证据继续等待 identity recovery，而不是误算成翻译问题。
+数据库重建幂等、backup/restore、shadow export 也全部通过。planner `master-plan-v3` 下当前可执行 `dish_semantic_review` 为 **0**：已经有合法 source-native evidence + 中文规范化的记录不再进入人工语义任务；identity 尚未 publishable 的菜品证据等待 identity recovery，而不是误算成翻译问题。
 
 ## Merge / QC
 
@@ -227,38 +249,43 @@ Blocking QC：
 
 ## Public runtime 与 SQLite 指标不要混用
 
-当前 public runtime 与 SQLite canonicalization 是两条尚未完全 cutover 的统计路径：
+当前 public runtime 与 SQLite canonicalization 是两条尚未完全 cutover 的统计路径。
 
 Public named runtime：
 
-- 1,415 家；
-- `recommendedDishes`：192 家；
-- `featuredDishes` known：188 家；
-- 已有中文规范化菜品字段可展示：300 家 / 21.2%。
+- restaurants：**1,415**；
+- `recommendedDishes`：**196 家**；
+- `featuredDishes` known：**190 家**；
+- featured-only：109 家；
+- 已有中文规范化菜品值可用于展示：**305 家 / 21.6%**；
+- 无公开菜品值：1,110 家；
+- approximate recommendation：0。
 
-这里的“300 家”表示**最终已有中文规范化值**，不是说 300 家餐厅的网站提供中文。
+这里的“305 家”表示**最终已有中文规范化值**，不是说 305 家餐厅的网站提供中文。
 
 SQLite source-backed canonical subset：
 
-- `recommended_dishes.zh`：159 家；
-- `featured_dishes.zh`：158 家。
+- `recommended_dishes.zh`：**164 家**；
+- `featured_dishes.zh`：**171 家**。
 
-两组数字不能直接相减：public runtime 还包含 legacy/canonical 路径中的其他已验证菜品；SQLite shadow export 尚未正式替换 Pages runtime。
+两组数字不能直接相减：public runtime 仍包含 legacy/canonical 路径中的其他已验证菜品；SQLite shadow export 尚未正式替换 Pages runtime。
 
 ## Recommendation-first remaining queue
 
-当前 public `recommendedDishes` gap = 1,223：
+当前 public `recommendedDishes` gap = **1,219**：
 
-- **229** `collect_strict_recommended_dishes`：已有 crawlable bound official URL；
-- **647** `extract_retained_dish_source`：有 retained Tabelog / Hot Pepper 等第三方来源；
+- **226** `collect_strict_recommended_dishes`：已有 crawlable bound official URL；
+- **646** `extract_retained_dish_source`：有 retained Tabelog / Hot Pepper 等第三方来源；
 - **347** `find_independent_dish_source`：需要寻找新的免费独立 dish source。
+
+226 + 646 + 347 = 1,219。
 
 这条 queue 负责“找更多推荐菜来源”。`dish_translation_pending.json` 则负责“已有来源菜名尚未中文规范化”。两者是不同缺口，不能混为一谈。
 
 ## 继续开发顺序
 
-1. 对 229 家绑定官网继续抽取推荐/菜单文本；
-2. 对 647 家 retained third-party source 做更深的日文菜名/推荐语义提取；
+1. 对 226 家绑定官网继续抽取日文推荐/菜单文本；
+2. 对 646 家 retained third-party source 做更深的日文菜名/推荐语义提取；
 3. source-native 菜名先进入 evidence，再批量中文规范化；
 4. 不能可靠翻译的进入 translation-pending，不丢证据；
 5. 对 347 家缺来源项寻找新的免费独立来源；
