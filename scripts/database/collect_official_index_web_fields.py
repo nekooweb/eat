@@ -8,7 +8,9 @@ page is fetched through the robots-aware v4 fetcher and must still match the ret
 official restaurant name before field claims are emitted.
 
 Raw HTML is never persisted. Durable claims keep stable URL, retrieval timestamp,
-content SHA-256 and parser version.
+content SHA-256 and parser version. V2 output is snapshot-based, so later scans may
+append a changed official-page snapshot for the same Place ID while canonical field
+resolution remains import-time missing-only.
 """
 from __future__ import annotations
 
@@ -25,7 +27,7 @@ import reconcile_private_official_web_consensus_v4 as web
 
 ROOT = Path(__file__).resolve().parents[2]
 DATA = ROOT / "data"
-RULE_VERSION = "source-basic-web-field-evidence-v1"
+RULE_VERSION = "source-basic-web-field-evidence-v2"
 IDENTITY_RULE = "retained_verified_official_page"
 
 
@@ -50,6 +52,7 @@ def missing_fields(known, pid):
         "hours": ("hours.raw", "hours.reference.legacy", "hours.normalized.legacy"),
         "lunch_budget": ("budget.lunch.range", "budget.lunch.legacy_range"),
         "dinner_budget": ("budget.dinner.range", "budget.dinner.legacy_range"),
+        "telephone": ("contact.telephone",),
     }
     return [
         kind for kind, keys in equivalents.items()
@@ -177,7 +180,7 @@ def claims_from_fact(fact: dict, page: dict, missing: set[str]):
         claims["priceRange"] = price
 
     telephone = str(fact.get("telephone") or "").strip()
-    if telephone:
+    if "telephone" in missing and telephone:
         claims["telephone"] = telephone
     return claims
 
@@ -245,6 +248,7 @@ def main():
 
     targets = targets[: max(0, args.max_pages)]
     counts["target_rows"] = len(targets)
+    counts["telephone_completion_target_enabled"] = 1
     pages = {}
     with concurrent.futures.ThreadPoolExecutor(max_workers=max(1, min(12, args.workers))) as pool:
         future_map = {pool.submit(web.fetch_page, target["pageUrl"]): target for target in targets}
@@ -299,7 +303,7 @@ def main():
         counts["new_evidence_rows"] += 1
 
     output = {
-        "schemaVersion": 1,
+        "schemaVersion": 2,
         "ruleVersion": RULE_VERSION,
         "checkedAt": web.utc_now()[:10],
         "policy": {
@@ -310,13 +314,26 @@ def main():
             "rawHtmlPersisted": False,
             "robotsRespected": True,
             "restrictedAccessBypass": False,
+            "telephoneIncludedInCompletionTargets": True,
+            "multiSnapshotEvidenceByPlaceId": True,
+            "snapshotIdentity": ["googlePlaceId", "finalUrl", "contentHash"],
+            "crossSnapshotClaimMerge": False,
+            "canonicalResolution": "import_time_missing_only",
         },
         "summary": {
             "rows": len(rows),
+            "places": len({row["googlePlaceId"] for row in rows}),
             "fieldCounts": dict(sorted(field_counts.items())),
             "fetchCounts": dict(sorted(counts.items())),
         },
-        "rows": sorted(rows, key=lambda row: row["googlePlaceId"]),
+        "rows": sorted(
+            rows,
+            key=lambda row: (
+                row["googlePlaceId"],
+                str((row.get("webEvidence") or {}).get("finalUrl") or ""),
+                str((row.get("webEvidence") or {}).get("contentHash") or ""),
+            ),
+        ),
     }
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(output, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
