@@ -8,7 +8,7 @@
     "unpublishedPlaceIdOnly": 1389,
     "runtimeBaselineComplete": true,
     "recommendedDishesKnown": 197,
-    "featuredDishesKnown": 274,
+    "featuredDishesKnown": 277,
     "recommendationGap": 1218,
     "recommendationGapWithAnyKnownSourceUrl": 883,
     "recommendationGapWithCrawlableOfficialUrl": 225,
@@ -18,8 +18,8 @@
       "collect_strict_recommended_dishes": 225,
       "extract_retained_dish_source": 646,
       "find_independent_dish_source": 347,
-      "collect_source_backed_featured_dishes": 58,
-      "collect_opening_hours": 56,
+      "collect_source_backed_featured_dishes": 56,
+      "collect_opening_hours": 58,
       "collect_dinner_budget": 27,
       "collect_lunch_budget": 25,
       "collect_identity_detail_fields": 1,
@@ -686,6 +686,26 @@
       "retainedThirdPartyUrlCount": 0,
       "recommendedDishesKnown": 0,
       "featuredDishesKnown": 6,
+      "gaps": [
+        "recommendedDishes",
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_strict_recommended_dishes",
+      "priorityScore": 1115
+    },
+    {
+      "googlePlaceId": "ChIJvwu5WJeNGGARy4zgM9UMhg0",
+      "name": "薬膳酒＆心のケア　Barこころゆ",
+      "basicInfoState": "source_matched",
+      "cuisine": "餐厅",
+      "distanceMeters": 944,
+      "sourceUrlCount": 1,
+      "crawlableOfficialUrlCount": 1,
+      "retainedThirdPartyUrlCount": 0,
+      "recommendedDishesKnown": 0,
+      "featuredDishesKnown": 1,
       "gaps": [
         "recommendedDishes",
         "openingHours",
@@ -3545,27 +3565,6 @@
       "basicInfoState": "source_matched",
       "cuisine": "咖啡",
       "distanceMeters": 936,
-      "sourceUrlCount": 1,
-      "crawlableOfficialUrlCount": 1,
-      "retainedThirdPartyUrlCount": 0,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "recommendedDishes",
-        "featuredDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1100
-    },
-    {
-      "googlePlaceId": "ChIJvwu5WJeNGGARy4zgM9UMhg0",
-      "name": "薬膳酒＆心のケア　Barこころゆ",
-      "basicInfoState": "source_matched",
-      "cuisine": "餐厅",
-      "distanceMeters": 944,
       "sourceUrlCount": 1,
       "crawlableOfficialUrlCount": 1,
       "retainedThirdPartyUrlCount": 0,
@@ -25013,26 +25012,6 @@
       "priorityScore": 710
     },
     {
-      "googlePlaceId": "ChIJFzuCSRuMGGAR_YI1oNrtOBk",
-      "name": "Iwakura",
-      "basicInfoState": "source_matched",
-      "cuisine": "意大利菜",
-      "distanceMeters": 816,
-      "sourceUrlCount": 1,
-      "crawlableOfficialUrlCount": 1,
-      "retainedThirdPartyUrlCount": 0,
-      "recommendedDishesKnown": 2,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "featuredDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
-      ],
-      "nextAction": "collect_source_backed_featured_dishes",
-      "priorityScore": 710
-    },
-    {
       "googlePlaceId": "ChIJzbh-BgCNGGARYOcIF_C_Og8",
       "name": "Livevillageアポロ",
       "basicInfoState": "source_matched",
@@ -25388,26 +25367,6 @@
       "gaps": [
         "featuredDishes",
         "lunchBudget"
-      ],
-      "nextAction": "collect_source_backed_featured_dishes",
-      "priorityScore": 710
-    },
-    {
-      "googlePlaceId": "ChIJC5nF0AeMGGARePD5dsnR-Cw",
-      "name": "Triple One",
-      "basicInfoState": "source_matched",
-      "cuisine": "中华",
-      "distanceMeters": 1118,
-      "sourceUrlCount": 1,
-      "crawlableOfficialUrlCount": 1,
-      "retainedThirdPartyUrlCount": 0,
-      "recommendedDishesKnown": 2,
-      "featuredDishesKnown": 0,
-      "gaps": [
-        "featuredDishes",
-        "openingHours",
-        "lunchBudget",
-        "dinnerBudget"
       ],
       "nextAction": "collect_source_backed_featured_dishes",
       "priorityScore": 710
@@ -26143,6 +26102,25 @@
       "priorityScore": 405
     },
     {
+      "googlePlaceId": "ChIJFzuCSRuMGGAR_YI1oNrtOBk",
+      "name": "Iwakura",
+      "basicInfoState": "source_matched",
+      "cuisine": "意大利菜",
+      "distanceMeters": 816,
+      "sourceUrlCount": 1,
+      "crawlableOfficialUrlCount": 1,
+      "retainedThirdPartyUrlCount": 0,
+      "recommendedDishesKnown": 5,
+      "featuredDishesKnown": 4,
+      "gaps": [
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_opening_hours",
+      "priorityScore": 405
+    },
+    {
       "googlePlaceId": "ChIJB_WeKhqMGGARiHfhZXYgVFo",
       "name": "おむすび権米衛 御茶ノ水ソラシティ店",
       "basicInfoState": "canonical",
@@ -26589,6 +26567,25 @@
       "crawlableOfficialUrlCount": 1,
       "retainedThirdPartyUrlCount": 0,
       "recommendedDishesKnown": 3,
+      "featuredDishesKnown": 4,
+      "gaps": [
+        "openingHours",
+        "lunchBudget",
+        "dinnerBudget"
+      ],
+      "nextAction": "collect_opening_hours",
+      "priorityScore": 405
+    },
+    {
+      "googlePlaceId": "ChIJC5nF0AeMGGARePD5dsnR-Cw",
+      "name": "Triple One",
+      "basicInfoState": "source_matched",
+      "cuisine": "中华",
+      "distanceMeters": 1118,
+      "sourceUrlCount": 1,
+      "crawlableOfficialUrlCount": 1,
+      "retainedThirdPartyUrlCount": 0,
+      "recommendedDishesKnown": 5,
       "featuredDishesKnown": 4,
       "gaps": [
         "openingHours",

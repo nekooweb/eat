@@ -31,44 +31,44 @@
     "hotPepperRowsAvailable": 535,
     "hotPepperRecommendedRestaurants": 20,
     "hotPepperFeaturedRestaurants": 70,
-    "websiteTasks": 342,
-    "websiteHosts": 290,
-    "websitePagesVisited": 668,
-    "websiteRecommendedRestaurants": 71,
-    "websiteFeaturedMenuRestaurants": 91,
+    "websiteTasks": 282,
+    "websiteHosts": 244,
+    "websitePagesVisited": 454,
+    "websiteRecommendedRestaurants": 30,
+    "websiteFeaturedMenuRestaurants": 35,
     "websiteStructuredMenuRestaurants": 0,
-    "websitePlainMenuRestaurants": 91,
-    "websitePlainMenuItems": 370,
-    "sourceBackedRecommendationRestaurants": 90,
-    "sourceBackedFeaturedOnlyRestaurants": 118,
-    "recommendationItems": 170,
-    "featuredItems": 444,
+    "websitePlainMenuRestaurants": 35,
+    "websitePlainMenuItems": 138,
+    "sourceBackedRecommendationRestaurants": 50,
+    "sourceBackedFeaturedOnlyRestaurants": 103,
+    "recommendationItems": 73,
+    "featuredItems": 212,
     "statusCounts": {
-      "no_match_with_errors": 72,
-      "recommended_match": 71,
-      "no_match": 143,
-      "menu_match": 48
+      "no_match_with_errors": 71,
+      "menu_match": 33,
+      "no_match": 142,
+      "recommended_match": 30
     },
     "previousEvidence": {
-      "recommendationRestaurants": 170,
-      "featuredRestaurants": 176,
-      "evidenceRestaurants": 292,
-      "recommendationItems": 241,
-      "featuredItems": 255
-    },
-    "freshCrawlEvidence": {
-      "recommendationRestaurants": 90,
-      "featuredRestaurants": 161,
-      "evidenceRestaurants": 208,
-      "recommendationItems": 170,
-      "featuredItems": 444
-    },
-    "mergedEvidence": {
       "recommendationRestaurants": 171,
       "featuredRestaurants": 260,
       "evidenceRestaurants": 319,
       "recommendationItems": 309,
       "featuredItems": 617
+    },
+    "freshCrawlEvidence": {
+      "recommendationRestaurants": 50,
+      "featuredRestaurants": 105,
+      "evidenceRestaurants": 153,
+      "recommendationItems": 73,
+      "featuredItems": 212
+    },
+    "mergedEvidence": {
+      "recommendationRestaurants": 171,
+      "featuredRestaurants": 263,
+      "evidenceRestaurants": 320,
+      "recommendationItems": 315,
+      "featuredItems": 626
     }
   },
   "rows": [
@@ -3459,6 +3459,36 @@
       "name": "Triple One",
       "recommendedDishes": [
         {
+          "nameZh": "越南河粉",
+          "nameJa": "フォー",
+          "provider": "sourceWebsite",
+          "sourceUrl": "http://www.hainanchifan.com/tripleone",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "html-block:フォー|pho\\b",
+          "evidenceSnippet": "レモングラス香るBBQポーク スペシャリテ 佛跳牆（フォーティャオチァン） 「あまりの美味しそうな香りに修行僧ですらお寺の塀を飛び越えて来る」という詞にあるとされる中国・福建料理の"
+        },
+        {
+          "nameZh": "饺子",
+          "nameJa": "餃子",
+          "provider": "sourceWebsite",
+          "sourceUrl": "http://www.hainanchifan.com/tripleone/",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "html-block:餃子|饺子|gyoza",
+          "evidenceSnippet": "点心 料理長おすすめ点心3種 （叉焼饅、フカヒレ入り蒸し餃子、もっちり海老蒸し餃子） 温菜"
+        },
+        {
+          "nameZh": "饺子",
+          "nameJa": "餃子",
+          "provider": "sourceWebsite",
+          "sourceUrl": "http://www.hainanchifan.com/tripleone",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "html-block:餃子|饺子|gyoza",
+          "evidenceSnippet": "点心 料理長おすすめ点心3種 （叉焼饅、フカヒレ入り蒸し餃子、もっちり海老蒸し餃子） 温菜"
+        },
+        {
           "nameZh": "咖喱",
           "nameJa": "カレー",
           "provider": "sourceWebsite",
@@ -3477,7 +3507,48 @@
           "evidenceSnippet": "心3種、揚げ春巻きなど5皿 前菜 宮崎県沖産鰤のオリエンタルカルパッチョ 点心 料理長おすすめ点心3種 （叉焼饅、フカヒレ入り蒸し餃子、もっちり海老蒸し餃子） 温菜 ライスペーパー"
         }
       ],
-      "featuredDishes": []
+      "featuredDishes": [
+        {
+          "nameZh": "咖喱",
+          "nameJa": "カレー",
+          "provider": "sourceWebsite",
+          "sourceUrl": "http://www.hainanchifan.com/tripleone/",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "menu-page-text:カレー|カリー|咖喱|curry",
+          "evidenceSnippet": "チキンカレー"
+        },
+        {
+          "nameZh": "寿司",
+          "nameJa": "寿司",
+          "provider": "sourceWebsite",
+          "sourceUrl": "http://www.hainanchifan.com/tripleone/",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "menu-page-text:寿司|すし|鮨|sushi",
+          "evidenceSnippet": "「大手町駅」C6出口から直結の大手町パークビルディング（C6a）にお入りください。 エスカレーターでB1Fのレストラン街へ上がり、「金沢まいもん寿司」に向かって左隣のエレベーターに"
+        },
+        {
+          "nameZh": "海南鸡饭",
+          "nameJa": "海南鶏飯",
+          "provider": "sourceWebsite",
+          "sourceUrl": "http://www.hainanchifan.com/tripleone/",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "menu-page-text:海南鶏飯|海南鸡饭|hainan(?:ese)? chicken rice",
+          "evidenceSnippet": "シンガポール海南鶏飯グループTOP"
+        },
+        {
+          "nameZh": "烤饼",
+          "nameJa": "ナン",
+          "provider": "sourceWebsite",
+          "sourceUrl": "http://www.hainanchifan.com/tripleone/",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "menu-page-text:ナン|naan",
+          "evidenceSnippet": "〜ナンプラーチリソースで〜"
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJc5NiOxGMGGAR0PMWjP7od20",
@@ -4984,6 +5055,36 @@
           "nameZh": "意大利面",
           "nameJa": "パスタ",
           "provider": "sourceWebsite",
+          "sourceUrl": "https://r.gnavi.co.jp/eki/0002604/italian/rs/",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "html-block:パスタ|スパゲッティ|pasta|spaghetti",
+          "evidenceSnippet": "店貸切 ◆飲み放題付き◆ズワイガニの旨味濃厚なトマトクリームソースが絶品！人気No.1パスタを堪能♪《全10品》 ◆飲み放題付◆カニ好きのためのズワイガニパスタ◆茨城県産ハーブ豚肩"
+        },
+        {
+          "nameZh": "披萨",
+          "nameJa": "ピザ",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://r.gnavi.co.jp/eki/0002604/italian/rs/",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "html-block:ピザ|ピッツァ|pizza",
+          "evidenceSnippet": "【2H50種飲放題付き】 みんなでワイワイ♪豚ステーキなど6品♪お手軽豚会コース 【2.5H50種飲放題付き】豚ステーキ、手作りピザ、パスタなど7品♪ ！おすすめ豚会コース ──"
+        },
+        {
+          "nameZh": "牛排",
+          "nameJa": "ステーキ",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://r.gnavi.co.jp/eki/0002604/italian/rs/",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "html-block:ステーキ|steak",
+          "evidenceSnippet": "店貸切 【春の味覚とクラフトビール付コース】人気メニュー盛り沢山ハラミステーキなどを含む６,800円コース ｜女子会 誕生日会 記念日\" loading=\"lazy\" width="
+        },
+        {
+          "nameZh": "意大利面",
+          "nameJa": "パスタ",
+          "provider": "sourceWebsite",
           "sourceUrl": "http://r.gnavi.co.jp/g207201/",
           "checkedAt": "2026-09-06",
           "evidenceClass": "source_recommendation_text",
@@ -4999,7 +5100,48 @@
           "evidenceSnippet": "きを演出いたします。※貸切時、仮設灰皿を設置できます。 個室情報をもっと見る ピックアップ写真 【2階テーブル席】 和×伊×大正浪漫と新世界の雰囲気 【旬のメニュー】 その時期が旬"
         }
       ],
-      "featuredDishes": []
+      "featuredDishes": [
+        {
+          "nameZh": "汉堡排",
+          "nameJa": "ハンバーグ",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://r.gnavi.co.jp/eki/0002604/italian/rs/",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "menu-page-text:ハンバーグ|hamburg steak",
+          "evidenceSnippet": "当店のハンバーグのこだわり"
+        },
+        {
+          "nameZh": "玛格丽特披萨",
+          "nameJa": "マルゲリータ",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://r.gnavi.co.jp/eki/0002604/italian/rs/",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "menu-page-text:マルゲリータ|margherita",
+          "evidenceSnippet": "マルゲリータ"
+        },
+        {
+          "nameZh": "鳗鱼",
+          "nameJa": "鰻",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://r.gnavi.co.jp/eki/0002604/italian/rs/",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "menu-page-text:うなぎ|鰻|鳗鱼|unagi",
+          "evidenceSnippet": "【夏季限定！】鰻のサラダ、セイロ蒸し、ジャンボエビフライ等々☆6000円2時間飲み放題付"
+        },
+        {
+          "nameZh": "鳗鱼",
+          "nameJa": "鰻",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://r.gnavi.co.jp/eki/0002796/italian/rs/",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "menu-page-text:うなぎ|鰻|鳗鱼|unagi",
+          "evidenceSnippet": "【夏季限定！】鰻のサラダ、セイロ蒸し、ジャンボエビフライ等々☆6000円2時間飲み放題付"
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJG4bwugSMGGARuz8X6hPQM8Y",
@@ -9965,6 +10107,23 @@
           "evidenceClass": "retained_source_menu_item",
           "evidenceRule": "retained:dishes:備後府中焼き",
           "evidenceSnippet": "備後府中焼き"
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJvwu5WJeNGGARy4zgM9UMhg0",
+      "name": "薬膳酒＆心のケア　Barこころゆ",
+      "recommendedDishes": [],
+      "featuredDishes": [
+        {
+          "nameZh": "越南河粉",
+          "nameJa": "フォー",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://yakuzenkokoroyu.com/consultation/20240215114206/",
+          "checkedAt": "2026-09-08",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "menu-page-text:フォー|pho\\b",
+          "evidenceSnippet": "申込方法： 相談希望日時の24時間前までに、 申込フォーム に必要事項をご入力ください。"
         }
       ]
     },
