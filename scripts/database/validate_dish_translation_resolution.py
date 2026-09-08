@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate canonical Chinese dish fields against retained source-native evidence."""
+"""Validate canonical Chinese dish fields against source-native evidence."""
 from __future__ import annotations
 
 import argparse
@@ -15,6 +15,7 @@ FEATURED_CLASSES = {
     "provider_promotional_dish_text",
     "structured_menu_item",
     "source_menu_text",
+    "tabelog_menu_text",
 }
 RULE_VERSION = "dish-source-translation-zh-v1"
 _HAN = re.compile(r"[\u3400-\u9fff]")
