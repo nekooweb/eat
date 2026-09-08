@@ -34,6 +34,17 @@ function dishMatches(text, limit = 6) {
   return out;
 }
 
+function publicDishNames(row) {
+  const names = new Set();
+  for (const field of ['recommendedDishes', 'featuredDishes']) {
+    for (const value of row?.[field] || []) {
+      const name = cleanText(typeof value === 'string' ? value : value?.nameZh || value?.name || value?.label);
+      if (name) names.add(name);
+    }
+  }
+  return names;
+}
+
 const FIELDS = [
   'shopDetail',
   'wedding',
@@ -51,8 +62,13 @@ function main() {
   const rich = win.HOTPEPPER_RICH_METADATA || {};
   const rows = Array.isArray(rich.rows) ? rich.rows : [];
 
+  const runtimeWin = loadWindowFile('google_inventory_runtime.js');
+  const runtimeRows = Array.isArray(runtimeWin.GOOGLE_INVENTORY_RESTAURANTS) ? runtimeWin.GOOGLE_INVENTORY_RESTAURANTS : [];
+  const runtimeById = new Map(runtimeRows.map((row) => [row.googlePlaceId, row]));
+
   const summary = {
     rows: rows.length,
+    publicRuntimeRows: runtimeRows.length,
     networkRequests: 0,
     paidGoogleDataApiCalls: 0,
     fields: {},
@@ -60,9 +76,12 @@ function main() {
     candidateTexts: 0,
     recommendationCandidateTexts: 0,
     uniqueCandidatePlaces: 0,
+    placesWithAnyNewPublicDish: 0,
+    newPublicDishValues: 0,
     sampleCandidates: []
   };
   const candidatePlaces = new Set();
+  const placesWithNew = new Set();
 
   for (const field of FIELDS) {
     summary.fields[field] = {
@@ -70,12 +89,15 @@ function main() {
       nonGeneric: 0,
       dishCandidateTexts: 0,
       recommendationCandidateTexts: 0,
+      newPublicDishValues: 0,
       dishTokens: {}
     };
   }
 
   for (const row of rows) {
     let rowHasCandidate = false;
+    const currentPublic = runtimeById.get(row.googlePlaceId);
+    const existingNames = publicDishNames(currentPublic);
     for (const field of FIELDS) {
       const text = cleanText(row.sourceServiceText?.[field]);
       if (!text) continue;
@@ -94,6 +116,12 @@ function main() {
         summary.recommendationCandidateTexts += 1;
         stats.recommendationCandidateTexts += 1;
       }
+      const newDishes = matches.filter((match) => !existingNames.has(match.nameZh));
+      if (newDishes.length) {
+        placesWithNew.add(row.googlePlaceId);
+        summary.newPublicDishValues += newDishes.length;
+        stats.newPublicDishValues += newDishes.length;
+      }
       for (const match of matches) {
         stats.dishTokens[match.nameZh] = (stats.dishTokens[match.nameZh] || 0) + 1;
       }
@@ -104,6 +132,8 @@ function main() {
           field,
           recommendation,
           dishes: matches.map((item) => item.nameZh),
+          newDishes: newDishes.map((item) => item.nameZh),
+          existingPublicDishes: [...existingNames],
           sourceTokens: matches.map((item) => item.sourceToken),
           text: text.slice(0, 180)
         });
@@ -113,6 +143,7 @@ function main() {
   }
 
   summary.uniqueCandidatePlaces = candidatePlaces.size;
+  summary.placesWithAnyNewPublicDish = placesWithNew.size;
   for (const stats of Object.values(summary.fields)) {
     stats.dishTokens = Object.fromEntries(
       Object.entries(stats.dishTokens).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
