@@ -39,14 +39,21 @@ function safeUrl(value) {
   }
 }
 
+function excludedIndependentHost(host) {
+  const h = String(host || '').toLowerCase().replace(/^www\./, '');
+  if (/openstreetmap\.org$|hotpepper\.jp$|tabelog\.com$/.test(h)) return true;
+  if (/(^|\.)google\./.test(h) || /googleusercontent\.com$/.test(h)) return true;
+  if (/facebook\.com$|instagram\.com$|x\.com$|twitter\.com$|youtube\.com$|tiktok\.com$/.test(h)) return true;
+  // Restaurant directories / reservation aggregators are not independent sources.
+  if (/gnavi\.co\.jp$|retty\.me$|tripadvisor\.[a-z.]+$|yelp\.[a-z.]+$|foursquare\.com$/.test(h)) return true;
+  if (/loco\.yahoo\.co\.jp$|paypaygourmet\.yahoo\.co\.jp$|autoreserve\.com$|ekiten\.jp$/.test(h)) return true;
+  if (/restaurant\.ikyu\.com$|bar-navi\.suntory\.co\.jp$/.test(h)) return true;
+  return false;
+}
+
 function eligibleIndependentUrl(value) {
   const url = safeUrl(value);
-  if (!url) return false;
-  const host = url.hostname.toLowerCase().replace(/^www\./, '');
-  if (/openstreetmap\.org$|hotpepper\.jp$|tabelog\.com$/.test(host)) return false;
-  if (/(^|\.)google\./.test(host) || /googleusercontent\.com$/.test(host)) return false;
-  if (/facebook\.com$|instagram\.com$|x\.com$|twitter\.com$|youtube\.com$|tiktok\.com$/.test(host)) return false;
-  return true;
+  return Boolean(url && !excludedIndependentHost(url.hostname));
 }
 
 function normalizeName(value) {
@@ -65,8 +72,6 @@ function nameSimilarity(a, b) {
     const long = Math.max(x.length, y.length);
     if (short >= 4) return Math.max(0.84, short / long);
   }
-  // Deterministic bigram Dice similarity: enough for proposal ranking without
-  // introducing a fuzzy identity promotion rule.
   function bigrams(text) {
     if (text.length < 2) return [text];
     const out = [];
@@ -170,14 +175,14 @@ let invalidUrls = 0;
 let nameMismatch = 0;
 let alreadyHasSource = 0;
 let candidateRecordsOutsideGap = 0;
-let retainedIndexProposalRows = 0;
+let excludedAggregatorUrls = 0;
 
 function putProposal(row) {
   const old = outputById.get(row.googlePlaceId);
   if (!old || Number(row.proposalScore || 0) > Number(old.proposalScore || 0)) outputById.set(row.googlePlaceId, row);
 }
 
-// Lane 1: preserve the existing retained official candidate-index logic.
+// Lane 1: retained official candidate index.
 for (const record of indexRecords) {
   const pid = clean(record.googlePlaceId);
   const target = targetById.get(pid);
@@ -193,16 +198,17 @@ for (const record of indexRecords) {
     nameMismatch += 1;
     continue;
   }
-
+  const rawUrls = [record.pageUrl, ...(record.menuUrls || [])].filter(Boolean);
+  excludedAggregatorUrls += rawUrls.filter((value) => {
+    const url = safeUrl(value);
+    return Boolean(url && excludedIndependentHost(url.hostname));
+  }).length;
   const pageUrl = eligibleIndependentUrl(record.pageUrl) ? safeUrl(record.pageUrl).toString() : null;
-  const menuUrls = [...new Set((record.menuUrls || [])
-    .filter(eligibleIndependentUrl)
-    .map((value) => safeUrl(value).toString()))];
+  const menuUrls = [...new Set((record.menuUrls || []).filter(eligibleIndependentUrl).map((value) => safeUrl(value).toString()))];
   if (!pageUrl && !menuUrls.length) {
     invalidUrls += 1;
     continue;
   }
-
   const urls = [...new Set([pageUrl, ...menuUrls].filter(Boolean))];
   const score = nameSimilarity(target.name, record.name);
   putProposal({
@@ -232,16 +238,18 @@ for (const record of indexRecords) {
     reviewRequiredBeforeBinding: true,
     mayWriteDishEvidenceBeforeIdentityReview: false
   });
-  retainedIndexProposalRows += 1;
 }
 
-// Lane 2: use the already-retained Overture snapshot to discover independent
-// website candidates for current source-less public rows. This is proposal-only:
-// Overture proximity/name agreement cannot itself mutate identity or dish evidence.
+// Lane 2: retained Overture snapshot, proposal-only.
 const overtureSpatial = new Map();
 let overtureRowsWithIndependentUrls = 0;
 for (const row of overtureRows) {
   if (!Number.isFinite(row?.lat) || !Number.isFinite(row?.lng) || !clean(row?.name)) continue;
+  const allWebsites = flattenStrings(row.websites);
+  excludedAggregatorUrls += allWebsites.filter((value) => {
+    const url = safeUrl(value);
+    return Boolean(url && excludedIndependentHost(url.hostname));
+  }).length;
   const urls = independentUrls(row.websites);
   if (!urls.length) continue;
   overtureRowsWithIndependentUrls += 1;
@@ -298,8 +306,6 @@ for (const target of targetRows) {
     overtureRejectedAmbiguous += 1;
     continue;
   }
-
-  const pageUrl = best.urls[0] || null;
   const pid = target.googlePlaceId;
   overtureProposals.push({
     googlePlaceId: pid,
@@ -307,7 +313,7 @@ for (const target of targetRows) {
     distanceMeters: target.distanceMeters ?? runtime.distanceMeters ?? null,
     currentAction: target.nextAction,
     currentSourceUrlCount: Number(target.sourceUrlCount || 0),
-    pageUrl,
+    pageUrl: best.urls[0] || null,
     menuUrls: [],
     candidateHosts: hostList(best.urls),
     checkedAt: clean(overtureDoc.checkedAt || overtureDoc.release) || null,
@@ -336,8 +342,7 @@ for (const target of targetRows) {
   });
 }
 
-// One Overture native identity must not be proposed for multiple frozen Place IDs.
-// Keep the strongest proposal and defer the rest as collision/ambiguity review.
+// A native Overture entity must not fan out to multiple Place IDs.
 const overtureByNative = new Map();
 for (const proposal of overtureProposals.sort((a, b) => b.proposalScore - a.proposalScore || a.candidateDistanceMeters - b.candidateDistanceMeters)) {
   const native = proposal.candidateProviderId || `${proposal.candidateName}|${proposal.pageUrl}`;
@@ -364,10 +369,8 @@ const shardCounts = Array.from({ length: SHARDS }, (_, shard) => ({
   overture: outputRows.filter((row) => row.shard === shard && row.candidateProvider === 'Overture Maps').length
 }));
 
-const overtureProposalRows = outputRows.filter((row) => row.candidateProvider === 'Overture Maps').length;
-const highConfidenceOvertureProposalRows = outputRows.filter((row) => row.proposalState === 'review_high_confidence_overture_website_candidate').length;
 const summary = {
-  schemaVersion: 2,
+  schemaVersion: 3,
   catalogTotal: 2804,
   publicRuntimeTotal: 1415,
   currentIndependentDishSourceGap: targetRows.length,
@@ -376,8 +379,8 @@ const summary = {
   overtureRowsWithIndependentUrls,
   proposalRows: outputRows.length,
   retainedIndexProposalRows: outputRows.filter((row) => row.candidateProvider === 'retained_official_candidate_index').length,
-  overtureProposalRows,
-  highConfidenceOvertureProposalRows,
+  overtureProposalRows: outputRows.filter((row) => row.candidateProvider === 'Overture Maps').length,
+  highConfidenceOvertureProposalRows: outputRows.filter((row) => row.proposalState === 'review_high_confidence_overture_website_candidate').length,
   proposalRowsWithExplicitMenuUrls: outputRows.filter((row) => row.menuUrls?.length).length,
   proposalRowsPageOnly: outputRows.filter((row) => !row.menuUrls?.length).length,
   proposalCoverageOfIndependentGapPct: targetRows.length ? Number((outputRows.length * 100 / targetRows.length).toFixed(1)) : 0,
@@ -387,6 +390,7 @@ const summary = {
   overtureRejectedName,
   overtureRejectedWeak,
   overtureRejectedAmbiguous,
+  excludedAggregatorUrls,
   nameMismatch,
   invalidUrls,
   alreadyHasSource,
@@ -396,7 +400,7 @@ const summary = {
 };
 
 const payload = {
-  schemaVersion: 2,
+  schemaVersion: 3,
   generatedAt: new Date().toISOString(),
   policy: {
     proposalOnly: true,
@@ -412,6 +416,7 @@ const payload = {
     independentHttpUrlRequired: true,
     socialUrlsExcluded: true,
     thirdPartyAggregatorUrlsExcluded: true,
+    excludedAggregatorFamilies: ['Gurunavi', 'Retty', 'Tripadvisor', 'Yelp', 'Foursquare', 'Yahoo Loco/PayPay Gourmet', 'AutoReserve', 'Ekiten', 'Ikyu Restaurant', 'Suntory Bar-Navi'],
     proximityOnlyBindingAllowed: false,
     dishEvidencePromotionBeforeIdentityReviewAllowed: false,
     centralIdentityReviewRequired: true,
