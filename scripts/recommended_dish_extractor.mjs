@@ -78,132 +78,171 @@ export const DISH_RULES = [
   [/ロース丼/i, '里脊肉盖饭'],
   [/ローストチキン/i, '烤鸡'],
   [/(?:YEBISU BAR[^\s]*)?肉豆富|肉豆腐/i, '肉豆腐'],
-  [/濃厚つけ麺/i, '浓厚蘸面'],
-  [/家系ラーメン|横浜家系/i, '横滨家系拉面'],
-  [/塩生姜らー?麺|塩生姜ラーメン/i, '盐生姜拉面'],
-  [/煮干し?ラーメン|煮干し?そば/i, '煮干拉面'],
-  [/担々麺|担担麺/i, '担担面'],
-  [/麻辣湯|マーラータン/i, '麻辣烫'],
-  [/刀削麺/i, '刀削面'],
-  [/バターチキン/i, '黄油鸡咖喱'],
-  [/ビリヤニ/i, '印度香饭'],
-  [/タンドリーチキン/i, '坦都里烤鸡'],
-  [/ナン/i, '馕饼'],
-  [/フォー/i, '越南河粉'],
-  [/バインミー/i, '越南法棍'],
-  [/バインセオ/i, '越南煎饼'],
-  [/パエリア/i, '西班牙海鲜饭'],
-  [/タコス/i, '塔可'],
-  [/ケバブ/i, '烤肉夹饼'],
-  [/小籠包|小龙包/i, '小笼包'],
-  [/餃子|ぎょうざ|ギョーザ/i, '饺子'],
-  [/炒飯|チャーハン/i, '炒饭'],
-  [/麻婆豆腐/i, '麻婆豆腐'],
-  [/酢豚/i, '糖醋里脊'],
-  [/青椒肉絲/i, '青椒肉丝'],
-  [/回鍋肉/i, '回锅肉'],
-  [/エビチリ|海老チリ/i, '干烧虾仁'],
-  [/北京ダック|北京烤鴨/i, '北京烤鸭'],
-  [/寿司|鮨|すし/i, '寿司'],
-  [/刺身|お造り/i, '刺身'],
-  [/海鮮丼|海鮮どんぶり/i, '海鲜盖饭'],
-  [/鉄火丼/i, '金枪鱼盖饭'],
-  [/鰻重|うな重/i, '鳗鱼重'],
-  [/うな丼|鰻丼/i, '鳗鱼盖饭'],
-  [/焼き?鳥|やきとり/i, '烤鸡串'],
-  [/焼き?とん|やきとん/i, '烤猪串'],
-  [/串カツ|串揚げ/i, '炸串'],
+  [/真鯛のフィッシュ[＆&]チップス/i, '真鲷炸鱼薯条'],
+  [/神威豚ロース塩麹グリル/i, '盐麹烤神威猪里脊'],
+  [/備後府中焼き/i, '备后府中烧'],
+  [/お造里/i, '刺身'],
+  [/宇和島流鯛めし/i, '宇和岛式鲷鱼饭'],
+  [/七輪焼き/i, '七轮炭烤'],
   [/串焼き/i, '烤串'],
-  [/焼肉|焼き肉/i, '烤肉'],
-  [/牛タン/i, '牛舌'],
-  [/すき焼き/i, '寿喜烧'],
-  [/しゃぶしゃぶ/i, '涮涮锅'],
+  [/おむすび/i, '饭团'],
+  [/^かけ$/i, '清汤乌冬面'],
+  [/カレー付き生姜焼き|生姜焼き.*カレー|curry.*ginger pork/i, '咖喱姜烧猪肉'],
+  [/エビ炒飯|海老炒飯|えび炒飯|shrimp fried rice/i, '虾仁炒饭'],
+  [/濃厚つけ麺|濃厚つけめん/i, '浓厚蘸面'],
+  [/家系(?:ラーメン|らーめん)|横浜家系/i, '横滨家系拉面'],
+  [/煮干し(?:ラーメン|らーめん)|煮干(?:ラーメン|らーめん)/i, '煮干拉面'],
+  [/塩生姜(?:ラーメン|らーめん)/i, '盐味生姜拉面'],
+  [/鶏白湯(?:ラーメン|らーめん)|chicken paitan/i, '鸡白汤拉面'],
+  [/豚骨(?:ラーメン|らーめん)|tonkotsu ramen/i, '豚骨拉面'],
+  [/バターチキン(?:カレー)?|butter chicken/i, '黄油鸡咖喱'],
+  [/キーマ(?:カレー)?|keema curry/i, '肉末咖喱'],
+  [/スープカレー|soup curry/i, '汤咖喱'],
+  [/タンドリーチキン|tandoori chicken/i, '坦都里烤鸡'],
+  [/ミールス|meals\b/i, '南印度米尔斯套餐'],
+  [/マサラドーサ|ドーサ|masala dosa|dosa\b/i, '印度薄饼'],
+  [/海南鶏飯|海南鸡饭|hainan(?:ese)? chicken rice/i, '海南鸡饭'],
+  [/カオマンガイ|khao man gai/i, '泰式海南鸡饭'],
+  [/トムヤムクン|tom yum/i, '冬阴功汤'],
+  [/グリーンカレー|green curry/i, '泰式绿咖喱'],
+  [/バインミー|banh mi/i, '越南法棍三明治'],
+  [/バインセオ|banh xeo/i, '越南煎饼'],
+  [/よだれ鶏|口水鶏/i, '口水鸡'],
+  [/油淋鶏|油淋鸡/i, '油淋鸡'],
+  [/エビチリ|海老チリ/i, '干烧虾仁'],
+  [/刀削麺|刀削面/i, '刀削面'],
+  [/焼き餃子|焼餃子/i, '煎饺'],
+  [/水餃子|水饺/i, '水饺'],
+  [/だし巻き(?:玉子|卵)|出汁巻き(?:玉子|卵)/i, '日式高汤玉子烧'],
+  [/鯖(?:の)?塩焼き|塩鯖|焼き鯖/i, '盐烤鲭鱼'],
+  [/生姜焼き|しょうが焼き/i, '姜烧猪肉'],
+  [/焼きとん|やきとん/i, '烤猪肉串'],
+  [/もつ焼き|もつ焼/i, '烤内脏'],
+  [/水炊き|水炊/i, '鸡肉水炊锅'],
+  [/ちゃんこ鍋|ちゃんこ/i, '相扑火锅'],
+  [/おばんざい/i, '京都家常小菜'],
+  [/牡蠣フライ|カキフライ/i, '炸牡蛎'],
+  [/アジフライ|鯵フライ/i, '炸竹荚鱼'],
+  [/穴子(?:丼|重)?/i, '星鳗料理'],
+  [/ねぎま/i, '葱鸡肉串'],
+  [/つくね/i, '鸡肉丸串'],
+  [/マルゲリータ|margherita/i, '玛格丽特披萨'],
+  [/カルボナーラ|carbonara/i, '卡邦尼意大利面'],
+  [/ボロネーゼ|bolognese/i, '肉酱意大利面'],
+  [/ペペロンチーノ|aglio.*olio|peperoncino/i, '蒜香辣椒意大利面'],
+  [/リゾット|risotto/i, '意式烩饭'],
+  [/ラザニア|lasagna/i, '千层面'],
+  [/チーズタッカルビ|cheese dakgalbi/i, '芝士辣炒鸡'],
+  [/ヤンニョムチキン|yangnyeom/i, '韩式甜辣炸鸡'],
+  [/プルコギ|bulgogi/i, '韩式烤牛肉'],
+  [/モンブラン|mont blanc/i, '蒙布朗蛋糕'],
+  [/チーズケーキ|cheesecake/i, '芝士蛋糕'],
+  [/ティラミス|tiramisu/i, '提拉米苏'],
+  [/あんみつ/i, '日式蜜豆凉粉'],
+  [/どら焼き|どら焼|dorayaki/i, '铜锣烧'],
+  [/大福|daifuku/i, '大福'],
+  [/ビリヤニ|biryani/i, '印度香饭'],
+  [/焼き?鳥|やきとり|yakitori/i, '烤鸡串'],
+  [/串揚げ|串カツ|kushiage/i, '炸串'],
+  [/唐揚げ|から揚げ|からあげ|karaage/i, '日式炸鸡'],
+  [/チキン南蛮/i, '南蛮鸡'],
+  [/中華そば/i, '中华拉面'],
+  [/つけ麺|つけめん|tsukemen/i, '蘸面'],
+  [/担々麺|担担麺|担担面|tantanmen/i, '担担面'],
+  [/油そば/i, '油拌面'],
+  [/ラーメン|らーめん|拉麺|ramen/i, '拉面'],
+  [/蕎麦|そば|soba/i, '荞麦面'],
+  [/うどん|udon/i, '乌冬面'],
+  [/カレー|カリー|咖喱|curry/i, '咖喱'],
+  [/ナン|naan/i, '烤饼'],
+  [/ステーキ|steak/i, '牛排'],
+  [/ハンバーグ|hamburg steak/i, '汉堡排'],
+  [/寿司|すし|鮨|sushi/i, '寿司'],
+  [/刺身|お造り|sashimi/i, '刺身'],
+  [/海鮮丼|海鲜丼/i, '海鲜盖饭'],
+  [/うなぎ|鰻|鳗鱼|unagi/i, '鳗鱼'],
+  [/天ぷら|天麩羅|tempura/i, '天妇罗'],
+  [/とんかつ|豚カツ|tonkatsu/i, '炸猪排'],
+  [/牛カツ/i, '炸牛排'],
+  [/牛タン|gyutan/i, '牛舌'],
+  [/焼肉|yakiniku/i, '烤肉'],
+  [/ホルモン/i, '烤内脏'],
+  [/しゃぶしゃぶ|shabu.?shabu/i, '涮涮锅'],
+  [/すき焼き|すきやき|sukiyaki/i, '寿喜烧'],
   [/もつ鍋/i, '牛杂锅'],
-  [/水炊き/i, '日式鸡肉锅'],
-  [/ちゃんこ/i, '相扑火锅'],
-  [/おでん/i, '关东煮'],
-  [/天ぷら|天婦羅/i, '天妇罗'],
-  [/とんかつ|豚カツ/i, '炸猪排'],
-  [/カツ丼/i, '炸猪排盖饭'],
-  [/牛丼/i, '牛肉盖饭'],
-  [/親子丼/i, '亲子盖饭'],
-  [/豚丼/i, '猪肉盖饭'],
-  [/うどん/i, '乌冬面'],
-  [/そば|蕎麦/i, '荞麦面'],
-  [/ラーメン|らーめん|らぁめん|中華そば/i, '拉面'],
-  [/つけ麺/i, '蘸面'],
-  [/カレー|カリー/i, '咖喱'],
-  [/オムライス/i, '蛋包饭'],
-  [/ハンバーグ/i, '汉堡排'],
-  [/ステーキ/i, '牛排'],
-  [/お好み焼き/i, '大阪烧'],
-  [/たこ焼き/i, '章鱼烧'],
-  [/焼きそば/i, '炒面'],
-  [/パスタ|スパゲッティ/i, '意大利面'],
-  [/ピザ|ピッツァ/i, '披萨'],
-  [/ハンバーガー|バーガー/i, '汉堡'],
-  [/サンドイッチ|サンド(?:$|\s|[、,。])/i, '三明治'],
-  [/おにぎり|おむすび/i, '饭团'],
-  [/パンケーキ/i, '松饼'],
-  [/クレープ/i, '可丽饼'],
-  [/プリン/i, '布丁'],
-  [/ケーキ/i, '蛋糕'],
-  [/アイスクリーム|ジェラート/i, '冰淇淋'],
-  [/和菓子/i, '和果子'],
-  [/豆花/i, '豆花'],
-  [/だし巻き玉子|出汁巻き玉子|だし巻き卵/i, '日式高汤玉子烧'],
-  [/唐揚げ|から揚げ|からあげ/i, '日式炸鸡'],
-  [/鯖塩焼き|さば塩焼き/i, '盐烤鲭鱼'],
-  [/焼き鯖|焼鯖/i, '烤鲭鱼'],
-  [/生姜焼き/i, '姜烧猪肉'],
-  [/牡蠣|カキ/i, '牡蛎'],
-  [/まぐろ|マグロ|鮪/i, '金枪鱼'],
-  [/鯖|さば|サバ/i, '鲭鱼'],
-  [/鰯|いわし|イワシ/i, '沙丁鱼'],
-  [/鰹|かつお|カツオ/i, '鲣鱼'],
-  [/海鮮|魚介/i, '海鲜'],
-  [/サラダ/i, '沙拉'],
-  [/フライドポテト|ポテトフライ/i, '炸薯条'],
-  [/コーヒー|珈琲/i, '咖啡'],
-  [/カフェラテ|カフェラッテ|ラテ/i, '拿铁'],
-  [/紅茶|ティー/i, '红茶'],
-  [/抹茶/i, '抹茶'],
-  [/パフェ/i, '芭菲'],
-  [/シュークリーム/i, '泡芙'],
-  [/クロワッサン/i, '可颂'],
-  [/バゲット/i, '法棍'],
-  [/トースト/i, '吐司']
+  [/餃子|饺子|gyoza/i, '饺子'],
+  [/小籠包|小笼包|xiaolongbao/i, '小笼包'],
+  [/麻婆豆腐|mapo/i, '麻婆豆腐'],
+  [/炒飯|チャーハン|炒饭|fried rice/i, '炒饭'],
+  [/回鍋肉|回锅肉/i, '回锅肉'],
+  [/青椒肉絲|青椒肉丝/i, '青椒肉丝'],
+  [/酢豚/i, '糖醋猪肉'],
+  [/パスタ|スパゲッティ|pasta|spaghetti/i, '意大利面'],
+  [/ピザ|ピッツァ|pizza/i, '披萨'],
+  [/オムライス|omelette rice|omurice/i, '蛋包饭'],
+  [/ドリア/i, '焗饭'],
+  [/グラタン|gratin/i, '焗烤'],
+  [/サンドイッチ|サンド|sandwich/i, '三明治'],
+  [/ハンバーガー|バーガー|burger/i, '汉堡'],
+  [/タコス|tacos?/i, '塔可'],
+  [/ケバブ|kebab/i, '烤肉卷'],
+  [/フォー|pho\b/i, '越南河粉'],
+  [/ガパオ|gapao/i, '打抛饭'],
+  [/パッタイ|pad thai/i, '泰式炒河粉'],
+  [/サムギョプサル|samgyeopsal/i, '韩式烤五花肉'],
+  [/チヂミ|jeon\b/i, '韩式煎饼'],
+  [/冷麺|冷面/i, '冷面'],
+  [/ビビンバ|bibimbap/i, '石锅拌饭'],
+  [/お好み焼き?|okonomiyaki/i, '御好烧'],
+  [/もんじゃ|monjayaki/i, '文字烧'],
+  [/たこ焼き?|takoyaki/i, '章鱼烧'],
+  [/おでん|oden\b/i, '关东煮'],
+  [/親子丼|oyakodon/i, '亲子盖饭'],
+  [/牛丼|gyudon/i, '牛肉饭'],
+  [/天丼|tendon\b/i, '天妇罗盖饭'],
+  [/カツ丼|katsudon/i, '炸猪排盖饭'],
+  [/ローストビーフ|roast beef/i, '烤牛肉'],
+  [/燻製|smoked/i, '烟熏料理'],
+  [/クロワッサン|croissant/i, '可颂'],
+  [/パンケーキ|pancake/i, '松饼'],
+  [/フレンチトースト|french toast/i, '法式吐司'],
+  [/ケーキ|cake/i, '蛋糕'],
+  [/パフェ|parfait/i, '芭菲'],
+  [/プリン|pudding|flan/i, '布丁'],
+  [/クレープ|crepe/i, '可丽饼'],
+  [/ジェラート|gelato/i, '意式冰淇淋']
 ];
 
-export function translateDishText(value) {
-  const text = normalizePlainText(value).slice(0, 240);
+export function translateDishText(raw) {
+  const text = normalizePlainText(raw);
   if (!text) return null;
-  const names = [];
   for (const [pattern, nameZh] of DISH_RULES) {
-    if (pattern.test(text) && !names.includes(nameZh)) names.push(nameZh);
-    if (names.length >= 3) break;
+    if (pattern.test(text)) return { nameZh, nameOriginal: text.slice(0, 80), rule: pattern.source };
   }
-  return names.length ? names : null;
+  // Already-Chinese short dish labels can be retained as-is when they contain no kana.
+  if (/^[\u3400-\u9fffA-Za-z0-9·・&＋+\-\s]{1,24}$/u.test(text) && /[\u3400-\u9fff]/u.test(text) && !/[\u3040-\u30ff]/u.test(text)) {
+    return { nameZh: text, nameOriginal: text, rule: 'already-chinese' };
+  }
+  return null;
 }
 
-export function extractStrictRecommendationsFromText(text, limit = 3) {
-  const normalized = normalizePlainText(text).slice(0, 600);
-  if (!normalized || !RECOMMENDATION_MARKER.test(normalized)) return [];
+function itemsFromText(text, limit = 3) {
   const output = [];
   const seen = new Set();
   for (const [pattern, nameZh] of DISH_RULES) {
-    const match = normalized.match(pattern);
+    const match = String(text || '').match(pattern);
     if (!match || seen.has(nameZh)) continue;
     seen.add(nameZh);
-    output.push({
-      nameZh,
-      nameOriginal: match[0],
-      rule: pattern.source,
-      evidenceSnippet: normalized.slice(0, 90)
-    });
+    output.push({ nameZh, nameOriginal: match[0], rule: pattern.source });
     if (output.length >= limit) break;
   }
   return output;
+}
+
+export function extractStrictRecommendationsFromText(value, limit = 3) {
+  const text = normalizePlainText(value);
+  if (!text || !RECOMMENDATION_MARKER.test(text)) return [];
+  return itemsFromText(text, limit);
 }
 
 export function extractStrictRecommendationsFromHtml(html, limit = 3) {
@@ -212,59 +251,53 @@ export function extractStrictRecommendationsFromHtml(html, limit = 3) {
   const seen = new Set();
   for (let i = 0; i < blocks.length; i += 1) {
     if (!RECOMMENDATION_MARKER.test(blocks[i])) continue;
-    const context = [blocks[i - 1], blocks[i], blocks[i + 1], blocks[i + 2]]
-      .filter(Boolean)
-      .join(' ')
-      .slice(0, 420);
-    for (const match of extractStrictRecommendationsFromText(context, limit)) {
-      if (seen.has(match.nameZh)) continue;
-      seen.add(match.nameZh);
-      output.push({ ...match, evidenceSnippet: context.slice(0, 90) });
+    const context = blocks.slice(Math.max(0, i - 1), Math.min(blocks.length, i + 3)).join(' ').slice(0, 420);
+    for (const item of itemsFromText(context, limit)) {
+      if (seen.has(item.nameZh)) continue;
+      seen.add(item.nameZh);
+      output.push({ ...item, evidenceSnippet: context.slice(0, 90) });
       if (output.length >= limit) return output;
     }
   }
   return output;
 }
 
-function menuItems(value, output = [], depth = 0) {
-  if (depth > 8 || value == null) return output;
+function walkJson(value, visit) {
   if (Array.isArray(value)) {
-    for (const item of value) menuItems(item, output, depth + 1);
-    return output;
+    for (const item of value) walkJson(item, visit);
+    return;
   }
-  if (typeof value !== 'object') return output;
-  const rawType = value['@type'];
-  const types = Array.isArray(rawType) ? rawType : [rawType];
-  if (types.some((type) => String(type || '').toLowerCase() === 'menuitem')) {
-    const translated = translateDishText(value.name || value.description || '');
-    if (translated?.length) {
-      output.push({
-        nameZh: translated[0],
-        nameOriginal: String(value.name || value.description || '').slice(0, 100),
-        rule: 'jsonld-menuitem'
-      });
-    }
-  }
-  for (const child of Object.values(value)) menuItems(child, output, depth + 1);
-  return output;
+  if (!value || typeof value !== 'object') return;
+  visit(value);
+  for (const item of Object.values(value)) walkJson(item, visit);
 }
 
-export function extractStructuredMenuItems(html, limit = 6) {
-  const items = [];
-  const scripts = String(html || '').match(/<script\b[^>]*type=["']application\/ld\+json["'][^>]*>[\s\S]*?<\/script>/gi) || [];
-  for (const script of scripts) {
-    const raw = script.replace(/^<script\b[^>]*>/i, '').replace(/<\/script>$/i, '').trim();
-    if (!raw) continue;
+export function extractStructuredMenuItems(html, limit = 3) {
+  const names = [];
+  const seenRaw = new Set();
+  const scriptRe = /<script\b[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi;
+  let match;
+  while ((match = scriptRe.exec(String(html || '')))) {
     try {
-      menuItems(JSON.parse(raw), items);
+      const data = JSON.parse(decodeEntities(match[1]).trim());
+      walkJson(data, (obj) => {
+        const types = Array.isArray(obj['@type']) ? obj['@type'] : [obj['@type']];
+        if (!types.some((x) => String(x || '').toLowerCase() === 'menuitem')) return;
+        const raw = String(obj.name || '').trim();
+        if (raw && !seenRaw.has(raw)) { seenRaw.add(raw); names.push(raw); }
+      });
     } catch {
-      // malformed JSON-LD is not evidence
+      // Invalid JSON-LD is ignored; it is not evidence.
     }
   }
+  const output = [];
   const seen = new Set();
-  return items.filter((item) => {
-    if (!item?.nameZh || seen.has(item.nameZh)) return false;
-    seen.add(item.nameZh);
-    return true;
-  }).slice(0, limit);
+  for (const raw of names) {
+    const translated = translateDishText(raw);
+    if (!translated || seen.has(translated.nameZh)) continue;
+    seen.add(translated.nameZh);
+    output.push({ ...translated, evidenceSnippet: raw.slice(0, 90) });
+    if (output.length >= limit) break;
+  }
+  return output;
 }
