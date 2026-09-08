@@ -1,5 +1,7 @@
 // Shared extractor for source-backed recommendation/menu evidence.
-// This module NEVER infers dishes from cuisine, restaurant name, or brand alone.
+// Source pages may be Japanese or another source-native language. Canonical public
+// dish labels are normalized to Chinese; this module NEVER infers dishes from
+// cuisine, restaurant name, or brand alone.
 
 export const RECOMMENDATION_MARKER = /おすすめ|オススメ|お勧め|名物|看板(?:メニュー)?|自慢|一押し|イチオシ|推し|人気\s*(?:no\.?\s*1|no1|1位)?|一番人気|売れ筋|必食|スペシャリテ|シグネチャー|signature|specialt(?:y|ies)|recommended|recommendation|best[ -]?seller|must[ -]?try|most[ -]?popular|house[ -]?special|chef(?:'s)?[ -]?recommend/i;
 export const MENU_LINK_MARKER = /menu|food|dish|cuisine|lunch|dinner|料理|お品書|御品書|メニュー|食事|おすすめ|名物/i;
@@ -42,9 +44,45 @@ export function normalizePlainText(value) {
     .trim();
 }
 
-// Specific rules precede broad dish-family rules so the Chinese display keeps
-// useful menu detail whenever the source text contains it.
+// Specific rules precede broad dish-family rules so the Chinese canonical label
+// keeps useful source detail whenever the source-native text contains it.
 export const DISH_RULES = [
+  // Source-native Japanese normalization recovered from retained source evidence.
+  [/もも貴族焼\s*[（(]?たれ[）)]?/i, '鸡腿贵族烧（酱汁）'],
+  [/厚切上タン/i, '上等厚切牛舌'],
+  [/厚切りタン/i, '厚切牛舌'],
+  [/上レバー/i, '上等肝片'],
+  [/スターバックス\s*ラテ/i, '星巴克拿铁'],
+  [/ハニーミルクラテ/i, '蜂蜜牛奶拿铁'],
+  [/ミルク珈琲\s*[（(]黒糖[）)]/i, '黑糖牛奶咖啡'],
+  [/ブレンドコーヒー/i, '拼配咖啡'],
+  [/ナスとベーコンのトマトソース/i, '茄子培根番茄酱意面'],
+  [/バカ盛りポテトフライ/i, '超大份炸薯条'],
+  [/小いわし天婦羅|小いわし天ぷら/i, '小沙丁鱼天妇罗'],
+  [/牛もつ煮込み/i, '炖牛杂'],
+  [/日替わりランチ/i, '每日午餐套餐'],
+  [/サムゲタン/i, '参鸡汤'],
+  [/石焼ビビンパ/i, '石锅拌饭'],
+  [/純豆腐チゲ/i, '嫩豆腐锅'],
+  [/ドミノ・デラックス/i, '达美乐豪华披萨'],
+  [/のどぐろ塩焼き/i, '盐烤赤鯥'],
+  [/丸ごとワタリガニのトマトクリーム/i, '整只梭子蟹番茄奶油意面'],
+  [/野菜巻き串/i, '蔬菜卷串'],
+  [/牛肉と豆腐の四川風煮込み/i, '川味牛肉炖豆腐'],
+  [/本気のトロ鉄火巻き/i, '金枪鱼腩铁火卷'],
+  [/きりたんぽ/i, '秋田烤米棒'],
+  [/ロース丼/i, '里脊肉盖饭'],
+  [/ローストチキン/i, '烤鸡'],
+  [/(?:YEBISU BAR[^\s]*)?肉豆富|肉豆腐/i, '肉豆腐'],
+  [/真鯛のフィッシュ[＆&]チップス/i, '真鲷炸鱼薯条'],
+  [/神威豚ロース塩麹グリル/i, '盐麹烤神威猪里脊'],
+  [/備後府中焼き/i, '备后府中烧'],
+  [/お造里/i, '刺身'],
+  [/宇和島流鯛めし/i, '宇和岛式鲷鱼饭'],
+  [/七輪焼き/i, '七轮炭烤'],
+  [/串焼き/i, '烤串'],
+  [/おむすび/i, '饭团'],
+  [/^かけ$/i, '清汤乌冬面'],
   [/カレー付き生姜焼き|生姜焼き.*カレー|curry.*ginger pork/i, '咖喱姜烧猪肉'],
   [/エビ炒飯|海老炒飯|えび炒飯|shrimp fried rice/i, '虾仁炒饭'],
   [/濃厚つけ麺|濃厚つけめん/i, '浓厚蘸面'],
