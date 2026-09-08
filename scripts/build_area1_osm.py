@@ -34,17 +34,14 @@ CUISINE_MAP = {
     'donburi': '盖饭', 'gyoza': '饺子', 'hotpot': '锅物', 'barbecue': '烧烤',
     'coffee_shop': '咖啡', 'dessert': '甜品', 'cake': '甜品', 'ice_cream': '甜品',
 }
-PRACTICAL_SOURCE_TAGS = (
-    'payment:credit_cards',
+CARD_SCHEME_TAGS = (
     'payment:visa',
     'payment:mastercard',
     'payment:jcb',
     'payment:american_express',
     'payment:diners_club',
-    'internet_access',
-    'wheelchair',
-    'smoking',
 )
+SMOKING_VALUES = {'no', 'yes', 'separated', 'isolated', 'outside', 'dedicated'}
 
 
 def haversine(a, b, c, d):
@@ -72,10 +69,9 @@ def curated_names():
 
 
 def fetch_overpass():
-    # Keep the independent OSM candidate universe aligned with the repository's
-    # Google food-business scope. `out center tags` retains all public OSM tags;
-    # the serializer below keeps selected native website/phone/practical metadata
-    # without treating any of those fields as identity proof.
+    # Overpass returns full tags, but only a strict allowlist of source-native facts
+    # is serialized below. Compatibility placeholders and unused OSM tags are not
+    # persisted in data/area1_osm.js.
     query = f'''[out:json][timeout:180];(
  nwr(around:{RADIUS_M},{CENTER_LAT},{CENTER_LNG})["amenity"~"^(restaurant|fast_food|cafe|food_court|bar|pub|biergarten|ice_cream)$"]["name"];
  nwr(around:{RADIUS_M},{CENTER_LAT},{CENTER_LNG})["shop"~"^(bakery|pastry|confectionery|deli|coffee|tea|ice_cream)$"]["name"];
@@ -87,7 +83,7 @@ def fetch_overpass():
             request = urllib.request.Request(
                 endpoint,
                 data=data,
-                headers={'User-Agent': 'nekooweb-eat-static-builder/2.4'},
+                headers={'User-Agent': 'nekooweb-eat-static-builder/2.5'},
             )
             return json.loads(urllib.request.urlopen(request, timeout=210).read().decode())
         except Exception as error:
@@ -127,8 +123,33 @@ def address(tags):
     return ' '.join(dict.fromkeys(value for key in keys if (value := tags.get(key))))
 
 
+def excluded_website_host(host):
+    host = str(host or '').lower().removeprefix('www.')
+    if not host:
+        return True
+    if re.search(r'(?:^|\.)openstreetmap\.org$', host):
+        return True
+    if re.search(r'(?:^|\.)hotpepper\.jp$|(?:^|\.)tabelog\.com$', host):
+        return True
+    if re.search(r'(?:^|\.)google\.|googleusercontent\.com$', host):
+        return True
+    if re.search(r'(?:^|\.)(facebook|instagram|twitter|x|youtube|tiktok)\.com$', host):
+        return True
+    if re.search(r'(?:^|\.)gnavi\.co\.jp$|(?:^|\.)retty\.me$|(?:^|\.)foursquare\.com$', host):
+        return True
+    if re.search(r'(?:^|\.)tripadvisor\.[a-z.]+$|(?:^|\.)yelp\.[a-z.]+$', host):
+        return True
+    if re.search(r'(?:^|\.)loco\.yahoo\.co\.jp$|(?:^|\.)paypaygourmet\.yahoo\.co\.jp$', host):
+        return True
+    if re.search(r'(?:^|\.)autoreserve\.com$|(?:^|\.)ekiten\.jp$|(?:^|\.)restaurant\.ikyu\.com$', host):
+        return True
+    if re.search(r'(?:^|\.)bar-navi\.suntory\.co\.jp$|(?:^|\.)supleks\.jp$', host):
+        return True
+    return False
+
+
 def source_websites(tags):
-    """Retain public OSM website tags as source metadata, never as identity proof."""
+    """Keep only plausible first-party/independent OSM website values."""
     output = []
     for key in ('contact:website', 'website'):
         raw = str(tags.get(key) or '').strip()
@@ -138,13 +159,19 @@ def source_websites(tags):
             value = value.strip()
             if not re.match(r'^https?://', value, re.I):
                 continue
+            try:
+                parsed = urllib.parse.urlsplit(value)
+            except ValueError:
+                continue
+            if excluded_website_host(parsed.hostname):
+                continue
             if value not in output:
                 output.append(value)
     return output[:4]
 
 
 def source_phones(tags):
-    """Retain source-native OSM phone strings without inferring or reformatting them."""
+    """Keep only valid source-native OSM phone strings, without reformatting."""
     output = []
     seen_digits = set()
     for key in ('contact:phone', 'phone'):
@@ -164,18 +191,32 @@ def source_phones(tags):
 
 
 def source_practical_tags(tags):
-    """Retain explicit OSM practical tags for later exact-binding resolution.
-
-    This serializer does not itself map tags to canonical values. Downstream resolvers
-    accept only conservative semantics: explicit credit-card support, Wi-Fi/no internet,
-    wheelchair yes/no, and recognized smoking-policy values. Ambiguous values remain
-    retained provenance and are never promoted automatically.
-    """
+    """Keep only practical OSM values that a strict downstream resolver can use."""
     output = {}
-    for key in PRACTICAL_SOURCE_TAGS:
-        raw = str(tags.get(key) or '').strip()
-        if raw:
-            output[key] = raw[:80]
+
+    credit_cards = str(tags.get('payment:credit_cards') or '').strip().casefold()
+    if credit_cards in {'yes', 'no'}:
+        output['payment:credit_cards'] = credit_cards
+
+    # Named card schemes are useful only as explicit positive support. A `no` for one
+    # brand does not establish whether cards in general are accepted.
+    for key in CARD_SCHEME_TAGS:
+        value = str(tags.get(key) or '').strip().casefold()
+        if value == 'yes':
+            output[key] = value
+
+    internet = str(tags.get('internet_access') or '').strip().casefold()
+    if internet in {'wlan', 'no'}:
+        output['internet_access'] = internet
+
+    wheelchair = str(tags.get('wheelchair') or '').strip().casefold()
+    if wheelchair in {'yes', 'no'}:
+        output['wheelchair'] = wheelchair
+
+    smoking = str(tags.get('smoking') or '').strip().casefold()
+    if smoking in SMOKING_VALUES:
+        output['smoking'] = smoking
+
     return output
 
 
@@ -204,12 +245,15 @@ def main():
         if distance > RADIUS_M + 5 or entity in seen:
             continue
         seen.add(entity)
+
         cuisine = cuisine_for(tags)
-        opening = tags.get('opening_hours') or None
+        opening = str(tags.get('opening_hours') or '').strip()
+        source_address = address(tags).strip()
         overlap = norm(name) in existing
         websites = source_websites(tags)
         phones = source_phones(tags)
         practical_tags = source_practical_tags(tags)
+
         if overlap:
             overlap_count += 1
         if websites:
@@ -222,41 +266,38 @@ def main():
             practical_rows += 1
             practical_tag_values += len(practical_tags)
 
-        # Keep curated-name overlaps instead of excluding them. They are useful
-        # independent identity bridges. Website/phone/practical values remain source
-        # metadata; Google status stays pending and no identity is promoted here.
-        output.append({
+        # Minimal compatibility shell: profile/area/id/source are required by existing
+        # loaders. Optional source facts are serialized only when non-empty. Identity
+        # status/Place ID are supplied later by reviewed overlays, never by OSM itself.
+        row = {
             'id': 'osm-' + element.get('type', 'x')[0] + '-' + str(element.get('id')),
             'profile': 'TOKYO',
             'area': '地区1️⃣',
             'name': name,
             'cuisine': cuisine,
-            'tags': [cuisine],
-            'distance': int(round(distance / 50) * 50),
             'distanceMeters': int(round(distance)),
-            'lunch': None,
-            'dinner': None,
-            'dishes': [],
-            'openingHoursRaw': opening,
-            'closedDays': [],
-            'address': address(tags),
             'lat': round(float(lat), 6),
             'lng': round(float(lng), 6),
-            'sourceWebsites': websites,
-            'sourcePhones': phones,
-            'sourcePracticalTags': practical_tags,
-            'googlePlaceId': None,
-            'googleStatus': 'pending',
             'source': 'OpenStreetMap',
             'sourceId': f"{element.get('type', 'x')}/{element.get('id')}",
-            'curatedOverlap': overlap,
-            'hyakumeiten': False,
-            'randomWeight': 1,
-        })
+        }
+        if opening:
+            row['openingHoursRaw'] = opening
+        if source_address:
+            row['address'] = source_address
+        if websites:
+            row['sourceWebsites'] = websites
+        if phones:
+            row['sourcePhones'] = phones
+        if practical_tags:
+            row['sourcePracticalTags'] = practical_tags
+        if overlap:
+            row['curatedOverlap'] = True
+        output.append(row)
 
     output.sort(key=lambda item: (item['distanceMeters'], item['name']))
     OUT.write_text(
-        '// Auto-generated candidate pool. Google business identity must be verified before promotion.\n'
+        '// Auto-generated minimal OSM candidate pool. Identity fields are added only by reviewed overlays.\n'
         'window.RESTAURANTS.push(\n'
         + ',\n'.join(json.dumps(row, ensure_ascii=False, separators=(',', ':')) for row in output)
         + '\n);\n',
@@ -271,7 +312,8 @@ def main():
         'sourcePhoneValues': phone_values,
         'rowsWithSourcePracticalTags': practical_rows,
         'sourcePracticalTagValues': practical_tag_values,
-        'googleStatus': 'pending',
+        'identityFieldsSerialized': False,
+        'compatibilityPlaceholdersSerialized': False,
         'identityPromotions': 0,
     }, ensure_ascii=False))
     return 0
