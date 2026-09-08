@@ -24,6 +24,7 @@ import retained_official_identity as official_identity
 import retained_osm_identity as osm_identity
 import retained_phase2 as phase2
 import resolve_dish_translation_evidence as dish_translation
+import resolve_hotpepper_rich_reference_fields as hotpepper_rich_reference
 import resolve_hotpepper_source_fact_budgets as hotpepper_source_fact_budget
 import resolve_master as resolver
 import resolve_retained_fields as retained_field_resolver
@@ -146,6 +147,7 @@ def build(output: Path, reset: bool = False):
         derived_counts = derived.resolve_hotpepper_basic_practical(db, stamp)
         rich = resolver.resolve_safe_practical(db, stamp)
         hotpepper_rich_counts = hotpepper_rich.resolve_rich_metadata(db, id_set, conflict_places, stamp)
+        hotpepper_rich_reference_counts = hotpepper_rich_reference.resolve_fields(db, id_set, conflict_places, stamp)
         official_practical_counts = official_practical.import_evidence(db, id_set, conflict_places, stamp)
         official_practical_detail_counts = official_practical_detail.import_evidence(db, id_set, conflict_places, stamp)
         # OSM native metadata is intentionally late: higher-priority retained/web
@@ -172,6 +174,7 @@ def build(output: Path, reset: bool = False):
             "retainedFieldResolverV2": retained_field_counts, "hotPepperCandidateFieldReview": candidate_hp_counts,
             "hotPepperSourceFactBudgetResolver": source_fact_budget_counts, "hotPepperBasicPractical": derived_counts,
             "safePracticalResolver": rich, "hotPepperRichFieldResolver": hotpepper_rich_counts,
+            "hotPepperRichReferenceResolver": hotpepper_rich_reference_counts,
             "dishTranslationResolver": dict(dish_translation_counts), "ingestionPlan": taskplan,
             "basicConflictSourceKeys": len(basic_conflicts), "allRetainedConflictSourceKeys": len(conflict_keys), "allRetainedConflictPlaces": len(conflict_places),
             "hoursRawObserved": db.execute("SELECT count(*) FROM field_observations WHERE field_key='hours.raw' AND value_json IS NOT NULL").fetchone()[0],
