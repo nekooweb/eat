@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 3,
+  "schemaVersion": 4,
   "checkedAt": "2026-09-08",
   "policy": {
     "googleIdentityKey": "frozen Place ID only",
@@ -18,7 +18,10 @@
     "catalogIdentityKey": "frozen Place ID only",
     "catalogTotal": 2804,
     "publicNamedRuntimeOnly": true,
-    "featuredRule": "retained Hot Pepper promotional dish text or schema.org MenuItem; never promoted to recommended without recommendation wording"
+    "featuredRule": "retained Hot Pepper promotional dish text or schema.org MenuItem; never promoted to recommended without recommendation wording",
+    "sourceLanguageMayBeJapanese": true,
+    "publicCanonicalDishLanguage": "zh-CN",
+    "untranslatedSourceDishIsNotMissingDishEvidence": true
   },
   "summary": {
     "catalogTotal": 2804,
@@ -35,8 +38,8 @@
     "recommendationItems": 19,
     "featuredItems": 72,
     "statusCounts": {
-      "no_match_with_errors": 73,
-      "no_match": 165
+      "no_match_with_errors": 78,
+      "no_match": 160
     },
     "previousEvidence": {
       "recommendationRestaurants": 165,
