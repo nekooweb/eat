@@ -157,11 +157,18 @@ const runtimeRows = Array.isArray(runtimeWindow.GOOGLE_INVENTORY_RESTAURANTS)
   ? runtimeWindow.GOOGLE_INVENTORY_RESTAURANTS
   : [];
 
-if (queueDoc.summary?.catalogTotal !== 2804 || queueDoc.summary?.publicRuntimeTotal !== 1415) {
-  throw new Error('Dish queue must be built from the frozen 2,804 / named 1,415 baseline');
-}
-if (runtimeRows.length !== 1415 || runtimeRows.some((row) => !row.googlePlaceId || !clean(row.name))) {
-  throw new Error('Independent-source planning requires the named 1,415 public runtime');
+const runtimeStats = runtimeWindow.GOOGLE_INVENTORY_STATS || {};
+const runtimeIds = new Set(runtimeRows.map((row) => row.googlePlaceId));
+const queueIds = (queueDoc.rows || []).map((row) => row.googlePlaceId);
+if (queueDoc.summary?.catalogTotal !== 2804
+  || queueDoc.summary?.publicRuntimeTotal !== runtimeRows.length
+  || runtimeStats.inventoryTotal !== runtimeRows.length
+  || runtimeStats.catalogTotal !== queueDoc.summary.catalogTotal
+  || runtimeRows.length < 3 || runtimeIds.size !== runtimeRows.length
+  || queueIds.length !== runtimeRows.length || new Set(queueIds).size !== queueIds.length
+  || queueIds.some((id) => !runtimeIds.has(id))
+  || runtimeRows.some((row) => !row.googlePlaceId || !clean(row.name))) {
+  throw new Error('Dish queue and current named runtime must contain the same complete ID set; rebuild inputs first');
 }
 
 const runtimeById = new Map(runtimeRows.map((row) => [row.googlePlaceId, row]));
@@ -372,7 +379,7 @@ const shardCounts = Array.from({ length: SHARDS }, (_, shard) => ({
 const summary = {
   schemaVersion: 3,
   catalogTotal: 2804,
-  publicRuntimeTotal: 1415,
+  publicRuntimeTotal: runtimeRows.length,
   currentIndependentDishSourceGap: targetRows.length,
   officialCandidateIndexRecords: indexRecords.length,
   overtureSnapshotRows: overtureRows.length,

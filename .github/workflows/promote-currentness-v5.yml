@@ -1,13 +1,6 @@
 name: Promote strict branch-body currentness v5
 
 on:
-  push:
-    branches: ["main"]
-    paths:
-      - ".github/workflows/promote-currentness-v5.yml"
-      - "scripts/database/review_id_only_currentness_sources_v5.py"
-      - "scripts/database/promote_reviewed_multisource_currentness_v5.py"
-      - "data/id_only_currentness_source_overrides.json"
   workflow_dispatch:
 
 permissions:

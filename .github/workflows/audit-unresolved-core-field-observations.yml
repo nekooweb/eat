@@ -1,22 +1,6 @@
 name: Audit unresolved core field observations
 
 on:
-  push:
-    branches: ["main"]
-    paths:
-      - ".github/workflows/audit-unresolved-core-field-observations.yml"
-      - "scripts/database/audit_unresolved_core_field_observations.py"
-      - "scripts/database/build_master.py"
-      - "scripts/database/plan_ingestion_tasks.py"
-      - "scripts/database/import_bound_open_data_fields.py"
-      - "scripts/database/import_source_basic_web_evidence.py"
-      - "scripts/database/import_bound_overture_metadata.py"
-      - "scripts/database/import_hotpepper_rich_metadata.py"
-      - "data/google_basic_source_matches.json"
-      - "data/source_basic_web_field_evidence.json"
-      - "data/hotpepper_rich_metadata.js"
-      - "data/area1_osm.js"
-      - "data/overture_area1_candidates.json"
   workflow_dispatch:
 
 permissions:

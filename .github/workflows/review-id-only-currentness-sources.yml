@@ -2,19 +2,6 @@ name: Review currentness for priority id-only candidates
 
 on:
   workflow_dispatch:
-  push:
-    branches: ["main"]
-    paths:
-      - ".github/workflows/review-id-only-currentness-sources.yml"
-      - "scripts/database/review_id_only_currentness_sources.py"
-      - "scripts/database/review_id_only_currentness_sources_v2.py"
-      - "scripts/database/audit_id_only_priority_identity_groups.py"
-      - "scripts/database/collect_official_practical_fields.py"
-      - "scripts/database/build_master.py"
-      - "data/area1_enrichment_queue.json"
-      - "data/hotpepper_catalog_facts.json"
-      - "data/overture_area1_candidates.json"
-      - "data/area1_google_ids.json"
 
 permissions:
   contents: read

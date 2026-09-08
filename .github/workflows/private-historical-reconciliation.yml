@@ -1,15 +1,6 @@
 name: Probe historical Google hints against independent sources
 
 on:
-  push:
-    branches: ["main"]
-    paths:
-      - ".github/workflows/private-historical-reconciliation.yml"
-      - "scripts/database/reconcile_private_google_hints.py"
-      - "scripts/database/**"
-      - "data/overture_area1_candidates.json"
-      - "data/area1_osm.js"
-      - "data/hotpepper_catalog_facts.json"
   workflow_dispatch:
 
 permissions:

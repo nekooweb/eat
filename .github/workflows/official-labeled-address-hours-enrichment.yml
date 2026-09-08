@@ -2,18 +2,6 @@ name: Enrich labeled address and hours from reviewed official pages
 
 on:
   workflow_dispatch:
-  push:
-    branches: ["main"]
-    paths:
-      - ".github/workflows/official-labeled-address-hours-enrichment.yml"
-      - "scripts/database/collect_official_labeled_address_hours.py"
-      - "scripts/database/collect_official_index_web_fields.py"
-      - "scripts/database/collect_official_practical_fields.py"
-      - "scripts/database/merge_public_web_field_evidence.py"
-      - "scripts/database/import_source_basic_web_evidence.py"
-      - "scripts/database/build_master.py"
-      - "data/official_candidate_index.json"
-      - "data/source_basic_web_field_evidence.json"
 
 permissions:
   contents: write

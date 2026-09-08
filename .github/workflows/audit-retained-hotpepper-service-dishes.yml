@@ -1,13 +1,6 @@
 name: Audit retained Hot Pepper service dish candidates
 
 on:
-  push:
-    branches: ["main"]
-    paths:
-      - ".github/workflows/audit-retained-hotpepper-service-dishes.yml"
-      - "scripts/audit_retained_hotpepper_service_dish_candidates.mjs"
-      - "scripts/recommended_dish_extractor.mjs"
-      - "data/hotpepper_rich_metadata.js"
   workflow_dispatch:
 
 permissions:

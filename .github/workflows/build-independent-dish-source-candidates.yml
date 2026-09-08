@@ -1,13 +1,6 @@
 name: Build independent dish source candidate plan
 
 on:
-  push:
-    branches: ["main"]
-    paths:
-      - ".github/workflows/build-independent-dish-source-candidates.yml"
-      - "scripts/build_independent_dish_source_candidate_plan.mjs"
-      - "data/official_candidate_index.json"
-      - "data/google_inventory_detail_queue.json"
   workflow_dispatch:
 
 permissions:
@@ -36,6 +29,8 @@ jobs:
           node-version: '22'
       - name: Enforce no-paid-data-API policy
         run: node scripts/audit_no_paid_apis.mjs
+      - name: Rebuild current source runtime and queues
+        run: python3 scripts/reload_data.py --public-only --outdir _audit/data-reload
       - name: Build proposal-only candidate plan
         run: |
           set -euo pipefail
@@ -46,7 +41,7 @@ jobs:
           if (x.policy?.proposalOnly !== true || x.policy?.identityBindingChanges !== 0) throw new Error('candidate plan must remain proposal-only');
           if (x.policy?.networkRequests !== 0 || x.policy?.paidGoogleDataApiCalls !== 0) throw new Error('candidate plan must remain network-free');
           if (x.policy?.proximityOnlyBindingAllowed !== false || x.policy?.dishEvidencePromotionBeforeIdentityReviewAllowed !== false) throw new Error('candidate plan identity boundary failed');
-          if (x.summary?.catalogTotal !== 2804 || x.summary?.publicRuntimeTotal !== 1415 || x.summary?.shards !== 8) throw new Error('candidate plan baseline mismatch');
+          if (x.summary?.catalogTotal !== 2804 || x.summary?.publicRuntimeTotal !== JSON.parse(fs.readFileSync('data/google_inventory_detail_queue.json', 'utf8')).summary.publicRuntimeTotal || x.summary?.shards !== 8) throw new Error('candidate plan baseline mismatch');
           console.log(JSON.stringify(x.summary));
           NODE
       - name: Commit candidate plan

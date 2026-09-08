@@ -2,24 +2,6 @@ name: Promote reviewed multi-source currentness identities v2
 
 on:
   workflow_dispatch:
-  push:
-    branches: ["main"]
-    paths:
-      - ".github/workflows/promote-reviewed-multisource-currentness-v2.yml"
-      - "scripts/database/promote_reviewed_multisource_currentness.py"
-      - "scripts/database/review_id_only_currentness_sources.py"
-      - "scripts/database/review_id_only_currentness_sources_v2.py"
-      - "scripts/database/audit_id_only_priority_identity_groups.py"
-      - "scripts/database/collect_official_practical_fields.py"
-      - "scripts/merge_basic_recovery_overlays.py"
-      - "scripts/database/build_master.py"
-      - "scripts/build_google_inventory_runtime.mjs"
-      - "scripts/audit_google_inventory_runtime.mjs"
-      - "data/google_basic_source_matches.json"
-      - "data/hotpepper_catalog_facts.json"
-      - "data/overture_area1_candidates.json"
-      - "data/area1_enrichment_queue.json"
-      - "data/area1_google_ids.json"
 
 permissions:
   contents: write

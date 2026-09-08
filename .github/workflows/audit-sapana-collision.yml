@@ -1,10 +1,6 @@
 name: Audit SAPANA provider collision
 
 on:
-  push:
-    branches: ["main"]
-    paths:
-      - ".github/workflows/audit-sapana-collision.yml"
   workflow_dispatch:
 
 permissions:

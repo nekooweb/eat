@@ -1,10 +1,6 @@
 name: Recover current Hot Pepper backed id-only identities
 
 on:
-  push:
-    branches: ["main"]
-    paths:
-      - ".github/workflows/current-hotpepper-id-recovery.yml"
   workflow_dispatch:
 
 permissions:

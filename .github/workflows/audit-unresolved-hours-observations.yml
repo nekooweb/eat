@@ -1,17 +1,6 @@
 name: Audit unresolved hours observations
 
 on:
-  push:
-    branches: ["main"]
-    paths:
-      - ".github/workflows/audit-unresolved-hours-observations.yml"
-      - "scripts/database/audit_unresolved_hours_observations.py"
-      - "scripts/database/build_master.py"
-      - "scripts/database/resolve_retained_fields.py"
-      - "data/google_basic_source_matches.json"
-      - "data/source_enrichment*.js"
-      - "data/hotpepper_catalog_facts.json"
-      - "data/hotpepper_rich_metadata.js"
   workflow_dispatch:
 
 permissions:

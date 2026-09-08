@@ -2,20 +2,6 @@ name: Audit strict id-only identity backlog
 
 on:
   workflow_dispatch:
-  push:
-    branches: ["main"]
-    paths:
-      - ".github/workflows/audit-id-only-identity-backlog.yml"
-      - "scripts/database/audit_id_only_identity_backlog.py"
-      - "scripts/database/build_master.py"
-      - "scripts/audit_no_paid_apis.mjs"
-      - "data/area1_enrichment_queue.json"
-      - "data/area1_full_collection_queue.json"
-      - "data/hotpepper_catalog_facts.json"
-      - "data/official_candidate_index.json"
-      - "data/google_basic_source_matches.json"
-      - "data/google_entities.generated.js"
-      - "data/area1_google_ids.json"
 
 permissions:
   contents: read

@@ -127,9 +127,23 @@ def apply_migrations(db: sqlite3.Connection) -> None:
     migrations = sorted(MIGRATIONS.glob("*.sql"))
     if not migrations:
         raise RuntimeError("no database migrations found")
-    for migration in migrations:
-        db.executescript(migration.read_text(encoding="utf-8"))
+    db.execute("CREATE TABLE IF NOT EXISTS schema_migrations (version INTEGER PRIMARY KEY, applied_at TEXT NOT NULL)")
     db.commit()
+    applied = {row[0] for row in db.execute("SELECT version FROM schema_migrations")}
+    for migration in migrations:
+        version = int(migration.name.split("_", 1)[0])
+        if version in applied:
+            continue
+        script = migration.read_text(encoding="utf-8")
+        try:
+            db.executescript(
+                "BEGIN IMMEDIATE;\n" + script
+                + f"\nINSERT OR IGNORE INTO schema_migrations VALUES({version},strftime('%Y-%m-%dT%H:%M:%SZ','now'));\nCOMMIT;"
+            )
+        except Exception:
+            db.rollback()
+            raise
+        applied.add(version)
 
 
 def upsert_catalog(db, place_id, scope, snapshot, state, stamp):

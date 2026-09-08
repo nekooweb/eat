@@ -53,15 +53,24 @@ jobs:
           name: data-loading-input-backup-${{ github.run_id }}
           path: _tmp/reset-source-backup
           retention-days: 30
-      - name: Rebuild current public fixtures without network
+      - name: Reset and validate the complete data-loading graph without network
         run: |
           set -euo pipefail
-          node scripts/build_hotpepper_rich_core_fallback.mjs
-          node scripts/build_production_dataset.mjs
-          node scripts/build_source_provenance.mjs
-          node scripts/build_source_facts.mjs
-          node scripts/build_google_inventory_runtime.mjs
-          node scripts/materialize_chinese_dish_runtime.mjs
-          node scripts/build_google_inventory_detail_queue.mjs
+          python scripts/reload_data.py --outdir _tmp/reset-result --database _tmp/reset-result/eat-master.sqlite --reset
+          python scripts/reload_data.py --outdir _tmp/reset-result --database _tmp/reset-result/eat-master.sqlite
       - name: Run loading regressions
         run: python scripts/test_data_loading_reset.py
+      - name: Preserve complete rebuilt database and outputs
+        uses: actions/upload-artifact@v4
+        with:
+          name: data-loading-reset-result-${{ github.run_id }}
+          path: |
+            _tmp/reset-result
+            data/google_inventory_runtime.js
+            data/google_inventory_detail_queue.json
+            data/source_provenance.js
+            data/source_facts.js
+            data/production_area1.js
+            data/independent_dish_source_candidates.json
+            data/dish_batch_plan.json
+          retention-days: 30

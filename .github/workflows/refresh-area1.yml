@@ -2,14 +2,6 @@ name: Refresh Area 1 Restaurant Data
 
 on:
   workflow_dispatch:
-  push:
-    branches: ["main"]
-    paths:
-      - "scripts/build_area1_osm.py"
-      - "scripts/build_osm_independent_dish_source_candidate_plan.mjs"
-      - "scripts/review_osm_independent_dish_source_candidates.mjs"
-      - "scripts/refresh_bound_osm_source_websites.mjs"
-      - ".github/workflows/refresh-area1.yml"
 
 permissions:
   contents: write

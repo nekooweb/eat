@@ -52,29 +52,10 @@ jobs:
               assert r['distanceMeters'] <= 1200
           print(json.dumps(d['summary'],ensure_ascii=False))
           PY
-      - name: Build reviewed rich-metadata core fallback
-        run: |
-          node scripts/build_hotpepper_rich_core_fallback.mjs
-          test -s data/source_enrichment_hotpepper-richcore.js
-          node --check data/source_enrichment_hotpepper-richcore.js
-      - name: Build strict legacy canonical fallback
-        run: |
-          node scripts/test_opening_hours.mjs
-          node scripts/test_price_resolver.mjs
-          node scripts/build_production_dataset.mjs
-          node scripts/build_source_provenance.mjs
-          node scripts/build_source_facts.mjs
-      - name: Build and materialize exact 2804 inventory runtime
+      - name: Rebuild database runtime and queues from one input revision
         run: |
           set -euo pipefail
-          mkdir -p _audit
-          node scripts/build_google_inventory_runtime.mjs | tee _audit/google_inventory_runtime_raw_summary.json
-          node --check data/google_inventory_runtime.js
-          node scripts/audit_google_inventory_runtime.mjs | tee _audit/google_inventory_runtime_in_memory_dish_audit.json
-          node scripts/materialize_chinese_dish_runtime.mjs | tee _audit/google_inventory_runtime_materialized_summary.json
-          node --check data/google_inventory_runtime.js
-          node scripts/audit_materialized_chinese_dish_runtime.mjs | tee _audit/google_inventory_runtime_materialized_audit.json
-          test -s data/google_inventory_runtime.js
+          python3 scripts/reload_data.py --outdir _audit/data-reload --reset
 
       - name: Static syntax and required-file checks
         run: |
@@ -170,7 +151,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: eat-data-audit
-          path: _audit
+          path: |
+            _audit/**/*.json
+            _audit/**/*.log
           if-no-files-found: warn
           retention-days: 3
 
@@ -182,6 +165,18 @@ jobs:
           cp data/production_area1.js data/google_inventory_runtime.js data/source_provenance.js data/source_facts.js data/hotpepper_rich_metadata.js _site/data/
           cp voice/*.mp3 _site/voice/
           cp image/*.webp _site/image/
+          python3 - <<'PY'
+          import hashlib,re
+          from pathlib import Path
+          page=Path('_site/index.html')
+          def version(match):
+              relative=match.group(1)
+              asset=Path('_site')/relative.removeprefix('./')
+              return relative+'?v='+hashlib.sha256(asset.read_bytes()).hexdigest()[:16]
+          text=page.read_text()
+          text=re.sub(r'(\./(?:data/[^"?]+\.js|app\.js|effects\.js))(?:\?v=[^"]*)?',version,text)
+          page.write_text(text)
+          PY
           if grep -Eqi 'google-maps-embed-key|maps/embed/v1' _site/index.html; then
             echo 'Google Embed configuration must not be present in the public site.' >&2
             exit 1

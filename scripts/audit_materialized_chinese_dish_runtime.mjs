@@ -23,7 +23,15 @@ if (stats.dishRuntimeMaterialized !== true) throw new Error('Public runtime does
 if (stats.dishReviewPolicy !== 'strict-source-zh-v1') throw new Error(`Unexpected public dish policy: ${stats.dishReviewPolicy}`);
 if (stats.approximateRecommendationsAllowed !== false) throw new Error('Approximate dish recommendations are enabled');
 if (stats.genericFallbackAllowed !== false) throw new Error('Public runtime permits generic dish fallback');
-if (stats.inventoryTotal !== rows.length || rows.length !== 1415) throw new Error(`Unexpected public runtime size: ${rows.length}`);
+const catalog = JSON.parse(fs.readFileSync(path.join(DATA, 'area1_google_ids.json'), 'utf8'));
+const catalogIds = new Set(catalog.googlePlaceIds || []);
+const publicIds = rows.map((row) => row.googlePlaceId);
+if (catalogIds.size !== catalog.count || catalog.count !== 2804) throw new Error('Invalid frozen catalog');
+if (stats.inventoryTotal !== rows.length || stats.catalogTotal !== catalog.count || rows.length < 3
+  || new Set(publicIds).size !== rows.length || publicIds.some((id) => !catalogIds.has(id))
+  || stats.unpublishedPlaceIdOnly !== catalog.count - rows.length) {
+  throw new Error(`Public runtime/catalog count or identity mismatch: ${rows.length}`);
+}
 if (stats.hoursRuntimePolicy !== PUBLIC_HOURS_POLICY) throw new Error(`Unexpected public hours policy: ${stats.hoursRuntimePolicy}`);
 
 const HAN_RE = /[\u3400-\u9fff]/u;

@@ -1,12 +1,6 @@
 name: Recover order-normalized current id-only identities v3
 
 on:
-  push:
-    branches: ["main"]
-    paths:
-      - ".github/workflows/current-hotpepper-id-recovery-v3.yml"
-      - "scripts/database/review_id_only_currentness_sources_v3.py"
-      - "scripts/database/promote_reviewed_multisource_currentness_v3.py"
   workflow_dispatch:
 
 permissions:

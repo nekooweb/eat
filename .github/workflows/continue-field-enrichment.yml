@@ -1,11 +1,6 @@
 name: Continue grouped field enrichment
 
 on:
-  push:
-    branches:
-      - continue-full-field-enrichment
-    paths:
-      - '.github/workflows/continue-field-enrichment.yml'
   workflow_dispatch:
 
 concurrency:

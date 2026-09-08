@@ -1,16 +1,6 @@
 name: Route current id-only recovery backlog
 
 on:
-  push:
-    branches: ["main"]
-    paths:
-      - ".github/workflows/audit-id-only-current-round.yml"
-      - "scripts/database/audit_id_only_identity_backlog.py"
-      - "data/area1_enrichment_queue.json"
-      - "data/area1_full_collection_queue.json"
-      - "data/hotpepper_catalog_facts.json"
-      - "data/official_candidate_index.json"
-      - "data/google_basic_source_matches.json"
   workflow_dispatch:
 
 permissions:

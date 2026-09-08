@@ -1,14 +1,6 @@
 name: Report remaining priority identity rows
 
 on:
-  push:
-    branches: ["main"]
-    paths:
-      - ".github/workflows/report-remaining-priority-identities.yml"
-      - "data/google_basic_source_matches.json"
-      - "data/hotpepper_catalog_facts.json"
-      - "data/overture_area1_candidates.json"
-      - "scripts/database/audit_id_only_priority_identity_groups.py"
   workflow_dispatch:
 
 permissions:
