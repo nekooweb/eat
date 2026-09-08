@@ -92,7 +92,7 @@ if (stats.catalogTotal !== 2804) throw new Error(`Frozen catalog mismatch: ${sta
 if (stats.inventoryTotal !== rows.length) throw new Error('Published runtime/stat count mismatch');
 if (rows.length + Number(stats.unpublishedPlaceIdOnly || 0) !== 2804) throw new Error('Published/unpublished catalog counts do not reconcile');
 if (new Set(rows.map((row) => row.googlePlaceId)).size !== rows.length) throw new Error('Duplicate public Place ID');
-if (rows.some((row) => row.nameKnown === false || !String(row.name || '').trim())) throw new Error('Detailed enrichment queue must contain named public rows only');
+if (rows.some((row) => row.nameKnown === false || !String(row.name || '').trim())) throw new Error('Dish queue must contain named public rows only');
 
 const provenance = fs.existsSync(path.join(DATA, 'source_provenance.js'))
   ? loadWindowFile('source_provenance.js').SOURCE_PROVENANCE || { rows: [] }
@@ -116,46 +116,41 @@ const queue = rows.map((row) => {
     Array.isArray(ev?.featuredDishes) ? ev.featuredDishes.length : 0
   );
   const sources = sourceProfile(row, prov);
-  const gaps = [];
-  if (!recommendedCount) gaps.push('recommendedDishes');
-  if (!featuredCount) gaps.push('featuredDishes');
-  if (!row.hoursReference) gaps.push('openingHours');
-  if (!knownPrice(row.lunch)) gaps.push('lunchBudget');
-  if (!knownPrice(row.dinner)) gaps.push('dinnerBudget');
-  if (!row.address) gaps.push('address');
-  if (!row.cuisine) gaps.push('cuisine');
+
+  // Product backlog is dish-only. Other metadata is informational and never produces
+  // a nextAction. Google Place ID remains the frozen identity/navigation anchor.
+  const dishGaps = [];
+  if (!recommendedCount) dishGaps.push('recommendedDishes');
+  if (!featuredCount) dishGaps.push('featuredDishes');
+  const secondaryMetadata = {
+    openingHoursKnown: Boolean(row.hoursReference),
+    lunchBudgetKnown: knownPrice(row.lunch),
+    dinnerBudgetKnown: knownPrice(row.dinner),
+    addressKnown: Boolean(row.address),
+    cuisineKnown: Boolean(row.cuisine)
+  };
 
   let nextAction;
   let priorityScore;
   if (!recommendedCount) {
+    // Highest product value: fill a strict recommendation when explicit semantics exist.
+    // If the source only proves menu presence, the collector may add F but never invent R.
     if (sources.crawlableOfficialUrlCount > 0) {
       nextAction = 'collect_strict_recommended_dishes';
-      priorityScore = 1080 + Math.min(sources.crawlableOfficialUrlCount, 10) * 20 + (featuredCount ? 15 : 0);
+      priorityScore = 1080 + Math.min(sources.crawlableOfficialUrlCount, 10) * 20 + (featuredCount ? 15 : 40);
     } else if (sources.retainedThirdPartyUrlCount > 0) {
       nextAction = 'extract_retained_dish_source';
-      priorityScore = 1040 + Math.min(sources.retainedThirdPartyUrlCount, 10) * 15 + (featuredCount ? 15 : 0);
+      priorityScore = 1040 + Math.min(sources.retainedThirdPartyUrlCount, 10) * 15 + (featuredCount ? 15 : 40);
     } else {
       nextAction = 'find_independent_dish_source';
-      priorityScore = 1000 + (featuredCount ? 15 : 0);
+      priorityScore = 1000 + (featuredCount ? 15 : 40);
     }
     if (row.basicInfoState === 'canonical') priorityScore += 10;
   } else if (!featuredCount) {
     nextAction = 'collect_source_backed_featured_dishes';
     priorityScore = 700 + Math.min(sources.sourceUrlCount, 10) * 10;
-  } else if (gaps.includes('openingHours')) {
-    nextAction = 'collect_opening_hours';
-    priorityScore = 400 + Math.min(sources.sourceUrlCount, 10) * 5;
-  } else if (gaps.includes('dinnerBudget')) {
-    nextAction = 'collect_dinner_budget';
-    priorityScore = 300 + Math.min(sources.sourceUrlCount, 10) * 4;
-  } else if (gaps.includes('lunchBudget')) {
-    nextAction = 'collect_lunch_budget';
-    priorityScore = 280 + Math.min(sources.sourceUrlCount, 10) * 4;
-  } else if (gaps.includes('address') || gaps.includes('cuisine')) {
-    nextAction = 'collect_identity_detail_fields';
-    priorityScore = 200 + Math.min(sources.sourceUrlCount, 10) * 3;
   } else {
-    nextAction = 'complete';
+    nextAction = 'dish_complete';
     priorityScore = 0;
   }
 
@@ -168,7 +163,8 @@ const queue = rows.map((row) => {
     ...sources,
     recommendedDishesKnown: recommendedCount,
     featuredDishesKnown: featuredCount,
-    gaps,
+    dishGaps,
+    secondaryMetadata,
     nextAction,
     priorityScore
   };
@@ -177,8 +173,10 @@ const queue = rows.map((row) => {
 const actionCounts = {};
 for (const row of queue) actionCounts[row.nextAction] = (actionCounts[row.nextAction] || 0) + 1;
 const recommendationGapRows = queue.filter((row) => row.recommendedDishesKnown === 0);
+const noDishRows = queue.filter((row) => row.recommendedDishesKnown === 0 && row.featuredDishesKnown === 0);
+const displayDishRows = queue.filter((row) => row.recommendedDishesKnown > 0 || row.featuredDishesKnown > 0);
 const summary = {
-  schemaVersion: 5,
+  schemaVersion: 6,
   scope: stats.scope || 'TOKYO/地区1️⃣',
   radiusMeters: 1200,
   catalogTotal: 2804,
@@ -187,13 +185,17 @@ const summary = {
   runtimeBaselineComplete,
   recommendedDishesKnown: rows.filter((row) => Array.isArray(row.recommendedDishes) && row.recommendedDishes.length).length,
   featuredDishesKnown: rows.filter((row) => Array.isArray(row.featuredDishes) && row.featuredDishes.length).length,
+  displayDishKnown: displayDishRows.length,
+  noDishGap: noDishRows.length,
   recommendationGap: recommendationGapRows.length,
   recommendationGapWithAnyKnownSourceUrl: recommendationGapRows.filter((row) => row.sourceUrlCount > 0).length,
   recommendationGapWithCrawlableOfficialUrl: recommendationGapRows.filter((row) => row.crawlableOfficialUrlCount > 0).length,
   recommendationGapWithRetainedThirdPartyOnly: recommendationGapRows.filter((row) => row.crawlableOfficialUrlCount === 0 && row.retainedThirdPartyUrlCount > 0).length,
   recommendationGapNeedingNewDishSource: recommendationGapRows.filter((row) => row.crawlableOfficialUrlCount === 0 && row.retainedThirdPartyUrlCount === 0).length,
   actionCounts,
-  priorityRule: 'within named public rows: direct official recommendation extraction > retained third-party dish extraction > new independent dish-source discovery > featured dishes > hours > budgets > address/cuisine; identity recovery remains separate'
+  primaryGoal: 'source-backed dish coverage',
+  nonDishMetadataCreatesTasks: false,
+  priorityRule: 'strict recommendation > retained dish source > new independent dish source > source-backed featured menu; hours/budget/address/cuisine are informational only'
 };
 
 fs.writeFileSync(OUTPUT, JSON.stringify({ summary, rows: queue }, null, 2) + '\n', 'utf8');
