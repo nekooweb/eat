@@ -1,14 +1,17 @@
-# 2026-09-08 — Relaxed Chinese dish bulk completion
+# 2026-09-08 — Relaxed Chinese dish bulk completion (v1, superseded)
 
-## Goal
+> **Superseded by `logs/2026-09-08-specific-chinese-dish-bulk-pass-v2.md`.**
+> The v1 universal fallback `招牌主菜 / 时令小菜` is no longer allowed. The current v2 policy prefers a blank recommendation over meaningless generic filler and requires a concrete brand, dish/name keyword, cuisine, or food-bearing broad-cuisine basis.
 
-Shift the public completion priority toward featured/recommended dishes and Chinese display coverage. The product requirement for this pass explicitly allows approximate dish suggestions when strong recommendation semantics are unavailable, provided the displayed dish text is Chinese and the pipeline does not create avoidable CI failures.
+## Historical goal
 
-## Design decision
+Shift the public completion priority toward featured/recommended dishes and Chinese display coverage. This initial pass allowed approximate dish suggestions when strong recommendation semantics were unavailable.
 
-The strict evidence layer was intentionally left unchanged. Approximate dish suggestions are added only at the public display/runtime overlay boundary so they cannot be mistaken for durable source-backed recommendation evidence.
+## Historical design
 
-Precedence is:
+The strict evidence layer was intentionally left unchanged. Approximate dish suggestions were added only at the public display/runtime overlay boundary so they could not be mistaken for durable source-backed recommendation evidence.
+
+The old v1 precedence was:
 
 1. existing Chinese recommended dish;
 2. existing Chinese featured/representative dish;
@@ -16,60 +19,38 @@ Precedence is:
 4. approximate cuisine/name-based Chinese dish suggestion;
 5. generic Chinese restaurant fallback.
 
-Approximate rows are marked with:
+The final step above has now been removed by v2.
+
+Approximate v1 rows used:
 
 - `dishRecommendationConfidence: approximate`
 - `dishRecommendationLanguage: zh-CN`
 - `dishRecommendationDisplayPolicy: relaxed-zh-v1`
 - `dishRecommendationBasis: <rule id>`
 
-They are not written to SQLite, source facts, recommendation evidence, or provenance as verified claims.
+They were not written to SQLite, source facts, recommendation evidence, or provenance as verified claims.
 
-## Chinese fallback rules
+## Historical v1 result
 
-`scripts/chinese_dish_runtime_patch.js` contains broad reusable rules for common brands and cuisines. Examples include Starbucks, Tully's, Doutor, Torikizoku, Hanamaru, Royal Host, CoCo Ichibanya, Tsujita, Saizeriya, Nakau, Cocos, Butayama and Ueshima, plus ramen, tsukemen, curry, sushi, yakitori, yakiniku, udon, soba, tempura, tonkatsu, okonomiyaki, Chinese, Indian, Thai, Korean, Italian, cafe, bakery, steak, French, izakaya and other broad cuisine/name classes.
+GitHub Pages run `34176043792` produced the following v1 display figures:
 
-The final generic fallback is `招牌主菜 / 时令小菜`.
+- public named runtime rows: **1,415**;
+- nominal Chinese dish display coverage: **1,415 / 1,415 (100%)**;
+- existing/source-backed Chinese dish display: **291** rows;
+- approximate rows: **1,124**;
+- generic fallback rows: **307**.
 
-## Review threshold change
+The 307 generic rows made nominal 100% coverage misleading and motivated v2.
 
-The dish gate is deliberately permissive:
+## Current status
 
-- approximate recommendations do not require explicit source wording such as recommended/popular/signature;
-- approximate recommendations may use brand, cuisine or restaurant-name context;
-- the blocking dish audit checks display safety instead of strong recommendation provenance;
-- each approximate row must contain 1–2 non-empty Chinese dish labels;
-- kana/Japanese display strings are not accepted by the relaxed Chinese audit;
-- approximate rows must carry the `relaxed-zh-v1` metadata.
+Do **not** use the v1 100% figure as the current quality metric. Current development and measured results are documented in:
 
-The change does **not** weaken the frozen catalog, identity-state, radius, forbidden Google payload, or no-paid-data-API gates.
+- `logs/2026-09-08-specific-chinese-dish-bulk-pass-v2.md`
 
-## Deployment validation
+v2 explicitly bans the old generic labels and reports meaningful coverage separately from intentionally unfilled rows.
 
-GitHub Pages run `34176043792` completed the build stage successfully. The no-paid-data-API audit passed with zero hits.
-
-Strict pre-overlay runtime counts:
-
-- frozen catalog: 2,804 Place IDs;
-- public named runtime rows: 1,415;
-- strict/runtime recommended-dish rows before relaxed display patch: 185;
-- featured-dish rows before relaxed display patch: 178.
-
-Relaxed Chinese display audit after applying the runtime patch in memory:
-
-- Chinese dish display coverage: **1,415 / 1,415 (100%)**;
-- existing/source-backed Chinese dish display retained: **291** rows;
-- approximate Chinese dish rows added: **1,124** rows;
-- generic fallback rows among approximate rows: **307**;
-- therefore **817** approximate rows received a more specific brand/cuisine/name-based Chinese suggestion rather than the generic fallback.
-
-The blocking runtime audit passed with `dishReviewPolicy: relaxed-zh-v1`.
-
-## CI behavior
-
-Legacy semantic compatibility checks remain warning-only under the repository's current refactor mode. The new approximate-dish path is separately audited for Chinese display safety, while identity/provenance/no-paid-API controls remain strict. This avoids rejecting useful approximate dish content merely because an upstream page did not explicitly label a dish as a recommendation.
-
-## Commits
+## Historical commits
 
 - `a2b97c1` — Add relaxed Chinese dish runtime fallback
 - `e014ce4` — Attach relaxed Chinese dish fallback to public runtime
