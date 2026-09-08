@@ -1,0 +1,122 @@
+name: Review extended independent dish sources
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: review-extended-independent-dish-sources
+  cancel-in-progress: false
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Sync latest main
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          git reset --hard origin/main
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Enforce no-paid-data-API policy
+        run: node scripts/audit_no_paid_apis.mjs
+      - name: Check extended review tooling syntax
+        run: |
+          node --check scripts/review_independent_dish_source_candidates_v3.mjs
+          node --check scripts/review_independent_dish_source_candidates_extended.mjs
+          node --check scripts/apply_reviewed_independent_source_overlay.mjs
+          node --check scripts/audit_reviewed_independent_source_overlay.mjs
+      - name: Rebuild current runtime and independent-source plan
+        run: python scripts/reload_data.py --public-only --outdir _audit/extended-source-pre
+      - name: Review high and medium Overture proposals with unchanged strict final identity criteria
+        env:
+          INDEPENDENT_SOURCE_REVIEW_TIMEOUT_MS: "7000"
+          INDEPENDENT_SOURCE_REVIEW_CONCURRENCY: "6"
+          INDEPENDENT_SOURCE_REVIEW_SUBPAGE_LIMIT: "6"
+          INDEPENDENT_SOURCE_REVIEW_SECOND_LEVEL_LIMIT: "12"
+          INDEPENDENT_SOURCE_REVIEW_SECOND_LEVEL_PER_PAGE_LIMIT: "4"
+        run: |
+          set -euo pipefail
+          node scripts/review_independent_dish_source_candidates_extended.mjs \
+            data/independent_dish_source_candidates.json \
+            data/reviewed_independent_dish_sources.json | tee /tmp/extended-independent-review-summary.json
+          test -s data/reviewed_independent_dish_sources.json
+          node - <<'NODE'
+          const fs = require('fs');
+          const x = JSON.parse(fs.readFileSync('data/reviewed_independent_dish_sources.json','utf8'));
+          const p = x.policy || {};
+          const s = x.summary || {};
+          if (x.schemaVersion !== 4 || p.strictAutoOnly !== true || p.sourceOverlayOnly !== true) throw new Error('extended strict source policy missing');
+          if (p.paidGoogleDataApiCalls !== 0 || p.googleDisplayPayloadUsed !== false || p.identityBindingChanges !== 0) throw new Error('extended review violated zero-paid/source-only policy');
+          if (p.finalStrictPageNameAndLocationCriteriaUnchangedFromV3 !== true || p.candidateInputPromotionChangesIdentityThreshold !== false) throw new Error('medium proposal review changed final identity threshold');
+          if (p.proximityOnlyBindingAllowed !== false || p.dishEvidencePromotionBeforeIdentityReviewAllowed !== false) throw new Error('extended review crossed identity/evidence boundary');
+          if (!Array.isArray(p.reviewedProposalStates) || p.reviewedProposalStates.length !== 2) throw new Error('extended proposal states missing');
+          if (s.approvedRows !== (x.rows || []).length || s.approvedRows !== s.preservedApprovedRows + s.newApprovedRows) throw new Error('monotonic approval count mismatch');
+          if (s.extendedReviewMediumConfidenceRows < 1 || s.extendedReviewInputRows !== s.extendedReviewHighConfidenceRows + s.extendedReviewMediumConfidenceRows) throw new Error('medium proposal rows were not included');
+          console.log(JSON.stringify(s));
+          NODE
+      - name: Apply approved sources and rebuild queue
+        run: |
+          set -euo pipefail
+          node scripts/apply_reviewed_independent_source_overlay.mjs
+          node scripts/audit_reviewed_independent_source_overlay.mjs
+          node scripts/audit_google_inventory_runtime.mjs
+          node scripts/build_google_inventory_detail_queue.mjs data/google_inventory_detail_queue.json
+          node scripts/build_dish_batch_plan.mjs data/dish_batch_plan.json 8
+          node scripts/build_independent_dish_source_candidate_plan.mjs data/independent_dish_source_candidates.json 8
+          node - <<'NODE'
+          const fs = require('fs');
+          const reviewed = JSON.parse(fs.readFileSync('data/reviewed_independent_dish_sources.json','utf8'));
+          const q = JSON.parse(fs.readFileSync('data/google_inventory_detail_queue.json','utf8'));
+          const c = JSON.parse(fs.readFileSync('data/independent_dish_source_candidates.json','utf8'));
+          const ids = new Set((reviewed.rows || []).map(r=>r.googlePlaceId));
+          for (const row of q.rows || []) {
+            if (ids.has(row.googlePlaceId) && row.recommendedDishesKnown === 0 && row.crawlableOfficialUrlCount < 1) throw new Error(`approved source not crawlable: ${row.googlePlaceId}`);
+          }
+          if (c.summary.currentIndependentDishSourceGap !== q.summary.recommendationGapNeedingNewDishSource) throw new Error('candidate plan stale after extended overlay');
+          console.log(JSON.stringify({reviewed:reviewed.summary,queue:q.summary,candidates:c.summary}));
+          NODE
+      - name: Re-check no-paid-data-API policy
+        run: node scripts/audit_no_paid_apis.mjs
+      - name: Commit extended strict source approvals and rebuilt plans
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            data/reviewed_independent_dish_sources.json \
+            data/google_inventory_runtime.js \
+            data/google_inventory_detail_queue.json \
+            data/dish_batch_plan.json \
+            data/independent_dish_source_candidates.json
+          if git diff --cached --quiet; then
+            echo "No new extended strict independent-source changes."
+            exit 0
+          fi
+          git commit -m "Extend strict reviewed independent dish sources"
+          git reset --hard HEAD
+          git fetch origin main
+          git rebase origin/main
+          git push origin HEAD:main
+
+  validate_database:
+    needs: review
+    permissions:
+      contents: read
+    uses: ./.github/workflows/database-contract.yml
+    with:
+      sync_main: true
