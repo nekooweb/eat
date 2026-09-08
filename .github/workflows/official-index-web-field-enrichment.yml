@@ -71,16 +71,21 @@ jobs:
           python - <<'PY'
           import json,re
           d=json.load(open('_tmp/official-index-web-field-incoming.json'))
-          assert d['ruleVersion']=='source-basic-web-field-evidence-v1'
+          assert d['schemaVersion']==2
+          assert d['ruleVersion']=='source-basic-web-field-evidence-v2'
           p=d['policy']
           assert p['paidDataApiCalls']==0
           assert p['googleDisplayPayloadPersisted'] is False
           assert p['sourceBackedIdentityRequired'] is True
           assert p['rawHtmlPersisted'] is False
           assert p['robotsRespected'] is True
-          ids=[]
+          assert p['telephoneIncludedInCompletionTargets'] is True
+          assert p['multiSnapshotEvidenceByPlaceId'] is True
+          assert p['snapshotIdentity']==['googlePlaceId','finalUrl','contentHash']
+          assert p['crossSnapshotClaimMerge'] is False
+          snapshots=[]; places=set()
           for row in d['rows']:
-            ids.append(row['googlePlaceId'])
+            places.add(row['googlePlaceId'])
             assert row['sourceProvider']=='official'
             check=row['identityCheck']
             assert check['accepted'] is True
@@ -94,8 +99,9 @@ jobs:
             assert ev['parserVersion']=='official-web-jsonld-v1'
             assert ev['rawHtmlPersisted'] is False
             assert row['fieldClaims']
-          assert len(ids)==len(set(ids))
-          print(json.dumps({'rows':len(ids),'fieldCounts':d['summary']['fieldCounts'],'fetchCounts':d['summary']['fetchCounts']},ensure_ascii=False,sort_keys=True))
+            snapshots.append((row['googlePlaceId'],ev['finalUrl'],ev['contentHash']))
+          assert len(snapshots)==len(set(snapshots))
+          print(json.dumps({'rows':len(snapshots),'places':len(places),'fieldCounts':d['summary']['fieldCounts'],'fetchCounts':d['summary']['fetchCounts']},ensure_ascii=False,sort_keys=True))
           PY
       - name: Merge and validate master effect
         run: |
@@ -116,7 +122,6 @@ jobs:
           m=json.load(open('_tmp/master-after.json'))
           p=m['ingestionPlan']
           after={'fieldTasks':p['taskTypeCounts']['field_completion'],'missing':p['fieldCompletionMissingCounts']}
-          # Same identity baseline: public official facts can only remove field gaps.
           assert after['fieldTasks'] <= before['fieldTasks'], (before,after)
           for key,value in before['missing'].items():
             assert after['missing'].get(key,0) <= value, (key,before,after)
