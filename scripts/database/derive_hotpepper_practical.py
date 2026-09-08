@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import sqlite3
 from collections import Counter, defaultdict
 from pathlib import Path
@@ -19,6 +20,19 @@ ROOT = Path(__file__).resolve().parents[2]
 DATA = ROOT / "data"
 OVERLAY_PATH = DATA / "hotpepper_catalog_practical_overlay.json"
 RULE_VERSION = "hotpepper-catalog-practical-v1"
+
+# Backward-compatible interface used by review_hotpepper_candidate_fields.py.
+# Modes are now strict: ambiguous explanatory text returns None instead of being
+# collapsed by a raw startswith('あり'/'なし') shortcut.
+RULES = {
+    "lunch_availability.raw": ("practical.lunch_available", "exact_ari_nashi"),
+    "course.raw": ("practical.course_available", "exact_ari_nashi"),
+    "free_drink.raw": ("practical.free_drink_available", "free_drink"),
+    "free_food.raw": ("practical.free_food_available", "free_food"),
+    "private_room.raw": ("practical.private_room_available", "private_room"),
+    "payment_card.raw": ("practical.card_available", "card"),
+    "parking.raw": ("practical.parking_available", "parking"),
+}
 
 OUTPUT_TO_RAW = {
     "practical.lunch_available": "lunch_availability.raw",
@@ -34,6 +48,104 @@ OUTPUT_TO_RAW = {
     "station.name": "station.raw",
     "access.reference": "access.raw",
 }
+
+
+def _clean(value) -> str:
+    return re.sub(r"\s+", " ", str(value or "")).strip()
+
+
+def _prefixed_availability(text: str, subject: str):
+    yes = re.match(r"^あり(?:\s*[:：]|$)", text) is not None
+    no = re.match(r"^なし(?:\s*[:：]|$)", text) is not None
+    if not yes and not no:
+        return None
+    if subject == "food":
+        negative = re.search(r"食べ放題.{0,28}(?:ご用意しておりません|ご用意はございません|ございません|ありません|行っておりません|実施しておりません|なし)", text)
+        positive = re.search(r"食べ放題.{0,28}(?:あり|有り|ございます|ご用意|実施|付き|付|コース)", text)
+    else:
+        negative = re.search(r"飲み放題.{0,28}(?:ご用意しておりません|ご用意はございません|ございません|ありません|行っておりません|実施しておりません|なし)", text)
+        positive = re.search(r"飲み放題.{0,28}(?:あり|有り|ございます|ご用意|実施|付き|付|コース)", text)
+    if yes and negative:
+        return None
+    if no and positive and not negative:
+        return None
+    return yes
+
+
+def _private_room_status(text: str) -> str:
+    yes = re.match(r"^あり(?:\s*[:：]|$)", text) is not None
+    no = re.match(r"^なし(?:\s*[:：]|$)", text) is not None
+    if not yes and not no:
+        return "unknown"
+    negative = re.search(r"(?:個室なし|個室はございません|個室はありません|個室のご用意はございません|個室のご用意はありません|個室がございません|個室がありません)", text)
+    text_without_semi = text.replace("半個室", "")
+    explicit_full = "完全個室" in text or "個室" in text_without_semi
+    semi = "半個室" in text
+    if yes:
+        if negative:
+            return "semi_private" if semi else "unknown"
+        if explicit_full:
+            return "available"
+        if semi:
+            return "semi_private"
+        return "available"
+    positive = re.search(r"(?:完全個室|個室.{0,18}(?:あり|有り|完備|ご用意|利用可|ございます))", text)
+    if positive and not negative:
+        return "unknown"
+    return "not_available"
+
+
+def _parking_status(text: str) -> str:
+    yes = re.match(r"^あり(?:\s*[:：]|$)", text) is not None
+    no = re.match(r"^なし(?:\s*[:：]|$)", text) is not None
+    if not yes and not no:
+        return "unknown"
+    nearby = re.search(r"(?:コインパーキング|近隣.{0,24}(?:駐車場|パーキング)|近く.{0,24}(?:駐車場|パーキング)|お近く.{0,24}(?:駐車場|パーキング)|有料駐車場)", text)
+    on_site = re.search(r"(?:専用.{0,10}(?:駐車|\d+台)|(?:当店|当ビル|ビル|ホテル|施設|館内|地下|共用|共有).{0,20}駐車場|駐車場(?:あり|有り|有|をご用意)|\d+台分|ワテラスタワーの駐車場|東京ドーム(?:シティ)?の駐車場)", text)
+    if no:
+        return "nearby_paid" if nearby else "none"
+    if on_site:
+        return "on_site_or_building"
+    if nearby:
+        return "nearby_paid"
+    return "available_unspecified"
+
+
+def parse_boolean(raw, mode):
+    if not isinstance(raw, str):
+        return None
+    text = _clean(raw)
+    if mode == "card":
+        if text == "利用可":
+            return True
+        if text == "利用不可":
+            return False
+        return None
+    if mode == "exact_ari_nashi":
+        if text == "あり":
+            return True
+        if text == "なし":
+            return False
+        return None
+    if mode == "free_drink":
+        return _prefixed_availability(text, "drink")
+    if mode == "free_food":
+        return _prefixed_availability(text, "food")
+    if mode == "private_room":
+        status = _private_room_status(text)
+        if status == "available":
+            return True
+        if status == "not_available":
+            return False
+        return None
+    if mode == "parking":
+        status = _parking_status(text)
+        if status in ("on_site_or_building", "available_unspecified"):
+            return True
+        if status == "none":
+            return False
+        return None
+    return None
 
 
 def validate_overlay(doc: dict) -> None:
