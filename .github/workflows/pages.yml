@@ -64,13 +64,16 @@ jobs:
           node scripts/build_production_dataset.mjs
           node scripts/build_source_provenance.mjs
           node scripts/build_source_facts.mjs
-      - name: Build exact 2804 legacy inventory fallback
+      - name: Build and materialize exact 2804 inventory runtime
         run: |
           set -euo pipefail
           mkdir -p _audit
-          node scripts/build_google_inventory_runtime.mjs | tee _audit/google_inventory_runtime_summary.json
+          node scripts/build_google_inventory_runtime.mjs | tee _audit/google_inventory_runtime_raw_summary.json
           node --check data/google_inventory_runtime.js
-          node scripts/audit_google_inventory_runtime.mjs | tee _audit/google_inventory_runtime_audit.json
+          node scripts/audit_google_inventory_runtime.mjs | tee _audit/google_inventory_runtime_in_memory_dish_audit.json
+          node scripts/materialize_chinese_dish_runtime.mjs | tee _audit/google_inventory_runtime_materialized_summary.json
+          node --check data/google_inventory_runtime.js
+          node scripts/audit_materialized_chinese_dish_runtime.mjs | tee _audit/google_inventory_runtime_materialized_audit.json
           test -s data/google_inventory_runtime.js
 
       - name: Static syntax and required-file checks
@@ -86,7 +89,10 @@ jobs:
           node --check data/source_facts.js
           node --check scripts/audit_no_paid_apis.mjs
           node --check scripts/audit_google_inventory_runtime.mjs
+          node --check scripts/audit_materialized_chinese_dish_runtime.mjs
           node --check scripts/build_google_inventory_runtime.mjs
+          node --check scripts/materialize_chinese_dish_runtime.mjs
+          node --check scripts/chinese_dish_runtime_patch.js
           node --check scripts/build_hotpepper_rich_core_fallback.mjs
           node --check scripts/build_production_dataset.mjs
           node --check scripts/build_enrichment_queue.mjs
@@ -182,6 +188,11 @@ jobs:
           fi
           grep -q 'leaflet@1.9.4' _site/index.html
           grep -q 'OpenStreetMap' _site/index.html
+          grep -q '"dishRuntimeMaterialized":true' _site/data/google_inventory_runtime.js
+          if grep -Eq '招牌主菜|时令小菜' _site/data/google_inventory_runtime.js; then
+            echo 'Legacy generic dish filler must not be present in the public runtime.' >&2
+            exit 1
+          fi
       - name: Upload build for review
         if: github.event_name == 'pull_request'
         uses: actions/upload-artifact@v4
