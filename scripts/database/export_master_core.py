@@ -114,8 +114,8 @@ def build_exports(database: Path, outdir: Path):
             closure_raw = first_value(values, place_id, "closure.raw")
             hours_reference = first_value(values, place_id, "hours.reference.legacy")
             opening_hours_legacy = first_value(values, place_id, "hours.normalized.legacy")
-            recommended = first_value(values, place_id, "recommended_dishes.legacy") or []
-            featured = first_value(values, place_id, "featured_dishes.legacy") or []
+            recommended = first_value(values, place_id, "recommended_dishes.zh", "recommended_dishes.legacy") or []
+            featured = first_value(values, place_id, "featured_dishes.zh", "featured_dishes.legacy") or []
 
             practical = {}
             for field_key, public_key in PRACTICAL_EXPORT_FIELDS.items():
