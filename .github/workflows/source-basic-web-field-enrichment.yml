@@ -77,7 +77,8 @@ jobs:
           python - <<'PY'
           import json,re
           d=json.load(open('data/source_basic_web_field_evidence.json'))
-          assert d['ruleVersion']=='source-basic-web-field-evidence-v1'
+          assert d['schemaVersion']==2
+          assert d['ruleVersion']=='source-basic-web-field-evidence-v2'
           p=d['policy']
           assert p['paidDataApiCalls']==0
           assert p['googleDisplayPayloadPersisted'] is False
@@ -85,10 +86,13 @@ jobs:
           assert p['httpsExistingSourceUrlsOnly'] is True
           assert p['rawHtmlPersisted'] is False
           assert p['robotsRespected'] is True
+          assert p['multiSnapshotEvidenceByPlaceId'] is True
+          assert p['snapshotIdentity']==['googlePlaceId','finalUrl','contentHash']
+          assert p['crossSnapshotClaimMerge'] is False
           allowed={'official_name_plus_structured_address','official_name_plus_phone','official_name_plus_geo','retained_verified_official_page'}
-          ids=[]
+          snapshots=[]; places=set()
           for row in d['rows']:
-            ids.append(row['googlePlaceId'])
+            places.add(row['googlePlaceId'])
             check=row['identityCheck']; assert check['accepted'] is True
             assert check['identityRule'] in allowed
             ev=row['webEvidence']
@@ -97,8 +101,9 @@ jobs:
             assert re.fullmatch(r'[0-9a-f]{64}',str(ev['contentHash']))
             assert ev['rawHtmlPersisted'] is False
             assert row['fieldClaims']
-          assert len(ids)==len(set(ids))
-          print(json.dumps({'rows':len(ids),'fieldCounts':d['summary']['fieldCounts']},ensure_ascii=False,sort_keys=True))
+            snapshots.append((row['googlePlaceId'],ev['finalUrl'],ev['contentHash']))
+          assert len(snapshots)==len(set(snapshots))
+          print(json.dumps({'rows':len(snapshots),'places':len(places),'multiSnapshotPlaces':len(snapshots)-len(places),'fieldCounts':d['summary']['fieldCounts']},ensure_ascii=False,sort_keys=True))
           PY
       - name: Validate master and runtime after enrichment
         run: |
@@ -117,6 +122,8 @@ jobs:
             'missing': plan['fieldCompletionMissingCounts'],
           }
           assert after['fieldTasks'] <= before['fieldTasks'], (before,after)
+          for field,count in after['missing'].items():
+            assert count <= before['missing'].get(field,count), (field,before,after)
           json.dump(after,open('_tmp/field-after.json','w'),sort_keys=True)
           print(json.dumps({'before':before,'after':after},sort_keys=True))
           PY
