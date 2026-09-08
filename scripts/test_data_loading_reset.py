@@ -131,7 +131,7 @@ class DataLoadingRegression(unittest.TestCase):
         db.close()
 
     def test_oversized_hash_bucket_is_split_without_task_loss(self):
-        tasks=[{'taskId':str(i),'placeId':str(i),'agentType':'dish-source-acquisition','priority':1} for i in range(601)]
+        tasks=[{'taskId':str(i),'placeId':str(i),'agentType':'dish-source-acquisition','taskType':'dish_source_acquisition','priority':1} for i in range(601)]
         with patch.object(workplan,'stable_bucket',return_value=0):
             shards=workplan.make_shards(tasks,8,6,2)
         summary=workplan.validate_shards(tasks,shards)
