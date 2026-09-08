@@ -17,28 +17,29 @@
       "contentHash"
     ],
     "crossSnapshotClaimMerge": false,
-    "canonicalResolution": "import_time_missing_only"
+    "canonicalResolution": "import_time_missing_only",
+    "telephoneIncludedInCompletionTargets": true
   },
   "summary": {
-    "rows": 76,
+    "rows": 77,
     "places": 57,
-    "placesWithMultipleSnapshots": 19,
+    "placesWithMultipleSnapshots": 20,
     "fieldCounts": {
       "address": 3,
       "cuisineNormalized": 1,
       "geo": 1,
       "openingHoursRaw": 35,
-      "priceRange": 8,
+      "priceRange": 9,
       "telephone": 51
     },
     "providerCounts": {
-      "Overture Maps": 17,
+      "Overture Maps": 18,
       "official": 59
     },
     "lastMerge": {
-      "snapshot_added": 19,
-      "snapshot_added_existing_place": 19,
-      "snapshot_already_present": 5
+      "snapshot_added": 1,
+      "snapshot_added_existing_place": 1,
+      "snapshot_already_present": 57
     }
   },
   "rows": [
@@ -2117,6 +2118,38 @@
         "priceRange": "¥1,000〜¥3,000"
       },
       "checkedAt": "2026-09-07"
+    },
+    {
+      "googlePlaceId": "ChIJnYWupOGNGGARbJXrXzGrfL4",
+      "sourceProvider": "Overture Maps",
+      "sourceProviderId": "516e682b-3800-4957-943c-a7304c1ef093",
+      "missingBefore": [
+        "dinner_budget",
+        "hours",
+        "lunch_budget"
+      ],
+      "identityCheck": {
+        "accepted": true,
+        "identityRule": "official_name_plus_structured_address",
+        "score": 0.832629,
+        "maxSourceNameSimilarity": 0.88,
+        "addressSupportingMembers": 1,
+        "phoneSupportingMembers": 1,
+        "minimumGeoDistanceMeters": 0.823,
+        "pageAddress": "101-0054 東京都 千代田区 神田錦町1-21-2 大手町モダンビルディング 1F"
+      },
+      "webEvidence": {
+        "sourceUrl": "https://www.tablecheck.com/ja/storiare-tokyo/",
+        "finalUrl": "https://www.tablecheck.com/ja/storiare-tokyo",
+        "retrievedAt": "2026-09-08T05:54:36Z",
+        "contentHash": "26d74c864df48eef0bc7324ed1a2c7fa238bd08ba0c868dd168e494ce941a708",
+        "parserVersion": "official-web-jsonld-v1",
+        "rawHtmlPersisted": false
+      },
+      "fieldClaims": {
+        "priceRange": "¥4500 - ¥17500"
+      },
+      "checkedAt": "2026-09-08"
     },
     {
       "googlePlaceId": "ChIJnYWupOGNGGARbJXrXzGrfL4",
