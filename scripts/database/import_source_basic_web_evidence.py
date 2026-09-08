@@ -38,6 +38,7 @@ CANONICAL_EQUIVALENTS = {
     "hours.raw": ("hours.raw", "hours.reference.legacy", "hours.normalized.legacy"),
     "cuisine": ("cuisine",),
     "coordinates": ("coordinates",),
+    "contact.telephone": ("contact.telephone",),
 }
 
 
@@ -71,6 +72,20 @@ def normalized_geo(value):
     if not (-90 <= lat <= 90 and -180 <= lng <= 180):
         return None
     return {"lat": float(lat), "lng": float(lng)}
+
+
+def normalized_telephone(value):
+    if not isinstance(value, str):
+        return None
+    text = value.strip()
+    if not text or len(text) > 80:
+        return None
+    digits = re.sub(r"\D", "", text)
+    if len(digits) < 8 or len(digits) > 15:
+        return None
+    # Preserve the public source's formatting for display/provenance. The digit
+    # check is validation only; it does not invent a reformatted number.
+    return text
 
 
 def known_resolution_index(db) -> set[tuple[str, str]]:
@@ -194,9 +209,9 @@ def import_evidence(db, id_set: set[str], conflict_places: set[str], stamp: str)
         price_range = claims.get("priceRange")
         if isinstance(price_range, str) and price_range.strip():
             fields.append(("budget.web_price_range_raw", price_range.strip(), False))
-        telephone = claims.get("telephone")
-        if isinstance(telephone, str) and telephone.strip():
-            fields.append(("contact.telephone", telephone.strip(), False))
+        telephone = normalized_telephone(claims.get("telephone"))
+        if telephone:
+            fields.append(("contact.telephone", telephone, True))
         fields.append(("source_websites", [final_url], False))
         fields.append(("provenance.public_web_content_hash", content_hash, False))
 
@@ -239,4 +254,5 @@ def import_evidence(db, id_set: set[str], conflict_places: set[str], stamp: str)
         },
         "ruleVersion": RULE_VERSION,
         "importTimeMissingOnly": True,
+        "telephoneCanonicalMissingOnly": True,
     }
