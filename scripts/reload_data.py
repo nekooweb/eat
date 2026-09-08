@@ -45,6 +45,8 @@ def main():
         ('source-facts',['node','scripts/build_source_facts.mjs']),
         ('official-overlay',[sys.executable,'scripts/database/export_reviewed_official_runtime_sources.py']),
         ('runtime-raw',['node','scripts/build_google_inventory_runtime.mjs']),
+        ('independent-source-overlay',['node','scripts/apply_reviewed_independent_source_overlay.mjs']),
+        ('independent-source-overlay-audit',['node','scripts/audit_reviewed_independent_source_overlay.mjs']),
         ('runtime-identity',['node','scripts/audit_google_inventory_runtime.mjs']),
         ('runtime-materialize',['node','scripts/materialize_chinese_dish_runtime.mjs']),
         ('runtime-materialized-audit',['node','scripts/audit_materialized_chinese_dish_runtime.mjs']),
@@ -77,7 +79,8 @@ def main():
         raise RuntimeError('Runtime/queue identity sets diverged after reload')
     files={}
     for name in ['production_area1.js','source_provenance.js','source_facts.js','reviewed_official_runtime_sources.json',
-                 'google_inventory_runtime.js','google_inventory_detail_queue.json','dish_batch_plan.json','independent_dish_source_candidates.json']:
+                 'reviewed_independent_dish_sources.json','google_inventory_runtime.js','google_inventory_detail_queue.json',
+                 'dish_batch_plan.json','independent_dish_source_candidates.json']:
         raw=(DATA/name).read_bytes()
         files[name]={'bytes':len(raw),'sha256':hashlib.sha256(raw).hexdigest()}
     manifest={'schemaVersion':1,'sourceCommit':source_commit,'mode':'public-only' if args.public_only else 'full',
