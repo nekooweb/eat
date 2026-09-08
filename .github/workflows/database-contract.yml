@@ -74,7 +74,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Sync latest main for reusable handoff
-        if: ${{ github.event_name == 'workflow_call' && inputs.sync_main == true }}
+        if: ${{ inputs.sync_main == true }}
         run: |
           set -euo pipefail
           git fetch origin main
