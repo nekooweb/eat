@@ -16,9 +16,36 @@ function readWindowJson(file, assignment, fallback) {
   if (!fs.existsSync(file)) return fallback;
   const text = fs.readFileSync(file, 'utf8');
   const marker = `window.${assignment}=`;
-  const start = text.indexOf(marker);
-  if (start < 0) throw new Error(`Cannot parse ${path.basename(file)} assignment ${assignment}`);
-  return JSON.parse(text.slice(start + marker.length).replace(/;\s*$/s, '').trim());
+  const markerStart = text.indexOf(marker);
+  if (markerStart < 0) throw new Error(`Cannot find ${path.basename(file)} assignment ${assignment}`);
+  let start = markerStart + marker.length;
+  while (start < text.length && /\s/.test(text[start])) start += 1;
+  if (!['{', '['].includes(text[start])) throw new Error(`Assignment ${assignment} does not start with JSON`);
+
+  const stack = [];
+  let inString = false;
+  let escaped = false;
+  for (let i = start; i < text.length; i += 1) {
+    const ch = text[i];
+    if (inString) {
+      if (escaped) escaped = false;
+      else if (ch === '\\') escaped = true;
+      else if (ch === '"') inString = false;
+      continue;
+    }
+    if (ch === '"') {
+      inString = true;
+      continue;
+    }
+    if (ch === '{') stack.push('}');
+    else if (ch === '[') stack.push(']');
+    else if (ch === '}' || ch === ']') {
+      const expected = stack.pop();
+      if (expected !== ch) throw new Error(`Unbalanced JSON assignment ${assignment}`);
+      if (stack.length === 0) return JSON.parse(text.slice(start, i + 1));
+    }
+  }
+  throw new Error(`Unterminated JSON assignment ${assignment}`);
 }
 
 function parseRuntime() {
