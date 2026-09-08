@@ -29,11 +29,11 @@
   },
   "summary": {
     "productionBacked": 651,
-    "sourceMatchedInventoryOnly": 765,
-    "basicReadyTotal": 1416,
-    "identityOnlyRemaining": 1388,
+    "sourceMatchedInventoryOnly": 766,
+    "basicReadyTotal": 1417,
+    "identityOnlyRemaining": 1387,
     "providers": {
-      "Hot Pepper": 359,
+      "Hot Pepper": 360,
       "OpenStreetMap": 11,
       "Overture Maps": 395
     },
@@ -2367,6 +2367,72 @@
       "sourceCheckedAt": "2026-09-06",
       "verification": "existing_high_confidence_binding",
       "matchLevel": "strong"
+    },
+    {
+      "googlePlaceId": "ChIJ9XAxGQOMGGARFuWMs0nm1SA",
+      "provider": "Hot Pepper",
+      "providerId": "J000864904",
+      "name": "フレッシュネスバーガー 神田須田町店",
+      "address": "東京都千代田区神田須田町１－１４栄華ビル",
+      "lat": 35.6953853165,
+      "lng": 139.7699636815,
+      "distanceMeters": 1118,
+      "cuisine": "カフェ・スイーツ",
+      "websites": [
+        "https://www.hotpepper.jp/strJ000864904/?vos=nhppalsa000016",
+        "https://search.freshnessburger.co.jp/detail/3033064/"
+      ],
+      "sourceCheckedAt": "2026-09-08",
+      "verification": "reviewed_hotpepper_overture_currentness_consensus",
+      "matchLevel": "reviewed-multisource-currentness-v1",
+      "identityConsensus": {
+        "historicalHotPepperReview": {
+          "hotpepperId": "J000864904",
+          "distanceMeters": 5.6,
+          "nameSimilarity": 0.6441,
+          "addressSimilarity": null,
+          "combinedScore": 0.7613,
+          "confidence": "high",
+          "seedSource": "transient_full_sweep"
+        },
+        "overtureSupport": {
+          "overtureId": "7523fc60-2fae-49d1-bd0f-2fd4884febf8",
+          "name": "フレッシュネスバーガー 神田須田町店",
+          "address": "千代田区東京都千代田区神田須田町１丁目１４",
+          "lat": 35.69549,
+          "lng": 139.769903,
+          "distanceMeters": 12.9,
+          "nameSimilarity": 1.0,
+          "addressSimilarity": 0.75,
+          "postalMatch": false,
+          "margin": 0.3102
+        },
+        "currentIndependentPage": {
+          "url": "https://search.freshnessburger.co.jp/detail/3033064/",
+          "retrievedAt": "2026-09-08T07:16:00Z",
+          "contentHash": "d836dbe0e56215a18e5832b4803a5f992ee06ac9ee7031bbc58c193c1839ca42",
+          "matchedExpectedName": "フレッシュネスバーガー 神田須田町店",
+          "pageName": "【公式】フレッシュネスバーガー神田須田町店",
+          "pageAddress": "101-0041 東京都千代田区 神田須田町1-14 栄華ﾋﾞﾙ1･2階",
+          "nameSimilarity": 0.8947,
+          "addressSimilarity": 0.7917,
+          "postalMatch": false,
+          "geoDistanceMeters": null,
+          "locationConfirmed": true
+        },
+        "policy": {
+          "legacyVerifiedStateCreated": false,
+          "sourceMatchedOnly": true,
+          "independentSources": [
+            "Hot Pepper",
+            "Overture Maps",
+            "current official page"
+          ],
+          "currentnessRequired": true,
+          "providerReuseForbidden": true,
+          "ruleVersion": "reviewed-multisource-currentness-v1"
+        }
+      }
     },
     {
       "googlePlaceId": "ChIJ9_4CKwCNGGAReojOE2R0Ydc",
