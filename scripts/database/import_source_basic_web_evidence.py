@@ -8,9 +8,10 @@ This importer performs no network requests. It never upgrades an ID-only identit
 only adds field observations to an identity that is already publishable and non-conflict
 in the SQLite master.
 
-Canonical fields are checked again at import time. This is intentionally stricter than
-trusting collection-time `missingBefore`: parallel workers may fill a field after a page
-was collected, and late public-web evidence must never replace that newer resolution.
+V2 allows multiple verified page snapshots for the same Place ID. Snapshot identity is
+`(Place ID, final URL, content hash)`. Canonical fields are checked again at import time,
+so a later snapshot can fill a still-missing field but can never replace an already-known
+canonical resolution. V1 durable evidence remains readable during migration.
 """
 from __future__ import annotations
 
@@ -23,8 +24,12 @@ import master_import_core as core
 ROOT = Path(__file__).resolve().parents[2]
 DATA = ROOT / "data"
 EVIDENCE_PATH = DATA / "source_basic_web_field_evidence.json"
-RULE_VERSION = "source-basic-web-field-evidence-v1"
-ACQUISITION_METHOD = "public_source_basic_web_field_evidence_v1"
+RULE_VERSION = "source-basic-web-field-evidence-v2"
+LEGACY_RULE_VERSION = "source-basic-web-field-evidence-v1"
+ACQUISITION_METHODS = {
+    LEGACY_RULE_VERSION: "public_source_basic_web_field_evidence_v1",
+    RULE_VERSION: "public_source_basic_web_field_evidence_v2",
+}
 BINDING_METHOD = "field_only_from_public_web_after_existing_identity_check"
 HASH_RE = re.compile(r"^[0-9a-f]{64}$")
 ALLOWED_IDENTITY_RULES = {
@@ -105,9 +110,10 @@ def import_evidence(db, id_set: set[str], conflict_places: set[str], stamp: str)
     if not EVIDENCE_PATH.exists():
         return {"inputRows": 0, "acceptedRows": 0, "resolvedFields": 0, "fieldCounts": {}}
     doc = core.read_json(EVIDENCE_PATH)
+    doc_version = str(doc.get("ruleVersion") or "")
+    if doc_version not in ACQUISITION_METHODS:
+        raise RuntimeError(f"unexpected source-basic web evidence ruleVersion: {doc_version}")
     policy = doc.get("policy") or {}
-    if doc.get("ruleVersion") != RULE_VERSION:
-        raise RuntimeError(f"unexpected source-basic web evidence ruleVersion: {doc.get('ruleVersion')}")
     if policy.get("paidDataApiCalls") != 0:
         raise RuntimeError("source-basic web evidence must use zero paid data API calls")
     if policy.get("googleDisplayPayloadPersisted") is not False:
@@ -116,16 +122,24 @@ def import_evidence(db, id_set: set[str], conflict_places: set[str], stamp: str)
         raise RuntimeError("source-basic web evidence must require a pre-existing source-backed identity")
     if policy.get("rawHtmlPersisted") is not False or policy.get("robotsRespected") is not True:
         raise RuntimeError("source-basic web evidence access policy is incomplete")
+    if doc_version == RULE_VERSION:
+        if policy.get("multiSnapshotEvidenceByPlaceId") is not True:
+            raise RuntimeError("v2 source-basic web evidence must allow multi-snapshot provenance")
+        if policy.get("crossSnapshotClaimMerge") is not False:
+            raise RuntimeError("v2 source-basic web evidence must forbid cross-snapshot claim merges")
+        if policy.get("snapshotIdentity") != ["googlePlaceId", "finalUrl", "contentHash"]:
+            raise RuntimeError("v2 source-basic web evidence snapshot identity is invalid")
 
     counts = Counter()
     accepted = 0
-    seen = set()
+    seen_snapshots = set()
     known = known_resolution_index(db)
+    acquisition_method = ACQUISITION_METHODS[doc_version]
+
     for row in doc.get("rows") or []:
         pid = str(row.get("googlePlaceId") or "").strip()
-        if not pid or pid in seen:
-            raise RuntimeError(f"invalid/duplicate source-basic web evidence Place ID: {pid or '<missing>'}")
-        seen.add(pid)
+        if not pid:
+            raise RuntimeError("source-basic web evidence row is missing Place ID")
         if pid not in id_set:
             counts["outside_catalog"] += 1
             continue
@@ -151,6 +165,11 @@ def import_evidence(db, id_set: set[str], conflict_places: set[str], stamp: str)
         if not HASH_RE.fullmatch(content_hash):
             counts["invalid_content_hash"] += 1
             continue
+        snapshot = (pid, final_url, content_hash)
+        if snapshot in seen_snapshots:
+            raise RuntimeError(f"duplicate source-basic web evidence snapshot: {snapshot}")
+        seen_snapshots.add(snapshot)
+
         identity_check = row.get("identityCheck") or {}
         if identity_check.get("accepted") is not True:
             counts["identity_check_not_accepted"] += 1
@@ -167,7 +186,7 @@ def import_evidence(db, id_set: set[str], conflict_places: set[str], stamp: str)
             "identityCheck": identity_check,
             "webEvidence": evidence,
             "fieldClaims": row.get("fieldClaims") or {},
-            "ruleVersion": RULE_VERSION,
+            "ruleVersion": doc_version,
         }
         provider_id = f"source-basic-web:{pid}:{core.sha256_text(final_url)[:18]}:{content_hash[:12]}"
         srid = core.source_record(
@@ -177,7 +196,7 @@ def import_evidence(db, id_set: set[str], conflict_places: set[str], stamp: str)
             payload,
             final_url,
             retrieved_at,
-            ACQUISITION_METHOD,
+            acquisition_method,
             "public HTTPS page tied to an independently source-backed/reviewed official identity; robots respected; raw HTML not retained",
             stamp,
         )
@@ -242,6 +261,8 @@ def import_evidence(db, id_set: set[str], conflict_places: set[str], stamp: str)
     return {
         "inputRows": len(doc.get("rows") or []),
         "acceptedRows": accepted,
+        "acceptedSnapshots": accepted,
+        "uniqueSnapshotKeys": len(seen_snapshots),
         "resolvedFields": sum(counts[key] for key in canonical_keys),
         "fieldCounts": {
             key: counts[key]
@@ -252,7 +273,9 @@ def import_evidence(db, id_set: set[str], conflict_places: set[str], stamp: str)
             key: value for key, value in sorted(counts.items())
             if key not in canonical_keys
         },
-        "ruleVersion": RULE_VERSION,
+        "ruleVersion": doc_version,
+        "currentRuleVersion": RULE_VERSION,
         "importTimeMissingOnly": True,
         "telephoneCanonicalMissingOnly": True,
+        "multiSnapshotCompatible": True,
     }
