@@ -1,0 +1,47 @@
+name: Audit unmatched recommendation markers
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.recommendation-marker-audit-run'
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Rebuild current public runtime
+        run: |
+          set -euo pipefail
+          node scripts/audit_no_paid_apis.mjs
+          python scripts/reload_data.py --public-only --outdir /tmp/recommendation-marker-audit-reload
+      - name: Find explicit recommendation text missed by the dish vocabulary
+        run: |
+          set -euo pipefail
+          node scripts/audit_hotpepper_unmatched_recommendation_markers.mjs /tmp/unmatched-recommendation-markers.json | tee /tmp/unmatched-recommendation-markers.log
+          node - <<'NODE'
+          const fs=require('fs');
+          const x=JSON.parse(fs.readFileSync('/tmp/unmatched-recommendation-markers.json','utf8'));
+          if(x.policy?.networkRequests!==0||x.policy?.paidGoogleDataApiCalls!==0||x.policy?.automaticPromotionAllowed!==false) throw new Error('audit boundary failed');
+          if(x.summary?.catalogTotal!==2804||x.summary?.publicRuntimeTotal!==1422) throw new Error('audit baseline failed');
+          console.log('UNMATCHED_RECOMMENDATION_SUMMARY='+JSON.stringify(x.summary));
+          NODE
+      - uses: actions/upload-artifact@v4
+        with:
+          name: unmatched-recommendation-markers
+          path: |
+            /tmp/unmatched-recommendation-markers.json
+            /tmp/unmatched-recommendation-markers.log
+          retention-days: 7
