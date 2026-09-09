@@ -17,8 +17,11 @@ const ROOT = path.resolve(HERE, '..');
 const DATA = path.join(ROOT, 'data');
 const OUTPUT = process.argv[2] || path.join(DATA, 'google_inventory_detail_evidence.json');
 const DIAGNOSTICS_OUTPUT = String(process.env.INVENTORY_DETAIL_DIAGNOSTICS_OUTPUT || '').trim();
-const TIMEOUT_MS = Number(process.env.INVENTORY_DETAIL_FETCH_TIMEOUT_MS || 7000);
-const HOST_WORKERS = Math.max(1, Math.min(32, Number(process.env.INVENTORY_DETAIL_HOST_WORKERS || 20)));
+// Already-bound official sources include many small/legacy sites. A 7s/24-host pass
+// produced materially more transient misses than a slower bounded audit, so keep the
+// collector at a conservative floor/ceiling without changing any evidence semantics.
+const TIMEOUT_MS = Math.max(12_000, Number(process.env.INVENTORY_DETAIL_FETCH_TIMEOUT_MS || 12_000));
+const HOST_WORKERS = Math.max(1, Math.min(16, Number(process.env.INVENTORY_DETAIL_HOST_WORKERS || 16)));
 const SITE_PAGE_LIMIT = Math.max(2, Math.min(6, Number(process.env.INVENTORY_DETAIL_SITE_PAGE_LIMIT || 5)));
 const MENU_LINK_LIMIT = Math.max(1, Math.min(5, Number(process.env.INVENTORY_DETAIL_MENU_LINK_LIMIT || 4)));
 const MAX_HTML_CHARS = 1_200_000;
