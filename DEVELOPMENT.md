@@ -1,19 +1,32 @@
 # Eat 开发状态与后续计划
 
-更新日期：2026-09-08。
+更新日期：2026-09-09。
 
-## 执行状态：修复准备好，后续按需运行
+## 执行状态：主线已合并；按需运行
 
-按 2026-09-08 用户最新要求，停止继续采集、持续重建和本地主库替换。本次修改保留在 [PR #32](https://github.com/nekooweb/eat/pull/32)，未合并，未据此启动新生产发布。
+2026-09-08 的数据载入修复 PR #32 已实际合并到 `main`。此前文档中“PR #32 未合并”的描述已过期；当前主线继续采用其安全重载、manual-only 全量 reset、普通 Pages 仅 `--public-only` 的执行边界。
 
-此前完整离线验证及扩展的 11 项回归已通过 [run 34216698239](https://github.com/nekooweb/eat/actions/runs/34216698239)。这些是已执行的验证记录，不是正在运行的任务。本地主库未用重建产物替换，旧库与恢复资料都保留。
+此前完整离线验证及扩展的 11 项回归已通过 [run 34216698239](https://github.com/nekooweb/eat/actions/runs/34216698239)。这些是已执行的验证记录，不是正在运行的任务。本地主库是否已被新的离线重建产物替换，仍必须根据具体执行记录判断，不能仅根据代码已合并推断。
 
-全量 reset workflow 现为 manual-only。Pages 常规构建只执行 `--public-only`，不重置主库。后续字段和命令以 [字段契约](DATA_LOADING_FIELDS.md)为准。
+全量 reset workflow 维持 manual-only。Pages 常规构建只执行 `--public-only`，不重置主库。后续字段和命令以 [字段契约](DATA_LOADING_FIELDS.md)为准。
 
+## 2026-09-09 工具身份名称契约修复
+
+新发现的错误表明，来源/官网别名不能进入下游工具的身份名称字段。例如 `めいどりーみん 秋葉原 AKIBA` 是来源侧当前名称/别名，而冻结 catalog 中相同 Place ID 的工具身份名称应保持 `Maidreamin Akihabara Himitsukichi`。
+
+因此新增统一约束：
+
+- 工具 task 的 `name` 必须来自当前 runtime/catalog；
+- `officialName`、页面标题及来源名称仅作为 source alias / identity evidence；
+- runtime 没有已知名称时必须跳过，不允许用来源别名补成工具身份；
+- 来源别名仍可参与页面身份文本过滤，但不得替代 catalog name；
+- PR Review 在 `--public-only` 重建后执行 `scripts/test_tool_identity_name_contract.mjs`，并使用真实 Maidreamin Place ID 做回归验证。
+
+详细记录见 [2026-09-09 tool identity-name contract log](logs/2026-09-09-tool-identity-name-contract.md)。
 
 ## 当前修复基线
 
-本轮修复数据载入中断、危险重置、任务类型不一致和重复自动触发问题。核心修复提交 `da60a70` 已通过 [完整重建与回归](https://github.com/nekooweb/eat/actions/runs/34215698634)、数据库契约、PR 和 Pages 预览构建。生产是否已发布应以合并提交对应的 Pages deploy 状态为准，不以预览构建代替。
+2026-09-08 修复数据载入中断、危险重置、任务类型不一致和重复自动触发问题。核心修复提交 `da60a70` 已通过 [完整重建与回归](https://github.com/nekooweb/eat/actions/runs/34215698634)、数据库契约、PR 和 Pages 预览构建。生产是否已发布应以对应的 Pages deploy 状态为准，不以预览构建代替。
 
 | 当前重建结果 | 数量 |
 | --- | ---: |
@@ -38,6 +51,7 @@
 5. Pages、PR、数据库检查和候选计划原先分别使用不同构建步骤，容易读取旧生成文件。新增统一离线入口 `scripts/reload_data.py`，按同一 checkout revision 重建。
 6. PR 仍要求已退役 Google Embed，阻断现行 Leaflet 页面。已调整为 Leaflet / OpenStreetMap 检查，并继续禁止 Google key/embed 配置回归。
 7. 普通代码推送会触发许多旧采集/写回任务。44 个维护 workflow 改为手动触发，保留原有输入；自动任务只做当前构建、校验、规划和发布。
+8. 2026-09-09 修复官方来源名称被下游工具当成 catalog identity 的问题；来源别名与工具身份名称现在强制分离并有 PR 回归测试。
 
 ## 数据清理
 
@@ -72,6 +86,6 @@ python3 scripts/reload_data.py --outdir _audit/data-reload --database _local/eat
 
 ## 后续边界
 
-本次是离线载入、重建、清理与发布修复，没有发起新的全量网络采集。身份长尾和菜品缺口仍需新证据。SQLite shadow → 唯一公开数据源的切换需要单独比较准入、字段来源和浏览器行为，不能把本次统一入口描述成已经完成该切换。
+身份长尾和菜品缺口仍需新证据。SQLite shadow → 唯一公开数据源的切换需要单独比较准入、字段来源和浏览器行为，不能把统一入口描述成已经完成该切换。
 
-详细过程见 [重置日志](logs/2026-09-08-data-loading-reset.md)，实际流程见 [DATA_PIPELINE](DATA_PIPELINE.md)。旧日期型日志为历史检查点，不作为当前统计来源。
+详细过程见 [重置日志](logs/2026-09-08-data-loading-reset.md) 与 [2026-09-09 identity-name 修复日志](logs/2026-09-09-tool-identity-name-contract.md)，实际流程见 [DATA_PIPELINE](DATA_PIPELINE.md)。旧日期型日志为历史检查点，不作为当前统计来源。

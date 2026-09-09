@@ -14,7 +14,7 @@ const RUNTIME = path.join(DATA, 'google_inventory_runtime.js');
 const CHECKED_AT = new Date().toISOString().slice(0, 10);
 const TIMEOUT_MS = Math.max(8_000, Number(process.env.OFFICIAL_MENU_IMAGE_TEXT_TIMEOUT_MS || 12_000));
 const WORKERS = Math.max(1, Math.min(16, Number(process.env.OFFICIAL_MENU_IMAGE_TEXT_WORKERS || 12)));
-const USER_AGENT = 'eat-data-maintenance/2.1 (+https://github.com/nekooweb/eat)';
+const USER_AGENT = 'eat-data-maintenance/2.2 (+https://github.com/nekooweb/eat)';
 const MAX_HTML_CHARS = 1_200_000;
 const NON_HTML_ASSET = /\.(?:pdf|jpe?g|png|gif|webp|avif|svg|css|js|mjs|xml)(?:$|[?#])/i;
 const MENU_URL_CONTEXT = /(?:menu|menus|food|foods|lunch|dinner|takeout|takeouts|system|campaign|料理|お品書|御品書|メニュー|フード|商品|グランド)/i;
@@ -52,10 +52,15 @@ function normalizedIdentityText(value) {
   return String(value || '').normalize('NFKC').toLowerCase().replace(/[\s\p{P}\p{S}]+/gu, '');
 }
 
-function textLooksLikeRestaurantIdentity(text, restaurantName) {
+function textLooksLikeRestaurantIdentity(text, restaurantNames) {
   const textKey = normalizedIdentityText(text);
-  const nameKey = normalizedIdentityText(restaurantName);
-  return nameKey.length >= 4 && textKey.includes(nameKey);
+  if (!textKey) return false;
+  const names = Array.isArray(restaurantNames) ? restaurantNames : [restaurantNames];
+  for (const restaurantName of names) {
+    const nameKey = normalizedIdentityText(restaurantName);
+    if (nameKey.length >= 4 && textKey.includes(nameKey)) return true;
+  }
+  return false;
 }
 
 function htmlMenuUrl(value) {
@@ -94,7 +99,7 @@ function dishMatches(text, limit = 5) {
   return output;
 }
 
-function extractImageAttributeDishes(html, sourceUrl, restaurantName) {
+function extractImageAttributeDishes(html, sourceUrl, restaurantNames) {
   const output = [];
   const seen = new Set();
   const imageRe = /<img\b[^>]*>/gi;
@@ -111,7 +116,7 @@ function extractImageAttributeDishes(html, sourceUrl, restaurantName) {
       const text = decodeEntities(attr[2]);
       if (
         text.length < 2 || text.length > 60 || GENERIC_ONLY.test(text) ||
-        NON_DISH_ACCESSIBLE_TEXT.test(text) || textLooksLikeRestaurantIdentity(text, restaurantName)
+        NON_DISH_ACCESSIBLE_TEXT.test(text) || textLooksLikeRestaurantIdentity(text, restaurantNames)
       ) continue;
       values.push(text);
     }
@@ -171,10 +176,20 @@ async function main() {
   const tasks = [];
   let skippedNonMenuContext = 0;
   let skippedAlreadyFeatured = 0;
+  let skippedMissingRuntimeIdentityName = 0;
+  let sourceAliasDiffers = 0;
   for (const row of source.rows || []) {
-    if (row.reviewState !== 'reviewed' || !row.googlePlaceId || !row.officialName) continue;
+    if (row.reviewState !== 'reviewed' || !row.googlePlaceId) continue;
     const runtime = runtimeById.get(row.googlePlaceId);
-    if (!runtime || !runtime.nameKnown) continue;
+    const identityName = String(runtime?.name || '').trim();
+    if (!runtime || runtime.nameKnown !== true || !identityName) {
+      skippedMissingRuntimeIdentityName += 1;
+      continue;
+    }
+    const sourceOfficialName = String(row.officialName || '').trim();
+    if (sourceOfficialName && normalizedIdentityText(sourceOfficialName) !== normalizedIdentityText(identityName)) {
+      sourceAliasDiffers += 1;
+    }
     if (Array.isArray(runtime.featuredDishes) && runtime.featuredDishes.length > 0) {
       skippedAlreadyFeatured += 1;
       continue;
@@ -185,7 +200,12 @@ async function main() {
         if (!NON_HTML_ASSET.test(String(rawUrl || ''))) skippedNonMenuContext += 1;
         continue;
       }
-      tasks.push({ googlePlaceId: row.googlePlaceId, name: row.officialName, url });
+      tasks.push({
+        googlePlaceId: row.googlePlaceId,
+        name: identityName,
+        sourceOfficialName: sourceOfficialName || null,
+        url
+      });
     }
   }
 
@@ -199,7 +219,8 @@ async function main() {
       const task = tasks[index];
       try {
         const page = await fetchHtml(task.url);
-        const featuredDishes = dedupe(extractImageAttributeDishes(page.html, page.finalUrl, task.name));
+        const identityAliases = [task.name, task.sourceOfficialName].filter(Boolean);
+        const featuredDishes = dedupe(extractImageAttributeDishes(page.html, page.finalUrl, identityAliases));
         resultRows.push({ ...task, finalUrl: page.finalUrl, featuredDishes });
       } catch (error) {
         errors.push({ ...task, error: String(error?.message || error).slice(0, 160) });
@@ -214,6 +235,7 @@ async function main() {
     const current = byPlace.get(row.googlePlaceId) || {
       googlePlaceId: row.googlePlaceId,
       name: row.name,
+      sourceOfficialName: row.sourceOfficialName || null,
       recommendedDishes: [],
       featuredDishes: []
     };
@@ -223,15 +245,19 @@ async function main() {
 
   const rows = [...byPlace.values()].sort((a, b) => a.googlePlaceId.localeCompare(b.googlePlaceId));
   const payload = {
-    schemaVersion: 3,
+    schemaVersion: 4,
     checkedAt: CHECKED_AT,
     policy: {
       catalogIdentityKey: 'frozen Place ID only',
       catalogTotal: 2804,
       reviewedOfficialMenuUrlsOnly: true,
       currentFeaturedDishGapOnly: true,
+      toolIdentityNameSource: 'runtime_catalog_name',
+      sourceOfficialNameRole: 'source_alias_only',
+      sourceOfficialNameMayReplaceToolIdentity: false,
       explicitMenuUrlContextRequired: true,
       restaurantIdentityTextRejected: true,
+      sourceAliasIdentityTextRejected: true,
       imageBinaryRead: false,
       ocrExecuted: false,
       accessibleHtmlAttributesOnly: ['img.alt', 'img.title'],
@@ -249,6 +275,8 @@ async function main() {
       reviewedOfficialRows: Number(source.summary?.reviewedRows || 0),
       reviewedRowsWithMenuUrls: Number(source.summary?.reviewedRowsWithMenuUrls || 0),
       publicRuntimeTotal: runtimeRows.length,
+      sourceAliasDiffers,
+      skippedMissingRuntimeIdentityName,
       skippedAlreadyFeatured,
       htmlMenuTasks: tasks.length,
       skippedNonMenuContext,

@@ -46,12 +46,17 @@ jobs:
           node scripts/collect_official_menu_image_text_evidence.mjs /tmp/menu-image-text-evidence.json | tee /tmp/menu-image-text-summary.json
           node - <<'NODE'
           const fs=require('fs');
+          const vm=require('vm');
           const x=JSON.parse(fs.readFileSync('/tmp/menu-image-text-evidence.json','utf8'));
           const p=x.policy||{};
           if(p.paidGoogleDataApiCalls!==0||p.reviewedOfficialMenuUrlsOnly!==true||p.currentFeaturedDishGapOnly!==true) throw new Error('menu image-text source boundary failed');
           if(p.ocrExecuted!==false||p.imageBinaryRead!==false||p.recommendationPromotionAllowed!==false) throw new Error('menu image-text semantic boundary failed');
           if(p.explicitMenuUrlContextRequired!==true||p.restaurantIdentityTextRejected!==true||p.asciiSubstringBoundaryGuard!==true) throw new Error('menu image-text precision guards missing');
+          if(p.toolIdentityNameSource!=='runtime_catalog_name'||p.sourceOfficialNameRole!=='source_alias_only'||p.sourceOfficialNameMayReplaceToolIdentity!==false) throw new Error('tool identity-name contract missing');
           if((x.rows||[]).some(r=>(r.recommendedDishes||[]).length)) throw new Error('image-text evidence may not create recommended dishes');
+          const sandbox={window:{},console};vm.createContext(sandbox);vm.runInContext(fs.readFileSync('data/google_inventory_runtime.js','utf8'),sandbox);
+          const runtimeById=new Map((sandbox.window.GOOGLE_INVENTORY_RESTAURANTS||[]).map(r=>[r.googlePlaceId,r]));
+          for(const r of x.rows||[]){const expected=String(runtimeById.get(r.googlePlaceId)?.name||'').trim();if(!expected||r.name!==expected)throw new Error(`tool task name is not catalog identity: ${r.googlePlaceId}`);}
           console.log(JSON.stringify(x.summary));
           NODE
       - name: Merge evidence monotonically and rebuild runtime
