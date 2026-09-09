@@ -232,34 +232,27 @@ jobs:
           set -euo pipefail
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add \
-            data/google_inventory_detail_evidence.json \
-            data/google_inventory_runtime.js \
-            data/google_inventory_detail_queue.json \
-            data/dish_translation_pending.json \
-            data/dish_batch_plan.json \
-            data/independent_dish_source_candidates.json \
-            data/reviewed_official_runtime_sources.json \
-            data/reviewed_independent_dish_sources.json
+          # reload_data.py intentionally regenerates several deterministic data
+          # products. Stage the complete data tree so rebase never sees a dirty
+          # tracked worktree just because a newly-derived output was omitted
+          # from a hand-maintained file list.
+          git add -A data
           if git diff --cached --quiet; then
             echo 'No source-backed dish changes to publish.'
             exit 0
           fi
           git commit -m 'Update source-backed dishes with parallel collector'
+          if ! git diff --quiet; then
+            echo 'Discarding non-data generated worktree changes before rebase:'
+            git status --short
+            git restore --worktree -- .
+          fi
           git fetch origin main
           git rebase origin/main
           python scripts/reload_data.py --public-only --outdir /tmp/fast-dish-post-rebase
           node scripts/audit_google_inventory_detail_evidence.mjs
           node scripts/audit_no_paid_apis.mjs
-          git add \
-            data/google_inventory_detail_evidence.json \
-            data/google_inventory_runtime.js \
-            data/google_inventory_detail_queue.json \
-            data/dish_translation_pending.json \
-            data/dish_batch_plan.json \
-            data/independent_dish_source_candidates.json \
-            data/reviewed_official_runtime_sources.json \
-            data/reviewed_independent_dish_sources.json
+          git add -A data
           if ! git diff --cached --quiet; then git commit --amend --no-edit; fi
           git push origin HEAD:main
       - name: Upload merged diagnostics
