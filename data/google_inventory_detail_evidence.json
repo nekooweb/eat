@@ -126,43 +126,37 @@
     "curatedFoodRulesOnly": true
   },
   "summary": {
-    "publicRuntimeTotal": 1422,
-    "currentNoDishRows": 713,
-    "exactHotPepperNoDishTargets": 57,
-    "targets": 57,
-    "rootIdentityMatched": 57,
-    "foodPagesFetched": 18,
-    "evidenceRestaurants": 2,
-    "featuredItems": 9,
-    "errorTargets": 0,
     "previousEvidence": {
       "recommendationRestaurants": 531,
-      "featuredRestaurants": 639,
-      "evidenceRestaurants": 700,
+      "featuredRestaurants": 647,
+      "evidenceRestaurants": 708,
       "recommendationItems": 947,
-      "featuredItems": 2486
+      "featuredItems": 2506
     },
     "freshCrawlEvidence": {
       "recommendationRestaurants": 0,
-      "featuredRestaurants": 2,
-      "evidenceRestaurants": 2,
+      "featuredRestaurants": 0,
+      "evidenceRestaurants": 0,
       "recommendationItems": 0,
-      "featuredItems": 9
+      "featuredItems": 0
     },
     "mergedEvidence": {
       "recommendationRestaurants": 531,
-      "featuredRestaurants": 641,
-      "evidenceRestaurants": 702,
+      "featuredRestaurants": 647,
+      "evidenceRestaurants": 708,
       "recommendationItems": 947,
-      "featuredItems": 2495
+      "featuredItems": 2506
     },
     "specificityCorrection": {
-      "correctedRestaurants": 0,
-      "correctedItems": 0,
-      "duplicateItemsRemoved": 0,
-      "ruleCounts": {},
+      "correctedRestaurants": 2,
+      "correctedItems": 2,
+      "duplicateItemsRemoved": 2,
+      "ruleCounts": {
+        "meat-sushi-over-sushi": 1,
+        "yakisoba-over-soba": 1
+      },
       "recommendationItemsAfterCorrection": 947,
-      "featuredItemsAfterCorrection": 2495
+      "featuredItemsAfterCorrection": 2504
     }
   },
   "rows": [
@@ -7973,6 +7967,40 @@
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:ケーキ|cake",
           "evidenceSnippet": "サクラパンケーキ"
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJ9zuhtByMGGARx4--ZNpSWJc",
+      "name": "ぼたん",
+      "recommendedDishes": [],
+      "featuredDishes": [
+        {
+          "nameZh": "寿喜烧",
+          "nameJa": "鳥すきやき",
+          "provider": "official",
+          "sourceUrl": "https://www.sukiyaki-botan.jp/honten",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "retained_source_menu_item",
+          "evidenceRule": "retained:dishes:すき焼き|すきやき|sukiyaki",
+          "evidenceSnippet": "鳥すきやき"
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJa-BaVhuMGGARouYQYPE4Zfo",
+      "name": "神田志乃多寿司",
+      "recommendedDishes": [],
+      "featuredDishes": [
+        {
+          "nameZh": "寿司",
+          "nameJa": "稲荷寿司",
+          "provider": "Visit Chiyoda",
+          "sourceUrl": "https://visit-chiyoda.tokyo/app/spot/detail/365",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "retained_source_menu_item",
+          "evidenceRule": "retained:dishes:寿司|すし|鮨|sushi",
+          "evidenceSnippet": "稲荷寿司"
         }
       ]
     },
@@ -16998,6 +17026,23 @@
       ]
     },
     {
+      "googlePlaceId": "ChIJH45U0y2NGGARFO8F9X8I1nA",
+      "name": "海上菜館",
+      "recommendedDishes": [],
+      "featuredDishes": [
+        {
+          "nameZh": "煎饺",
+          "nameJa": "焼き餃子",
+          "provider": "official",
+          "sourceUrl": "https://kaijyousaikan.foodre.jp/",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "retained_source_menu_item",
+          "evidenceRule": "retained:dishes:焼き餃子|焼餃子",
+          "evidenceSnippet": "焼き餃子"
+        }
+      ]
+    },
+    {
       "googlePlaceId": "ChIJh4hmXeCNGGARK7cpKqXTWqE",
       "name": "熟成豚ホルモン えいじ",
       "recommendedDishes": [],
@@ -25215,7 +25260,7 @@
     },
     {
       "googlePlaceId": "ChIJo5orgxyMGGARW6EJMAe0WOE",
-      "name": "やまや",
+      "name": "博多もつ鍋やまや 御茶ノ水ワテラス店",
       "recommendedDishes": [
         {
           "nameZh": "日式炸鸡",
@@ -25298,6 +25343,16 @@
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:もつ焼き|もつ焼",
           "evidenceSnippet": "もつ鍋を中心に、名物 ごまさば、博多ひとくち餃子、博多名物 酢もつなどの郷土料理や、やまやの辛子明太子を使用しただし巻き明太玉子焼き、博多とんこつ炊き餃子、もつ焼き鉄板など、やまや"
+        },
+        {
+          "nameZh": "牛杂锅",
+          "nameJa": "博多もつ鍋",
+          "provider": "official",
+          "sourceUrl": "https://www.restaurant-yamaya.com/brand/motsu/restaurant/ochanomizu_w",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "retained_source_menu_item",
+          "evidenceRule": "retained:dishes:もつ鍋",
+          "evidenceSnippet": "博多もつ鍋"
         }
       ]
     },
@@ -28011,6 +28066,23 @@
           "evidenceClass": "hotpepper_menu_text",
           "evidenceRule": "hotpepper-price-backed-h4:燻製|smoked",
           "evidenceSnippet": "自家製燻製(くんせい)『豚ばら』 530円(税込）"
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJQ3MESwOMGGARX99d47o0V6k",
+      "name": "神田まつや",
+      "recommendedDishes": [],
+      "featuredDishes": [
+        {
+          "nameZh": "荞麦面",
+          "nameJa": "かしわ南蛮そば",
+          "provider": "Visit Chiyoda",
+          "sourceUrl": "https://visit-chiyoda.tokyo/app/spot/detail/359",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "retained_source_menu_item",
+          "evidenceRule": "retained:dishes:蕎麦|そば|soba",
+          "evidenceSnippet": "かしわ南蛮そば"
         }
       ]
     },
@@ -32234,6 +32306,33 @@
       ]
     },
     {
+      "googlePlaceId": "ChIJT9HCuRyMGGARqIt735A6L1k",
+      "name": "東京豆花工房",
+      "recommendedDishes": [],
+      "featuredDishes": [
+        {
+          "nameZh": "原味豆花",
+          "nameJa": "原味豆花",
+          "provider": "Visit Chiyoda",
+          "sourceUrl": "https://visit-chiyoda.tokyo/app/spot/detail/908",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "retained_source_menu_item",
+          "evidenceRule": "retained:dishes:already-chinese",
+          "evidenceSnippet": "原味豆花"
+        },
+        {
+          "nameZh": "東京豆花",
+          "nameJa": "東京豆花",
+          "provider": "Visit Chiyoda",
+          "sourceUrl": "https://visit-chiyoda.tokyo/app/spot/detail/908",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "retained_source_menu_item",
+          "evidenceRule": "retained:dishes:already-chinese",
+          "evidenceSnippet": "東京豆花"
+        }
+      ]
+    },
+    {
       "googlePlaceId": "ChIJTakxCEGMGGARIum61E1U1y8",
       "name": "炭火焼き鳥 すいけん 飯田橋",
       "recommendedDishes": [
@@ -33434,7 +33533,7 @@
     },
     {
       "googlePlaceId": "ChIJu7qJqhyMGGARbJMAT8uPgtY",
-      "name": "Little Marco",
+      "name": "トラットリア リトルマルコ",
       "recommendedDishes": [
         {
           "nameZh": "卡邦尼意大利面",
@@ -36642,6 +36741,23 @@
       ]
     },
     {
+      "googlePlaceId": "ChIJX-yVohyMGGARUTdpnpXyQNQ",
+      "name": "かんだやぶそば",
+      "recommendedDishes": [],
+      "featuredDishes": [
+        {
+          "nameZh": "荞麦面",
+          "nameJa": "鴨せいろうそば",
+          "provider": "Visit Chiyoda",
+          "sourceUrl": "https://visit-chiyoda.tokyo/app/spot/detail/382",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "retained_source_menu_item",
+          "evidenceRule": "retained:dishes:蕎麦|そば|soba",
+          "evidenceSnippet": "鴨せいろうそば"
+        }
+      ]
+    },
+    {
       "googlePlaceId": "ChIJX0irAWmMGGAR_hkHazZeHoM",
       "name": "はなの舞 九段店",
       "recommendedDishes": [
@@ -39646,6 +39762,16 @@
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:グラタン|gratin",
           "evidenceSnippet": "殻つき牡蠣グラタン"
+        },
+        {
+          "nameZh": "生牡蠣",
+          "nameJa": "生牡蠣",
+          "provider": "official",
+          "sourceUrl": "https://awashell.com/",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "retained_source_menu_item",
+          "evidenceRule": "retained:dishes:already-chinese",
+          "evidenceSnippet": "生牡蠣"
         }
       ]
     },
