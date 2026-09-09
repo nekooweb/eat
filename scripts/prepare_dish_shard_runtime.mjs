@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import vm from 'node:vm';
 import { fileURLToPath } from 'node:url';
+import { isExcludedIndependentHost } from './independent_source_host_policy.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, '..');
@@ -65,10 +66,17 @@ const provenanceById = new Map((provenanceWindow.SOURCE_PROVENANCE?.rows || [])
 
 function shardKey(row) {
   const hosts = new Set();
+  // Runtime sourceWebsites may include shared discovery/directory providers such
+  // as Hot Pepper or Tabelog. Using those as the shard key collapses hundreds
+  // of unrelated restaurants into one runner. Only merchant-like hosts that
+  // pass the centralized independent-source host policy are allowed to pin a
+  // row to a host shard; excluded directories fall back to the Place ID hash.
   for (const raw of row.sourceWebsites || []) {
     const host = hostOf(raw);
-    if (host) hosts.add(host);
+    if (host && !isExcludedIndependentHost(host)) hosts.add(host);
   }
+  // A provenance link explicitly reviewed as official is a stronger host pin
+  // and is kept even when no runtime sourceWebsite is present.
   for (const link of provenanceById.get(row.googlePlaceId)?.sourceLinks || []) {
     if (String(link?.provider || '').toLowerCase() !== 'official') continue;
     const host = hostOf(link?.url);
@@ -91,6 +99,9 @@ for (const row of rows) {
   selectedIds.add(row.googlePlaceId);
 }
 
+const selectedSharePct = rows.length
+  ? Number(((selectedRows.length / rows.length) * 100).toFixed(1))
+  : 0;
 const shardStats = {
   ...stats,
   inventoryTotal: selectedRows.length,
@@ -140,6 +151,7 @@ const manifest = {
   catalogTotal: 2804,
   originalPublicRuntimeTotal: rows.length,
   selectedRuntimeRows: selectedRows.length,
+  selectedSharePct,
   originalQueueRows: queueRowsBefore.length,
   selectedQueueRows: shardQueueRows.length,
   hostKeyRows,
@@ -147,7 +159,8 @@ const manifest = {
   selectedIds: [...selectedIds].sort(),
   policy: {
     deterministic: true,
-    shardKey: 'first sorted already-bound source/official hostname, else frozen Place ID',
+    shardKey: 'first sorted merchant-like source/official hostname, excluding centralized directory hosts; else frozen Place ID',
+    centralizedDirectoryHostsExcludedFromShardPinning: true,
     sourceRowsMutated: false,
     identityFieldsMutated: false,
     paidGoogleDataApiCalls: 0
@@ -162,6 +175,9 @@ console.log(JSON.stringify({
   shardIndex: SHARD_INDEX,
   shardCount: SHARD_COUNT,
   selectedRuntimeRows: selectedRows.length,
+  selectedSharePct,
   selectedQueueRows: shardQueueRows.length,
-  originalPublicRuntimeTotal: rows.length
+  originalPublicRuntimeTotal: rows.length,
+  hostKeyRows,
+  placeIdKeyRows
 }));
