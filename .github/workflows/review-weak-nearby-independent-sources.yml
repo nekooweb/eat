@@ -39,12 +39,14 @@ jobs:
           node --check scripts/build_weak_nearby_independent_source_candidates.mjs
           node --check scripts/review_independent_dish_source_candidates_v3.mjs
           node --check scripts/review_independent_dish_source_candidates_extended.mjs
+          node --check scripts/test_independent_source_candidate_hardening.mjs
       - name: Rebuild current runtime and standard source plan
         run: python scripts/reload_data.py --public-only --outdir _audit/weak-source-pre
-      - name: Build tight proximity-only Overture candidates for page review
+      - name: Build tight name-plus-proximity Overture candidates for page review
         env:
           WEAK_SOURCE_MAX_DISTANCE_M: "15"
           WEAK_SOURCE_AMBIGUITY_GAP_M: "6"
+          WEAK_SOURCE_MIN_NAME_SIMILARITY: "0.45"
         run: |
           set -euo pipefail
           node scripts/build_weak_nearby_independent_source_candidates.mjs /tmp/weak-independent-source-candidates.json | tee /tmp/weak-source-plan-summary.json
@@ -52,12 +54,15 @@ jobs:
           const fs=require('fs');
           const x=JSON.parse(fs.readFileSync('/tmp/weak-independent-source-candidates.json','utf8'));
           const p=x.policy||{}, s=x.summary||{};
-          if (p.proposalOnly!==true || p.networkRequests!==0 || p.paidGoogleDataApiCalls!==0 || p.identityBindingChanges!==0) throw new Error('weak source plan must be offline proposal-only');
-          if (p.proximityOnlyBindingAllowed!==false || p.finalPageNameAndLocationReviewRequired!==true || p.dishEvidencePromotionBeforeIdentityReviewAllowed!==false) throw new Error('weak candidate plan crossed identity boundary');
-          if (s.catalogTotal!==2804 || s.publicRuntimeTotal<=0 || s.maximumCandidateDistanceMeters!==15) throw new Error('weak source plan baseline mismatch');
+          if (x.schemaVersion!==2 || p.proposalOnly!==true || p.networkRequests!==0 || p.paidGoogleDataApiCalls!==0 || p.identityBindingChanges!==0) throw new Error('weak source plan must be offline proposal-only');
+          if (p.proximityOnlyBindingAllowed!==false || p.proximityOnlyProposalAllowed!==false || p.finalPageNameAndLocationReviewRequired!==true || p.dishEvidencePromotionBeforeIdentityReviewAllowed!==false) throw new Error('weak candidate plan crossed identity boundary');
+          if (p.minimumNameSimilarityRequiredForProposal!==true || Number(p.minimumNameSimilarity)!==0.45) throw new Error('weak candidate minimum-name contract missing');
+          if (s.catalogTotal!==2804 || s.publicRuntimeTotal<=0 || s.maximumCandidateDistanceMeters!==15 || Number(s.minimumNameSimilarity)!==0.45) throw new Error('weak source plan baseline mismatch');
+          if ((x.rows||[]).some(r=>Number(r.nameSimilarity)<0.45)) throw new Error('weak source plan contains sub-threshold name similarity');
           if (s.proposalRows > 120) throw new Error(`weak review batch too large: ${s.proposalRows}`);
           console.log(JSON.stringify(s));
           NODE
+          node scripts/test_independent_source_candidate_hardening.mjs
       - name: Strictly review weak candidates using unchanged v3 page identity criteria
         env:
           INDEPENDENT_SOURCE_REVIEW_TIMEOUT_MS: "7000"
