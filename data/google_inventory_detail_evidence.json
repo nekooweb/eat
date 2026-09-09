@@ -118,39 +118,43 @@
     "nonDishAccessibleTextFiltered": true,
     "recommendationPromotionAllowed": false,
     "ordinaryAccessibleMenuTextIsFeaturedOnly": true,
-    "identityMutationAllowed": false
+    "identityMutationAllowed": false,
+    "publicNoDishRowsOnly": true,
+    "exactRetainedHotPepperUrlOnly": true,
+    "sameRestaurantFoodLinkRequired": true,
+    "priceBackedH4Required": true,
+    "curatedFoodRulesOnly": true
   },
   "summary": {
-    "reviewedOfficialRows": 193,
-    "reviewedRowsWithMenuUrls": 113,
     "publicRuntimeTotal": 1422,
-    "skippedAlreadyFeatured": 136,
-    "htmlMenuTasks": 16,
-    "skippedNonMenuContext": 16,
-    "pagesFetched": 15,
-    "errors": 1,
-    "evidenceRestaurants": 4,
-    "featuredItems": 8,
+    "currentNoDishRows": 713,
+    "exactHotPepperNoDishTargets": 57,
+    "targets": 57,
+    "rootIdentityMatched": 57,
+    "foodPagesFetched": 18,
+    "evidenceRestaurants": 2,
+    "featuredItems": 9,
+    "errorTargets": 0,
     "previousEvidence": {
-      "recommendationRestaurants": 531,
-      "featuredRestaurants": 635,
-      "evidenceRestaurants": 700,
-      "recommendationItems": 947,
-      "featuredItems": 2478
-    },
-    "freshCrawlEvidence": {
-      "recommendationRestaurants": 0,
-      "featuredRestaurants": 4,
-      "evidenceRestaurants": 4,
-      "recommendationItems": 0,
-      "featuredItems": 8
-    },
-    "mergedEvidence": {
       "recommendationRestaurants": 531,
       "featuredRestaurants": 639,
       "evidenceRestaurants": 700,
       "recommendationItems": 947,
       "featuredItems": 2486
+    },
+    "freshCrawlEvidence": {
+      "recommendationRestaurants": 0,
+      "featuredRestaurants": 2,
+      "evidenceRestaurants": 2,
+      "recommendationItems": 0,
+      "featuredItems": 9
+    },
+    "mergedEvidence": {
+      "recommendationRestaurants": 531,
+      "featuredRestaurants": 641,
+      "evidenceRestaurants": 702,
+      "recommendationItems": 947,
+      "featuredItems": 2495
     },
     "specificityCorrection": {
       "correctedRestaurants": 0,
@@ -158,7 +162,7 @@
       "duplicateItemsRemoved": 0,
       "ruleCounts": {},
       "recommendationItemsAfterCorrection": 947,
-      "featuredItemsAfterCorrection": 2486
+      "featuredItemsAfterCorrection": 2495
     }
   },
   "rows": [
@@ -20247,6 +20251,63 @@
       ]
     },
     {
+      "googlePlaceId": "ChIJJS9BPgCNGGAR90vpFuQ1ONU",
+      "name": "集い処Key",
+      "recommendedDishes": [],
+      "featuredDishes": [
+        {
+          "nameZh": "卷曲薯条",
+          "nameJa": "カーリーポテト",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ004067756/food/",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "hotpepper_menu_text",
+          "evidenceRule": "hotpepper-price-backed-h4:normalized-curly-fries",
+          "evidenceSnippet": "カーリーポテト 沖縄のポテトフライといえば！スパイシーでカールしたポテトがビールをおかわりへっ！ 580円（税込）"
+        },
+        {
+          "nameZh": "浅渍苦瓜",
+          "nameJa": "ゴーヤーの浅漬け",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ004067756/food/",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "hotpepper_menu_text",
+          "evidenceRule": "hotpepper-price-backed-h4:normalized-pickled-goya",
+          "evidenceSnippet": "ゴーヤーの浅漬け 沖縄定番のゴーヤーをさっぱり浅漬けに。 450円（税込）"
+        },
+        {
+          "nameZh": "炙烤鲣鱼",
+          "nameJa": "鰹のたたき",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ004067756/food/",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "hotpepper_menu_text",
+          "evidenceRule": "hotpepper-price-backed-h4:normalized-katsuo-tataki",
+          "evidenceSnippet": "鰹のたたき 漁港直送の鰹！ぜひお召し上がりください！ 800円（税込）"
+        },
+        {
+          "nameZh": "竹轮黄瓜",
+          "nameJa": "ちくきゅう",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ004067756/food/",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "hotpepper_menu_text",
+          "evidenceRule": "hotpepper-price-backed-h4:normalized-chikuwa-cucumber",
+          "evidenceSnippet": "高知発祥！ちくきゅう きゅうり丸々入ったちくきゅう！最初のおつまみにどうぞ！ 500円（税込）"
+        },
+        {
+          "nameZh": "高知皿钵料理",
+          "nameJa": "皿鉢料理",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ004067756/food/",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "hotpepper_menu_text",
+          "evidenceRule": "hotpepper-price-backed-h4:normalized-sawachi-cuisine",
+          "evidenceSnippet": "高知名物！皿鉢料理 3日前までの電話ご予約でお一人様2000円で皿鉢料理をご用意します。前菜3種・揚げ物2種・刺身1種当店だけの高知と沖縄が混ざった皿鉢料理！※お電話にてご予約くさ"
+        }
+      ]
+    },
+    {
       "googlePlaceId": "ChIJjy0wVWiMGGARjpbwtjgucmo",
       "name": "宝来屋本店",
       "recommendedDishes": [],
@@ -37637,6 +37698,53 @@
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:燻製|smoked",
           "evidenceSnippet": "自慢の燻製（スモーク）は、ししゃも、たらこ、鮭、チーズなど"
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJXYK4EEGMGGARUFNXeUzrLDg",
+      "name": "カルーザル",
+      "recommendedDishes": [],
+      "featuredDishes": [
+        {
+          "nameZh": "奶酪拼盘",
+          "nameJa": "チーズ盛合せ",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ000034078/food/",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "hotpepper_menu_text",
+          "evidenceRule": "hotpepper-price-backed-h4:normalized-cheese-platter",
+          "evidenceSnippet": "チーズ盛合せ 2,600円"
+        },
+        {
+          "nameZh": "巧克力拼盘",
+          "nameJa": "ショコラ盛合せ",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ000034078/food/",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "hotpepper_menu_text",
+          "evidenceRule": "hotpepper-price-backed-h4:normalized-chocolate-platter",
+          "evidenceSnippet": "ショコラ盛合せ 1,600円 「料理」の先頭へ戻る 備考 ※表示価格はサービス料及び消費税を含めた総額表示です。 ※更新日が2021/3/31以前の情報は、当時の価格及び税率に基づ"
+        },
+        {
+          "nameZh": "果干",
+          "nameJa": "ドライフルーツ",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ000034078/food/",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "hotpepper_menu_text",
+          "evidenceRule": "hotpepper-price-backed-h4:normalized-dried-fruit",
+          "evidenceSnippet": "ドライフルーツ 1,800円"
+        },
+        {
+          "nameZh": "葡萄干黄油",
+          "nameJa": "レーズンバター",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ000034078/food/",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "hotpepper_menu_text",
+          "evidenceRule": "hotpepper-price-backed-h4:normalized-raisin-butter",
+          "evidenceSnippet": "レーズンバター 1,000円"
         }
       ]
     },
