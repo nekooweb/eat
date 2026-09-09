@@ -47,7 +47,11 @@ jobs:
           python - <<'PY'
           import json
           m=json.load(open('_tmp/master-before.json')); p=m['ingestionPlan']
-          out={'fieldTasks':p['taskTypeCounts']['field_completion'],'missing':p['fieldCompletionMissingCounts']}
+          out={
+            'fieldTasks':p.get('taskTypeCounts',{}).get('field_completion',0),
+            'missing':p.get('fieldCompletionMissingCounts',{}),
+            'identityStates':m['identityStates'],
+          }
           json.dump(out,open('_tmp/address-hours-before.json','w'),sort_keys=True)
           print(json.dumps(out,sort_keys=True))
           PY
@@ -137,12 +141,15 @@ jobs:
           import json
           before=json.load(open('_tmp/address-hours-before.json'))
           m=json.load(open('_tmp/master-after.json')); p=m['ingestionPlan']
-          after={'fieldTasks':p['taskTypeCounts']['field_completion'],'missing':p['fieldCompletionMissingCounts']}
+          after={
+            'fieldTasks':p.get('taskTypeCounts',{}).get('field_completion',0),
+            'missing':p.get('fieldCompletionMissingCounts',{}),
+            'identityStates':m['identityStates'],
+          }
+          assert after['identityStates']==before['identityStates'],(before,after)
           assert after['fieldTasks'] <= before['fieldTasks'],(before,after)
           for key,value in before['missing'].items():
               assert after['missing'].get(key,0) <= value,(key,before,after)
-          assert after['missing'].get('address',0) <= before['missing'].get('address',0)
-          assert after['missing'].get('hours',0) <= before['missing'].get('hours',0)
           json.dump(after,open('_tmp/address-hours-after.json','w'),sort_keys=True)
           print(json.dumps({'before':before,'after':after},sort_keys=True))
           PY
