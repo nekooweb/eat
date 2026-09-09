@@ -30,6 +30,8 @@ jobs:
             node --check scripts/test_independent_source_host_policy.mjs
             node --check scripts/review_independent_dish_source_candidates_v4.mjs
             node --check scripts/test_independent_source_reviewer_v4.mjs
+            node --check scripts/audit_dish_overlay_production_attachment.mjs
+            node --check scripts/audit_recommendation_source_provenance.mjs
             node scripts/test_independent_source_host_policy.mjs
             node scripts/test_independent_source_reviewer_v4.mjs
             node scripts/sanitize_independent_source_candidate_plan.mjs \
@@ -37,6 +39,8 @@ jobs:
               /tmp/pr-independent-source-candidates.sanitized.json
             node scripts/audit_independent_source_host_policy.mjs /tmp/pr-independent-source-candidates.sanitized.json
             node scripts/audit_independent_source_host_policy.mjs data/reviewed_independent_dish_sources.json
+            node scripts/audit_dish_overlay_production_attachment.mjs
+            node scripts/audit_recommendation_source_provenance.mjs
             node scripts/audit_repository.mjs
             node scripts/audit_normalized_fields.mjs
           fi
