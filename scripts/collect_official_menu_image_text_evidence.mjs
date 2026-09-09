@@ -15,7 +15,13 @@ const WORKERS = Math.max(1, Math.min(16, Number(process.env.OFFICIAL_MENU_IMAGE_
 const USER_AGENT = 'eat-data-maintenance/2.1 (+https://github.com/nekooweb/eat)';
 const MAX_HTML_CHARS = 1_200_000;
 const NON_HTML_ASSET = /\.(?:pdf|jpe?g|png|gif|webp|avif|svg|css|js|mjs|xml)(?:$|[?#])/i;
+// The source index marks menu URLs, but historical rows can also retain a brand root
+// or an about page. Accessible-image text is only safe on a URL whose own path/query/
+// fragment still carries a menu-like context. `system` is included for Akiba Zettai's
+// reviewed menu page and `campaign` for reviewed seasonal-menu pages.
+const MENU_URL_CONTEXT = /(?:menu|menus|food|foods|lunch|dinner|takeout|takeouts|system|campaign|料理|お品書|御品書|メニュー|フード|商品|グランド)/i;
 const GENERIC_ONLY = /^(?:menu|menus|メニュー|料理|お品書き|御品書き|写真|画像|image|photo|商品|おすすめ|オススメ|no\s*image)$/i;
+const NON_DISH_ACCESSIBLE_TEXT = /(?:ロゴ|\blogo\b|外観|内観|instagram|facebook|twitter|youtube|店舗写真|店内写真|スタッフ|採用|会社概要|バナー|banner)/i;
 
 function decodeEntities(value) {
   return String(value || '')
@@ -37,10 +43,23 @@ function htmlMenuUrl(value) {
   try {
     const u = new URL(value);
     if (!['http:', 'https:'].includes(u.protocol) || NON_HTML_ASSET.test(u.toString())) return null;
+    const context = `${u.pathname} ${u.search} ${u.hash}`;
+    if (!MENU_URL_CONTEXT.test(context)) return null;
     return u.toString();
   } catch {
     return null;
   }
+}
+
+function asciiSubstringFalsePositive(text, match) {
+  const token = String(match?.[0] || '');
+  if (!/^[A-Za-z][A-Za-z .'-]*$/.test(token)) return false;
+  const start = Number(match?.index ?? -1);
+  if (start < 0) return false;
+  const end = start + token.length;
+  const before = start > 0 ? text[start - 1] : '';
+  const after = end < text.length ? text[end] : '';
+  return /[A-Za-z]/.test(before) || /[A-Za-z]/.test(after);
 }
 
 function dishMatches(text, limit = 5) {
@@ -48,7 +67,7 @@ function dishMatches(text, limit = 5) {
   const seen = new Set();
   for (const [pattern, nameZh] of DISH_RULES) {
     const match = text.match(pattern);
-    if (!match || seen.has(nameZh)) continue;
+    if (!match || asciiSubstringFalsePositive(text, match) || seen.has(nameZh)) continue;
     seen.add(nameZh);
     output.push({ nameZh, nameOriginal: match[0], rule: pattern.source });
     if (output.length >= limit) break;
@@ -68,12 +87,12 @@ function extractImageAttributeDishes(html, sourceUrl) {
     let attr;
     while ((attr = attrRe.exec(tag))) {
       const text = decodeEntities(attr[2]);
-      if (text.length < 2 || text.length > 180 || GENERIC_ONLY.test(text)) continue;
+      if (text.length < 2 || text.length > 100 || GENERIC_ONLY.test(text) || NON_DISH_ACCESSIBLE_TEXT.test(text)) continue;
       values.push(text);
     }
     for (const text of [...new Set(values)]) {
       for (const match of dishMatches(text, 5)) {
-        const key = `${match.nameZh}|${sourceUrl}|${text}`;
+        const key = `${match.nameZh}|${sourceUrl}`;
         if (seen.has(key)) continue;
         seen.add(key);
         output.push({
@@ -107,7 +126,7 @@ async function fetchHtml(url) {
 function dedupe(items, limit = 8) {
   const map = new Map();
   for (const item of items || []) {
-    const key = `${item.nameZh}|${item.sourceUrl}|${item.evidenceSnippet}`;
+    const key = `${item.nameZh}|${item.provider}|${item.sourceUrl}|${item.evidenceClass}`;
     if (!map.has(key)) map.set(key, item);
   }
   return [...map.values()].slice(0, limit);
@@ -123,11 +142,15 @@ async function main() {
   }
 
   const tasks = [];
+  let skippedNonMenuContext = 0;
   for (const row of source.rows || []) {
     if (row.reviewState !== 'reviewed' || !row.googlePlaceId || !row.officialName) continue;
     for (const rawUrl of row.menuUrls || []) {
       const url = htmlMenuUrl(rawUrl);
-      if (!url) continue;
+      if (!url) {
+        if (!NON_HTML_ASSET.test(String(rawUrl || ''))) skippedNonMenuContext += 1;
+        continue;
+      }
       tasks.push({ googlePlaceId: row.googlePlaceId, name: row.officialName, url });
     }
   }
@@ -166,15 +189,18 @@ async function main() {
 
   const rows = [...byPlace.values()].sort((a, b) => a.googlePlaceId.localeCompare(b.googlePlaceId));
   const payload = {
-    schemaVersion: 1,
+    schemaVersion: 2,
     checkedAt: CHECKED_AT,
     policy: {
       catalogIdentityKey: 'frozen Place ID only',
       catalogTotal: 2804,
       reviewedOfficialMenuUrlsOnly: true,
+      explicitMenuUrlContextRequired: true,
       imageBinaryRead: false,
       ocrExecuted: false,
       accessibleHtmlAttributesOnly: ['img.alt', 'img.title'],
+      asciiSubstringBoundaryGuard: true,
+      nonDishAccessibleTextFiltered: true,
       recommendationPromotionAllowed: false,
       ordinaryAccessibleMenuTextIsFeaturedOnly: true,
       cuisineNameBrandInferenceAllowed: false,
@@ -187,6 +213,7 @@ async function main() {
       reviewedOfficialRows: Number(source.summary?.reviewedRows || 0),
       reviewedRowsWithMenuUrls: Number(source.summary?.reviewedRowsWithMenuUrls || 0),
       htmlMenuTasks: tasks.length,
+      skippedNonMenuContext,
       pagesFetched: resultRows.length,
       errors: errors.length,
       evidenceRestaurants: rows.length,
