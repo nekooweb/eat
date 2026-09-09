@@ -10,9 +10,10 @@ const DATA = path.join(ROOT, 'data');
 const OUTPUT = process.argv[2] || path.join(DATA, 'weak_nearby_independent_source_candidates.json');
 const MAX_DISTANCE_M = Math.max(8, Math.min(50, Number(process.env.WEAK_SOURCE_MAX_DISTANCE_M || 25)));
 const AMBIGUITY_GAP_M = Math.max(3, Math.min(20, Number(process.env.WEAK_SOURCE_AMBIGUITY_GAP_M || 8)));
+const MIN_NAME_SIMILARITY = Math.max(0.25, Math.min(0.75, Number(process.env.WEAK_SOURCE_MIN_NAME_SIMILARITY || 0.45)));
 const GRID_DEG = 0.0015;
 const EARTH_RADIUS_M = 6371000;
-const BANNED_HOST = /(?:^|\.)(?:facebook\.com|instagram\.com|x\.com|twitter\.com|youtube\.com|tiktok\.com|tabelog\.com|hotpepper\.jp|google\.[a-z.]+|googleusercontent\.com|gnavi\.co\.jp|retty\.me|foursquare\.com|autoreserve\.com|ekiten\.jp)$/i;
+const BANNED_HOST = /(?:^|\.)(?:facebook\.com|instagram\.com|x\.com|twitter\.com|youtube\.com|tiktok\.com|tabelog\.com|hotpepper\.jp|google\.[a-z.]+|googleusercontent\.com|gnavi\.co\.jp|retty\.me|foursquare\.com|autoreserve\.com|ekiten\.jp|hitosara\.com|localplace\.jp|demae-can\.com|epark\.jp|ubereats\.com|wolt\.com)$/i;
 
 function readJson(name) { return JSON.parse(fs.readFileSync(path.join(DATA, name), 'utf8')); }
 function loadWindowFile(name) {
@@ -111,6 +112,7 @@ let noCoordinate = 0;
 let noNearbyWebsite = 0;
 let ambiguousNearby = 0;
 let tooFar = 0;
+let lowNameSimilarityRejected = 0;
 for (const target of targetRows) {
   if (standardIds.has(target.googlePlaceId)) {
     standardProposalExcluded += 1;
@@ -133,14 +135,20 @@ for (const target of targetRows) {
     noNearbyWebsite += 1;
     continue;
   }
-  candidates.sort((a, b) => a.distance - b.distance || b.similarity - a.similarity);
-  const best = candidates[0];
+  const nameEligible = candidates.filter((candidate) => candidate.similarity >= MIN_NAME_SIMILARITY);
+  if (!nameEligible.length) {
+    lowNameSimilarityRejected += 1;
+    continue;
+  }
+  nameEligible.sort((a, b) => a.distance - b.distance || b.similarity - a.similarity);
+  const best = nameEligible[0];
   if (best.distance > MAX_DISTANCE_M) {
     tooFar += 1;
     continue;
   }
   const bestHosts = new Set(hostList(best.urls));
-  const competing = candidates.slice(1).find((candidate) => {
+  const competing = candidates.find((candidate) => {
+    if (candidate === best) return false;
     const hosts = hostList(candidate.urls);
     return candidate.distance - best.distance < AMBIGUITY_GAP_M && hosts.some((host) => !bestHosts.has(host));
   });
@@ -148,6 +156,7 @@ for (const target of targetRows) {
     ambiguousNearby += 1;
     continue;
   }
+  const distanceScore = Math.max(0, 1 - best.distance / MAX_DISTANCE_M);
   rows.push({
     googlePlaceId: target.googlePlaceId,
     name: target.name,
@@ -163,10 +172,10 @@ for (const target of targetRows) {
     candidateProviderId: clean(best.row.overtureId) || null,
     candidateDistanceMeters: Number(best.distance.toFixed(1)),
     nameSimilarity: Number(best.similarity.toFixed(3)),
-    proposalScore: Number(Math.max(0, 1 - best.distance / MAX_DISTANCE_M).toFixed(4)),
+    proposalScore: Number((best.similarity * 0.6 + distanceScore * 0.4).toFixed(4)),
     proposalState: 'review_overture_website_candidate',
     confidenceSignals: [
-      'proximity_only_candidate_for_strict_page_review',
+      'partial_name_similarity_plus_proximity_candidate_for_strict_page_review',
       'current_runtime_has_independent_coordinates',
       'retained_overture_row_has_independent_website',
       'candidate_not_used_for_binding_without_page_name_and_location_evidence'
@@ -175,7 +184,7 @@ for (const target of targetRows) {
     mayWriteDishEvidenceBeforeIdentityReview: false
   });
 }
-rows.sort((a, b) => a.candidateDistanceMeters - b.candidateDistanceMeters || b.nameSimilarity - a.nameSimilarity || a.googlePlaceId.localeCompare(b.googlePlaceId));
+rows.sort((a, b) => b.proposalScore - a.proposalScore || a.candidateDistanceMeters - b.candidateDistanceMeters || b.nameSimilarity - a.nameSimilarity || a.googlePlaceId.localeCompare(b.googlePlaceId));
 const summary = {
   catalogTotal: 2804,
   publicRuntimeTotal: runtimeRows.length,
@@ -185,16 +194,18 @@ const summary = {
   overtureWebsiteRows,
   maximumCandidateDistanceMeters: MAX_DISTANCE_M,
   ambiguityGapMeters: AMBIGUITY_GAP_M,
+  minimumNameSimilarity: MIN_NAME_SIMILARITY,
   proposalRows: rows.length,
   noCoordinate,
   noNearbyWebsite,
   ambiguousNearby,
   tooFar,
-  lowNameSimilarityRows: rows.filter((row) => row.nameSimilarity < 0.82).length,
+  lowNameSimilarityRejected,
+  belowStandardNameCompatibilityRows: rows.filter((row) => row.nameSimilarity < 0.82).length,
   exactOrCompatibleNameRows: rows.filter((row) => row.nameSimilarity >= 0.82).length
 };
 const payload = {
-  schemaVersion: 1,
+  schemaVersion: 2,
   checkedAt: new Date().toISOString().slice(0, 10),
   policy: {
     proposalOnly: true,
@@ -203,11 +214,16 @@ const payload = {
     paidGoogleDataApiCalls: 0,
     identityBindingChanges: 0,
     proximityOnlyBindingAllowed: false,
-    candidateNameCompatibilityRequiredForProposal: false,
+    proximityOnlyProposalAllowed: false,
+    fullNameCompatibilityRequiredForProposal: false,
+    minimumNameSimilarityRequiredForProposal: true,
+    minimumNameSimilarity: MIN_NAME_SIMILARITY,
     finalPageNameAndLocationReviewRequired: true,
     dishEvidencePromotionBeforeIdentityReviewAllowed: false,
     standardIndependentProposalRowsExcluded: true,
-    multipleDifferentHostCandidatesWithinAmbiguityGapRejected: true
+    multipleDifferentHostCandidatesWithinAmbiguityGapRejected: true,
+    thirdPartyAggregatorUrlsExcluded: true,
+    addedExcludedAggregatorFamilies: ['Hitosara', 'Localplace', 'Demae-can', 'EPARK', 'Uber Eats', 'Wolt']
   },
   summary,
   rows
