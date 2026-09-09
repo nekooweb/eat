@@ -1,0 +1,47 @@
+name: Audit legacy PR16 gap batch (PR)
+
+on:
+  pull_request:
+    paths:
+      - "scripts/audit_legacy_pr16_gap_batch.mjs"
+      - ".github/workflows/_audit-legacy-pr16-gap-batch-pr.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PR merge commit
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Enforce no-paid policy and syntax
+        run: |
+          set -euo pipefail
+          node scripts/audit_no_paid_apis.mjs
+          node --check scripts/audit_legacy_pr16_gap_batch.mjs
+      - name: Rebuild current public runtime
+        run: python3 scripts/reload_data.py --public-only --outdir _audit/legacy-pr16-reload
+      - name: Audit legacy PR16 facts against current runtime and provenance
+        run: |
+          set -euo pipefail
+          node scripts/audit_legacy_pr16_gap_batch.mjs /tmp/legacy-pr16-gap-batch.json | tee /tmp/legacy-pr16-gap-batch-summary.txt
+          node - <<'NODE'
+          const fs=require('fs');
+          const x=JSON.parse(fs.readFileSync('/tmp/legacy-pr16-gap-batch.json','utf8'));
+          if(x.policy?.auditOnly!==true||x.policy?.runtimeMutations!==0||x.policy?.identityMutations!==0||x.policy?.dishMutations!==0||x.policy?.paidGoogleDataApiCalls!==0) throw new Error('legacy PR16 audit crossed mutation boundary');
+          if(x.summary?.catalogTotal!==2804||x.summary?.publicRuntimeTotal<=0||x.summary?.legacyRows!==17) throw new Error('legacy PR16 audit baseline mismatch');
+          console.log('LEGACY_PR16_AUDIT='+JSON.stringify(x.summary));
+          NODE
+      - name: Upload audit
+        uses: actions/upload-artifact@v4
+        with:
+          name: legacy-pr16-gap-batch-audit
+          path: |
+            /tmp/legacy-pr16-gap-batch.json
+            /tmp/legacy-pr16-gap-batch-summary.txt
+          retention-days: 7
