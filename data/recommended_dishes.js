@@ -164,5 +164,41 @@ window.RECOMMENDED_DISHES = [
     dishes:['特制烤三明治'],
     sourceUrl:'https://lookinggood.jp/',
     checkedAt:'2026-09-06'
+  },
+  {
+    googlePlaceId:'ChIJu7qJqhyMGGARbJMAT8uPgtY',
+    dishes:['西冷牛排'],
+    sourceUrl:'https://daiwa-j.com/brands/trattorialittlemarco/',
+    checkedAt:'2026-09-09'
+  },
+  {
+    googlePlaceId:'ChIJ9zuhtByMGGARx4--ZNpSWJc',
+    dishes:['鸟肉寿喜烧'],
+    sourceUrl:'https://botan.foodre.jp/',
+    checkedAt:'2026-09-09'
+  },
+  {
+    googlePlaceId:'ChIJX-yVohyMGGARUTdpnpXyQNQ',
+    dishes:['山药泥荞麦面'],
+    sourceUrl:'https://visit-chiyoda.tokyo/app/spot/detail/382',
+    checkedAt:'2026-09-09'
+  },
+  {
+    googlePlaceId:'ChIJa-BaVhuMGGARouYQYPE4Zfo',
+    dishes:['稻荷寿司','干瓢海苔卷'],
+    sourceUrl:'https://visit-chiyoda.tokyo/app/spot/detail/365',
+    checkedAt:'2026-09-09'
+  },
+  {
+    googlePlaceId:'ChIJo5orgxyMGGARW6EJMAe0WOE',
+    dishes:['博多牛杂锅','名物芝麻青花鱼'],
+    sourceUrl:'https://www.restaurant-yamaya.com/brand/motsu/restaurant/ochanomizu_w',
+    checkedAt:'2026-09-09'
+  },
+  {
+    googlePlaceId:'ChIJZW-28RuMGGARyK-E3vgwKic',
+    dishes:['Shell & Chips炸贝拼薯条'],
+    sourceUrl:'https://awashell.com/',
+    checkedAt:'2026-09-09'
   }
 ];
