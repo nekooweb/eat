@@ -1,0 +1,20 @@
+name: Run stable source-backed dish collector once
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "_ops/run-source-backed-stable-once-2026-09-09.txt"
+
+permissions:
+  actions: write
+  contents: read
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dispatch source-backed dish collector
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run collect-google-inventory-details.yml --repo "$GITHUB_REPOSITORY" --ref main
