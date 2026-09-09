@@ -1,0 +1,122 @@
+name: Audit bound-source recommendation misses fast
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.recommendation-page-miss-audit-run'
+
+permissions:
+  contents: read
+
+env:
+  DISH_COLLECTOR_SHARDS: '4'
+
+jobs:
+  shard:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2, 3]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Rebuild current public runtime
+        run: |
+          set -euo pipefail
+          node scripts/audit_no_paid_apis.mjs
+          python scripts/reload_data.py --public-only --outdir "/tmp/recommendation-miss-${{ matrix.shard }}-reload"
+      - name: Prepare balanced ephemeral shard
+        run: |
+          set -euo pipefail
+          node scripts/prepare_dish_shard_runtime.mjs \
+            "${{ matrix.shard }}" \
+            "$DISH_COLLECTOR_SHARDS" \
+            "/tmp/recommendation-miss-manifest-${{ matrix.shard }}.json"
+      - name: Audit marker-bearing pages missed by strict extraction
+        env:
+          RECOMMENDATION_MISS_FETCH_TIMEOUT_MS: '10000'
+          RECOMMENDATION_MISS_HOST_WORKERS: '8'
+          RECOMMENDATION_MISS_SITE_PAGE_LIMIT: '4'
+          RECOMMENDATION_MISS_MENU_LINK_LIMIT: '3'
+        run: |
+          set -euo pipefail
+          node scripts/audit_bound_source_recommendation_marker_misses.mjs \
+            "/tmp/recommendation-misses-${{ matrix.shard }}.json" | tee "/tmp/recommendation-misses-${{ matrix.shard }}.log"
+          node - <<'NODE'
+          const fs=require('fs');
+          const shard=Number('${{ matrix.shard }}');
+          const x=JSON.parse(fs.readFileSync(`/tmp/recommendation-misses-${shard}.json`,'utf8'));
+          if(x.policy?.auditOnly!==true||x.policy?.paidGoogleDataApiCalls!==0||x.policy?.identityMutationAllowed!==false||x.policy?.automaticPromotionAllowed!==false) throw new Error('recommendation miss audit crossed mutation boundary');
+          if(x.summary?.catalogTotal!==2804) throw new Error('catalog baseline mismatch');
+          console.log(`RECOMMENDATION_MISS_SHARD_${shard}=`+JSON.stringify(x.summary));
+          NODE
+      - uses: actions/upload-artifact@v4
+        with:
+          name: recommendation-miss-shard-${{ matrix.shard }}
+          path: |
+            /tmp/recommendation-misses-${{ matrix.shard }}.json
+            /tmp/recommendation-misses-${{ matrix.shard }}.log
+            /tmp/recommendation-miss-manifest-${{ matrix.shard }}.json
+          retention-days: 7
+
+  summarize:
+    needs: shard
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: recommendation-miss-shard-*
+          path: /tmp/recommendation-misses
+          merge-multiple: true
+      - name: Merge audit summaries and print high-value misses first
+        run: |
+          set -euo pipefail
+          node - <<'NODE'
+          const fs=require('fs');
+          const docs=[0,1,2,3].map(i=>JSON.parse(fs.readFileSync(`/tmp/recommendation-misses/recommendation-misses-${i}.json`,'utf8')));
+          const manifests=[0,1,2,3].map(i=>JSON.parse(fs.readFileSync(`/tmp/recommendation-misses/recommendation-miss-manifest-${i}.json`,'utf8')));
+          const ids=manifests.flatMap(x=>x.selectedIds||[]);
+          if(new Set(ids).size!==1422||ids.length!==1422) throw new Error(`shard coverage mismatch ${ids.length}/${new Set(ids).size}`);
+          const rows=docs.flatMap(x=>x.rows||[]);
+          const high=rows.filter(r=>(r.markerMisses||[]).some(m=>(m.knownDishLabels||[]).length));
+          const summary={
+            catalogTotal:2804,
+            publicRuntimeTotal:1422,
+            recommendationGapTargets:docs.reduce((s,x)=>s+Number(x.summary?.targetRows||0),0),
+            websiteTasks:docs.reduce((s,x)=>s+Number(x.summary?.websiteTasks||0),0),
+            pagesVisited:docs.reduce((s,x)=>s+Number(x.summary?.pagesVisited||0),0),
+            pagesWithStrictRecommendationExtraction:docs.reduce((s,x)=>s+Number(x.summary?.pagesWithStrictRecommendationExtraction||0),0),
+            markerMissRestaurants:new Set(rows.map(r=>r.googlePlaceId)).size,
+            markerMissContexts:rows.reduce((s,r)=>s+(r.markerMisses||[]).length,0),
+            highValueKnownDishMissRestaurants:new Set(high.map(r=>r.googlePlaceId)).size,
+            shardRows:manifests.map(x=>x.selectedRuntimeRows)
+          };
+          console.log('RECOMMENDATION_MISS_TOTAL='+JSON.stringify(summary));
+          for(const row of high){
+            for(const miss of row.markerMisses||[]){
+              if(!(miss.knownDishLabels||[]).length) continue;
+              console.log(`HIGH_VALUE_MISS\t${row.googlePlaceId}\t${row.name}\t${miss.marker}\t${miss.knownDishLabels.join('|')}\t${miss.pageUrl}\t${miss.context}`);
+            }
+          }
+          for(const row of rows){
+            for(const miss of row.markerMisses||[]){
+              if((miss.knownDishLabels||[]).length) continue;
+              console.log(`UNKNOWN_DISH_MISS\t${row.googlePlaceId}\t${row.name}\t${miss.marker}\t${miss.pageUrl}\t${miss.context}`);
+            }
+          }
+          fs.writeFileSync('/tmp/recommendation-miss-total.json',JSON.stringify({summary,rows},null,2)+'\n');
+          NODE
+      - uses: actions/upload-artifact@v4
+        with:
+          name: recommendation-miss-total
+          path: /tmp/recommendation-miss-total.json
+          retention-days: 7
