@@ -36,7 +36,7 @@ window.RESTAURANTS.push(...[
   },
   {
     id:'src-pr16-tokyo-mamehana', profile:'TOKYO', area:'地区1️⃣', name:'東京豆花工房',
-    googlePlaceId:'ChIJT9HCuRyMGGARqIt735A6L1k', source:'curated', sourceOnly:true,
+    googlePlaceId:'ChIJT9HCuRyMGGARqIt735A6L1k', source:'official', sourceOnly:true,
     cuisine:'台湾菜', address:'東京都千代田区神田須田町1-19', dishes:['原味豆花','東京豆花'],
     openingHoursRaw:'月・火・木–日・祝 11:30–19:00', closedDays:['水'],
     sourceRefs:[
@@ -45,7 +45,7 @@ window.RESTAURANTS.push(...[
   },
   {
     id:'src-pr16-kanda-matsuya', profile:'TOKYO', area:'地区1️⃣', name:'神田まつや',
-    googlePlaceId:'ChIJQ3MESwOMGGARX99d47o0V6k', source:'curated', sourceOnly:true,
+    googlePlaceId:'ChIJQ3MESwOMGGARX99d47o0V6k', source:'official', sourceOnly:true,
     cuisine:'荞麦面', address:'東京都千代田区神田須田町1-13', dishes:['もりそば','かしわ南蛮そば'],
     openingHoursRaw:'月–金 11:00–20:30; 土・祝 11:00–19:30', closedDays:['日'],
     sourceRefs:[
@@ -54,7 +54,7 @@ window.RESTAURANTS.push(...[
   },
   {
     id:'src-pr16-kanda-yabusoba', profile:'TOKYO', area:'地区1️⃣', name:'かんだやぶそば',
-    googlePlaceId:'ChIJX-yVohyMGGARUTdpnpXyQNQ', source:'curated', sourceOnly:true,
+    googlePlaceId:'ChIJX-yVohyMGGARUTdpnpXyQNQ', source:'official', sourceOnly:true,
     cuisine:'荞麦面', address:'東京都千代田区神田淡路町2-10', dishes:['そばとろ','鴨せいろうそば'],
     openingHoursRaw:'月・火・木–日・祝 11:30–20:30', closedDays:['水'],
     sourceRefs:[
@@ -63,7 +63,7 @@ window.RESTAURANTS.push(...[
   },
   {
     id:'src-pr16-kanda-shinoda', profile:'TOKYO', area:'地区1️⃣', name:'神田志乃多寿司',
-    googlePlaceId:'ChIJa-BaVhuMGGARouYQYPE4Zfo', source:'curated', sourceOnly:true,
+    googlePlaceId:'ChIJa-BaVhuMGGARouYQYPE4Zfo', source:'official', sourceOnly:true,
     cuisine:'寿司', address:'東京都千代田区神田淡路町2-2', dishes:['稲荷寿司','のり巻'],
     openingHoursRaw:'月・水–日・祝 07:30–18:00', closedDays:['火'],
     sourceRefs:[
@@ -81,7 +81,7 @@ window.RESTAURANTS.push(...[
   },
   {
     id:'src-pr16-restaurant-morocco', profile:'TOKYO', area:'地区1️⃣', name:'RESTAURANT MOROCCO TOKYO',
-    googlePlaceId:'ChIJjX2UEKaNGGARqhp9myAPFiw', source:'curated', sourceOnly:true,
+    googlePlaceId:'ChIJjX2UEKaNGGARqhp9myAPFiw', source:'official', sourceOnly:true,
     cuisine:'摩洛哥菜', address:'東京都千代田区内神田1-5-9', dishes:['タジン鍋','クスクス'],
     openingHoursRaw:'月–土 11:30–14:30, 17:30–23:00', closedDays:['日'],
     sourceRefs:[
@@ -138,7 +138,7 @@ window.RESTAURANTS.push(...[
   },
   {
     id:'src-pr16-bar-anami', profile:'TOKYO', area:'地区1️⃣', name:'BAR ANAMI',
-    googlePlaceId:'ChIJlZV_LwqNGGARYv0gSCBaRi4', source:'curated', sourceOnly:true,
+    googlePlaceId:'ChIJlZV_LwqNGGARYv0gSCBaRi4', source:'official', sourceOnly:true,
     cuisine:'酒吧', address:'東京都千代田区神田司町2-7-6 鈴木ビル1F', dinner:[3000,4999],
     sourceRefs:[
       {provider:'Suntory BAR-NAVI',url:'https://bar-navi.suntory.co.jp/shop/S000007547/',checkedAt:'2026-09-06',fields:['name','cuisine','address','budget']}
