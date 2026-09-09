@@ -1,0 +1,20 @@
+name: Run official address-hours enrichment once
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "_ops/run-official-address-hours-once-2026-09-09.txt"
+
+permissions:
+  actions: write
+  contents: read
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dispatch strict official address-hours enrichment
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run official-labeled-address-hours-enrichment.yml --repo "$GITHUB_REPOSITORY" --ref main
