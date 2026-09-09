@@ -1,0 +1,57 @@
+name: Audit bounded official dish crawl retry once
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "_ops/audit-official-dish-crawl-retry-once-2026-09-09.txt"
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Enforce zero-paid policy
+        run: node scripts/audit_no_paid_apis.mjs
+      - name: Retry already-bound sources with a longer bounded timeout
+        env:
+          INVENTORY_DETAIL_FETCH_TIMEOUT_MS: '15000'
+          INVENTORY_DETAIL_HOST_WORKERS: '12'
+          INVENTORY_DETAIL_SITE_PAGE_LIMIT: '5'
+          INVENTORY_DETAIL_MENU_LINK_LIMIT: '4'
+          INVENTORY_DETAIL_DIAGNOSTICS_OUTPUT: '/tmp/retry-diagnostics.json'
+        run: |
+          set -euo pipefail
+          node scripts/collect_google_inventory_recommendations.mjs /tmp/retry-evidence.json | tee /tmp/retry-summary.txt
+          node - <<'NODE'
+          const fs=require('fs');
+          const d=JSON.parse(fs.readFileSync('/tmp/retry-diagnostics.json','utf8'));
+          const e=JSON.parse(fs.readFileSync('/tmp/retry-evidence.json','utf8'));
+          const failed=(d.rows||[]).filter(r=>r.status==='no_match_with_errors');
+          const report={
+            diagnostics:d.summary,
+            collector:e.summary,
+            failedRows:failed.length,
+            recoveredEvidenceRows:(d.rows||[]).filter(r=>r.status==='recommended_match'||r.status==='menu_match').length,
+            failedSamples:failed.slice(0,25).map(r=>({name:r.name,rootUrl:r.rootUrl,errors:r.errors}))
+          };
+          console.log('BOUNDED_RETRY_AUDIT='+JSON.stringify(report));
+          fs.writeFileSync('/tmp/retry-report.json',JSON.stringify(report,null,2)+'\n');
+          NODE
+      - name: Upload retry audit
+        uses: actions/upload-artifact@v4
+        with:
+          name: official-dish-crawl-bounded-retry-audit
+          path: |
+            /tmp/retry-report.json
+            /tmp/retry-diagnostics.json
+            /tmp/retry-evidence.json
+          retention-days: 7
