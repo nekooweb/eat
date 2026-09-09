@@ -1,0 +1,63 @@
+name: Audit official JSON-LD menu lists (PR)
+
+on:
+  pull_request:
+    paths:
+      - "scripts/audit_official_jsonld_itemlist_menu.mjs"
+      - ".github/workflows/_audit-official-jsonld-itemlist-menu-pr.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout PR merge commit
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Enforce zero-paid policy and syntax
+        run: |
+          set -euo pipefail
+          node scripts/audit_no_paid_apis.mjs
+          node --check scripts/audit_official_jsonld_itemlist_menu.mjs
+      - name: Rebuild current public runtime inputs
+        run: python3 scripts/reload_data.py --public-only --outdir _audit/official-jsonld-list-pr-reload
+      - name: Audit reviewed official JSON-LD menu list structures
+        env:
+          OFFICIAL_JSONLD_LIST_TIMEOUT_MS: '10000'
+          OFFICIAL_JSONLD_LIST_WORKERS: '8'
+          OFFICIAL_JSONLD_LIST_URL_LIMIT: '4'
+        run: |
+          set -euo pipefail
+          node scripts/audit_official_jsonld_itemlist_menu.mjs /tmp/official-jsonld-list-menu.json | tee /tmp/official-jsonld-list-summary.txt
+          node - <<'NODE'
+          const fs=require('fs');
+          const x=JSON.parse(fs.readFileSync('/tmp/official-jsonld-list-menu.json','utf8'));
+          const p=x.policy||{}, s=x.summary||{};
+          if(x.schemaVersion!==1||p.auditOnly!==true||p.currentNoDishOnly!==true||p.reviewedOfficialBindingsOnly!==true) throw new Error('JSON-LD list audit source/target boundary failed');
+          if(p.httpsOnly!==true||p.sameHostFamilyFinalUrlRequired!==true||p.reviewedOfficialUrlsOnly!==true) throw new Error('JSON-LD list URL boundary failed');
+          if(p.jsonLdMenuOrMenuSectionAccepted!==true||p.itemListAcceptedOnlyOnMenuContextUrl!==true||p.entryNameAndPriceEvidenceRequired!==true) throw new Error('JSON-LD list structure boundary failed');
+          if(p.productAccepted!==false||p.arbitraryJsonObjectAccepted!==false) throw new Error('JSON-LD list broad-object guard failed');
+          if(p.recommendationPromotionAllowed!==false||p.ordinaryStructuredEntryIsFeaturedOnly!==true) throw new Error('JSON-LD list recommendation boundary failed');
+          if(p.identityMutationAllowed!==false||p.catalogNameMutationAllowed!==false||p.sourceOfficialNameRole!=='source_alias_only') throw new Error('JSON-LD list identity boundary failed');
+          if(p.pageScriptsExecuted!==false||p.rawHtmlPersisted!==false||p.paidGoogleDataApiCalls!==0) throw new Error('JSON-LD list execution/data policy failed');
+          if(s.catalogTotal!==2804||s.publicRuntimeTotal<=0||s.currentNoDish<=0||s.reviewedOfficialNoDishRows<=0) throw new Error(`JSON-LD list baseline mismatch: ${JSON.stringify(s)}`);
+          for(const r of x.rows||[]){
+            if((r.recommendedDishes||[]).length) throw new Error(`JSON-LD list created recommendation: ${r.googlePlaceId}`);
+            if(!(r.featuredDishes||[]).length) throw new Error(`empty JSON-LD list evidence row: ${r.googlePlaceId}`);
+          }
+          console.log('JSONLD_LIST_AUDIT_CONTRACT='+JSON.stringify(s));
+          NODE
+      - name: Upload audit
+        uses: actions/upload-artifact@v4
+        with:
+          name: official-jsonld-menu-list-audit
+          path: |
+            /tmp/official-jsonld-list-menu.json
+            /tmp/official-jsonld-list-summary.txt
+          retention-days: 7
