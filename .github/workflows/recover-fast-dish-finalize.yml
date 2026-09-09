@@ -1,0 +1,158 @@
+name: Recover fast dish finalize from artifacts
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.dish-finalize-recovery'
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: collect-source-backed-recommended-dishes
+  cancel-in-progress: false
+
+env:
+  SOURCE_RUN_ID: '34369618604'
+
+jobs:
+  recover:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout current main
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Rebuild current baseline
+        run: |
+          set -euo pipefail
+          node scripts/audit_no_paid_apis.mjs
+          python scripts/reload_data.py --public-only --outdir /tmp/recover-fast-dish-baseline
+          cp data/google_inventory_detail_evidence.json /tmp/merged-evidence.json
+          node - <<'NODE'
+          const fs=require('fs'),vm=require('vm');
+          const sandbox={window:{},console}; vm.createContext(sandbox);
+          vm.runInContext(fs.readFileSync('data/google_inventory_runtime.js','utf8'),sandbox);
+          const s=sandbox.window.GOOGLE_INVENTORY_STATS||{};
+          fs.writeFileSync('/tmp/before-stats.json',JSON.stringify(s));
+          console.log('RECOVERY_BEFORE='+JSON.stringify({recommended:s.recommendedDishesKnown,featured:s.featuredDishesKnown,display:s.chineseDishDisplayRows,noDish:s.unfilledDishRows}));
+          NODE
+      - name: Mine retained source evidence once
+        run: |
+          set -euo pipefail
+          node scripts/build_retained_dish_evidence.mjs \
+            /tmp/retained-dish-evidence.json \
+            data/dish_translation_pending.json | tee /tmp/retained-dish-summary.json
+          node scripts/build_retained_hotpepper_promotional_dish_evidence.mjs \
+            /tmp/retained-hotpepper-promotional-dish-evidence.json | tee /tmp/retained-promo-summary.json
+      - name: Download already-collected shard artifacts
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: nekooweb/eat
+          run-id: ${{ env.SOURCE_RUN_ID }}
+          pattern: fast-dish-shard-*
+          path: /tmp/dish-shards
+          merge-multiple: true
+      - name: Verify artifact identity coverage
+        run: |
+          set -euo pipefail
+          node - <<'NODE'
+          const fs=require('fs');
+          const manifests=[0,1,2,3].map(i=>JSON.parse(fs.readFileSync(`/tmp/dish-shards/manifest-${i}.json`,'utf8')));
+          const ids=[];
+          for(const [i,m] of manifests.entries()){
+            if(m.shardIndex!==i||m.shardCount!==4||m.catalogTotal!==2804||m.originalPublicRuntimeTotal!==1422) throw new Error(`invalid source artifact manifest ${i}`);
+            if(m.policy?.identityFieldsMutated!==false||m.policy?.paidGoogleDataApiCalls!==0) throw new Error(`artifact ${i} crossed identity/cost boundary`);
+            ids.push(...(m.selectedIds||[]));
+          }
+          const unique=new Set(ids);
+          if(ids.length!==unique.size||unique.size!==1422) throw new Error(`artifact shard coverage invalid: ${ids.length}/${unique.size}`);
+          console.log(JSON.stringify({sourceRunId:process.env.SOURCE_RUN_ID,shards:4,uniqueIds:unique.size,shardRows:manifests.map(x=>x.selectedRuntimeRows)}));
+          NODE
+      - name: Merge retained and collected evidence
+        run: |
+          set -euo pipefail
+          merge_one() {
+            local input="$1"
+            node scripts/merge_google_inventory_detail_evidence.mjs \
+              /tmp/merged-evidence.json "$input" /tmp/merged-next.json >/tmp/recovery-merge-summary.json
+            mv /tmp/merged-next.json /tmp/merged-evidence.json
+          }
+          merge_one /tmp/retained-dish-evidence.json
+          merge_one /tmp/retained-hotpepper-promotional-dish-evidence.json
+          for input in /tmp/dish-shards/fresh-*.json; do merge_one "$input"; done
+          for input in /tmp/dish-shards/sitemap-*.json; do merge_one "$input"; done
+          cp /tmp/merged-evidence.json data/google_inventory_detail_evidence.json
+          node scripts/correct_dish_specificity_evidence.mjs \
+            data/google_inventory_detail_evidence.json \
+            data/google_inventory_detail_evidence.json | tee /tmp/recovery-specificity-summary.json
+          node scripts/audit_google_inventory_detail_evidence.mjs
+      - name: Rebuild and verify net increment
+        run: |
+          set -euo pipefail
+          python scripts/reload_data.py --public-only --outdir /tmp/recover-fast-dish-after
+          node - <<'NODE'
+          const fs=require('fs'),vm=require('vm');
+          const before=JSON.parse(fs.readFileSync('/tmp/before-stats.json','utf8'));
+          const sandbox={window:{},console}; vm.createContext(sandbox);
+          vm.runInContext(fs.readFileSync('data/google_inventory_runtime.js','utf8'),sandbox);
+          const after=sandbox.window.GOOGLE_INVENTORY_STATS||{};
+          for(const key of ['recommendedDishesKnown','featuredDishesKnown','chineseDishDisplayRows']){
+            if(Number(after[key]||0)<Number(before[key]||0)) throw new Error(`non-monotonic recovery ${key}`);
+          }
+          const delta={
+            recommended:Number(after.recommendedDishesKnown||0)-Number(before.recommendedDishesKnown||0),
+            featured:Number(after.featuredDishesKnown||0)-Number(before.featuredDishesKnown||0),
+            display:Number(after.chineseDishDisplayRows||0)-Number(before.chineseDishDisplayRows||0),
+            noDish:Number(after.unfilledDishRows||0)-Number(before.unfilledDishRows||0)
+          };
+          fs.writeFileSync('/tmp/recovery-delta.json',JSON.stringify({before,after,delta},null,2)+'\n');
+          console.log('RECOVERY_DELTA='+JSON.stringify(delta));
+          console.log('RECOVERY_AFTER='+JSON.stringify({recommended:after.recommendedDishesKnown,featured:after.featuredDishesKnown,display:after.chineseDishDisplayRows,noDish:after.unfilledDishRows}));
+          NODE
+          node scripts/audit_google_inventory_detail_evidence.mjs
+          node scripts/audit_no_paid_apis.mjs
+      - name: Commit verified recovered outputs
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A data
+          if git diff --cached --quiet; then
+            echo 'No recovered data changes to publish.'
+            exit 0
+          fi
+          git commit -m 'Publish recovered parallel dish evidence'
+          if ! git diff --quiet; then git restore --worktree -- .; fi
+          git fetch origin main
+          git rebase origin/main
+          python scripts/reload_data.py --public-only --outdir /tmp/recover-fast-dish-post-rebase
+          node scripts/audit_google_inventory_detail_evidence.mjs
+          node scripts/audit_no_paid_apis.mjs
+          git add -A data
+          if ! git diff --cached --quiet; then git commit --amend --no-edit; fi
+          git push origin HEAD:main
+      - name: Upload recovery diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: recovered-fast-dish-finalize-diagnostics
+          path: |
+            /tmp/recovery-delta.json
+            /tmp/retained-dish-summary.json
+            /tmp/retained-promo-summary.json
+            /tmp/recovery-specificity-summary.json
+          if-no-files-found: ignore
+          retention-days: 7
