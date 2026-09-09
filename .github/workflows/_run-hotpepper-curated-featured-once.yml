@@ -1,0 +1,20 @@
+name: Run curated Hot Pepper featured gaps once
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "_ops/run-hotpepper-curated-featured-once-2026-09-09.txt"
+
+permissions:
+  actions: write
+  contents: read
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dispatch curated featured-gap enrichment
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run collect-hotpepper-curated-featured-gaps.yml --repo "$GITHUB_REPOSITORY" --ref main
