@@ -8,7 +8,7 @@
     "unpublishedPlaceIdOnly": 1382,
     "runtimeBaselineComplete": true,
     "recommendedDishesKnown": 556,
-    "featuredDishesKnown": 645,
+    "featuredDishesKnown": 649,
     "displayDishKnown": 709,
     "noDishGap": 713,
     "recommendationGap": 866,
@@ -20,8 +20,8 @@
       "collect_strict_recommended_dishes": 249,
       "extract_retained_dish_source": 321,
       "find_independent_dish_source": 296,
-      "collect_source_backed_featured_dishes": 64,
-      "dish_complete": 492
+      "collect_source_backed_featured_dishes": 60,
+      "dish_complete": 496
     },
     "primaryGoal": "source-backed dish coverage",
     "nonDishMetadataCreatesTasks": false,
@@ -21550,30 +21550,6 @@
       "priorityScore": 750
     },
     {
-      "googlePlaceId": "ChIJlwLspAOMGGARz2EN6kWhYfY",
-      "name": "海王丸",
-      "basicInfoState": "canonical",
-      "cuisine": "酒吧",
-      "distanceMeters": 1132,
-      "sourceUrlCount": 5,
-      "crawlableOfficialUrlCount": 5,
-      "retainedThirdPartyUrlCount": 0,
-      "recommendedDishesKnown": 3,
-      "featuredDishesKnown": 0,
-      "dishGaps": [
-        "featuredDishes"
-      ],
-      "secondaryMetadata": {
-        "openingHoursKnown": false,
-        "lunchBudgetKnown": false,
-        "dinnerBudgetKnown": false,
-        "addressKnown": false,
-        "cuisineKnown": true
-      },
-      "nextAction": "collect_source_backed_featured_dishes",
-      "priorityScore": 750
-    },
-    {
       "googlePlaceId": "ChIJbTtuHuiNGGARBrcnzLyb6kg",
       "name": "喫茶トお酒 襤褸",
       "basicInfoState": "canonical",
@@ -21596,54 +21572,6 @@
       },
       "nextAction": "collect_source_backed_featured_dishes",
       "priorityScore": 740
-    },
-    {
-      "googlePlaceId": "ChIJ66JZhxqMGGARafukTgY53_k",
-      "name": "チャントーヤ・ココナッツカリー",
-      "basicInfoState": "canonical",
-      "cuisine": "餐厅",
-      "distanceMeters": 486,
-      "sourceUrlCount": 3,
-      "crawlableOfficialUrlCount": 2,
-      "retainedThirdPartyUrlCount": 1,
-      "recommendedDishesKnown": 1,
-      "featuredDishesKnown": 0,
-      "dishGaps": [
-        "featuredDishes"
-      ],
-      "secondaryMetadata": {
-        "openingHoursKnown": false,
-        "lunchBudgetKnown": false,
-        "dinnerBudgetKnown": false,
-        "addressKnown": false,
-        "cuisineKnown": true
-      },
-      "nextAction": "collect_source_backed_featured_dishes",
-      "priorityScore": 730
-    },
-    {
-      "googlePlaceId": "ChIJc5NiOxGMGGARL8jOKrnIR5c",
-      "name": "スマトラカレー 共栄堂",
-      "basicInfoState": "canonical",
-      "cuisine": "咖喱",
-      "distanceMeters": 163,
-      "sourceUrlCount": 2,
-      "crawlableOfficialUrlCount": 1,
-      "retainedThirdPartyUrlCount": 1,
-      "recommendedDishesKnown": 1,
-      "featuredDishesKnown": 0,
-      "dishGaps": [
-        "featuredDishes"
-      ],
-      "secondaryMetadata": {
-        "openingHoursKnown": true,
-        "lunchBudgetKnown": true,
-        "dinnerBudgetKnown": true,
-        "addressKnown": true,
-        "cuisineKnown": true
-      },
-      "nextAction": "collect_source_backed_featured_dishes",
-      "priorityScore": 720
     },
     {
       "googlePlaceId": "ChIJ____DxGMGGARxguBsW1lnd0",
@@ -21688,30 +21616,6 @@
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
-        "cuisineKnown": true
-      },
-      "nextAction": "collect_source_backed_featured_dishes",
-      "priorityScore": 720
-    },
-    {
-      "googlePlaceId": "ChIJeSb-oGqMGGARy1Awdl6inpE",
-      "name": "花子",
-      "basicInfoState": "canonical",
-      "cuisine": "日式",
-      "distanceMeters": 625,
-      "sourceUrlCount": 2,
-      "crawlableOfficialUrlCount": 1,
-      "retainedThirdPartyUrlCount": 1,
-      "recommendedDishesKnown": 3,
-      "featuredDishesKnown": 0,
-      "dishGaps": [
-        "featuredDishes"
-      ],
-      "secondaryMetadata": {
-        "openingHoursKnown": false,
-        "lunchBudgetKnown": false,
-        "dinnerBudgetKnown": false,
-        "addressKnown": false,
         "cuisineKnown": true
       },
       "nextAction": "collect_source_backed_featured_dishes",
@@ -23854,6 +23758,28 @@
       "priorityScore": 0
     },
     {
+      "googlePlaceId": "ChIJc5NiOxGMGGARL8jOKrnIR5c",
+      "name": "スマトラカレー 共栄堂",
+      "basicInfoState": "canonical",
+      "cuisine": "咖喱",
+      "distanceMeters": 163,
+      "sourceUrlCount": 2,
+      "crawlableOfficialUrlCount": 1,
+      "retainedThirdPartyUrlCount": 1,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 1,
+      "dishGaps": [],
+      "secondaryMetadata": {
+        "openingHoursKnown": true,
+        "lunchBudgetKnown": true,
+        "dinnerBudgetKnown": true,
+        "addressKnown": true,
+        "cuisineKnown": true
+      },
+      "nextAction": "dish_complete",
+      "priorityScore": 0
+    },
+    {
       "googlePlaceId": "ChIJ6-JxGJyNGGARhu0YEPhV3mc",
       "name": "浅草割烹 天とよ 神保町店",
       "basicInfoState": "canonical",
@@ -25636,6 +25562,28 @@
       "priorityScore": 0
     },
     {
+      "googlePlaceId": "ChIJ66JZhxqMGGARafukTgY53_k",
+      "name": "チャントーヤ・ココナッツカリー",
+      "basicInfoState": "canonical",
+      "cuisine": "餐厅",
+      "distanceMeters": 486,
+      "sourceUrlCount": 3,
+      "crawlableOfficialUrlCount": 2,
+      "retainedThirdPartyUrlCount": 1,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 1,
+      "dishGaps": [],
+      "secondaryMetadata": {
+        "openingHoursKnown": false,
+        "lunchBudgetKnown": false,
+        "dinnerBudgetKnown": false,
+        "addressKnown": false,
+        "cuisineKnown": true
+      },
+      "nextAction": "dish_complete",
+      "priorityScore": 0
+    },
+    {
       "googlePlaceId": "ChIJH1UPl0GNGGARwn4CxpMNnYI",
       "name": "酒とてらだや 九段下",
       "basicInfoState": "source_matched",
@@ -26752,6 +26700,28 @@
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
+        "cuisineKnown": true
+      },
+      "nextAction": "dish_complete",
+      "priorityScore": 0
+    },
+    {
+      "googlePlaceId": "ChIJeSb-oGqMGGARy1Awdl6inpE",
+      "name": "花子",
+      "basicInfoState": "canonical",
+      "cuisine": "日式",
+      "distanceMeters": 625,
+      "sourceUrlCount": 2,
+      "crawlableOfficialUrlCount": 1,
+      "retainedThirdPartyUrlCount": 1,
+      "recommendedDishesKnown": 3,
+      "featuredDishesKnown": 3,
+      "dishGaps": [],
+      "secondaryMetadata": {
+        "openingHoursKnown": false,
+        "lunchBudgetKnown": false,
+        "dinnerBudgetKnown": false,
+        "addressKnown": false,
         "cuisineKnown": true
       },
       "nextAction": "dish_complete",
@@ -32494,6 +32464,28 @@
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
+        "cuisineKnown": true
+      },
+      "nextAction": "dish_complete",
+      "priorityScore": 0
+    },
+    {
+      "googlePlaceId": "ChIJlwLspAOMGGARz2EN6kWhYfY",
+      "name": "海王丸",
+      "basicInfoState": "canonical",
+      "cuisine": "酒吧",
+      "distanceMeters": 1132,
+      "sourceUrlCount": 5,
+      "crawlableOfficialUrlCount": 5,
+      "retainedThirdPartyUrlCount": 0,
+      "recommendedDishesKnown": 3,
+      "featuredDishesKnown": 3,
+      "dishGaps": [],
+      "secondaryMetadata": {
+        "openingHoursKnown": false,
+        "lunchBudgetKnown": false,
+        "dinnerBudgetKnown": false,
+        "addressKnown": false,
         "cuisineKnown": true
       },
       "nextAction": "dish_complete",
