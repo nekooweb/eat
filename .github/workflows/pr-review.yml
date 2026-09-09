@@ -24,6 +24,16 @@ jobs:
             python3 scripts/reload_data.py --public-only --outdir _audit/pr-reload
             node scripts/test_tool_identity_name_contract.mjs
             node scripts/test_independent_source_candidate_hardening.mjs
+            node --check scripts/independent_source_host_policy.mjs
+            node --check scripts/sanitize_independent_source_candidate_plan.mjs
+            node --check scripts/audit_independent_source_host_policy.mjs
+            node --check scripts/test_independent_source_host_policy.mjs
+            node scripts/test_independent_source_host_policy.mjs
+            node scripts/sanitize_independent_source_candidate_plan.mjs \
+              data/independent_dish_source_candidates.json \
+              /tmp/pr-independent-source-candidates.sanitized.json
+            node scripts/audit_independent_source_host_policy.mjs /tmp/pr-independent-source-candidates.sanitized.json
+            node scripts/audit_independent_source_host_policy.mjs data/reviewed_independent_dish_sources.json
             node scripts/audit_repository.mjs
             node scripts/audit_normalized_fields.mjs
           fi

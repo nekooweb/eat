@@ -36,10 +36,15 @@ jobs:
         run: node scripts/audit_no_paid_apis.mjs
       - name: Check weak-source tooling syntax
         run: |
+          node --check scripts/independent_source_host_policy.mjs
+          node --check scripts/sanitize_independent_source_candidate_plan.mjs
+          node --check scripts/audit_independent_source_host_policy.mjs
+          node --check scripts/test_independent_source_host_policy.mjs
           node --check scripts/build_weak_nearby_independent_source_candidates.mjs
           node --check scripts/review_independent_dish_source_candidates_v3.mjs
           node --check scripts/review_independent_dish_source_candidates_extended.mjs
           node --check scripts/test_independent_source_candidate_hardening.mjs
+          node scripts/test_independent_source_host_policy.mjs
       - name: Rebuild current runtime and standard source plan
         run: python scripts/reload_data.py --public-only --outdir _audit/weak-source-pre
       - name: Build tight name-plus-proximity Overture candidates for page review
@@ -63,6 +68,13 @@ jobs:
           console.log(JSON.stringify(s));
           NODE
           node scripts/test_independent_source_candidate_hardening.mjs
+      - name: Sanitize weak candidate hosts before network review
+        run: |
+          set -euo pipefail
+          node scripts/sanitize_independent_source_candidate_plan.mjs \
+            /tmp/weak-independent-source-candidates.json \
+            /tmp/weak-independent-source-candidates.sanitized.json | tee /tmp/weak-independent-host-sanitize-summary.json
+          node scripts/audit_independent_source_host_policy.mjs /tmp/weak-independent-source-candidates.sanitized.json
       - name: Strictly review weak candidates using unchanged v3 page identity criteria
         env:
           INDEPENDENT_SOURCE_REVIEW_TIMEOUT_MS: "7000"
@@ -73,8 +85,9 @@ jobs:
         run: |
           set -euo pipefail
           node scripts/review_independent_dish_source_candidates_extended.mjs \
-            /tmp/weak-independent-source-candidates.json \
+            /tmp/weak-independent-source-candidates.sanitized.json \
             data/reviewed_independent_dish_sources.json | tee /tmp/weak-source-review-summary.json
+          node scripts/audit_independent_source_host_policy.mjs data/reviewed_independent_dish_sources.json
           node - <<'NODE'
           const fs=require('fs');
           const x=JSON.parse(fs.readFileSync('data/reviewed_independent_dish_sources.json','utf8'));
