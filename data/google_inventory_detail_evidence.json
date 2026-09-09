@@ -106,50 +106,43 @@
     "automaticTranslationOutsideCuratedRulesAllowed": false
   },
   "summary": {
-    "catalogTotal": 2804,
-    "publicRuntimeTotal": 1422,
-    "queueEligibleIds": 313,
-    "targets": 286,
-    "uniqueOrigins": 254,
-    "sitemapFilesFetched": 583,
-    "menuUrlsDiscovered": 118,
-    "menuPagesFetched": 84,
-    "errorTargets": 9,
-    "evidenceRestaurants": 29,
-    "recommendationRestaurants": 2,
-    "featuredRestaurants": 27,
-    "recommendationItems": 4,
-    "featuredItems": 106,
+    "eligibleTargets": 123,
+    "targets": 123,
+    "rootIdentityMatched": 123,
+    "foodPagesFetched": 65,
+    "explicitRecommendationHeadings": 111,
+    "matchedHeadings": 5,
+    "unmatchedHeadings": 106,
+    "evidenceRestaurants": 5,
+    "recommendationItems": 5,
+    "errorTargets": 0,
     "previousEvidence": {
       "recommendationRestaurants": 526,
       "featuredRestaurants": 635,
       "evidenceRestaurants": 700,
       "recommendationItems": 942,
-      "featuredItems": 2480
+      "featuredItems": 2478
     },
     "freshCrawlEvidence": {
-      "recommendationRestaurants": 2,
-      "featuredRestaurants": 27,
-      "evidenceRestaurants": 29,
-      "recommendationItems": 4,
-      "featuredItems": 106
+      "recommendationRestaurants": 5,
+      "featuredRestaurants": 0,
+      "evidenceRestaurants": 5,
+      "recommendationItems": 5,
+      "featuredItems": 0
     },
     "mergedEvidence": {
-      "recommendationRestaurants": 526,
+      "recommendationRestaurants": 531,
       "featuredRestaurants": 635,
       "evidenceRestaurants": 700,
-      "recommendationItems": 942,
-      "featuredItems": 2480
+      "recommendationItems": 947,
+      "featuredItems": 2478
     },
     "specificityCorrection": {
-      "correctedRestaurants": 3,
-      "correctedItems": 3,
-      "duplicateItemsRemoved": 2,
-      "ruleCounts": {
-        "meat-sushi-over-sushi": 1,
-        "yakisoba-over-soba": 2
-      },
-      "recommendationItemsAfterCorrection": 942,
+      "correctedRestaurants": 0,
+      "correctedItems": 0,
+      "duplicateItemsRemoved": 0,
+      "ruleCounts": {},
+      "recommendationItemsAfterCorrection": 947,
       "featuredItemsAfterCorrection": 2478
     }
   },
@@ -14640,7 +14633,18 @@
     {
       "googlePlaceId": "ChIJew2TRAOMGGARu-xMs41vCWE",
       "name": "ワインバル sacawa",
-      "recommendedDishes": [],
+      "recommendedDishes": [
+        {
+          "nameZh": "当日精选奶酪",
+          "nameJa": "仕入れによって変わるチーズ",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001226423/food/",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "hotpepper-explicit-recommended-h3:normalized-daily-selected-cheese",
+          "evidenceSnippet": "仕入れによって変わるチーズ"
+        }
+      ],
       "featuredDishes": [
         {
           "nameZh": "意大利面",
@@ -19219,6 +19223,21 @@
           "evidenceSnippet": "アディロンダックバーガー"
         },
         {
+          "nameZh": "炒面",
+          "nameJa": "そば",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://adirondackcafejp.wordpress.com/food/",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "specificity:yakisoba-over-soba:menu-page-text:蕎麦|そば|soba",
+          "evidenceSnippet": "焼きそば Fried Noodle （税込み１４３０）",
+          "specificityCorrection": {
+            "rule": "yakisoba-over-soba",
+            "previousNameZh": "荞麦面",
+            "sourceNativeCompositeRequired": true
+          }
+        },
+        {
           "nameZh": "炒饭",
           "nameJa": "チャーハン",
           "provider": "sourceWebsite",
@@ -19237,21 +19256,6 @@
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:ステーキ|steak",
           "evidenceSnippet": "マグロステーキ丼"
-        },
-        {
-          "nameZh": "炒面",
-          "nameJa": "そば",
-          "provider": "sourceWebsite",
-          "sourceUrl": "https://adirondackcafejp.wordpress.com/food/",
-          "checkedAt": "2026-09-09",
-          "evidenceClass": "source_menu_text",
-          "evidenceRule": "specificity:yakisoba-over-soba:menu-page-text:蕎麦|そば|soba",
-          "evidenceSnippet": "焼きそば Fried Noodle （税込み１４３０）",
-          "specificityCorrection": {
-            "rule": "yakisoba-over-soba",
-            "previousNameZh": "荞麦面",
-            "sourceNativeCompositeRequired": true
-          }
         }
       ]
     },
@@ -20768,7 +20772,18 @@
     {
       "googlePlaceId": "ChIJk8lPalKNGGAR3-bmpjS_38k",
       "name": "和食日和 おさけと大手町",
-      "recommendedDishes": [],
+      "recommendedDishes": [
+        {
+          "nameZh": "八寸八种拼盘",
+          "nameJa": "八寸八種盛り合せ",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ004678105/food/",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "hotpepper-explicit-recommended-h3:normalized-hassun-eight-item-platter",
+          "evidenceSnippet": "彩り八寸】日本酒好き必見!おさけが進む会席「和醸良酒」は名物の八寸八種盛り合せ付きで全8品♪"
+        }
+      ],
       "featuredDishes": [
         {
           "nameZh": "意式冰淇淋",
@@ -23627,7 +23642,18 @@
     {
       "googlePlaceId": "ChIJmYLaXW6NGGARfjZ3eudU71w",
       "name": "大衆食堂てんぐ大ホール 水道橋東口店",
-      "recommendedDishes": [],
+      "recommendedDishes": [
+        {
+          "nameZh": "金枪鱼腌萝卜塔",
+          "nameJa": "とろたくタワー",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ003851489/food/",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "hotpepper-explicit-recommended-h3:normalized-torotaku-tower",
+          "evidenceSnippet": "とろたくタワー"
+        }
+      ],
       "featuredDishes": [
         {
           "nameZh": "刺身",
@@ -35312,7 +35338,18 @@
     {
       "googlePlaceId": "ChIJvyDKWN7hGGARrFkY0C5a9Kw",
       "name": "和食日和 おさけと 神保町",
-      "recommendedDishes": [],
+      "recommendedDishes": [
+        {
+          "nameZh": "八寸八种拼盘",
+          "nameJa": "彩り八寸八種盛り",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001263486/food/",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "hotpepper-explicit-recommended-h3:normalized-hassun-eight-item-platter",
+          "evidenceSnippet": "全8品6500円(税込)】】日本酒好き必見!おさけが進む会席「和醸良酒」名物!彩り八寸八種盛り付き"
+        }
+      ],
       "featuredDishes": [
         {
           "nameZh": "刺身",
@@ -38145,7 +38182,18 @@
     {
       "googlePlaceId": "ChIJYUvcMpONGGARZzwC18gkmXQ",
       "name": "SHIKIBU しきぶ 水道橋店",
-      "recommendedDishes": [],
+      "recommendedDishes": [
+        {
+          "nameZh": "猪五花肉配蔬菜",
+          "nameJa": "豚バラ肉と野菜のマリアージュ",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ003498685/food/",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "hotpepper-explicit-recommended-h3:normalized-pork-belly-vegetables",
+          "evidenceSnippet": "豚バラ肉と野菜のマリアージュにうっとり"
+        }
+      ],
       "featuredDishes": [
         {
           "nameZh": "刺身",
