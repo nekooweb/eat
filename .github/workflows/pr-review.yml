@@ -23,6 +23,7 @@ jobs:
             node scripts/test_opening_hours.mjs
             python3 scripts/reload_data.py --public-only --outdir _audit/pr-reload
             node scripts/test_tool_identity_name_contract.mjs
+            node scripts/test_independent_source_candidate_hardening.mjs
             node scripts/audit_repository.mjs
             node scripts/audit_normalized_fields.mjs
           fi
