@@ -52,8 +52,8 @@ jobs:
           p=m['ingestionPlan']
           s={
             'identityStates':m['identityStates'],
-            'fieldTasks':p['taskTypeCounts']['field_completion'],
-            'missing':p['fieldCompletionMissingCounts'],
+            'fieldTasks':p.get('taskTypeCounts',{}).get('field_completion',0),
+            'missing':p.get('fieldCompletionMissingCounts',{}),
           }
           json.dump(s,open('_tmp/budget-before.json','w'),sort_keys=True)
           print(json.dumps(s,sort_keys=True))
@@ -156,8 +156,8 @@ jobs:
           p=m['ingestionPlan']
           after={
             'identityStates':m['identityStates'],
-            'fieldTasks':p['taskTypeCounts']['field_completion'],
-            'missing':p['fieldCompletionMissingCounts'],
+            'fieldTasks':p.get('taskTypeCounts',{}).get('field_completion',0),
+            'missing':p.get('fieldCompletionMissingCounts',{}),
             'import':m['officialMealBudgetWebEvidence'],
           }
           assert after['identityStates']==before['identityStates'], (before,after)
