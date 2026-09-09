@@ -1,0 +1,33 @@
+name: Validate source-field quarantine
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.source-field-quarantine-run'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Rebuild and validate quarantined source fields
+        run: |
+          set -euo pipefail
+          node scripts/audit_no_paid_apis.mjs
+          python scripts/reload_data.py --public-only --outdir /tmp/source-field-quarantine-validation
+          node scripts/test_source_field_quarantine.mjs
+          node scripts/audit_google_inventory_runtime.mjs
+          node scripts/audit_materialized_chinese_dish_runtime.mjs
+          node scripts/audit_no_paid_apis.mjs
