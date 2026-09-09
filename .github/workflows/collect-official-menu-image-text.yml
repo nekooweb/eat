@@ -1,0 +1,126 @@
+name: Collect reviewed official menu image text
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: collect-source-backed-recommended-dishes
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout latest main
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Sync latest main after serialized wait
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          git reset --hard origin/main
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Enforce zero-paid policy and syntax
+        run: |
+          node scripts/audit_no_paid_apis.mjs
+          node --check scripts/collect_official_menu_image_text_evidence.mjs
+      - name: Snapshot current dish queue
+        run: cp data/google_inventory_detail_queue.json /tmp/detail-queue-before.json
+      - name: Collect accessible image text from reviewed official menu URLs
+        env:
+          OFFICIAL_MENU_IMAGE_TEXT_TIMEOUT_MS: '12000'
+          OFFICIAL_MENU_IMAGE_TEXT_WORKERS: '12'
+        run: |
+          set -euo pipefail
+          node scripts/collect_official_menu_image_text_evidence.mjs /tmp/menu-image-text-evidence.json | tee /tmp/menu-image-text-summary.json
+          node - <<'NODE'
+          const fs=require('fs');
+          const x=JSON.parse(fs.readFileSync('/tmp/menu-image-text-evidence.json','utf8'));
+          const p=x.policy||{};
+          if(p.paidGoogleDataApiCalls!==0||p.reviewedOfficialMenuUrlsOnly!==true||p.currentFeaturedDishGapOnly!==true) throw new Error('menu image-text source boundary failed');
+          if(p.ocrExecuted!==false||p.imageBinaryRead!==false||p.recommendationPromotionAllowed!==false) throw new Error('menu image-text semantic boundary failed');
+          if(p.explicitMenuUrlContextRequired!==true||p.restaurantIdentityTextRejected!==true||p.asciiSubstringBoundaryGuard!==true) throw new Error('menu image-text precision guards missing');
+          if((x.rows||[]).some(r=>(r.recommendedDishes||[]).length)) throw new Error('image-text evidence may not create recommended dishes');
+          console.log(JSON.stringify(x.summary));
+          NODE
+      - name: Merge evidence monotonically and rebuild runtime
+        run: |
+          set -euo pipefail
+          node scripts/merge_google_inventory_detail_evidence.mjs \
+            data/google_inventory_detail_evidence.json \
+            /tmp/menu-image-text-evidence.json \
+            data/google_inventory_detail_evidence.json | tee /tmp/menu-image-text-merge-summary.json
+          node scripts/correct_dish_specificity_evidence.mjs \
+            data/google_inventory_detail_evidence.json \
+            data/google_inventory_detail_evidence.json | tee /tmp/menu-image-text-specificity-summary.json
+          node scripts/audit_google_inventory_detail_evidence.mjs
+          node scripts/build_google_inventory_runtime.mjs
+          node scripts/apply_reviewed_independent_source_overlay.mjs
+          node scripts/audit_reviewed_independent_source_overlay.mjs
+          node scripts/audit_google_inventory_runtime.mjs
+          node scripts/build_google_inventory_detail_queue.mjs data/google_inventory_detail_queue.json
+          node scripts/build_dish_batch_plan.mjs data/dish_batch_plan.json 8
+          node scripts/build_independent_dish_source_candidate_plan.mjs data/independent_dish_source_candidates.json 8
+      - name: Validate monotonic coverage and identity invariants
+        run: |
+          node - <<'NODE'
+          const fs=require('fs');
+          const before=JSON.parse(fs.readFileSync('/tmp/detail-queue-before.json','utf8')).summary;
+          const after=JSON.parse(fs.readFileSync('data/google_inventory_detail_queue.json','utf8')).summary;
+          if(before.catalogTotal!==2804||after.catalogTotal!==2804||before.publicRuntimeTotal!==after.publicRuntimeTotal) throw new Error('catalog/runtime identity count changed');
+          if(after.recommendedDishesKnown!==before.recommendedDishesKnown) throw new Error('featured-only image text changed strict recommendation coverage');
+          if(after.displayDishKnown<before.displayDishKnown||after.featuredDishesKnown<before.featuredDishesKnown) throw new Error('dish coverage regressed');
+          if(after.noDishGap>before.noDishGap) throw new Error('no-dish gap regressed');
+          console.log(JSON.stringify({before,after,displayGain:after.displayDishKnown-before.displayDishKnown,featuredGain:after.featuredDishesKnown-before.featuredDishesKnown}));
+          NODE
+      - name: Commit evidence and rebuilt plans
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            data/google_inventory_detail_evidence.json \
+            data/google_inventory_runtime.js \
+            data/google_inventory_detail_queue.json \
+            data/dish_batch_plan.json \
+            data/independent_dish_source_candidates.json
+          if git diff --cached --quiet; then
+            echo "No new strict reviewed menu image-text evidence."
+            exit 0
+          fi
+          git commit -m "Add reviewed official menu image-text dishes"
+          git fetch origin main
+          git rebase origin/main
+          git push origin HEAD:main
+      - name: Upload image-text audit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reviewed-official-menu-image-text-enrichment
+          path: |
+            /tmp/menu-image-text-evidence.json
+            /tmp/menu-image-text-summary.json
+            /tmp/menu-image-text-merge-summary.json
+            /tmp/menu-image-text-specificity-summary.json
+            /tmp/detail-queue-before.json
+          if-no-files-found: warn
+          retention-days: 7
+
+  validate_database:
+    needs: collect
+    permissions:
+      contents: read
+    uses: ./.github/workflows/database-contract.yml
+    with:
+      sync_main: true
