@@ -3,6 +3,7 @@ name: Audit Overture alias candidates (PR)
 on:
   pull_request:
     paths:
+      - "scripts/build_overture_area1.py"
       - "scripts/audit_overture_alias_independent_source_candidates.mjs"
       - ".github/workflows/_audit-overture-alias-candidates-pr.yml"
 
@@ -12,6 +13,7 @@ permissions:
 jobs:
   audit:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - name: Checkout PR merge commit
         uses: actions/checkout@v4
@@ -19,29 +21,54 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
       - name: Enforce zero-paid policy and syntax
         run: |
           set -euo pipefail
           node scripts/audit_no_paid_apis.mjs
           node --check scripts/audit_overture_alias_independent_source_candidates.mjs
+          python -m py_compile scripts/build_overture_area1.py
       - name: Rebuild current public runtime inputs
         run: python3 scripts/reload_data.py --public-only --outdir _audit/overture-alias-pr-reload
-      - name: Run offline alias-candidate audit
+      - name: Build fresh name-rich Overture staging snapshot
+        env:
+          OVERTURE_RELEASE: '2026-08-19.0'
         run: |
           set -euo pipefail
-          node scripts/audit_overture_alias_independent_source_candidates.mjs /tmp/overture-alias-audit.json | tee /tmp/overture-alias-summary.txt
+          python -m pip install 'duckdb>=1.3,<2'
+          python scripts/build_overture_area1.py /tmp/overture-name-rich.json | tee /tmp/overture-name-rich-summary.txt
+          python - <<'PY'
+          import json
+          x=json.load(open('/tmp/overture-name-rich.json', encoding='utf-8'))
+          assert x['schemaVersion'] == 2
+          assert x['policy']['paidApiCalls'] == 0
+          assert x['policy']['commonNamesAreAliasEvidenceOnly'] is True
+          assert x['policy']['commonNamesMayReplaceCatalogIdentity'] is False
+          assert x['summary']['foodCandidatesInsideRadius'] > 0
+          print(json.dumps(x['summary'], ensure_ascii=False))
+          PY
+      - name: Run source-common-name bridge audit
+        run: |
+          set -euo pipefail
+          node scripts/audit_overture_alias_independent_source_candidates.mjs \
+            /tmp/overture-alias-audit.json \
+            /tmp/overture-name-rich.json | tee /tmp/overture-alias-summary.txt
           node - <<'NODE'
           const fs=require('fs');
           const x=JSON.parse(fs.readFileSync('/tmp/overture-alias-audit.json','utf8'));
           const p=x.policy||{}, s=x.summary||{};
-          if(p.auditOnly!==true||p.proposalOnly!==true||p.networkRequests!==0||p.paidGoogleDataApiCalls!==0) throw new Error('alias audit must remain offline/proposal-only');
+          if(p.auditOnly!==true||p.proposalOnly!==true||p.networkRequests!==0||p.paidGoogleDataApiCalls!==0) throw new Error('alias audit must remain offline/proposal-only after source snapshot acquisition');
           if(p.identityBindingChanges!==0||p.dishEvidenceChanges!==0||p.sourceAliasMayReplaceCatalogIdentity!==false) throw new Error('alias audit identity boundary failed');
-          if(p.proximityOnlyBindingAllowed!==false||p.centralAliasIdentityReviewRequiredBeforeBinding!==true) throw new Error('alias audit review boundary failed');
-          if(s.catalogTotal!==2804||s.publicRuntimeTotal<=0||s.independentSourceGap<=0) throw new Error('alias audit catalog contract failed');
-          for(const r of x.reviewCandidates||[]){
-            if(r.name===r.candidateName) throw new Error(`alias candidate unexpectedly has identical raw names: ${r.googlePlaceId}`);
-            if(r.sourceAliasMayReplaceCatalogIdentity!==false||r.identityBindingChanges!==0||r.mayWriteDishEvidenceBeforeAliasReview!==false) throw new Error(`alias candidate mutation boundary failed: ${r.googlePlaceId}`);
-            if(r.reviewableByNonNameEvidence!==true||!(r.addressAgreement||r.postcodeAgreement)) throw new Error(`alias candidate lacks non-name evidence: ${r.googlePlaceId}`);
+          if(p.proximityOnlyBindingAllowed!==false||p.addressOrProximityMayEstablishAliasEquivalence!==false) throw new Error('address/proximity alias boundary failed');
+          if(p.sourceCommonNameBridgeMustBelongToSameOvertureEntity!==true||p.centralAliasIdentityReviewRequiredBeforeBinding!==true) throw new Error('source common-name bridge boundary failed');
+          if(s.catalogTotal!==2804||s.publicRuntimeTotal<=0||s.independentSourceGap!==296||s.overtureSchemaVersion!==2) throw new Error('alias audit catalog/source contract failed');
+          for(const r of x.aliasBridgeCandidates||[]){
+            if(r.sourceAliasBridgeEstablishedBySameOvertureEntity!==true) throw new Error(`missing same-entity alias bridge: ${r.googlePlaceId}`);
+            if(r.sourceAliasMayReplaceCatalogIdentity!==false||r.identityBindingChanges!==0||r.dishEvidenceChanges!==0) throw new Error(`alias candidate mutation boundary failed: ${r.googlePlaceId}`);
+            if(!r.matchedSourceCommonName||r.matchedSourceCommonNameSimilarity<0.82) throw new Error(`weak source common-name bridge: ${r.googlePlaceId}`);
           }
           console.log('ALIAS_AUDIT_CONTRACT='+JSON.stringify(s));
           NODE
@@ -50,6 +77,8 @@ jobs:
         with:
           name: overture-alias-candidate-audit
           path: |
+            /tmp/overture-name-rich.json
+            /tmp/overture-name-rich-summary.txt
             /tmp/overture-alias-audit.json
             /tmp/overture-alias-summary.txt
           retention-days: 7
