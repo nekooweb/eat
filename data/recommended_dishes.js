@@ -94,12 +94,6 @@ window.RECOMMENDED_DISHES = [
     checkedAt:'2026-09-06'
   },
   {
-    googlePlaceId:'ChIJ2yzmKgCNGGARujgyaVuRhy8',
-    dishes:['自制北京烤鸭','上海风炖鸭'],
-    sourceUrl:'https://gj8y401.gorp.jp/',
-    checkedAt:'2026-09-06'
-  },
-  {
     googlePlaceId:'ChIJzdH-Ym2NGGARNTgMz5QhTvw',
     dishes:['自制培根芝士汉堡','牛油果芝士汉堡'],
     sourceUrl:'https://folkburgersandbeers.owst.jp/',
