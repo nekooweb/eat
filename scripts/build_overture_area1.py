@@ -3,6 +3,10 @@
 
 This script reads Overture's public GeoParquet with DuckDB. It does not use an
 API key and does not promote rows into production. The output is a review input.
+
+The staging snapshot retains the source entity's primary and common names. Common
+names are source-provided aliases/language variants only; they never replace the
+catalog/runtime identity name by themselves.
 """
 
 import json
@@ -73,6 +77,15 @@ def is_food_candidate(basic_category, taxonomy):
     return any(token in haystack for token in FOOD_TOKENS)
 
 
+def retained_names(primary, names_doc):
+    """Keep only identity-safe source name facts needed for later alias review."""
+    common = names_doc.get('common') if isinstance(names_doc, dict) else None
+    return {
+        'primary': primary,
+        'common': common,
+    }
+
+
 def main():
     try:
         import duckdb
@@ -102,6 +115,7 @@ def main():
         SELECT
           id,
           names.primary AS name,
+          to_json(names) AS names_json,
           basic_category,
           to_json(taxonomy) AS taxonomy_json,
           confidence,
@@ -123,6 +137,8 @@ def main():
     columns = [item[0] for item in cursor.description]
     rows = []
     scanned = 0
+    rows_with_common_names = 0
+    common_name_values = 0
     for raw in cursor.fetchall():
         scanned += 1
         item = dict(zip(columns, raw))
@@ -136,9 +152,16 @@ def main():
         taxonomy = parse_json(item.get('taxonomy_json'))
         if not is_food_candidate(item.get('basic_category'), taxonomy):
             continue
+        names_doc = parse_json(item.get('names_json'))
+        names = retained_names(item.get('name'), names_doc)
+        common_values = [v.strip() for v in flatten_strings(names.get('common')) if isinstance(v, str) and v.strip()]
+        if common_values:
+            rows_with_common_names += 1
+            common_name_values += len(set(common_values))
         rows.append({
             'overtureId': item.get('id'),
             'name': item.get('name'),
+            'names': names,
             'basicCategory': item.get('basic_category'),
             'taxonomy': taxonomy,
             'confidence': item.get('confidence'),
@@ -154,7 +177,7 @@ def main():
 
     rows.sort(key=lambda row: (row['distanceMeters'], row.get('name') or '', row.get('overtureId') or ''))
     payload = {
-        'schemaVersion': 1,
+        'schemaVersion': 2,
         'source': 'Overture Maps Places public GeoParquet',
         'release': release,
         'scope': {
@@ -167,11 +190,16 @@ def main():
             'paidApiCalls': 0,
             'productionAdmission': False,
             'preciseRadiusApplied': True,
-            'preserveRecordSourcesForAttribution': True
+            'preserveRecordSourcesForAttribution': True,
+            'sourceNamesRetained': ['primary', 'common'],
+            'commonNamesAreAliasEvidenceOnly': True,
+            'commonNamesMayReplaceCatalogIdentity': False,
         },
         'summary': {
             'bboxRowsScanned': scanned,
-            'foodCandidatesInsideRadius': len(rows)
+            'foodCandidatesInsideRadius': len(rows),
+            'rowsWithCommonNames': rows_with_common_names,
+            'commonNameValues': common_name_values,
         },
         'rows': rows
     }
