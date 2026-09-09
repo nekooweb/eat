@@ -31,11 +31,23 @@ jobs:
         run: node scripts/audit_no_paid_apis.mjs
       - name: Check independent-source tooling syntax
         run: |
+          node --check scripts/independent_source_host_policy.mjs
+          node --check scripts/sanitize_independent_source_candidate_plan.mjs
+          node --check scripts/audit_independent_source_host_policy.mjs
+          node --check scripts/test_independent_source_host_policy.mjs
           node --check scripts/review_independent_dish_source_candidates_v3.mjs
           node --check scripts/apply_reviewed_independent_source_overlay.mjs
           node --check scripts/audit_reviewed_independent_source_overlay.mjs
+          node scripts/test_independent_source_host_policy.mjs
       - name: Rebuild current source runtime and queues
         run: python3 scripts/reload_data.py --public-only --outdir _audit/data-reload
+      - name: Sanitize candidate hosts before any network review
+        run: |
+          set -euo pipefail
+          node scripts/sanitize_independent_source_candidate_plan.mjs \
+            data/independent_dish_source_candidates.json \
+            /tmp/independent-dish-source-candidates.sanitized.json | tee /tmp/independent-source-host-sanitize-summary.json
+          node scripts/audit_independent_source_host_policy.mjs /tmp/independent-dish-source-candidates.sanitized.json
       - name: Review high-confidence Overture website proposals with monotonic HTTPS-first branch discovery
         env:
           INDEPENDENT_SOURCE_REVIEW_TIMEOUT_MS: "7000"
@@ -46,9 +58,10 @@ jobs:
         run: |
           set -euo pipefail
           node scripts/review_independent_dish_source_candidates_v3.mjs \
-            data/independent_dish_source_candidates.json \
+            /tmp/independent-dish-source-candidates.sanitized.json \
             data/reviewed_independent_dish_sources.json | tee /tmp/independent-source-review-summary.json
           test -s data/reviewed_independent_dish_sources.json
+          node scripts/audit_independent_source_host_policy.mjs data/reviewed_independent_dish_sources.json
           node - <<'NODE'
           const fs = require('fs');
           const x = JSON.parse(fs.readFileSync('data/reviewed_independent_dish_sources.json', 'utf8'));
