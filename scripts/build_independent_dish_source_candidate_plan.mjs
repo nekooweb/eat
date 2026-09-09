@@ -3,6 +3,13 @@ import fs from 'node:fs';
 import path from 'node:path';
 import vm from 'node:vm';
 import { fileURLToPath } from 'node:url';
+import {
+  INDEPENDENT_SOURCE_HOST_POLICY_VERSION,
+  excludedIndependentHostFamilies,
+  isExcludedIndependentHost,
+  normalizeHost,
+  safeIndependentUrl
+} from './independent_source_host_policy.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, '..');
@@ -28,6 +35,8 @@ function clean(value) {
   return String(value || '').replace(/\s+/g, ' ').trim();
 }
 
+// Syntactic parsing is kept separate so summary counters can distinguish an
+// invalid URL from a valid URL rejected by the central independent-source policy.
 function safeUrl(value) {
   try {
     const url = new URL(value);
@@ -40,20 +49,11 @@ function safeUrl(value) {
 }
 
 function excludedIndependentHost(host) {
-  const h = String(host || '').toLowerCase().replace(/^www\./, '');
-  if (/openstreetmap\.org$|hotpepper\.jp$|tabelog\.com$/.test(h)) return true;
-  if (/(^|\.)google\./.test(h) || /googleusercontent\.com$/.test(h)) return true;
-  if (/facebook\.com$|instagram\.com$|x\.com$|twitter\.com$|youtube\.com$|tiktok\.com$/.test(h)) return true;
-  // Restaurant directories / reservation aggregators are not independent sources.
-  if (/gnavi\.co\.jp$|retty\.me$|tripadvisor\.[a-z.]+$|yelp\.[a-z.]+$|foursquare\.com$/.test(h)) return true;
-  if (/loco\.yahoo\.co\.jp$|paypaygourmet\.yahoo\.co\.jp$|autoreserve\.com$|ekiten\.jp$/.test(h)) return true;
-  if (/restaurant\.ikyu\.com$|bar-navi\.suntory\.co\.jp$/.test(h)) return true;
-  return false;
+  return isExcludedIndependentHost(host);
 }
 
 function eligibleIndependentUrl(value) {
-  const url = safeUrl(value);
-  return Boolean(url && !excludedIndependentHost(url.hostname));
+  return Boolean(safeIndependentUrl(value));
 }
 
 function normalizeName(value) {
@@ -142,11 +142,11 @@ function flattenStrings(value) {
 function independentUrls(value) {
   return [...new Set(flattenStrings(value)
     .filter(eligibleIndependentUrl)
-    .map((item) => safeUrl(item).toString()))];
+    .map((item) => safeIndependentUrl(item).toString()))];
 }
 
 function hostList(urls) {
-  return [...new Set(urls.map((value) => new URL(value).hostname.toLowerCase().replace(/^www\./, '')))];
+  return [...new Set(urls.map((value) => normalizeHost(new URL(value).hostname)))];
 }
 
 const queueDoc = readJson('google_inventory_detail_queue.json');
@@ -210,8 +210,8 @@ for (const record of indexRecords) {
     const url = safeUrl(value);
     return Boolean(url && excludedIndependentHost(url.hostname));
   }).length;
-  const pageUrl = eligibleIndependentUrl(record.pageUrl) ? safeUrl(record.pageUrl).toString() : null;
-  const menuUrls = [...new Set((record.menuUrls || []).filter(eligibleIndependentUrl).map((value) => safeUrl(value).toString()))];
+  const pageUrl = eligibleIndependentUrl(record.pageUrl) ? safeIndependentUrl(record.pageUrl).toString() : null;
+  const menuUrls = [...new Set((record.menuUrls || []).filter(eligibleIndependentUrl).map((value) => safeIndependentUrl(value).toString()))];
   if (!pageUrl && !menuUrls.length) {
     invalidUrls += 1;
     continue;
@@ -423,7 +423,9 @@ const payload = {
     independentHttpUrlRequired: true,
     socialUrlsExcluded: true,
     thirdPartyAggregatorUrlsExcluded: true,
-    excludedAggregatorFamilies: ['Gurunavi', 'Retty', 'Tripadvisor', 'Yelp', 'Foursquare', 'Yahoo Loco/PayPay Gourmet', 'AutoReserve', 'Ekiten', 'Ikyu Restaurant', 'Suntory Bar-Navi'],
+    independentSourceHostPolicyVersion: INDEPENDENT_SOURCE_HOST_POLICY_VERSION,
+    independentSourceHostPolicySource: 'scripts/independent_source_host_policy.mjs',
+    excludedAggregatorFamilies: excludedIndependentHostFamilies(),
     proximityOnlyBindingAllowed: false,
     dishEvidencePromotionBeforeIdentityReviewAllowed: false,
     centralIdentityReviewRequired: true,

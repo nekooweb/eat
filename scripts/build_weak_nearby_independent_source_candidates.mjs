@@ -3,6 +3,11 @@ import fs from 'node:fs';
 import path from 'node:path';
 import vm from 'node:vm';
 import { fileURLToPath } from 'node:url';
+import {
+  INDEPENDENT_SOURCE_HOST_POLICY_VERSION,
+  filterIndependentUrls,
+  normalizeHost
+} from './independent_source_host_policy.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, '..');
@@ -13,7 +18,6 @@ const AMBIGUITY_GAP_M = Math.max(3, Math.min(20, Number(process.env.WEAK_SOURCE_
 const MIN_NAME_SIMILARITY = Math.max(0.25, Math.min(0.75, Number(process.env.WEAK_SOURCE_MIN_NAME_SIMILARITY || 0.45)));
 const GRID_DEG = 0.0015;
 const EARTH_RADIUS_M = 6371000;
-const BANNED_HOST = /(?:^|\.)(?:facebook\.com|instagram\.com|x\.com|twitter\.com|youtube\.com|tiktok\.com|tabelog\.com|hotpepper\.jp|google\.[a-z.]+|googleusercontent\.com|gnavi\.co\.jp|retty\.me|foursquare\.com|autoreserve\.com|ekiten\.jp|hitosara\.com|localplace\.jp|demae-can\.com|epark\.jp|ubereats\.com|wolt\.com)$/i;
 
 function readJson(name) { return JSON.parse(fs.readFileSync(path.join(DATA, name), 'utf8')); }
 function loadWindowFile(name) {
@@ -23,17 +27,6 @@ function loadWindowFile(name) {
   return sandbox.window;
 }
 function clean(value) { return String(value || '').replace(/\s+/g, ' ').trim(); }
-function safeUrl(value) {
-  try {
-    const url = new URL(value);
-    if (!['http:', 'https:'].includes(url.protocol)) return null;
-    url.hash = '';
-    const host = url.hostname.toLowerCase().replace(/^www\./, '');
-    if (BANNED_HOST.test(host)) return null;
-    if (/tripadvisor\.|yelp\./i.test(host) || host === 'loco.yahoo.co.jp' || host === 'paypaygourmet.yahoo.co.jp' || host === 'restaurant.ikyu.com' || host === 'bar-navi.suntory.co.jp') return null;
-    return url;
-  } catch { return null; }
-}
 function flattenStrings(value) {
   if (value == null) return [];
   if (typeof value === 'string') return [value];
@@ -42,9 +35,9 @@ function flattenStrings(value) {
   return [];
 }
 function independentUrls(value) {
-  return [...new Set(flattenStrings(value).map(safeUrl).filter(Boolean).map((url) => url.toString()))];
+  return filterIndependentUrls(flattenStrings(value));
 }
-function hostList(urls) { return [...new Set(urls.map((value) => new URL(value).hostname.toLowerCase().replace(/^www\./, '')))]; }
+function hostList(urls) { return [...new Set(urls.map((value) => normalizeHost(new URL(value).hostname)))]; }
 function normalizeName(value) {
   return clean(value).normalize('NFKC').toLowerCase().replace(/株式会社|有限会社|合同会社/g, '')
     .replace(/[\s　・･’'"\-—_()（）\[\]【】「」『』&＆!！?？.,，。:：/\\]+/g, '');
@@ -223,7 +216,8 @@ const payload = {
     standardIndependentProposalRowsExcluded: true,
     multipleDifferentHostCandidatesWithinAmbiguityGapRejected: true,
     thirdPartyAggregatorUrlsExcluded: true,
-    addedExcludedAggregatorFamilies: ['Hitosara', 'Localplace', 'Demae-can', 'EPARK', 'Uber Eats', 'Wolt']
+    independentSourceHostPolicyVersion: INDEPENDENT_SOURCE_HOST_POLICY_VERSION,
+    independentSourceHostPolicySource: 'scripts/independent_source_host_policy.mjs'
   },
   summary,
   rows
