@@ -19,5 +19,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          gh workflow run review-weak-nearby-independent-sources.yml --ref main
+          gh workflow run review-weak-nearby-independent-sources.yml \
+            -R nekooweb/eat \
+            --ref main
           echo "Dispatched hardened review-weak-nearby-independent-sources.yml once on main."
