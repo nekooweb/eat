@@ -56,6 +56,43 @@ The PR Review rebuilds current public inputs and runs the weak plan with the wor
 
 The standard 29-candidate plan currently contains none of the newly identified aggregator/delivery hosts, so this PR does not rewrite the standard candidate threshold or current standard data. A future defense-in-depth change may centralize the host policy across all independent-source reviewers/planners, but it is not required to make this verified weak-lane correction safe.
 
-## Execution boundary after merge
+## Controlled weak review after merge
 
-After this hardening reaches `main`, one controlled manual run of `review-weak-nearby-independent-sources.yml` is justified because the network-review input is now only five pre-filtered candidates. The workflow must retain the unchanged strict v3 identity gate. If that single run yields no new strict approvals, do not repeat the weak lane without new source evidence or a new matching method.
+One controlled `review-weak-nearby-independent-sources.yml` run was executed after the hardening reached `main`. A temporary path-limited dispatcher was used because the workflow is manual-only. The first dispatcher attempt failed before dispatch because `gh workflow run` had no repository context; no reviewer or data mutation occurred in that failed attempt. The corrected dispatcher used explicit `-R nekooweb/eat` context and successfully dispatched exactly one review run.
+
+The hardened plan generated exactly 5 candidates at the production settings:
+
+- `proposalRows = 5`;
+- `lowNameSimilarityRejected = 212`;
+- `ambiguousNearby = 9`;
+- all 5 were below the standard 0.82 name-compatibility threshold and were therefore only weak-review candidates;
+- the two real co-located false-positive regression IDs remained blocked before review.
+
+The unchanged strict v3 reviewer rejected all 5 candidates and approved none:
+
+- `newApprovedRows = 0`;
+- existing approved rows preserved = 3;
+- rejected rows = 5;
+- `non_https_final_url = 1`;
+- `fetch_failed = 3`;
+- `no_strong_page_name_evidence = 1`;
+- accepted location signals = 0;
+- identity changes = 0;
+- dish evidence created by review = 0;
+- paid Google data API calls = 0.
+
+The three previously approved independent sources (`Al Mina`, `la cantina cancemi`, and `和風居酒屋「一喜一笑」`) remain the only approved rows and were preserved unchanged. The independent-source gap remains 296, and public dish coverage remains 556 strict recommended / 651 featured / 711 display-known rows out of 1,422 public runtime rows. Database contract validation after the controlled review also passed.
+
+The workflow committed the review audit/rebuilt derived files as commit `e50d5e7` (`Review strict nearby independent dish sources`). This commit records the five rejected review attempts but does not add a new source binding.
+
+## Current execution boundary
+
+The weak-nearby lane is considered exhausted for the current retained source snapshot. Do not repeat it without new source evidence or a materially new matching method. In particular:
+
+- do not lower the 0.45 weak-proposal threshold merely to recover more candidates;
+- do not use address/postcode/proximity as alias equivalence;
+- do not bypass HTTPS or strong page-name evidence requirements;
+- do not retry the same five failed/rejected candidates as a routine loop;
+- continue new dish-source work through genuinely new evidence surfaces rather than repeated weak-nearby review.
+
+The temporary dispatcher and sentinel used for the controlled run are removed immediately after this checkpoint so they cannot retrigger later.
