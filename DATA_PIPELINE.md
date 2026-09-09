@@ -1,15 +1,26 @@
 # 数据载入、重置和发布流程
 
-更新日期：2026-09-08。
+更新日期：2026-09-09。
 
-## 执行状态：修复准备好，后续按需运行
+## 执行状态：主线已合并；后续按需运行
 
-按 2026-09-08 用户最新要求，停止继续采集、持续重建和本地主库替换。本次修改保留在 [PR #32](https://github.com/nekooweb/eat/pull/32)，未合并，未据此启动新生产发布。
+2026-09-08 的数据载入修复 PR #32 已合并到 `main`。此前这里“PR #32 未合并”的描述已经过期。当前继续执行其既定边界：全量 reset workflow 为 manual-only；Pages 常规构建只执行 `--public-only`，不重置主库。
 
-此前完整离线验证及扩展的 11 项回归已通过 [run 34216698239](https://github.com/nekooweb/eat/actions/runs/34216698239)。这些是已执行的验证记录，不是正在运行的任务。本地主库未用重建产物替换，旧库与恢复资料都保留。
+此前完整离线验证及扩展的 11 项回归已通过 [run 34216698239](https://github.com/nekooweb/eat/actions/runs/34216698239)。这些是已执行的验证记录，不代表当前正在运行任务，也不能单独证明某个本地主库副本已经替换。
 
-全量 reset workflow 现为 manual-only。Pages 常规构建只执行 `--public-only`，不重置主库。后续字段和命令以 [字段契约](DATA_LOADING_FIELDS.md)为准。
+后续字段和命令以 [字段契约](DATA_LOADING_FIELDS.md)为准。
 
+## 0. 工具身份名称与来源别名
+
+从 2026-09-09 起，下游采集/审计工具必须区分 catalog identity name 与来源名称：
+
+- `googlePlaceId` 仍是冻结 catalog 的身份键；
+- 工具任务的 `name` 只能来自当前生成的 runtime/catalog row；
+- `officialName`、页面标题、来源名称只作为 source alias / identity evidence；
+- runtime 名称未知时跳过该工具任务，不允许用来源别名补成身份名称；
+- 来源别名可以用于页面身份文字排除或验证，但不得写回/替代 catalog name。
+
+回归例：Place ID `ChIJAQA0URyMGGARcHdnj-vbe6s` 的工具身份名必须保持 `Maidreamin Akihabara Himitsukichi`；即使来源页面出现 `めいどりーみん 秋葉原 AKIBA`，后者也只能作为 source alias。PR Review 在 `--public-only` 后运行 `scripts/test_tool_identity_name_contract.mjs` 验证此契约。
 
 ## 1. 当前唯一离线入口
 
@@ -64,6 +75,7 @@
 - 公开营业时间只保留经过语义验证的统一字段；来源原文保存在维护数据及主库。
 - 推荐菜和特色菜保留既有来源规则，拒绝 category/name/brand inference。
 - 未取得的数据保持未知；网络失败不当作闭店，不覆盖已知来源事实。
+- 来源侧名称、官方页面名称或语言变体不能自动替换工具/runtime 的 catalog identity name。
 
 ## 5. 任务与失败状态
 
@@ -92,7 +104,7 @@ Pages 装配以每个生成 JS 的 SHA-256 前缀替换旧固定查询版本，�
 
 ## 8. 当前发布的实际边界
 
-Pages 通过统一入口验证公开 runtime 与队列；SQLite 校验由独立数据库契约/手动全量流程负责。浏览器仍消费 generated runtime；SQLite recommendation.shadow.json 尚未成为唯一发布源。本次修复消除的是构建顺序和版本脱节，不是一次未经回归的 eligibility 改写。
+Pages 通过统一入口验证公开 runtime 与队列；SQLite 校验由独立数据库契约/手动全量流程负责。浏览器仍消费 generated runtime；SQLite recommendation.shadow.json 尚未成为唯一发布源。数据载入修复消除的是构建顺序和版本脱节，不是一次未经回归的 eligibility 改写。
 
 本地经过校验的主库副本可由 GitHub artifact 恢复。个人电脑离线不会自动同步到 GitHub；本地新增证据需要显式交接给维护输入或未来的直接主库发布器。
 
@@ -102,4 +114,4 @@ Pages 通过统一入口验证公开 runtime 与队列；SQLite 校验由独立�
 
 清理前原始输入：artifact `data-loading-input-backup-34214401849`；重建数据库和输出：`data-loading-reset-result-34215698634`。本地另有旧主库备份，详见 [当天日志](logs/2026-09-08-data-loading-reset.md)。
 
-未来验证必须区分：代码已提交、离线重建成功、主库已更新、网页已发布、网络资料已采集。这五个状态不能互相替代。
+2026-09-09 的工具身份名称修复详见 [对应日志](logs/2026-09-09-tool-identity-name-contract.md)。未来验证必须继续区分：代码已提交、离线重建成功、主库已更新、网页已发布、网络资料已采集。这五个状态不能互相替代。
