@@ -32,7 +32,7 @@
     "ordinaryMenuDishBecomesFeaturedOnly": true,
     "shardIndex": 0,
     "shardCount": 1,
-    "source": "already-bound merchant/official pages reviewed from recommendation-marker miss audit",
+    "source": "reviewed bound source page structural adjacency evidence",
     "eligibleBindings": [
       "strict_auto",
       "manual_exact"
@@ -133,37 +133,42 @@
     "exactFeaturedEvidenceLabelRequired": true,
     "genericCuisinePromotionAllowed": false,
     "automaticDistanceOnlyPromotionAllowed": false,
-    "sourceAuditRunId": "34371635502",
+    "sourceAuditRunId": "34372222834",
     "sourceHostMustRemainBoundToIdentity": true,
     "concreteSourceNativeDishInSameSnippetRequired": true,
-    "alcoholOnlyPromotionAllowed": false
+    "alcoholOnlyPromotionAllowed": false,
+    "sourceDomainMustAlreadyBeBoundToIdentity": true,
+    "reviewedStructuralAdjacencyRequired": true,
+    "exactSourceNativeProductRequired": true,
+    "explicitRecommendationOrPrideMarkerRequired": true,
+    "automaticAdjacencyPromotionAllowed": false
   },
   "summary": {
     "catalogTotal": 2804,
     "publicRuntimeTotal": 1422,
-    "auditRunId": "34371635502",
-    "reviewedRules": 7,
-    "recommendationRestaurants": 7,
-    "recommendationItems": 7,
+    "auditRunId": "34372222834",
+    "reviewedRules": 3,
+    "recommendationRestaurants": 3,
+    "recommendationItems": 3,
     "previousEvidence": {
-      "recommendationRestaurants": 539,
-      "featuredRestaurants": 647,
-      "evidenceRestaurants": 709,
-      "recommendationItems": 958,
-      "featuredItems": 2504
-    },
-    "freshCrawlEvidence": {
-      "recommendationRestaurants": 7,
-      "featuredRestaurants": 0,
-      "evidenceRestaurants": 7,
-      "recommendationItems": 7,
-      "featuredItems": 0
-    },
-    "mergedEvidence": {
       "recommendationRestaurants": 546,
       "featuredRestaurants": 647,
       "evidenceRestaurants": 714,
       "recommendationItems": 965,
+      "featuredItems": 2504
+    },
+    "freshCrawlEvidence": {
+      "recommendationRestaurants": 3,
+      "featuredRestaurants": 0,
+      "evidenceRestaurants": 3,
+      "recommendationItems": 3,
+      "featuredItems": 0
+    },
+    "mergedEvidence": {
+      "recommendationRestaurants": 549,
+      "featuredRestaurants": 647,
+      "evidenceRestaurants": 714,
+      "recommendationItems": 968,
       "featuredItems": 2504
     },
     "specificityCorrection": {
@@ -171,7 +176,7 @@
       "correctedItems": 0,
       "duplicateItemsRemoved": 0,
       "ruleCounts": {},
-      "recommendationItemsAfterCorrection": 965,
+      "recommendationItemsAfterCorrection": 968,
       "featuredItemsAfterCorrection": 2504
     }
   },
@@ -6475,7 +6480,18 @@
     {
       "googlePlaceId": "ChIJ72nZrlqNGGARuIt0IyoUDiU",
       "name": "カレーハウスCoCo壱番屋 水道橋外堀通り店",
-      "recommendedDishes": [],
+      "recommendedDishes": [
+        {
+          "nameZh": "甜味猪肉咖喱",
+          "nameJa": "甘口ポークカレー",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.ichibanya.co.jp/menu/detail.html?id=1294",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "reviewed-adjacency:34372222834:coco-sweet-pork-curry-recommended-for-mild-kids",
+          "evidenceSnippet": "甘口ポークカレー ｜ 辛さが苦手な方や、お子さまにもオススメ！"
+        }
+      ],
       "featuredDishes": [
         {
           "nameZh": "乌冬面",
@@ -20494,7 +20510,18 @@
     {
       "googlePlaceId": "ChIJjy0wVWiMGGARjpbwtjgucmo",
       "name": "宝来屋本店",
-      "recommendedDishes": [],
+      "recommendedDishes": [
+        {
+          "nameZh": "栗子羊羹",
+          "nameJa": "栗羊羹",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://wagashi.houraiya.co.jp/?page_id=75",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "reviewed-adjacency:34372222834:houraiya-kuri-yokan-pride",
+          "evidenceSnippet": "『栗羊羹』 ｜ じっくり練り上げた羊羹の中に、ふんだんに栗が入った当店自慢の一品です。"
+        }
+      ],
       "featuredDishes": [
         {
           "nameZh": "大福",
@@ -34677,7 +34704,18 @@
     {
       "googlePlaceId": "ChIJV92zNT6MGGAROru704vXOho",
       "name": "サンマルクカフェ",
-      "recommendedDishes": [],
+      "recommendedDishes": [
+        {
+          "nameZh": "蜜香红薯巧克力可颂",
+          "nameJa": "薫る蜜「芋」Premiumチョコクロ",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.saint-marc-hd.com/saintmarccafe/shop/491/menu/",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "reviewed-adjacency:34372222834:saintmarc-sweetpotato-premium-chococro-recommend",
+          "evidenceSnippet": "【期間限定】薫る蜜「芋」Premiumチョコクロ ｜ おすすめ商品"
+        }
+      ],
       "featuredDishes": [
         {
           "nameZh": "三明治",

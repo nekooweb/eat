@@ -7,21 +7,21 @@
     "publicRuntimeTotal": 1422,
     "unpublishedPlaceIdOnly": 1382,
     "runtimeBaselineComplete": true,
-    "recommendedDishesKnown": 574,
+    "recommendedDishesKnown": 577,
     "featuredDishesKnown": 656,
     "displayDishKnown": 722,
     "noDishGap": 700,
-    "recommendationGap": 848,
-    "recommendationGapWithAnyKnownSourceUrl": 575,
-    "recommendationGapWithCrawlableOfficialUrl": 241,
+    "recommendationGap": 845,
+    "recommendationGapWithAnyKnownSourceUrl": 572,
+    "recommendationGapWithCrawlableOfficialUrl": 238,
     "recommendationGapWithRetainedThirdPartyOnly": 318,
     "recommendationGapNeedingNewDishSource": 289,
     "actionCounts": {
-      "collect_strict_recommended_dishes": 241,
+      "collect_strict_recommended_dishes": 238,
       "extract_retained_dish_source": 318,
       "find_independent_dish_source": 289,
       "collect_source_backed_featured_dishes": 66,
-      "dish_complete": 508
+      "dish_complete": 511
     },
     "primaryGoal": "source-backed dish coverage",
     "nonDishMetadataCreatesTasks": false,
@@ -71,30 +71,6 @@
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": false,
         "addressKnown": false,
-        "cuisineKnown": true
-      },
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1285
-    },
-    {
-      "googlePlaceId": "ChIJV92zNT6MGGAROru704vXOho",
-      "name": "サンマルクカフェ",
-      "basicInfoState": "canonical",
-      "cuisine": "咖啡",
-      "distanceMeters": 608,
-      "sourceUrlCount": 9,
-      "crawlableOfficialUrlCount": 9,
-      "retainedThirdPartyUrlCount": 0,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 6,
-      "dishGaps": [
-        "recommendedDishes"
-      ],
-      "secondaryMetadata": {
-        "openingHoursKnown": true,
-        "lunchBudgetKnown": false,
-        "dinnerBudgetKnown": false,
-        "addressKnown": true,
         "cuisineKnown": true
       },
       "nextAction": "collect_strict_recommended_dishes",
@@ -1779,30 +1755,6 @@
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": false,
         "addressKnown": false,
-        "cuisineKnown": true
-      },
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1145
-    },
-    {
-      "googlePlaceId": "ChIJ72nZrlqNGGARuIt0IyoUDiU",
-      "name": "カレーハウスCoCo壱番屋 水道橋外堀通り店",
-      "basicInfoState": "canonical",
-      "cuisine": "咖喱",
-      "distanceMeters": 781,
-      "sourceUrlCount": 2,
-      "crawlableOfficialUrlCount": 2,
-      "retainedThirdPartyUrlCount": 0,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 6,
-      "dishGaps": [
-        "recommendedDishes"
-      ],
-      "secondaryMetadata": {
-        "openingHoursKnown": true,
-        "lunchBudgetKnown": false,
-        "dinnerBudgetKnown": false,
-        "addressKnown": true,
         "cuisineKnown": true
       },
       "nextAction": "collect_strict_recommended_dishes",
@@ -6050,30 +6002,6 @@
       "retainedThirdPartyUrlCount": 0,
       "recommendedDishesKnown": 0,
       "featuredDishesKnown": 1,
-      "dishGaps": [
-        "recommendedDishes"
-      ],
-      "secondaryMetadata": {
-        "openingHoursKnown": false,
-        "lunchBudgetKnown": false,
-        "dinnerBudgetKnown": false,
-        "addressKnown": true,
-        "cuisineKnown": true
-      },
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1115
-    },
-    {
-      "googlePlaceId": "ChIJjy0wVWiMGGARjpbwtjgucmo",
-      "name": "宝来屋本店",
-      "basicInfoState": "source_matched",
-      "cuisine": "日式",
-      "distanceMeters": 1178,
-      "sourceUrlCount": 1,
-      "crawlableOfficialUrlCount": 1,
-      "retainedThirdPartyUrlCount": 0,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 2,
       "dishGaps": [
         "recommendedDishes"
       ],
@@ -26141,6 +26069,28 @@
       "priorityScore": 0
     },
     {
+      "googlePlaceId": "ChIJV92zNT6MGGAROru704vXOho",
+      "name": "サンマルクカフェ",
+      "basicInfoState": "canonical",
+      "cuisine": "咖啡",
+      "distanceMeters": 608,
+      "sourceUrlCount": 9,
+      "crawlableOfficialUrlCount": 9,
+      "retainedThirdPartyUrlCount": 0,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 6,
+      "dishGaps": [],
+      "secondaryMetadata": {
+        "openingHoursKnown": true,
+        "lunchBudgetKnown": false,
+        "dinnerBudgetKnown": false,
+        "addressKnown": true,
+        "cuisineKnown": true
+      },
+      "nextAction": "dish_complete",
+      "priorityScore": 0
+    },
+    {
       "googlePlaceId": "ChIJe-OOg2mNGGARw1nH63o3aNw",
       "name": "The Carne House",
       "basicInfoState": "source_matched",
@@ -27850,6 +27800,28 @@
         "openingHoursKnown": false,
         "lunchBudgetKnown": true,
         "dinnerBudgetKnown": true,
+        "addressKnown": true,
+        "cuisineKnown": true
+      },
+      "nextAction": "dish_complete",
+      "priorityScore": 0
+    },
+    {
+      "googlePlaceId": "ChIJ72nZrlqNGGARuIt0IyoUDiU",
+      "name": "カレーハウスCoCo壱番屋 水道橋外堀通り店",
+      "basicInfoState": "canonical",
+      "cuisine": "咖喱",
+      "distanceMeters": 781,
+      "sourceUrlCount": 2,
+      "crawlableOfficialUrlCount": 2,
+      "retainedThirdPartyUrlCount": 0,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 6,
+      "dishGaps": [],
+      "secondaryMetadata": {
+        "openingHoursKnown": true,
+        "lunchBudgetKnown": false,
+        "dinnerBudgetKnown": false,
         "addressKnown": true,
         "cuisineKnown": true
       },
@@ -33328,6 +33300,28 @@
         "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": true,
+        "addressKnown": true,
+        "cuisineKnown": true
+      },
+      "nextAction": "dish_complete",
+      "priorityScore": 0
+    },
+    {
+      "googlePlaceId": "ChIJjy0wVWiMGGARjpbwtjgucmo",
+      "name": "宝来屋本店",
+      "basicInfoState": "source_matched",
+      "cuisine": "日式",
+      "distanceMeters": 1178,
+      "sourceUrlCount": 1,
+      "crawlableOfficialUrlCount": 1,
+      "retainedThirdPartyUrlCount": 0,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 2,
+      "dishGaps": [],
+      "secondaryMetadata": {
+        "openingHoursKnown": false,
+        "lunchBudgetKnown": false,
+        "dinnerBudgetKnown": false,
         "addressKnown": true,
         "cuisineKnown": true
       },
