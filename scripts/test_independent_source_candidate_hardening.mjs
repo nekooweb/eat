@@ -4,6 +4,10 @@ import os from 'node:os';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
+import {
+  INDEPENDENT_SOURCE_HOST_POLICY_VERSION,
+  isExcludedIndependentHost
+} from './independent_source_host_policy.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, '..');
@@ -15,24 +19,19 @@ const KNOWN_COLOCATED_FALSE_POSITIVE_IDS = new Set([
   'ChIJ653a_raNGGARTTmzcG148NY'  // はなくま -> nearby Renoir in audit
 ]);
 
-function bannedHost(host) {
-  const h = String(host || '').toLowerCase().replace(/^www\./, '');
-  if (/hitosara\.com$|localplace\.jp$|demae-can\.com$|epark\.jp$|ubereats\.com$|wolt\.com$/.test(h)) return true;
-  if (/gnavi\.co\.jp$|retty\.me$|tripadvisor\.|yelp\.|foursquare\.com$|autoreserve\.com$|ekiten\.jp$/.test(h)) return true;
-  if (h === 'loco.yahoo.co.jp' || h === 'paypaygourmet.yahoo.co.jp' || h === 'restaurant.ikyu.com' || h === 'bar-navi.suntory.co.jp') return true;
-  if (/facebook\.com$|instagram\.com$|x\.com$|twitter\.com$|youtube\.com$|tiktok\.com$/.test(h)) return true;
-  return /tabelog\.com$|hotpepper\.jp$|googleusercontent\.com$/.test(h) || /(^|\.)google\./.test(h);
-}
-
 function assertCandidateHosts(rows, label) {
   for (const row of rows || []) {
     for (const host of row.candidateHosts || []) {
-      if (bannedHost(host)) throw new Error(`${label} leaked excluded third-party host ${host} for ${row.googlePlaceId}`);
+      if (isExcludedIndependentHost(host)) throw new Error(`${label} leaked excluded third-party host ${host} for ${row.googlePlaceId}`);
     }
   }
 }
 
 const standard = JSON.parse(fs.readFileSync(path.join(DATA, 'independent_dish_source_candidates.json'), 'utf8'));
+if (standard.policy?.independentSourceHostPolicyVersion !== INDEPENDENT_SOURCE_HOST_POLICY_VERSION
+  || standard.policy?.independentSourceHostPolicySource !== 'scripts/independent_source_host_policy.mjs') {
+  throw new Error('standard independent-source planner is not pinned to central host policy');
+}
 assertCandidateHosts(standard.rows, 'standard plan');
 
 const run = spawnSync(process.execPath, [path.join(HERE, 'build_weak_nearby_independent_source_candidates.mjs'), output], {
@@ -67,6 +66,10 @@ if (policy.minimumNameSimilarityRequiredForProposal !== true || Number(policy.mi
 if (policy.finalPageNameAndLocationReviewRequired !== true || policy.dishEvidencePromotionBeforeIdentityReviewAllowed !== false) {
   throw new Error('final strict page review boundary missing');
 }
+if (policy.independentSourceHostPolicyVersion !== INDEPENDENT_SOURCE_HOST_POLICY_VERSION
+  || policy.independentSourceHostPolicySource !== 'scripts/independent_source_host_policy.mjs') {
+  throw new Error('weak independent-source planner is not pinned to central host policy');
+}
 if (summary.catalogTotal !== 2804 || summary.publicRuntimeTotal <= 0 || summary.currentIndependentDishSourceGap <= 0) {
   throw new Error('weak source hardening catalog contract failed');
 }
@@ -84,5 +87,6 @@ console.log(JSON.stringify({
   weakAmbiguousNearby: Number(summary.ambiguousNearby || 0),
   minimumNameSimilarity: MIN_NAME_SIMILARITY,
   knownCoLocatedFalsePositivesBlocked: KNOWN_COLOCATED_FALSE_POSITIVE_IDS.size,
-  expandedAggregatorHostsBlocked: true
+  independentSourceHostPolicyVersion: INDEPENDENT_SOURCE_HOST_POLICY_VERSION,
+  centralHostPolicyAppliedToStandardAndWeak: true
 }));
