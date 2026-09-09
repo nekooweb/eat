@@ -1,0 +1,65 @@
+name: Audit recommendation marker adjacency
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.recommendation-adjacency-audit-run'
+
+permissions:
+  contents: read
+  actions: read
+
+env:
+  SOURCE_RUN_ID: '34371635502'
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Rebuild current public runtime
+        run: |
+          set -euo pipefail
+          node scripts/audit_no_paid_apis.mjs
+          python scripts/reload_data.py --public-only --outdir /tmp/recommendation-adjacency-reload
+      - name: Download previous 69-restaurant marker-miss audit
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: nekooweb/eat
+          run-id: ${{ env.SOURCE_RUN_ID }}
+          name: recommendation-miss-total
+          path: /tmp/previous-marker-audit
+      - name: Audit title and adjacent blocks only
+        env:
+          RECOMMENDATION_ADJACENCY_FETCH_TIMEOUT_MS: '10000'
+          RECOMMENDATION_ADJACENCY_WORKERS: '12'
+        run: |
+          set -euo pipefail
+          node scripts/audit_recommendation_marker_adjacency.mjs \
+            /tmp/previous-marker-audit/recommendation-miss-total.json \
+            /tmp/recommendation-adjacency.json | tee /tmp/recommendation-adjacency.log
+          node - <<'NODE'
+          const fs=require('fs');
+          const x=JSON.parse(fs.readFileSync('/tmp/recommendation-adjacency.json','utf8'));
+          if(x.policy?.auditOnly!==true||x.policy?.paidGoogleDataApiCalls!==0||x.policy?.identityMutationAllowed!==false||x.policy?.automaticPromotionAllowed!==false) throw new Error('adjacency audit crossed mutation boundary');
+          if(x.summary?.catalogTotal!==2804||x.summary?.publicRuntimeTotal!==1422) throw new Error('adjacency baseline mismatch');
+          if(x.summary?.priorMarkerMissRestaurants!==69) throw new Error(`unexpected prior marker miss count: ${x.summary?.priorMarkerMissRestaurants}`);
+          console.log('RECOMMENDATION_ADJACENCY_SUMMARY='+JSON.stringify(x.summary));
+          NODE
+      - uses: actions/upload-artifact@v4
+        with:
+          name: recommendation-marker-adjacency
+          path: |
+            /tmp/recommendation-adjacency.json
+            /tmp/recommendation-adjacency.log
+          retention-days: 7
