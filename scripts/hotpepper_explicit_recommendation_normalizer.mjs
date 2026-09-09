@@ -184,6 +184,10 @@ const RULES = [
   [/炙り明太子/i, '炙烤明太子', 'aburi-mentaiko'],
   [/牛スジ煮込み/i, '炖牛筋', 'beef-tendon-stew'],
   [/オリーブ牛のグリル/i, '烤橄榄牛', 'olive-beef-grill'],
+  [/とろたくタワー/i, '金枪鱼腌萝卜塔', 'torotaku-tower'],
+  [/八寸八種盛り合(?:せ|わせ)|彩り八寸八種盛り/i, '八寸八种拼盘', 'hassun-eight-item-platter'],
+  [/仕入れによって変わるチーズ/i, '当日精选奶酪', 'daily-selected-cheese'],
+  [/豚バラ肉と野菜のマリアージュ/i, '猪五花肉配蔬菜', 'pork-belly-vegetables'],
   [/点心/i, '点心', 'dim-sum']
 ];
 
