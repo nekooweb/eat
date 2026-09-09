@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-09T15:26:03.244Z",
+  "generatedAt": "2026-09-09T15:29:01.352Z",
   "policy": {
     "catalogIdentityKey": "frozen Place ID only",
     "catalogTotal": 2804,
@@ -15,14 +15,14 @@
   },
   "summary": {
     "publicRuntimeTotal": 1422,
-    "recommendationGap": 863,
-    "dishWorkRows": 923,
+    "recommendationGap": 861,
+    "dishWorkRows": 922,
     "shards": 8,
     "laneCounts": {
       "official_crawl": 248,
-      "retained_source_mining": 326,
+      "retained_source_mining": 324,
       "independent_source_discovery": 289,
-      "official_or_retained_featured": 60
+      "official_or_retained_featured": 61
     },
     "shardCounts": [
       {
@@ -37,10 +37,10 @@
       },
       {
         "shard": 1,
-        "total": 119,
+        "total": 118,
         "lanes": {
           "official_crawl": 32,
-          "retained_source_mining": 38,
+          "retained_source_mining": 37,
           "independent_source_discovery": 39,
           "official_or_retained_featured": 10
         }
@@ -80,9 +80,9 @@
         "total": 104,
         "lanes": {
           "official_crawl": 36,
-          "retained_source_mining": 36,
+          "retained_source_mining": 35,
           "independent_source_discovery": 27,
-          "official_or_retained_featured": 5
+          "official_or_retained_featured": 6
         }
       },
       {
@@ -2781,20 +2781,6 @@
       "sourceUrlCount": 1,
       "recommendedDishesKnown": 0,
       "featuredDishesKnown": 6
-    },
-    {
-      "googlePlaceId": "ChIJ1VVZYwGMGGARXP0y20DXT4E",
-      "name": "神田焼肉 俺の肉 本店",
-      "lane": "retained_source_mining",
-      "nextAction": "extract_retained_dish_source",
-      "shard": 1,
-      "priorityScore": 1070,
-      "cuisine": "焼肉・ホルモン",
-      "crawlableOfficialUrlCount": 0,
-      "retainedThirdPartyUrlCount": 1,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 5
     },
     {
       "googlePlaceId": "ChIJbelw0xyNGGARxidm5TuDQ70",
@@ -9433,20 +9419,6 @@
       "featuredDishesKnown": 0
     },
     {
-      "googlePlaceId": "ChIJeyv8ydyNGGARioyjbHzl6Ec",
-      "name": "食堂 新",
-      "lane": "retained_source_mining",
-      "nextAction": "extract_retained_dish_source",
-      "shard": 5,
-      "priorityScore": 1095,
-      "cuisine": "居酒屋",
-      "crawlableOfficialUrlCount": 0,
-      "retainedThirdPartyUrlCount": 1,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0
-    },
-    {
       "googlePlaceId": "ChIJlag912qMGGARdMlQIDV_1Z0",
       "name": "健美食弐屋",
       "lane": "retained_source_mining",
@@ -10044,6 +10016,20 @@
       "cuisine": "日式",
       "crawlableOfficialUrlCount": 1,
       "retainedThirdPartyUrlCount": 0,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 0
+    },
+    {
+      "googlePlaceId": "ChIJeyv8ydyNGGARioyjbHzl6Ec",
+      "name": "食堂 新",
+      "lane": "official_or_retained_featured",
+      "nextAction": "collect_source_backed_featured_dishes",
+      "shard": 5,
+      "priorityScore": 710,
+      "cuisine": "居酒屋",
+      "crawlableOfficialUrlCount": 0,
+      "retainedThirdPartyUrlCount": 1,
       "sourceUrlCount": 1,
       "recommendedDishesKnown": 1,
       "featuredDishesKnown": 0

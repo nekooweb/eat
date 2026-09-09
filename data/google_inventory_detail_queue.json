@@ -7,21 +7,21 @@
     "publicRuntimeTotal": 1422,
     "unpublishedPlaceIdOnly": 1382,
     "runtimeBaselineComplete": true,
-    "recommendedDishesKnown": 559,
+    "recommendedDishesKnown": 561,
     "featuredDishesKnown": 656,
-    "displayDishKnown": 716,
-    "noDishGap": 706,
-    "recommendationGap": 863,
-    "recommendationGapWithAnyKnownSourceUrl": 590,
+    "displayDishKnown": 717,
+    "noDishGap": 705,
+    "recommendationGap": 861,
+    "recommendationGapWithAnyKnownSourceUrl": 588,
     "recommendationGapWithCrawlableOfficialUrl": 248,
-    "recommendationGapWithRetainedThirdPartyOnly": 326,
+    "recommendationGapWithRetainedThirdPartyOnly": 324,
     "recommendationGapNeedingNewDishSource": 289,
     "actionCounts": {
       "collect_strict_recommended_dishes": 248,
-      "extract_retained_dish_source": 326,
+      "extract_retained_dish_source": 324,
       "find_independent_dish_source": 289,
-      "collect_source_backed_featured_dishes": 60,
-      "dish_complete": 499
+      "collect_source_backed_featured_dishes": 61,
+      "dish_complete": 500
     },
     "primaryGoal": "source-backed dish coverage",
     "nonDishMetadataCreatesTasks": false,
@@ -10584,31 +10584,6 @@
       "priorityScore": 1095
     },
     {
-      "googlePlaceId": "ChIJeyv8ydyNGGARioyjbHzl6Ec",
-      "name": "食堂 新",
-      "basicInfoState": "source_matched",
-      "cuisine": "居酒屋",
-      "distanceMeters": 252,
-      "sourceUrlCount": 1,
-      "crawlableOfficialUrlCount": 0,
-      "retainedThirdPartyUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "dishGaps": [
-        "recommendedDishes",
-        "featuredDishes"
-      ],
-      "secondaryMetadata": {
-        "openingHoursKnown": true,
-        "lunchBudgetKnown": false,
-        "dinnerBudgetKnown": true,
-        "addressKnown": true,
-        "cuisineKnown": true
-      },
-      "nextAction": "extract_retained_dish_source",
-      "priorityScore": 1095
-    },
-    {
       "googlePlaceId": "ChIJ6T1XCJyNGGARz2n95fYZGLE",
       "name": "神保町シーシャカフェべー太",
       "basicInfoState": "source_matched",
@@ -14186,30 +14161,6 @@
       "retainedThirdPartyUrlCount": 1,
       "recommendedDishesKnown": 0,
       "featuredDishesKnown": 6,
-      "dishGaps": [
-        "recommendedDishes"
-      ],
-      "secondaryMetadata": {
-        "openingHoursKnown": true,
-        "lunchBudgetKnown": false,
-        "dinnerBudgetKnown": true,
-        "addressKnown": true,
-        "cuisineKnown": true
-      },
-      "nextAction": "extract_retained_dish_source",
-      "priorityScore": 1070
-    },
-    {
-      "googlePlaceId": "ChIJ1VVZYwGMGGARXP0y20DXT4E",
-      "name": "神田焼肉 俺の肉 本店",
-      "basicInfoState": "source_matched",
-      "cuisine": "焼肉・ホルモン",
-      "distanceMeters": 1181,
-      "sourceUrlCount": 1,
-      "crawlableOfficialUrlCount": 0,
-      "retainedThirdPartyUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 5,
       "dishGaps": [
         "recommendedDishes"
       ],
@@ -21768,6 +21719,30 @@
       "crawlableOfficialUrlCount": 0,
       "retainedThirdPartyUrlCount": 1,
       "recommendedDishesKnown": 2,
+      "featuredDishesKnown": 0,
+      "dishGaps": [
+        "featuredDishes"
+      ],
+      "secondaryMetadata": {
+        "openingHoursKnown": true,
+        "lunchBudgetKnown": false,
+        "dinnerBudgetKnown": true,
+        "addressKnown": true,
+        "cuisineKnown": true
+      },
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
+      "googlePlaceId": "ChIJeyv8ydyNGGARioyjbHzl6Ec",
+      "name": "食堂 新",
+      "basicInfoState": "source_matched",
+      "cuisine": "居酒屋",
+      "distanceMeters": 252,
+      "sourceUrlCount": 1,
+      "crawlableOfficialUrlCount": 0,
+      "retainedThirdPartyUrlCount": 1,
+      "recommendedDishesKnown": 1,
       "featuredDishesKnown": 0,
       "dishGaps": [
         "featuredDishes"
@@ -33435,6 +33410,28 @@
       "retainedThirdPartyUrlCount": 1,
       "recommendedDishesKnown": 2,
       "featuredDishesKnown": 6,
+      "dishGaps": [],
+      "secondaryMetadata": {
+        "openingHoursKnown": true,
+        "lunchBudgetKnown": false,
+        "dinnerBudgetKnown": true,
+        "addressKnown": true,
+        "cuisineKnown": true
+      },
+      "nextAction": "dish_complete",
+      "priorityScore": 0
+    },
+    {
+      "googlePlaceId": "ChIJ1VVZYwGMGGARXP0y20DXT4E",
+      "name": "神田焼肉 俺の肉 本店",
+      "basicInfoState": "source_matched",
+      "cuisine": "焼肉・ホルモン",
+      "distanceMeters": 1181,
+      "sourceUrlCount": 1,
+      "crawlableOfficialUrlCount": 0,
+      "retainedThirdPartyUrlCount": 1,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 5,
       "dishGaps": [],
       "secondaryMetadata": {
         "openingHoursKnown": true,

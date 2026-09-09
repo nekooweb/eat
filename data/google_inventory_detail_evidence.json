@@ -32,7 +32,7 @@
     "ordinaryMenuDishBecomesFeaturedOnly": true,
     "shardIndex": 0,
     "shardCount": 1,
-    "source": "already-bound independent official/source websites only",
+    "source": "retained Hot Pepper catalog facts only",
     "eligibleBindings": [
       "strict_auto",
       "manual_exact"
@@ -123,39 +123,49 @@
     "exactRetainedHotPepperUrlOnly": true,
     "sameRestaurantFoodLinkRequired": true,
     "priceBackedH4Required": true,
-    "curatedFoodRulesOnly": true
+    "curatedFoodRulesOnly": true,
+    "toolIdentityNameSource": "runtime_catalog_name",
+    "recommendationRequiresConcreteSourceNativeDishRule": true,
+    "automaticGenericPromotionAllowed": false
   },
   "summary": {
+    "catalogTotal": 2804,
+    "publicRuntimeTotal": 1422,
+    "recommendationGapRows": 863,
+    "strictGapRules": 2,
+    "recommendationRestaurants": 2,
+    "recommendationItems": 2,
+    "ruleCounts": {
+      "upper-raw-negi-tan-shio": 1,
+      "saba-kuroni": 1
+    },
     "previousEvidence": {
       "recommendationRestaurants": 531,
       "featuredRestaurants": 647,
       "evidenceRestaurants": 708,
       "recommendationItems": 947,
-      "featuredItems": 2506
+      "featuredItems": 2504
     },
     "freshCrawlEvidence": {
-      "recommendationRestaurants": 0,
+      "recommendationRestaurants": 2,
       "featuredRestaurants": 0,
-      "evidenceRestaurants": 0,
-      "recommendationItems": 0,
+      "evidenceRestaurants": 2,
+      "recommendationItems": 2,
       "featuredItems": 0
     },
     "mergedEvidence": {
-      "recommendationRestaurants": 531,
+      "recommendationRestaurants": 533,
       "featuredRestaurants": 647,
-      "evidenceRestaurants": 708,
-      "recommendationItems": 947,
-      "featuredItems": 2506
+      "evidenceRestaurants": 709,
+      "recommendationItems": 949,
+      "featuredItems": 2504
     },
     "specificityCorrection": {
-      "correctedRestaurants": 2,
-      "correctedItems": 2,
-      "duplicateItemsRemoved": 2,
-      "ruleCounts": {
-        "meat-sushi-over-sushi": 1,
-        "yakisoba-over-soba": 1
-      },
-      "recommendationItemsAfterCorrection": 947,
+      "correctedRestaurants": 0,
+      "correctedItems": 0,
+      "duplicateItemsRemoved": 0,
+      "ruleCounts": {},
+      "recommendationItemsAfterCorrection": 949,
       "featuredItemsAfterCorrection": 2504
     }
   },
@@ -2983,7 +2993,18 @@
     {
       "googlePlaceId": "ChIJ1VVZYwGMGGARXP0y20DXT4E",
       "name": "神田焼肉 俺の肉 本店",
-      "recommendedDishes": [],
+      "recommendedDishes": [
+        {
+          "nameZh": "葱盐牛舌",
+          "nameJa": "上生ネギタン塩",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ000740599/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "hotpepper-strict-gap-facts.catch:upper-raw-negi-tan-shio",
+          "evidenceSnippet": "名物！上生ネギタン塩 1Lでジョッキで豪快に飲む"
+        }
+      ],
       "featuredDishes": [
         {
           "nameZh": "上等肝片",
@@ -14899,6 +14920,23 @@
           "evidenceSnippet": "シーシャに隠れたカレーが絶品・・・！"
         }
       ]
+    },
+    {
+      "googlePlaceId": "ChIJeyv8ydyNGGARioyjbHzl6Ec",
+      "name": "食堂 新",
+      "recommendedDishes": [
+        {
+          "nameZh": "黑煮青花鱼",
+          "nameJa": "鯖黒煮",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ003648087/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-06",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "hotpepper-strict-gap-facts.genre.catch:saba-kuroni",
+          "evidenceSnippet": "看板商品の『鯖黒煮』は絶品です！"
+        }
+      ],
+      "featuredDishes": []
     },
     {
       "googlePlaceId": "ChIJez-2RiKNGGARfX_Fn9r5GOY",
