@@ -1,0 +1,113 @@
+name: Apply reviewed adjacency recommendations
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.reviewed-adjacency-recommendation-run'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: collect-source-backed-recommended-dishes
+  cancel-in-progress: false
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Rebuild baseline
+        run: |
+          set -euo pipefail
+          node scripts/audit_no_paid_apis.mjs
+          python scripts/reload_data.py --public-only --outdir /tmp/adjacency-baseline
+          node - <<'NODE'
+          const fs=require('fs'),vm=require('vm');
+          const sandbox={window:{},console};vm.createContext(sandbox);
+          vm.runInContext(fs.readFileSync('data/google_inventory_runtime.js','utf8'),sandbox);
+          const s=sandbox.window.GOOGLE_INVENTORY_STATS||{};
+          fs.writeFileSync('/tmp/adjacency-before.json',JSON.stringify(s));
+          console.log('ADJACENCY_BEFORE='+JSON.stringify({recommended:s.recommendedDishesKnown,featured:s.featuredDishesKnown,display:s.chineseDishDisplayRows,noDish:s.unfilledDishRows}));
+          NODE
+      - name: Build reviewed adjacency evidence
+        run: |
+          set -euo pipefail
+          node scripts/build_reviewed_adjacency_recommendations.mjs /tmp/adjacency-evidence.json | tee /tmp/adjacency-build.log
+          node - <<'NODE'
+          const fs=require('fs');
+          const x=JSON.parse(fs.readFileSync('/tmp/adjacency-evidence.json','utf8'));
+          if(x.policy?.networkRequests!==0||x.policy?.paidGoogleDataApiCalls!==0||x.policy?.identityMutationAllowed!==false) throw new Error('adjacency source boundary failed');
+          if(x.policy?.sourceDomainMustAlreadyBeBoundToIdentity!==true||x.policy?.reviewedStructuralAdjacencyRequired!==true||x.policy?.automaticAdjacencyPromotionAllowed!==false) throw new Error('adjacency semantics weakened');
+          if(x.summary?.recommendationRestaurants!==3||x.summary?.recommendationItems!==3) throw new Error(`unexpected adjacency batch: ${JSON.stringify(x.summary)}`);
+          console.log('ADJACENCY_BUILD='+JSON.stringify(x.summary));
+          NODE
+      - name: Merge and audit strict recommendation evidence
+        run: |
+          set -euo pipefail
+          node scripts/merge_google_inventory_detail_evidence.mjs \
+            data/google_inventory_detail_evidence.json \
+            /tmp/adjacency-evidence.json \
+            /tmp/adjacency-merged.json | tee /tmp/adjacency-merge.log
+          cp /tmp/adjacency-merged.json data/google_inventory_detail_evidence.json
+          node scripts/correct_dish_specificity_evidence.mjs \
+            data/google_inventory_detail_evidence.json \
+            data/google_inventory_detail_evidence.json | tee /tmp/adjacency-specificity.log
+          node scripts/audit_google_inventory_detail_evidence.mjs
+      - name: Rebuild and require exact recommendation growth
+        run: |
+          set -euo pipefail
+          python scripts/reload_data.py --public-only --outdir /tmp/adjacency-after
+          node - <<'NODE'
+          const fs=require('fs'),vm=require('vm');
+          const before=JSON.parse(fs.readFileSync('/tmp/adjacency-before.json','utf8'));
+          const sandbox={window:{},console};vm.createContext(sandbox);
+          vm.runInContext(fs.readFileSync('data/google_inventory_runtime.js','utf8'),sandbox);
+          const after=sandbox.window.GOOGLE_INVENTORY_STATS||{};
+          const delta=Number(after.recommendedDishesKnown||0)-Number(before.recommendedDishesKnown||0);
+          if(delta!==3) throw new Error(`adjacency recommendation delta mismatch: ${delta}`);
+          if(Number(after.featuredDishesKnown||0)<Number(before.featuredDishesKnown||0)||Number(after.chineseDishDisplayRows||0)<Number(before.chineseDishDisplayRows||0)) throw new Error('non-monotonic dish coverage');
+          fs.writeFileSync('/tmp/adjacency-delta.json',JSON.stringify({before,after,delta},null,2)+'\n');
+          console.log('ADJACENCY_DELTA='+JSON.stringify({recommended:delta,afterRecommended:after.recommendedDishesKnown,afterFeatured:after.featuredDishesKnown,afterDisplay:after.chineseDishDisplayRows,afterNoDish:after.unfilledDishRows}));
+          NODE
+          node scripts/audit_google_inventory_detail_evidence.mjs
+          node scripts/audit_no_paid_apis.mjs
+      - name: Commit verified adjacency recommendations
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A data
+          if git diff --cached --quiet; then echo 'No adjacency changes'; exit 0; fi
+          git commit -m 'Add reviewed adjacency recommendations'
+          if ! git diff --quiet; then git restore --worktree -- .; fi
+          git fetch origin main
+          git rebase origin/main
+          python scripts/reload_data.py --public-only --outdir /tmp/adjacency-post-rebase
+          node scripts/audit_google_inventory_detail_evidence.mjs
+          node scripts/audit_no_paid_apis.mjs
+          git add -A data
+          if ! git diff --cached --quiet; then git commit --amend --no-edit; fi
+          git push origin HEAD:main
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: reviewed-adjacency-recommendations
+          path: |
+            /tmp/adjacency-evidence.json
+            /tmp/adjacency-delta.json
+            /tmp/adjacency-build.log
+            /tmp/adjacency-merge.log
+            /tmp/adjacency-specificity.log
+          if-no-files-found: ignore
+          retention-days: 7
