@@ -51,6 +51,11 @@ def main():
         ('independent-source-overlay',['node','scripts/apply_reviewed_independent_source_overlay.mjs']),
         ('independent-source-overlay-audit',['node','scripts/audit_reviewed_independent_source_overlay.mjs']),
         ('runtime-native-contact-overture',['node','scripts/materialize_runtime_native_contact_fields.mjs','overture']),
+        # Apply reviewed field-level quarantine immediately after Overture. This
+        # removes contaminated provider website/phone fields while preserving
+        # the frozen Place ID/name/coordinates. Later missing-only OSM/native
+        # sources may still supply independently reviewed replacement metadata.
+        ('runtime-source-field-quarantine',['node','scripts/materialize_runtime_source_field_quarantine.mjs']),
         # SQLite precedence: reviewed basic OSM practical fields exist before retained/Hot Pepper.
         ('runtime-basic-osm-practical',['node','scripts/materialize_runtime_native_contact_fields.mjs','osm-basic-practical']),
         ('runtime-practical-contact',['node','scripts/materialize_runtime_practical_fields.mjs']),
@@ -92,7 +97,7 @@ def main():
     for name in ['production_area1.js','source_provenance.js','source_facts.js','reviewed_official_runtime_sources.json',
                  'reviewed_native_contact_runtime_overlay.json','reviewed_official_practical_runtime_overlay.json',
                  'reviewed_independent_dish_sources.json','hotpepper_catalog_practical_overlay.json',
-                 'google_inventory_runtime.js','google_inventory_detail_queue.json',
+                 'source_field_quarantine.json','google_inventory_runtime.js','google_inventory_detail_queue.json',
                  'dish_batch_plan.json','independent_dish_source_candidates.json']:
         raw=(DATA/name).read_bytes()
         files[name]={'bytes':len(raw),'sha256':hashlib.sha256(raw).hexdigest()}
@@ -104,6 +109,10 @@ def main():
               'telephoneFromReviewedOverture':stats.get('telephoneAppliedFromReviewedOverture',0),
               'telephoneFromPublicWeb':stats.get('telephoneAppliedFromPublicWebEvidence',0),
               'telephoneFromReviewedOsm':stats.get('telephoneAppliedFromReviewedOsm',0),
+              'sourceFieldQuarantineRows':stats.get('sourceFieldQuarantineRows',0),
+              'sourceFieldQuarantineAppliedRows':stats.get('sourceFieldQuarantineAppliedRows',0),
+              'sourceFieldQuarantineRemovedWebsiteValues':stats.get('sourceFieldQuarantineRemovedWebsiteValues',0),
+              'sourceFieldQuarantineRemovedProviderTelephones':stats.get('sourceFieldQuarantineRemovedProviderTelephones',0),
               'stationRows':stats.get('stationKnown',0),
               'lunchServiceRows':stats.get('lunchServiceKnown',0),'courseAvailabilityRows':stats.get('courseAvailabilityKnown',0),
               'allYouCanDrinkRows':stats.get('allYouCanDrinkKnown',0),'allYouCanEatRows':stats.get('allYouCanEatKnown',0),
