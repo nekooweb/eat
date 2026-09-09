@@ -1,0 +1,46 @@
+name: Audit unparsed hours patterns (PR)
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/_audit-unparsed-hours-pr.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PR merge commit
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Enforce zero-paid policy
+        run: node scripts/audit_no_paid_apis.mjs
+      - name: Rebuild current public runtime
+        run: python3 scripts/reload_data.py --public-only --outdir _audit/unparsed-hours-reload
+      - name: Audit maintained raw hours that remain unparsed
+        run: |
+          set -euo pipefail
+          node scripts/audit_unparsed_source_hours.mjs > /tmp/unparsed-hours.json
+          node - <<'NODE'
+          const fs=require('fs');
+          const x=JSON.parse(fs.readFileSync('/tmp/unparsed-hours.json','utf8'));
+          console.log('UNPARSED_HOURS_SUMMARY='+JSON.stringify({
+            canonicalRowsWithoutNormalizedHours:x.canonicalRowsWithoutNormalizedHours,
+            missingHoursRowsWithMaintainedRawEvidence:x.missingHoursRowsWithMaintainedRawEvidence,
+            providerRawHourRecords:x.providerRawHourRecords,
+            topPatterns:x.topPatterns
+          }));
+          console.log('UNPARSED_HOURS_ROWS='+JSON.stringify(x.rows));
+          if(x.missingHoursRowsWithMaintainedRawEvidence<1) throw new Error('expected maintained raw-hour gaps');
+          NODE
+      - name: Upload hours audit
+        uses: actions/upload-artifact@v4
+        with:
+          name: unparsed-hours-pattern-audit
+          path: /tmp/unparsed-hours.json
+          retention-days: 7
