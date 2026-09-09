@@ -1,0 +1,63 @@
+name: Audit official RDFa MenuItem (PR)
+
+on:
+  pull_request:
+    paths:
+      - "scripts/audit_official_rdfa_menu_items.mjs"
+      - ".github/workflows/_audit-official-rdfa-menu-items-pr.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout PR merge commit
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Enforce zero-paid policy and syntax
+        run: |
+          set -euo pipefail
+          node scripts/audit_no_paid_apis.mjs
+          node --check scripts/audit_official_rdfa_menu_items.mjs
+      - name: Rebuild current public runtime inputs
+        run: python3 scripts/reload_data.py --public-only --outdir _audit/official-rdfa-pr-reload
+      - name: Audit reviewed official RDFa MenuItem scopes
+        env:
+          OFFICIAL_RDFA_TIMEOUT_MS: '10000'
+          OFFICIAL_RDFA_WORKERS: '8'
+          OFFICIAL_RDFA_URL_LIMIT: '4'
+        run: |
+          set -euo pipefail
+          node scripts/audit_official_rdfa_menu_items.mjs /tmp/official-rdfa-menu-items.json | tee /tmp/official-rdfa-summary.txt
+          node - <<'NODE'
+          const fs=require('fs');
+          const x=JSON.parse(fs.readFileSync('/tmp/official-rdfa-menu-items.json','utf8'));
+          const p=x.policy||{}, s=x.summary||{};
+          if(x.schemaVersion!==1||p.auditOnly!==true||p.currentNoDishOnly!==true||p.reviewedOfficialBindingsOnly!==true) throw new Error('RDFa audit source/target boundary failed');
+          if(p.httpsOnly!==true||p.sameHostFamilyFinalUrlRequired!==true||p.reviewedOfficialUrlsOnly!==true) throw new Error('RDFa URL boundary failed');
+          if(p.explicitSchemaOrgRdfaMenuItemOnly!==true||p.schemaOrgProductAccepted!==false||p.arbitraryVisibleTextAccepted!==false) throw new Error('RDFa semantic boundary failed');
+          if(p.recommendationPromotionAllowed!==false||p.ordinaryMenuItemIsFeaturedOnly!==true) throw new Error('RDFa recommendation boundary failed');
+          if(p.identityMutationAllowed!==false||p.catalogNameMutationAllowed!==false||p.sourceOfficialNameRole!=='source_alias_only') throw new Error('RDFa identity boundary failed');
+          if(p.pageScriptsExecuted!==false||p.rawHtmlPersisted!==false||p.paidGoogleDataApiCalls!==0) throw new Error('RDFa execution/data policy failed');
+          if(s.catalogTotal!==2804||s.publicRuntimeTotal<=0||s.currentNoDish<=0||s.reviewedOfficialNoDishRows<=0) throw new Error(`RDFa baseline mismatch: ${JSON.stringify(s)}`);
+          for(const r of x.rows||[]){
+            if((r.recommendedDishes||[]).length) throw new Error(`RDFa created recommendation: ${r.googlePlaceId}`);
+            if(!(r.featuredDishes||[]).length) throw new Error(`empty RDFa evidence row: ${r.googlePlaceId}`);
+            for(const d of r.featuredDishes||[]) if(!String(d.evidenceRule||'').startsWith('rdfa-menuitem:')) throw new Error(`non-RDFa evidence leaked: ${r.googlePlaceId}`);
+          }
+          console.log('RDFA_AUDIT_CONTRACT='+JSON.stringify(s));
+          NODE
+      - name: Upload audit
+        uses: actions/upload-artifact@v4
+        with:
+          name: official-rdfa-menuitem-audit
+          path: |
+            /tmp/official-rdfa-menu-items.json
+            /tmp/official-rdfa-summary.txt
+          retention-days: 7
