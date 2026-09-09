@@ -106,42 +106,49 @@
     "automaticTranslationOutsideCuratedRulesAllowed": false
   },
   "summary": {
-    "eligibleTargets": 123,
-    "targets": 123,
-    "rootIdentityMatched": 123,
-    "foodPagesFetched": 65,
-    "explicitRecommendationHeadings": 111,
-    "matchedHeadings": 5,
-    "unmatchedHeadings": 106,
-    "evidenceRestaurants": 5,
-    "recommendationItems": 5,
-    "errorTargets": 0,
+    "catalogTotal": 2804,
+    "publicRuntimeTotal": 1422,
+    "queueEligibleIds": 313,
+    "targets": 286,
+    "uniqueOrigins": 254,
+    "sitemapFilesFetched": 579,
+    "menuUrlsDiscovered": 118,
+    "menuPagesFetched": 84,
+    "errorTargets": 9,
+    "evidenceRestaurants": 29,
+    "recommendationRestaurants": 2,
+    "featuredRestaurants": 27,
+    "recommendationItems": 4,
+    "featuredItems": 106,
     "previousEvidence": {
-      "recommendationRestaurants": 526,
+      "recommendationRestaurants": 531,
       "featuredRestaurants": 635,
       "evidenceRestaurants": 700,
-      "recommendationItems": 942,
-      "featuredItems": 2478
+      "recommendationItems": 947,
+      "featuredItems": 2480
     },
     "freshCrawlEvidence": {
-      "recommendationRestaurants": 5,
-      "featuredRestaurants": 0,
-      "evidenceRestaurants": 5,
-      "recommendationItems": 5,
-      "featuredItems": 0
+      "recommendationRestaurants": 2,
+      "featuredRestaurants": 27,
+      "evidenceRestaurants": 29,
+      "recommendationItems": 4,
+      "featuredItems": 106
     },
     "mergedEvidence": {
       "recommendationRestaurants": 531,
       "featuredRestaurants": 635,
       "evidenceRestaurants": 700,
       "recommendationItems": 947,
-      "featuredItems": 2478
+      "featuredItems": 2480
     },
     "specificityCorrection": {
-      "correctedRestaurants": 0,
-      "correctedItems": 0,
-      "duplicateItemsRemoved": 0,
-      "ruleCounts": {},
+      "correctedRestaurants": 2,
+      "correctedItems": 2,
+      "duplicateItemsRemoved": 2,
+      "ruleCounts": {
+        "meat-sushi-over-sushi": 1,
+        "yakisoba-over-soba": 1
+      },
       "recommendationItemsAfterCorrection": 947,
       "featuredItemsAfterCorrection": 2478
     }
@@ -25827,7 +25834,7 @@
           "nameJa": "カレー",
           "provider": "sourceWebsite",
           "sourceUrl": "https://gondtokyo.com/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_recommendation_text",
           "evidenceRule": "html-block:カレー|カリー|咖喱|curry",
           "evidenceSnippet": "私たちは現在、社員13名とアルバイトの方数名で、インド料理店2店を運営しています。 今まで、“インド各地の名物カレーの店『グルガオン』”、“タンドール料理『カイバル』”、“南インド"
@@ -28861,7 +28868,7 @@
           "nameJa": "カレー",
           "provider": "sourceWebsite",
           "sourceUrl": "https://jimbocho.jp/dinnermenu",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:カレー|カリー|咖喱|curry",
           "evidenceSnippet": "※：料理は、おつまみ、前菜3種もり、サラダ、メイン、カレー、デザートとなります"
@@ -28871,7 +28878,7 @@
           "nameJa": "パスタ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://jimbocho.jp/lunchmenu",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:パスタ|スパゲッティ|pasta|spaghetti",
           "evidenceSnippet": "本日のパスタ"
@@ -28881,7 +28888,7 @@
           "nameJa": "リゾット",
           "provider": "sourceWebsite",
           "sourceUrl": "https://jimbocho.jp/lunchmenu",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:リゾット|risotto",
           "evidenceSnippet": "チーズリゾット"
