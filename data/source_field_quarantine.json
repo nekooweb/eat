@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-09-10",
+  "policy": {
+    "fieldLevelOnly": true,
+    "identityMutationAllowed": false,
+    "catalogNameMutationAllowed": false,
+    "coordinateMutationAllowed": false,
+    "networkRequests": 0,
+    "paidGoogleDataApiCalls": 0,
+    "quarantinedFieldsMayBeRestoredOnlyAfterIndependentReview": true
+  },
+  "rows": [
+    {
+      "googlePlaceId": "ChIJ73iZqQeMGGAR1UPN4hA0-bA",
+      "catalogName": "Minatoya",
+      "provider": "Overture Maps",
+      "providerId": "afc0e565-78bf-42da-be0e-33898c9ddd8c",
+      "blockedWebsiteHosts": [
+        "yumeji-minatoya.co.jp"
+      ],
+      "blockProviderTelephone": true,
+      "reason": "The retained Overture entity matches the Otemachi restaurant by name/address/coordinates, but its website points to the unrelated Takehisa Yumeji gallery Minatoya in Higashi-Nihombashi. Treat website/source URL and provider-native telephone as contaminated fields without changing the restaurant identity binding.",
+      "reviewEvidence": {
+        "badSourceUrl": "https://yumeji-minatoya.co.jp/",
+        "badWebsiteEntity": "竹久夢二専門画廊 港屋",
+        "badWebsitePublishedAddress": "東京都中央区東日本橋2-18-11",
+        "targetRetainedAddress": "千代田区1 Chome-9-1 Otemachi"
+      }
+    }
+  ]
+}
