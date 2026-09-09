@@ -106,44 +106,51 @@
     "automaticTranslationOutsideCuratedRulesAllowed": false
   },
   "summary": {
-    "eligibleTargets": 123,
-    "targets": 123,
-    "rootIdentityMatched": 123,
-    "foodPagesFetched": 65,
-    "explicitRecommendationHeadings": 111,
-    "matchedHeadings": 0,
-    "unmatchedHeadings": 111,
-    "evidenceRestaurants": 0,
-    "recommendationItems": 0,
-    "errorTargets": 0,
+    "catalogTotal": 2804,
+    "publicRuntimeTotal": 1422,
+    "queueEligibleIds": 313,
+    "targets": 286,
+    "uniqueOrigins": 254,
+    "sitemapFilesFetched": 583,
+    "menuUrlsDiscovered": 118,
+    "menuPagesFetched": 84,
+    "errorTargets": 9,
+    "evidenceRestaurants": 29,
+    "recommendationRestaurants": 2,
+    "featuredRestaurants": 27,
+    "recommendationItems": 4,
+    "featuredItems": 106,
     "previousEvidence": {
       "recommendationRestaurants": 526,
       "featuredRestaurants": 635,
       "evidenceRestaurants": 700,
       "recommendationItems": 942,
-      "featuredItems": 2479
+      "featuredItems": 2480
     },
     "freshCrawlEvidence": {
-      "recommendationRestaurants": 0,
-      "featuredRestaurants": 0,
-      "evidenceRestaurants": 0,
-      "recommendationItems": 0,
-      "featuredItems": 0
+      "recommendationRestaurants": 2,
+      "featuredRestaurants": 27,
+      "evidenceRestaurants": 29,
+      "recommendationItems": 4,
+      "featuredItems": 106
     },
     "mergedEvidence": {
       "recommendationRestaurants": 526,
       "featuredRestaurants": 635,
       "evidenceRestaurants": 700,
       "recommendationItems": 942,
-      "featuredItems": 2479
+      "featuredItems": 2480
     },
     "specificityCorrection": {
-      "correctedRestaurants": 0,
-      "correctedItems": 0,
-      "duplicateItemsRemoved": 0,
-      "ruleCounts": {},
+      "correctedRestaurants": 3,
+      "correctedItems": 3,
+      "duplicateItemsRemoved": 2,
+      "ruleCounts": {
+        "meat-sushi-over-sushi": 1,
+        "yakisoba-over-soba": 2
+      },
       "recommendationItemsAfterCorrection": 942,
-      "featuredItemsAfterCorrection": 2479
+      "featuredItemsAfterCorrection": 2478
     }
   },
   "rows": [
@@ -201,7 +208,7 @@
           "nameJa": "寿司",
           "provider": "Hot Pepper",
           "sourceUrl": "https://www.hotpepper.jp/strJ004005643/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "provider_promotional_dish_text",
           "evidenceRule": "hotpepper-catch-menu:寿司|すし|鮨|sushi",
           "evidenceSnippet": "■寿司屋の本気おつまみ ■こだわり&厳選の鮮魚！"
@@ -653,7 +660,7 @@
           "nameJa": "焼き鳥",
           "provider": "Hot Pepper",
           "sourceUrl": "https://www.hotpepper.jp/strJ001178242/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "provider_promotional_dish_text",
           "evidenceRule": "hotpepper-catch-menu:焼き?鳥|やきとり|yakitori",
           "evidenceSnippet": "こだわりの炭火焼き鳥 旬の食材をお洒落な空間で"
@@ -1038,6 +1045,16 @@
       ],
       "featuredDishes": [
         {
+          "nameZh": "烤肉",
+          "nameJa": "焼肉",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001187622/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-catch-menu:焼肉|yakiniku",
+          "evidenceSnippet": "毎朝入荷！新鮮なお肉☆ 鉄板焼肉食べ放題950円！"
+        },
+        {
           "nameZh": "刺身",
           "nameJa": "刺身",
           "provider": "Hot Pepper",
@@ -1066,16 +1083,6 @@
           "evidenceClass": "hotpepper_menu_text",
           "evidenceRule": "hotpepper-price-backed-h4:ラーメン|らーめん|拉麺|ramen",
           "evidenceSnippet": "汁無しラーメン 深い旨みと香りが広がります。独特の黒酢とピリ辛がやみつき。 620円（税抜）"
-        },
-        {
-          "nameZh": "烤肉",
-          "nameJa": "焼肉",
-          "provider": "Hot Pepper",
-          "sourceUrl": "https://www.hotpepper.jp/strJ001187622/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "provider_promotional_dish_text",
-          "evidenceRule": "hotpepper-catch-menu:焼肉|yakiniku",
-          "evidenceSnippet": "毎朝入荷！新鮮なお肉☆ 鉄板焼肉食べ放題950円！"
         },
         {
           "nameZh": "牛排",
@@ -1224,6 +1231,16 @@
       ],
       "featuredDishes": [
         {
+          "nameZh": "烤鸡串",
+          "nameJa": "焼鳥",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001186753/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-catch-menu:焼き?鳥|やきとり|yakitori",
+          "evidenceSnippet": "【焼鳥】信長秘伝のタレ 飲み放題付コース多数"
+        },
+        {
           "nameZh": "拉面",
           "nameJa": "ラーメン",
           "provider": "Hot Pepper",
@@ -1232,16 +1249,6 @@
           "evidenceClass": "hotpepper_menu_text",
           "evidenceRule": "hotpepper-price-backed-h4:ラーメン|らーめん|拉麺|ramen",
           "evidenceSnippet": "〆のラーメン 605円（税込）"
-        },
-        {
-          "nameZh": "烤鸡串",
-          "nameJa": "焼鳥",
-          "provider": "Hot Pepper",
-          "sourceUrl": "https://www.hotpepper.jp/strJ001186753/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "provider_promotional_dish_text",
-          "evidenceRule": "hotpepper-catch-menu:焼き?鳥|やきとり|yakitori",
-          "evidenceSnippet": "【焼鳥】信長秘伝のタレ 飲み放題付コース多数"
         },
         {
           "nameZh": "葱鸡肉串",
@@ -1536,7 +1543,7 @@
           "nameJa": "ピザ",
           "provider": "Hot Pepper",
           "sourceUrl": "https://www.hotpepper.jp/strJ000004667/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "provider_promotional_dish_text",
           "evidenceRule": "hotpepper-catch-menu:ピザ|ピッツァ|pizza",
           "evidenceSnippet": "少人数～大人数様まで 窯焼ピザ10種以上"
@@ -1573,7 +1580,7 @@
           "nameJa": "大福",
           "provider": "sourceWebsite",
           "sourceUrl": "https://kanda-bunsendo.com/seasonal?tag=1",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:大福|daifuku",
           "evidenceSnippet": "いちご大福"
@@ -1583,7 +1590,7 @@
           "nameJa": "cake",
           "provider": "sourceWebsite",
           "sourceUrl": "https://kanda-bunsendo.com/seasonal?tag=1",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:ケーキ|cake",
           "evidenceSnippet": "Bean paste rice cake wrapped in ...続きを読む"
@@ -1705,6 +1712,16 @@
       ],
       "featuredDishes": [
         {
+          "nameZh": "烤内脏",
+          "nameJa": "ホルモン",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001295401/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-catch-menu:ホルモン",
+          "evidenceSnippet": "お肉にこだわっています♪ ホルモン三種盛り☆"
+        },
+        {
           "nameZh": "冷面",
           "nameJa": "冷麺",
           "provider": "Hot Pepper",
@@ -1713,16 +1730,6 @@
           "evidenceClass": "hotpepper_menu_text",
           "evidenceRule": "hotpepper-price-backed-h4:冷麺|冷面",
           "evidenceSnippet": "冷麺 胡瓜・大葉・茗荷入り 850円（税込）"
-        },
-        {
-          "nameZh": "烤内脏",
-          "nameJa": "ホルモン",
-          "provider": "Hot Pepper",
-          "sourceUrl": "https://www.hotpepper.jp/strJ001295401/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "provider_promotional_dish_text",
-          "evidenceRule": "hotpepper-catch-menu:ホルモン",
-          "evidenceSnippet": "お肉にこだわっています♪ ホルモン三種盛り☆"
         },
         {
           "nameZh": "烤饼",
@@ -1782,7 +1789,7 @@
           "nameJa": "ちゃんこ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://fukuhara-0303.gorp.jp/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_recommendation_text",
           "evidenceRule": "html-block:ちゃんこ鍋|ちゃんこ",
           "evidenceSnippet": "メニュー おすすめ 鶏ざんまいコース 2800円（税込）/ 1名様 地鶏ちゃんこコース 3800円（税込）/ 1名様"
@@ -1901,6 +1908,21 @@
       ],
       "featuredDishes": [
         {
+          "nameZh": "肉寿司",
+          "nameJa": "寿司",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001103764/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "specificity:meat-sushi-over-sushi:hotpepper-catch-menu:寿司|すし|鮨|sushi",
+          "evidenceSnippet": "鮮度が命！馬肉料理専門店 肉食女子必見☆馬肉寿司",
+          "specificityCorrection": {
+            "rule": "meat-sushi-over-sushi",
+            "previousNameZh": "寿司",
+            "sourceNativeCompositeRequired": true
+          }
+        },
+        {
           "nameZh": "炒饭",
           "nameJa": "チャーハン",
           "provider": "Hot Pepper",
@@ -1939,21 +1961,6 @@
           "evidenceClass": "hotpepper_menu_text",
           "evidenceRule": "hotpepper-price-backed-h4:もつ鍋",
           "evidenceSnippet": "博多名物・白味噌もつ鍋（一人前） 2人前～注文をお願いしています 1750円 「料理」の先頭へ戻る ■おつまみ■"
-        },
-        {
-          "nameZh": "肉寿司",
-          "nameJa": "寿司",
-          "provider": "Hot Pepper",
-          "sourceUrl": "https://www.hotpepper.jp/strJ001103764/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "provider_promotional_dish_text",
-          "evidenceRule": "specificity:meat-sushi-over-sushi:hotpepper-catch-menu:寿司|すし|鮨|sushi",
-          "evidenceSnippet": "鮮度が命！馬肉料理専門店 肉食女子必見☆馬肉寿司",
-          "specificityCorrection": {
-            "rule": "meat-sushi-over-sushi",
-            "previousNameZh": "寿司",
-            "sourceNativeCompositeRequired": true
-          }
         }
       ]
     },
@@ -1988,7 +1995,7 @@
           "nameJa": "鰻",
           "provider": "Hot Pepper",
           "sourceUrl": "https://www.hotpepper.jp/strJ003916777/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "provider_promotional_dish_text",
           "evidenceRule": "hotpepper-catch-menu:うなぎ|鰻|鳗鱼|unagi",
           "evidenceSnippet": "美味しい鰻をもっと身近に テイクアウト対応◎"
@@ -2298,7 +2305,7 @@
           "nameJa": "天ぷら",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.grandcuisine.co.jp/about",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_recommendation_text",
           "evidenceRule": "html-block:天ぷら|天麩羅|tempura",
           "evidenceSnippet": "札幌みその 北海道産味噌の旨味を最大限に引き出した濃厚スープが自慢。トロっと柔らかいチャーシューやこだわりの麺の深い味わいで、札幌の味噌らーめん文化を新しい形で届けます。 天丼専門"
@@ -2308,7 +2315,7 @@
           "nameJa": "天丼",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.grandcuisine.co.jp/about",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_recommendation_text",
           "evidenceRule": "html-block:天丼|tendon\\b",
           "evidenceSnippet": "札幌みその 北海道産味噌の旨味を最大限に引き出した濃厚スープが自慢。トロっと柔らかいチャーシューやこだわりの麺の深い味わいで、札幌の味噌らーめん文化を新しい形で届けます。 天丼専門"
@@ -2318,7 +2325,7 @@
           "nameJa": "らーめん",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.grandcuisine.co.jp/about",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_recommendation_text",
           "evidenceRule": "html-block:ラーメン|らーめん|拉麺|ramen",
           "evidenceSnippet": "札幌みその 北海道産味噌の旨味を最大限に引き出した濃厚スープが自慢。トロっと柔らかいチャーシューやこだわりの麺の深い味わいで、札幌の味噌らーめん文化を新しい形で届けます。 天丼専門"
@@ -3149,6 +3156,16 @@
       ],
       "featuredDishes": [
         {
+          "nameZh": "印度香饭",
+          "nameJa": "ビリヤニ",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ004500004/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-catch-menu:ビリヤニ|biryani",
+          "evidenceSnippet": "本場ビリヤニのコース料理 大人数歓迎！貸切・宴会◎"
+        },
+        {
           "nameZh": "南印度米尔斯套餐",
           "nameJa": "ミールス",
           "provider": "Hot Pepper",
@@ -3157,16 +3174,6 @@
           "evidenceClass": "hotpepper_menu_text",
           "evidenceRule": "hotpepper-price-backed-h4:ミールス|meals\\b",
           "evidenceSnippet": "ルシのディナー ベジミールス (菜食＝野菜のみ) 1.本日のベジ カレー 2種 2.ダール(豆カレー) 3.サンバル(豆を煮崩した野菜カレー) 4.ラッサム(薬膳スープ) 5.メド"
-        },
-        {
-          "nameZh": "印度香饭",
-          "nameJa": "ビリヤニ",
-          "provider": "Hot Pepper",
-          "sourceUrl": "https://www.hotpepper.jp/strJ004500004/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "provider_promotional_dish_text",
-          "evidenceRule": "hotpepper-catch-menu:ビリヤニ|biryani",
-          "evidenceSnippet": "本場ビリヤニのコース料理 大人数歓迎！貸切・宴会◎"
         },
         {
           "nameZh": "咖喱",
@@ -3220,7 +3227,7 @@
           "nameJa": "焼鳥",
           "provider": "Hot Pepper",
           "sourceUrl": "https://www.hotpepper.jp/strJ001177558/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "provider_promotional_dish_text",
           "evidenceRule": "hotpepper-catch-menu:焼き?鳥|やきとり|yakitori",
           "evidenceSnippet": "税込390円均一の焼鳥屋 全席プライベートな空間"
@@ -3417,7 +3424,7 @@
           "nameJa": "カレー",
           "provider": "sourceWebsite",
           "sourceUrl": "https://mafumicofffee.vercel.app/menu",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:カレー|カリー|咖喱|curry",
           "evidenceSnippet": "カレーライス ルッコラの海に溺れるクロックムッシュ 食後に珈琲をどうぞ"
@@ -3427,7 +3434,7 @@
           "nameJa": "プリン",
           "provider": "sourceWebsite",
           "sourceUrl": "https://mafumicofffee.vercel.app/menu",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:プリン|pudding|flan",
           "evidenceSnippet": "プリン 季節のレアチーズケーキ（マスカット）"
@@ -3437,7 +3444,7 @@
           "nameJa": "チーズケーキ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://mafumicofffee.vercel.app/menu",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:チーズケーキ|cheesecake",
           "evidenceSnippet": "プリン 季節のレアチーズケーキ（マスカット）"
@@ -3447,7 +3454,7 @@
           "nameJa": "ケーキ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://mafumicofffee.vercel.app/menu",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:ケーキ|cake",
           "evidenceSnippet": "プリン 季節のレアチーズケーキ（マスカット）"
@@ -3755,7 +3762,7 @@
           "nameJa": "パスタ",
           "provider": "Hot Pepper",
           "sourceUrl": "https://www.hotpepper.jp/strJ001143550/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "provider_promotional_dish_text",
           "evidenceRule": "hotpepper-catch-menu:パスタ|スパゲッティ|pasta|spaghetti",
           "evidenceSnippet": "こだわりの手打ちパスタ♪ ソムリエが選ぶビオロジコ"
@@ -3905,7 +3912,7 @@
           "nameJa": "刺身",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.kono-hana.com/food/launch/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:刺身|お造り|sashimi",
           "evidenceSnippet": "メインの食材はもとより、豆腐、お刺身、卵、米、お味噌汁に至るまで、選び抜いた食材で丁寧にお作りいたしております。"
@@ -3915,7 +3922,7 @@
           "nameJa": "天麩羅",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.kono-hana.com/food/launch/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:天ぷら|天麩羅|tempura",
           "evidenceSnippet": "天麩羅定食 1,500円（税込）"
@@ -3925,7 +3932,7 @@
           "nameJa": "日替わりランチ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.kono-hana.com/food/launch/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:日替わりランチ",
           "evidenceSnippet": "日替わりランチ"
@@ -4030,7 +4037,7 @@
           "nameJa": "親子丼",
           "provider": "sourceWebsite",
           "sourceUrl": "http://www.yudetarou.com/menu/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:親子丼|oyakodon",
           "evidenceSnippet": "揚げ鶏親子丼 730円"
@@ -4040,7 +4047,7 @@
           "nameJa": "カレー",
           "provider": "sourceWebsite",
           "sourceUrl": "http://www.yudetarou.com/menu/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:カレー|カリー|咖喱|curry",
           "evidenceSnippet": "カレーそば 630円"
@@ -4050,7 +4057,7 @@
           "nameJa": "天丼",
           "provider": "sourceWebsite",
           "sourceUrl": "http://www.yudetarou.com/menu/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:天丼|tendon\\b",
           "evidenceSnippet": "ミニ天丼"
@@ -4060,7 +4067,7 @@
           "nameJa": "SOBA",
           "provider": "sourceWebsite",
           "sourceUrl": "http://www.yudetarou.com/menu/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:蕎麦|そば|soba",
           "evidenceSnippet": "ABOUT SOBA"
@@ -4104,7 +4111,7 @@
           "nameJa": "Taco",
           "provider": "sourceWebsite",
           "sourceUrl": "https://food96.com/place/hcseafood",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "sitemap-menu-text:タコス|tacos?",
           "evidenceSnippet": "Taco Bell Menu"
@@ -4114,7 +4121,7 @@
           "nameJa": "Taco",
           "provider": "sourceWebsite",
           "sourceUrl": "https://food96.com/place/mtfujijanpanesecuisine",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "sitemap-menu-text:タコス|tacos?",
           "evidenceSnippet": "Taco Bell Menu"
@@ -4124,7 +4131,7 @@
           "nameJa": "Pizza",
           "provider": "sourceWebsite",
           "sourceUrl": "https://food96.com/place/hcseafood",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "sitemap-menu-text:ピザ|ピッツァ|pizza",
           "evidenceSnippet": "Pizza Hut Menu"
@@ -4134,7 +4141,7 @@
           "nameJa": "Pizza",
           "provider": "sourceWebsite",
           "sourceUrl": "https://food96.com/place/mtfujijanpanesecuisine",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "sitemap-menu-text:ピザ|ピッツァ|pizza",
           "evidenceSnippet": "Pizza Hut Menu"
@@ -4144,7 +4151,7 @@
           "nameJa": "Burger",
           "provider": "sourceWebsite",
           "sourceUrl": "https://food96.com/place/hcseafood",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "sitemap-menu-text:ハンバーガー|バーガー|burger",
           "evidenceSnippet": "🍔 Burgers"
@@ -4154,7 +4161,7 @@
           "nameJa": "Burger",
           "provider": "sourceWebsite",
           "sourceUrl": "https://food96.com/place/mtfujijanpanesecuisine",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "sitemap-menu-text:ハンバーガー|バーガー|burger",
           "evidenceSnippet": "🍔 Burgers"
@@ -4270,7 +4277,7 @@
           "nameJa": "刺身",
           "provider": "Hot Pepper",
           "sourceUrl": "https://www.hotpepper.jp/strJ000050117/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "provider_promotional_dish_text",
           "evidenceRule": "hotpepper-catch-menu:刺身|お造り|sashimi",
           "evidenceSnippet": "佐渡直送鮮魚！旬の刺身 佐渡直送の新鮮魚介類！"
@@ -4431,7 +4438,7 @@
           "nameJa": "サンドイッチ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://subway.co.jp/menu/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "sitemap-menu-text:サンドイッチ|サンド|sandwich",
           "evidenceSnippet": "サンドイッチ"
@@ -4441,7 +4448,7 @@
           "nameJa": "サンドイッチ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://subway.co.jp/menu/allergy/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "sitemap-menu-text:サンドイッチ|サンド|sandwich",
           "evidenceSnippet": "サンドイッチ"
@@ -4451,7 +4458,7 @@
           "nameJa": "サンドイッチ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://subway.co.jp/menu/category/sandwich/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:サンドイッチ|サンド|sandwich",
           "evidenceSnippet": "サンドイッチ のメニュー | サブウェイ公式サイト"
@@ -4461,7 +4468,7 @@
           "nameJa": "サンドイッチ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://subway.co.jp/menu/grilled_chicken_cheese/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:サンドイッチ|サンド|sandwich",
           "evidenceSnippet": "サンドイッチ"
@@ -4471,7 +4478,7 @@
           "nameJa": "サンドイッチ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://subway.co.jp/menu/howtoorder/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "sitemap-menu-text:サンドイッチ|サンド|sandwich",
           "evidenceSnippet": "メニューからお好きなサンドイッチを選ぼう!"
@@ -4481,7 +4488,7 @@
           "nameJa": "タンドリーチキン",
           "provider": "sourceWebsite",
           "sourceUrl": "https://subway.co.jp/menu/category/sandwich/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:タンドリーチキン|tandoori chicken",
           "evidenceSnippet": "タンドリーチキン"
@@ -5050,7 +5057,7 @@
           "nameJa": "ピザ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.craftbeermarket.jp/todays-food-list/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:ピザ|ピッツァ|pizza",
           "evidenceSnippet": "ピザメニュー"
@@ -5060,7 +5067,7 @@
           "nameJa": "ステーキ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.craftbeermarket.jp/todays-food-list/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:ステーキ|steak",
           "evidenceSnippet": "［自家醸造ビールとステーキと音楽ライブ］ お問合せはお電話で！"
@@ -5101,6 +5108,16 @@
       ],
       "featuredDishes": [
         {
+          "nameZh": "荞麦面",
+          "nameJa": "そば",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ000762322/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-catch-menu:蕎麦|そば|soba",
+          "evidenceSnippet": "九段下から徒歩1分 武道館からすぐそば！"
+        },
+        {
           "nameZh": "意大利面",
           "nameJa": "パスタ",
           "provider": "Hot Pepper",
@@ -5129,16 +5146,6 @@
           "evidenceClass": "hotpepper_menu_text",
           "evidenceRule": "hotpepper-price-backed-h4:ステーキ|steak",
           "evidenceSnippet": "スパムステーキ 858円（税込） 「料理」の先頭へ戻る 【アラカルト】"
-        },
-        {
-          "nameZh": "荞麦面",
-          "nameJa": "そば",
-          "provider": "Hot Pepper",
-          "sourceUrl": "https://www.hotpepper.jp/strJ000762322/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "provider_promotional_dish_text",
-          "evidenceRule": "hotpepper-catch-menu:蕎麦|そば|soba",
-          "evidenceSnippet": "九段下から徒歩1分 武道館からすぐそば！"
         }
       ]
     },
@@ -5505,7 +5512,7 @@
           "nameJa": "天ぷら",
           "provider": "Hot Pepper",
           "sourceUrl": "https://www.hotpepper.jp/strJ001211019/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_recommendation_text",
           "evidenceRule": "hotpepper-catch:天ぷら|天麩羅|tempura",
           "evidenceSnippet": "お得に天ぷらと割烹料理を 天とよ自慢の串天カツ★"
@@ -5563,7 +5570,7 @@
           "nameJa": "カレー",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.chantoya.com/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_recommendation_text",
           "evidenceRule": "html-block:カレー|カリー|咖喱|curry",
           "evidenceSnippet": "2025.06.21 メンズノンノ 神保町芸人おすすめのお店で掲載されました。 2024.07.21 食べログ カレー TOKYO 百名店 2024年"
@@ -5725,7 +5732,7 @@
           "nameJa": "串焼き",
           "provider": "Hot Pepper",
           "sourceUrl": "https://www.hotpepper.jp/strJ000955033/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_recommendation_text",
           "evidenceRule": "hotpepper-catch:串焼き",
           "evidenceSnippet": "自慢の串焼き 常連さんに愛されるお店！"
@@ -6191,7 +6198,7 @@
           "nameJa": "水餃子",
           "provider": "sourceWebsite",
           "sourceUrl": "https://geby500.gorp.jp/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_recommendation_text",
           "evidenceRule": "html-block:水餃子|水饺",
           "evidenceSnippet": "料理の種類は100種類以上！！ 料理の種類はなんと100種類以上！女性に人気のおこげも◎ 点心も充実♪エビ蒸し餃子をはじめ、鉄板の焼餃子、水餃子や小籠包など幅広いラインナップ！！"
@@ -6201,7 +6208,7 @@
           "nameJa": "焼餃子",
           "provider": "sourceWebsite",
           "sourceUrl": "https://geby500.gorp.jp/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_recommendation_text",
           "evidenceRule": "html-block:焼き餃子|焼餃子",
           "evidenceSnippet": "料理の種類は100種類以上！！ 料理の種類はなんと100種類以上！女性に人気のおこげも◎ 点心も充実♪エビ蒸し餃子をはじめ、鉄板の焼餃子、水餃子や小籠包など幅広いラインナップ！！"
@@ -6211,7 +6218,7 @@
           "nameJa": "餃子",
           "provider": "sourceWebsite",
           "sourceUrl": "https://geby500.gorp.jp/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_recommendation_text",
           "evidenceRule": "html-block:餃子|饺子|gyoza",
           "evidenceSnippet": "料理の種類は100種類以上！！ 料理の種類はなんと100種類以上！女性に人気のおこげも◎ 点心も充実♪エビ蒸し餃子をはじめ、鉄板の焼餃子、水餃子や小籠包など幅広いラインナップ！！"
@@ -6380,7 +6387,7 @@
           "nameJa": "うどん",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.ichibanya.co.jp/menu/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:うどん|udon",
           "evidenceSnippet": "写真はカレーうどん"
@@ -6390,27 +6397,17 @@
           "nameJa": "うどん",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.ichibanya.co.jp/menu/detail.html?id=1163",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "sitemap-menu-text:うどん|udon",
           "evidenceSnippet": "写真はカレーうどん"
-        },
-        {
-          "nameZh": "南蛮鸡",
-          "nameJa": "チキン南蛮",
-          "provider": "sourceWebsite",
-          "sourceUrl": "https://www.ichibanya.co.jp/menu/pdf/nutrition.pdf",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "source_pdf_menu_text",
-          "evidenceRule": "pdf-menu-line:チキン南蛮",
-          "evidenceSnippet": "手仕込チキン南蛮カツカレー"
         },
         {
           "nameZh": "咖喱",
           "nameJa": "カレー",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.ichibanya.co.jp/menu/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:カレー|カリー|咖喱|curry",
           "evidenceSnippet": "ココイチのメニュー | カレーハウスCoCo壱番屋"
@@ -6420,7 +6417,7 @@
           "nameJa": "カレー",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.ichibanya.co.jp/menu/detail.html?id=1163",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "sitemap-menu-text:カレー|カリー|咖喱|curry",
           "evidenceSnippet": "ココイチのメニュー | カレーハウスCoCo壱番屋"
@@ -6430,10 +6427,20 @@
           "nameJa": "カレー",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.ichibanya.co.jp/menu/detail.html?id=1293",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:カレー|カリー|咖喱|curry",
           "evidenceSnippet": "ポークカレー | ココイチのメニュー | カレーハウスCoCo壱番屋"
+        },
+        {
+          "nameZh": "咖喱",
+          "nameJa": "カレー",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.ichibanya.co.jp/menu/order.html",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "menu-page-text:カレー|カリー|咖喱|curry",
+          "evidenceSnippet": "ココイチの楽しみ方 | ココイチのメニュー | カレーハウスCoCo壱番屋"
         }
       ]
     },
@@ -6637,7 +6644,7 @@
           "nameJa": "うどん",
           "provider": "sourceWebsite",
           "sourceUrl": "https://stores.marugame.com/110630?utm_source=google_serps&utm_medium=gmb&utm_campaign=gbpwebs",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_recommendation_text",
           "evidenceRule": "html-block:うどん|udon",
           "evidenceSnippet": "丸亀製麺のこだわり おすすめ・限定メニュー 打ち立てのうどんをつけ汁で味わう。 ごま香る、ひんやりまろやか。"
@@ -7082,7 +7089,7 @@
           "nameJa": "からあげ",
           "provider": "Hot Pepper",
           "sourceUrl": "https://www.hotpepper.jp/strJ003649494/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "provider_promotional_dish_text",
           "evidenceRule": "hotpepper-catch-menu:唐揚げ|から揚げ|からあげ|karaage",
           "evidenceSnippet": "からあげグランプリ金賞！ 充実のラインナップ"
@@ -7371,7 +7378,7 @@
           "nameJa": "餃子",
           "provider": "Hot Pepper",
           "sourceUrl": "https://www.hotpepper.jp/strJ001284514/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_recommendation_text",
           "evidenceRule": "hotpepper-catch:餃子|饺子|gyoza",
           "evidenceSnippet": "大人気の創作餃子！ お酒が充実♪"
@@ -7955,7 +7962,7 @@
           "nameJa": "海鮮丼",
           "provider": "Hot Pepper",
           "sourceUrl": "https://www.hotpepper.jp/strJ004005211/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_recommendation_text",
           "evidenceRule": "hotpepper-catch:海鮮丼|海鲜丼",
           "evidenceSnippet": "【おすすめランチ】海鮮丼 日本酒に合う料理"
@@ -8029,8 +8036,8 @@
           "nameZh": "荞麦面",
           "nameJa": "そば",
           "provider": "sourceWebsite",
-          "sourceUrl": "https://yudetaro.jp/menu/",
-          "checkedAt": "2026-09-08",
+          "sourceUrl": "https://yudetaro.jp/menu",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:蕎麦|そば|soba",
           "evidenceSnippet": "ゆで太郎 年越しそば"
@@ -8039,7 +8046,7 @@
           "nameZh": "荞麦面",
           "nameJa": "そば",
           "provider": "sourceWebsite",
-          "sourceUrl": "https://yudetaro.jp/menu",
+          "sourceUrl": "https://yudetaro.jp/menu/",
           "checkedAt": "2026-09-08",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:蕎麦|そば|soba",
@@ -8395,7 +8402,7 @@
           "nameJa": "パスタ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.city.chiyoda.lg.jp/koho/kenko/kenko/eyo/bosai-menu.html",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:パスタ|スパゲッティ|pasta|spaghetti",
           "evidenceSnippet": "【調理しやすいで賞】サバイバルトマトパスタ＆春雨わかめサラダ"
@@ -8412,7 +8419,7 @@
           "nameJa": "ラーメン",
           "provider": "sourceWebsite",
           "sourceUrl": "https://ramenao.com/menu",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "sitemap-menu-text:ラーメン|らーめん|拉麺|ramen",
           "evidenceSnippet": "ラーメン青menuページ"
@@ -8632,7 +8639,7 @@
           "nameJa": "カレー",
           "provider": "sourceWebsite",
           "sourceUrl": "https://projectalive0804.com/food/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:カレー|カリー|咖喱|curry",
           "evidenceSnippet": "黒カレー(牛すじのカレー)"
@@ -8642,7 +8649,7 @@
           "nameJa": "ピッツァ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://projectalive0804.com/food/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:ピザ|ピッツァ|pizza",
           "evidenceSnippet": "ピッツァ"
@@ -8652,7 +8659,7 @@
           "nameJa": "ハンバーグ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://projectalive0804.com/food/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:ハンバーグ|hamburg steak",
           "evidenceSnippet": "Bress 特製煮込みハンバーグ"
@@ -8662,7 +8669,7 @@
           "nameJa": "グラタン",
           "provider": "sourceWebsite",
           "sourceUrl": "https://projectalive0804.com/food/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:グラタン|gratin",
           "evidenceSnippet": "ミートパトラ(ひき肉のデミグラスグラタン)"
@@ -8672,7 +8679,7 @@
           "nameJa": "マルゲリータ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://projectalive0804.com/food/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:マルゲリータ|margherita",
           "evidenceSnippet": "マルゲリータ"
@@ -8682,7 +8689,7 @@
           "nameJa": "ペペロンチーノ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://projectalive0804.com/food/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:ペペロンチーノ|aglio.*olio|peperoncino",
           "evidenceSnippet": "おつまみキャベツのペペロンチーノ トッピング：ベーコン・キノコ 各+¥110"
@@ -9329,7 +9336,7 @@
           "nameJa": "天麩羅",
           "provider": "Hot Pepper",
           "sourceUrl": "https://www.hotpepper.jp/strJ000841893/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "provider_promotional_dish_text",
           "evidenceRule": "hotpepper-catch-menu:天ぷら|天麩羅|tempura",
           "evidenceSnippet": "江戸前天麩羅 ゆったりとした空間"
@@ -9458,6 +9465,16 @@
       ],
       "featuredDishes": [
         {
+          "nameZh": "拉面",
+          "nameJa": "ラーメン",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001039823/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-catch-menu:ラーメン|らーめん|拉麺|ramen",
+          "evidenceSnippet": "炙り鷄醤油ラーメン お得に！利き酒セット"
+        },
+        {
           "nameZh": "姜烧猪肉",
           "nameJa": "しょうが焼き",
           "provider": "Hot Pepper",
@@ -9476,16 +9493,6 @@
           "evidenceClass": "hotpepper_menu_text",
           "evidenceRule": "hotpepper-price-backed-h4:担々麺|担担麺|担担面|tantanmen",
           "evidenceSnippet": "黒ごまいっぱーいの担々麺 ～黒ごまで体の中から若返り～ 炭火炙り鶏/ねぎ/水菜/わかめ/ゆず皮/小松菜/ニラ/アーモンド入り（辛さはお好みに合わせて調整します） 1,080円（税込"
-        },
-        {
-          "nameZh": "拉面",
-          "nameJa": "ラーメン",
-          "provider": "Hot Pepper",
-          "sourceUrl": "https://www.hotpepper.jp/strJ001039823/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "provider_promotional_dish_text",
-          "evidenceRule": "hotpepper-catch-menu:ラーメン|らーめん|拉麺|ramen",
-          "evidenceSnippet": "炙り鷄醤油ラーメン お得に！利き酒セット"
         },
         {
           "nameZh": "烤串",
@@ -9536,6 +9543,16 @@
       ],
       "featuredDishes": [
         {
+          "nameZh": "烤内脏",
+          "nameJa": "ホルモン",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ000765753/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-catch-menu:ホルモン",
+          "evidenceSnippet": "特選上盛なんと4280円 ぷりぷりの新鮮ホルモン！"
+        },
+        {
           "nameZh": "冷面",
           "nameJa": "冷麺",
           "provider": "Hot Pepper",
@@ -9554,16 +9571,6 @@
           "evidenceClass": "hotpepper_menu_text",
           "evidenceRule": "hotpepper-price-backed-h4:サムゲタン",
           "evidenceSnippet": "参鶏湯（サムゲタン）２日前に予約要 1680円"
-        },
-        {
-          "nameZh": "烤内脏",
-          "nameJa": "ホルモン",
-          "provider": "Hot Pepper",
-          "sourceUrl": "https://www.hotpepper.jp/strJ000765753/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "provider_promotional_dish_text",
-          "evidenceRule": "hotpepper-catch-menu:ホルモン",
-          "evidenceSnippet": "特選上盛なんと4280円 ぷりぷりの新鮮ホルモン！"
         },
         {
           "nameZh": "烤内脏",
@@ -10132,6 +10139,16 @@
       ],
       "featuredDishes": [
         {
+          "nameZh": "烤内脏",
+          "nameJa": "もつ焼き",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ000642300/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-catch-menu:もつ焼き|もつ焼",
+          "evidenceSnippet": "もつ焼き もつ煮"
+        },
+        {
           "nameZh": "咖喱",
           "nameJa": "カレー",
           "provider": "Hot Pepper",
@@ -10150,16 +10167,6 @@
           "evidenceClass": "hotpepper_menu_text",
           "evidenceRule": "hotpepper-price-backed-h4:天ぷら|天麩羅|tempura",
           "evidenceSnippet": "さきいか天ぷら 495円（税込）"
-        },
-        {
-          "nameZh": "烤内脏",
-          "nameJa": "もつ焼き",
-          "provider": "Hot Pepper",
-          "sourceUrl": "https://www.hotpepper.jp/strJ000642300/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "provider_promotional_dish_text",
-          "evidenceRule": "hotpepper-catch-menu:もつ焼き|もつ焼",
-          "evidenceSnippet": "もつ焼き もつ煮"
         },
         {
           "nameZh": "烤饼",
@@ -10230,7 +10237,7 @@
           "nameJa": "カレー",
           "provider": "Hot Pepper",
           "sourceUrl": "https://www.hotpepper.jp/strJ000811975/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "provider_promotional_dish_text",
           "evidenceRule": "hotpepper-catch-menu:カレー|カリー|咖喱|curry",
           "evidenceSnippet": "こだわりカレー 駅近"
@@ -10527,7 +10534,7 @@
           "nameJa": "SANDWICH",
           "provider": "sourceWebsite",
           "sourceUrl": "https://gallerykogure.com/cafe-lounge-boro-food/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_recommendation_text",
           "evidenceRule": "html-block:サンドイッチ|サンド|sandwich",
           "evidenceSnippet": "SANDWICH & TOAST 厚切りハムサンド Ham Sandwich たっぷりタマゴサンド Plenty Egg Sandwich ミックスサンド Mix Sandwich"
@@ -10537,7 +10544,7 @@
           "nameJa": "ピザ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://gallerykogure.com/cafe-lounge-boro-food/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_recommendation_text",
           "evidenceRule": "html-block:ピザ|ピッツァ|pizza",
           "evidenceSnippet": "SANDWICH & TOAST 厚切りハムサンド Ham Sandwich たっぷりタマゴサンド Plenty Egg Sandwich ミックスサンド Mix Sandwich"
@@ -10878,7 +10885,7 @@
           "nameJa": "Cake",
           "provider": "sourceWebsite",
           "sourceUrl": "https://naotok.tokyo/umito-atami-bettei-qrmenu-b",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "sitemap-menu-text:ケーキ|cake",
           "evidenceSnippet": "Banana Cake"
@@ -10888,7 +10895,7 @@
           "nameJa": "Cake",
           "provider": "sourceWebsite",
           "sourceUrl": "https://naotok.tokyo/umito-atami-bettei-qrmenu",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "sitemap-menu-text:ケーキ|cake",
           "evidenceSnippet": "Banana Cake"
@@ -10898,7 +10905,7 @@
           "nameJa": "うなぎ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://naotok.tokyo/umito-atami-bettei-qrmenu-b",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "sitemap-menu-text:うなぎ|鰻|鳗鱼|unagi",
           "evidenceSnippet": "うなぎのパイ包み"
@@ -10908,7 +10915,7 @@
           "nameJa": "うなぎ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://naotok.tokyo/umito-atami-bettei-qrmenu",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "sitemap-menu-text:うなぎ|鰻|鳗鱼|unagi",
           "evidenceSnippet": "でしこうなぎのパイ包み"
@@ -11030,7 +11037,7 @@
           "nameJa": "カレー",
           "provider": "sourceWebsite",
           "sourceUrl": "http://www.thali-ya.com/teiban-menu.html",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:カレー|カリー|咖喱|curry",
           "evidenceSnippet": "インドカレー定食"
@@ -11040,7 +11047,7 @@
           "nameJa": "ケバブ",
           "provider": "sourceWebsite",
           "sourceUrl": "http://www.thali-ya.com/teiban-menu.html",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:ケバブ|kebab",
           "evidenceSnippet": "チキンケバブキーマ定食"
@@ -11050,7 +11057,7 @@
           "nameJa": "キーマ",
           "provider": "sourceWebsite",
           "sourceUrl": "http://www.thali-ya.com/teiban-menu.html",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:キーマ(?:カレー)?|keema curry",
           "evidenceSnippet": "チキンケバブキーマ定食"
@@ -11077,7 +11084,7 @@
           "nameJa": "カレー",
           "provider": "Hot Pepper",
           "sourceUrl": "https://www.hotpepper.jp/strJ001066087/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "provider_promotional_dish_text",
           "evidenceRule": "hotpepper-catch-menu:カレー|カリー|咖喱|curry",
           "evidenceSnippet": "絶品ドライカレー 豊富なワイン"
@@ -11233,7 +11240,7 @@
           "nameJa": "pudding",
           "provider": "sourceWebsite",
           "sourceUrl": "https://1899.jp/ochanomizu/en/menu/cafe/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "sitemap-menu-text:プリン|pudding|flan",
           "evidenceSnippet": "This parfait is full of matcha green tea, including dark green tea ice cream and homemade"
@@ -11243,7 +11250,7 @@
           "nameJa": "Gelato",
           "provider": "sourceWebsite",
           "sourceUrl": "https://1899.jp/ochanomizu/en/menu/cafe/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "sitemap-menu-text:ジェラート|gelato",
           "evidenceSnippet": "Rich Matcha Gelato &yen; 700"
@@ -11253,7 +11260,7 @@
           "nameJa": "Pancake",
           "provider": "sourceWebsite",
           "sourceUrl": "https://1899.jp/ochanomizu/en/menu/cafe/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "sitemap-menu-text:パンケーキ|pancake",
           "evidenceSnippet": "Dorayaki (Green Tea Pancake with Bean Paste) along with ice cream &yen; 1,000"
@@ -11263,7 +11270,7 @@
           "nameJa": "parfait",
           "provider": "sourceWebsite",
           "sourceUrl": "https://1899.jp/ochanomizu/en/menu/cafe/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "sitemap-menu-text:パフェ|parfait",
           "evidenceSnippet": "Hojicha autumn-colored parfait &yen;1,900"
@@ -11273,7 +11280,7 @@
           "nameJa": "cake",
           "provider": "sourceWebsite",
           "sourceUrl": "https://1899.jp/ochanomizu/en/menu/cafe/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "sitemap-menu-text:ケーキ|cake",
           "evidenceSnippet": "Dorayaki (Green Tea Pancake with Bean Paste) along with ice cream &yen; 1,000"
@@ -11283,7 +11290,7 @@
           "nameJa": "Dorayaki",
           "provider": "sourceWebsite",
           "sourceUrl": "https://1899.jp/ochanomizu/en/menu/cafe/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "sitemap-menu-text:どら焼き|どら焼|dorayaki",
           "evidenceSnippet": "Dorayaki (Green Tea Pancake with Bean Paste) along with ice cream &yen; 1,000"
@@ -11517,7 +11524,7 @@
           "nameJa": "サンドイッチ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.tullys.co.jp/menu/drink/coffee/honey_m.html",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:サンドイッチ|サンド|sandwich",
           "evidenceSnippet": "サンドイッチ"
@@ -11527,7 +11534,7 @@
           "nameJa": "サンドイッチ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.tullys.co.jp/menu/drink/coffee/iced.html",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "sitemap-menu-text:サンドイッチ|サンド|sandwich",
           "evidenceSnippet": "サンドイッチ"
@@ -11537,7 +11544,7 @@
           "nameJa": "サンドイッチ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.tullys.co.jp/menu/drink/coffee/todays.html",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "sitemap-menu-text:サンドイッチ|サンド|sandwich",
           "evidenceSnippet": "サンドイッチ"
@@ -11547,7 +11554,7 @@
           "nameJa": "サンドイッチ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.tullys.co.jp/menu/seasonal_lineup/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:サンドイッチ|サンド|sandwich",
           "evidenceSnippet": "サンドイッチ"
@@ -11557,7 +11564,7 @@
           "nameJa": "パスタ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.tullys.co.jp/menu/drink/coffee/honey_m.html",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:パスタ|スパゲッティ|pasta|spaghetti",
           "evidenceSnippet": "パスタ"
@@ -11567,7 +11574,7 @@
           "nameJa": "パスタ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.tullys.co.jp/menu/drink/coffee/iced.html",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "sitemap-menu-text:パスタ|スパゲッティ|pasta|spaghetti",
           "evidenceSnippet": "パスタ"
@@ -11583,7 +11590,7 @@
           "nameJa": "牛タン",
           "provider": "Hot Pepper",
           "sourceUrl": "https://www.hotpepper.jp/strJ003324333/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_recommendation_text",
           "evidenceRule": "hotpepper-catch:牛タン|gyutan",
           "evidenceSnippet": "おすすめ牛タンメニュー☆ 個室感覚で貸切可能です◎"
@@ -11755,7 +11762,7 @@
           "nameJa": "ピザ",
           "provider": "Hot Pepper",
           "sourceUrl": "https://www.hotpepper.jp/strJ001176329/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_recommendation_text",
           "evidenceRule": "hotpepper-catch:ピザ|ピッツァ|pizza",
           "evidenceSnippet": "名物「薪窯ナポリピザ」 最大120名様の貸切対応"
@@ -11843,7 +11850,7 @@
           "nameJa": "ブレンドコーヒー",
           "provider": "sourceWebsite",
           "sourceUrl": "https://rec-coffee.com/collections/all-products",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_recommendation_text",
           "evidenceRule": "html-block:ブレンドコーヒー",
           "evidenceSnippet": "あたり 人気の定番ブレンドコーヒー2種類のセット 【送料無料】コーヒーバッグコンプリートセット 【送料無料】コーヒーバッグコンプリートセット"
@@ -12106,6 +12113,16 @@
       ],
       "featuredDishes": [
         {
+          "nameZh": "烤鸡串",
+          "nameJa": "焼き鳥",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ004613094/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-catch-menu:焼き?鳥|やきとり|yakitori",
+          "evidenceSnippet": "炭火焼き鳥がコスパ旨い！ 水道橋でゆったり飲み会◎"
+        },
+        {
           "nameZh": "刺身",
           "nameJa": "刺身",
           "provider": "Hot Pepper",
@@ -12154,16 +12171,6 @@
           "evidenceClass": "hotpepper_menu_text",
           "evidenceRule": "hotpepper-price-backed-h4:串揚げ|串カツ|kushiage",
           "evidenceSnippet": "豚玉ねぎ串カツ サクッと香ばしい衣の中に、ジューシーな豚肉の旨味と玉ねぎの自然な甘みを閉じ込めた『豚玉ねぎ串カツ』。絶妙な火入れで仕上げたアツアツの串カツは、特製ソースにくぐらせる"
-        },
-        {
-          "nameZh": "炸竹荚鱼",
-          "nameJa": "アジフライ",
-          "provider": "Hot Pepper",
-          "sourceUrl": "https://www.hotpepper.jp/strJ004613094/food/",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "hotpepper_menu_text",
-          "evidenceRule": "hotpepper-price-backed-h4:アジフライ|鯵フライ",
-          "evidenceSnippet": "アジフライ サクサクの衣をまとった『アジフライ』。香ばしい衣の食感のあとには、ふっくらと柔らかなアジの旨味がじんわりと広がります。熱々のフライに濃厚な特製ソースとまろやかなマヨネー"
         }
       ]
     },
@@ -12514,7 +12521,7 @@
           "nameJa": "サンドイッチ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.tullys.co.jp/menu/drink/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:サンドイッチ|サンド|sandwich",
           "evidenceSnippet": "サンドイッチ"
@@ -12524,7 +12531,7 @@
           "nameJa": "サンドイッチ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.tullys.co.jp/menu/seasonal_lineup/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:サンドイッチ|サンド|sandwich",
           "evidenceSnippet": "サンドイッチ"
@@ -12534,7 +12541,7 @@
           "nameJa": "パスタ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.tullys.co.jp/menu/seasonal_lineup/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:パスタ|スパゲッティ|pasta|spaghetti",
           "evidenceSnippet": "パスタ"
@@ -12544,7 +12551,7 @@
           "nameJa": "チーズケーキ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.tullys.co.jp/menu/seasonal_lineup/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:チーズケーキ|cheesecake",
           "evidenceSnippet": "シナモンパンプキンチーズケーキ"
@@ -12554,7 +12561,7 @@
           "nameJa": "モンブラン",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.tullys.co.jp/menu/seasonal_lineup/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:モンブラン|mont blanc",
           "evidenceSnippet": "モンブランタルト"
@@ -12564,7 +12571,7 @@
           "nameJa": "ケーキ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.tullys.co.jp/menu/seasonal_lineup/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:ケーキ|cake",
           "evidenceSnippet": "シナモンパンプキンチーズケーキ"
@@ -12588,6 +12595,16 @@
       ],
       "featuredDishes": [
         {
+          "nameZh": "担担面",
+          "nameJa": "担々麺",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001231662/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-catch-menu:担々麺|担担麺|担担面|tantanmen",
+          "evidenceSnippet": "無かん水麺使用の担々麺 化学調味料不使用"
+        },
+        {
           "nameZh": "口水鸡",
           "nameJa": "よだれ鶏",
           "provider": "Hot Pepper",
@@ -12596,16 +12613,6 @@
           "evidenceClass": "hotpepper_menu_text",
           "evidenceRule": "hotpepper-price-backed-h4:よだれ鶏|口水鶏",
           "evidenceSnippet": "よだれ鶏(蒸し鶏の麻辣ソース) 2,420円（税込）"
-        },
-        {
-          "nameZh": "担担面",
-          "nameJa": "担々麺",
-          "provider": "Hot Pepper",
-          "sourceUrl": "https://www.hotpepper.jp/strJ001231662/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "provider_promotional_dish_text",
-          "evidenceRule": "hotpepper-catch-menu:担々麺|担担麺|担担面|tantanmen",
-          "evidenceSnippet": "無かん水麺使用の担々麺 化学調味料不使用"
         },
         {
           "nameZh": "日式炸鸡",
@@ -13057,7 +13064,7 @@
           "nameJa": "カレー",
           "provider": "Hot Pepper",
           "sourceUrl": "https://www.hotpepper.jp/strJ000813845/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "provider_promotional_dish_text",
           "evidenceRule": "hotpepper-catch-menu:カレー|カリー|咖喱|curry",
           "evidenceSnippet": "一人でも気軽に入れるお店 スパイス香る自家製カレー"
@@ -13184,7 +13191,7 @@
           "nameJa": "うどん",
           "provider": "sourceWebsite",
           "sourceUrl": "http://tezukuriii.blog40.fc2.com/blog-category-1.html",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:うどん|udon",
           "evidenceSnippet": "冷凍うどんで作った「つぶ貝の塩辛ペペロンチーノ」"
@@ -13194,7 +13201,7 @@
           "nameJa": "焼肉",
           "provider": "sourceWebsite",
           "sourceUrl": "http://tezukuriii.blog40.fc2.com/blog-category-1.html",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:焼肉|yakiniku",
           "evidenceSnippet": "焼肉LOVE(クラブ) (5)"
@@ -13204,7 +13211,7 @@
           "nameJa": "そば",
           "provider": "sourceWebsite",
           "sourceUrl": "http://tezukuriii.blog40.fc2.com/blog-category-1.html",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:蕎麦|そば|soba",
           "evidenceSnippet": "今日のまかない(ご飯)は、先日の撮影で使用しなかった北海道の「角屋の塩やきそば(ゆで)」をレンジで温め「温玉」をトッピングしました～"
@@ -13214,7 +13221,7 @@
           "nameJa": "ペペロンチーノ",
           "provider": "sourceWebsite",
           "sourceUrl": "http://tezukuriii.blog40.fc2.com/blog-category-1.html",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:ペペロンチーノ|aglio.*olio|peperoncino",
           "evidenceSnippet": "北海道ペペロンチーノ？"
@@ -13224,7 +13231,7 @@
           "nameJa": "フォー",
           "provider": "sourceWebsite",
           "sourceUrl": "http://tezukuriii.blog40.fc2.com/blog-category-1.html",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:フォー|pho\\b",
           "evidenceSnippet": "検索フォーム"
@@ -13251,7 +13258,7 @@
           "nameJa": "タコス",
           "provider": "Hot Pepper",
           "sourceUrl": "https://www.hotpepper.jp/strJ004660329/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "provider_promotional_dish_text",
           "evidenceRule": "hotpepper-catch-menu:タコス|tacos?",
           "evidenceSnippet": "旨味溢れる絶品肉とタコス 陽気でお洒落な隠れ家バル"
@@ -13345,18 +13352,8 @@
           "nameZh": "乌冬面",
           "nameJa": "うどん",
           "provider": "sourceWebsite",
-          "sourceUrl": "https://www.kamadoka.com/assets/pdf/kamadoka_allergy_20250303.pdf",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "source_pdf_menu_text",
-          "evidenceRule": "pdf-menu-line:うどん|udon",
-          "evidenceSnippet": "15 楽コース 〆のうどん - - ● - - - - - - - - - - - - - - - - - - - - - - - - -"
-        },
-        {
-          "nameZh": "乌冬面",
-          "nameJa": "うどん",
-          "provider": "sourceWebsite",
           "sourceUrl": "https://www.kamadoka.com/menulist/party/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:うどん|udon",
           "evidenceSnippet": "〆のうどん"
@@ -13366,7 +13363,7 @@
           "nameJa": "おでん",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.kamadoka.com/menulist/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:おでん|oden\\b",
           "evidenceSnippet": "鶏出汁おでん"
@@ -13376,7 +13373,7 @@
           "nameJa": "刺身",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.kamadoka.com/menulist/party/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:刺身|お造り|sashimi",
           "evidenceSnippet": "お刺身3点盛り合わせ"
@@ -13385,21 +13382,31 @@
           "nameZh": "寿喜烧",
           "nameJa": "すき焼き",
           "provider": "sourceWebsite",
-          "sourceUrl": "https://www.kamadoka.com/assets/pdf/kamadoka_allergy_20250303.pdf",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "source_pdf_menu_text",
-          "evidenceRule": "pdf-menu-line:すき焼き|すきやき|sukiyaki",
-          "evidenceSnippet": "30 凛コース 国産牛のすき焼き - - ● - ● - - - - - - - - ● - - - ● - - - - - - - - - -"
-        },
-        {
-          "nameZh": "寿喜烧",
-          "nameJa": "すき焼き",
-          "provider": "sourceWebsite",
           "sourceUrl": "https://www.kamadoka.com/menulist/party/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:すき焼き|すきやき|sukiyaki",
           "evidenceSnippet": "国産牛のすき焼き"
+        },
+        {
+          "nameZh": "日式高汤玉子烧",
+          "nameJa": "出汁巻き玉子",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.kamadoka.com/menulist/party/",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "menu-page-text:だし巻き(?:玉子|卵)|出汁巻き(?:玉子|卵)",
+          "evidenceSnippet": "店仕込みの出汁巻き玉子"
+        },
+        {
+          "nameZh": "鸡肉水炊锅",
+          "nameJa": "水炊き",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.kamadoka.com/menulist/party/",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "menu-page-text:水炊き|水炊",
+          "evidenceSnippet": "鶏と牛もつの博多風水炊き"
         }
       ]
     },
@@ -13423,7 +13430,7 @@
           "nameJa": "焼鳥",
           "provider": "Hot Pepper",
           "sourceUrl": "https://www.hotpepper.jp/strJ001164123/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "provider_promotional_dish_text",
           "evidenceRule": "hotpepper-catch-menu:焼き?鳥|やきとり|yakitori",
           "evidenceSnippet": "税込390円均一の焼鳥屋 全席プライベートな空間"
@@ -13494,6 +13501,16 @@
       ],
       "featuredDishes": [
         {
+          "nameZh": "麻婆豆腐",
+          "nameJa": "麻婆豆腐",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ004633410/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-catch-menu:麻婆豆腐|mapo",
+          "evidenceSnippet": "香り豊かな麻婆豆腐を堪能 相性抜群の一品を楽しむ"
+        },
+        {
           "nameZh": "刀削面",
           "nameJa": "刀削麺",
           "provider": "Hot Pepper",
@@ -13542,16 +13559,6 @@
           "evidenceClass": "hotpepper_menu_text",
           "evidenceRule": "hotpepper-price-backed-h4:水餃子|水饺",
           "evidenceSnippet": "自家製水餃子(8個) 880円（税込） 「料理」の先頭へ戻る デザート"
-        },
-        {
-          "nameZh": "炒面",
-          "nameJa": "焼きそば",
-          "provider": "Hot Pepper",
-          "sourceUrl": "https://www.hotpepper.jp/strJ004633410/food/",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "hotpepper_menu_text",
-          "evidenceRule": "hotpepper-price-backed-h4:hotpepper-specific:焼きそば",
-          "evidenceSnippet": "五目あんかけ焼きそば 880円（税込）"
         }
       ]
     },
@@ -14076,7 +14083,7 @@
           "nameJa": "焼き鳥",
           "provider": "Hot Pepper",
           "sourceUrl": "https://www.hotpepper.jp/strJ000115502/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "provider_promotional_dish_text",
           "evidenceRule": "hotpepper-catch-menu:焼き?鳥|やきとり|yakitori",
           "evidenceSnippet": "秘伝の焼き鳥たれ 本格的な備長炭炭火焼き鳥"
@@ -14211,7 +14218,7 @@
           "nameJa": "Curry",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.beppinsya.com/%E3%83%A1%E3%83%8B%E3%83%A5%E3%83%BC/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:カレー|カリー|咖喱|curry",
           "evidenceSnippet": "Gluten Free Spice Curry ビストロべっぴん舎 オフィシャルサイト"
@@ -14221,7 +14228,7 @@
           "nameJa": "キーマ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.beppinsya.com/%E3%83%A1%E3%83%8B%E3%83%A5%E3%83%BC/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:キーマ(?:カレー)?|keema curry",
           "evidenceSnippet": "■べっぴんキーマカリー"
@@ -14325,7 +14332,7 @@
           "nameJa": "うどん",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.okonomi-hanako.com/iidahashi.html",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_recommendation_text",
           "evidenceRule": "html-block:うどん|udon",
           "evidenceSnippet": "住所移転しました。 花子のお好み焼きは、おそばやうどんでボリュームもしっかり楽しめるのに、なぜかサラッと食べれてしまう、不思議な魅力のお好み焼きです。看板メニューの国泰寺焼きは、鉄"
@@ -14335,7 +14342,7 @@
           "nameJa": "お好み焼き",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.okonomi-hanako.com/iidahashi.html",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_recommendation_text",
           "evidenceRule": "html-block:お好み焼き?|okonomiyaki",
           "evidenceSnippet": "住所移転しました。 花子のお好み焼きは、おそばやうどんでボリュームもしっかり楽しめるのに、なぜかサラッと食べれてしまう、不思議な魅力のお好み焼きです。看板メニューの国泰寺焼きは、鉄"
@@ -14345,7 +14352,7 @@
           "nameJa": "そば",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.okonomi-hanako.com/iidahashi.html",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_recommendation_text",
           "evidenceRule": "html-block:蕎麦|そば|soba",
           "evidenceSnippet": "住所移転しました。 花子のお好み焼きは、おそばやうどんでボリュームもしっかり楽しめるのに、なぜかサラッと食べれてしまう、不思議な魅力のお好み焼きです。看板メニューの国泰寺焼きは、鉄"
@@ -14798,9 +14805,19 @@
           "nameJa": "焼鳥",
           "provider": "Hot Pepper",
           "sourceUrl": "https://www.hotpepper.jp/strJ001264464/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_recommendation_text",
           "evidenceRule": "hotpepper-catch:焼き?鳥|やきとり|yakitori",
+          "evidenceSnippet": "★名物！つくね串も人気★ 旨みスパイス×炭火焼鳥"
+        },
+        {
+          "nameZh": "鸡肉丸串",
+          "nameJa": "つくね",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001264464/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "hotpepper-catch:つくね",
           "evidenceSnippet": "★名物！つくね串も人気★ 旨みスパイス×炭火焼鳥"
         },
         {
@@ -14812,16 +14829,6 @@
           "evidenceClass": "source_recommendation_text",
           "evidenceRule": "hotpepper-explicit-recommended-h3:焼き?鳥|やきとり|yakitori",
           "evidenceSnippet": "★宴会シーズンにもピッタリ★】ホッと温まる焼鳥料理＆3時間飲み放題付きコース"
-        },
-        {
-          "nameZh": "鸡肉丸串",
-          "nameJa": "つくね",
-          "provider": "Hot Pepper",
-          "sourceUrl": "https://www.hotpepper.jp/strJ001264464/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "source_recommendation_text",
-          "evidenceRule": "hotpepper-catch:つくね",
-          "evidenceSnippet": "★名物！つくね串も人気★ 旨みスパイス×炭火焼鳥"
         }
       ],
       "featuredDishes": [
@@ -14991,6 +14998,16 @@
       ],
       "featuredDishes": [
         {
+          "nameZh": "荞麦面",
+          "nameJa": "そば",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001103085/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-catch-menu:蕎麦|そば|soba",
+          "evidenceSnippet": "北海道産幌加内産そば使用 二八蕎麦ならではそば湯割"
+        },
+        {
           "nameZh": "乌冬面",
           "nameJa": "うどん",
           "provider": "Hot Pepper",
@@ -15039,16 +15056,6 @@
           "evidenceClass": "hotpepper_menu_text",
           "evidenceRule": "hotpepper-price-backed-h4:アジフライ|鯵フライ",
           "evidenceSnippet": "長崎県産アジフライ 770円（税込）"
-        },
-        {
-          "nameZh": "烤鸡串",
-          "nameJa": "焼き鳥",
-          "provider": "Hot Pepper",
-          "sourceUrl": "https://www.hotpepper.jp/strJ001103085/food/",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "hotpepper_menu_text",
-          "evidenceRule": "hotpepper-price-backed-h4:焼き?鳥|やきとり|yakitori",
-          "evidenceSnippet": "蕎麦屋の焼き鳥 715円（税込）"
         }
       ]
     },
@@ -15365,7 +15372,7 @@
           "nameJa": "ピザ",
           "provider": "sourceWebsite",
           "sourceUrl": "http://www.tails1998.com/menu/former_beers_on_tap.php",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:ピザ|ピッツァ|pizza",
           "evidenceSnippet": "ピザポート醸造所 (14)"
@@ -15375,7 +15382,7 @@
           "nameJa": "ピザ",
           "provider": "sourceWebsite",
           "sourceUrl": "http://www.tails1998.com/menu/hongo.php",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:ピザ|ピッツァ|pizza",
           "evidenceSnippet": "ピザポート醸造所 (14)"
@@ -15385,7 +15392,7 @@
           "nameJa": "ピザ",
           "provider": "sourceWebsite",
           "sourceUrl": "http://www.tails1998.com/menu/kanda.php",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:ピザ|ピッツァ|pizza",
           "evidenceSnippet": "ピザポート醸造所 (14)"
@@ -15395,7 +15402,7 @@
           "nameJa": "ピザ",
           "provider": "sourceWebsite",
           "sourceUrl": "http://www.tails1998.com/menu/seasonal.php",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:ピザ|ピッツァ|pizza",
           "evidenceSnippet": "ピザポート醸造所 (14)"
@@ -15405,7 +15412,7 @@
           "nameJa": "ドリア",
           "provider": "sourceWebsite",
           "sourceUrl": "http://www.tails1998.com/menu/seasonal.php",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:ドリア",
           "evidenceSnippet": "ドリアンIPA Sankt Gallen Durio zibethinus IPA"
@@ -15415,7 +15422,7 @@
           "nameJa": "フォー",
           "provider": "sourceWebsite",
           "sourceUrl": "http://www.tails1998.com/menu/seasonal.php",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:フォー|pho\\b",
           "evidenceSnippet": "アメリカ コロラド州フォートコリンズ"
@@ -15432,7 +15439,7 @@
           "nameJa": "大福",
           "provider": "sourceWebsite",
           "sourceUrl": "http://www.chikuryuan-okano.com/menu.html",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:大福|daifuku",
           "evidenceSnippet": "上野輪王寺宮公弁法親王に献上したところ、お誉めの言葉を頂き、これを「こごめ大福」と名づけられました。"
@@ -15442,7 +15449,7 @@
           "nameJa": "どら焼き",
           "provider": "sourceWebsite",
           "sourceUrl": "http://www.chikuryuan-okano.com/menu.html",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:どら焼き|どら焼|dorayaki",
           "evidenceSnippet": "ミネラル豊富なきび砂糖を配合しています。餡は、北海道産小豆のおぐら餡、竹隆庵岡埜オリジナルのどら焼きです。"
@@ -15486,6 +15493,26 @@
       ],
       "featuredDishes": [
         {
+          "nameZh": "汉堡排",
+          "nameJa": "ハンバーグ",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ002648019/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-catch-menu:ハンバーグ|hamburg steak",
+          "evidenceSnippet": "話題の黒毛和牛ハンバーグ 肉屋が通う焼肉屋さん♪"
+        },
+        {
+          "nameZh": "烤肉",
+          "nameJa": "焼肉",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ002648019/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-catch-menu:焼肉|yakiniku",
+          "evidenceSnippet": "話題の黒毛和牛ハンバーグ 肉屋が通う焼肉屋さん♪"
+        },
+        {
           "nameZh": "冷面",
           "nameJa": "冷麺",
           "provider": "Hot Pepper",
@@ -15504,26 +15531,6 @@
           "evidenceClass": "hotpepper_menu_text",
           "evidenceRule": "hotpepper-price-backed-h4:厚切りタン",
           "evidenceSnippet": "厚切りタン 1,538円（税込）"
-        },
-        {
-          "nameZh": "汉堡排",
-          "nameJa": "ハンバーグ",
-          "provider": "Hot Pepper",
-          "sourceUrl": "https://www.hotpepper.jp/strJ002648019/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "provider_promotional_dish_text",
-          "evidenceRule": "hotpepper-catch-menu:ハンバーグ|hamburg steak",
-          "evidenceSnippet": "話題の黒毛和牛ハンバーグ 肉屋が通う焼肉屋さん♪"
-        },
-        {
-          "nameZh": "烤肉",
-          "nameJa": "焼肉",
-          "provider": "Hot Pepper",
-          "sourceUrl": "https://www.hotpepper.jp/strJ002648019/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "provider_promotional_dish_text",
-          "evidenceRule": "hotpepper-catch-menu:焼肉|yakiniku",
-          "evidenceSnippet": "話題の黒毛和牛ハンバーグ 肉屋が通う焼肉屋さん♪"
         },
         {
           "nameZh": "牛排",
@@ -15624,7 +15631,7 @@
           "nameJa": "フォー",
           "provider": "sourceWebsite",
           "sourceUrl": "https://jp.sake-times.com/special/press/press_chinjunomori-french-dinner",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "sitemap-menu-text:フォー|pho\\b",
           "evidenceSnippet": "SAKETIMES PRESS 申請フォーム"
@@ -15634,7 +15641,7 @@
           "nameJa": "フォー",
           "provider": "sourceWebsite",
           "sourceUrl": "https://jp.sake-times.com/special/press/press_hakobune_hakkaisan_dinner",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "sitemap-menu-text:フォー|pho\\b",
           "evidenceSnippet": "SAKETIMES PRESS 申請フォーム"
@@ -15644,7 +15651,7 @@
           "nameJa": "フォー",
           "provider": "sourceWebsite",
           "sourceUrl": "https://jp.sake-times.com/special/press/press_makers_dinner",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "sitemap-menu-text:フォー|pho\\b",
           "evidenceSnippet": "SAKETIMES PRESS 申請フォーム"
@@ -15660,7 +15667,7 @@
           "nameJa": "刺身",
           "provider": "sourceWebsite",
           "sourceUrl": "https://gj3d602.gorp.jp/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_recommendation_text",
           "evidenceRule": "html-block:刺身|お造り|sashimi",
           "evidenceSnippet": "エリア最大規模の大宴会場 130人着席可能の大宴会場を完備！皆様お顔を見渡すことができ一体感のあるご宴会が可能です。広々とした造りとなっておりますので、宴会途中のご移動もスムーズ！"
@@ -15670,7 +15677,7 @@
           "nameJa": "焼き鳥",
           "provider": "sourceWebsite",
           "sourceUrl": "https://gj3d602.gorp.jp/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_recommendation_text",
           "evidenceRule": "html-block:焼き?鳥|やきとり|yakitori",
           "evidenceSnippet": "エリア最大規模の大宴会場 130人着席可能の大宴会場を完備！皆様お顔を見渡すことができ一体感のあるご宴会が可能です。広々とした造りとなっておりますので、宴会途中のご移動もスムーズ！"
@@ -15680,7 +15687,7 @@
           "nameJa": "牛タン",
           "provider": "sourceWebsite",
           "sourceUrl": "https://gj3d602.gorp.jp/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_recommendation_text",
           "evidenceRule": "html-block:牛タン|gyutan",
           "evidenceSnippet": "こだわり イチオシ☆仙台牛タン 炭火で焼いた仙台牛タン！本場のような厚切りかつ肉汁が溢れだす牛タンはお酒の相性バツグン！☆彡 ご友人との大切な時間に当店看板商品で舌を満足させてくだ"
@@ -16092,6 +16099,16 @@
       ],
       "featuredDishes": [
         {
+          "nameZh": "韩式烤五花肉",
+          "nameJa": "サムギョプサル",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001146483/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-catch-menu:サムギョプサル|samgyeopsal",
+          "evidenceSnippet": "お仕事帰りにふらっと♪ 駅近で本格サムギョプサル"
+        },
+        {
           "nameZh": "冷面",
           "nameJa": "冷麺",
           "provider": "Hot Pepper",
@@ -16140,16 +16157,6 @@
           "evidenceClass": "hotpepper_menu_text",
           "evidenceRule": "hotpepper-price-backed-h4:石焼ビビンパ",
           "evidenceSnippet": "石焼ビビンパ 1,400円（税込）"
-        },
-        {
-          "nameZh": "糖醋猪肉",
-          "nameJa": "酢豚",
-          "provider": "Hot Pepper",
-          "sourceUrl": "https://www.hotpepper.jp/strJ001146483/food/",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "hotpepper_menu_text",
-          "evidenceRule": "hotpepper-price-backed-h4:酢豚",
-          "evidenceSnippet": "韓国風酢豚 2,780円（税込）"
         }
       ]
     },
@@ -16358,7 +16365,7 @@
           "nameJa": "カレー",
           "provider": "sourceWebsite",
           "sourceUrl": "https://himalaya-table.info/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_recommendation_text",
           "evidenceRule": "html-block:カレー|カリー|咖喱|curry",
           "evidenceSnippet": "ネパール料理は、インドと中国に挟まれた立地と、異なる民族が共生してきた稀有な状況の中で、独特の食文化をつくってきました。 カレーだけではなく、蒸し、揚げ、炒め物等の多岐にわたる調理"
@@ -16368,7 +16375,7 @@
           "nameJa": "小籠包",
           "provider": "sourceWebsite",
           "sourceUrl": "https://himalaya-table.info/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_recommendation_text",
           "evidenceRule": "html-block:小籠包|小笼包|xiaolongbao",
           "evidenceSnippet": "ネパール料理は、インドと中国に挟まれた立地と、異なる民族が共生してきた稀有な状況の中で、独特の食文化をつくってきました。 カレーだけではなく、蒸し、揚げ、炒め物等の多岐にわたる調理"
@@ -16378,7 +16385,7 @@
           "nameJa": "キーマ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://himalaya-table.info/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_recommendation_text",
           "evidenceRule": "html-block:キーマ(?:カレー)?|keema curry",
           "evidenceSnippet": "マトン・カレー 羊肉のカレーです。男性人気NO.1 キーマ・カレー チキンひき肉カレーです。女性人気NO.1"
@@ -16666,7 +16673,7 @@
           "nameJa": "パスタ",
           "provider": "sourceWebsite",
           "sourceUrl": "http://edge-jimbocho.com/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_recommendation_text",
           "evidenceRule": "html-block:パスタ|スパゲッティ|pasta|spaghetti",
           "evidenceSnippet": "神保町で味わう、寛ぎのパスタタイム 自慢のパスタと、落ち着いた店内空間 厳選した素材を使用したパスタを中心に、心地よい時間をお過ごしいただけます。神保町エリアでのお食事に、ぜひお立"
@@ -16773,7 +16780,7 @@
           "nameJa": "刺身",
           "provider": "Hot Pepper",
           "sourceUrl": "https://www.hotpepper.jp/strJ004469719/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "provider_promotional_dish_text",
           "evidenceRule": "hotpepper-catch-menu:刺身|お造り|sashimi",
           "evidenceSnippet": "鮮度抜群のお刺身◎ 各種ドリンク"
@@ -17029,7 +17036,7 @@
           "nameJa": "サンドイッチ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.tullys.co.jp/menu/drink/coffee/honey_m.html",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:サンドイッチ|サンド|sandwich",
           "evidenceSnippet": "サンドイッチ"
@@ -17039,7 +17046,7 @@
           "nameJa": "サンドイッチ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.tullys.co.jp/menu/drink/coffee/iced.html",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "sitemap-menu-text:サンドイッチ|サンド|sandwich",
           "evidenceSnippet": "サンドイッチ"
@@ -17049,7 +17056,7 @@
           "nameJa": "サンドイッチ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.tullys.co.jp/menu/drink/coffee/todays.html",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "sitemap-menu-text:サンドイッチ|サンド|sandwich",
           "evidenceSnippet": "サンドイッチ"
@@ -17059,7 +17066,7 @@
           "nameJa": "サンドイッチ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.tullys.co.jp/menu/seasonal_lineup/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:サンドイッチ|サンド|sandwich",
           "evidenceSnippet": "サンドイッチ"
@@ -17069,7 +17076,7 @@
           "nameJa": "パスタ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.tullys.co.jp/menu/drink/coffee/honey_m.html",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:パスタ|スパゲッティ|pasta|spaghetti",
           "evidenceSnippet": "パスタ"
@@ -17079,7 +17086,7 @@
           "nameJa": "パスタ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.tullys.co.jp/menu/drink/coffee/iced.html",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "sitemap-menu-text:パスタ|スパゲッティ|pasta|spaghetti",
           "evidenceSnippet": "パスタ"
@@ -17096,7 +17103,7 @@
           "nameJa": "サンドイッチ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.tullys.co.jp/menu/drink/coffee/honey_m.html",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:サンドイッチ|サンド|sandwich",
           "evidenceSnippet": "サンドイッチ"
@@ -17106,7 +17113,7 @@
           "nameJa": "サンドイッチ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.tullys.co.jp/menu/drink/coffee/iced.html",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "sitemap-menu-text:サンドイッチ|サンド|sandwich",
           "evidenceSnippet": "サンドイッチ"
@@ -17116,7 +17123,7 @@
           "nameJa": "サンドイッチ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.tullys.co.jp/menu/drink/coffee/todays.html",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "sitemap-menu-text:サンドイッチ|サンド|sandwich",
           "evidenceSnippet": "サンドイッチ"
@@ -17126,7 +17133,7 @@
           "nameJa": "サンドイッチ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.tullys.co.jp/menu/seasonal_lineup/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:サンドイッチ|サンド|sandwich",
           "evidenceSnippet": "サンドイッチ"
@@ -17136,7 +17143,7 @@
           "nameJa": "パスタ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.tullys.co.jp/menu/drink/coffee/honey_m.html",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:パスタ|スパゲッティ|pasta|spaghetti",
           "evidenceSnippet": "パスタ"
@@ -17146,7 +17153,7 @@
           "nameJa": "パスタ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.tullys.co.jp/menu/drink/coffee/iced.html",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "sitemap-menu-text:パスタ|スパゲッティ|pasta|spaghetti",
           "evidenceSnippet": "パスタ"
@@ -17249,7 +17256,7 @@
           "nameJa": "curry",
           "provider": "sourceWebsite",
           "sourceUrl": "https://ethiopia-curry.com/ethiopia/%E3%81%8A%E8%96%A6%E3%82%81%E3%83%A1%E3%83%8B%E3%83%A5%E3%83%BC",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_recommendation_text",
           "evidenceRule": "html-block:カレー|カリー|咖喱|curry",
           "evidenceSnippet": "Chicken curry 大きめのチキンがゴロゴロ入って当店の人気メニュー ビーフカリー Beef curry"
@@ -17259,7 +17266,7 @@
           "nameJa": "curry",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.ethiopia-curry.com/%e3%81%8a%e8%96%a6%e3%82%81%e3%83%a1%e3%83%8b%e3%83%a5%e3%83%bc",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_recommendation_text",
           "evidenceRule": "html-block:カレー|カリー|咖喱|curry",
           "evidenceSnippet": "Chicken curry 大きめのチキンがゴロゴロ入って当店の人気メニュー ビーフカリー Beef curry"
@@ -17269,7 +17276,7 @@
           "nameJa": "curry",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.ethiopia-curry.com/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_recommendation_text",
           "evidenceRule": "html-block:カレー|カリー|咖喱|curry",
           "evidenceSnippet": "Beef curry 根強い人気を得ているビーフカリーです。旨みの効いたこれぞ正統派のカリーです。 エチオピアのビーフカリーの特徴は、ルーとビーフ、そしてライスの織り成す絶妙のバラ"
@@ -17279,7 +17286,7 @@
           "nameJa": "ナン",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.ethiopia-curry.com/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_recommendation_text",
           "evidenceRule": "html-block:ナン|naan",
           "evidenceSnippet": "その魂の込められた極上で独特な味わいは創業当初から今日まで、カレー激戦区の神田界隈・首都圏はもとより、 日本各地の百貨店のテナントやイベント出店において人気を博しています。 お知ら"
@@ -17304,6 +17311,16 @@
       ],
       "featuredDishes": [
         {
+          "nameZh": "鳗鱼",
+          "nameJa": "鰻",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ000770859/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-catch-menu:うなぎ|鰻|鳗鱼|unagi",
+          "evidenceSnippet": "老舗の味鰻重3900円税込～ 接待や会食にも"
+        },
+        {
           "nameZh": "烤鸡串",
           "nameJa": "やきとり",
           "provider": "Hot Pepper",
@@ -17312,16 +17329,6 @@
           "evidenceClass": "hotpepper_menu_text",
           "evidenceRule": "hotpepper-price-backed-h4:焼き?鳥|やきとり|yakitori",
           "evidenceSnippet": "やきとり 860円税込"
-        },
-        {
-          "nameZh": "鳗鱼",
-          "nameJa": "鰻",
-          "provider": "Hot Pepper",
-          "sourceUrl": "https://www.hotpepper.jp/strJ000770859/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "provider_promotional_dish_text",
-          "evidenceRule": "hotpepper-catch-menu:うなぎ|鰻|鳗鱼|unagi",
-          "evidenceSnippet": "老舗の味鰻重3900円税込～ 接待や会食にも"
         }
       ]
     },
@@ -17655,6 +17662,16 @@
       "name": "こんごう庵 神保町店",
       "recommendedDishes": [
         {
+          "nameZh": "荞麦面",
+          "nameJa": "そば",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ000004250/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "hotpepper-catch:蕎麦|そば|soba",
+          "evidenceSnippet": "新潟名物へぎそば 越後の地酒満喫コース"
+        },
+        {
           "nameZh": "日式高汤玉子烧",
           "nameJa": "出汁巻き玉子",
           "provider": "sourceWebsite",
@@ -17663,16 +17680,6 @@
           "evidenceClass": "source_recommendation_text",
           "evidenceRule": "html-block:だし巻き(?:玉子|卵)|出汁巻き(?:玉子|卵)",
           "evidenceSnippet": "1 / 10 【名物】ジャンボ油揚げ（葱味噌入り） 825円 (税込) そば屋のジャンボ出汁巻き玉子"
-        },
-        {
-          "nameZh": "荞麦面",
-          "nameJa": "そば",
-          "provider": "Hot Pepper",
-          "sourceUrl": "https://www.hotpepper.jp/strJ000004250/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "source_recommendation_text",
-          "evidenceRule": "hotpepper-catch:蕎麦|そば|soba",
-          "evidenceSnippet": "新潟名物へぎそば 越後の地酒満喫コース"
         },
         {
           "nameZh": "荞麦面",
@@ -17901,6 +17908,16 @@
       ],
       "featuredDishes": [
         {
+          "nameZh": "烤鸡串",
+          "nameJa": "焼鳥",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ003473927/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-catch-menu:焼き?鳥|やきとり|yakitori",
+          "evidenceSnippet": "シーンに合わせてご案内◎ 職人が焼く極上の焼鳥"
+        },
+        {
           "nameZh": "上等肝片",
           "nameJa": "上レバー",
           "provider": "Hot Pepper",
@@ -17929,16 +17946,6 @@
           "evidenceClass": "hotpepper_menu_text",
           "evidenceRule": "hotpepper-price-backed-h4:リゾット|risotto",
           "evidenceSnippet": "出汁チーズリゾット 681円（税込）"
-        },
-        {
-          "nameZh": "烤鸡串",
-          "nameJa": "焼鳥",
-          "provider": "Hot Pepper",
-          "sourceUrl": "https://www.hotpepper.jp/strJ003473927/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "provider_promotional_dish_text",
-          "evidenceRule": "hotpepper-catch-menu:焼き?鳥|やきとり|yakitori",
-          "evidenceSnippet": "シーンに合わせてご案内◎ 職人が焼く極上の焼鳥"
         },
         {
           "nameZh": "烤鸡串",
@@ -18105,7 +18112,7 @@
           "nameJa": "刺身",
           "provider": "Hot Pepper",
           "sourceUrl": "https://www.hotpepper.jp/strJ000704847/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "provider_promotional_dish_text",
           "evidenceRule": "hotpepper-catch-menu:刺身|お造り|sashimi",
           "evidenceSnippet": "お気軽にどうぞ やっぱりお刺身はにぎりで"
@@ -18195,7 +18202,7 @@
           "nameJa": "野菜巻き串",
           "provider": "Hot Pepper",
           "sourceUrl": "https://www.hotpepper.jp/strJ004612762/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_recommendation_text",
           "evidenceRule": "hotpepper-catch:野菜巻き串",
           "evidenceSnippet": "博多名物☆野菜巻き串堪能 駅近くでご褒美の一杯を♪"
@@ -19009,7 +19016,7 @@
           "nameJa": "唐揚げ",
           "provider": "Hot Pepper",
           "sourceUrl": "https://www.hotpepper.jp/strJ004403542/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "provider_promotional_dish_text",
           "evidenceRule": "hotpepper-catch-menu:唐揚げ|から揚げ|からあげ|karaage",
           "evidenceSnippet": "コスパ◎唐揚げ食べ放題！ 個室をお探しの方に◎"
@@ -19169,7 +19176,7 @@
           "nameJa": "ナン",
           "provider": "Hot Pepper",
           "sourceUrl": "https://www.hotpepper.jp/strJ000637552/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "provider_promotional_dish_text",
           "evidenceRule": "hotpepper-catch-menu:ナン|naan",
           "evidenceSnippet": "モチモチの大きなナン 靖国神社のすぐ側"
@@ -19186,7 +19193,7 @@
           "nameJa": "サンド",
           "provider": "sourceWebsite",
           "sourceUrl": "https://adirondackcafejp.wordpress.com/food/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:サンドイッチ|サンド|sandwich",
           "evidenceSnippet": "フィラデルフィアサンド"
@@ -19196,7 +19203,7 @@
           "nameJa": "Taco",
           "provider": "sourceWebsite",
           "sourceUrl": "https://adirondackcafejp.wordpress.com/food/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:タコス|tacos?",
           "evidenceSnippet": "タコライス Taco Rice (税込み１５４０）"
@@ -19206,32 +19213,17 @@
           "nameJa": "バーガー",
           "provider": "sourceWebsite",
           "sourceUrl": "https://adirondackcafejp.wordpress.com/food/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:ハンバーガー|バーガー|burger",
           "evidenceSnippet": "アディロンダックバーガー"
-        },
-        {
-          "nameZh": "炒面",
-          "nameJa": "そば",
-          "provider": "sourceWebsite",
-          "sourceUrl": "https://adirondackcafejp.wordpress.com/food/",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "source_menu_text",
-          "evidenceRule": "specificity:yakisoba-over-soba:menu-page-text:蕎麦|そば|soba",
-          "evidenceSnippet": "焼きそば Fried Noodle （税込み１４３０）",
-          "specificityCorrection": {
-            "rule": "yakisoba-over-soba",
-            "previousNameZh": "荞麦面",
-            "sourceNativeCompositeRequired": true
-          }
         },
         {
           "nameZh": "炒饭",
           "nameJa": "チャーハン",
           "provider": "sourceWebsite",
           "sourceUrl": "https://adirondackcafejp.wordpress.com/food/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:炒飯|チャーハン|炒饭|fried rice",
           "evidenceSnippet": "タイ風チャーハン Thai Fried Rice（税込み１４３０）"
@@ -19241,10 +19233,25 @@
           "nameJa": "ステーキ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://adirondackcafejp.wordpress.com/food/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:ステーキ|steak",
           "evidenceSnippet": "マグロステーキ丼"
+        },
+        {
+          "nameZh": "炒面",
+          "nameJa": "そば",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://adirondackcafejp.wordpress.com/food/",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "specificity:yakisoba-over-soba:menu-page-text:蕎麦|そば|soba",
+          "evidenceSnippet": "焼きそば Fried Noodle （税込み１４３０）",
+          "specificityCorrection": {
+            "rule": "yakisoba-over-soba",
+            "previousNameZh": "荞麦面",
+            "sourceNativeCompositeRequired": true
+          }
         }
       ]
     },
@@ -19487,6 +19494,16 @@
       ],
       "featuredDishes": [
         {
+          "nameZh": "饭团",
+          "nameJa": "おむすび",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001295004/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-catch-menu:おむすび",
+          "evidenceSnippet": "神社でカフェを楽しめる 握りたてのおむすび"
+        },
+        {
           "nameZh": "乌冬面",
           "nameJa": "うどん",
           "provider": "sourceWebsite",
@@ -19535,16 +19552,6 @@
           "evidenceClass": "source_menu_text",
           "evidenceRule": "sitemap-menu-text:パフェ|parfait",
           "evidenceSnippet": "枡パフェ ¥950"
-        },
-        {
-          "nameZh": "越南河粉",
-          "nameJa": "フォー",
-          "provider": "sourceWebsite",
-          "sourceUrl": "http://masumasu-cafe.com/index.php/menu/",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "source_menu_text",
-          "evidenceRule": "menu-page-text:フォー|pho\\b",
-          "evidenceSnippet": "法人様専用お問合せフォーム"
         }
       ]
     },
@@ -19558,7 +19565,7 @@
           "nameJa": "サンド",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.doutor.co.jp/dcs/menu/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:サンドイッチ|サンド|sandwich",
           "evidenceSnippet": "ミラノサンド"
@@ -19567,18 +19574,8 @@
           "nameZh": "三明治",
           "nameJa": "サンド",
           "provider": "sourceWebsite",
-          "sourceUrl": "https://www.doutor.co.jp/dcs/menu/gmpdf/stand.pdf",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "source_pdf_menu_text",
-          "evidenceRule": "pdf-menu-line:サンドイッチ|サンド|sandwich",
-          "evidenceSnippet": "ミラノサンド"
-        },
-        {
-          "nameZh": "三明治",
-          "nameJa": "サンド",
-          "provider": "sourceWebsite",
           "sourceUrl": "https://www.doutor.co.jp/dcs/menu/list/hotdrink.html",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:サンドイッチ|サンド|sandwich",
           "evidenceSnippet": "ミラノサンド"
@@ -19588,7 +19585,7 @@
           "nameJa": "サンド",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.doutor.co.jp/dcs/menu/season.html",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:サンドイッチ|サンド|sandwich",
           "evidenceSnippet": "ミラノサンド"
@@ -19598,20 +19595,30 @@
           "nameJa": "クレープ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.doutor.co.jp/dcs/menu/season.html",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:クレープ|crepe",
           "evidenceSnippet": "果実を食べる 白桃ミルクレープ"
         },
         {
-          "nameZh": "咖喱",
-          "nameJa": "カレー",
+          "nameZh": "拼配咖啡",
+          "nameJa": "ブレンドコーヒー",
           "provider": "sourceWebsite",
-          "sourceUrl": "https://www.doutor.co.jp/dcs/menu/gmpdf/kitchen.pdf",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "source_pdf_menu_text",
-          "evidenceRule": "pdf-menu-line:カレー|カリー|咖喱|curry",
-          "evidenceSnippet": "2種のあいがけカレー タコとエビの"
+          "sourceUrl": "https://www.doutor.co.jp/col/menu/list/blend.html",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "sitemap-menu-text:ブレンドコーヒー",
+          "evidenceSnippet": "ブレンドコーヒー｜メニュー｜カフェ コロラド"
+        },
+        {
+          "nameZh": "拼配咖啡",
+          "nameJa": "ブレンドコーヒー",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.doutor.co.jp/dcs/menu/list/hotdrink.html",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "menu-page-text:ブレンドコーヒー",
+          "evidenceSnippet": "ブレンドコーヒー"
         }
       ]
     },
@@ -20132,7 +20139,7 @@
           "nameJa": "餃子",
           "provider": "Hot Pepper",
           "sourceUrl": "https://www.hotpepper.jp/strJ003624081/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "provider_promotional_dish_text",
           "evidenceRule": "hotpepper-catch-menu:餃子|饺子|gyoza",
           "evidenceSnippet": "試作を重ねたこだわり餃子 安心の食材"
@@ -20177,7 +20184,7 @@
           "nameJa": "大福",
           "provider": "sourceWebsite",
           "sourceUrl": "https://wagashi.houraiya.co.jp/?page_id=53",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:大福|daifuku",
           "evidenceSnippet": "ぶどう大福"
@@ -20187,7 +20194,7 @@
           "nameJa": "大福",
           "provider": "sourceWebsite",
           "sourceUrl": "https://wagashi.houraiya.co.jp/?page_id=75",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:大福|daifuku",
           "evidenceSnippet": "ぶどう大福"
@@ -20679,7 +20686,7 @@
           "nameJa": "串揚げ",
           "provider": "Hot Pepper",
           "sourceUrl": "https://www.hotpepper.jp/strJ000952481/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_recommendation_text",
           "evidenceRule": "hotpepper-catch:串揚げ|串カツ|kushiage",
           "evidenceSnippet": "自慢の串揚げ なんだか懐かしい料理も♪"
@@ -21254,7 +21261,7 @@
           "nameJa": "サンドイッチ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://thinkcoffee.jp/news/3rd-anniversary-set-menu/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_recommendation_text",
           "evidenceRule": "html-block:サンドイッチ|サンド|sandwich",
           "evidenceSnippet": "6月30日は当店オープン3周年記念日です&#x1f389;⁡ ⁡これを記念して、当店の人気商品トップ2を組み合わせた、期間限定「3周年記念セット」を販売中です！ ⁡ No.2 NY"
@@ -21264,7 +21271,7 @@
           "nameJa": "チーズケーキ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://thinkcoffee.jp/menu_detail/dessert/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_recommendation_text",
           "evidenceRule": "html-block:チーズケーキ|cheesecake",
           "evidenceSnippet": "ちょっと疲れた時に、楽しいひと時の締めに、やっぱり欲しくなる甘いデザート 中でも、米国大使館御用達のNYチーズケーキは、イチオシです ぜひご賞味ください 東京都千代田区"
@@ -21274,7 +21281,7 @@
           "nameJa": "ケーキ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://thinkcoffee.jp/menu_detail/dessert/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_recommendation_text",
           "evidenceRule": "html-block:ケーキ|cake",
           "evidenceSnippet": "ちょっと疲れた時に、楽しいひと時の締めに、やっぱり欲しくなる甘いデザート 中でも、米国大使館御用達のNYチーズケーキは、イチオシです ぜひご賞味ください 東京都千代田区"
@@ -21664,7 +21671,7 @@
           "nameJa": "クロワッサン",
           "provider": "sourceWebsite",
           "sourceUrl": "http://sombreuil.jp/restaurant/menu/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:クロワッサン|croissant",
           "evidenceSnippet": "アンチョビクロワッサン"
@@ -21674,7 +21681,7 @@
           "nameJa": "クロワッサン",
           "provider": "sourceWebsite",
           "sourceUrl": "https://sombreuil.jp/restaurant/menu/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "sitemap-menu-text:クロワッサン|croissant",
           "evidenceSnippet": "アンチョビクロワッサン"
@@ -21684,7 +21691,7 @@
           "nameJa": "カレー",
           "provider": "sourceWebsite",
           "sourceUrl": "https://sombreuil.jp/wedding/cuisine/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "sitemap-menu-text:カレー|カリー|咖喱|curry",
           "evidenceSnippet": "タラバガニのグリエ 各種香味野菜とトリュフ カレー風味のソース"
@@ -21694,7 +21701,7 @@
           "nameJa": "Tiramisu",
           "provider": "sourceWebsite",
           "sourceUrl": "http://sombreuil.jp/restaurant/menu/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:ティラミス|tiramisu",
           "evidenceSnippet": "Tiramisu aux figue,s cassis, crème double, gelée de sangria"
@@ -21704,7 +21711,7 @@
           "nameJa": "Tiramisu",
           "provider": "sourceWebsite",
           "sourceUrl": "https://sombreuil.jp/restaurant/menu/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "sitemap-menu-text:ティラミス|tiramisu",
           "evidenceSnippet": "Tiramisu aux figue,s cassis, crème double, gelée de sangria"
@@ -21714,7 +21721,7 @@
           "nameJa": "モンブラン",
           "provider": "sourceWebsite",
           "sourceUrl": "http://sombreuil.jp/restaurant/menu/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:モンブラン|mont blanc",
           "evidenceSnippet": "モンブラン"
@@ -22433,7 +22440,7 @@
           "nameJa": "刺身",
           "provider": "sourceWebsite",
           "sourceUrl": "https://kaioumaru-kanda.owst.jp/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_recommendation_text",
           "evidenceRule": "html-block:刺身|お造り|sashimi",
           "evidenceSnippet": "ランチ 駅チカ３分♪採算度外視★ボリューム満点の刺身舟盛り＆日本酒が自慢♪の海鮮居酒屋◎ 毎日全国の市場から直送される新鮮な鮮魚♪名物豪華海鮮船盛！ ご予算に合わせたコースを海王丸"
@@ -22443,7 +22450,7 @@
           "nameJa": "ラーメン",
           "provider": "sourceWebsite",
           "sourceUrl": "https://kaioumaru-kanda.owst.jp/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_recommendation_text",
           "evidenceRule": "html-block:ラーメン|らーめん|拉麺|ramen",
           "evidenceSnippet": "◎○◎ 海王丸お品書き ◎ サラダ（ハーフOK） ◎○◎ 人気のラーメンサラダ 935円 (税込) ハーフサイズもOKです！"
@@ -22453,7 +22460,7 @@
           "nameJa": "焼鳥",
           "provider": "sourceWebsite",
           "sourceUrl": "https://kaioumaru-kanda.owst.jp/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_recommendation_text",
           "evidenceRule": "html-block:焼き?鳥|やきとり|yakitori",
           "evidenceSnippet": "5000(税込）～ 巷に溢れるありきたりなプランでは満足できないお客様に◎。ご宴会の日程、人数、ご予算、食べたいお料理、苦手な食材などのご要望をお聞きしながら、その会だけの宴会プラ"
@@ -22583,6 +22590,21 @@
       ],
       "featuredDishes": [
         {
+          "nameZh": "炒面",
+          "nameJa": "そば",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001195210/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "specificity:yakisoba-over-soba:hotpepper-catch-menu:蕎麦|そば|soba",
+          "evidenceSnippet": "焼きそばのっけ盛♪ オリジナルサワー",
+          "specificityCorrection": {
+            "rule": "yakisoba-over-soba",
+            "previousNameZh": "荞麦面",
+            "sourceNativeCompositeRequired": true
+          }
+        },
+        {
           "nameZh": "刺身",
           "nameJa": "刺身",
           "provider": "Hot Pepper",
@@ -22614,21 +22636,6 @@
         },
         {
           "nameZh": "炒面",
-          "nameJa": "そば",
-          "provider": "Hot Pepper",
-          "sourceUrl": "https://www.hotpepper.jp/strJ001195210/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "provider_promotional_dish_text",
-          "evidenceRule": "specificity:yakisoba-over-soba:hotpepper-catch-menu:蕎麦|そば|soba",
-          "evidenceSnippet": "焼きそばのっけ盛♪ オリジナルサワー",
-          "specificityCorrection": {
-            "rule": "yakisoba-over-soba",
-            "previousNameZh": "荞麦面",
-            "sourceNativeCompositeRequired": true
-          }
-        },
-        {
-          "nameZh": "炒面",
           "nameJa": "焼そば",
           "provider": "Hot Pepper",
           "sourceUrl": "https://www.hotpepper.jp/strJ001195210/food/",
@@ -22636,16 +22643,6 @@
           "evidenceClass": "hotpepper_menu_text",
           "evidenceRule": "hotpepper-price-backed-h4:hotpepper-specific:焼きそば",
           "evidenceSnippet": "屋台風鉄板夜鳴き 焼そば 一皿 一時間に一回鉄板にて焼きあげます。スタッフが御用聞きに伺いますのでお気軽にご注文下さい。名物！『のっけ盛』もあります！ 390円 「料理」の先頭へ戻"
-        },
-        {
-          "nameZh": "炸牡蛎",
-          "nameJa": "カキフライ",
-          "provider": "Hot Pepper",
-          "sourceUrl": "https://www.hotpepper.jp/strJ001195210/food/",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "hotpepper_menu_text",
-          "evidenceRule": "hotpepper-price-backed-h4:牡蠣フライ|カキフライ",
-          "evidenceSnippet": "カキフライ タルタルソース添え 三ヶ/五ヶ/七ヶ 480/750/980円"
         }
       ]
     },
@@ -22824,7 +22821,7 @@
           "nameJa": "ハンバーグ",
           "provider": "Hot Pepper",
           "sourceUrl": "https://www.hotpepper.jp/strJ001216074/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_recommendation_text",
           "evidenceRule": "hotpepper-catch:ハンバーグ|hamburg steak",
           "evidenceSnippet": "大人気！手ごねハンバーグ お酒を飲みながら♪"
@@ -22893,7 +22890,7 @@
           "nameJa": "サンドイッチ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.tullys.co.jp/menu/drink/coffee/honey_m.html",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:サンドイッチ|サンド|sandwich",
           "evidenceSnippet": "サンドイッチ"
@@ -22903,7 +22900,7 @@
           "nameJa": "サンドイッチ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.tullys.co.jp/menu/drink/coffee/iced.html",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "sitemap-menu-text:サンドイッチ|サンド|sandwich",
           "evidenceSnippet": "サンドイッチ"
@@ -22913,7 +22910,7 @@
           "nameJa": "サンドイッチ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.tullys.co.jp/menu/drink/coffee/todays.html",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "sitemap-menu-text:サンドイッチ|サンド|sandwich",
           "evidenceSnippet": "サンドイッチ"
@@ -22923,7 +22920,7 @@
           "nameJa": "サンドイッチ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.tullys.co.jp/menu/seasonal_lineup/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:サンドイッチ|サンド|sandwich",
           "evidenceSnippet": "サンドイッチ"
@@ -22933,7 +22930,7 @@
           "nameJa": "パスタ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.tullys.co.jp/menu/drink/coffee/honey_m.html",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:パスタ|スパゲッティ|pasta|spaghetti",
           "evidenceSnippet": "パスタ"
@@ -22943,7 +22940,7 @@
           "nameJa": "パスタ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.tullys.co.jp/menu/drink/coffee/iced.html",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "sitemap-menu-text:パスタ|スパゲッティ|pasta|spaghetti",
           "evidenceSnippet": "パスタ"
@@ -23046,7 +23043,7 @@
           "nameJa": "サンドイッチ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.point-et-ligne.com/news/%e5%a4%8f%e5%ad%a3%e9%99%90%e5%ae%9a%e5%95%86%e5%93%81-2/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:サンドイッチ|サンド|sandwich",
           "evidenceSnippet": "新サンドイッチ"
@@ -23056,7 +23053,7 @@
           "nameJa": "サンドイッチ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.point-et-ligne.com/news/%e5%ad%a3%e7%af%80%e9%99%90%e5%ae%9a%e6%96%b0%e5%95%86%e5%93%81/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:サンドイッチ|サンド|sandwich",
           "evidenceSnippet": "新サンドイッチ"
@@ -23066,7 +23063,7 @@
           "nameJa": "サンドイッチ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.point-et-ligne.com/news/%e7%a5%9e%e6%a5%bd%e5%9d%82%e9%99%90%e5%ae%9a%e6%96%b0%e5%95%86%e5%93%81/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:サンドイッチ|サンド|sandwich",
           "evidenceSnippet": "新サンドイッチ"
@@ -23089,6 +23086,16 @@
         }
       ],
       "featuredDishes": [
+        {
+          "nameZh": "烤肉",
+          "nameJa": "焼肉",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001266961/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-catch-menu:焼肉|yakiniku",
+          "evidenceSnippet": "お昼限定！焼肉定食がお得 サプライズなどもOK♪"
+        },
         {
           "nameZh": "冷面",
           "nameJa": "冷麺",
@@ -23130,16 +23137,6 @@
           "evidenceSnippet": "牛ホルモン(青唐・塩・味噌) 上質なシマチョウを使用！！ぷりっぷりの脂が口の中でとろけます！！ 768円（税込） <img src=\"https://imgfp.hotp.jp/S"
         },
         {
-          "nameZh": "烤肉",
-          "nameJa": "焼肉",
-          "provider": "Hot Pepper",
-          "sourceUrl": "https://www.hotpepper.jp/strJ001266961/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "provider_promotional_dish_text",
-          "evidenceRule": "hotpepper-catch-menu:焼肉|yakiniku",
-          "evidenceSnippet": "お昼限定！焼肉定食がお得 サプライズなどもOK♪"
-        },
-        {
           "nameZh": "烤饼",
           "nameJa": "ナン",
           "provider": "Hot Pepper",
@@ -23161,7 +23158,7 @@
           "nameJa": "ケーキ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://k-brazil.jp/%E5%BA%97%E5%86%85%E3%83%A1%E3%83%8B%E3%83%A5%E3%83%BC",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:ケーキ|cake",
           "evidenceSnippet": "ケーキ単品・・・６００円"
@@ -23385,6 +23382,16 @@
       ],
       "featuredDishes": [
         {
+          "nameZh": "披萨",
+          "nameJa": "pizza",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001145364/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-catch-menu:ピザ|ピッツァ|pizza",
+          "evidenceSnippet": "pizzaは15種類以上！ イタリアワインが豊富！"
+        },
+        {
           "nameZh": "千层面",
           "nameJa": "ラザニア",
           "provider": "Hot Pepper",
@@ -23423,16 +23430,6 @@
           "evidenceClass": "hotpepper_menu_text",
           "evidenceRule": "hotpepper-price-backed-h4:リゾット|risotto",
           "evidenceSnippet": "窯焼きいか墨のリゾット 口が黒くなっても食べたい！イカスミの香り、味がしっかりとするあつあつ焼きリゾットです 1,400円（税込） 「料理」の先頭へ戻る ～Pizza～ <img "
-        },
-        {
-          "nameZh": "披萨",
-          "nameJa": "pizza",
-          "provider": "Hot Pepper",
-          "sourceUrl": "https://www.hotpepper.jp/strJ001145364/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "provider_promotional_dish_text",
-          "evidenceRule": "hotpepper-catch-menu:ピザ|ピッツァ|pizza",
-          "evidenceSnippet": "pizzaは15種類以上！ イタリアワインが豊富！"
         },
         {
           "nameZh": "提拉米苏",
@@ -23538,6 +23535,26 @@
       ],
       "featuredDishes": [
         {
+          "nameZh": "煎饺",
+          "nameJa": "焼餃子",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001260431/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-catch-menu:焼き餃子|焼餃子",
+          "evidenceSnippet": "手作りに拘る『寶焼餃子』 広々ゆったりとした空間♪"
+        },
+        {
+          "nameZh": "饺子",
+          "nameJa": "餃子",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001260431/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-catch-menu:餃子|饺子|gyoza",
+          "evidenceSnippet": "手作りに拘る『寶焼餃子』 広々ゆったりとした空間♪"
+        },
+        {
           "nameZh": "干烧虾仁",
           "nameJa": "海老チリ",
           "provider": "Hot Pepper",
@@ -23576,26 +23593,6 @@
           "evidenceClass": "hotpepper_menu_text",
           "evidenceRule": "hotpepper-price-backed-h4:唐揚げ|から揚げ|からあげ|karaage",
           "evidenceSnippet": "やみつき唐揚げ 6個 869円（税込） 「料理」の先頭へ戻る 【サラダ】"
-        },
-        {
-          "nameZh": "炒面",
-          "nameJa": "焼きそば",
-          "provider": "Hot Pepper",
-          "sourceUrl": "https://www.hotpepper.jp/strJ001260431/food/",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "hotpepper_menu_text",
-          "evidenceRule": "hotpepper-price-backed-h4:hotpepper-specific:焼きそば",
-          "evidenceSnippet": "上海焼きそば 968円（税込）"
-        },
-        {
-          "nameZh": "烤内脏",
-          "nameJa": "ホルモン",
-          "provider": "Hot Pepper",
-          "sourceUrl": "https://www.hotpepper.jp/strJ001260431/food/",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "hotpepper_menu_text",
-          "evidenceRule": "hotpepper-price-backed-h4:ホルモン",
-          "evidenceSnippet": "ホルモンのガーリック炒め 968円（税込）"
         }
       ]
     },
@@ -23608,7 +23605,7 @@
           "nameJa": "おでん",
           "provider": "Hot Pepper",
           "sourceUrl": "https://www.hotpepper.jp/strJ000116156/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_recommendation_text",
           "evidenceRule": "hotpepper-catch:おでん|oden\\b",
           "evidenceSnippet": "夏の名物！かき氷おでん 塩にこだわった炙り焼き"
@@ -23808,10 +23805,10 @@
           "nameJa": "刺身",
           "provider": "sourceWebsite",
           "sourceUrl": "https://gj47600.gorp.jp/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_recommendation_text",
           "evidenceRule": "html-block:刺身|お造り|sashimi",
-          "evidenceSnippet": "魚肴満喫4800円コース 4800円（税込） お料理コースのみ 売れ筋 おまかせ刺身盛り合わせ 1300円（税込） 一人前 魚肴名物 角タコ焼き 660円（税込）"
+          "evidenceSnippet": "人によって好みは色々かと思いますが,,,,,,, 売れ筋 おまかせ刺身盛り合わせ 1300円（税込） 一人前 魚肴名物 角タコ焼き 660円（税込）"
         }
       ],
       "featuredDishes": []
@@ -24164,7 +24161,7 @@
           "nameJa": "ピザ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://ebrietas-ytr.amebaownd.com/pages/1604493/static",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_recommendation_text",
           "evidenceRule": "html-block:ピザ|ピッツァ|pizza",
           "evidenceSnippet": "・ソーセージグリル ・おすすめピザ ・豚のグリル ・デザート"
@@ -24192,7 +24189,7 @@
           "nameJa": "蕎麦",
           "provider": "Hot Pepper",
           "sourceUrl": "https://www.hotpepper.jp/strJ000640640/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "provider_promotional_dish_text",
           "evidenceRule": "hotpepper-catch-menu:蕎麦|そば|soba",
           "evidenceSnippet": "高級感のある手打蕎麦 こだわりの一品"
@@ -24236,7 +24233,7 @@
           "nameJa": "串焼き",
           "provider": "sourceWebsite",
           "sourceUrl": "https://kushifuku.com/menu/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:串焼き",
           "evidenceSnippet": "- 串焼き -"
@@ -24246,7 +24243,7 @@
           "nameJa": "串焼き",
           "provider": "sourceWebsite",
           "sourceUrl": "https://kushifuku.com/menu/drink/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:串焼き",
           "evidenceSnippet": "- 串焼き -"
@@ -24256,7 +24253,7 @@
           "nameJa": "串焼き",
           "provider": "sourceWebsite",
           "sourceUrl": "https://kushifuku.com/menu/meal/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:串焼き",
           "evidenceSnippet": "- 串焼き -"
@@ -24266,7 +24263,7 @@
           "nameJa": "串焼き",
           "provider": "sourceWebsite",
           "sourceUrl": "https://kushifuku.com/menu/sumibi/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:串焼き",
           "evidenceSnippet": "- 串焼き -"
@@ -24799,7 +24796,7 @@
           "nameJa": "Pasta",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.tablecheck.com/ja/storiare-tokyo/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_recommendation_text",
           "evidenceRule": "html-block:パスタ|スパゲッティ|pasta|spaghetti",
           "evidenceSnippet": "8.STORIARE 渾身の締めの一皿 Our Signature Pasta 9.桃 アールグレイチーズケーキ Peach, Earl Grey Cheesecake"
@@ -24809,7 +24806,7 @@
           "nameJa": "チーズケーキ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.tablecheck.com/ja/storiare-tokyo/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_recommendation_text",
           "evidenceRule": "html-block:チーズケーキ|cheesecake",
           "evidenceSnippet": "8.STORIARE 渾身の締めの一皿 Our Signature Pasta 9.桃 アールグレイチーズケーキ Peach, Earl Grey Cheesecake"
@@ -24819,7 +24816,7 @@
           "nameJa": "ケーキ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.tablecheck.com/ja/storiare-tokyo/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_recommendation_text",
           "evidenceRule": "html-block:ケーキ|cake",
           "evidenceSnippet": "8.STORIARE 渾身の締めの一皿 Our Signature Pasta 9.桃 アールグレイチーズケーキ Peach, Earl Grey Cheesecake"
@@ -25951,6 +25948,16 @@
       ],
       "featuredDishes": [
         {
+          "nameZh": "汉堡",
+          "nameJa": "ハンバーガー",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ003516099/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-catch-menu:ハンバーガー|バーガー|burger",
+          "evidenceSnippet": "ハンバーガーが目玉 おしゃれな雰囲気の店内"
+        },
+        {
           "nameZh": "塔可",
           "nameJa": "タコス",
           "provider": "Hot Pepper",
@@ -25979,16 +25986,6 @@
           "evidenceClass": "hotpepper_menu_text",
           "evidenceRule": "hotpepper-price-backed-h4:パンケーキ|pancake",
           "evidenceSnippet": "メープルバターパンケーキ 780円（税込）"
-        },
-        {
-          "nameZh": "汉堡",
-          "nameJa": "ハンバーガー",
-          "provider": "Hot Pepper",
-          "sourceUrl": "https://www.hotpepper.jp/strJ003516099/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "provider_promotional_dish_text",
-          "evidenceRule": "hotpepper-catch-menu:ハンバーガー|バーガー|burger",
-          "evidenceSnippet": "ハンバーガーが目玉 おしゃれな雰囲気の店内"
         },
         {
           "nameZh": "汉堡排",
@@ -26548,7 +26545,7 @@
           "nameJa": "カツ丼",
           "provider": "Hot Pepper",
           "sourceUrl": "https://www.hotpepper.jp/strJ002647945/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "provider_promotional_dish_text",
           "evidenceRule": "hotpepper-catch-menu:カツ丼|katsudon",
           "evidenceSnippet": "タレが命の新潟カツ丼 厳選の豚肉で作りました"
@@ -26801,6 +26798,16 @@
       "recommendedDishes": [],
       "featuredDishes": [
         {
+          "nameZh": "刺身",
+          "nameJa": "刺身",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001043637/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-catch-menu:刺身|お造り|sashimi",
+          "evidenceSnippet": "お刺身も♪豊富な品ぞろえ お一人様でも気軽にどうぞ"
+        },
+        {
           "nameZh": "日式炸鸡",
           "nameJa": "唐揚げ",
           "provider": "Hot Pepper",
@@ -26849,16 +26856,6 @@
           "evidenceClass": "hotpepper_menu_text",
           "evidenceRule": "hotpepper-price-backed-h4:牡蠣フライ|カキフライ",
           "evidenceSnippet": "カキフライ 858円 (税込) 「料理」の先頭へ戻る ◆逸品売れ筋！！◆"
-        },
-        {
-          "nameZh": "烤内脏",
-          "nameJa": "ホルモン",
-          "provider": "Hot Pepper",
-          "sourceUrl": "https://www.hotpepper.jp/strJ001043637/food/",
-          "checkedAt": "2026-09-09",
-          "evidenceClass": "hotpepper_menu_text",
-          "evidenceRule": "hotpepper-price-backed-h4:ホルモン",
-          "evidenceSnippet": "ホルモンピリ辛炒め 858円 (税込)"
         }
       ]
     },
@@ -26967,7 +26964,7 @@
           "nameJa": "カレー",
           "provider": "Hot Pepper",
           "sourceUrl": "https://www.hotpepper.jp/strJ001152555/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "provider_promotional_dish_text",
           "evidenceRule": "hotpepper-catch-menu:カレー|カリー|咖喱|curry",
           "evidenceSnippet": "テイクアウトカレー 選べるトッピング"
@@ -27003,7 +27000,7 @@
           "nameJa": "唐揚げ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://gj8g200.gorp.jp/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_recommendation_text",
           "evidenceRule": "html-block:唐揚げ|から揚げ|からあげ|karaage",
           "evidenceSnippet": "新登場！飲み放題付食べ放題コース！ 〈2時間食べ飲み放題！！〉平日限定のお得な食べ飲み放題コース。焼き鳥軒の人気メニューである自家製唐揚げやサラダ、枝豆などを食べ放題で楽しめます。"
@@ -27013,7 +27010,7 @@
           "nameJa": "串焼き",
           "provider": "sourceWebsite",
           "sourceUrl": "https://gj8g200.gorp.jp/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_recommendation_text",
           "evidenceRule": "html-block:串焼き",
           "evidenceSnippet": "新登場!おなか一杯楽しめる【食べ放題コース】飲放付 お得なハッピーアワー開催中!自慢の串焼きとご一緒に! こだわり コース"
@@ -27023,7 +27020,7 @@
           "nameJa": "焼き鳥",
           "provider": "sourceWebsite",
           "sourceUrl": "https://gj8g200.gorp.jp/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_recommendation_text",
           "evidenceRule": "html-block:焼き?鳥|やきとり|yakitori",
           "evidenceSnippet": "新登場！飲み放題付食べ放題コース！ 〈2時間食べ飲み放題！！〉平日限定のお得な食べ飲み放題コース。焼き鳥軒の人気メニューである自家製唐揚げやサラダ、枝豆などを食べ放題で楽しめます。"
@@ -27088,7 +27085,7 @@
           "nameJa": "とんかつ",
           "provider": "Hot Pepper",
           "sourceUrl": "https://www.hotpepper.jp/strJ004612600/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "provider_promotional_dish_text",
           "evidenceRule": "hotpepper-catch-menu:とんかつ|豚カツ|tonkatsu",
           "evidenceSnippet": "【新感覚とんかつ】 【コスパ抜群空間】"
@@ -27559,6 +27556,16 @@
       ],
       "featuredDishes": [
         {
+          "nameZh": "牛舌",
+          "nameJa": "牛タン",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ003829674/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-catch-menu:牛タン|gyutan",
+          "evidenceSnippet": "”国産”鶏使用！ 売切御免！厚切り牛タン串"
+        },
+        {
           "nameZh": "亲子盖饭",
           "nameJa": "親子丼",
           "provider": "Hot Pepper",
@@ -27589,16 +27596,6 @@
           "evidenceSnippet": "赤玉頑固の濃厚だし巻き玉子 748円（税込）"
         },
         {
-          "nameZh": "牛舌",
-          "nameJa": "牛タン",
-          "provider": "Hot Pepper",
-          "sourceUrl": "https://www.hotpepper.jp/strJ003829674/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "provider_promotional_dish_text",
-          "evidenceRule": "hotpepper-catch-menu:牛タン|gyutan",
-          "evidenceSnippet": "”国産”鶏使用！ 売切御免！厚切り牛タン串"
-        },
-        {
           "nameZh": "葱鸡肉串",
           "nameJa": "ねぎま",
           "provider": "Hot Pepper",
@@ -27626,6 +27623,16 @@
         }
       ],
       "featuredDishes": [
+        {
+          "nameZh": "御好烧",
+          "nameJa": "お好み焼き",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ004005674/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-catch-menu:お好み焼き?|okonomiyaki",
+          "evidenceSnippet": "お好み焼き食べ放題 学生さん限定価格あり♪"
+        },
         {
           "nameZh": "乌冬面",
           "nameJa": "うどん",
@@ -27655,16 +27662,6 @@
           "evidenceClass": "hotpepper_menu_text",
           "evidenceRule": "hotpepper-price-backed-h4:生姜焼き|しょうが焼き",
           "evidenceSnippet": "豚バラ(ネギ塩焼き 又は 生姜焼き) 各 ※画像は生姜焼きです 650円（税込）"
-        },
-        {
-          "nameZh": "御好烧",
-          "nameJa": "お好み焼き",
-          "provider": "Hot Pepper",
-          "sourceUrl": "https://www.hotpepper.jp/strJ004005674/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "provider_promotional_dish_text",
-          "evidenceRule": "hotpepper-catch-menu:お好み焼き?|okonomiyaki",
-          "evidenceSnippet": "お好み焼き食べ放題 学生さん限定価格あり♪"
         },
         {
           "nameZh": "披萨",
@@ -27868,6 +27865,16 @@
       ],
       "featuredDishes": [
         {
+          "nameZh": "烤鸡串",
+          "nameJa": "焼き鳥",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ004004277/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-catch-menu:焼き?鳥|やきとり|yakitori",
+          "evidenceSnippet": "大山地鶏×阿波尾鶏！ 焼き鳥に合うドリンク充実"
+        },
+        {
           "nameZh": "乌冬面",
           "nameJa": "うどん",
           "provider": "Hot Pepper",
@@ -27916,16 +27923,6 @@
           "evidenceClass": "hotpepper_menu_text",
           "evidenceRule": "hotpepper-price-backed-h4:ティラミス|tiramisu",
           "evidenceSnippet": "自家製ティラミス 580円（税込）"
-        },
-        {
-          "nameZh": "日式炸鸡",
-          "nameJa": "唐揚げ",
-          "provider": "Hot Pepper",
-          "sourceUrl": "https://www.hotpepper.jp/strJ004004277/food/",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "hotpepper_menu_text",
-          "evidenceRule": "hotpepper-price-backed-h4:唐揚げ|から揚げ|からあげ|karaage",
-          "evidenceSnippet": "なんこつの唐揚げ 680円（税込） 「料理」の先頭へ戻る 〆"
         }
       ]
     },
@@ -28082,6 +28079,16 @@
       ],
       "featuredDishes": [
         {
+          "nameZh": "饺子",
+          "nameJa": "餃子",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ004510224/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-catch-menu:餃子|饺子|gyoza",
+          "evidenceSnippet": "毎週火曜日は餃子100円！ 赤ちょうちんが目印です♪"
+        },
+        {
           "nameZh": "口水鸡",
           "nameJa": "よだれ鶏",
           "provider": "Hot Pepper",
@@ -28130,16 +28137,6 @@
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:焼肉|yakiniku",
           "evidenceSnippet": "焼肉きんぐ"
-        },
-        {
-          "nameZh": "烤鸡串",
-          "nameJa": "やきとり",
-          "provider": "sourceWebsite",
-          "sourceUrl": "https://ts-entertainment.com/brand/brand_13/",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "source_menu_text",
-          "evidenceRule": "menu-page-text:焼き?鳥|やきとり|yakitori",
-          "evidenceSnippet": "やきとり家すみれ"
         }
       ]
     },
@@ -28384,7 +28381,7 @@
           "nameJa": "Spaghetti",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.salvatore.jp/restaurant/recommendmenu/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "sitemap-menu-text:パスタ|スパゲッティ|pasta|spaghetti",
           "evidenceSnippet": "Spaghetti Peperoncino"
@@ -28394,7 +28391,7 @@
           "nameJa": "PIZZA",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.salvatore.jp/restaurant/recommendmenu/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "sitemap-menu-text:ピザ|ピッツァ|pizza",
           "evidenceSnippet": "�f���o���[�s�b�c�@ PIZZA DELIVERY"
@@ -28404,7 +28401,7 @@
           "nameJa": "Peperoncino",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.salvatore.jp/restaurant/recommendmenu/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "sitemap-menu-text:ペペロンチーノ|aglio.*olio|peperoncino",
           "evidenceSnippet": "Spaghetti Peperoncino"
@@ -28771,7 +28768,7 @@
           "nameJa": "サンドイッチ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.tullys.co.jp/menu/drink/coffee/honey_m.html",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:サンドイッチ|サンド|sandwich",
           "evidenceSnippet": "サンドイッチ"
@@ -28781,7 +28778,7 @@
           "nameJa": "サンドイッチ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.tullys.co.jp/menu/drink/coffee/iced.html",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "sitemap-menu-text:サンドイッチ|サンド|sandwich",
           "evidenceSnippet": "サンドイッチ"
@@ -28791,7 +28788,7 @@
           "nameJa": "サンドイッチ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.tullys.co.jp/menu/drink/coffee/todays.html",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "sitemap-menu-text:サンドイッチ|サンド|sandwich",
           "evidenceSnippet": "サンドイッチ"
@@ -28801,7 +28798,7 @@
           "nameJa": "サンドイッチ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.tullys.co.jp/menu/seasonal_lineup/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:サンドイッチ|サンド|sandwich",
           "evidenceSnippet": "サンドイッチ"
@@ -28811,7 +28808,7 @@
           "nameJa": "パスタ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.tullys.co.jp/menu/drink/coffee/honey_m.html",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:パスタ|スパゲッティ|pasta|spaghetti",
           "evidenceSnippet": "パスタ"
@@ -28821,7 +28818,7 @@
           "nameJa": "パスタ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.tullys.co.jp/menu/drink/coffee/iced.html",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "sitemap-menu-text:パスタ|スパゲッティ|pasta|spaghetti",
           "evidenceSnippet": "パスタ"
@@ -29492,7 +29489,7 @@
           "nameJa": "ケーキ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.rakuten.co.jp/keikidokoro/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_recommendation_text",
           "evidenceRule": "html-block:ケーキ|cake",
           "evidenceSnippet": "季節の蜜芋パウンドケーキ 人気ベスト3 初めての方用 熨斗／化粧箱"
@@ -29563,7 +29560,7 @@
           "nameJa": "パスタ",
           "provider": "sourceWebsite",
           "sourceUrl": "http://www.hibiya-bar.com/my-memorial-bar/foodstyle/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "sitemap-menu-text:パスタ|スパゲッティ|pasta|spaghetti",
           "evidenceSnippet": "7.バジルの香りとオリーブオイルの風味が絶妙シェフ特製カップパスタ"
@@ -29573,7 +29570,7 @@
           "nameJa": "燻製",
           "provider": "sourceWebsite",
           "sourceUrl": "http://www.hibiya-bar.com/my-memorial-bar/foodstyle/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "sitemap-menu-text:燻製|smoked",
           "evidenceSnippet": "3.【肉料理】オーストラリア産ローストビーフ 燻製バルサミコソース"
@@ -29583,7 +29580,7 @@
           "nameJa": "ローストビーフ",
           "provider": "sourceWebsite",
           "sourceUrl": "http://www.hibiya-bar.com/my-memorial-bar/foodstyle/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "sitemap-menu-text:ローストビーフ|roast beef",
           "evidenceSnippet": "3.【肉料理】オーストラリア産ローストビーフ 燻製バルサミコソース"
@@ -29593,7 +29590,7 @@
           "nameJa": "ステーキ",
           "provider": "sourceWebsite",
           "sourceUrl": "http://www.hibiya-bar.com/my-memorial-bar/foodstyle/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "sitemap-menu-text:ステーキ|steak",
           "evidenceSnippet": "5.鳥取県産大山鳥のグリルステーキ～さわやかな酸味と味わい豊かなバジルソース～"
@@ -29603,7 +29600,7 @@
           "nameJa": "オムライス",
           "provider": "sourceWebsite",
           "sourceUrl": "http://www.hibiya-bar.com/my-memorial-bar/foodstyle/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "sitemap-menu-text:オムライス|omelette rice|omurice",
           "evidenceSnippet": "8.トマトソースが香るカップオムライス"
@@ -29613,7 +29610,7 @@
           "nameJa": "フォー",
           "provider": "sourceWebsite",
           "sourceUrl": "http://www.hibiya-bar.com/my-memorial-bar/foodstyle/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "sitemap-menu-text:フォー|pho\\b",
           "evidenceSnippet": "貸切申し込みフォーム"
@@ -30036,7 +30033,7 @@
           "nameJa": "担担麺",
           "provider": "sourceWebsite",
           "sourceUrl": "https://maratan.com/sidemenu/%E8%96%AC%E8%86%B3%E6%8B%85%E6%8B%85%E9%BA%BA%E5%86%99%E7%9C%9F_hp-2",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "sitemap-menu-text:担々麺|担担麺|担担面|tantanmen",
           "evidenceSnippet": "薬膳担担麺写真_HP | 七宝麻辣湯"
@@ -30046,7 +30043,7 @@
           "nameJa": "担担麺",
           "provider": "sourceWebsite",
           "sourceUrl": "https://maratan.com/sidemenu/%E8%96%AC%E8%86%B3%E6%8B%85%E6%8B%85%E9%BA%BA%E5%86%99%E7%9C%9F_hp",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "sitemap-menu-text:担々麺|担担麺|担担面|tantanmen",
           "evidenceSnippet": "薬膳担担麺写真_HP | 七宝麻辣湯"
@@ -30056,7 +30053,7 @@
           "nameJa": "担担麺",
           "provider": "sourceWebsite",
           "sourceUrl": "https://maratan.com/sidemenu",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:担々麺|担担麺|担担面|tantanmen",
           "evidenceSnippet": "ご飯・薬膳担担麺"
@@ -30072,7 +30069,7 @@
           "nameJa": "餃子",
           "provider": "Hot Pepper",
           "sourceUrl": "https://www.hotpepper.jp/strJ001171148/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_recommendation_text",
           "evidenceRule": "hotpepper-catch:餃子|饺子|gyoza",
           "evidenceSnippet": "大人気の創作餃子！ 女子会やデートにも!"
@@ -30294,7 +30291,7 @@
           "nameJa": "寿司",
           "provider": "Hot Pepper",
           "sourceUrl": "https://www.hotpepper.jp/strJ001170001/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "provider_promotional_dish_text",
           "evidenceRule": "hotpepper-catch-menu:寿司|すし|鮨|sushi",
           "evidenceSnippet": "祝いの席に！活魚の姿造り ぶっかけ寿司こぼれ盛り！"
@@ -30437,7 +30434,7 @@
           "nameJa": "タコス",
           "provider": "Hot Pepper",
           "sourceUrl": "https://www.hotpepper.jp/strJ004067849/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "provider_promotional_dish_text",
           "evidenceRule": "hotpepper-catch-menu:タコス|tacos?",
           "evidenceSnippet": "お酒のお供に◎特製タコス みんなと思いきり楽しむ！"
@@ -30697,7 +30694,7 @@
           "nameJa": "刺身",
           "provider": "Hot Pepper",
           "sourceUrl": "https://www.hotpepper.jp/strJ001171178/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "provider_promotional_dish_text",
           "evidenceRule": "hotpepper-catch-menu:刺身|お造り|sashimi",
           "evidenceSnippet": "喫煙席あり飛騨牛 お刺身 2名-40名様モダン個室空間"
@@ -30986,7 +30983,7 @@
           "nameJa": "刺身",
           "provider": "sourceWebsite",
           "sourceUrl": "http://makoto-sushi.jp/menu/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:刺身|お造り|sashimi",
           "evidenceSnippet": "その他、ご予算に応じて調理致します。（先付け、刺身、焼物、煮物、寿司、お椀、デザート）"
@@ -30996,7 +30993,7 @@
           "nameJa": "鮨",
           "provider": "sourceWebsite",
           "sourceUrl": "http://makoto-sushi.jp/menu/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:寿司|すし|鮨|sushi",
           "evidenceSnippet": "お品書き｜誠鮨"
@@ -31444,6 +31441,16 @@
       "name": "多福楼",
       "recommendedDishes": [
         {
+          "nameZh": "麻婆豆腐",
+          "nameJa": "麻婆豆腐",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ003942583/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "hotpepper-catch:麻婆豆腐|mapo",
+          "evidenceSnippet": "人気No1!石鍋四川麻婆豆腐 小川町駅徒歩1分の好立地!"
+        },
+        {
           "nameZh": "煎饺",
           "nameJa": "焼き餃子",
           "provider": "Hot Pepper",
@@ -31462,16 +31469,6 @@
           "evidenceClass": "source_recommendation_text",
           "evidenceRule": "hotpepper-explicit-recommended-h3:餃子|饺子|gyoza",
           "evidenceSnippet": "オススメ】国産野菜に国産挽肉を使用した爆汁餃子☆皮にはもち米を使用！もちもちでジューシーな味わい♪"
-        },
-        {
-          "nameZh": "麻婆豆腐",
-          "nameJa": "麻婆豆腐",
-          "provider": "Hot Pepper",
-          "sourceUrl": "https://www.hotpepper.jp/strJ003942583/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "source_recommendation_text",
-          "evidenceRule": "hotpepper-catch:麻婆豆腐|mapo",
-          "evidenceSnippet": "人気No1!石鍋四川麻婆豆腐 小川町駅徒歩1分の好立地!"
         },
         {
           "nameZh": "麻婆豆腐",
@@ -31567,7 +31564,7 @@
           "nameJa": "お好み焼き",
           "provider": "Hot Pepper",
           "sourceUrl": "https://www.hotpepper.jp/strJ001176575/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "provider_promotional_dish_text",
           "evidenceRule": "hotpepper-catch-menu:お好み焼き?|okonomiyaki",
           "evidenceSnippet": "目の前で焼き上げます！ 絶品お好み焼き1100円～"
@@ -31785,6 +31782,16 @@
       ],
       "featuredDishes": [
         {
+          "nameZh": "烤鸡串",
+          "nameJa": "焼き鳥",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ000115726/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-catch-menu:焼き?鳥|やきとり|yakitori",
+          "evidenceSnippet": "老舗の焼き鳥店で舌鼓♪ 立ち寄りやすいカウンター"
+        },
+        {
           "nameZh": "日式炸鸡",
           "nameJa": "唐揚げ",
           "provider": "Hot Pepper",
@@ -31816,16 +31823,6 @@
         },
         {
           "nameZh": "烤鸡串",
-          "nameJa": "焼き鳥",
-          "provider": "Hot Pepper",
-          "sourceUrl": "https://www.hotpepper.jp/strJ000115726/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "provider_promotional_dish_text",
-          "evidenceRule": "hotpepper-catch-menu:焼き?鳥|やきとり|yakitori",
-          "evidenceSnippet": "老舗の焼き鳥店で舌鼓♪ 立ち寄りやすいカウンター"
-        },
-        {
-          "nameZh": "烤鸡串",
           "nameJa": "やきとり",
           "provider": "Hot Pepper",
           "sourceUrl": "https://www.hotpepper.jp/strJ000115726/food/",
@@ -31852,6 +31849,16 @@
         }
       ],
       "featuredDishes": [
+        {
+          "nameZh": "烤串",
+          "nameJa": "串焼き",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ004402309/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-catch-menu:串焼き",
+          "evidenceSnippet": "絶品の串焼きをご堪能あれ 厳選したお酒を取り揃え！"
+        },
         {
           "nameZh": "乌冬面",
           "nameJa": "うどん",
@@ -31881,16 +31888,6 @@
           "evidenceClass": "hotpepper_menu_text",
           "evidenceRule": "hotpepper-price-backed-h4:ラーメン|らーめん|拉麺|ramen",
           "evidenceSnippet": "〆]ラーメン 350円（税込） 「料理」の先頭へ戻る 〆"
-        },
-        {
-          "nameZh": "烤串",
-          "nameJa": "串焼き",
-          "provider": "Hot Pepper",
-          "sourceUrl": "https://www.hotpepper.jp/strJ004402309/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "provider_promotional_dish_text",
-          "evidenceRule": "hotpepper-catch-menu:串焼き",
-          "evidenceSnippet": "絶品の串焼きをご堪能あれ 厳選したお酒を取り揃え！"
         },
         {
           "nameZh": "烤鸡串",
@@ -32583,7 +32580,7 @@
           "nameJa": "バーガー",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.zetteria.jp/menu/burger.html",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "sitemap-menu-text:ハンバーガー|バーガー|burger",
           "evidenceSnippet": "レギュラーバーガー｜メニュー｜ゼッテリア"
@@ -32593,7 +32590,7 @@
           "nameJa": "バーガー",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.zetteria.jp/menu/zeppin.html",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "sitemap-menu-text:ハンバーガー|バーガー|burger",
           "evidenceSnippet": "絶品バーガー｜メニュー｜ゼッテリア"
@@ -32717,7 +32714,7 @@
           "nameJa": "カレー",
           "provider": "sourceWebsite",
           "sourceUrl": "http://sakana-kikaku.co.jp/shop/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:カレー|カリー|咖喱|curry",
           "evidenceSnippet": "炭火焼き鶏とスパイス・カレー"
@@ -32727,7 +32724,7 @@
           "nameJa": "フォー",
           "provider": "sourceWebsite",
           "sourceUrl": "http://sakana-kikaku.co.jp/recruit/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:フォー|pho\\b",
           "evidenceSnippet": "3.別項「お問い合わせ」フォームより"
@@ -32755,7 +32752,7 @@
           "nameJa": "おでん",
           "provider": "Hot Pepper",
           "sourceUrl": "https://www.hotpepper.jp/strJ001207630/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "provider_promotional_dish_text",
           "evidenceRule": "hotpepper-catch-menu:おでん|oden\\b",
           "evidenceSnippet": "クラフトビール常時８種♪ 季節で変わるおでん♪"
@@ -32869,7 +32866,7 @@
           "nameJa": "うどん",
           "provider": "sourceWebsite",
           "sourceUrl": "https://udon-jinza.com/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_recommendation_text",
           "evidenceRule": "html-block:うどん|udon",
           "evidenceSnippet": "甚三は店内で毎朝作る自家製麺の 讃岐うどんと国産の高品質な 豚肉（千葉県産・林SPF）を使用した 肉うどんをオススメとする、 うどん食堂です。 香川の食堂で食べるうどんを東京の地で"
@@ -33241,7 +33238,7 @@
           "nameJa": "パスタ",
           "provider": "sourceWebsite",
           "sourceUrl": "http://edge-jimbocho.com/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_recommendation_text",
           "evidenceRule": "html-block:パスタ|スパゲッティ|pasta|spaghetti",
           "evidenceSnippet": "神保町で味わう、寛ぎのパスタタイム 自慢のパスタと、落ち着いた店内空間 厳選した素材を使用したパスタを中心に、心地よい時間をお過ごしいただけます。神保町エリアでのお食事に、ぜひお立"
@@ -33574,6 +33571,16 @@
       ],
       "featuredDishes": [
         {
+          "nameZh": "饺子",
+          "nameJa": "餃子",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ003917327/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-catch-menu:餃子|饺子|gyoza",
+          "evidenceSnippet": "飲み放題付き宴会コース 餃子100個食べたらタダ！"
+        },
+        {
           "nameZh": "关东煮",
           "nameJa": "おでん",
           "provider": "Hot Pepper",
@@ -33622,16 +33629,6 @@
           "evidenceClass": "hotpepper_menu_text",
           "evidenceRule": "hotpepper-price-backed-h4:唐揚げ|から揚げ|からあげ|karaage",
           "evidenceSnippet": "茄子の唐揚げ 638円（税込）"
-        },
-        {
-          "nameZh": "炒面",
-          "nameJa": "焼きそば",
-          "provider": "Hot Pepper",
-          "sourceUrl": "https://www.hotpepper.jp/strJ003917327/food/",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "hotpepper_menu_text",
-          "evidenceRule": "hotpepper-price-backed-h4:hotpepper-specific:焼きそば",
-          "evidenceSnippet": "ソース焼きそば 748円（税込） 「料理」の先頭へ戻る ●‐‐‐++ 甘味 ++‐‐‐● <div class=\""
         }
       ]
     },
@@ -33750,6 +33747,16 @@
       ],
       "featuredDishes": [
         {
+          "nameZh": "烤鸡串",
+          "nameJa": "焼鳥",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ003784353/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-catch-menu:焼き?鳥|やきとり|yakitori",
+          "evidenceSnippet": "◆地鶏を使用した焼鳥 ◆落ち着いた雰囲気"
+        },
+        {
           "nameZh": "日式炸鸡",
           "nameJa": "唐揚げ",
           "provider": "Hot Pepper",
@@ -33778,16 +33785,6 @@
           "evidenceClass": "hotpepper_menu_text",
           "evidenceRule": "hotpepper-price-backed-h4:ナン|naan",
           "evidenceSnippet": "ナンコツ 300円（税込）"
-        },
-        {
-          "nameZh": "烤鸡串",
-          "nameJa": "焼鳥",
-          "provider": "Hot Pepper",
-          "sourceUrl": "https://www.hotpepper.jp/strJ003784353/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "provider_promotional_dish_text",
-          "evidenceRule": "hotpepper-catch-menu:焼き?鳥|やきとり|yakitori",
-          "evidenceSnippet": "◆地鶏を使用した焼鳥 ◆落ち着いた雰囲気"
         },
         {
           "nameZh": "牛排",
@@ -33838,6 +33835,16 @@
       ],
       "featuredDishes": [
         {
+          "nameZh": "寿司",
+          "nameJa": "寿司",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ000114460/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-catch-menu:寿司|すし|鮨|sushi",
+          "evidenceSnippet": "にぎり寿司 寿司職人"
+        },
+        {
           "nameZh": "天妇罗盖饭",
           "nameJa": "天丼",
           "provider": "Hot Pepper",
@@ -33846,16 +33853,6 @@
           "evidenceClass": "hotpepper_menu_text",
           "evidenceRule": "hotpepper-price-backed-h4:天丼|tendon\\b",
           "evidenceSnippet": "花天丼 1,150円"
-        },
-        {
-          "nameZh": "寿司",
-          "nameJa": "寿司",
-          "provider": "Hot Pepper",
-          "sourceUrl": "https://www.hotpepper.jp/strJ000114460/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "provider_promotional_dish_text",
-          "evidenceRule": "hotpepper-catch-menu:寿司|すし|鮨|sushi",
-          "evidenceSnippet": "にぎり寿司 寿司職人"
         },
         {
           "nameZh": "星鳗料理",
@@ -34081,7 +34078,7 @@
           "nameJa": "おむすび",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.omusubi-gonbei.com/particular/food-culture/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_recommendation_text",
           "evidenceRule": "html-block:おむすび",
           "evidenceSnippet": "おむすび権米衛では創業時から玄米のおむすびも提供しています。玄米は糠層があることで白米に比べて噛みごたえがあるため、食べづらいと感じる方もいます。また、玄米で食べると自然と咀嚼回数"
@@ -34091,7 +34088,7 @@
           "nameJa": "おむすび",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.omusubi-gonbei.com/particular/foodstuff/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_recommendation_text",
           "evidenceRule": "html-block:おむすび",
           "evidenceSnippet": "高菜 「ごま高菜」「高菜玄米」のおむすびに使われている高菜は、 九州産の「三池高菜」 。高菜漬けの中でも 発酵度合いが比較的弱いため酸味が少なくて食べやすく 、海外でも人気の商品。"
@@ -34109,7 +34106,7 @@
           "nameJa": "サンドイッチ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.tullys.co.jp/menu/drink/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:サンドイッチ|サンド|sandwich",
           "evidenceSnippet": "サンドイッチ"
@@ -34119,7 +34116,7 @@
           "nameJa": "サンドイッチ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.tullys.co.jp/menu/seasonal_lineup/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:サンドイッチ|サンド|sandwich",
           "evidenceSnippet": "サンドイッチ"
@@ -34129,7 +34126,7 @@
           "nameJa": "パスタ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.tullys.co.jp/menu/seasonal_lineup/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:パスタ|スパゲッティ|pasta|spaghetti",
           "evidenceSnippet": "パスタ"
@@ -34139,7 +34136,7 @@
           "nameJa": "チーズケーキ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.tullys.co.jp/menu/seasonal_lineup/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:チーズケーキ|cheesecake",
           "evidenceSnippet": "シナモンパンプキンチーズケーキ"
@@ -34149,7 +34146,7 @@
           "nameJa": "モンブラン",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.tullys.co.jp/menu/seasonal_lineup/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:モンブラン|mont blanc",
           "evidenceSnippet": "モンブランタルト"
@@ -34159,7 +34156,7 @@
           "nameJa": "ケーキ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.tullys.co.jp/menu/seasonal_lineup/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:ケーキ|cake",
           "evidenceSnippet": "シナモンパンプキンチーズケーキ"
@@ -34193,7 +34190,7 @@
           "nameJa": "サンド",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.saint-marc-hd.com/saintmarccafe/menu/saintmarccafe/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:サンドイッチ|サンド|sandwich",
           "evidenceSnippet": "サンマルクホットサンド"
@@ -34203,7 +34200,7 @@
           "nameJa": "サンド",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.saint-marc-hd.com/saintmarccafe/shop/491/menu/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:サンドイッチ|サンド|sandwich",
           "evidenceSnippet": "サンマルクホットサンド"
@@ -34213,7 +34210,7 @@
           "nameJa": "サンド",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.saint-marc-hd.com/saintmarccafe/shop/491/menu/category/drink/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:サンドイッチ|サンド|sandwich",
           "evidenceSnippet": "サンマルクホットサンド"
@@ -34223,7 +34220,7 @@
           "nameJa": "Pasta",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.saint-marc-hd.com/saintmarccafe/menu/saintmarccafe/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:パスタ|スパゲッティ|pasta|spaghetti",
           "evidenceSnippet": "Pasta"
@@ -34233,7 +34230,7 @@
           "nameJa": "パフェ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.saint-marc-hd.com/saintmarccafe/menu/saintmarccafe/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:パフェ|parfait",
           "evidenceSnippet": "【期間限定】薫る蜜「芋」パフェ"
@@ -34243,7 +34240,7 @@
           "nameJa": "パフェ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.saint-marc-hd.com/saintmarccafe/shop/491/menu/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:パフェ|parfait",
           "evidenceSnippet": "【期間限定】薫る蜜「芋」パフェ"
@@ -34877,7 +34874,7 @@
           "nameJa": "フォー",
           "provider": "sourceWebsite",
           "sourceUrl": "http://www.jeannedarc.moe/index.html",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:フォー|pho\\b",
           "evidenceSnippet": "アルバイト希望の方は下記フォームよりご応募ください。"
@@ -34893,7 +34890,7 @@
           "nameJa": "寿司",
           "provider": "Hot Pepper",
           "sourceUrl": "https://www.hotpepper.jp/strJ004510177/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_recommendation_text",
           "evidenceRule": "hotpepper-catch:寿司|すし|鮨|sushi",
           "evidenceSnippet": "当店自慢のお寿司に舌鼓☆ 単品メニューも充実！"
@@ -35014,6 +35011,16 @@
       ],
       "featuredDishes": [
         {
+          "nameZh": "烤鸡串",
+          "nameJa": "焼鳥",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001194992/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-catch-menu:焼き?鳥|やきとり|yakitori",
+          "evidenceSnippet": "税込390円均一の焼鳥屋 全席プライベートな空間"
+        },
+        {
           "nameZh": "南蛮鸡",
           "nameJa": "チキン南蛮",
           "provider": "Hot Pepper",
@@ -35032,16 +35039,6 @@
           "evidenceClass": "hotpepper_menu_text",
           "evidenceRule": "hotpepper-price-backed-h4:ホルモン",
           "evidenceSnippet": "ホルモンねぎ盛ポン酢 噛めば納得、ホルモンの旨み。砂肝のこりこり食感の銀かわ。ハツは甘く、バラエティ豊か。 390円（税込）"
-        },
-        {
-          "nameZh": "烤鸡串",
-          "nameJa": "焼鳥",
-          "provider": "Hot Pepper",
-          "sourceUrl": "https://www.hotpepper.jp/strJ001194992/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "provider_promotional_dish_text",
-          "evidenceRule": "hotpepper-catch-menu:焼き?鳥|やきとり|yakitori",
-          "evidenceSnippet": "税込390円均一の焼鳥屋 全席プライベートな空間"
         },
         {
           "nameZh": "芭菲",
@@ -35207,7 +35204,7 @@
           "nameJa": "サンドイッチ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.tullys.co.jp/menu/drink/coffee/honey_m.html",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:サンドイッチ|サンド|sandwich",
           "evidenceSnippet": "サンドイッチ"
@@ -35217,7 +35214,7 @@
           "nameJa": "サンドイッチ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.tullys.co.jp/menu/drink/coffee/iced.html",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "sitemap-menu-text:サンドイッチ|サンド|sandwich",
           "evidenceSnippet": "サンドイッチ"
@@ -35227,7 +35224,7 @@
           "nameJa": "サンドイッチ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.tullys.co.jp/menu/drink/coffee/todays.html",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "sitemap-menu-text:サンドイッチ|サンド|sandwich",
           "evidenceSnippet": "サンドイッチ"
@@ -35237,7 +35234,7 @@
           "nameJa": "サンドイッチ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.tullys.co.jp/menu/seasonal_lineup/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:サンドイッチ|サンド|sandwich",
           "evidenceSnippet": "サンドイッチ"
@@ -35247,7 +35244,7 @@
           "nameJa": "パスタ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.tullys.co.jp/menu/drink/coffee/honey_m.html",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:パスタ|スパゲッティ|pasta|spaghetti",
           "evidenceSnippet": "パスタ"
@@ -35257,7 +35254,7 @@
           "nameJa": "パスタ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.tullys.co.jp/menu/drink/coffee/iced.html",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "sitemap-menu-text:パスタ|スパゲッティ|pasta|spaghetti",
           "evidenceSnippet": "パスタ"
@@ -35453,6 +35450,16 @@
       ],
       "featuredDishes": [
         {
+          "nameZh": "烤肉",
+          "nameJa": "焼肉",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ003942979/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-catch-menu:焼肉|yakiniku",
+          "evidenceSnippet": "コスパ抜群の板前焼肉♪ 目の前でカットされるお肉"
+        },
+        {
           "nameZh": "咖喱",
           "nameJa": "カレー",
           "provider": "Hot Pepper",
@@ -35471,16 +35478,6 @@
           "evidenceClass": "hotpepper_menu_text",
           "evidenceRule": "hotpepper-price-backed-h4:ホルモン",
           "evidenceSnippet": "ホルモンミックス 塩 小腸や大腸、心臓、レバーなどの部位をミックスした当店のおすすめの逸品！部位によって食感や旨味が異なり絶品です。 1,980円（税込）"
-        },
-        {
-          "nameZh": "烤肉",
-          "nameJa": "焼肉",
-          "provider": "Hot Pepper",
-          "sourceUrl": "https://www.hotpepper.jp/strJ003942979/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "provider_promotional_dish_text",
-          "evidenceRule": "hotpepper-catch-menu:焼肉|yakiniku",
-          "evidenceSnippet": "コスパ抜群の板前焼肉♪ 目の前でカットされるお肉"
         }
       ]
     },
@@ -35511,7 +35508,7 @@
           "nameJa": "プリン",
           "provider": "sourceWebsite",
           "sourceUrl": "https://kiraboshi.wixsite.com/kiraboshigakuin/menu",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:プリン|pudding|flan",
           "evidenceSnippet": "プリンス部員"
@@ -35521,7 +35518,7 @@
           "nameJa": "唐揚げ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://kiraboshi.wixsite.com/kiraboshigakuin/menu",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:唐揚げ|から揚げ|からあげ|karaage",
           "evidenceSnippet": "唐揚げ（5個）"
@@ -35531,7 +35528,7 @@
           "nameJa": "オムライス",
           "provider": "sourceWebsite",
           "sourceUrl": "https://kiraboshi.wixsite.com/kiraboshigakuin/menu",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:オムライス|omelette rice|omurice",
           "evidenceSnippet": "オムライス"
@@ -35541,7 +35538,7 @@
           "nameJa": "たこ焼き",
           "provider": "sourceWebsite",
           "sourceUrl": "https://kiraboshi.wixsite.com/kiraboshigakuin/menu",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:たこ焼き?|takoyaki",
           "evidenceSnippet": "たこ焼き(6個）"
@@ -35558,7 +35555,7 @@
           "nameJa": "サンド",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.doutor.co.jp/dcs/menu/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:サンドイッチ|サンド|sandwich",
           "evidenceSnippet": "ミラノサンド"
@@ -35568,7 +35565,7 @@
           "nameJa": "サンド",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.doutor.co.jp/dcs/menu/list/hotdrink.html",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:サンドイッチ|サンド|sandwich",
           "evidenceSnippet": "ミラノサンド"
@@ -35578,7 +35575,7 @@
           "nameJa": "サンド",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.doutor.co.jp/dcs/menu/season.html",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:サンドイッチ|サンド|sandwich",
           "evidenceSnippet": "ミラノサンド"
@@ -35588,30 +35585,30 @@
           "nameJa": "クレープ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.doutor.co.jp/dcs/menu/season.html",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:クレープ|crepe",
           "evidenceSnippet": "果実を食べる 白桃ミルクレープ"
         },
         {
-          "nameZh": "咖喱",
-          "nameJa": "カレー",
+          "nameZh": "拼配咖啡",
+          "nameJa": "ブレンドコーヒー",
           "provider": "sourceWebsite",
-          "sourceUrl": "https://www.doutor.co.jp/dcs/menu/gmpdf/kitchen.pdf",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "source_pdf_menu_text",
-          "evidenceRule": "pdf-menu-line:カレー|カリー|咖喱|curry",
-          "evidenceSnippet": "2種のあいがけカレー タコとエビの"
+          "sourceUrl": "https://www.doutor.co.jp/col/menu/list/blend.html",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "sitemap-menu-text:ブレンドコーヒー",
+          "evidenceSnippet": "ブレンドコーヒー｜メニュー｜カフェ コロラド"
         },
         {
-          "nameZh": "意大利面",
-          "nameJa": "PASTA",
+          "nameZh": "拼配咖啡",
+          "nameJa": "ブレンドコーヒー",
           "provider": "sourceWebsite",
-          "sourceUrl": "https://www.doutor.co.jp/dcs/menu/gmpdf/kitchen.pdf",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "source_pdf_menu_text",
-          "evidenceRule": "pdf-menu-line:パスタ|スパゲッティ|pasta|spaghetti",
-          "evidenceSnippet": "北海道生乳 マンゴーラッシー いちごラッシー RICE PASTA"
+          "sourceUrl": "https://www.doutor.co.jp/dcs/menu/list/hotdrink.html",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "menu-page-text:ブレンドコーヒー",
+          "evidenceSnippet": "ブレンドコーヒー"
         }
       ]
     },
@@ -35885,6 +35882,16 @@
           "nameZh": "披萨",
           "nameJa": "ピザ",
           "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ000232937/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-catch-menu:ピザ|ピッツァ|pizza",
+          "evidenceSnippet": "『各種コースのご用意◎』 『石窯仕上げの本格ピザ』"
+        },
+        {
+          "nameZh": "披萨",
+          "nameJa": "ピザ",
+          "provider": "Hot Pepper",
           "sourceUrl": "https://www.hotpepper.jp/strJ000232937/food/",
           "checkedAt": "2026-09-09",
           "evidenceClass": "hotpepper_menu_text",
@@ -35910,16 +35917,6 @@
           "evidenceClass": "hotpepper_menu_text",
           "evidenceRule": "hotpepper-price-backed-h4:マルゲリータ|margherita",
           "evidenceSnippet": "マルゲリータ 2,530円（税込）"
-        },
-        {
-          "nameZh": "披萨",
-          "nameJa": "ピザ",
-          "provider": "Hot Pepper",
-          "sourceUrl": "https://www.hotpepper.jp/strJ000232937/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "provider_promotional_dish_text",
-          "evidenceRule": "hotpepper-catch-menu:ピザ|ピッツァ|pizza",
-          "evidenceSnippet": "『各種コースのご用意◎』 『石窯仕上げの本格ピザ』"
         }
       ]
     },
@@ -35932,7 +35929,7 @@
           "nameJa": "串焼き",
           "provider": "sourceWebsite",
           "sourceUrl": "https://kanda-sanmasa.com/ja?utm_medium=referral&utm_source=google&utm_campaign=mm&utm_content=hp",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_recommendation_text",
           "evidenceRule": "html-block:串焼き",
           "evidenceSnippet": "こだわりのもつやきを堪能 厳選された素材を使用し、丁寧に焼き上げたもつやきが自慢です。串焼きの香ばしい香りとともに、ジューシーな味わいを楽しむことができます。シンプルながらも奥深い"
@@ -36114,7 +36111,7 @@
           "nameJa": "おでん",
           "provider": "Hot Pepper",
           "sourceUrl": "https://www.hotpepper.jp/strJ003411415/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "provider_promotional_dish_text",
           "evidenceRule": "hotpepper-catch-menu:おでん|oden\\b",
           "evidenceSnippet": "鮨のこだわり 金色に輝く出汁のおでん"
@@ -36124,7 +36121,7 @@
           "nameJa": "鮨",
           "provider": "Hot Pepper",
           "sourceUrl": "https://www.hotpepper.jp/strJ003411415/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "provider_promotional_dish_text",
           "evidenceRule": "hotpepper-catch-menu:寿司|すし|鮨|sushi",
           "evidenceSnippet": "鮨のこだわり 金色に輝く出汁のおでん"
@@ -36534,7 +36531,7 @@
           "nameJa": "サムギョプサル",
           "provider": "Hot Pepper",
           "sourceUrl": "https://www.hotpepper.jp/strJ003474656/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_recommendation_text",
           "evidenceRule": "hotpepper-catch:サムギョプサル|samgyeopsal",
           "evidenceSnippet": "看板商品のサムギョプサル お祝い・サプライズ大歓迎"
@@ -36670,7 +36667,7 @@
           "nameJa": "おでん",
           "provider": "Hot Pepper",
           "sourceUrl": "https://www.hotpepper.jp/strJ004049982/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_recommendation_text",
           "evidenceRule": "hotpepper-catch:おでん|oden\\b",
           "evidenceSnippet": "赤からおでん！9/10～ 赤から名物コース！"
@@ -36913,7 +36910,7 @@
           "nameJa": "サンド",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.doutor.co.jp/dcs/menu/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:サンドイッチ|サンド|sandwich",
           "evidenceSnippet": "ミラノサンド"
@@ -36923,7 +36920,7 @@
           "nameJa": "サンド",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.doutor.co.jp/dcs/menu/list/hotdrink.html",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:サンドイッチ|サンド|sandwich",
           "evidenceSnippet": "ミラノサンド"
@@ -36933,7 +36930,7 @@
           "nameJa": "サンド",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.doutor.co.jp/dcs/menu/season.html",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:サンドイッチ|サンド|sandwich",
           "evidenceSnippet": "ミラノサンド"
@@ -36943,30 +36940,30 @@
           "nameJa": "クレープ",
           "provider": "sourceWebsite",
           "sourceUrl": "https://www.doutor.co.jp/dcs/menu/season.html",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:クレープ|crepe",
           "evidenceSnippet": "果実を食べる 白桃ミルクレープ"
         },
         {
-          "nameZh": "咖喱",
-          "nameJa": "カレー",
+          "nameZh": "拼配咖啡",
+          "nameJa": "ブレンドコーヒー",
           "provider": "sourceWebsite",
-          "sourceUrl": "https://www.doutor.co.jp/dcs/menu/gmpdf/kitchen.pdf",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "source_pdf_menu_text",
-          "evidenceRule": "pdf-menu-line:カレー|カリー|咖喱|curry",
-          "evidenceSnippet": "2種のあいがけカレー タコとエビの"
+          "sourceUrl": "https://www.doutor.co.jp/col/menu/list/blend.html",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "sitemap-menu-text:ブレンドコーヒー",
+          "evidenceSnippet": "ブレンドコーヒー｜メニュー｜カフェ コロラド"
         },
         {
-          "nameZh": "意大利面",
-          "nameJa": "PASTA",
+          "nameZh": "拼配咖啡",
+          "nameJa": "ブレンドコーヒー",
           "provider": "sourceWebsite",
-          "sourceUrl": "https://www.doutor.co.jp/dcs/menu/gmpdf/kitchen.pdf",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "source_pdf_menu_text",
-          "evidenceRule": "pdf-menu-line:パスタ|スパゲッティ|pasta|spaghetti",
-          "evidenceSnippet": "北海道生乳 マンゴーラッシー いちごラッシー RICE PASTA"
+          "sourceUrl": "https://www.doutor.co.jp/dcs/menu/list/hotdrink.html",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "menu-page-text:ブレンドコーヒー",
+          "evidenceSnippet": "ブレンドコーヒー"
         }
       ]
     },
@@ -37075,7 +37072,7 @@
           "nameJa": "Pasta",
           "provider": "sourceWebsite",
           "sourceUrl": "https://lart-et-mikuni.jp/dinner",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:パスタ|スパゲッティ|pasta|spaghetti",
           "evidenceSnippet": "Pasta"
@@ -37085,7 +37082,7 @@
           "nameJa": "Pasta",
           "provider": "sourceWebsite",
           "sourceUrl": "https://lart-et-mikuni.jp/lunch",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:パスタ|スパゲッティ|pasta|spaghetti",
           "evidenceSnippet": "Pasta"
@@ -37094,18 +37091,8 @@
           "nameZh": "焗烤",
           "nameJa": "グラタン",
           "provider": "sourceWebsite",
-          "sourceUrl": "https://lart-et-mikuni.jp/dinner",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "source_menu_text",
-          "evidenceRule": "menu-page-text:グラタン|gratin",
-          "evidenceSnippet": "グラタン・ドフィノア添え"
-        },
-        {
-          "nameZh": "焗烤",
-          "nameJa": "グラタン",
-          "provider": "sourceWebsite",
           "sourceUrl": "https://lart-et-mikuni.jp/lunch",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:グラタン|gratin",
           "evidenceSnippet": "グラタン・ドフィノア添え"
@@ -37114,21 +37101,31 @@
           "nameZh": "芭菲",
           "nameJa": "パフェ",
           "provider": "sourceWebsite",
-          "sourceUrl": "https://lart-et-mikuni.jp/dinner",
-          "checkedAt": "2026-09-08",
+          "sourceUrl": "https://lart-et-mikuni.jp/lunch",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:パフェ|parfait",
           "evidenceSnippet": "クリスマススペシャルパフェ"
         },
         {
-          "nameZh": "芭菲",
-          "nameJa": "パフェ",
+          "nameZh": "蛋糕",
+          "nameJa": "cake",
           "provider": "sourceWebsite",
           "sourceUrl": "https://lart-et-mikuni.jp/lunch",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_menu_text",
-          "evidenceRule": "menu-page-text:パフェ|parfait",
-          "evidenceSnippet": "クリスマススペシャルパフェ"
+          "evidenceRule": "menu-page-text:ケーキ|cake",
+          "evidenceSnippet": "Roll cake apple and peach compote"
+        },
+        {
+          "nameZh": "越南河粉",
+          "nameJa": "フォー",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://lart-et-mikuni.jp/lunch",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "menu-page-text:フォー|pho\\b",
+          "evidenceSnippet": "クレソンとレフォールのソース"
         }
       ]
     },
@@ -37359,6 +37356,26 @@
       ],
       "featuredDishes": [
         {
+          "nameZh": "文字烧",
+          "nameJa": "もんじゃ",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ003624816/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-catch-menu:もんじゃ|monjayaki",
+          "evidenceSnippet": "もんじゃ焼き専門店♪ １Fには焼きとん専門店◎"
+        },
+        {
+          "nameZh": "烤猪肉串",
+          "nameJa": "焼きとん",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ003624816/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-catch-menu:焼きとん|やきとん",
+          "evidenceSnippet": "もんじゃ焼き専門店♪ １Fには焼きとん専門店◎"
+        },
+        {
           "nameZh": "咖喱",
           "nameJa": "カレー",
           "provider": "Hot Pepper",
@@ -37379,16 +37396,6 @@
           "evidenceSnippet": "鉄板deリゾット カルボナーラorシーフード 1,380円（税込） 「料理」の先頭へ戻る 逸品おつまみ <img src=\"https://imgfp.hotp.jp/IMGH/1"
         },
         {
-          "nameZh": "文字烧",
-          "nameJa": "もんじゃ",
-          "provider": "Hot Pepper",
-          "sourceUrl": "https://www.hotpepper.jp/strJ003624816/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "provider_promotional_dish_text",
-          "evidenceRule": "hotpepper-catch-menu:もんじゃ|monjayaki",
-          "evidenceSnippet": "もんじゃ焼き専門店♪ １Fには焼きとん専門店◎"
-        },
-        {
           "nameZh": "日式炸鸡",
           "nameJa": "唐揚げ",
           "provider": "Hot Pepper",
@@ -37407,16 +37414,6 @@
           "evidenceClass": "hotpepper_menu_text",
           "evidenceRule": "hotpepper-price-backed-h4:hotpepper-specific:焼きそば",
           "evidenceSnippet": "焼きそば（ソース・塩） 1,180円（税込）"
-        },
-        {
-          "nameZh": "炸牡蛎",
-          "nameJa": "カキフライ",
-          "provider": "Hot Pepper",
-          "sourceUrl": "https://www.hotpepper.jp/strJ003624816/food/",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "hotpepper_menu_text",
-          "evidenceRule": "hotpepper-price-backed-h4:牡蠣フライ|カキフライ",
-          "evidenceSnippet": "カキフライ 750円（税込） 「料理」の先頭へ戻る デザート"
         }
       ]
     },
@@ -37880,7 +37877,7 @@
           "nameJa": "ケーキ",
           "provider": "Hot Pepper",
           "sourceUrl": "https://www.hotpepper.jp/strJ001169331/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "provider_promotional_dish_text",
           "evidenceRule": "hotpepper-catch-menu:ケーキ|cake",
           "evidenceSnippet": "ケーキ カウンターがメインです！"
@@ -37936,6 +37933,16 @@
       "name": "ちゃい九炉",
       "recommendedDishes": [
         {
+          "nameZh": "炸串",
+          "nameJa": "串カツ",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ000955110/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "hotpepper-catch:串揚げ|串カツ|kushiage",
+          "evidenceSnippet": "大阪串カツ 1串98円～ その日のお勧めメニュー！"
+        },
+        {
           "nameZh": "日式炸鸡",
           "nameJa": "唐揚げ",
           "provider": "Hot Pepper",
@@ -37944,16 +37951,6 @@
           "evidenceClass": "source_recommendation_text",
           "evidenceRule": "hotpepper-explicit-recommended-h3:唐揚げ|から揚げ|からあげ|karaage",
           "evidenceSnippet": "バカ盛り唐揚げ"
-        },
-        {
-          "nameZh": "炸串",
-          "nameJa": "串カツ",
-          "provider": "Hot Pepper",
-          "sourceUrl": "https://www.hotpepper.jp/strJ000955110/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "source_recommendation_text",
-          "evidenceRule": "hotpepper-catch:串揚げ|串カツ|kushiage",
-          "evidenceSnippet": "大阪串カツ 1串98円～ その日のお勧めメニュー！"
         },
         {
           "nameZh": "炸串",
@@ -38050,7 +38047,7 @@
           "nameJa": "焼き鳥",
           "provider": "Hot Pepper",
           "sourceUrl": "https://www.hotpepper.jp/strJ000731778/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "provider_promotional_dish_text",
           "evidenceRule": "hotpepper-catch-menu:焼き?鳥|やきとり|yakitori",
           "evidenceSnippet": "秘伝の焼き鳥たれ 本格的な備長炭炭火焼き鳥"
@@ -38316,7 +38313,7 @@
           "nameJa": "麻婆豆腐",
           "provider": "Hot Pepper",
           "sourceUrl": "https://www.hotpepper.jp/strJ004402265/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_recommendation_text",
           "evidenceRule": "hotpepper-catch:麻婆豆腐|mapo",
           "evidenceSnippet": "一人でも名物麻婆豆腐を 落ち着いたテーブル席"
@@ -38835,7 +38832,7 @@
           "nameJa": "親子丼",
           "provider": "Hot Pepper",
           "sourceUrl": "https://www.hotpepper.jp/strJ000243520/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_recommendation_text",
           "evidenceRule": "hotpepper-catch:親子丼|oyakodon",
           "evidenceSnippet": "福島県産銘柄鶏「伊達鶏」 お店自慢の『親子丼』！"
@@ -38960,7 +38957,7 @@
           "nameJa": "そば",
           "provider": "sourceWebsite",
           "sourceUrl": "https://livevillage-apollo.com/",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_recommendation_text",
           "evidenceRule": "html-block:蕎麦|そば|soba",
           "evidenceSnippet": "・郵便局そば「広島アンテナショップ府中」と「FONE」に挟まれた路地を入ります。 ・右手に青空駐車・黄看板「Times」、さらに歩き、今度は左手に青空駐車・黄看板「Times」、右"
@@ -39031,7 +39028,7 @@
           "nameJa": "ハンバーガー",
           "provider": "Hot Pepper",
           "sourceUrl": "https://www.hotpepper.jp/strJ001203100/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "provider_promotional_dish_text",
           "evidenceRule": "hotpepper-catch-menu:ハンバーガー|バーガー|burger",
           "evidenceSnippet": "ハンバーガーが12種類！ キレイな店内！"
@@ -39494,7 +39491,7 @@
           "nameJa": "うどん",
           "provider": "sourceWebsite",
           "sourceUrl": "https://kanda-curry.com/?p=11114",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_recommendation_text",
           "evidenceRule": "html-block:うどん|udon",
           "evidenceSnippet": "京都でいつも食べに行っていた「日の出うどん」さんのカレーを会席料理の作り方でアレンジ。ご飯にも出汁を効かせ、カレールーには1人前に玉ねぎ1個以上使い「人参・トマト・生姜・バナナに季"
@@ -39504,7 +39501,7 @@
           "nameJa": "カレー",
           "provider": "sourceWebsite",
           "sourceUrl": "https://kanda-curry.com/?p=11114",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_recommendation_text",
           "evidenceRule": "html-block:カレー|カリー|咖喱|curry",
           "evidenceSnippet": "京都でいつも食べに行っていた「日の出うどん」さんのカレーを会席料理の作り方でアレンジ。ご飯にも出汁を効かせ、カレールーには1人前に玉ねぎ1個以上使い「人参・トマト・生姜・バナナに季"
@@ -39514,7 +39511,7 @@
           "nameJa": "すき焼き",
           "provider": "sourceWebsite",
           "sourceUrl": "https://kanda-curry.com/?p=11114",
-          "checkedAt": "2026-09-08",
+          "checkedAt": "2026-09-09",
           "evidenceClass": "source_recommendation_text",
           "evidenceRule": "html-block:すき焼き|すきやき|sukiyaki",
           "evidenceSnippet": "京都でいつも食べに行っていた「日の出うどん」さんのカレーを会席料理の作り方でアレンジ。ご飯にも出汁を効かせ、カレールーには1人前に玉ねぎ1個以上使い「人参・トマト・生姜・バナナに季"
@@ -39539,6 +39536,16 @@
       ],
       "featuredDishes": [
         {
+          "nameZh": "刺身",
+          "nameJa": "刺身",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ000062487/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "provider_promotional_dish_text",
+          "evidenceRule": "hotpepper-catch-menu:刺身|お造り|sashimi",
+          "evidenceSnippet": "大盤振る舞い祭♪ 新鮮なお刺身"
+        },
+        {
           "nameZh": "乌冬面",
           "nameJa": "うどん",
           "provider": "Hot Pepper",
@@ -39547,16 +39554,6 @@
           "evidenceClass": "hotpepper_menu_text",
           "evidenceRule": "hotpepper-price-backed-h4:うどん|udon",
           "evidenceSnippet": "明太焼うどん 462円（税込）"
-        },
-        {
-          "nameZh": "刺身",
-          "nameJa": "刺身",
-          "provider": "Hot Pepper",
-          "sourceUrl": "https://www.hotpepper.jp/strJ000062487/?vos=nhppalsa000016",
-          "checkedAt": "2026-09-08",
-          "evidenceClass": "provider_promotional_dish_text",
-          "evidenceRule": "hotpepper-catch-menu:刺身|お造り|sashimi",
-          "evidenceSnippet": "大盤振る舞い祭♪ 新鮮なお刺身"
         },
         {
           "nameZh": "天妇罗",
