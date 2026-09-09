@@ -1,0 +1,56 @@
+name: Audit unconsumed retained dish fields (PR)
+
+on:
+  pull_request:
+    paths:
+      - "scripts/audit_retained_unconsumed_dish_fields.mjs"
+      - ".github/workflows/_audit-retained-unconsumed-dish-fields-pr.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout PR merge commit
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Enforce zero-paid policy and syntax
+        run: |
+          set -euo pipefail
+          node scripts/audit_no_paid_apis.mjs
+          node --check scripts/audit_retained_unconsumed_dish_fields.mjs
+      - name: Rebuild current public runtime inputs
+        run: python3 scripts/reload_data.py --public-only --outdir _audit/retained-unconsumed-pr-reload
+      - name: Run offline retained-field audit
+        run: |
+          set -euo pipefail
+          node scripts/audit_retained_unconsumed_dish_fields.mjs /tmp/retained-unconsumed-dish-fields.json | tee /tmp/retained-unconsumed-summary.txt
+          node - <<'NODE'
+          const fs=require('fs');
+          const x=JSON.parse(fs.readFileSync('/tmp/retained-unconsumed-dish-fields.json','utf8'));
+          const p=x.policy||{}, s=x.summary||{};
+          if(x.schemaVersion!==1||p.auditOnly!==true||p.networkRequests!==0||p.paidGoogleDataApiCalls!==0) throw new Error('retained audit must remain zero-network/zero-paid');
+          if(p.identityBindingChanges!==0||p.dishEvidenceChanges!==0||p.noCanonicalMutationFromAudit!==true) throw new Error('retained audit mutation boundary failed');
+          if(p.sourceRefRequiredForSourceEnrichmentCandidate!==true||p.categoryNameCuisineBrandInferenceAllowed!==false) throw new Error('retained audit source/semantic boundary failed');
+          if(p.serviceBudgetAccessHoursTextMayAutoPromoteDishEvidence!==false||p.diagnosticDishTermHitIsNotDishEvidence!==true) throw new Error('diagnostic text promotion boundary failed');
+          if(s.catalogTotal!==2804||s.publicRuntimeTotal<=0||s.retainedSourceMiningTargets!==321) throw new Error(`retained audit current queue mismatch: ${JSON.stringify(s)}`);
+          for(const r of x.safeCandidates||[]){
+            if(!r.googlePlaceId||!r.sourceUrl||!r.sourcePath||!r.nameZh) throw new Error('safe candidate missing provenance');
+            if(!/^https?:\/\//.test(r.sourceUrl)) throw new Error(`safe candidate has invalid source URL: ${r.googlePlaceId}`);
+          }
+          console.log('RETAINED_AUDIT_CONTRACT='+JSON.stringify(s));
+          NODE
+      - name: Upload audit
+        uses: actions/upload-artifact@v4
+        with:
+          name: retained-unconsumed-dish-field-audit
+          path: |
+            /tmp/retained-unconsumed-dish-fields.json
+            /tmp/retained-unconsumed-summary.txt
+          retention-days: 7
