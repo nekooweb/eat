@@ -1,0 +1,43 @@
+name: Audit featured recommendation promotions
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.featured-recommendation-audit-run'
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Rebuild current runtime and audit retained featured snippets
+        run: |
+          set -euo pipefail
+          node scripts/audit_no_paid_apis.mjs
+          python scripts/reload_data.py --public-only --outdir /tmp/featured-promotion-audit-reload
+          node scripts/audit_featured_recommendation_promotion_candidates.mjs /tmp/featured-promotion-candidates.json | tee /tmp/featured-promotion-candidates.log
+          node - <<'NODE'
+          const fs=require('fs');
+          const x=JSON.parse(fs.readFileSync('/tmp/featured-promotion-candidates.json','utf8'));
+          if(x.policy?.networkRequests!==0||x.policy?.paidGoogleDataApiCalls!==0||x.policy?.automaticPromotionAllowed!==false) throw new Error('promotion audit boundary failed');
+          console.log('FEATURED_PROMOTION_SUMMARY='+JSON.stringify(x.summary));
+          NODE
+      - uses: actions/upload-artifact@v4
+        with:
+          name: featured-recommendation-promotion-candidates
+          path: |
+            /tmp/featured-promotion-candidates.json
+            /tmp/featured-promotion-candidates.log
+          retention-days: 7
