@@ -23,6 +23,7 @@ jobs:
             node scripts/test_opening_hours.mjs
             python3 scripts/reload_data.py --public-only --outdir _audit/pr-reload
             node scripts/test_tool_identity_name_contract.mjs
+            node scripts/test_source_field_quarantine.mjs
             node scripts/test_independent_source_candidate_hardening.mjs
             node --check scripts/independent_source_host_policy.mjs
             node --check scripts/sanitize_independent_source_candidate_plan.mjs
