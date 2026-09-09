@@ -40,14 +40,14 @@ try {
   fs.writeFileSync(tempInput, JSON.stringify(promoted, null, 2) + '\n');
   if (fs.existsSync(OUTPUT)) fs.copyFileSync(OUTPUT, tempOutput);
   const result = spawnSync(process.execPath, [
-    path.join(HERE, 'review_independent_dish_source_candidates_v3.mjs'),
+    path.join(HERE, 'review_independent_dish_source_candidates_v4.mjs'),
     tempInput,
     tempOutput
   ], {
     cwd: ROOT,
     env: process.env,
     encoding: 'utf8',
-    maxBuffer: 8 * 1024 * 1024,
+    maxBuffer: 12 * 1024 * 1024,
     timeout: 180_000
   });
   if (result.error) throw result.error;
@@ -66,6 +66,7 @@ try {
     mediumConfidenceRowsTemporarilyRoutedThroughSameStrictReviewer: true,
     candidateInputPromotionChangesIdentityThreshold: false,
     finalStrictPageNameAndLocationCriteriaUnchangedFromV3: true,
+    v4CentralHostPolicyWrapperRequired: true,
     proximityOnlyBindingAllowed: false,
     dishEvidencePromotionBeforeIdentityReviewAllowed: false
   };

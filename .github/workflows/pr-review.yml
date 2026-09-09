@@ -28,7 +28,10 @@ jobs:
             node --check scripts/sanitize_independent_source_candidate_plan.mjs
             node --check scripts/audit_independent_source_host_policy.mjs
             node --check scripts/test_independent_source_host_policy.mjs
+            node --check scripts/review_independent_dish_source_candidates_v4.mjs
+            node --check scripts/test_independent_source_reviewer_v4.mjs
             node scripts/test_independent_source_host_policy.mjs
+            node scripts/test_independent_source_reviewer_v4.mjs
             node scripts/sanitize_independent_source_candidate_plan.mjs \
               data/independent_dish_source_candidates.json \
               /tmp/pr-independent-source-candidates.sanitized.json
