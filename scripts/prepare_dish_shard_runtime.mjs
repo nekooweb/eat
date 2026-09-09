@@ -145,7 +145,7 @@ const shardQueue = {
 fs.writeFileSync(queuePath, JSON.stringify(shardQueue, null, 2) + '\n', 'utf8');
 
 const manifest = {
-  schemaVersion: 2,
+  schemaVersion: 1,
   shardIndex: SHARD_INDEX,
   shardCount: SHARD_COUNT,
   catalogTotal: 2804,
