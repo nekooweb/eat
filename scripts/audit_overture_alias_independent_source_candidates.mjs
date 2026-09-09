@@ -8,57 +8,38 @@ const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, '..');
 const DATA = path.join(ROOT, 'data');
 const OUTPUT = process.argv[2] || path.join(ROOT, '_audit', 'overture-alias-independent-source-candidates.json');
+const OVERTURE_PATH = process.argv[3] || path.join(DATA, 'overture_area1_candidates.json');
 const MAX_DISTANCE_M = 120;
-const REVIEW_ADDRESS_DISTANCE_M = 40;
-const REVIEW_POSTCODE_ULTRANEar_M = 5;
-const ULTRANEar_DIAGNOSTIC_M = 3;
-const EARTH_RADIUS_M = 6371000;
 const GRID_DEG = 0.0015;
+const EARTH_RADIUS_M = 6371000;
 
-function readJson(name) {
-  return JSON.parse(fs.readFileSync(path.join(DATA, name), 'utf8'));
-}
-
+function readJsonFile(file) { return JSON.parse(fs.readFileSync(file, 'utf8')); }
+function readJson(name) { return readJsonFile(path.join(DATA, name)); }
 function loadRuntime() {
   const sandbox = { window: {}, console };
   vm.createContext(sandbox);
-  vm.runInContext(fs.readFileSync(path.join(DATA, 'google_inventory_runtime.js'), 'utf8'), sandbox, {
-    filename: 'google_inventory_runtime.js'
-  });
+  vm.runInContext(fs.readFileSync(path.join(DATA, 'google_inventory_runtime.js'), 'utf8'), sandbox, { filename: 'google_inventory_runtime.js' });
   return {
-    rows: Array.isArray(sandbox.window.GOOGLE_INVENTORY_RESTAURANTS)
-      ? sandbox.window.GOOGLE_INVENTORY_RESTAURANTS
-      : [],
+    rows: Array.isArray(sandbox.window.GOOGLE_INVENTORY_RESTAURANTS) ? sandbox.window.GOOGLE_INVENTORY_RESTAURANTS : [],
     stats: sandbox.window.GOOGLE_INVENTORY_STATS || {}
   };
 }
-
-function clean(value) {
-  return String(value || '').replace(/\s+/g, ' ').trim();
-}
-
+function clean(value) { return String(value || '').replace(/\s+/g, ' ').trim(); }
 function normalizeName(value) {
   return clean(value).normalize('NFKC').toLowerCase()
     .replace(/株式会社|有限会社|合同会社/g, '')
     .replace(/[\s　・･’'"\-—_()（）\[\]【】「」『』&＆!！?？.,，。:：/\\]+/g, '');
 }
-
 function nameSimilarity(a, b) {
-  const x = normalizeName(a);
-  const y = normalizeName(b);
+  const x = normalizeName(a), y = normalizeName(b);
   if (!x || !y) return 0;
   if (x === y) return 1;
   if (x.includes(y) || y.includes(x)) {
-    const short = Math.min(x.length, y.length);
-    const long = Math.max(x.length, y.length);
+    const short = Math.min(x.length, y.length), long = Math.max(x.length, y.length);
     if (short >= 4) return Math.max(0.84, short / long);
   }
-  const grams = (text) => text.length < 2
-    ? [text]
-    : Array.from({ length: text.length - 1 }, (_, i) => text.slice(i, i + 2));
-  const left = grams(x);
-  const right = grams(y);
-  const counts = new Map();
+  const grams = (text) => text.length < 2 ? [text] : Array.from({ length: text.length - 1 }, (_, i) => text.slice(i, i + 2));
+  const left = grams(x), right = grams(y), counts = new Map();
   for (const token of left) counts.set(token, (counts.get(token) || 0) + 1);
   let overlap = 0;
   for (const token of right) {
@@ -69,25 +50,44 @@ function nameSimilarity(a, b) {
   }
   return (2 * overlap) / (left.length + right.length);
 }
-
 function namesCompatible(a, b) {
-  const x = normalizeName(a);
-  const y = normalizeName(b);
-  const score = nameSimilarity(a, b);
+  const x = normalizeName(a), y = normalizeName(b), score = nameSimilarity(a, b);
   return Boolean(x && y && (x === y || x.includes(y) || y.includes(x) || score >= 0.82));
 }
-
+function flattenStrings(value) {
+  if (value == null) return [];
+  if (typeof value === 'string') return [value];
+  if (Array.isArray(value)) return value.flatMap(flattenStrings);
+  if (typeof value === 'object') return Object.values(value).flatMap(flattenStrings);
+  return [];
+}
+function looksLikeName(value) {
+  const text = clean(value);
+  if (text.length < 2 || text.length > 120 || /https?:\/\//i.test(text)) return false;
+  if (/^[a-z]{2,3}(?:[-_][a-z]{2,4})?$/i.test(text)) return false;
+  if (/^\d+(?:\.\d+)?$/.test(text)) return false;
+  return true;
+}
+function sourceNameVariants(row) {
+  const primary = clean(row?.name);
+  const common = flattenStrings(row?.names?.common).map(clean).filter(looksLikeName);
+  const seen = new Set(), output = [];
+  for (const item of [primary, ...common]) {
+    const key = normalizeName(item);
+    if (!key || seen.has(key)) continue;
+    seen.add(key);
+    output.push({ value: item, kind: item === primary ? 'primary' : 'common' });
+  }
+  return output;
+}
 function safeUrl(value) {
   try {
     const url = new URL(value);
     if (!['http:', 'https:'].includes(url.protocol)) return null;
     url.hash = '';
     return url;
-  } catch {
-    return null;
-  }
+  } catch { return null; }
 }
-
 function excludedIndependentHost(host) {
   const h = String(host || '').toLowerCase().replace(/^www\./, '');
   if (/openstreetmap\.org$|hotpepper\.jp$|tabelog\.com$/.test(h)) return true;
@@ -96,271 +96,163 @@ function excludedIndependentHost(host) {
   if (/gnavi\.co\.jp$|retty\.me$|tripadvisor\.[a-z.]+$|yelp\.[a-z.]+$|foursquare\.com$/.test(h)) return true;
   if (/loco\.yahoo\.co\.jp$|paypaygourmet\.yahoo\.co\.jp$|autoreserve\.com$|ekiten\.jp$/.test(h)) return true;
   if (/restaurant\.ikyu\.com$|bar-navi\.suntory\.co\.jp$/.test(h)) return true;
+  if (/hitosara\.com$|localplace\.jp$|demae-can\.com$|epark\.jp$|ubereats\.com$|wolt\.com$/.test(h)) return true;
   return false;
 }
-
-function flattenStrings(value) {
-  if (value == null) return [];
-  if (typeof value === 'string') return [value];
-  if (Array.isArray(value)) return value.flatMap(flattenStrings);
-  if (typeof value === 'object') return Object.values(value).flatMap(flattenStrings);
-  return [];
-}
-
 function independentUrls(value) {
-  const output = [];
-  const seen = new Set();
+  const out = [], seen = new Set();
   for (const raw of flattenStrings(value)) {
     const url = safeUrl(raw);
     if (!url || excludedIndependentHost(url.hostname)) continue;
     const key = url.toString();
     if (seen.has(key)) continue;
-    seen.add(key);
-    output.push(key);
+    seen.add(key); out.push(key);
   }
-  return output;
+  return out;
 }
-
 function addressStrings(value) {
   if (value == null) return [];
   if (typeof value === 'string') return [clean(value)].filter(Boolean);
   if (Array.isArray(value)) return value.flatMap(addressStrings);
   if (typeof value !== 'object') return [];
-  const preferred = [
-    value.freeform,
-    value.streetAddress,
-    value.addressLine,
-    value.addressLocality,
-    value.locality,
-    value.addressRegion,
-    value.region,
-    value.postcode,
-    value.postalCode
-  ].filter(Boolean).map(clean);
-  const combined = clean(preferred.join(' '));
-  const nested = Object.entries(value)
-    .filter(([key]) => !['freeform','streetAddress','addressLine','addressLocality','locality','addressRegion','region','postcode','postalCode'].includes(key))
-    .flatMap(([, item]) => addressStrings(item));
-  return [...new Set([combined, ...nested].filter(Boolean))];
+  const preferred = [value.freeform, value.streetAddress, value.addressLine, value.addressLocality, value.locality, value.addressRegion, value.region, value.postcode, value.postalCode]
+    .filter(Boolean).map(clean);
+  return [...new Set([clean(preferred.join(' ')), ...Object.values(value).flatMap(addressStrings)].filter(Boolean))];
 }
-
 function overtureAddress(value) {
   const values = addressStrings(value);
-  if (!values.length) return '';
-  return values.sort((a, b) => b.length - a.length)[0];
+  return values.length ? values.sort((a, b) => b.length - a.length)[0] : '';
 }
-
-function postcode(value) {
-  const text = clean(value).normalize('NFKC');
-  const match = text.match(/(?:〒\s*)?(\d{3})[-ー－\s]?(\d{4})/);
-  return match ? `${match[1]}${match[2]}` : '';
-}
-
-function normalizeAddress(value) {
-  return clean(value).normalize('NFKC').toLowerCase()
-    .replace(/〒\s*\d{3}[-ー－\s]?\d{4}/g, '')
-    .replace(/日本|japan|東京都|tokyo(?:-to)?/gi, '')
-    .replace(/[\s　・･’'"\-—_()（）\[\]【】「」『』&＆!！?？.,，。:：/\\]+/g, '');
-}
-
-function addressAgreement(a, b) {
-  const x = normalizeAddress(a);
-  const y = normalizeAddress(b);
-  if (!x || !y) return false;
-  if (x.length >= 8 && y.includes(x)) return true;
-  if (y.length >= 8 && x.includes(y)) return true;
-  const max = Math.min(22, x.length, y.length);
-  for (let size = max; size >= 8; size -= 1) {
-    for (let i = 0; i <= x.length - size; i += 1) {
-      if (y.includes(x.slice(i, i + size))) return true;
-    }
-  }
-  return false;
-}
-
 function haversine(lat1, lng1, lat2, lng2) {
-  const p1 = lat1 * Math.PI / 180;
-  const p2 = lat2 * Math.PI / 180;
-  const dlat = (lat2 - lat1) * Math.PI / 180;
-  const dlng = (lng2 - lng1) * Math.PI / 180;
+  const p1 = lat1 * Math.PI / 180, p2 = lat2 * Math.PI / 180;
+  const dlat = (lat2 - lat1) * Math.PI / 180, dlng = (lng2 - lng1) * Math.PI / 180;
   const value = Math.sin(dlat / 2) ** 2 + Math.cos(p1) * Math.cos(p2) * Math.sin(dlng / 2) ** 2;
   return EARTH_RADIUS_M * 2 * Math.atan2(Math.sqrt(value), Math.sqrt(Math.max(0, 1 - value)));
 }
-
-function gridKey(lat, lng) {
-  return `${Math.floor(Number(lat) / GRID_DEG)}:${Math.floor(Number(lng) / GRID_DEG)}`;
-}
-
+function gridKey(lat, lng) { return `${Math.floor(Number(lat) / GRID_DEG)}:${Math.floor(Number(lng) / GRID_DEG)}`; }
 function nearbyGridKeys(lat, lng) {
-  const y = Math.floor(Number(lat) / GRID_DEG);
-  const x = Math.floor(Number(lng) / GRID_DEG);
-  const output = [];
-  for (let dy = -1; dy <= 1; dy += 1) {
-    for (let dx = -1; dx <= 1; dx += 1) output.push(`${y + dy}:${x + dx}`);
-  }
-  return output;
+  const y = Math.floor(Number(lat) / GRID_DEG), x = Math.floor(Number(lng) / GRID_DEG), out = [];
+  for (let dy = -1; dy <= 1; dy += 1) for (let dx = -1; dx <= 1; dx += 1) out.push(`${y + dy}:${x + dx}`);
+  return out;
+}
+function strongAliasBridge(similarity, distance) {
+  return (similarity >= 0.96 && distance <= 80)
+    || (similarity >= 0.88 && distance <= 45)
+    || (similarity >= 0.82 && distance <= 25);
 }
 
-const queueDoc = readJson('google_inventory_detail_queue.json');
-const overtureDoc = readJson('overture_area1_candidates.json');
+const queue = readJson('google_inventory_detail_queue.json');
+const overture = readJsonFile(OVERTURE_PATH);
 const runtime = loadRuntime();
-const runtimeRows = runtime.rows;
-const runtimeById = new Map(runtimeRows.map((row) => [row.googlePlaceId, row]));
-const targetRows = (queueDoc.rows || []).filter((row) => row.nextAction === 'find_independent_dish_source');
-
-if (
-  queueDoc.summary?.catalogTotal !== 2804
-  || runtime.stats?.catalogTotal !== 2804
-  || queueDoc.summary?.publicRuntimeTotal !== runtimeRows.length
-  || targetRows.length !== Number(queueDoc.summary?.recommendationGapNeedingNewDishSource || targetRows.length)
-) {
+const runtimeById = new Map(runtime.rows.map((row) => [row.googlePlaceId, row]));
+const targets = (queue.rows || []).filter((row) => row.nextAction === 'find_independent_dish_source');
+if (queue.summary?.catalogTotal !== 2804 || runtime.stats?.catalogTotal !== 2804 || queue.summary?.publicRuntimeTotal !== runtime.rows.length || targets.length !== 296) {
   throw new Error('current runtime/queue contract mismatch');
 }
 
 const spatial = new Map();
-let overtureRowsWithIndependentUrls = 0;
-for (const row of overtureDoc.rows || []) {
+let rowsWithCommonNames = 0, commonNameVariants = 0, overtureRowsWithIndependentUrls = 0, excludedUrlValues = 0;
+for (const row of overture.rows || []) {
+  const variants = sourceNameVariants(row);
+  const common = variants.filter((item) => item.kind === 'common');
+  if (common.length) { rowsWithCommonNames += 1; commonNameVariants += common.length; }
   if (!Number.isFinite(row?.lat) || !Number.isFinite(row?.lng) || !clean(row?.name)) continue;
-  const urls = independentUrls(row.websites);
+  const rawUrls = flattenStrings(row.websites), urls = independentUrls(row.websites);
+  excludedUrlValues += Math.max(0, rawUrls.length - urls.length);
   if (!urls.length) continue;
   overtureRowsWithIndependentUrls += 1;
   const key = gridKey(row.lat, row.lng);
   if (!spatial.has(key)) spatial.set(key, []);
-  spatial.get(key).push({ row, urls });
+  spatial.get(key).push({ row, urls, variants });
 }
 
-const auditRows = [];
-let targetsWithNearbyIndependentCandidate = 0;
-let targetsWhoseNearestNameIsCompatible = 0;
-let targetsWhoseNearestNameIsDifferent = 0;
-let differentNameWithRuntimeAddress = 0;
-let differentNameWithCandidateAddress = 0;
-let differentNameWithAddressAgreement = 0;
-let differentNameWithPostcodeAgreement = 0;
-let ultraNearDifferentName = 0;
-let reviewableByNonNameEvidence = 0;
-
-for (const target of targetRows) {
+const bridgeRows = [];
+let targetsWithNearbyIndependentCandidate = 0, targetsWithPrimaryNameCompatibleCandidate = 0, targetsWithSourceCommonNameBridge = 0;
+for (const target of targets) {
   const current = runtimeById.get(target.googlePlaceId);
   if (!current || !Number.isFinite(current.lat) || !Number.isFinite(current.lng)) continue;
-  const candidates = [];
+  const nearby = [];
   for (const key of nearbyGridKeys(current.lat, current.lng)) {
     for (const entry of spatial.get(key) || []) {
       const distance = haversine(current.lat, current.lng, entry.row.lat, entry.row.lng);
-      if (distance > MAX_DISTANCE_M) continue;
-      candidates.push({ ...entry, distance });
+      if (distance <= MAX_DISTANCE_M) nearby.push({ ...entry, distance });
     }
   }
-  if (!candidates.length) continue;
+  if (!nearby.length) continue;
   targetsWithNearbyIndependentCandidate += 1;
-  candidates.sort((a, b) => a.distance - b.distance || String(a.row.overtureId || '').localeCompare(String(b.row.overtureId || '')));
-  const best = candidates[0];
-  const second = candidates[1] || null;
-  const similarity = nameSimilarity(current.name, best.row.name);
-  if (namesCompatible(current.name, best.row.name)) {
-    targetsWhoseNearestNameIsCompatible += 1;
-    continue;
+  if (nearby.some((entry) => namesCompatible(current.name, entry.row.name))) targetsWithPrimaryNameCompatibleCandidate += 1;
+  const bridged = [];
+  for (const entry of nearby) {
+    if (namesCompatible(current.name, entry.row.name)) continue;
+    const commonMatches = entry.variants.filter((item) => item.kind === 'common')
+      .map((item) => ({ ...item, similarity: nameSimilarity(current.name, item.value) }))
+      .filter((item) => namesCompatible(current.name, item.value) && strongAliasBridge(item.similarity, entry.distance))
+      .sort((a, b) => b.similarity - a.similarity || a.value.localeCompare(b.value));
+    if (commonMatches.length) bridged.push({ ...entry, match: commonMatches[0] });
   }
-  targetsWhoseNearestNameIsDifferent += 1;
-
-  const runtimeAddress = clean(current.address);
-  const candidateAddress = overtureAddress(best.row.addresses);
-  if (runtimeAddress) differentNameWithRuntimeAddress += 1;
-  if (candidateAddress) differentNameWithCandidateAddress += 1;
-  const addressMatch = Boolean(runtimeAddress && candidateAddress && addressAgreement(runtimeAddress, candidateAddress));
-  const runtimePostcode = postcode(runtimeAddress);
-  const candidatePostcode = postcode(candidateAddress);
-  const postcodeMatch = Boolean(runtimePostcode && candidatePostcode && runtimePostcode === candidatePostcode);
-  if (addressMatch) differentNameWithAddressAgreement += 1;
-  if (postcodeMatch) differentNameWithPostcodeAgreement += 1;
-  if (best.distance <= ULTRANEar_DIAGNOSTIC_M) ultraNearDifferentName += 1;
-
-  const runnerUpDistance = second ? second.distance : null;
-  const runnerUpGap = second ? second.distance - best.distance : null;
-  const addressQualified = addressMatch && best.distance <= REVIEW_ADDRESS_DISTANCE_M;
-  const postcodeUltraNearQualified = postcodeMatch && best.distance <= REVIEW_POSTCODE_ULTRANEar_M;
-  const reviewable = addressQualified || postcodeUltraNearQualified;
-  if (reviewable) reviewableByNonNameEvidence += 1;
-
-  let auditState = 'different_name_nearby_diagnostic_only';
-  if (addressQualified && postcodeMatch) auditState = 'review_alias_candidate_address_postcode_location';
-  else if (addressQualified) auditState = 'review_alias_candidate_address_location';
-  else if (postcodeUltraNearQualified) auditState = 'review_alias_candidate_postcode_ultranear';
-  else if (best.distance <= ULTRANEar_DIAGNOSTIC_M) auditState = 'ultranear_alias_diagnostic_only';
-
-  auditRows.push({
+  if (!bridged.length) continue;
+  targetsWithSourceCommonNameBridge += 1;
+  bridged.sort((a, b) => b.match.similarity - a.match.similarity || a.distance - b.distance);
+  const best = bridged[0], second = bridged[1] || null;
+  bridgeRows.push({
     googlePlaceId: target.googlePlaceId,
     name: current.name,
     candidateName: clean(best.row.name),
+    matchedSourceCommonName: best.match.value,
+    matchedSourceCommonNameSimilarity: Number(best.match.similarity.toFixed(3)),
     candidateProvider: 'Overture Maps',
     candidateProviderId: clean(best.row.overtureId) || null,
-    candidateUrls: best.urls.slice(0, 4),
     candidateDistanceMeters: Number(best.distance.toFixed(1)),
-    runnerUpDistanceMeters: Number.isFinite(runnerUpDistance) ? Number(runnerUpDistance.toFixed(1)) : null,
-    runnerUpGapMeters: Number.isFinite(runnerUpGap) ? Number(runnerUpGap.toFixed(1)) : null,
-    nameSimilarity: Number(similarity.toFixed(3)),
-    runtimeAddress: runtimeAddress || null,
-    candidateAddress: candidateAddress || null,
-    runtimePostcode: runtimePostcode || null,
-    candidatePostcode: candidatePostcode || null,
-    addressAgreement: addressMatch,
-    postcodeAgreement: postcodeMatch,
+    competingAliasBridgeCandidateDistanceMeters: second ? Number(second.distance.toFixed(1)) : null,
+    competingAliasBridgeCandidateName: second ? clean(second.row.name) : null,
+    candidateAddress: overtureAddress(best.row.addresses) || null,
+    candidateUrls: best.urls.slice(0, 4),
     overtureConfidence: best.row.confidence ?? null,
-    auditState,
-    reviewableByNonNameEvidence: reviewable,
+    auditState: second && Math.abs(second.match.similarity - best.match.similarity) < 0.03 && Math.abs(second.distance - best.distance) < 15
+      ? 'source_common_name_bridge_ambiguous'
+      : 'source_common_name_bridge_candidate',
+    sourceAliasBridgeEstablishedBySameOvertureEntity: true,
     sourceAliasMayReplaceCatalogIdentity: false,
     identityBindingChanges: 0,
-    mayWriteDishEvidenceBeforeAliasReview: false
+    dishEvidenceChanges: 0,
+    centralAliasIdentityReviewRequiredBeforeBinding: true
   });
 }
 
-// Do not let one retained Overture entity silently become a proposed alias for multiple Place IDs.
 const nativeCounts = new Map();
-for (const row of auditRows.filter((item) => item.reviewableByNonNameEvidence)) {
+for (const row of bridgeRows) {
   const key = row.candidateProviderId || `${row.candidateName}|${row.candidateUrls[0] || ''}`;
   nativeCounts.set(key, (nativeCounts.get(key) || 0) + 1);
 }
 let nativeCollisionRows = 0;
-for (const row of auditRows) {
-  if (!row.reviewableByNonNameEvidence) continue;
+for (const row of bridgeRows) {
   const key = row.candidateProviderId || `${row.candidateName}|${row.candidateUrls[0] || ''}`;
   if ((nativeCounts.get(key) || 0) <= 1) continue;
-  row.auditState = 'alias_candidate_native_collision_diagnostic_only';
-  row.reviewableByNonNameEvidence = false;
+  row.auditState = 'source_common_name_bridge_native_collision';
   row.nativeCandidateCollision = true;
   nativeCollisionRows += 1;
 }
-
-const reviewRows = auditRows.filter((row) => row.reviewableByNonNameEvidence);
-const stateCounts = Object.fromEntries([...new Set(auditRows.map((row) => row.auditState))]
-  .sort()
-  .map((state) => [state, auditRows.filter((row) => row.auditState === state).length]));
-const reviewStateCounts = Object.fromEntries([...new Set(reviewRows.map((row) => row.auditState))]
-  .sort()
-  .map((state) => [state, reviewRows.filter((row) => row.auditState === state).length]));
-
+const cleanBridgeRows = bridgeRows.filter((row) => row.auditState === 'source_common_name_bridge_candidate');
 const summary = {
   catalogTotal: 2804,
-  publicRuntimeTotal: runtimeRows.length,
-  independentSourceGap: targetRows.length,
-  overtureRows: (overtureDoc.rows || []).length,
+  publicRuntimeTotal: runtime.rows.length,
+  independentSourceGap: targets.length,
+  overtureSchemaVersion: overture.schemaVersion || null,
+  overtureRows: (overture.rows || []).length,
   overtureRowsWithIndependentUrls,
+  rowsWithCommonNames,
+  commonNameVariants,
+  excludedUrlValues,
   targetsWithNearbyIndependentCandidate,
-  targetsWhoseNearestNameIsCompatible,
-  targetsWhoseNearestNameIsDifferent,
-  differentNameWithRuntimeAddress,
-  differentNameWithCandidateAddress,
-  differentNameWithAddressAgreement,
-  differentNameWithPostcodeAgreement,
-  ultraNearDifferentName,
-  reviewableByNonNameEvidence: reviewRows.length,
-  nativeCollisionRows,
-  stateCounts,
-  reviewStateCounts
+  targetsWithPrimaryNameCompatibleCandidate,
+  targetsWithSourceCommonNameBridge,
+  bridgeCandidatesBeforeCollision: bridgeRows.length,
+  cleanSourceCommonNameBridgeCandidates: cleanBridgeRows.length,
+  ambiguousBridgeRows: bridgeRows.filter((row) => row.auditState === 'source_common_name_bridge_ambiguous').length,
+  nativeCollisionRows
 };
-
 const payload = {
-  schemaVersion: 1,
+  schemaVersion: 2,
   generatedAt: new Date().toISOString(),
   policy: {
     auditOnly: true,
@@ -370,39 +262,22 @@ const payload = {
     identityBindingChanges: 0,
     dishEvidenceChanges: 0,
     catalogIdentityNameSource: 'current runtime/catalog name',
-    candidateNameRole: 'source alias candidate only',
+    candidatePrimaryNameRole: 'source entity primary name only',
+    sourceCommonNameRole: 'source-provided alias bridge evidence only',
     sourceAliasMayReplaceCatalogIdentity: false,
+    addressOrProximityMayEstablishAliasEquivalence: false,
     proximityOnlyBindingAllowed: false,
-    reviewableAliasCandidateRequiresIndependentAddressOrPostcodeEvidence: true,
+    sourceCommonNameBridgeMustBelongToSameOvertureEntity: true,
     centralAliasIdentityReviewRequiredBeforeBinding: true,
     dishEvidencePromotionBeforeAliasReviewAllowed: false,
-    maximumOvertureDistanceMeters: MAX_DISTANCE_M,
-    addressReviewMaximumDistanceMeters: REVIEW_ADDRESS_DISTANCE_M,
-    postcodeUltraNearMaximumDistanceMeters: REVIEW_POSTCODE_ULTRANEar_M,
-    ultraNearWithoutAddressEvidenceIsDiagnosticOnly: true
+    thirdPartyAggregatorUrlsExcluded: true,
+    maximumOvertureDistanceMeters: MAX_DISTANCE_M
   },
   summary,
-  reviewCandidates: reviewRows.sort((a, b) =>
-    Number(b.postcodeAgreement) - Number(a.postcodeAgreement)
-    || Number(b.addressAgreement) - Number(a.addressAgreement)
-    || a.candidateDistanceMeters - b.candidateDistanceMeters
-    || a.googlePlaceId.localeCompare(b.googlePlaceId)
-  ),
-  diagnosticRows: auditRows.sort((a, b) =>
-    Number(b.reviewableByNonNameEvidence) - Number(a.reviewableByNonNameEvidence)
-    || a.candidateDistanceMeters - b.candidateDistanceMeters
-    || a.googlePlaceId.localeCompare(b.googlePlaceId)
-  )
+  aliasBridgeCandidates: cleanBridgeRows.sort((a, b) => b.matchedSourceCommonNameSimilarity - a.matchedSourceCommonNameSimilarity || a.candidateDistanceMeters - b.candidateDistanceMeters || a.googlePlaceId.localeCompare(b.googlePlaceId)),
+  allBridgeRows: bridgeRows
 };
-
 fs.mkdirSync(path.dirname(OUTPUT), { recursive: true });
 fs.writeFileSync(OUTPUT, JSON.stringify(payload, null, 2) + '\n', 'utf8');
 console.log(JSON.stringify(summary));
-if (payload.reviewCandidates.length) {
-  console.log('REVIEW_CANDIDATE_SAMPLES=' + JSON.stringify(payload.reviewCandidates.slice(0, 20)));
-}
-if (payload.diagnosticRows.length) {
-  console.log('ULTRANEAR_DIAGNOSTIC_SAMPLES=' + JSON.stringify(payload.diagnosticRows
-    .filter((row) => row.candidateDistanceMeters <= ULTRANEar_DIAGNOSTIC_M)
-    .slice(0, 20)));
-}
+if (payload.aliasBridgeCandidates.length) console.log('ALIAS_BRIDGE_SAMPLES=' + JSON.stringify(payload.aliasBridgeCandidates.slice(0, 30)));
