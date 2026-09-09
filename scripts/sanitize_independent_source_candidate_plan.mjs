@@ -21,6 +21,7 @@ if (source.policy?.proposalOnly !== true || source.policy?.identityBindingChange
 let droppedRows = 0;
 let changedRows = 0;
 let removedUrlValues = 0;
+let reviewRootAugmentedRows = 0;
 const rows = [];
 
 for (const row of source.rows || []) {
@@ -29,29 +30,40 @@ for (const row of source.rows || []) {
   const originalMenuUrls = Array.isArray(row.menuUrls) ? row.menuUrls.filter(Boolean) : [];
   const originalValues = [originalPage, ...originalCandidateUrls, ...originalMenuUrls].filter(Boolean);
 
-  const page = safeIndependentUrl(originalPage)?.toString() || null;
-  const candidateUrls = filterIndependentUrls(originalCandidateUrls);
-  const menuUrls = filterIndependentUrls(originalMenuUrls);
-  const available = [...new Set([page, ...candidateUrls, ...menuUrls].filter(Boolean))];
-  removedUrlValues += Math.max(0, originalValues.length - available.length);
+  // Count only values actually rejected by URL/host policy. Duplicate valid roots are
+  // not removals; the previous metric compared raw count with a deduplicated set and
+  // therefore falsely reported one removal per ordinary pageUrl/candidateUrl duplicate.
+  removedUrlValues += originalValues.filter((raw) => !safeIndependentUrl(raw)).length;
 
+  const page = safeIndependentUrl(originalPage)?.toString() || null;
+  const sanitizedCandidateUrls = filterIndependentUrls(originalCandidateUrls);
+  const menuUrls = filterIndependentUrls(originalMenuUrls);
+
+  // v3 network review historically reads candidateUrls + pageUrl. Preserve explicit
+  // branch/menu URLs as review roots by adding allowed menu URLs to the temporary
+  // sanitized candidateUrls while retaining menuUrls separately for provenance.
+  const candidateUrls = filterIndependentUrls([...sanitizedCandidateUrls, ...menuUrls]);
+  const menuRootAdded = menuUrls.some((url) => !sanitizedCandidateUrls.includes(url));
+  if (menuRootAdded) reviewRootAugmentedRows += 1;
+
+  const available = [...new Set([page, ...candidateUrls, ...menuUrls].filter(Boolean))];
   if (!available.length) {
     droppedRows += 1;
     continue;
   }
 
-  const nextPage = page || candidateUrls[0] || menuUrls[0] || null;
+  const nextPage = page || sanitizedCandidateUrls[0] || menuUrls[0] || null;
   const candidateHosts = [...new Set(available.map((value) => normalizeHost(new URL(value).hostname)))];
-  const changed = nextPage !== originalPage
-    || candidateUrls.length !== originalCandidateUrls.length
+  const hostPolicyChanged = nextPage !== originalPage
+    || sanitizedCandidateUrls.length !== originalCandidateUrls.length
     || menuUrls.length !== originalMenuUrls.length
     || JSON.stringify(candidateHosts) !== JSON.stringify(row.candidateHosts || []);
-  if (changed) changedRows += 1;
+  if (hostPolicyChanged) changedRows += 1;
 
   rows.push({
     ...row,
     pageUrl: nextPage,
-    ...(Object.hasOwn(row, 'candidateUrls') ? { candidateUrls } : {}),
+    candidateUrls,
     ...(Object.hasOwn(row, 'menuUrls') ? { menuUrls } : {}),
     candidateHosts
   });
@@ -64,7 +76,8 @@ const payload = {
     ...(source.policy || {}),
     hostSanitizedBeforeNetworkReview: true,
     independentSourceHostPolicyVersion: INDEPENDENT_SOURCE_HOST_POLICY_VERSION,
-    excludedHostsMayNotReachNetworkReviewer: true
+    excludedHostsMayNotReachNetworkReviewer: true,
+    explicitMenuUrlsIncludedInNetworkReviewRoots: true
   },
   summary: {
     ...(source.summary || {}),
@@ -72,7 +85,8 @@ const payload = {
     proposalRows: rows.length,
     hostPolicyDroppedRows: droppedRows,
     hostPolicyChangedRows: changedRows,
-    hostPolicyRemovedUrlValues: removedUrlValues
+    hostPolicyRemovedUrlValues: removedUrlValues,
+    reviewRootAugmentedRows
   },
   rows
 };
@@ -84,5 +98,6 @@ console.log(JSON.stringify({
   hostPolicyDroppedRows: droppedRows,
   hostPolicyChangedRows: changedRows,
   hostPolicyRemovedUrlValues: removedUrlValues,
+  reviewRootAugmentedRows,
   independentSourceHostPolicyVersion: INDEPENDENT_SOURCE_HOST_POLICY_VERSION
 }));
