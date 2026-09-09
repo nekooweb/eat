@@ -32,7 +32,7 @@
     "ordinaryMenuDishBecomesFeaturedOnly": true,
     "shardIndex": 0,
     "shardCount": 1,
-    "source": "existing retained Hot Pepper featured evidence only",
+    "source": "already-bound merchant/official pages reviewed from recommendation-marker miss audit",
     "eligibleBindings": [
       "strict_auto",
       "manual_exact"
@@ -132,44 +132,38 @@
     "reviewedRuleWhitelistRequired": true,
     "exactFeaturedEvidenceLabelRequired": true,
     "genericCuisinePromotionAllowed": false,
-    "automaticDistanceOnlyPromotionAllowed": false
+    "automaticDistanceOnlyPromotionAllowed": false,
+    "sourceAuditRunId": "34371635502",
+    "sourceHostMustRemainBoundToIdentity": true,
+    "concreteSourceNativeDishInSameSnippetRequired": true,
+    "alcoholOnlyPromotionAllowed": false
   },
   "summary": {
     "catalogTotal": 2804,
     "publicRuntimeTotal": 1422,
-    "reviewedRules": 9,
-    "recommendationRestaurants": 6,
-    "recommendationItems": 9,
-    "ruleCounts": {
-      "kochi-sawachi-specialty": 1,
-      "zaku-yaki-udon-pride": 1,
-      "zaku-sauce-yakisoba-pride": 1,
-      "kougai-basque-cheesecake-specialty": 1,
-      "kougai-hamburg-popular-specialty": 1,
-      "uokai-six-sashimi-most-popular": 1,
-      "uokai-aji-fry-popular": 1,
-      "hakata-karaage-recommended": 1,
-      "versailles-meat-sauce-pride": 1
-    },
+    "auditRunId": "34371635502",
+    "reviewedRules": 7,
+    "recommendationRestaurants": 7,
+    "recommendationItems": 7,
     "previousEvidence": {
-      "recommendationRestaurants": 533,
-      "featuredRestaurants": 647,
-      "evidenceRestaurants": 709,
-      "recommendationItems": 949,
-      "featuredItems": 2504
-    },
-    "freshCrawlEvidence": {
-      "recommendationRestaurants": 6,
-      "featuredRestaurants": 0,
-      "evidenceRestaurants": 6,
-      "recommendationItems": 9,
-      "featuredItems": 0
-    },
-    "mergedEvidence": {
       "recommendationRestaurants": 539,
       "featuredRestaurants": 647,
       "evidenceRestaurants": 709,
       "recommendationItems": 958,
+      "featuredItems": 2504
+    },
+    "freshCrawlEvidence": {
+      "recommendationRestaurants": 7,
+      "featuredRestaurants": 0,
+      "evidenceRestaurants": 7,
+      "recommendationItems": 7,
+      "featuredItems": 0
+    },
+    "mergedEvidence": {
+      "recommendationRestaurants": 546,
+      "featuredRestaurants": 647,
+      "evidenceRestaurants": 714,
+      "recommendationItems": 965,
       "featuredItems": 2504
     },
     "specificityCorrection": {
@@ -177,7 +171,7 @@
       "correctedItems": 0,
       "duplicateItemsRemoved": 0,
       "ruleCounts": {},
-      "recommendationItemsAfterCorrection": 958,
+      "recommendationItemsAfterCorrection": 965,
       "featuredItemsAfterCorrection": 2504
     }
   },
@@ -4374,6 +4368,23 @@
       ]
     },
     {
+      "googlePlaceId": "ChIJ3wcsHh2MGGAR-BCRlpETRq0",
+      "name": "麺屋武蔵 巌虎",
+      "recommendedDishes": [
+        {
+          "nameZh": "叉烧培根",
+          "nameJa": "チャーシューベーコン",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://menya634.co.jp/storelist/akihabara2/",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "reviewed-bound-source-marker-miss:34371635502:menya-musashi-chashu-bacon-pride",
+          "evidenceSnippet": "特製のチャーシューダレに豚バラ肉を数日漬け込み、絶妙な火加減でスモークします。チャーシューでもない、ベーコンでもない、それがチャーシューベーコンです。自慢のチャーシューベーコン、是"
+        }
+      ],
+      "featuredDishes": []
+    },
+    {
       "googlePlaceId": "ChIJ3woP4BCMGGAR_rK6Rw0LqWA",
       "name": "Starbucks",
       "recommendedDishes": [
@@ -4640,6 +4651,23 @@
       ]
     },
     {
+      "googlePlaceId": "ChIJ44VsmjyMGGARJVL9gwj7Afc",
+      "name": "上海厨房",
+      "recommendedDishes": [
+        {
+          "nameZh": "火锅",
+          "nameJa": "火鍋",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://zuienshanghichubo.gorp.jp/",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "reviewed-bound-source-marker-miss:34371635502:shanghai-kitchen-hotpot-pride",
+          "evidenceSnippet": "美味しい自慢の火鍋!!"
+        }
+      ],
+      "featuredDishes": []
+    },
+    {
       "googlePlaceId": "ChIJ4Qh_76yNGGARjBaMH-fu1E0",
       "name": "BLUE EGG",
       "recommendedDishes": [
@@ -4800,6 +4828,23 @@
           "evidenceSnippet": "蕎麦屋のごーやちゃんぷる 750円（税込）"
         }
       ]
+    },
+    {
+      "googlePlaceId": "ChIJ4V7HsByMGGAR3-Klt48CI28",
+      "name": "吟ばん",
+      "recommendedDishes": [
+        {
+          "nameZh": "每日主厨精选料理套餐",
+          "nameJa": "日替わりおまかせ料理コース",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://ginban.gorp.jp/",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "reviewed-bound-source-marker-miss:34371635502:ginban-daily-omakase-most-popular",
+          "evidenceSnippet": "天然クエや豪華な白身魚を！イチバン人気！豊洲市場仕入れ次第！日替わりおまかせ料理コース 13,200円"
+        }
+      ],
+      "featuredDishes": []
     },
     {
       "googlePlaceId": "ChIJ4V7HsByMGGARQh7spliek0U",
@@ -13441,7 +13486,18 @@
     {
       "googlePlaceId": "ChIJE0-B9UOMGGARGby_5OE_Fdo",
       "name": "かまどか",
-      "recommendedDishes": [],
+      "recommendedDishes": [
+        {
+          "nameZh": "日式釜饭",
+          "nameJa": "釜めし",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.kamadoka.com/menulist/",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "reviewed-bound-source-marker-miss:34371635502:kamadoka-kamameshi-specialty",
+          "evidenceSnippet": "【名物】釜めし"
+        }
+      ],
       "featuredDishes": [
         {
           "nameZh": "乌冬面",
@@ -15789,7 +15845,18 @@
     {
       "googlePlaceId": "ChIJfy1MgfyNGGARPtRC8Q1Dymg",
       "name": "立ち飲み日本酒",
-      "recommendedDishes": [],
+      "recommendedDishes": [
+        {
+          "nameZh": "单人桌上七轮炙烤双拼",
+          "nameJa": "1人用卓上七輪炙り2種盛り",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://jp.sake-times.com/special/press/p_tachinomi-5",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "reviewed-bound-source-marker-miss:34371635502:tachinomi-table-shichirin-two-item-specialty",
+          "evidenceSnippet": "フードメニューは、名物「1人用卓上七輪炙り2種盛り」400円、花陽浴の奈良漬け、鏡山のクリームチーズ300円、日本酒に合う肴200円などをお楽しみください。"
+        }
+      ],
       "featuredDishes": [
         {
           "nameZh": "越南河粉",
@@ -30624,6 +30691,23 @@
       ]
     },
     {
+      "googlePlaceId": "ChIJs1M2cgCNGGARriJT0eDqUkg",
+      "name": "宮越屋珈琲",
+      "recommendedDishes": [
+        {
+          "nameZh": "欧式拼配咖啡",
+          "nameJa": "ヨーロピアンブレンド",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.miyakoshiya-coffee.co.jp/news/archives/207",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "reviewed-bound-source-marker-miss:34371635502:miyakoshi-european-blend-monthly-recommendation",
+          "evidenceSnippet": "9月のおすすめ豆は、ヨーロピアンブレンドです。"
+        }
+      ],
+      "featuredDishes": []
+    },
+    {
       "googlePlaceId": "ChIJs1zmzD-MGGAR_TWUpga5JUs",
       "name": "大庄水産",
       "recommendedDishes": [
@@ -39241,6 +39325,23 @@
           "evidenceSnippet": "串焼き"
         }
       ]
+    },
+    {
+      "googlePlaceId": "ChIJz8qC-w2MGGARG3sp7CYG-ko",
+      "name": "明神丸",
+      "recommendedDishes": [
+        {
+          "nameZh": "稻草炙烤鲣鱼",
+          "nameJa": "わら焼き鰹たたき",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://shop.myojinmaru.jp/shop/takebashi/",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "reviewed-bound-source-marker-miss:34371635502:myojinmaru-waraya-katsuo-specialty",
+          "evidenceSnippet": "明神丸名物のわら焼き鰹たたきや、高知産の食材を使用した土佐料理などお楽しみいただけます。"
+        }
+      ],
+      "featuredDishes": []
     },
     {
       "googlePlaceId": "ChIJz9-m7D-MGGARwexAhrGf2V4",
