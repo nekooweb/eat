@@ -1,0 +1,284 @@
+name: Fast parallel source-backed dishes
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.dish-fast-run'
+  pull_request:
+    paths:
+      - 'scripts/prepare_dish_shard_runtime.mjs'
+      - '.github/workflows/collect-source-backed-dishes-fast.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: collect-source-backed-recommended-dishes
+  cancel-in-progress: false
+
+env:
+  DISH_COLLECTOR_SHARDS: '4'
+
+jobs:
+  shard:
+    name: collect shard ${{ matrix.shard }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2, 3]
+    steps:
+      - name: Checkout triggering revision
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 1
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Enforce zero-paid policy and rebuild public inputs
+        run: |
+          set -euo pipefail
+          node scripts/audit_no_paid_apis.mjs
+          python scripts/reload_data.py --public-only --outdir "/tmp/fast-dish-shard-${{ matrix.shard }}-reload"
+      - name: Prepare deterministic ephemeral shard
+        run: |
+          set -euo pipefail
+          node scripts/prepare_dish_shard_runtime.mjs \
+            "${{ matrix.shard }}" \
+            "$DISH_COLLECTOR_SHARDS" \
+            "/tmp/manifest-${{ matrix.shard }}.json"
+      - name: Crawl bound source websites
+        env:
+          INVENTORY_DETAIL_FETCH_TIMEOUT_MS: '12000'
+          INVENTORY_DETAIL_HOST_WORKERS: '8'
+          INVENTORY_DETAIL_SITE_PAGE_LIMIT: '5'
+          INVENTORY_DETAIL_MENU_LINK_LIMIT: '4'
+          INVENTORY_DETAIL_DIAGNOSTICS_OUTPUT: /tmp/fresh-diagnostics-${{ matrix.shard }}.json
+        run: |
+          set -euo pipefail
+          node scripts/collect_google_inventory_recommendations.mjs \
+            "/tmp/fresh-${{ matrix.shard }}.json" | tee "/tmp/fresh-summary-${{ matrix.shard }}.json"
+          test -s "/tmp/fresh-${{ matrix.shard }}.json"
+      - name: Crawl bounded official sitemaps
+        env:
+          OFFICIAL_SITEMAP_FETCH_TIMEOUT_MS: '7000'
+          OFFICIAL_SITEMAP_WORKERS: '8'
+          OFFICIAL_SITEMAP_CHILD_LIMIT: '3'
+          OFFICIAL_SITEMAP_MENU_PAGE_LIMIT: '3'
+        run: |
+          set -euo pipefail
+          node scripts/collect_official_sitemap_dish_evidence.mjs \
+            "/tmp/sitemap-${{ matrix.shard }}.json" | tee "/tmp/sitemap-summary-${{ matrix.shard }}.json"
+          test -s "/tmp/sitemap-${{ matrix.shard }}.json"
+      - name: Validate shard evidence boundary
+        run: |
+          set -euo pipefail
+          node - <<'NODE'
+          const fs = require('fs');
+          const shard = Number('${{ matrix.shard }}');
+          const manifest = JSON.parse(fs.readFileSync(`/tmp/manifest-${shard}.json`, 'utf8'));
+          const fresh = JSON.parse(fs.readFileSync(`/tmp/fresh-${shard}.json`, 'utf8'));
+          const sitemap = JSON.parse(fs.readFileSync(`/tmp/sitemap-${shard}.json`, 'utf8'));
+          if (manifest.schemaVersion !== 1 || manifest.shardIndex !== shard || manifest.shardCount !== 4) throw new Error('invalid shard manifest');
+          if (manifest.catalogTotal !== 2804 || manifest.policy?.identityFieldsMutated !== false || manifest.policy?.paidGoogleDataApiCalls !== 0) throw new Error('shard crossed identity/cost boundary');
+          if (manifest.selectedRuntimeRows < 1 || manifest.selectedQueueRows < 1) throw new Error('empty dish shard');
+          if (fresh.policy?.paidGoogleDataApiCalls !== 0 || fresh.policy?.catalogIdentityKey !== 'frozen Place ID only') throw new Error('fresh collector boundary failed');
+          if (sitemap.policy?.paidGoogleDataApiCalls !== 0 || sitemap.policy?.crossOriginUrlsAllowed !== false) throw new Error('sitemap collector boundary failed');
+          console.log(JSON.stringify({shard, manifest: {rows: manifest.selectedRuntimeRows, queue: manifest.selectedQueueRows}, fresh: fresh.summary, sitemap: sitemap.summary}));
+          NODE
+      - name: Stage shard artifact
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/fast-dish-artifact
+          cp "/tmp/manifest-${{ matrix.shard }}.json" "/tmp/fast-dish-artifact/manifest-${{ matrix.shard }}.json"
+          cp "/tmp/fresh-${{ matrix.shard }}.json" "/tmp/fast-dish-artifact/fresh-${{ matrix.shard }}.json"
+          cp "/tmp/sitemap-${{ matrix.shard }}.json" "/tmp/fast-dish-artifact/sitemap-${{ matrix.shard }}.json"
+          cp "/tmp/fresh-summary-${{ matrix.shard }}.json" "/tmp/fast-dish-artifact/fresh-summary-${{ matrix.shard }}.json"
+          cp "/tmp/sitemap-summary-${{ matrix.shard }}.json" "/tmp/fast-dish-artifact/sitemap-summary-${{ matrix.shard }}.json"
+      - name: Upload shard artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: fast-dish-shard-${{ matrix.shard }}
+          path: /tmp/fast-dish-artifact
+          retention-days: 7
+
+  finalize:
+    name: merge, audit and publish
+    if: github.event_name != 'pull_request'
+    needs: shard
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout triggering revision
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Rebuild baseline and snapshot current counts
+        run: |
+          set -euo pipefail
+          node scripts/audit_no_paid_apis.mjs
+          python scripts/reload_data.py --public-only --outdir /tmp/fast-dish-final-baseline
+          if [ -s data/google_inventory_detail_evidence.json ]; then
+            cp data/google_inventory_detail_evidence.json /tmp/merged-evidence.json
+          else
+            printf '{"schemaVersion":1,"policy":{"paidGoogleDataApiCalls":0},"rows":[],"summary":{}}\n' > /tmp/merged-evidence.json
+          fi
+          node - <<'NODE'
+          const fs=require('fs'),vm=require('vm');
+          const sandbox={window:{},console}; vm.createContext(sandbox);
+          vm.runInContext(fs.readFileSync('data/google_inventory_runtime.js','utf8'),sandbox);
+          const s=sandbox.window.GOOGLE_INVENTORY_STATS || {};
+          fs.writeFileSync('/tmp/before-stats.json',JSON.stringify(s));
+          console.log(JSON.stringify({before:{recommended:s.recommendedDishesKnown,featured:s.featuredDishesKnown,display:s.chineseDishDisplayRows,noDish:s.unfilledDishRows}}));
+          NODE
+      - name: Mine retained evidence once
+        run: |
+          set -euo pipefail
+          node scripts/build_retained_dish_evidence.mjs \
+            /tmp/retained-dish-evidence.json \
+            data/dish_translation_pending.json | tee /tmp/retained-dish-summary.json
+          node scripts/build_retained_hotpepper_promotional_dish_evidence.mjs \
+            /tmp/retained-hotpepper-promotional-dish-evidence.json | tee /tmp/retained-promo-summary.json
+          test -s /tmp/retained-dish-evidence.json
+          test -s /tmp/retained-hotpepper-promotional-dish-evidence.json
+      - name: Download all shard artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: fast-dish-shard-*
+          path: /tmp/dish-shards
+          merge-multiple: true
+      - name: Verify complete, disjoint shard coverage
+        run: |
+          set -euo pipefail
+          node - <<'NODE'
+          const fs=require('fs');
+          const manifests=[0,1,2,3].map(i=>JSON.parse(fs.readFileSync(`/tmp/dish-shards/manifest-${i}.json`,'utf8')));
+          const original=new Set(manifests.map(x=>x.originalPublicRuntimeTotal));
+          if(original.size!==1) throw new Error('shards were built from different runtime totals');
+          const expected=[...original][0];
+          const ids=[];
+          for(const m of manifests){
+            if(m.shardCount!==4 || m.catalogTotal!==2804 || m.policy?.deterministic!==true) throw new Error('invalid shard manifest contract');
+            ids.push(...(m.selectedIds||[]));
+          }
+          const unique=new Set(ids);
+          if(ids.length!==unique.size) throw new Error(`shard overlap detected: ${ids.length-unique.size}`);
+          if(unique.size!==expected) throw new Error(`shard union incomplete: ${unique.size}/${expected}`);
+          console.log(JSON.stringify({shards:4,publicRuntimeTotal:expected,uniqueIds:unique.size,shardRows:manifests.map(x=>x.selectedRuntimeRows)}));
+          NODE
+      - name: Merge all evidence monotonically
+        run: |
+          set -euo pipefail
+          merge_one() {
+            local input="$1"
+            node scripts/merge_google_inventory_detail_evidence.mjs \
+              /tmp/merged-evidence.json "$input" /tmp/merged-next.json >/tmp/merge-last-summary.json
+            mv /tmp/merged-next.json /tmp/merged-evidence.json
+          }
+          merge_one /tmp/retained-dish-evidence.json
+          merge_one /tmp/retained-hotpepper-promotional-dish-evidence.json
+          for input in /tmp/dish-shards/fresh-*.json; do merge_one "$input"; done
+          for input in /tmp/dish-shards/sitemap-*.json; do merge_one "$input"; done
+          cp /tmp/merged-evidence.json data/google_inventory_detail_evidence.json
+          node scripts/correct_dish_specificity_evidence.mjs \
+            data/google_inventory_detail_evidence.json \
+            data/google_inventory_detail_evidence.json | tee /tmp/specificity-summary.json
+          node scripts/audit_google_inventory_detail_evidence.mjs
+      - name: Rebuild public outputs and enforce monotonic coverage
+        run: |
+          set -euo pipefail
+          python scripts/reload_data.py --public-only --outdir /tmp/fast-dish-final-after
+          node - <<'NODE'
+          const fs=require('fs'),vm=require('vm');
+          const before=JSON.parse(fs.readFileSync('/tmp/before-stats.json','utf8'));
+          const sandbox={window:{},console}; vm.createContext(sandbox);
+          vm.runInContext(fs.readFileSync('data/google_inventory_runtime.js','utf8'),sandbox);
+          const after=sandbox.window.GOOGLE_INVENTORY_STATS || {};
+          const keys=['recommendedDishesKnown','featuredDishesKnown','chineseDishDisplayRows'];
+          for(const key of keys){
+            if(Number(after[key]||0)<Number(before[key]||0)) throw new Error(`non-monotonic ${key}: ${before[key]} -> ${after[key]}`);
+          }
+          const delta={
+            recommended:Number(after.recommendedDishesKnown||0)-Number(before.recommendedDishesKnown||0),
+            featured:Number(after.featuredDishesKnown||0)-Number(before.featuredDishesKnown||0),
+            display:Number(after.chineseDishDisplayRows||0)-Number(before.chineseDishDisplayRows||0),
+            noDish:Number(after.unfilledDishRows||0)-Number(before.unfilledDishRows||0),
+            recommendationGap:Number(after.recommendationGap||0)-Number(before.recommendationGap||0)
+          };
+          fs.writeFileSync('/tmp/dish-delta.json',JSON.stringify({before,after,delta},null,2)+'\n');
+          console.log('FAST_DISH_DELTA='+JSON.stringify(delta));
+          console.log('FAST_DISH_AFTER='+JSON.stringify({recommended:after.recommendedDishesKnown,featured:after.featuredDishesKnown,display:after.chineseDishDisplayRows,noDish:after.unfilledDishRows}));
+          NODE
+          node scripts/audit_no_paid_apis.mjs
+          node scripts/audit_google_inventory_detail_evidence.mjs
+      - name: Commit and publish incremental evidence
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add \
+            data/google_inventory_detail_evidence.json \
+            data/google_inventory_runtime.js \
+            data/google_inventory_detail_queue.json \
+            data/dish_translation_pending.json \
+            data/dish_batch_plan.json \
+            data/independent_dish_source_candidates.json \
+            data/reviewed_official_runtime_sources.json \
+            data/reviewed_independent_dish_sources.json
+          if git diff --cached --quiet; then
+            echo 'No source-backed dish changes to publish.'
+            exit 0
+          fi
+          git commit -m 'Update source-backed dishes with parallel collector'
+          git fetch origin main
+          git rebase origin/main
+          python scripts/reload_data.py --public-only --outdir /tmp/fast-dish-post-rebase
+          node scripts/audit_google_inventory_detail_evidence.mjs
+          node scripts/audit_no_paid_apis.mjs
+          git add \
+            data/google_inventory_detail_evidence.json \
+            data/google_inventory_runtime.js \
+            data/google_inventory_detail_queue.json \
+            data/dish_translation_pending.json \
+            data/dish_batch_plan.json \
+            data/independent_dish_source_candidates.json \
+            data/reviewed_official_runtime_sources.json \
+            data/reviewed_independent_dish_sources.json
+          if ! git diff --cached --quiet; then git commit --amend --no-edit; fi
+          git push origin HEAD:main
+      - name: Upload merged diagnostics
+        uses: actions/upload-artifact@v4
+        with:
+          name: fast-dish-final-diagnostics
+          path: |
+            /tmp/dish-delta.json
+            /tmp/retained-dish-summary.json
+            /tmp/retained-promo-summary.json
+            /tmp/specificity-summary.json
+          retention-days: 7
+
+  validate_database:
+    name: validate database contract
+    if: github.event_name != 'pull_request'
+    needs: finalize
+    permissions:
+      contents: read
+    uses: ./.github/workflows/database-contract.yml
+    with:
+      sync_main: true
