@@ -14,6 +14,7 @@ const RULES = [
   {
     googlePlaceId: 'ChIJJS9BPgCNGGAR90vpFuQ1ONU',
     id: 'kochi-sawachi-specialty',
+    featuredNameZh: '高知皿钵料理',
     required: /高知名物！?皿鉢料理/iu,
     nameJa: '皿鉢料理',
     nameZh: '高知皿钵料理'
@@ -21,6 +22,7 @@ const RULES = [
   {
     googlePlaceId: 'ChIJKyY0j9KNGGARE2VGUX508rs',
     id: 'zaku-yaki-udon-pride',
+    featuredNameZh: '乌冬面',
     required: /当店自慢(?:の)?焼きうどん/iu,
     nameJa: '焼きうどん',
     nameZh: '炒乌冬面'
@@ -28,6 +30,7 @@ const RULES = [
   {
     googlePlaceId: 'ChIJKyY0j9KNGGARE2VGUX508rs',
     id: 'zaku-sauce-yakisoba-pride',
+    featuredNameZh: '炒面',
     required: /当店自慢(?:の)?ソース焼きそば/iu,
     nameJa: 'ソース焼きそば',
     nameZh: '日式酱汁炒面'
@@ -35,6 +38,7 @@ const RULES = [
   {
     googlePlaceId: 'ChIJSzLrKbeNGGARKfvL5eX_KG8',
     id: 'kougai-basque-cheesecake-specialty',
+    featuredNameZh: '芝士蛋糕',
     required: /(?:バスクチーズケーキ.{0,28}名物デザート|名物デザート.{0,28}バスクチーズケーキ)/iu,
     nameJa: 'バスクチーズケーキ',
     nameZh: '巴斯克芝士蛋糕'
@@ -42,6 +46,7 @@ const RULES = [
   {
     googlePlaceId: 'ChIJSzLrKbeNGGARKfvL5eX_KG8',
     id: 'kougai-hamburg-popular-specialty',
+    featuredNameZh: '汉堡排',
     required: /(?:開業以来)?人気の名物ハンバーグ/iu,
     nameJa: 'ハンバーグ',
     nameZh: '汉堡排'
@@ -49,6 +54,7 @@ const RULES = [
   {
     googlePlaceId: 'ChIJv9k8LRuMGGARbldbtpre1oc',
     id: 'uokai-six-sashimi-most-popular',
+    featuredNameZh: '刺身',
     required: /本日の刺身六種盛り.{0,55}(?:圧倒的)?一番人気の看板刺身盛り合せ/iu,
     nameJa: '本日の刺身六種盛り',
     nameZh: '六种刺身拼盘'
@@ -56,6 +62,7 @@ const RULES = [
   {
     googlePlaceId: 'ChIJv9k8LRuMGGARbldbtpre1oc',
     id: 'uokai-aji-fry-popular',
+    featuredNameZh: '炸竹荚鱼',
     required: /人気のアジフライ/iu,
     nameJa: 'アジフライ',
     nameZh: '炸竹荚鱼'
@@ -63,6 +70,7 @@ const RULES = [
   {
     googlePlaceId: 'ChIJr50HJIONGGARU6Hr_LYxRPE',
     id: 'hakata-karaage-recommended',
+    featuredNameZh: '日式炸鸡',
     required: /鶏の唐揚げ.{0,85}おすすめの逸品/iu,
     nameJa: '鶏の唐揚げ',
     nameZh: '日式炸鸡'
@@ -70,6 +78,7 @@ const RULES = [
   {
     googlePlaceId: 'ChIJF-2NKGuMGGARTY1IRrHlOh8',
     id: 'versailles-meat-sauce-pride',
+    featuredNameZh: '意大利面',
     required: /濃厚ミートソーススパゲッティ.{0,85}自慢のミートソース/iu,
     nameJa: '濃厚ミートソーススパゲッティ',
     nameZh: '浓厚肉酱意大利面'
@@ -108,6 +117,7 @@ for (const rule of RULES) {
     RECOMMENDATION_MARKER.lastIndex = 0;
     return item?.provider === 'Hot Pepper'
       && item?.evidenceClass === 'hotpepper_menu_text'
+      && clean(item.nameZh) === rule.featuredNameZh
       && /^https:\/\/www\.hotpepper\.jp\/strJ\d+/iu.test(clean(item.sourceUrl))
       && RECOMMENDATION_MARKER.test(snippet)
       && rule.required.test(snippet);
@@ -156,6 +166,7 @@ const payload = {
     explicitRecommendationMarkerInSameSnippetRequired: true,
     sourceNativeConcreteDishInSameSnippetRequired: true,
     reviewedRuleWhitelistRequired: true,
+    exactFeaturedEvidenceLabelRequired: true,
     genericCuisinePromotionAllowed: false,
     automaticDistanceOnlyPromotionAllowed: false
   },
