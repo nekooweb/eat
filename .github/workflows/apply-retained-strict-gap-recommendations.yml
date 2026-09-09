@@ -1,0 +1,115 @@
+name: Apply retained strict recommendation gaps
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.retained-strict-recommendation-run'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: collect-source-backed-recommended-dishes
+  cancel-in-progress: false
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Rebuild baseline
+        run: |
+          set -euo pipefail
+          node scripts/audit_no_paid_apis.mjs
+          python scripts/reload_data.py --public-only --outdir /tmp/strict-gap-baseline
+          node - <<'NODE'
+          const fs=require('fs'),vm=require('vm');
+          const sandbox={window:{},console}; vm.createContext(sandbox);
+          vm.runInContext(fs.readFileSync('data/google_inventory_runtime.js','utf8'),sandbox);
+          const s=sandbox.window.GOOGLE_INVENTORY_STATS||{};
+          fs.writeFileSync('/tmp/strict-gap-before.json',JSON.stringify(s));
+          console.log('STRICT_GAP_BEFORE='+JSON.stringify({recommended:s.recommendedDishesKnown,featured:s.featuredDishesKnown,display:s.chineseDishDisplayRows,noDish:s.unfilledDishRows}));
+          NODE
+      - name: Build retained explicit recommendation gaps
+        run: |
+          set -euo pipefail
+          node scripts/build_retained_hotpepper_strict_gap_recommendations.mjs /tmp/strict-gap-evidence.json | tee /tmp/strict-gap-build.log
+          node - <<'NODE'
+          const fs=require('fs');
+          const x=JSON.parse(fs.readFileSync('/tmp/strict-gap-evidence.json','utf8'));
+          if(x.policy?.networkRequests!==0||x.policy?.paidGoogleDataApiCalls!==0||x.policy?.identityMutationAllowed!==false) throw new Error('strict gap source boundary failed');
+          if(x.policy?.recommendationRequiresExplicitMarker!==true||x.policy?.recommendationRequiresConcreteSourceNativeDishRule!==true) throw new Error('strict recommendation semantics weakened');
+          if(x.summary?.recommendationRestaurants<1||x.summary?.recommendationItems<1) throw new Error('no strict recommendation increment candidates');
+          console.log('STRICT_GAP_BUILD='+JSON.stringify(x.summary));
+          NODE
+      - name: Merge and audit recommendation evidence
+        run: |
+          set -euo pipefail
+          node scripts/merge_google_inventory_detail_evidence.mjs \
+            data/google_inventory_detail_evidence.json \
+            /tmp/strict-gap-evidence.json \
+            /tmp/strict-gap-merged.json | tee /tmp/strict-gap-merge.log
+          cp /tmp/strict-gap-merged.json data/google_inventory_detail_evidence.json
+          node scripts/correct_dish_specificity_evidence.mjs \
+            data/google_inventory_detail_evidence.json \
+            data/google_inventory_detail_evidence.json | tee /tmp/strict-gap-specificity.log
+          node scripts/audit_google_inventory_detail_evidence.mjs
+      - name: Rebuild and require recommendation growth
+        run: |
+          set -euo pipefail
+          python scripts/reload_data.py --public-only --outdir /tmp/strict-gap-after
+          node - <<'NODE'
+          const fs=require('fs'),vm=require('vm');
+          const before=JSON.parse(fs.readFileSync('/tmp/strict-gap-before.json','utf8'));
+          const built=JSON.parse(fs.readFileSync('/tmp/strict-gap-evidence.json','utf8'));
+          const sandbox={window:{},console}; vm.createContext(sandbox);
+          vm.runInContext(fs.readFileSync('data/google_inventory_runtime.js','utf8'),sandbox);
+          const after=sandbox.window.GOOGLE_INVENTORY_STATS||{};
+          const delta=Number(after.recommendedDishesKnown||0)-Number(before.recommendedDishesKnown||0);
+          if(delta<1) throw new Error(`strict recommendation count did not grow: ${before.recommendedDishesKnown} -> ${after.recommendedDishesKnown}`);
+          if(delta>Number(built.summary?.recommendationRestaurants||0)) throw new Error('recommendation delta exceeds source-backed candidate count');
+          if(Number(after.featuredDishesKnown||0)<Number(before.featuredDishesKnown||0)||Number(after.chineseDishDisplayRows||0)<Number(before.chineseDishDisplayRows||0)) throw new Error('non-monotonic dish coverage');
+          fs.writeFileSync('/tmp/strict-gap-delta.json',JSON.stringify({before,after,delta},null,2)+'\n');
+          console.log('STRICT_GAP_DELTA='+JSON.stringify({recommended:delta,afterRecommended:after.recommendedDishesKnown,afterFeatured:after.featuredDishesKnown,afterDisplay:after.chineseDishDisplayRows,afterNoDish:after.unfilledDishRows}));
+          NODE
+          node scripts/audit_google_inventory_detail_evidence.mjs
+          node scripts/audit_no_paid_apis.mjs
+      - name: Commit verified strict recommendations
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A data
+          if git diff --cached --quiet; then echo 'No strict recommendation changes'; exit 0; fi
+          git commit -m 'Add retained source-backed strict recommendations'
+          if ! git diff --quiet; then git restore --worktree -- .; fi
+          git fetch origin main
+          git rebase origin/main
+          python scripts/reload_data.py --public-only --outdir /tmp/strict-gap-post-rebase
+          node scripts/audit_google_inventory_detail_evidence.mjs
+          node scripts/audit_no_paid_apis.mjs
+          git add -A data
+          if ! git diff --cached --quiet; then git commit --amend --no-edit; fi
+          git push origin HEAD:main
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: retained-strict-recommendation-update
+          path: |
+            /tmp/strict-gap-evidence.json
+            /tmp/strict-gap-delta.json
+            /tmp/strict-gap-build.log
+            /tmp/strict-gap-merge.log
+            /tmp/strict-gap-specificity.log
+          if-no-files-found: ignore
+          retention-days: 7
