@@ -1,0 +1,31 @@
+name: Audit official embedded menu JSON once
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "_ops/audit-official-embedded-menu-json-once-2026-09-09.txt"
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Enforce policy and audit embedded JSON
+        run: |
+          set -euo pipefail
+          node scripts/audit_no_paid_apis.mjs
+          node --check scripts/audit_official_embedded_menu_json.mjs
+          node scripts/audit_official_embedded_menu_json.mjs /tmp/official-embedded-menu-json.json | tee /tmp/official-embedded-menu-json-summary.txt
+      - name: Upload audit
+        uses: actions/upload-artifact@v4
+        with:
+          name: official-embedded-menu-json-audit
+          path: /tmp/official-embedded-menu-json.json
+          retention-days: 7
