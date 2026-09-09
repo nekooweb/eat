@@ -1,0 +1,55 @@
+name: Audit Overture alias candidates (PR)
+
+on:
+  pull_request:
+    paths:
+      - "scripts/audit_overture_alias_independent_source_candidates.mjs"
+      - ".github/workflows/_audit-overture-alias-candidates-pr.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PR merge commit
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Enforce zero-paid policy and syntax
+        run: |
+          set -euo pipefail
+          node scripts/audit_no_paid_apis.mjs
+          node --check scripts/audit_overture_alias_independent_source_candidates.mjs
+      - name: Rebuild current public runtime inputs
+        run: python3 scripts/reload_data.py --public-only --outdir _audit/overture-alias-pr-reload
+      - name: Run offline alias-candidate audit
+        run: |
+          set -euo pipefail
+          node scripts/audit_overture_alias_independent_source_candidates.mjs /tmp/overture-alias-audit.json | tee /tmp/overture-alias-summary.txt
+          node - <<'NODE'
+          const fs=require('fs');
+          const x=JSON.parse(fs.readFileSync('/tmp/overture-alias-audit.json','utf8'));
+          const p=x.policy||{}, s=x.summary||{};
+          if(p.auditOnly!==true||p.proposalOnly!==true||p.networkRequests!==0||p.paidGoogleDataApiCalls!==0) throw new Error('alias audit must remain offline/proposal-only');
+          if(p.identityBindingChanges!==0||p.dishEvidenceChanges!==0||p.sourceAliasMayReplaceCatalogIdentity!==false) throw new Error('alias audit identity boundary failed');
+          if(p.proximityOnlyBindingAllowed!==false||p.centralAliasIdentityReviewRequiredBeforeBinding!==true) throw new Error('alias audit review boundary failed');
+          if(s.catalogTotal!==2804||s.publicRuntimeTotal<=0||s.independentSourceGap<=0) throw new Error('alias audit catalog contract failed');
+          for(const r of x.reviewCandidates||[]){
+            if(r.name===r.candidateName) throw new Error(`alias candidate unexpectedly has identical raw names: ${r.googlePlaceId}`);
+            if(r.sourceAliasMayReplaceCatalogIdentity!==false||r.identityBindingChanges!==0||r.mayWriteDishEvidenceBeforeAliasReview!==false) throw new Error(`alias candidate mutation boundary failed: ${r.googlePlaceId}`);
+            if(r.reviewableByNonNameEvidence!==true||!(r.addressAgreement||r.postcodeAgreement)) throw new Error(`alias candidate lacks non-name evidence: ${r.googlePlaceId}`);
+          }
+          console.log('ALIAS_AUDIT_CONTRACT='+JSON.stringify(s));
+          NODE
+      - name: Upload audit
+        uses: actions/upload-artifact@v4
+        with:
+          name: overture-alias-candidate-audit
+          path: |
+            /tmp/overture-alias-audit.json
+            /tmp/overture-alias-summary.txt
+          retention-days: 7
