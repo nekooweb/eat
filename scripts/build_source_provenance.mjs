@@ -18,7 +18,7 @@ const validDate = (value) => /^\d{4}-\d{2}-\d{2}$/.test(String(value || ''));
 const validUrl = (value) => /^https:\/\//.test(String(value || ''));
 const forbiddenProvider = (value) => /google/i.test(String(value || ''));
 
-const sandbox = { window: { RESTAURANTS: [] }, console };
+const sandbox = { window: { RESTAURANTS: [], RECOMMENDED_DISHES: [] }, console };
 vm.createContext(sandbox);
 
 const sourceFiles = fs.readdirSync(DATA)
@@ -26,6 +26,10 @@ const sourceFiles = fs.readdirSync(DATA)
   .sort();
 for (const filename of sourceFiles) {
   vm.runInContext(fs.readFileSync(path.join(DATA, filename), 'utf8'), sandbox, { filename });
+}
+const recommendationFile = path.join(DATA, 'recommended_dishes.js');
+if (fs.existsSync(recommendationFile)) {
+  vm.runInContext(fs.readFileSync(recommendationFile, 'utf8'), sandbox, { filename: 'recommended_dishes.js' });
 }
 
 const productionSandbox = { window: {}, console };
@@ -45,9 +49,14 @@ for (const row of production) {
 
 const linksById = new Map();
 const rows = sandbox.window.RESTAURANTS || [];
+const recommendations = Array.isArray(sandbox.window.RECOMMENDED_DISHES) ? sandbox.window.RECOMMENDED_DISHES : [];
 let exactAttachedRows = 0;
 let nameAttachedRows = 0;
 let skippedRefs = 0;
+let recommendationEvidenceRows = 0;
+let recommendationEvidenceMergedIntoExistingLink = 0;
+let recommendationEvidenceStandaloneLinks = 0;
+let recommendationEvidenceRejected = 0;
 
 function resolveProductionId(row) {
   if (row.googlePlaceId && productionById.has(row.googlePlaceId)) {
@@ -88,12 +97,53 @@ function mergeRef(placeId, row, ref) {
   bucket.set(key, existing);
 }
 
+function mergeRecommendationEvidence(row) {
+  const placeId = String(row?.googlePlaceId || '').trim();
+  const url = String(row?.sourceUrl || '').trim();
+  const dishes = unique((row?.dishes || []).map((value) => String(value || '').trim())).slice(0, 2);
+  if (!productionById.has(placeId) || !validUrl(url) || !validDate(row?.checkedAt) || dishes.length < 1) {
+    recommendationEvidenceRejected += 1;
+    return;
+  }
+  if (!linksById.has(placeId)) linksById.set(placeId, new Map());
+  const bucket = linksById.get(placeId);
+  let existingKey = null;
+  let existing = null;
+  for (const [key, ref] of bucket.entries()) {
+    if (String(ref.url || '').trim() !== url) continue;
+    existingKey = key;
+    existing = ref;
+    break;
+  }
+  if (existing) {
+    existing.fields = unique([...(existing.fields || []), 'dishes']).sort();
+    existing.recommendationEvidence = true;
+    existing.recommendationDishes = unique([...(existing.recommendationDishes || []), ...dishes]).slice(0, 2);
+    if (!existing.checkedAt || row.checkedAt > existing.checkedAt) existing.checkedAt = row.checkedAt;
+    bucket.set(existingKey, existing);
+    recommendationEvidenceMergedIntoExistingLink += 1;
+  } else {
+    const provider = 'reviewed recommendation evidence';
+    bucket.set(`${provider}\n${url}`, {
+      provider,
+      url,
+      fields: ['dishes'],
+      checkedAt: row.checkedAt,
+      recommendationEvidence: true,
+      recommendationDishes: dishes
+    });
+    recommendationEvidenceStandaloneLinks += 1;
+  }
+  recommendationEvidenceRows += 1;
+}
+
 for (const row of rows) {
   if (!Array.isArray(row.sourceRefs) || row.sourceRefs.length === 0) continue;
   const placeId = resolveProductionId(row);
   if (!placeId) continue;
   for (const ref of row.sourceRefs) mergeRef(placeId, row, ref);
 }
+for (const row of recommendations) mergeRecommendationEvidence(row);
 
 const overlayRows = [...linksById.entries()]
   .map(([googlePlaceId, bucket]) => {
@@ -130,15 +180,22 @@ const summary = {
   providerCounts,
   exactAttachedSourceRows: exactAttachedRows,
   uniqueNameAttachedSourceRows: nameAttachedRows,
-  skippedGoogleOrInvalidRefs: skippedRefs
+  skippedGoogleOrInvalidRefs: skippedRefs,
+  recommendationEvidenceRows,
+  recommendationEvidenceMergedIntoExistingLink,
+  recommendationEvidenceStandaloneLinks,
+  recommendationEvidenceRejected
 };
 
 const payload = {
-  schemaVersion: 1,
+  schemaVersion: 2,
   policy: {
     publicHttpsOnly: true,
     googleRefsExcluded: true,
-    claimsRemainSourceSpecific: true
+    claimsRemainSourceSpecific: true,
+    strictRecommendationEvidenceIncluded: true,
+    recommendationEvidenceCannotCreateIdentity: true,
+    recommendationEvidenceAddsDishClaimOnly: true
   },
   summary,
   rows: overlayRows
