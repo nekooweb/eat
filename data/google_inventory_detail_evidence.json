@@ -32,7 +32,7 @@
     "ordinaryMenuDishBecomesFeaturedOnly": true,
     "shardIndex": 0,
     "shardCount": 1,
-    "source": "retained Hot Pepper catalog facts only",
+    "source": "existing retained Hot Pepper featured evidence only",
     "eligibleBindings": [
       "strict_auto",
       "manual_exact"
@@ -126,38 +126,50 @@
     "curatedFoodRulesOnly": true,
     "toolIdentityNameSource": "runtime_catalog_name",
     "recommendationRequiresConcreteSourceNativeDishRule": true,
-    "automaticGenericPromotionAllowed": false
+    "automaticGenericPromotionAllowed": false,
+    "explicitRecommendationMarkerInSameSnippetRequired": true,
+    "sourceNativeConcreteDishInSameSnippetRequired": true,
+    "reviewedRuleWhitelistRequired": true,
+    "exactFeaturedEvidenceLabelRequired": true,
+    "genericCuisinePromotionAllowed": false,
+    "automaticDistanceOnlyPromotionAllowed": false
   },
   "summary": {
     "catalogTotal": 2804,
     "publicRuntimeTotal": 1422,
-    "recommendationGapRows": 863,
-    "strictGapRules": 2,
-    "recommendationRestaurants": 2,
-    "recommendationItems": 2,
+    "reviewedRules": 9,
+    "recommendationRestaurants": 6,
+    "recommendationItems": 9,
     "ruleCounts": {
-      "upper-raw-negi-tan-shio": 1,
-      "saba-kuroni": 1
+      "kochi-sawachi-specialty": 1,
+      "zaku-yaki-udon-pride": 1,
+      "zaku-sauce-yakisoba-pride": 1,
+      "kougai-basque-cheesecake-specialty": 1,
+      "kougai-hamburg-popular-specialty": 1,
+      "uokai-six-sashimi-most-popular": 1,
+      "uokai-aji-fry-popular": 1,
+      "hakata-karaage-recommended": 1,
+      "versailles-meat-sauce-pride": 1
     },
     "previousEvidence": {
-      "recommendationRestaurants": 531,
-      "featuredRestaurants": 647,
-      "evidenceRestaurants": 708,
-      "recommendationItems": 947,
-      "featuredItems": 2504
-    },
-    "freshCrawlEvidence": {
-      "recommendationRestaurants": 2,
-      "featuredRestaurants": 0,
-      "evidenceRestaurants": 2,
-      "recommendationItems": 2,
-      "featuredItems": 0
-    },
-    "mergedEvidence": {
       "recommendationRestaurants": 533,
       "featuredRestaurants": 647,
       "evidenceRestaurants": 709,
       "recommendationItems": 949,
+      "featuredItems": 2504
+    },
+    "freshCrawlEvidence": {
+      "recommendationRestaurants": 6,
+      "featuredRestaurants": 0,
+      "evidenceRestaurants": 6,
+      "recommendationItems": 9,
+      "featuredItems": 0
+    },
+    "mergedEvidence": {
+      "recommendationRestaurants": 539,
+      "featuredRestaurants": 647,
+      "evidenceRestaurants": 709,
+      "recommendationItems": 958,
       "featuredItems": 2504
     },
     "specificityCorrection": {
@@ -165,7 +177,7 @@
       "correctedItems": 0,
       "duplicateItemsRemoved": 0,
       "ruleCounts": {},
-      "recommendationItemsAfterCorrection": 949,
+      "recommendationItemsAfterCorrection": 958,
       "featuredItemsAfterCorrection": 2504
     }
   },
@@ -15039,7 +15051,18 @@
     {
       "googlePlaceId": "ChIJF-2NKGuMGGARTY1IRrHlOh8",
       "name": "ベルサイユの豚 九段下",
-      "recommendedDishes": [],
+      "recommendedDishes": [
+        {
+          "nameZh": "浓厚肉酱意大利面",
+          "nameJa": "濃厚ミートソーススパゲッティ",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001118661/food/",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "reviewed-featured-promotion:versailles-meat-sauce-pride",
+          "evidenceSnippet": "濃厚ミートソーススパゲッティ じっくり煮込んだひき肉たっぷりソースが決め手の王道ミートスパゲッティ。自慢のミートソースをぜひご堪能ください。 1,080円（税込）"
+        }
+      ],
       "featuredDishes": [
         {
           "nameZh": "卡邦尼意大利面",
@@ -20336,7 +20359,18 @@
     {
       "googlePlaceId": "ChIJJS9BPgCNGGAR90vpFuQ1ONU",
       "name": "集い処Key",
-      "recommendedDishes": [],
+      "recommendedDishes": [
+        {
+          "nameZh": "高知皿钵料理",
+          "nameJa": "皿鉢料理",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ004067756/food/",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "reviewed-featured-promotion:kochi-sawachi-specialty",
+          "evidenceSnippet": "高知名物！皿鉢料理 3日前までの電話ご予約でお一人様2000円で皿鉢料理をご用意します。前菜3種・揚げ物2種・刺身1種当店だけの高知と沖縄が混ざった皿鉢料理！※お電話にてご予約くさ"
+        }
+      ],
       "featuredDishes": [
         {
           "nameZh": "卷曲薯条",
@@ -21641,7 +21675,28 @@
     {
       "googlePlaceId": "ChIJKyY0j9KNGGARE2VGUX508rs",
       "name": "作 ZAKU 神田本店",
-      "recommendedDishes": [],
+      "recommendedDishes": [
+        {
+          "nameZh": "日式酱汁炒面",
+          "nameJa": "ソース焼きそば",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ003648761/food/",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "reviewed-featured-promotion:zaku-sauce-yakisoba-pride",
+          "evidenceSnippet": "当店自慢ソース焼きそば 680円（税込）"
+        },
+        {
+          "nameZh": "炒乌冬面",
+          "nameJa": "焼きうどん",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ003648761/food/",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "reviewed-featured-promotion:zaku-yaki-udon-pride",
+          "evidenceSnippet": "当店自慢焼きうどん 750円（税込）"
+        }
+      ],
       "featuredDishes": [
         {
           "nameZh": "乌冬面",
@@ -29462,7 +29517,18 @@
     {
       "googlePlaceId": "ChIJr50HJIONGGARU6Hr_LYxRPE",
       "name": "はかた商店 飯田橋西口店",
-      "recommendedDishes": [],
+      "recommendedDishes": [
+        {
+          "nameZh": "日式炸鸡",
+          "nameJa": "鶏の唐揚げ",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ000705380/food/",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "reviewed-featured-promotion:hakata-karaage-recommended",
+          "evidenceSnippet": "《美味自慢》 博多唐揚専門店『響』監修 鶏の唐揚げ (4コ) 【西日本しょうゆダレ部門金賞受賞】金賞受賞の唐揚げ専門店監修による、はかた商店おすすめの逸品です！ 660円（税込）"
+        }
+      ],
       "featuredDishes": [
         {
           "nameZh": "刺身",
@@ -31553,7 +31619,28 @@
     {
       "googlePlaceId": "ChIJSzLrKbeNGGARKfvL5eX_KG8",
       "name": "麻布笄軒 九段下店",
-      "recommendedDishes": [],
+      "recommendedDishes": [
+        {
+          "nameZh": "巴斯克芝士蛋糕",
+          "nameJa": "バスクチーズケーキ",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ003560045/food/",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "reviewed-featured-promotion:kougai-basque-cheesecake-specialty",
+          "evidenceSnippet": "究極のバスクチーズケーキ 麻布笄軒名物デザートの本格バスクチーズケーキ。北海道産クリームチーズをふんだんに使用してずっしりと濃厚でワインにもよく合います。テイクアウトも可能です。ホ"
+        },
+        {
+          "nameZh": "汉堡排",
+          "nameJa": "ハンバーグ",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ003560045/food/",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "reviewed-featured-promotion:kougai-hamburg-popular-specialty",
+          "evidenceSnippet": "ハンバーグステーキ 国産牛と豚肉を丁寧に手捏ねした開業以来人気の名物ハンバーグ/デミグラスソース・トマトソース・おろしポン酢ソースからお選びいただけます。また、追加トッピングも以下"
+        }
+      ],
       "featuredDishes": [
         {
           "nameZh": "咖喱",
@@ -34573,7 +34660,28 @@
     {
       "googlePlaceId": "ChIJv9k8LRuMGGARbldbtpre1oc",
       "name": "魚海船団 小川町 淡路町店",
-      "recommendedDishes": [],
+      "recommendedDishes": [
+        {
+          "nameZh": "六种刺身拼盘",
+          "nameJa": "本日の刺身六種盛り",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001277318/food/",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "reviewed-featured-promotion:uokai-six-sashimi-most-popular",
+          "evidenceSnippet": "◆豊洲直仕入れ 本日の刺身六種盛り 当店圧倒的一番人気の看板刺身盛り合せです！毎朝仕入れる新鮮な魚をご用意し、なんと原価率は８０％ほどかけております。創業当時からの「旨い魚を腹一杯"
+        },
+        {
+          "nameZh": "炸竹荚鱼",
+          "nameJa": "アジフライ",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001277318/food/",
+          "checkedAt": "2026-09-09",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "reviewed-featured-promotion:uokai-aji-fry-popular",
+          "evidenceSnippet": "◆生パン粉の大判アジフライ 魚海船団でも人気のアジフライサクサクのパン粉が当店のこだわりです！ 390円"
+        }
+      ],
       "featuredDishes": [
         {
           "nameZh": "刺身",
