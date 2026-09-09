@@ -1,0 +1,137 @@
+name: Collect curated Hot Pepper featured dish gaps
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: collect-source-backed-recommended-dishes
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout latest main
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Sync latest main after serialized wait
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          git reset --hard origin/main
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Enforce zero-paid policy and syntax
+        run: |
+          node scripts/audit_no_paid_apis.mjs
+          node --check scripts/hotpepper_featured_menu_normalizer.mjs
+          node --check scripts/collect_hotpepper_curated_featured_menu_evidence.mjs
+      - name: Snapshot current dish queue
+        run: cp data/google_inventory_detail_queue.json /tmp/detail-queue-before.json
+      - name: Collect curated price-backed Hot Pepper menu dishes
+        env:
+          HOTPEPPER_FEATURED_CONCURRENCY: '8'
+          HOTPEPPER_FEATURED_TIMEOUT_MS: '10000'
+          HOTPEPPER_FEATURED_LIMIT: '0'
+        run: |
+          set -euo pipefail
+          node scripts/collect_hotpepper_curated_featured_menu_evidence.mjs /tmp/hp-curated-featured.json | tee /tmp/hp-curated-featured-summary.json
+          node - <<'NODE'
+          const fs=require('fs');
+          const x=JSON.parse(fs.readFileSync('/tmp/hp-curated-featured.json','utf8'));
+          const p=x.policy||{};
+          if(p.paidGoogleDataApiCalls!==0||p.hotPepperWebServiceApiCalls!==0) throw new Error('curated featured pass must remain zero-paid/API-free');
+          if(p.publicNoDishRowsOnly!==true||p.exactRetainedHotPepperUrlOnly!==true||p.rootIdentityRevalidationRequired!==true||p.foodPageIdentityRevalidationRequired!==true) throw new Error('curated featured identity boundary failed');
+          if(p.priceBackedH4Required!==true||p.curatedFoodRulesOnly!==true||p.recommendationPromotionAllowed!==false||p.guessedMenuPathsAllowed!==false) throw new Error('curated featured semantic boundary failed');
+          const failures=[];
+          for(const row of x.rows||[]){
+            if((row.recommendedDishes||[]).length) failures.push(['unexpected-R',row.googlePlaceId]);
+            for(const item of row.featuredDishes||[]){
+              if(item.provider!=='Hot Pepper'||item.evidenceClass!=='hotpepper_menu_text') failures.push(['class',row.googlePlaceId,item]);
+              if(!String(item.evidenceRule||'').startsWith('hotpepper-price-backed-h4:normalized-')) failures.push(['rule',row.googlePlaceId,item]);
+              if(!/^https:\/\/www\.hotpepper\.jp\/strJ\d+\/(?:food|menu)\/?/i.test(item.sourceUrl||'')) failures.push(['url',row.googlePlaceId,item.sourceUrl]);
+              if(!item.nameJa||!item.nameZh||!item.evidenceSnippet) failures.push(['fields',row.googlePlaceId,item]);
+            }
+          }
+          if(failures.length) throw new Error(`curated featured contract failures: ${JSON.stringify(failures.slice(0,5))}`);
+          console.log(JSON.stringify({summary:x.summary,samples:(x.rows||[]).slice(0,8)}));
+          NODE
+      - name: Merge monotonically and rebuild runtime
+        run: |
+          set -euo pipefail
+          node scripts/merge_google_inventory_detail_evidence.mjs \
+            data/google_inventory_detail_evidence.json \
+            /tmp/hp-curated-featured.json \
+            data/google_inventory_detail_evidence.json | tee /tmp/hp-curated-featured-merge.json
+          node scripts/correct_dish_specificity_evidence.mjs \
+            data/google_inventory_detail_evidence.json \
+            data/google_inventory_detail_evidence.json | tee /tmp/hp-curated-featured-specificity.json
+          node scripts/audit_google_inventory_detail_evidence.mjs
+          node scripts/build_google_inventory_runtime.mjs
+          node scripts/apply_reviewed_independent_source_overlay.mjs
+          node scripts/audit_reviewed_independent_source_overlay.mjs
+          node scripts/audit_google_inventory_runtime.mjs
+          node scripts/build_google_inventory_detail_queue.mjs data/google_inventory_detail_queue.json
+          node scripts/build_dish_batch_plan.mjs data/dish_batch_plan.json 8
+          node scripts/build_independent_dish_source_candidate_plan.mjs data/independent_dish_source_candidates.json 8
+          node scripts/audit_no_paid_apis.mjs
+      - name: Validate monotonic gap reduction
+        run: |
+          node - <<'NODE'
+          const fs=require('fs');
+          const before=JSON.parse(fs.readFileSync('/tmp/detail-queue-before.json','utf8')).summary;
+          const after=JSON.parse(fs.readFileSync('data/google_inventory_detail_queue.json','utf8')).summary;
+          if(before.catalogTotal!==2804||after.catalogTotal!==2804||before.publicRuntimeTotal!==after.publicRuntimeTotal) throw new Error('identity cardinality changed');
+          if(after.recommendedDishesKnown!==before.recommendedDishesKnown) throw new Error('featured-only curated pass changed strict recommendations');
+          if(after.featuredDishesKnown<before.featuredDishesKnown||after.displayDishKnown<before.displayDishKnown||after.noDishGap>before.noDishGap) throw new Error('dish coverage regressed');
+          const report={before,after,delta:{featured:after.featuredDishesKnown-before.featuredDishesKnown,display:after.displayDishKnown-before.displayDishKnown,noDishGap:after.noDishGap-before.noDishGap}};
+          fs.writeFileSync('/tmp/hp-curated-featured-net.json',JSON.stringify(report,null,2)+'\n');
+          console.log(JSON.stringify(report));
+          NODE
+      - name: Commit evidence and rebuilt plans
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            data/google_inventory_detail_evidence.json \
+            data/google_inventory_runtime.js \
+            data/google_inventory_detail_queue.json \
+            data/dish_batch_plan.json \
+            data/independent_dish_source_candidates.json
+          if git diff --cached --quiet; then
+            echo 'No new curated featured evidence to commit.'
+            exit 0
+          fi
+          git commit -m "Add curated price-backed Hot Pepper menu dishes"
+          git fetch origin main
+          git rebase origin/main
+          git push origin HEAD:main
+      - name: Upload curated featured audit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hotpepper-curated-featured-gap-enrichment
+          path: |
+            /tmp/hp-curated-featured.json
+            /tmp/hp-curated-featured-summary.json
+            /tmp/hp-curated-featured-merge.json
+            /tmp/hp-curated-featured-specificity.json
+            /tmp/hp-curated-featured-net.json
+            /tmp/detail-queue-before.json
+          if-no-files-found: warn
+          retention-days: 7
+
+  validate_database:
+    needs: collect
+    permissions:
+      contents: read
+    uses: ./.github/workflows/database-contract.yml
+    with:
+      sync_main: true
