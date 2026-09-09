@@ -16,6 +16,7 @@ const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, '..');
 const DATA = path.join(ROOT, 'data');
 const OUTPUT = process.argv[2] || path.join(DATA, 'google_inventory_detail_evidence.json');
+const DIAGNOSTICS_OUTPUT = String(process.env.INVENTORY_DETAIL_DIAGNOSTICS_OUTPUT || '').trim();
 const TIMEOUT_MS = Number(process.env.INVENTORY_DETAIL_FETCH_TIMEOUT_MS || 7000);
 const HOST_WORKERS = Math.max(1, Math.min(32, Number(process.env.INVENTORY_DETAIL_HOST_WORKERS || 20)));
 const SITE_PAGE_LIMIT = Math.max(2, Math.min(6, Number(process.env.INVENTORY_DETAIL_SITE_PAGE_LIMIT || 5)));
@@ -455,6 +456,41 @@ async function main() {
     },
     rows
   };
+
+  if (DIAGNOSTICS_OUTPUT) {
+    const diagnosticRows = crawlResults
+      .map((result) => ({
+        googlePlaceId: result.googlePlaceId,
+        name: result.name,
+        rootUrl: result.rootUrl,
+        status: result.status,
+        errors: result.errors || [],
+        visitedUrls: result.visitedUrls || [],
+        structuredMenuLinksDiscovered: Number(result.structuredMenuLinksDiscovered || 0),
+        recommendedDishCount: (result.recommendedDishes || []).length,
+        featuredDishCount: (result.featuredDishes || []).length
+      }))
+      .sort((a, b) => a.googlePlaceId.localeCompare(b.googlePlaceId) || a.rootUrl.localeCompare(b.rootUrl));
+    const diagnostics = {
+      schemaVersion: 1,
+      checkedAt: CHECKED_AT,
+      policy: {
+        diagnosticOnly: true,
+        rawHtmlPersisted: false,
+        paidGoogleDataApiCalls: 0,
+        identityMutationAllowed: false,
+        dishEvidenceMutationAllowed: false
+      },
+      summary: {
+        publicRuntimeTotal: runtimeRows.length,
+        crawlResultRows: diagnosticRows.length,
+        statusCounts
+      },
+      rows: diagnosticRows
+    };
+    fs.mkdirSync(path.dirname(path.resolve(DIAGNOSTICS_OUTPUT)), { recursive: true });
+    fs.writeFileSync(DIAGNOSTICS_OUTPUT, JSON.stringify(diagnostics, null, 2) + '\n', 'utf8');
+  }
 
   fs.writeFileSync(OUTPUT, JSON.stringify(payload, null, 2) + '\n', 'utf8');
   console.log(JSON.stringify(payload.summary));
