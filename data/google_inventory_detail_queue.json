@@ -7,21 +7,21 @@
     "publicRuntimeTotal": 1422,
     "unpublishedPlaceIdOnly": 1382,
     "runtimeBaselineComplete": true,
-    "recommendedDishesKnown": 592,
-    "featuredDishesKnown": 656,
-    "displayDishKnown": 727,
-    "noDishGap": 695,
-    "recommendationGap": 830,
-    "recommendationGapWithAnyKnownSourceUrl": 556,
-    "recommendationGapWithCrawlableOfficialUrl": 222,
+    "recommendedDishesKnown": 595,
+    "featuredDishesKnown": 675,
+    "displayDishKnown": 740,
+    "noDishGap": 682,
+    "recommendationGap": 827,
+    "recommendationGapWithAnyKnownSourceUrl": 554,
+    "recommendationGapWithCrawlableOfficialUrl": 220,
     "recommendationGapWithRetainedThirdPartyOnly": 318,
-    "recommendationGapNeedingNewDishSource": 290,
+    "recommendationGapNeedingNewDishSource": 289,
     "actionCounts": {
-      "collect_strict_recommended_dishes": 222,
+      "collect_strict_recommended_dishes": 220,
       "extract_retained_dish_source": 318,
-      "find_independent_dish_source": 290,
-      "collect_source_backed_featured_dishes": 71,
-      "dish_complete": 521
+      "find_independent_dish_source": 289,
+      "collect_source_backed_featured_dishes": 65,
+      "dish_complete": 530
     },
     "primaryGoal": "source-backed dish coverage",
     "nonDishMetadataCreatesTasks": false,
@@ -43,7 +43,7 @@
         "recommendedDishes"
       ],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": false,
         "addressKnown": false,
@@ -62,7 +62,7 @@
       "crawlableOfficialUrlCount": 9,
       "retainedThirdPartyUrlCount": 0,
       "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 6,
+      "featuredDishesKnown": 10,
       "dishGaps": [
         "recommendedDishes"
       ],
@@ -135,7 +135,7 @@
       "crawlableOfficialUrlCount": 5,
       "retainedThirdPartyUrlCount": 0,
       "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 4,
+      "featuredDishesKnown": 8,
       "dishGaps": [
         "recommendedDishes"
       ],
@@ -233,7 +233,7 @@
       "crawlableOfficialUrlCount": 4,
       "retainedThirdPartyUrlCount": 1,
       "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 6,
+      "featuredDishesKnown": 7,
       "dishGaps": [
         "recommendedDishes"
       ],
@@ -547,31 +547,6 @@
       "priorityScore": 1150
     },
     {
-      "googlePlaceId": "ChIJrQJoMmuMGGARJ8q86MIn6_I",
-      "name": "スターバックス",
-      "basicInfoState": "canonical",
-      "cuisine": "咖啡",
-      "distanceMeters": 482,
-      "sourceUrlCount": 1,
-      "crawlableOfficialUrlCount": 1,
-      "retainedThirdPartyUrlCount": 0,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "dishGaps": [
-        "recommendedDishes",
-        "featuredDishes"
-      ],
-      "secondaryMetadata": {
-        "openingHoursKnown": true,
-        "lunchBudgetKnown": false,
-        "dinnerBudgetKnown": false,
-        "addressKnown": true,
-        "cuisineKnown": true
-      },
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1150
-    },
-    {
       "googlePlaceId": "ChIJZ6B6S2uMGGAR1FZFUTrzDm8",
       "name": "ネバーランド カフェ",
       "basicInfoState": "canonical",
@@ -662,33 +637,8 @@
         "featuredDishes"
       ],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
-        "lunchBudgetKnown": true,
-        "dinnerBudgetKnown": false,
-        "addressKnown": true,
-        "cuisineKnown": true
-      },
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1150
-    },
-    {
-      "googlePlaceId": "ChIJp5cOrBqMGGARMCiyzZVc7B8",
-      "name": "スターバックス",
-      "basicInfoState": "canonical",
-      "cuisine": "咖啡",
-      "distanceMeters": 520,
-      "sourceUrlCount": 1,
-      "crawlableOfficialUrlCount": 1,
-      "retainedThirdPartyUrlCount": 0,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "dishGaps": [
-        "recommendedDishes",
-        "featuredDishes"
-      ],
-      "secondaryMetadata": {
         "openingHoursKnown": true,
-        "lunchBudgetKnown": false,
+        "lunchBudgetKnown": true,
         "dinnerBudgetKnown": false,
         "addressKnown": true,
         "cuisineKnown": true
@@ -712,34 +662,9 @@
         "featuredDishes"
       ],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
-        "lunchBudgetKnown": false,
-        "dinnerBudgetKnown": true,
-        "addressKnown": true,
-        "cuisineKnown": true
-      },
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1150
-    },
-    {
-      "googlePlaceId": "ChIJ4e3_CQ6MGGARgbvLFz2U9kQ",
-      "name": "スターバックス",
-      "basicInfoState": "canonical",
-      "cuisine": "咖啡",
-      "distanceMeters": 553,
-      "sourceUrlCount": 1,
-      "crawlableOfficialUrlCount": 1,
-      "retainedThirdPartyUrlCount": 0,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "dishGaps": [
-        "recommendedDishes",
-        "featuredDishes"
-      ],
-      "secondaryMetadata": {
         "openingHoursKnown": true,
         "lunchBudgetKnown": false,
-        "dinnerBudgetKnown": false,
+        "dinnerBudgetKnown": true,
         "addressKnown": true,
         "cuisineKnown": true
       },
@@ -813,56 +738,6 @@
       ],
       "secondaryMetadata": {
         "openingHoursKnown": false,
-        "lunchBudgetKnown": false,
-        "dinnerBudgetKnown": false,
-        "addressKnown": true,
-        "cuisineKnown": true
-      },
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1150
-    },
-    {
-      "googlePlaceId": "ChIJ67ggdxeMGGAR5uSOMBBDfHU",
-      "name": "スターバックス",
-      "basicInfoState": "canonical",
-      "cuisine": "咖啡",
-      "distanceMeters": 611,
-      "sourceUrlCount": 1,
-      "crawlableOfficialUrlCount": 1,
-      "retainedThirdPartyUrlCount": 0,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "dishGaps": [
-        "recommendedDishes",
-        "featuredDishes"
-      ],
-      "secondaryMetadata": {
-        "openingHoursKnown": true,
-        "lunchBudgetKnown": false,
-        "dinnerBudgetKnown": false,
-        "addressKnown": true,
-        "cuisineKnown": true
-      },
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1150
-    },
-    {
-      "googlePlaceId": "ChIJf9IQHWuMGGAR3tH7Sw31YX0",
-      "name": "スターバックス",
-      "basicInfoState": "canonical",
-      "cuisine": "咖啡",
-      "distanceMeters": 632,
-      "sourceUrlCount": 1,
-      "crawlableOfficialUrlCount": 1,
-      "retainedThirdPartyUrlCount": 0,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "dishGaps": [
-        "recommendedDishes",
-        "featuredDishes"
-      ],
-      "secondaryMetadata": {
-        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": false,
         "addressKnown": true,
@@ -1072,56 +947,6 @@
       "priorityScore": 1150
     },
     {
-      "googlePlaceId": "ChIJKQlfZLaNGGARTe95b99jJXE",
-      "name": "町田商店",
-      "basicInfoState": "canonical",
-      "cuisine": "面食",
-      "distanceMeters": 862,
-      "sourceUrlCount": 1,
-      "crawlableOfficialUrlCount": 1,
-      "retainedThirdPartyUrlCount": 0,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "dishGaps": [
-        "recommendedDishes",
-        "featuredDishes"
-      ],
-      "secondaryMetadata": {
-        "openingHoursKnown": false,
-        "lunchBudgetKnown": false,
-        "dinnerBudgetKnown": false,
-        "addressKnown": false,
-        "cuisineKnown": true
-      },
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1150
-    },
-    {
-      "googlePlaceId": "ChIJCabBDR6NGGARgIhOTt5XEIs",
-      "name": "ターリー屋",
-      "basicInfoState": "canonical",
-      "cuisine": "印度菜",
-      "distanceMeters": 1044,
-      "sourceUrlCount": 1,
-      "crawlableOfficialUrlCount": 1,
-      "retainedThirdPartyUrlCount": 0,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "dishGaps": [
-        "recommendedDishes",
-        "featuredDishes"
-      ],
-      "secondaryMetadata": {
-        "openingHoursKnown": false,
-        "lunchBudgetKnown": false,
-        "dinnerBudgetKnown": false,
-        "addressKnown": false,
-        "cuisineKnown": true
-      },
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1150
-    },
-    {
       "googlePlaceId": "ChIJa5UiawCNGGARCrGQJqAnng8",
       "name": "80's Cafe",
       "basicInfoState": "canonical",
@@ -1272,31 +1097,6 @@
       "priorityScore": 1150
     },
     {
-      "googlePlaceId": "ChIJBwhgUwKMGGARjoO2N1BAAdk",
-      "name": "やよい軒",
-      "basicInfoState": "canonical",
-      "cuisine": "日式",
-      "distanceMeters": 1172,
-      "sourceUrlCount": 1,
-      "crawlableOfficialUrlCount": 1,
-      "retainedThirdPartyUrlCount": 0,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "dishGaps": [
-        "recommendedDishes",
-        "featuredDishes"
-      ],
-      "secondaryMetadata": {
-        "openingHoursKnown": false,
-        "lunchBudgetKnown": false,
-        "dinnerBudgetKnown": false,
-        "addressKnown": false,
-        "cuisineKnown": true
-      },
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1150
-    },
-    {
       "googlePlaceId": "ChIJp52jo0OMGGAR6L7VsZ1y3MY",
       "name": "ルノアール",
       "basicInfoState": "canonical",
@@ -1316,31 +1116,6 @@
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": false,
         "addressKnown": true,
-        "cuisineKnown": true
-      },
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1150
-    },
-    {
-      "googlePlaceId": "ChIJay-cC0SMGGARCJcjuM2PyA4",
-      "name": "大戸屋",
-      "basicInfoState": "canonical",
-      "cuisine": "日式",
-      "distanceMeters": 1182,
-      "sourceUrlCount": 1,
-      "crawlableOfficialUrlCount": 1,
-      "retainedThirdPartyUrlCount": 0,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "dishGaps": [
-        "recommendedDishes",
-        "featuredDishes"
-      ],
-      "secondaryMetadata": {
-        "openingHoursKnown": false,
-        "lunchBudgetKnown": false,
-        "dinnerBudgetKnown": false,
-        "addressKnown": false,
         "cuisineKnown": true
       },
       "nextAction": "collect_strict_recommended_dishes",
@@ -1530,7 +1305,7 @@
         "recommendedDishes"
       ],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": false,
         "addressKnown": false,
@@ -1621,7 +1396,7 @@
       "crawlableOfficialUrlCount": 2,
       "retainedThirdPartyUrlCount": 0,
       "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 6,
+      "featuredDishesKnown": 11,
       "dishGaps": [
         "recommendedDishes"
       ],
@@ -2301,7 +2076,7 @@
         "featuredDishes"
       ],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": false,
         "addressKnown": true,
@@ -2816,31 +2591,6 @@
       "basicInfoState": "source_matched",
       "cuisine": "餐厅",
       "distanceMeters": 625,
-      "sourceUrlCount": 1,
-      "crawlableOfficialUrlCount": 1,
-      "retainedThirdPartyUrlCount": 0,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "dishGaps": [
-        "recommendedDishes",
-        "featuredDishes"
-      ],
-      "secondaryMetadata": {
-        "openingHoursKnown": false,
-        "lunchBudgetKnown": false,
-        "dinnerBudgetKnown": false,
-        "addressKnown": true,
-        "cuisineKnown": true
-      },
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1140
-    },
-    {
-      "googlePlaceId": "ChIJyYK7lmqMGGARrod2NNXX-h0",
-      "name": "Don Gaucho",
-      "basicInfoState": "source_matched",
-      "cuisine": "烧肉",
-      "distanceMeters": 629,
       "sourceUrlCount": 1,
       "crawlableOfficialUrlCount": 1,
       "retainedThirdPartyUrlCount": 0,
@@ -4126,7 +3876,7 @@
         "featuredDishes"
       ],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": false,
         "addressKnown": true,
@@ -4336,6 +4086,31 @@
       "priorityScore": 1140
     },
     {
+      "googlePlaceId": "ChIJ73iZqQeMGGAR1UPN4hA0-bA",
+      "name": "Minatoya",
+      "basicInfoState": "source_matched",
+      "cuisine": "日式",
+      "distanceMeters": 1147,
+      "sourceUrlCount": 1,
+      "crawlableOfficialUrlCount": 1,
+      "retainedThirdPartyUrlCount": 0,
+      "recommendedDishesKnown": 0,
+      "featuredDishesKnown": 0,
+      "dishGaps": [
+        "recommendedDishes",
+        "featuredDishes"
+      ],
+      "secondaryMetadata": {
+        "openingHoursKnown": false,
+        "lunchBudgetKnown": false,
+        "dinnerBudgetKnown": false,
+        "addressKnown": true,
+        "cuisineKnown": true
+      },
+      "nextAction": "collect_strict_recommended_dishes",
+      "priorityScore": 1140
+    },
+    {
       "googlePlaceId": "ChIJ_3o6-xyMGGARl-r-ZJUuDPA",
       "name": "Gauge",
       "basicInfoState": "source_matched",
@@ -4376,7 +4151,7 @@
         "featuredDishes"
       ],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": false,
         "addressKnown": true,
@@ -4636,31 +4411,6 @@
       "priorityScore": 1140
     },
     {
-      "googlePlaceId": "ChIJhXD3-AaMGGARdelpZZ7sl1g",
-      "name": "Siam BBQ",
-      "basicInfoState": "source_matched",
-      "cuisine": "泰国菜",
-      "distanceMeters": 1182,
-      "sourceUrlCount": 1,
-      "crawlableOfficialUrlCount": 1,
-      "retainedThirdPartyUrlCount": 0,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "dishGaps": [
-        "recommendedDishes",
-        "featuredDishes"
-      ],
-      "secondaryMetadata": {
-        "openingHoursKnown": false,
-        "lunchBudgetKnown": false,
-        "dinnerBudgetKnown": false,
-        "addressKnown": true,
-        "cuisineKnown": true
-      },
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1140
-    },
-    {
       "googlePlaceId": "ChIJycGAVHWNGGAR0azOUShaa0E",
       "name": "厨二病喫茶 石榴",
       "basicInfoState": "source_matched",
@@ -4748,7 +4498,7 @@
         "recommendedDishes"
       ],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": false,
         "addressKnown": true,
@@ -4772,7 +4522,7 @@
         "recommendedDishes"
       ],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": true,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -4820,7 +4570,7 @@
         "recommendedDishes"
       ],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": false,
         "addressKnown": true,
@@ -4878,24 +4628,120 @@
       "priorityScore": 1125
     },
     {
-      "googlePlaceId": "ChIJeygUHWuMGGAR6JSkGxomd2c",
-      "name": "ロイヤルホスト",
+      "googlePlaceId": "ChIJrQJoMmuMGGARJ8q86MIn6_I",
+      "name": "スターバックス",
       "basicInfoState": "canonical",
-      "cuisine": "日式",
-      "distanceMeters": 609,
+      "cuisine": "咖啡",
+      "distanceMeters": 482,
       "sourceUrlCount": 1,
       "crawlableOfficialUrlCount": 1,
       "retainedThirdPartyUrlCount": 0,
       "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 4,
+      "featuredDishesKnown": 1,
       "dishGaps": [
         "recommendedDishes"
       ],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": false,
-        "addressKnown": false,
+        "addressKnown": true,
+        "cuisineKnown": true
+      },
+      "nextAction": "collect_strict_recommended_dishes",
+      "priorityScore": 1125
+    },
+    {
+      "googlePlaceId": "ChIJp5cOrBqMGGARMCiyzZVc7B8",
+      "name": "スターバックス",
+      "basicInfoState": "canonical",
+      "cuisine": "咖啡",
+      "distanceMeters": 520,
+      "sourceUrlCount": 1,
+      "crawlableOfficialUrlCount": 1,
+      "retainedThirdPartyUrlCount": 0,
+      "recommendedDishesKnown": 0,
+      "featuredDishesKnown": 1,
+      "dishGaps": [
+        "recommendedDishes"
+      ],
+      "secondaryMetadata": {
+        "openingHoursKnown": true,
+        "lunchBudgetKnown": false,
+        "dinnerBudgetKnown": false,
+        "addressKnown": true,
+        "cuisineKnown": true
+      },
+      "nextAction": "collect_strict_recommended_dishes",
+      "priorityScore": 1125
+    },
+    {
+      "googlePlaceId": "ChIJ4e3_CQ6MGGARgbvLFz2U9kQ",
+      "name": "スターバックス",
+      "basicInfoState": "canonical",
+      "cuisine": "咖啡",
+      "distanceMeters": 553,
+      "sourceUrlCount": 1,
+      "crawlableOfficialUrlCount": 1,
+      "retainedThirdPartyUrlCount": 0,
+      "recommendedDishesKnown": 0,
+      "featuredDishesKnown": 1,
+      "dishGaps": [
+        "recommendedDishes"
+      ],
+      "secondaryMetadata": {
+        "openingHoursKnown": true,
+        "lunchBudgetKnown": false,
+        "dinnerBudgetKnown": false,
+        "addressKnown": true,
+        "cuisineKnown": true
+      },
+      "nextAction": "collect_strict_recommended_dishes",
+      "priorityScore": 1125
+    },
+    {
+      "googlePlaceId": "ChIJ67ggdxeMGGAR5uSOMBBDfHU",
+      "name": "スターバックス",
+      "basicInfoState": "canonical",
+      "cuisine": "咖啡",
+      "distanceMeters": 611,
+      "sourceUrlCount": 1,
+      "crawlableOfficialUrlCount": 1,
+      "retainedThirdPartyUrlCount": 0,
+      "recommendedDishesKnown": 0,
+      "featuredDishesKnown": 1,
+      "dishGaps": [
+        "recommendedDishes"
+      ],
+      "secondaryMetadata": {
+        "openingHoursKnown": true,
+        "lunchBudgetKnown": false,
+        "dinnerBudgetKnown": false,
+        "addressKnown": true,
+        "cuisineKnown": true
+      },
+      "nextAction": "collect_strict_recommended_dishes",
+      "priorityScore": 1125
+    },
+    {
+      "googlePlaceId": "ChIJf9IQHWuMGGAR3tH7Sw31YX0",
+      "name": "スターバックス",
+      "basicInfoState": "canonical",
+      "cuisine": "咖啡",
+      "distanceMeters": 632,
+      "sourceUrlCount": 1,
+      "crawlableOfficialUrlCount": 1,
+      "retainedThirdPartyUrlCount": 0,
+      "recommendedDishesKnown": 0,
+      "featuredDishesKnown": 1,
+      "dishGaps": [
+        "recommendedDishes"
+      ],
+      "secondaryMetadata": {
+        "openingHoursKnown": true,
+        "lunchBudgetKnown": false,
+        "dinnerBudgetKnown": false,
+        "addressKnown": true,
         "cuisineKnown": true
       },
       "nextAction": "collect_strict_recommended_dishes",
@@ -4944,6 +4790,30 @@
         "lunchBudgetKnown": true,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
+        "cuisineKnown": true
+      },
+      "nextAction": "collect_strict_recommended_dishes",
+      "priorityScore": 1125
+    },
+    {
+      "googlePlaceId": "ChIJKQlfZLaNGGARTe95b99jJXE",
+      "name": "町田商店",
+      "basicInfoState": "canonical",
+      "cuisine": "面食",
+      "distanceMeters": 862,
+      "sourceUrlCount": 1,
+      "crawlableOfficialUrlCount": 1,
+      "retainedThirdPartyUrlCount": 0,
+      "recommendedDishesKnown": 0,
+      "featuredDishesKnown": 6,
+      "dishGaps": [
+        "recommendedDishes"
+      ],
+      "secondaryMetadata": {
+        "openingHoursKnown": true,
+        "lunchBudgetKnown": false,
+        "dinnerBudgetKnown": false,
+        "addressKnown": false,
         "cuisineKnown": true
       },
       "nextAction": "collect_strict_recommended_dishes",
@@ -5022,6 +4892,54 @@
       "priorityScore": 1125
     },
     {
+      "googlePlaceId": "ChIJCabBDR6NGGARgIhOTt5XEIs",
+      "name": "ターリー屋",
+      "basicInfoState": "canonical",
+      "cuisine": "印度菜",
+      "distanceMeters": 1044,
+      "sourceUrlCount": 1,
+      "crawlableOfficialUrlCount": 1,
+      "retainedThirdPartyUrlCount": 0,
+      "recommendedDishesKnown": 0,
+      "featuredDishesKnown": 3,
+      "dishGaps": [
+        "recommendedDishes"
+      ],
+      "secondaryMetadata": {
+        "openingHoursKnown": true,
+        "lunchBudgetKnown": false,
+        "dinnerBudgetKnown": false,
+        "addressKnown": false,
+        "cuisineKnown": true
+      },
+      "nextAction": "collect_strict_recommended_dishes",
+      "priorityScore": 1125
+    },
+    {
+      "googlePlaceId": "ChIJay-cC0SMGGARCJcjuM2PyA4",
+      "name": "大戸屋",
+      "basicInfoState": "canonical",
+      "cuisine": "日式",
+      "distanceMeters": 1182,
+      "sourceUrlCount": 1,
+      "crawlableOfficialUrlCount": 1,
+      "retainedThirdPartyUrlCount": 0,
+      "recommendedDishesKnown": 0,
+      "featuredDishesKnown": 6,
+      "dishGaps": [
+        "recommendedDishes"
+      ],
+      "secondaryMetadata": {
+        "openingHoursKnown": false,
+        "lunchBudgetKnown": false,
+        "dinnerBudgetKnown": false,
+        "addressKnown": false,
+        "cuisineKnown": true
+      },
+      "nextAction": "collect_strict_recommended_dishes",
+      "priorityScore": 1125
+    },
+    {
       "googlePlaceId": "ChIJc3taaQGMGGARJDSjckIspnw",
       "name": "ターリー屋",
       "basicInfoState": "canonical",
@@ -5036,7 +4954,7 @@
         "recommendedDishes"
       ],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": false,
         "addressKnown": false,
@@ -5061,7 +4979,7 @@
         "featuredDishes"
       ],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": true,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -5136,7 +5054,7 @@
         "featuredDishes"
       ],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": true,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -5256,7 +5174,7 @@
         "recommendedDishes"
       ],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": false,
         "addressKnown": true,
@@ -5275,7 +5193,7 @@
       "crawlableOfficialUrlCount": 1,
       "retainedThirdPartyUrlCount": 0,
       "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 6,
+      "featuredDishesKnown": 7,
       "dishGaps": [
         "recommendedDishes"
       ],
@@ -5352,7 +5270,7 @@
         "recommendedDishes"
       ],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": false,
         "addressKnown": true,
@@ -5491,7 +5409,7 @@
       "crawlableOfficialUrlCount": 1,
       "retainedThirdPartyUrlCount": 0,
       "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 6,
+      "featuredDishesKnown": 7,
       "dishGaps": [
         "recommendedDishes"
       ],
@@ -5515,7 +5433,7 @@
       "crawlableOfficialUrlCount": 1,
       "retainedThirdPartyUrlCount": 1,
       "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 1,
+      "featuredDishesKnown": 5,
       "dishGaps": [
         "recommendedDishes"
       ],
@@ -5563,7 +5481,7 @@
       "crawlableOfficialUrlCount": 1,
       "retainedThirdPartyUrlCount": 0,
       "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 6,
+      "featuredDishesKnown": 8,
       "dishGaps": [
         "recommendedDishes"
       ],
@@ -5612,6 +5530,30 @@
       "retainedThirdPartyUrlCount": 0,
       "recommendedDishesKnown": 0,
       "featuredDishesKnown": 1,
+      "dishGaps": [
+        "recommendedDishes"
+      ],
+      "secondaryMetadata": {
+        "openingHoursKnown": false,
+        "lunchBudgetKnown": false,
+        "dinnerBudgetKnown": false,
+        "addressKnown": true,
+        "cuisineKnown": true
+      },
+      "nextAction": "collect_strict_recommended_dishes",
+      "priorityScore": 1115
+    },
+    {
+      "googlePlaceId": "ChIJhXD3-AaMGGARdelpZZ7sl1g",
+      "name": "Siam BBQ",
+      "basicInfoState": "source_matched",
+      "cuisine": "泰国菜",
+      "distanceMeters": 1182,
+      "sourceUrlCount": 1,
+      "crawlableOfficialUrlCount": 1,
+      "retainedThirdPartyUrlCount": 0,
+      "recommendedDishesKnown": 0,
+      "featuredDishesKnown": 6,
       "dishGaps": [
         "recommendedDishes"
       ],
@@ -5841,7 +5783,7 @@
         "featuredDishes"
       ],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": true,
         "dinnerBudgetKnown": true,
         "addressKnown": false,
@@ -6291,7 +6233,7 @@
         "featuredDishes"
       ],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": true,
         "addressKnown": false,
@@ -6666,7 +6608,7 @@
         "featuredDishes"
       ],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": false,
         "addressKnown": false,
@@ -6741,7 +6683,7 @@
         "featuredDishes"
       ],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": true,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -6766,7 +6708,7 @@
         "featuredDishes"
       ],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": true,
         "dinnerBudgetKnown": false,
         "addressKnown": false,
@@ -7366,7 +7308,7 @@
         "featuredDishes"
       ],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": false,
         "addressKnown": false,
@@ -9216,7 +9158,7 @@
         "featuredDishes"
       ],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": true,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -9576,31 +9518,6 @@
       "priorityScore": 1105
     },
     {
-      "googlePlaceId": "ChIJ34CgHASMGGARG5poMVhiB1w",
-      "name": "塩生姜らー麺専門店 MANNISH 淡路町本店",
-      "basicInfoState": "canonical",
-      "cuisine": "拉面",
-      "distanceMeters": 953,
-      "sourceUrlCount": 2,
-      "crawlableOfficialUrlCount": 0,
-      "retainedThirdPartyUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "dishGaps": [
-        "recommendedDishes",
-        "featuredDishes"
-      ],
-      "secondaryMetadata": {
-        "openingHoursKnown": true,
-        "lunchBudgetKnown": true,
-        "dinnerBudgetKnown": true,
-        "addressKnown": true,
-        "cuisineKnown": true
-      },
-      "nextAction": "extract_retained_dish_source",
-      "priorityScore": 1105
-    },
-    {
       "googlePlaceId": "ChIJC69wrxyMGGARRfwOxHOPJUc",
       "name": "松榮亭",
       "basicInfoState": "canonical",
@@ -9765,7 +9682,7 @@
         "recommendedDishes"
       ],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": true,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -11084,7 +11001,7 @@
         "featuredDishes"
       ],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -11682,7 +11599,7 @@
         "recommendedDishes"
       ],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": false,
         "addressKnown": true,
@@ -11706,7 +11623,7 @@
         "recommendedDishes"
       ],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": true,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -11970,7 +11887,7 @@
         "recommendedDishes"
       ],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": true,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -12229,7 +12146,7 @@
       "crawlableOfficialUrlCount": 0,
       "retainedThirdPartyUrlCount": 1,
       "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 6,
+      "featuredDishesKnown": 7,
       "dishGaps": [
         "recommendedDishes"
       ],
@@ -12364,6 +12281,30 @@
       "priorityScore": 1080
     },
     {
+      "googlePlaceId": "ChIJ34CgHASMGGARG5poMVhiB1w",
+      "name": "塩生姜らー麺専門店 MANNISH 淡路町本店",
+      "basicInfoState": "canonical",
+      "cuisine": "拉面",
+      "distanceMeters": 953,
+      "sourceUrlCount": 2,
+      "crawlableOfficialUrlCount": 0,
+      "retainedThirdPartyUrlCount": 1,
+      "recommendedDishesKnown": 0,
+      "featuredDishesKnown": 1,
+      "dishGaps": [
+        "recommendedDishes"
+      ],
+      "secondaryMetadata": {
+        "openingHoursKnown": true,
+        "lunchBudgetKnown": true,
+        "dinnerBudgetKnown": true,
+        "addressKnown": true,
+        "cuisineKnown": true
+      },
+      "nextAction": "extract_retained_dish_source",
+      "priorityScore": 1080
+    },
+    {
       "googlePlaceId": "ChIJh4hmXeCNGGARK7cpKqXTWqE",
       "name": "熟成豚ホルモン えいじ",
       "basicInfoState": "canonical",
@@ -12397,7 +12338,7 @@
       "crawlableOfficialUrlCount": 0,
       "retainedThirdPartyUrlCount": 1,
       "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 6,
+      "featuredDishesKnown": 8,
       "dishGaps": [
         "recommendedDishes"
       ],
@@ -12546,7 +12487,7 @@
         "recommendedDishes"
       ],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -12594,7 +12535,7 @@
         "recommendedDishes"
       ],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -12637,7 +12578,7 @@
       "crawlableOfficialUrlCount": 0,
       "retainedThirdPartyUrlCount": 1,
       "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 6,
+      "featuredDishesKnown": 7,
       "dishGaps": [
         "recommendedDishes"
       ],
@@ -12666,7 +12607,7 @@
         "recommendedDishes"
       ],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -12757,7 +12698,7 @@
       "crawlableOfficialUrlCount": 0,
       "retainedThirdPartyUrlCount": 1,
       "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 6,
+      "featuredDishesKnown": 7,
       "dishGaps": [
         "recommendedDishes"
       ],
@@ -13242,7 +13183,7 @@
         "recommendedDishes"
       ],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -13386,7 +13327,7 @@
         "recommendedDishes"
       ],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -13940,31 +13881,6 @@
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": false,
         "addressKnown": false,
-        "cuisineKnown": true
-      },
-      "nextAction": "find_independent_dish_source",
-      "priorityScore": 1050
-    },
-    {
-      "googlePlaceId": "ChIJjX2UEKaNGGARqhp9myAPFiw",
-      "name": "RESTAURANT MOROCCO TOKYO",
-      "basicInfoState": "canonical",
-      "cuisine": "摩洛哥菜",
-      "distanceMeters": 952,
-      "sourceUrlCount": 1,
-      "crawlableOfficialUrlCount": 0,
-      "retainedThirdPartyUrlCount": 0,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "dishGaps": [
-        "recommendedDishes",
-        "featuredDishes"
-      ],
-      "secondaryMetadata": {
-        "openingHoursKnown": true,
-        "lunchBudgetKnown": false,
-        "dinnerBudgetKnown": false,
-        "addressKnown": true,
         "cuisineKnown": true
       },
       "nextAction": "find_independent_dish_source",
@@ -20246,31 +20162,6 @@
       "priorityScore": 1040
     },
     {
-      "googlePlaceId": "ChIJ73iZqQeMGGAR1UPN4hA0-bA",
-      "name": "Minatoya",
-      "basicInfoState": "source_matched",
-      "cuisine": "日式",
-      "distanceMeters": 1147,
-      "sourceUrlCount": 0,
-      "crawlableOfficialUrlCount": 0,
-      "retainedThirdPartyUrlCount": 0,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "dishGaps": [
-        "recommendedDishes",
-        "featuredDishes"
-      ],
-      "secondaryMetadata": {
-        "openingHoursKnown": false,
-        "lunchBudgetKnown": false,
-        "dinnerBudgetKnown": false,
-        "addressKnown": true,
-        "cuisineKnown": true
-      },
-      "nextAction": "find_independent_dish_source",
-      "priorityScore": 1040
-    },
-    {
       "googlePlaceId": "ChIJqe9vx_SNGGARmK4b3daLHdY",
       "name": "Quwanka",
       "basicInfoState": "source_matched",
@@ -20596,6 +20487,30 @@
       "priorityScore": 1040
     },
     {
+      "googlePlaceId": "ChIJjX2UEKaNGGARqhp9myAPFiw",
+      "name": "RESTAURANT MOROCCO TOKYO",
+      "basicInfoState": "canonical",
+      "cuisine": "摩洛哥菜",
+      "distanceMeters": 952,
+      "sourceUrlCount": 1,
+      "crawlableOfficialUrlCount": 0,
+      "retainedThirdPartyUrlCount": 0,
+      "recommendedDishesKnown": 0,
+      "featuredDishesKnown": 2,
+      "dishGaps": [
+        "recommendedDishes"
+      ],
+      "secondaryMetadata": {
+        "openingHoursKnown": true,
+        "lunchBudgetKnown": false,
+        "dinnerBudgetKnown": false,
+        "addressKnown": true,
+        "cuisineKnown": true
+      },
+      "nextAction": "find_independent_dish_source",
+      "priorityScore": 1025
+    },
+    {
       "googlePlaceId": "ChIJQ3MESwOMGGARX99d47o0V6k",
       "name": "神田まつや",
       "basicInfoState": "canonical",
@@ -20754,7 +20669,7 @@
         "featuredDishes"
       ],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -20810,30 +20725,6 @@
       },
       "nextAction": "collect_source_backed_featured_dishes",
       "priorityScore": 720
-    },
-    {
-      "googlePlaceId": "ChIJ3woP4BCMGGAR_rK6Rw0LqWA",
-      "name": "Starbucks",
-      "basicInfoState": "source_matched",
-      "cuisine": "咖啡",
-      "distanceMeters": 32,
-      "sourceUrlCount": 1,
-      "crawlableOfficialUrlCount": 1,
-      "retainedThirdPartyUrlCount": 0,
-      "recommendedDishesKnown": 1,
-      "featuredDishesKnown": 0,
-      "dishGaps": [
-        "featuredDishes"
-      ],
-      "secondaryMetadata": {
-        "openingHoursKnown": false,
-        "lunchBudgetKnown": false,
-        "dinnerBudgetKnown": false,
-        "addressKnown": true,
-        "cuisineKnown": true
-      },
-      "nextAction": "collect_source_backed_featured_dishes",
-      "priorityScore": 710
     },
     {
       "googlePlaceId": "ChIJbwAATwCNGGARQwDbKm46DFQ",
@@ -21196,30 +21087,6 @@
       "priorityScore": 710
     },
     {
-      "googlePlaceId": "ChIJGwjljhWMGGARjLafECSEbqA",
-      "name": "吉野家",
-      "basicInfoState": "canonical",
-      "cuisine": "快餐",
-      "distanceMeters": 466,
-      "sourceUrlCount": 1,
-      "crawlableOfficialUrlCount": 1,
-      "retainedThirdPartyUrlCount": 0,
-      "recommendedDishesKnown": 2,
-      "featuredDishesKnown": 0,
-      "dishGaps": [
-        "featuredDishes"
-      ],
-      "secondaryMetadata": {
-        "openingHoursKnown": true,
-        "lunchBudgetKnown": false,
-        "dinnerBudgetKnown": false,
-        "addressKnown": false,
-        "cuisineKnown": true
-      },
-      "nextAction": "collect_source_backed_featured_dishes",
-      "priorityScore": 710
-    },
-    {
       "googlePlaceId": "ChIJU-bJQwCNGGARG2tj8zrf1F0",
       "name": "讃岐うどん",
       "basicInfoState": "source_matched",
@@ -21268,35 +21135,11 @@
       "priorityScore": 710
     },
     {
-      "googlePlaceId": "ChIJ38dCzRqMGGAR9Awruuaqr_A",
-      "name": "吉野家",
-      "basicInfoState": "canonical",
-      "cuisine": "快餐",
-      "distanceMeters": 642,
-      "sourceUrlCount": 1,
-      "crawlableOfficialUrlCount": 1,
-      "retainedThirdPartyUrlCount": 0,
-      "recommendedDishesKnown": 2,
-      "featuredDishesKnown": 0,
-      "dishGaps": [
-        "featuredDishes"
-      ],
-      "secondaryMetadata": {
-        "openingHoursKnown": false,
-        "lunchBudgetKnown": false,
-        "dinnerBudgetKnown": false,
-        "addressKnown": false,
-        "cuisineKnown": true
-      },
-      "nextAction": "collect_source_backed_featured_dishes",
-      "priorityScore": 710
-    },
-    {
-      "googlePlaceId": "ChIJVaTZmWqMGGARH0x_mvWNJuc",
-      "name": "ガスト",
-      "basicInfoState": "canonical",
-      "cuisine": "日式",
-      "distanceMeters": 653,
+      "googlePlaceId": "ChIJyYK7lmqMGGARrod2NNXX-h0",
+      "name": "Don Gaucho",
+      "basicInfoState": "source_matched",
+      "cuisine": "烧肉",
+      "distanceMeters": 629,
       "sourceUrlCount": 1,
       "crawlableOfficialUrlCount": 1,
       "retainedThirdPartyUrlCount": 0,
@@ -21309,7 +21152,7 @@
         "openingHoursKnown": false,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": false,
-        "addressKnown": false,
+        "addressKnown": true,
         "cuisineKnown": true
       },
       "nextAction": "collect_source_backed_featured_dishes",
@@ -21373,30 +21216,6 @@
       "crawlableOfficialUrlCount": 1,
       "retainedThirdPartyUrlCount": 0,
       "recommendedDishesKnown": 3,
-      "featuredDishesKnown": 0,
-      "dishGaps": [
-        "featuredDishes"
-      ],
-      "secondaryMetadata": {
-        "openingHoursKnown": false,
-        "lunchBudgetKnown": false,
-        "dinnerBudgetKnown": false,
-        "addressKnown": false,
-        "cuisineKnown": true
-      },
-      "nextAction": "collect_source_backed_featured_dishes",
-      "priorityScore": 710
-    },
-    {
-      "googlePlaceId": "ChIJJ_D4jRmMGGARMpn_E26qUCA",
-      "name": "リンガーハット",
-      "basicInfoState": "canonical",
-      "cuisine": "日式",
-      "distanceMeters": 724,
-      "sourceUrlCount": 1,
-      "crawlableOfficialUrlCount": 1,
-      "retainedThirdPartyUrlCount": 0,
-      "recommendedDishesKnown": 1,
       "featuredDishesKnown": 0,
       "dishGaps": [
         "featuredDishes"
@@ -21498,31 +21317,7 @@
         "featuredDishes"
       ],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
-        "lunchBudgetKnown": false,
-        "dinnerBudgetKnown": false,
-        "addressKnown": true,
-        "cuisineKnown": true
-      },
-      "nextAction": "collect_source_backed_featured_dishes",
-      "priorityScore": 710
-    },
-    {
-      "googlePlaceId": "ChIJzdGFLRqMGGAR3t3hMZeXnQ8",
-      "name": "Starbucks",
-      "basicInfoState": "source_matched",
-      "cuisine": "咖啡",
-      "distanceMeters": 772,
-      "sourceUrlCount": 1,
-      "crawlableOfficialUrlCount": 1,
-      "retainedThirdPartyUrlCount": 0,
-      "recommendedDishesKnown": 1,
-      "featuredDishesKnown": 0,
-      "dishGaps": [
-        "featuredDishes"
-      ],
-      "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": false,
         "addressKnown": true,
@@ -21643,30 +21438,6 @@
       ],
       "secondaryMetadata": {
         "openingHoursKnown": true,
-        "lunchBudgetKnown": false,
-        "dinnerBudgetKnown": false,
-        "addressKnown": true,
-        "cuisineKnown": true
-      },
-      "nextAction": "collect_source_backed_featured_dishes",
-      "priorityScore": 710
-    },
-    {
-      "googlePlaceId": "ChIJeVvqqgSMGGARKrc6kVNUBh4",
-      "name": "Starbucks",
-      "basicInfoState": "source_matched",
-      "cuisine": "咖啡",
-      "distanceMeters": 902,
-      "sourceUrlCount": 1,
-      "crawlableOfficialUrlCount": 1,
-      "retainedThirdPartyUrlCount": 0,
-      "recommendedDishesKnown": 1,
-      "featuredDishesKnown": 0,
-      "dishGaps": [
-        "featuredDishes"
-      ],
-      "secondaryMetadata": {
-        "openingHoursKnown": false,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": false,
         "addressKnown": true,
@@ -21906,7 +21677,7 @@
         "featuredDishes"
       ],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -21930,7 +21701,7 @@
         "featuredDishes"
       ],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": false,
         "addressKnown": true,
@@ -21954,7 +21725,7 @@
         "featuredDishes"
       ],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -21978,7 +21749,7 @@
         "featuredDishes"
       ],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": false,
         "addressKnown": true,
@@ -22002,7 +21773,7 @@
         "featuredDishes"
       ],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": false,
         "addressKnown": false,
@@ -22170,7 +21941,7 @@
         "featuredDishes"
       ],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": false,
         "addressKnown": true,
@@ -22314,7 +22085,7 @@
         "featuredDishes"
       ],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": false,
         "addressKnown": false,
@@ -22338,7 +22109,7 @@
         "featuredDishes"
       ],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": false,
         "addressKnown": true,
@@ -22346,6 +22117,28 @@
       },
       "nextAction": "collect_source_backed_featured_dishes",
       "priorityScore": 710
+    },
+    {
+      "googlePlaceId": "ChIJ3woP4BCMGGAR_rK6Rw0LqWA",
+      "name": "Starbucks",
+      "basicInfoState": "source_matched",
+      "cuisine": "咖啡",
+      "distanceMeters": 32,
+      "sourceUrlCount": 1,
+      "crawlableOfficialUrlCount": 1,
+      "retainedThirdPartyUrlCount": 0,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 1,
+      "dishGaps": [],
+      "secondaryMetadata": {
+        "openingHoursKnown": false,
+        "lunchBudgetKnown": false,
+        "dinnerBudgetKnown": false,
+        "addressKnown": true,
+        "cuisineKnown": true
+      },
+      "nextAction": "dish_complete",
+      "priorityScore": 0
     },
     {
       "googlePlaceId": "ChIJBefQ4hOMGGARIkZIs01cRlQ",
@@ -22558,7 +22351,7 @@
       "featuredDishesKnown": 5,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": true,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -22577,7 +22370,7 @@
       "crawlableOfficialUrlCount": 0,
       "retainedThirdPartyUrlCount": 1,
       "recommendedDishesKnown": 1,
-      "featuredDishesKnown": 6,
+      "featuredDishesKnown": 7,
       "dishGaps": [],
       "secondaryMetadata": {
         "openingHoursKnown": true,
@@ -22841,10 +22634,10 @@
       "crawlableOfficialUrlCount": 0,
       "retainedThirdPartyUrlCount": 1,
       "recommendedDishesKnown": 3,
-      "featuredDishesKnown": 6,
+      "featuredDishesKnown": 7,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -23020,7 +22813,7 @@
       "featuredDishesKnown": 6,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": true,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -23152,7 +22945,7 @@
       "featuredDishesKnown": 1,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": true,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -23174,7 +22967,7 @@
       "featuredDishesKnown": 4,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": true,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -23193,7 +22986,7 @@
       "crawlableOfficialUrlCount": 2,
       "retainedThirdPartyUrlCount": 0,
       "recommendedDishesKnown": 1,
-      "featuredDishesKnown": 6,
+      "featuredDishesKnown": 7,
       "dishGaps": [],
       "secondaryMetadata": {
         "openingHoursKnown": true,
@@ -23218,7 +23011,7 @@
       "featuredDishesKnown": 2,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": true,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -23240,7 +23033,7 @@
       "featuredDishesKnown": 1,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -23284,7 +23077,7 @@
       "featuredDishesKnown": 6,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -23303,7 +23096,7 @@
       "crawlableOfficialUrlCount": 0,
       "retainedThirdPartyUrlCount": 2,
       "recommendedDishesKnown": 3,
-      "featuredDishesKnown": 6,
+      "featuredDishesKnown": 8,
       "dishGaps": [],
       "secondaryMetadata": {
         "openingHoursKnown": true,
@@ -23350,7 +23143,7 @@
       "featuredDishesKnown": 5,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -23391,10 +23184,10 @@
       "crawlableOfficialUrlCount": 0,
       "retainedThirdPartyUrlCount": 1,
       "recommendedDishesKnown": 2,
-      "featuredDishesKnown": 6,
+      "featuredDishesKnown": 7,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -23548,7 +23341,7 @@
       "featuredDishesKnown": 5,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -23570,7 +23363,7 @@
       "featuredDishesKnown": 3,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -23611,7 +23404,7 @@
       "crawlableOfficialUrlCount": 0,
       "retainedThirdPartyUrlCount": 1,
       "recommendedDishesKnown": 1,
-      "featuredDishesKnown": 6,
+      "featuredDishesKnown": 7,
       "dishGaps": [],
       "secondaryMetadata": {
         "openingHoursKnown": true,
@@ -23680,7 +23473,7 @@
       "featuredDishesKnown": 2,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": true,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -23768,7 +23561,7 @@
       "featuredDishesKnown": 1,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -23790,7 +23583,7 @@
       "featuredDishesKnown": 1,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": true,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -23875,10 +23668,10 @@
       "crawlableOfficialUrlCount": 0,
       "retainedThirdPartyUrlCount": 1,
       "recommendedDishesKnown": 3,
-      "featuredDishesKnown": 6,
+      "featuredDishesKnown": 8,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -23897,7 +23690,7 @@
       "crawlableOfficialUrlCount": 0,
       "retainedThirdPartyUrlCount": 1,
       "recommendedDishesKnown": 2,
-      "featuredDishesKnown": 6,
+      "featuredDishesKnown": 7,
       "dishGaps": [],
       "secondaryMetadata": {
         "openingHoursKnown": true,
@@ -24095,7 +23888,7 @@
       "crawlableOfficialUrlCount": 0,
       "retainedThirdPartyUrlCount": 1,
       "recommendedDishesKnown": 3,
-      "featuredDishesKnown": 6,
+      "featuredDishesKnown": 8,
       "dishGaps": [],
       "secondaryMetadata": {
         "openingHoursKnown": true,
@@ -24249,7 +24042,7 @@
       "crawlableOfficialUrlCount": 1,
       "retainedThirdPartyUrlCount": 2,
       "recommendedDishesKnown": 1,
-      "featuredDishesKnown": 6,
+      "featuredDishesKnown": 8,
       "dishGaps": [],
       "secondaryMetadata": {
         "openingHoursKnown": true,
@@ -24318,7 +24111,7 @@
       "featuredDishesKnown": 6,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": true,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -24359,10 +24152,10 @@
       "crawlableOfficialUrlCount": 0,
       "retainedThirdPartyUrlCount": 2,
       "recommendedDishesKnown": 1,
-      "featuredDishesKnown": 6,
+      "featuredDishesKnown": 7,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": true,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -24582,7 +24375,7 @@
       "featuredDishesKnown": 5,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -24802,7 +24595,7 @@
       "featuredDishesKnown": 4,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": false,
         "addressKnown": true,
@@ -24821,7 +24614,7 @@
       "crawlableOfficialUrlCount": 0,
       "retainedThirdPartyUrlCount": 2,
       "recommendedDishesKnown": 1,
-      "featuredDishesKnown": 6,
+      "featuredDishesKnown": 7,
       "dishGaps": [],
       "secondaryMetadata": {
         "openingHoursKnown": true,
@@ -24846,7 +24639,7 @@
       "featuredDishesKnown": 4,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -24890,7 +24683,7 @@
       "featuredDishesKnown": 4,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": false,
         "addressKnown": true,
@@ -24916,6 +24709,28 @@
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
+        "cuisineKnown": true
+      },
+      "nextAction": "dish_complete",
+      "priorityScore": 0
+    },
+    {
+      "googlePlaceId": "ChIJGwjljhWMGGARjLafECSEbqA",
+      "name": "吉野家",
+      "basicInfoState": "canonical",
+      "cuisine": "快餐",
+      "distanceMeters": 466,
+      "sourceUrlCount": 1,
+      "crawlableOfficialUrlCount": 1,
+      "retainedThirdPartyUrlCount": 0,
+      "recommendedDishesKnown": 4,
+      "featuredDishesKnown": 6,
+      "dishGaps": [],
+      "secondaryMetadata": {
+        "openingHoursKnown": true,
+        "lunchBudgetKnown": false,
+        "dinnerBudgetKnown": false,
+        "addressKnown": false,
         "cuisineKnown": true
       },
       "nextAction": "dish_complete",
@@ -25066,7 +24881,7 @@
       "featuredDishesKnown": 6,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -25132,7 +24947,7 @@
       "featuredDishesKnown": 6,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -25330,7 +25145,7 @@
       "featuredDishesKnown": 4,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -25349,7 +25164,7 @@
       "crawlableOfficialUrlCount": 0,
       "retainedThirdPartyUrlCount": 2,
       "recommendedDishesKnown": 1,
-      "featuredDishesKnown": 6,
+      "featuredDishesKnown": 7,
       "dishGaps": [],
       "secondaryMetadata": {
         "openingHoursKnown": true,
@@ -25440,7 +25255,7 @@
       "featuredDishesKnown": 3,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": false,
         "addressKnown": false,
@@ -25528,7 +25343,7 @@
       "featuredDishesKnown": 6,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -25594,7 +25409,7 @@
       "featuredDishesKnown": 3,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -25660,7 +25475,7 @@
       "featuredDishesKnown": 3,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": true,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -25679,7 +25494,7 @@
       "crawlableOfficialUrlCount": 0,
       "retainedThirdPartyUrlCount": 1,
       "recommendedDishesKnown": 1,
-      "featuredDishesKnown": 6,
+      "featuredDishesKnown": 7,
       "dishGaps": [],
       "secondaryMetadata": {
         "openingHoursKnown": true,
@@ -25701,7 +25516,7 @@
       "crawlableOfficialUrlCount": 0,
       "retainedThirdPartyUrlCount": 1,
       "recommendedDishesKnown": 1,
-      "featuredDishesKnown": 6,
+      "featuredDishesKnown": 7,
       "dishGaps": [],
       "secondaryMetadata": {
         "openingHoursKnown": true,
@@ -25745,7 +25560,7 @@
       "crawlableOfficialUrlCount": 2,
       "retainedThirdPartyUrlCount": 2,
       "recommendedDishesKnown": 1,
-      "featuredDishesKnown": 6,
+      "featuredDishesKnown": 7,
       "dishGaps": [],
       "secondaryMetadata": {
         "openingHoursKnown": true,
@@ -25833,7 +25648,7 @@
       "crawlableOfficialUrlCount": 0,
       "retainedThirdPartyUrlCount": 1,
       "recommendedDishesKnown": 1,
-      "featuredDishesKnown": 6,
+      "featuredDishesKnown": 7,
       "dishGaps": [],
       "secondaryMetadata": {
         "openingHoursKnown": true,
@@ -25899,7 +25714,7 @@
       "crawlableOfficialUrlCount": 0,
       "retainedThirdPartyUrlCount": 1,
       "recommendedDishesKnown": 2,
-      "featuredDishesKnown": 6,
+      "featuredDishesKnown": 7,
       "dishGaps": [],
       "secondaryMetadata": {
         "openingHoursKnown": true,
@@ -25978,6 +25793,28 @@
       "priorityScore": 0
     },
     {
+      "googlePlaceId": "ChIJeygUHWuMGGAR6JSkGxomd2c",
+      "name": "ロイヤルホスト",
+      "basicInfoState": "canonical",
+      "cuisine": "日式",
+      "distanceMeters": 609,
+      "sourceUrlCount": 1,
+      "crawlableOfficialUrlCount": 1,
+      "retainedThirdPartyUrlCount": 0,
+      "recommendedDishesKnown": 3,
+      "featuredDishesKnown": 6,
+      "dishGaps": [],
+      "secondaryMetadata": {
+        "openingHoursKnown": false,
+        "lunchBudgetKnown": false,
+        "dinnerBudgetKnown": false,
+        "addressKnown": false,
+        "cuisineKnown": true
+      },
+      "nextAction": "dish_complete",
+      "priorityScore": 0
+    },
+    {
       "googlePlaceId": "ChIJ0YSyAtCNGGAR5eFfZjItPqY",
       "name": "牡蠣小屋 水道橋店",
       "basicInfoState": "source_matched",
@@ -26012,7 +25849,7 @@
       "featuredDishesKnown": 5,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -26163,7 +26000,7 @@
       "crawlableOfficialUrlCount": 0,
       "retainedThirdPartyUrlCount": 1,
       "recommendedDishesKnown": 1,
-      "featuredDishesKnown": 6,
+      "featuredDishesKnown": 8,
       "dishGaps": [],
       "secondaryMetadata": {
         "openingHoursKnown": true,
@@ -26185,7 +26022,7 @@
       "crawlableOfficialUrlCount": 1,
       "retainedThirdPartyUrlCount": 2,
       "recommendedDishesKnown": 1,
-      "featuredDishesKnown": 6,
+      "featuredDishesKnown": 7,
       "dishGaps": [],
       "secondaryMetadata": {
         "openingHoursKnown": true,
@@ -26229,7 +26066,7 @@
       "crawlableOfficialUrlCount": 0,
       "retainedThirdPartyUrlCount": 1,
       "recommendedDishesKnown": 1,
-      "featuredDishesKnown": 6,
+      "featuredDishesKnown": 7,
       "dishGaps": [],
       "secondaryMetadata": {
         "openingHoursKnown": true,
@@ -26251,7 +26088,7 @@
       "crawlableOfficialUrlCount": 0,
       "retainedThirdPartyUrlCount": 1,
       "recommendedDishesKnown": 1,
-      "featuredDishesKnown": 6,
+      "featuredDishesKnown": 7,
       "dishGaps": [],
       "secondaryMetadata": {
         "openingHoursKnown": true,
@@ -26298,7 +26135,7 @@
       "featuredDishesKnown": 6,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -26342,7 +26179,7 @@
       "featuredDishesKnown": 6,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -26361,7 +26198,7 @@
       "crawlableOfficialUrlCount": 0,
       "retainedThirdPartyUrlCount": 1,
       "recommendedDishesKnown": 1,
-      "featuredDishesKnown": 6,
+      "featuredDishesKnown": 7,
       "dishGaps": [],
       "secondaryMetadata": {
         "openingHoursKnown": true,
@@ -26408,7 +26245,7 @@
       "featuredDishesKnown": 2,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": false,
         "addressKnown": true,
@@ -26430,7 +26267,7 @@
       "featuredDishesKnown": 6,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -26462,6 +26299,28 @@
       "priorityScore": 0
     },
     {
+      "googlePlaceId": "ChIJ38dCzRqMGGAR9Awruuaqr_A",
+      "name": "吉野家",
+      "basicInfoState": "canonical",
+      "cuisine": "快餐",
+      "distanceMeters": 642,
+      "sourceUrlCount": 1,
+      "crawlableOfficialUrlCount": 1,
+      "retainedThirdPartyUrlCount": 0,
+      "recommendedDishesKnown": 4,
+      "featuredDishesKnown": 6,
+      "dishGaps": [],
+      "secondaryMetadata": {
+        "openingHoursKnown": false,
+        "lunchBudgetKnown": false,
+        "dinnerBudgetKnown": false,
+        "addressKnown": false,
+        "cuisineKnown": true
+      },
+      "nextAction": "dish_complete",
+      "priorityScore": 0
+    },
+    {
       "googlePlaceId": "ChIJzb7OWbqNGGARwAWnkdf2ENk",
       "name": "あぶり清水 水道橋店",
       "basicInfoState": "source_matched",
@@ -26471,10 +26330,10 @@
       "crawlableOfficialUrlCount": 0,
       "retainedThirdPartyUrlCount": 1,
       "recommendedDishesKnown": 2,
-      "featuredDishesKnown": 6,
+      "featuredDishesKnown": 7,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -26518,7 +26377,7 @@
       "featuredDishesKnown": 1,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -26610,6 +26469,28 @@
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
+        "cuisineKnown": true
+      },
+      "nextAction": "dish_complete",
+      "priorityScore": 0
+    },
+    {
+      "googlePlaceId": "ChIJVaTZmWqMGGARH0x_mvWNJuc",
+      "name": "ガスト",
+      "basicInfoState": "canonical",
+      "cuisine": "日式",
+      "distanceMeters": 653,
+      "sourceUrlCount": 1,
+      "crawlableOfficialUrlCount": 1,
+      "retainedThirdPartyUrlCount": 0,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 1,
+      "dishGaps": [],
+      "secondaryMetadata": {
+        "openingHoursKnown": false,
+        "lunchBudgetKnown": false,
+        "dinnerBudgetKnown": false,
+        "addressKnown": false,
         "cuisineKnown": true
       },
       "nextAction": "dish_complete",
@@ -26848,7 +26729,7 @@
       "featuredDishesKnown": 1,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": false,
         "addressKnown": false,
@@ -26914,7 +26795,7 @@
       "featuredDishesKnown": 4,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": true,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -27068,7 +26949,7 @@
       "featuredDishesKnown": 5,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -27134,7 +27015,7 @@
       "featuredDishesKnown": 6,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -27153,10 +27034,10 @@
       "crawlableOfficialUrlCount": 0,
       "retainedThirdPartyUrlCount": 2,
       "recommendedDishesKnown": 1,
-      "featuredDishesKnown": 6,
+      "featuredDishesKnown": 8,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -27307,7 +27188,7 @@
       "crawlableOfficialUrlCount": 0,
       "retainedThirdPartyUrlCount": 1,
       "recommendedDishesKnown": 2,
-      "featuredDishesKnown": 6,
+      "featuredDishesKnown": 8,
       "dishGaps": [],
       "secondaryMetadata": {
         "openingHoursKnown": true,
@@ -27358,6 +27239,28 @@
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
+        "cuisineKnown": true
+      },
+      "nextAction": "dish_complete",
+      "priorityScore": 0
+    },
+    {
+      "googlePlaceId": "ChIJJ_D4jRmMGGARMpn_E26qUCA",
+      "name": "リンガーハット",
+      "basicInfoState": "canonical",
+      "cuisine": "日式",
+      "distanceMeters": 724,
+      "sourceUrlCount": 1,
+      "crawlableOfficialUrlCount": 1,
+      "retainedThirdPartyUrlCount": 0,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 6,
+      "dishGaps": [],
+      "secondaryMetadata": {
+        "openingHoursKnown": true,
+        "lunchBudgetKnown": false,
+        "dinnerBudgetKnown": false,
+        "addressKnown": false,
         "cuisineKnown": true
       },
       "nextAction": "dish_complete",
@@ -27461,7 +27364,7 @@
       "crawlableOfficialUrlCount": 1,
       "retainedThirdPartyUrlCount": 1,
       "recommendedDishesKnown": 1,
-      "featuredDishesKnown": 6,
+      "featuredDishesKnown": 7,
       "dishGaps": [],
       "secondaryMetadata": {
         "openingHoursKnown": true,
@@ -27530,7 +27433,7 @@
       "featuredDishesKnown": 6,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -27550,6 +27453,28 @@
       "retainedThirdPartyUrlCount": 0,
       "recommendedDishesKnown": 1,
       "featuredDishesKnown": 6,
+      "dishGaps": [],
+      "secondaryMetadata": {
+        "openingHoursKnown": false,
+        "lunchBudgetKnown": false,
+        "dinnerBudgetKnown": false,
+        "addressKnown": true,
+        "cuisineKnown": true
+      },
+      "nextAction": "dish_complete",
+      "priorityScore": 0
+    },
+    {
+      "googlePlaceId": "ChIJzdGFLRqMGGAR3t3hMZeXnQ8",
+      "name": "Starbucks",
+      "basicInfoState": "source_matched",
+      "cuisine": "咖啡",
+      "distanceMeters": 772,
+      "sourceUrlCount": 1,
+      "crawlableOfficialUrlCount": 1,
+      "retainedThirdPartyUrlCount": 0,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 1,
       "dishGaps": [],
       "secondaryMetadata": {
         "openingHoursKnown": false,
@@ -27684,7 +27609,7 @@
       "featuredDishesKnown": 6,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": true,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -27703,7 +27628,7 @@
       "crawlableOfficialUrlCount": 2,
       "retainedThirdPartyUrlCount": 0,
       "recommendedDishesKnown": 1,
-      "featuredDishesKnown": 6,
+      "featuredDishesKnown": 8,
       "dishGaps": [],
       "secondaryMetadata": {
         "openingHoursKnown": true,
@@ -27728,7 +27653,7 @@
       "featuredDishesKnown": 2,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": true,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -27747,7 +27672,7 @@
       "crawlableOfficialUrlCount": 0,
       "retainedThirdPartyUrlCount": 1,
       "recommendedDishesKnown": 1,
-      "featuredDishesKnown": 6,
+      "featuredDishesKnown": 8,
       "dishGaps": [],
       "secondaryMetadata": {
         "openingHoursKnown": true,
@@ -27901,7 +27826,7 @@
       "crawlableOfficialUrlCount": 0,
       "retainedThirdPartyUrlCount": 1,
       "recommendedDishesKnown": 1,
-      "featuredDishesKnown": 6,
+      "featuredDishesKnown": 7,
       "dishGaps": [],
       "secondaryMetadata": {
         "openingHoursKnown": true,
@@ -27967,7 +27892,7 @@
       "crawlableOfficialUrlCount": 2,
       "retainedThirdPartyUrlCount": 0,
       "recommendedDishesKnown": 1,
-      "featuredDishesKnown": 6,
+      "featuredDishesKnown": 7,
       "dishGaps": [],
       "secondaryMetadata": {
         "openingHoursKnown": true,
@@ -28033,7 +27958,7 @@
       "crawlableOfficialUrlCount": 0,
       "retainedThirdPartyUrlCount": 2,
       "recommendedDishesKnown": 2,
-      "featuredDishesKnown": 6,
+      "featuredDishesKnown": 7,
       "dishGaps": [],
       "secondaryMetadata": {
         "openingHoursKnown": true,
@@ -28077,7 +28002,7 @@
       "crawlableOfficialUrlCount": 0,
       "retainedThirdPartyUrlCount": 1,
       "recommendedDishesKnown": 2,
-      "featuredDishesKnown": 6,
+      "featuredDishesKnown": 8,
       "dishGaps": [],
       "secondaryMetadata": {
         "openingHoursKnown": true,
@@ -28429,10 +28354,10 @@
       "crawlableOfficialUrlCount": 0,
       "retainedThirdPartyUrlCount": 1,
       "recommendedDishesKnown": 2,
-      "featuredDishesKnown": 6,
+      "featuredDishesKnown": 8,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -28451,7 +28376,7 @@
       "crawlableOfficialUrlCount": 0,
       "retainedThirdPartyUrlCount": 1,
       "recommendedDishesKnown": 3,
-      "featuredDishesKnown": 6,
+      "featuredDishesKnown": 7,
       "dishGaps": [],
       "secondaryMetadata": {
         "openingHoursKnown": true,
@@ -28476,7 +28401,7 @@
       "featuredDishesKnown": 1,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": false,
         "addressKnown": true,
@@ -28498,7 +28423,7 @@
       "featuredDishesKnown": 4,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": true,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -28542,7 +28467,7 @@
       "featuredDishesKnown": 5,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": true,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -28564,7 +28489,7 @@
       "featuredDishesKnown": 1,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -28759,7 +28684,7 @@
       "crawlableOfficialUrlCount": 2,
       "retainedThirdPartyUrlCount": 0,
       "recommendedDishesKnown": 1,
-      "featuredDishesKnown": 6,
+      "featuredDishesKnown": 7,
       "dishGaps": [],
       "secondaryMetadata": {
         "openingHoursKnown": true,
@@ -28781,7 +28706,7 @@
       "crawlableOfficialUrlCount": 2,
       "retainedThirdPartyUrlCount": 1,
       "recommendedDishesKnown": 1,
-      "featuredDishesKnown": 6,
+      "featuredDishesKnown": 7,
       "dishGaps": [],
       "secondaryMetadata": {
         "openingHoursKnown": true,
@@ -28806,7 +28731,7 @@
       "featuredDishesKnown": 6,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -28825,7 +28750,7 @@
       "crawlableOfficialUrlCount": 0,
       "retainedThirdPartyUrlCount": 1,
       "recommendedDishesKnown": 4,
-      "featuredDishesKnown": 6,
+      "featuredDishesKnown": 7,
       "dishGaps": [],
       "secondaryMetadata": {
         "openingHoursKnown": true,
@@ -28869,7 +28794,7 @@
       "crawlableOfficialUrlCount": 0,
       "retainedThirdPartyUrlCount": 1,
       "recommendedDishesKnown": 3,
-      "featuredDishesKnown": 6,
+      "featuredDishesKnown": 7,
       "dishGaps": [],
       "secondaryMetadata": {
         "openingHoursKnown": true,
@@ -28916,7 +28841,7 @@
       "featuredDishesKnown": 3,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": true,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -28938,7 +28863,7 @@
       "featuredDishesKnown": 6,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -29048,7 +28973,7 @@
       "featuredDishesKnown": 6,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -29089,7 +29014,7 @@
       "crawlableOfficialUrlCount": 0,
       "retainedThirdPartyUrlCount": 1,
       "recommendedDishesKnown": 2,
-      "featuredDishesKnown": 6,
+      "featuredDishesKnown": 7,
       "dishGaps": [],
       "secondaryMetadata": {
         "openingHoursKnown": true,
@@ -29114,7 +29039,7 @@
       "featuredDishesKnown": 1,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -29161,6 +29086,28 @@
         "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": true,
+        "addressKnown": true,
+        "cuisineKnown": true
+      },
+      "nextAction": "dish_complete",
+      "priorityScore": 0
+    },
+    {
+      "googlePlaceId": "ChIJeVvqqgSMGGARKrc6kVNUBh4",
+      "name": "Starbucks",
+      "basicInfoState": "source_matched",
+      "cuisine": "咖啡",
+      "distanceMeters": 902,
+      "sourceUrlCount": 1,
+      "crawlableOfficialUrlCount": 1,
+      "retainedThirdPartyUrlCount": 0,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 1,
+      "dishGaps": [],
+      "secondaryMetadata": {
+        "openingHoursKnown": false,
+        "lunchBudgetKnown": false,
+        "dinnerBudgetKnown": false,
         "addressKnown": true,
         "cuisineKnown": true
       },
@@ -29287,7 +29234,7 @@
       "crawlableOfficialUrlCount": 4,
       "retainedThirdPartyUrlCount": 0,
       "recommendedDishesKnown": 4,
-      "featuredDishesKnown": 6,
+      "featuredDishesKnown": 7,
       "dishGaps": [],
       "secondaryMetadata": {
         "openingHoursKnown": true,
@@ -29441,7 +29388,7 @@
       "crawlableOfficialUrlCount": 0,
       "retainedThirdPartyUrlCount": 1,
       "recommendedDishesKnown": 2,
-      "featuredDishesKnown": 6,
+      "featuredDishesKnown": 8,
       "dishGaps": [],
       "secondaryMetadata": {
         "openingHoursKnown": true,
@@ -29532,7 +29479,7 @@
       "featuredDishesKnown": 2,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -29598,7 +29545,7 @@
       "featuredDishesKnown": 5,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -29705,7 +29652,7 @@
       "crawlableOfficialUrlCount": 2,
       "retainedThirdPartyUrlCount": 0,
       "recommendedDishesKnown": 3,
-      "featuredDishesKnown": 5,
+      "featuredDishesKnown": 6,
       "dishGaps": [],
       "secondaryMetadata": {
         "openingHoursKnown": true,
@@ -29881,7 +29828,7 @@
       "crawlableOfficialUrlCount": 9,
       "retainedThirdPartyUrlCount": 0,
       "recommendedDishesKnown": 3,
-      "featuredDishesKnown": 6,
+      "featuredDishesKnown": 7,
       "dishGaps": [],
       "secondaryMetadata": {
         "openingHoursKnown": true,
@@ -29906,7 +29853,7 @@
       "featuredDishesKnown": 4,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -29928,7 +29875,7 @@
       "featuredDishesKnown": 1,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -29950,7 +29897,7 @@
       "featuredDishesKnown": 5,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -29972,7 +29919,7 @@
       "featuredDishesKnown": 3,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -30431,7 +30378,7 @@
       "crawlableOfficialUrlCount": 2,
       "retainedThirdPartyUrlCount": 0,
       "recommendedDishesKnown": 1,
-      "featuredDishesKnown": 2,
+      "featuredDishesKnown": 3,
       "dishGaps": [],
       "secondaryMetadata": {
         "openingHoursKnown": true,
@@ -30519,7 +30466,7 @@
       "crawlableOfficialUrlCount": 2,
       "retainedThirdPartyUrlCount": 0,
       "recommendedDishesKnown": 1,
-      "featuredDishesKnown": 6,
+      "featuredDishesKnown": 7,
       "dishGaps": [],
       "secondaryMetadata": {
         "openingHoursKnown": true,
@@ -30673,7 +30620,7 @@
       "crawlableOfficialUrlCount": 0,
       "retainedThirdPartyUrlCount": 1,
       "recommendedDishesKnown": 3,
-      "featuredDishesKnown": 6,
+      "featuredDishesKnown": 7,
       "dishGaps": [],
       "secondaryMetadata": {
         "openingHoursKnown": true,
@@ -30786,7 +30733,7 @@
       "featuredDishesKnown": 1,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -30805,7 +30752,7 @@
       "crawlableOfficialUrlCount": 1,
       "retainedThirdPartyUrlCount": 1,
       "recommendedDishesKnown": 1,
-      "featuredDishesKnown": 6,
+      "featuredDishesKnown": 7,
       "dishGaps": [],
       "secondaryMetadata": {
         "openingHoursKnown": true,
@@ -30959,10 +30906,10 @@
       "crawlableOfficialUrlCount": 0,
       "retainedThirdPartyUrlCount": 1,
       "recommendedDishesKnown": 1,
-      "featuredDishesKnown": 6,
+      "featuredDishesKnown": 7,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -31116,7 +31063,7 @@
       "featuredDishesKnown": 6,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": false,
         "addressKnown": true,
@@ -31443,10 +31390,10 @@
       "crawlableOfficialUrlCount": 0,
       "retainedThirdPartyUrlCount": 1,
       "recommendedDishesKnown": 1,
-      "featuredDishesKnown": 6,
+      "featuredDishesKnown": 7,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -31509,7 +31456,7 @@
       "crawlableOfficialUrlCount": 0,
       "retainedThirdPartyUrlCount": 1,
       "recommendedDishesKnown": 3,
-      "featuredDishesKnown": 6,
+      "featuredDishesKnown": 7,
       "dishGaps": [],
       "secondaryMetadata": {
         "openingHoursKnown": true,
@@ -31531,10 +31478,10 @@
       "crawlableOfficialUrlCount": 0,
       "retainedThirdPartyUrlCount": 1,
       "recommendedDishesKnown": 1,
-      "featuredDishesKnown": 6,
+      "featuredDishesKnown": 7,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -31600,7 +31547,7 @@
       "featuredDishesKnown": 6,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -31732,7 +31679,7 @@
       "featuredDishesKnown": 1,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -31996,7 +31943,7 @@
       "featuredDishesKnown": 6,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": false,
         "addressKnown": true,
@@ -32125,7 +32072,7 @@
       "crawlableOfficialUrlCount": 0,
       "retainedThirdPartyUrlCount": 1,
       "recommendedDishesKnown": 1,
-      "featuredDishesKnown": 6,
+      "featuredDishesKnown": 9,
       "dishGaps": [],
       "secondaryMetadata": {
         "openingHoursKnown": true,
@@ -32216,7 +32163,7 @@
       "featuredDishesKnown": 6,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -32455,7 +32402,7 @@
       "crawlableOfficialUrlCount": 0,
       "retainedThirdPartyUrlCount": 1,
       "recommendedDishesKnown": 2,
-      "featuredDishesKnown": 6,
+      "featuredDishesKnown": 7,
       "dishGaps": [],
       "secondaryMetadata": {
         "openingHoursKnown": true,
@@ -32499,7 +32446,7 @@
       "crawlableOfficialUrlCount": 0,
       "retainedThirdPartyUrlCount": 1,
       "recommendedDishesKnown": 1,
-      "featuredDishesKnown": 6,
+      "featuredDishesKnown": 7,
       "dishGaps": [],
       "secondaryMetadata": {
         "openingHoursKnown": true,
@@ -32587,7 +32534,7 @@
       "crawlableOfficialUrlCount": 0,
       "retainedThirdPartyUrlCount": 1,
       "recommendedDishesKnown": 1,
-      "featuredDishesKnown": 6,
+      "featuredDishesKnown": 8,
       "dishGaps": [],
       "secondaryMetadata": {
         "openingHoursKnown": true,
@@ -32722,7 +32669,7 @@
       "featuredDishesKnown": 2,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": false,
         "addressKnown": true,
@@ -32763,10 +32710,10 @@
       "crawlableOfficialUrlCount": 0,
       "retainedThirdPartyUrlCount": 1,
       "recommendedDishesKnown": 1,
-      "featuredDishesKnown": 6,
+      "featuredDishesKnown": 7,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -32832,7 +32779,7 @@
       "featuredDishesKnown": 3,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -32854,7 +32801,7 @@
       "featuredDishesKnown": 4,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -32876,7 +32823,7 @@
       "featuredDishesKnown": 6,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -32917,7 +32864,7 @@
       "crawlableOfficialUrlCount": 0,
       "retainedThirdPartyUrlCount": 1,
       "recommendedDishesKnown": 2,
-      "featuredDishesKnown": 6,
+      "featuredDishesKnown": 8,
       "dishGaps": [],
       "secondaryMetadata": {
         "openingHoursKnown": true,
@@ -32986,7 +32933,7 @@
       "featuredDishesKnown": 5,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": false,
         "addressKnown": true,
@@ -33030,7 +32977,7 @@
       "featuredDishesKnown": 3,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -33056,6 +33003,28 @@
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
+        "cuisineKnown": true
+      },
+      "nextAction": "dish_complete",
+      "priorityScore": 0
+    },
+    {
+      "googlePlaceId": "ChIJBwhgUwKMGGARjoO2N1BAAdk",
+      "name": "やよい軒",
+      "basicInfoState": "canonical",
+      "cuisine": "日式",
+      "distanceMeters": 1172,
+      "sourceUrlCount": 1,
+      "crawlableOfficialUrlCount": 1,
+      "retainedThirdPartyUrlCount": 0,
+      "recommendedDishesKnown": 3,
+      "featuredDishesKnown": 3,
+      "dishGaps": [],
+      "secondaryMetadata": {
+        "openingHoursKnown": false,
+        "lunchBudgetKnown": false,
+        "dinnerBudgetKnown": false,
+        "addressKnown": false,
         "cuisineKnown": true
       },
       "nextAction": "dish_complete",
@@ -33159,7 +33128,7 @@
       "crawlableOfficialUrlCount": 0,
       "retainedThirdPartyUrlCount": 1,
       "recommendedDishesKnown": 1,
-      "featuredDishesKnown": 6,
+      "featuredDishesKnown": 7,
       "dishGaps": [],
       "secondaryMetadata": {
         "openingHoursKnown": true,
@@ -33250,7 +33219,7 @@
       "featuredDishesKnown": 4,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": false,
         "addressKnown": true,
@@ -33514,7 +33483,7 @@
       "featuredDishesKnown": 2,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": false,
         "addressKnown": true,
@@ -33602,7 +33571,7 @@
       "featuredDishesKnown": 3,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": false,
         "addressKnown": true,
@@ -33712,7 +33681,7 @@
       "featuredDishesKnown": 1,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
@@ -33800,7 +33769,7 @@
       "featuredDishesKnown": 6,
       "dishGaps": [],
       "secondaryMetadata": {
-        "openingHoursKnown": false,
+        "openingHoursKnown": true,
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": true,
         "addressKnown": true,
