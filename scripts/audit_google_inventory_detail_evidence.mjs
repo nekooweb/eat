@@ -2,6 +2,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { allowedDishEvidenceProviderSet } from './dish_evidence_provider_policy.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, '..');
@@ -17,10 +18,10 @@ let recommendationItems = 0;
 let featuredItems = 0;
 const HAN_RE = /[\u3400-\u9fff]/u;
 const KANA_RE = /[\u3040-\u30ff]/u;
-// Providers are explicit, reviewed evidence origins only. Keep this list in
-// sync with the maintained source-fact providers that are allowed to emit
+// Providers are explicit, reviewed evidence origins only. Keep this closed list
+// in sync with the maintained source-fact providers that are allowed to emit
 // dish evidence; do not replace it with an open-ended provider pass-through.
-const allowedProviders = new Set(['Hot Pepper', 'sourceWebsite', 'Tabelog', 'official', 'Visit Chiyoda']);
+const allowedProviders = allowedDishEvidenceProviderSet();
 const allowedRecommendationClasses = new Set([
   'source_recommendation_text',
   'source_pdf_recommendation_text'
