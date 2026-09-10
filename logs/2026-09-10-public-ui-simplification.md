@@ -38,3 +38,14 @@
 - 修复后需通过同义过滤、不变性、随机分组、未知行省略、折叠摘要、输出转义、署名和核心字段测试，再核对真实浏览器操作。
 
 最终验证状态将在完成后追加。
+
+## 最终验证
+
+验证时间：2026-09-10（GitHub Actions 时间约 05:24–05:25 UTC）。
+
+- 修复后 PR Review run `34440904706` 的 validate job 成功：10 个回归测试全部通过（10 pass、0 fail）。
+- PR Pages preview run `34440904753` 的 build job 成功。
+- PR #56 已 squash 合并到主线，合并提交为 `94ebc8b68eb889c4eecffe329b9e83ef57de3bec`。
+- 主线无付费数据 API 检查 run `34440992992` 成功；同一提交的 GitHub Pages run `34440993057` 的 build/deploy jobs 均成功。
+- 真实浏览器打开生产页 `https://nekooweb.github.io/eat/`：默认 12 个菜系与「更多菜系（38）」均可见；更多菜系可展开/收起且保留「已排除 1 项」状态；筛选后显示 47 家候选并生成 3 张餐厅卡片，位置总览/单店地图、OpenStreetMap 署名和普通 Google Maps 导航链接可见；三家对比默认收起，点击后可展开并显示已知字段。
+- 本轮仍未发起餐厅采集、SQLite reset 或主库替换；`PIPELINE_ISSUES.md` 中的数据层 P0/P1 问题保持待修状态。
