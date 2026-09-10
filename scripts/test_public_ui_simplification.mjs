@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import vm from 'node:vm';
 import { test } from 'node:test';
 
-function boot(rows) {
+function boot(rows, randomValue = 0) {
   const nodes = new Map();
   function node(selector) {
     if (!nodes.has(selector)) nodes.set(selector, {
@@ -13,13 +13,13 @@ function boot(rows) {
     });
     return nodes.get(selector);
   }
-  ['#rejects','#stats','#results','#generate','[data-filter-module="budget"]'].forEach(node);
+  ['#rejects','#stats','#results','#generate','[data-filter-module="budget"]','[data-filter-module="food"]','#more-cuisines-summary'].forEach(node);
   const ctx = {
     window: { GOOGLE_INVENTORY_RESTAURANTS: rows, GOOGLE_INVENTORY_STATS: {
       inventoryTotal: rows.length, namedBasic: rows.length, placeIdOnly: 0, catalogTotal: 2804
     }},
-    document: {querySelector: node, querySelectorAll: () => []},
-    crypto: {getRandomValues(array) {array.fill(0);return array;}},
+    document: {querySelector: selector => nodes.get(selector) || null, querySelectorAll: () => []},
+    crypto: {getRandomValues(array) {array.fill(randomValue);return array;}},
     console, requestAnimationFrame: callback => callback()
   };
   vm.createContext(ctx);
@@ -28,7 +28,7 @@ function boot(rows) {
     node,
     generate() {node('#generate').onclick();return node('#results').innerHTML;},
     exclude(tag) {
-      const button={dataset:{tag},classList:{toggle(){}}};
+      const button={dataset:{tag},classList:{toggle(){}},setAttribute(){}};
       node('#rejects').handlers.click({target:{closest:()=>button}});
     }
   };
@@ -73,7 +73,7 @@ test('comparison is opt-in and entirely unknown fields do not produce rows',()=>
   assert.match(html,/<details[^>]*class="[^"]*compare-panel/);
   assert.doesNotMatch(html,/<details[^>]*compare-panel[^>]*\bopen(?:[ >])/);
   const table=html.match(/<tbody>([\s\S]*?)<\/tbody>/)?.[1]||'';
-  assert.doesNotMatch(table,/<th>(?:预算|推荐\/特色菜|营业时间|百名店)<\/th>/);
+  assert.doesNotMatch(table,/<th[^>]*>(?:预算|推荐\/特色菜|营业时间|百名店)<\/th>/);
   assert.equal((html.match(/<article class="card result-card">/g)||[]).length,3);
   assert.match(html,/id="overview-map"/);
   assert.match(html,/query_place_id=/);
@@ -98,4 +98,28 @@ test('footer retains attribution and legal links without internal pipeline narra
   assert.match(footer,/ホットペッパー/);assert.match(footer,/OpenStreetMap/);
   assert.match(footer,/privacy.html/);assert.match(footer,/terms.html/);
   assert.ok((footer.match(/<p>/g)||[]).length<=3);
+});
+
+test('normalized cuisine grouping avoids two aliases when three real cuisines exist',()=>{
+  const rows=[restaurant('中餐甲','中华'),restaurant('中餐乙','中華'),
+    restaurant('韩餐甲','韩国菜'),restaurant('拉面甲','拉面')];
+  const html=boot(rows,0).generate();
+  const names=[...html.matchAll(/<h2>([^<]+)<\/h2>/g)].map(x=>x[1]);
+  assert.equal(names.filter(x=>x.startsWith('中餐')).length,1);
+  assert.ok(names.includes('韩餐甲'));
+  assert.ok(names.includes('拉面甲'));
+});
+
+test('more-cuisines summary reveals active exclusions while collapsed',()=>{
+  const page=boot(Array.from({length:20},(_,i)=>restaurant('店'+i,'类别'+String(i).padStart(2,'0'))));
+  page.exclude('类别19');
+  assert.match(page.node('#more-cuisines-summary').textContent,/已排除 1 项/);
+  page.exclude('类别19');
+  assert.doesNotMatch(page.node('#more-cuisines-summary').textContent,/已排除/);
+});
+
+test('restaurant text remains escaped in card and comparison markup',()=>{
+  const html=boot([restaurant('<script>甲</script>','中华'),restaurant('乙','咖啡'),restaurant('丙','日式')]).generate();
+  assert.doesNotMatch(html,/<script>甲<\/script>/);
+  assert.match(html,/&lt;script&gt;甲&lt;\/script&gt;/);
 });
