@@ -31,6 +31,7 @@ jobs:
         run: |
           set -euo pipefail
           node scripts/audit_no_paid_apis.mjs
+          node scripts/test_runtime_catalog_contract.mjs
           python scripts/reload_data.py --public-only --outdir /tmp/strict-gap-baseline
           node - <<'NODE'
           const fs=require('fs'),vm=require('vm');
@@ -49,7 +50,11 @@ jobs:
           const x=JSON.parse(fs.readFileSync('/tmp/strict-gap-evidence.json','utf8'));
           if(x.policy?.networkRequests!==0||x.policy?.paidGoogleDataApiCalls!==0||x.policy?.identityMutationAllowed!==false) throw new Error('strict gap source boundary failed');
           if(x.policy?.recommendationRequiresExplicitMarker!==true||x.policy?.recommendationRequiresConcreteSourceNativeDishRule!==true) throw new Error('strict recommendation semantics weakened');
-          if(x.summary?.recommendationRestaurants<1||x.summary?.recommendationItems<1) throw new Error('no strict recommendation increment candidates');
+          if(x.policy?.outputOnlyCurrentRecommendationGaps!==true||x.policy?.zeroGapIsValid!==true) throw new Error('strict gap updater must be gap-only and idempotent');
+          if(!String(x.policy?.publicRuntimeCountPolicy||'').startsWith('dynamic;')) throw new Error('strict gap updater regressed to a fixed public runtime count');
+          const s=x.summary||{};
+          if(Number(s.recommendationRestaurants||0)!==(x.rows||[]).length) throw new Error('strict recommendation row-count mismatch');
+          if(Number(s.recommendationItems||0)!==(x.rows||[]).reduce((n,row)=>n+(row.recommendedDishes||[]).length,0)) throw new Error('strict recommendation item-count mismatch');
           console.log('STRICT_GAP_BUILD='+JSON.stringify(x.summary));
           NODE
       - name: Merge and audit recommendation evidence
@@ -64,7 +69,7 @@ jobs:
             data/google_inventory_detail_evidence.json \
             data/google_inventory_detail_evidence.json | tee /tmp/strict-gap-specificity.log
           node scripts/audit_google_inventory_detail_evidence.mjs
-      - name: Rebuild and require recommendation growth
+      - name: Rebuild and require exact recommendation growth
         run: |
           set -euo pipefail
           python scripts/reload_data.py --public-only --outdir /tmp/strict-gap-after
@@ -76,11 +81,11 @@ jobs:
           vm.runInContext(fs.readFileSync('data/google_inventory_runtime.js','utf8'),sandbox);
           const after=sandbox.window.GOOGLE_INVENTORY_STATS||{};
           const delta=Number(after.recommendedDishesKnown||0)-Number(before.recommendedDishesKnown||0);
-          if(delta<1) throw new Error(`strict recommendation count did not grow: ${before.recommendedDishesKnown} -> ${after.recommendedDishesKnown}`);
-          if(delta>Number(built.summary?.recommendationRestaurants||0)) throw new Error('recommendation delta exceeds source-backed candidate count');
+          const expected=Number(built.summary?.recommendationRestaurants||0);
+          if(delta!==expected) throw new Error(`strict recommendation delta mismatch: actual=${delta} expected=${expected}`);
           if(Number(after.featuredDishesKnown||0)<Number(before.featuredDishesKnown||0)||Number(after.chineseDishDisplayRows||0)<Number(before.chineseDishDisplayRows||0)) throw new Error('non-monotonic dish coverage');
-          fs.writeFileSync('/tmp/strict-gap-delta.json',JSON.stringify({before,after,delta},null,2)+'\n');
-          console.log('STRICT_GAP_DELTA='+JSON.stringify({recommended:delta,afterRecommended:after.recommendedDishesKnown,afterFeatured:after.featuredDishesKnown,afterDisplay:after.chineseDishDisplayRows,afterNoDish:after.unfilledDishRows}));
+          fs.writeFileSync('/tmp/strict-gap-delta.json',JSON.stringify({before,after,expected,delta},null,2)+'\n');
+          console.log('STRICT_GAP_DELTA='+JSON.stringify({recommended:delta,expected,afterRecommended:after.recommendedDishesKnown,afterFeatured:after.featuredDishesKnown,afterDisplay:after.chineseDishDisplayRows,afterNoDish:after.unfilledDishRows}));
           NODE
           node scripts/audit_google_inventory_detail_evidence.mjs
           node scripts/audit_no_paid_apis.mjs
