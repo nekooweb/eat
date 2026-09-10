@@ -1,6 +1,6 @@
 # 后续数据载入：字段契约与执行方案
 
-更新日期：2026-09-08。当前仅准备代码与方案；不继续采集，不自动替换本地主库。修复位于 [PR #32](https://github.com/nekooweb/eat/pull/32)，待后续合并/运行。
+更新日期：2026-09-10。PR #32 已合并；字段载入和数据库边界仍保留。公开页面的精简规则另见 [PUBLIC_UI_FIELDS](PUBLIC_UI_FIELDS.md)，数据层待修事项见 [PIPELINE_ISSUES](PIPELINE_ISSUES.md)。本次 UI 修改不触发餐厅采集或主库替换。
 
 ## 1. 保留字段
 
@@ -37,7 +37,7 @@
 
 ## 4. 后续运行顺序
 
-1. 合并 PR 前确认 diff 范围与检查结果；当前保留原始来源和备份。
+1. 运行前确认当前提交和验证结果；保留原始来源及备份。
 2. 需要刷新网页/队列时运行：
    `python3 scripts/reload_data.py --public-only --outdir _audit/data-reload`。
    该操作不更新 SQLite，不采集网站。
