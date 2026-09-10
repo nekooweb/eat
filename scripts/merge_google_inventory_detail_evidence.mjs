@@ -37,9 +37,11 @@ function mergeItems(oldItems = [], newItems = []) {
       map.set(key, item);
     }
   }
+  // The evidence store is a monotonic provenance layer, not a presentation
+  // payload. Keep the complete deduplicated union here; bounded display/export
+  // layers may select a smaller recent subset without destroying old evidence.
   return [...map.values()]
-    .sort((a, b) => String(b.checkedAt || '').localeCompare(String(a.checkedAt || '')) || itemKey(a).localeCompare(itemKey(b)))
-    .slice(0, 6);
+    .sort((a, b) => String(b.checkedAt || '').localeCompare(String(a.checkedAt || '')) || itemKey(a).localeCompare(itemKey(b)));
 }
 
 const byId = new Map();
@@ -81,14 +83,19 @@ const mergedCounts = counts({ rows });
 if (mergedCounts.recommendationRestaurants < before.recommendationRestaurants || mergedCounts.featuredRestaurants < before.featuredRestaurants) {
   throw new Error(`monotonic evidence regression: before=${JSON.stringify(before)} merged=${JSON.stringify(mergedCounts)}`);
 }
+if (mergedCounts.recommendationItems < before.recommendationItems || mergedCounts.featuredItems < before.featuredItems) {
+  throw new Error(`monotonic evidence item regression: before=${JSON.stringify(before)} merged=${JSON.stringify(mergedCounts)}`);
+}
 
 const payload = {
-  schemaVersion: Math.max(Number(previous.schemaVersion || 1), Number(current.schemaVersion || 1), 3),
+  schemaVersion: Math.max(Number(previous.schemaVersion || 1), Number(current.schemaVersion || 1), 4),
   checkedAt: [previous.checkedAt, current.checkedAt].filter(Boolean).sort().at(-1) || new Date().toISOString().slice(0, 10),
   policy: {
     ...(previous.policy || {}),
     ...(current.policy || {}),
-    evidenceRetention: 'monotonic union; previously verified source-backed evidence is retained when later crawls fail or return no match',
+    evidenceRetention: 'complete monotonic union; previously verified source-backed evidence is retained when later crawls fail, return no match, or add newer distinct evidence',
+    evidenceStorageItemLimit: null,
+    presentationItemLimitAppliedHere: false,
     dishEvidenceDedupeKey: 'nameZh + provider + sourceUrl + evidenceClass; source-native spelling is metadata only'
   },
   summary: {
