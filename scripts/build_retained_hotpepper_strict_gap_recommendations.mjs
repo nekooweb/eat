@@ -4,6 +4,7 @@ import path from 'node:path';
 import vm from 'node:vm';
 import { fileURLToPath } from 'node:url';
 import { RECOMMENDATION_MARKER } from './recommended_dish_extractor.mjs';
+import { assertRuntimeCatalogContract } from './runtime_catalog_contract.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, '..');
@@ -39,9 +40,7 @@ function sourceTexts(row) {
 }
 
 const runtime = loadWindowFile('google_inventory_runtime.js');
-const runtimeRows = runtime.GOOGLE_INVENTORY_RESTAURANTS || [];
-const stats = runtime.GOOGLE_INVENTORY_STATS || {};
-if (stats.catalogTotal !== 2804 || runtimeRows.length !== 1422) throw new Error('Unexpected public runtime baseline');
+const { rows: runtimeRows, stats } = assertRuntimeCatalogContract(runtime);
 const gapById = new Map(runtimeRows
   .filter((row) => !Array.isArray(row.recommendedDishes) || row.recommendedDishes.length === 0)
   .map((row) => [row.googlePlaceId, row]));
@@ -89,23 +88,26 @@ for (const sourceRow of catalog.rows || []) {
 
 rows.sort((a, b) => a.googlePlaceId.localeCompare(b.googlePlaceId));
 const payload = {
-  schemaVersion: 1,
+  schemaVersion: 2,
   checkedAt,
   policy: {
     source: 'retained Hot Pepper catalog facts only',
     networkRequests: 0,
     paidGoogleDataApiCalls: 0,
     catalogIdentityKey: 'frozen Place ID only',
+    publicRuntimeCountPolicy: 'dynamic; validate runtime stats and public+unpublished catalog reconciliation instead of a fixed named-row count',
     toolIdentityNameSource: 'runtime_catalog_name',
     identityMutationAllowed: false,
     recommendationRequiresExplicitMarker: true,
     recommendationRequiresConcreteSourceNativeDishRule: true,
     cuisineInferenceAllowed: false,
     restaurantNameInferenceAllowed: false,
-    automaticGenericPromotionAllowed: false
+    automaticGenericPromotionAllowed: false,
+    outputOnlyCurrentRecommendationGaps: true,
+    zeroGapIsValid: true
   },
   summary: {
-    catalogTotal: 2804,
+    catalogTotal: Number(stats.catalogTotal),
     publicRuntimeTotal: runtimeRows.length,
     recommendationGapRows: gapById.size,
     strictGapRules: STRICT_GAP_RULES.length,
