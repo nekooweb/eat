@@ -31,6 +31,8 @@ jobs:
         run: |
           set -euo pipefail
           node --check scripts/build_reviewed_current_chain_recommendations.mjs
+          node scripts/test_runtime_catalog_contract.mjs
+          node scripts/test_reviewed_current_chain_updater.mjs
           node scripts/audit_no_paid_apis.mjs
       - name: Rebuild baseline
         run: |
@@ -54,8 +56,9 @@ jobs:
           if(x.policy?.networkRequests!==0||x.policy?.paidGoogleDataApiCalls!==0||x.policy?.identityMutationAllowed!==false) throw new Error('current-chain batch crossed mutation boundary');
           if(x.policy?.sourceDomainMustAlreadyBeBoundToIdentity!==true||x.policy?.currentOfficialRecommendationHeadingOrPairingRequired!==true||x.policy?.automaticPromotionAllowed!==false) throw new Error('current-chain recommendation semantics weakened');
           if(x.policy?.alreadyRecommendedTargetsSkipped!==true||x.policy?.outputOnlyCurrentRecommendationGaps!==true) throw new Error('current-chain updater must be gap-only and idempotent');
+          if(!String(x.policy?.publicRuntimeCountPolicy||'').startsWith('dynamic;')) throw new Error('current-chain updater regressed to a fixed public runtime count');
           const s=x.summary||{};
-          if(s.reviewedRules!==11) throw new Error(`unexpected reviewed rule registry size: ${JSON.stringify(s)}`);
+          if(!Number.isInteger(Number(s.reviewedRules))||Number(s.reviewedRules)<=0) throw new Error(`invalid reviewed rule registry size: ${JSON.stringify(s)}`);
           if(Number(s.skippedAlreadyRecommendedRules||0)+Number(s.recommendationRestaurants||0)!==Number(s.reviewedRules||0)) throw new Error(`reviewed rule reconciliation failed: ${JSON.stringify(s)}`);
           if(Number(s.recommendationRestaurants||0)!==(x.rows||[]).length) throw new Error('current-chain output row count mismatch');
           if((x.rows||[]).some(row=>!row.googlePlaceId||!row.name||!(row.recommendedDishes||[]).length)) throw new Error('invalid current-chain evidence row');

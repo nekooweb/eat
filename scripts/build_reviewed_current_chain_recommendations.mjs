@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import vm from 'node:vm';
 import { fileURLToPath } from 'node:url';
+import { assertRuntimeCatalogContract } from './runtime_catalog_contract.mjs';
 
 const HERE=path.dirname(fileURLToPath(import.meta.url));
 const ROOT=path.resolve(HERE,'..');
@@ -20,6 +21,10 @@ const TULLYS=[
   ['ChIJM1B1zgWMGGAR04DJYO1QtR0','タリーズコーヒー 神田橋本郷通り店'],
   ['ChIJqxsi-ECMGGAR9MgoPJ4JWHw','タリーズコーヒー 飯田橋ガーデンエアタワー店'],
   ['ChIJV6X7zcWNGGARyT1xchJ9ukA',"Tully's Coffee"]
+];
+const YOSHINOYA=[
+  'ChIJGwjljhWMGGARjLafECSEbqA',
+  'ChIJ38dCzRqMGGAR9Awruuaqr_A'
 ];
 const RULES=[
   ...TULLYS.map(([googlePlaceId])=>({
@@ -76,16 +81,26 @@ const RULES=[
     ],
     evidenceSnippet:'夏辛ちゃんぽん。唐辛子と花椒オイルの辛味が溶けだしたとんこつスープ。辛党必食の一杯。',
     evidenceBasis:'official current seasonal product page explicitly calls 夏辛ちゃんぽん a 辛党必食の一杯'
-  }
+  },
+  ...YOSHINOYA.map((googlePlaceId)=>({
+    googlePlaceId,
+    id:`yoshinoya-current-recommended-menu-${googlePlaceId.slice(-6)}`,
+    hostSuffix:'yoshinoya.com',
+    sourceUrl:'https://www.yoshinoya.com/menu/',
+    dishes:[
+      {nameJa:'月見牛とじ御膳',nameZh:'月见牛肉滑蛋御膳'},
+      {nameJa:'極旨牛鉄板ステーキ定食',nameZh:'极旨铁板牛排套餐'}
+    ],
+    evidenceSnippet:'おすすめメニュー RECOMMENDED：月見牛とじ御膳/月見牛とじ丼、極旨牛鉄板ステーキ定食',
+    evidenceBasis:'official current Yoshinoya menu page explicitly lists these concrete dishes under おすすめメニュー / RECOMMENDED'
+  }))
 ];
 
 function loadWindowFile(filename){const sandbox={window:{},console};vm.createContext(sandbox);vm.runInContext(fs.readFileSync(path.join(DATA,filename),'utf8'),sandbox,{filename});return sandbox.window;}
 function hostOf(value){try{return new URL(String(value||'').trim()).hostname.toLowerCase().replace(/^www\./,'');}catch{return '';}}
 function hostMatches(host,suffix){return host===suffix||host.endsWith(`.${suffix}`);}
 const runtime=loadWindowFile('google_inventory_runtime.js');
-const runtimeRows=runtime.GOOGLE_INVENTORY_RESTAURANTS||[];
-const stats=runtime.GOOGLE_INVENTORY_STATS||{};
-if(stats.catalogTotal!==2804||runtimeRows.length!==1422) throw new Error('Unexpected public runtime baseline');
+const {rows:runtimeRows,stats}=assertRuntimeCatalogContract(runtime);
 const runtimeById=new Map(runtimeRows.map(r=>[r.googlePlaceId,r]));
 const provenance=loadWindowFile('source_provenance.js').SOURCE_PROVENANCE||{rows:[]};
 const provById=new Map((provenance.rows||[]).map(r=>[r.googlePlaceId,r]));
@@ -114,6 +129,6 @@ for(const rule of RULES){
   }
   rows.push({googlePlaceId:rule.googlePlaceId,name:row.name,recommendedDishes:rule.dishes.map(d=>({nameZh:d.nameZh,nameJa:d.nameJa,provider:'sourceWebsite',sourceUrl:rule.sourceUrl,checkedAt:CHECKED_AT,evidenceClass:'source_recommendation_text',evidenceRule:`reviewed-current-chain:${rule.id}`,evidenceSnippet:rule.evidenceSnippet.slice(0,90)})),featuredDishes:[]});
 }
-const payload={schemaVersion:2,checkedAt:CHECKED_AT,policy:{source:'current official chain pages whose domain is already bound to each target identity',networkRequests:0,paidGoogleDataApiCalls:0,catalogIdentityKey:'frozen Place ID only',toolIdentityNameSource:'runtime_catalog_name',identityMutationAllowed:false,sourceDomainMustAlreadyBeBoundToIdentity:true,currentOfficialRecommendationHeadingOrPairingRequired:true,chainWideApplicationAllowedOnlyForCurrentChainMenuOrCampaign:true,genericCuisinePromotionAllowed:false,automaticPromotionAllowed:false,alreadyRecommendedTargetsSkipped:true,outputOnlyCurrentRecommendationGaps:true},summary:{catalogTotal:2804,publicRuntimeTotal:runtimeRows.length,reviewedRules:RULES.length,skippedAlreadyRecommendedRules:skippedAlreadyRecommended.length,recommendationRestaurants:rows.length,recommendationItems:rows.reduce((s,r)=>s+r.recommendedDishes.length,0)},skippedAlreadyRecommended,rows};
+const payload={schemaVersion:3,checkedAt:CHECKED_AT,policy:{source:'current official chain pages whose domain is already bound to each target identity',networkRequests:0,paidGoogleDataApiCalls:0,catalogIdentityKey:'frozen Place ID only',publicRuntimeCountPolicy:'dynamic; validate runtime stats and public+unpublished catalog reconciliation instead of a fixed named-row count',toolIdentityNameSource:'runtime_catalog_name',identityMutationAllowed:false,sourceDomainMustAlreadyBeBoundToIdentity:true,currentOfficialRecommendationHeadingOrPairingRequired:true,chainWideApplicationAllowedOnlyForCurrentChainMenuOrCampaign:true,genericCuisinePromotionAllowed:false,automaticPromotionAllowed:false,alreadyRecommendedTargetsSkipped:true,outputOnlyCurrentRecommendationGaps:true},summary:{catalogTotal:Number(stats.catalogTotal),publicRuntimeTotal:runtimeRows.length,reviewedRules:RULES.length,skippedAlreadyRecommendedRules:skippedAlreadyRecommended.length,recommendationRestaurants:rows.length,recommendationItems:rows.reduce((s,r)=>s+r.recommendedDishes.length,0)},skippedAlreadyRecommended,rows};
 fs.mkdirSync(path.dirname(path.resolve(OUTPUT)),{recursive:true});fs.writeFileSync(OUTPUT,JSON.stringify(payload,null,2)+'\n','utf8');
 console.log(JSON.stringify(payload.summary));for(const row of rows)console.log(JSON.stringify({googlePlaceId:row.googlePlaceId,name:row.name,dishes:row.recommendedDishes.map(d=>d.nameZh)}));

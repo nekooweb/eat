@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import vm from 'node:vm';
 import { fileURLToPath } from 'node:url';
+import { assertRuntimeCatalogContract } from './runtime_catalog_contract.mjs';
 
 const HERE=path.dirname(fileURLToPath(import.meta.url));
 const ROOT=path.resolve(HERE,'..');
@@ -23,9 +24,7 @@ function hostMatches(host,suffix){return host===suffix||host.endsWith(`.${suffix
 function isDoutorName(name){return /^(?:ドトールコーヒーショップ|DOUTOR\b|Doutor\b)/u.test(String(name||'').trim());}
 
 const runtime=loadWindowFile('google_inventory_runtime.js');
-const rows=runtime.GOOGLE_INVENTORY_RESTAURANTS||[];
-const stats=runtime.GOOGLE_INVENTORY_STATS||{};
-if(stats.catalogTotal!==2804||rows.length!==1422) throw new Error('Unexpected public runtime baseline');
+const {rows,stats}=assertRuntimeCatalogContract(runtime);
 const official=JSON.parse(fs.readFileSync(path.join(DATA,'reviewed_official_runtime_sources.json'),'utf8'));
 const officialById=new Map((official.rows||[]).map(row=>[row.googlePlaceId,row]));
 const provenance=loadWindowFile('source_provenance.js').SOURCE_PROVENANCE||{rows:[]};
@@ -59,13 +58,14 @@ const outputRows=targets.map(row=>({
 })).sort((a,b)=>a.googlePlaceId.localeCompare(b.googlePlaceId));
 
 const payload={
-  schemaVersion:1,
+  schemaVersion:2,
   checkedAt:CHECKED_AT,
   policy:{
     source:'current official DOUTOR seasonal recommendation menu',
     networkRequests:0,
     paidGoogleDataApiCalls:0,
     catalogIdentityKey:'frozen Place ID only',
+    publicRuntimeCountPolicy:'dynamic; validate runtime stats and public+unpublished catalog reconciliation instead of a fixed named-row count',
     toolIdentityNameSource:'runtime_catalog_name',
     identityMutationAllowed:false,
     targetNameMustBeDoutor:true,
@@ -76,7 +76,7 @@ const payload={
     automaticCrossBrandPromotionAllowed:false
   },
   summary:{
-    catalogTotal:2804,
+    catalogTotal:Number(stats.catalogTotal),
     publicRuntimeTotal:rows.length,
     doutorRuntimeRows:rows.filter(row=>isDoutorName(row.name)).length,
     reviewedOfficialDoutorRows:rows.filter(row=>isDoutorName(row.name)&&boundToOfficialDoutor(row)).length,

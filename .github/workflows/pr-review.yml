@@ -24,6 +24,8 @@ jobs:
             python3 scripts/reload_data.py --public-only --outdir _audit/pr-reload
             node scripts/test_dish_translation_gap_regression.mjs
             node scripts/test_detail_evidence_retention.mjs
+            node scripts/test_runtime_catalog_contract.mjs
+            node scripts/test_reviewed_current_chain_updater.mjs
             node scripts/test_tool_identity_name_contract.mjs
             node scripts/test_source_field_quarantine.mjs
             node scripts/test_independent_source_candidate_hardening.mjs
