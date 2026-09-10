@@ -32,7 +32,7 @@
     "ordinaryMenuDishBecomesFeaturedOnly": true,
     "shardIndex": 0,
     "shardCount": 1,
-    "source": "current official DOUTOR seasonal recommendation menu",
+    "source": "current official chain pages whose domain is already bound to each target identity",
     "eligibleBindings": [
       "strict_auto",
       "manual_exact"
@@ -149,35 +149,36 @@
     "reviewedOfficialDoutorDomainRequired": true,
     "existingStrictRecommendationMustBeAbsent": true,
     "currentOfficialRecommendationSectionRequired": true,
-    "automaticCrossBrandPromotionAllowed": false
+    "automaticCrossBrandPromotionAllowed": false,
+    "alreadyRecommendedTargetsSkipped": true,
+    "outputOnlyCurrentRecommendationGaps": true
   },
   "summary": {
     "catalogTotal": 2804,
     "publicRuntimeTotal": 1422,
-    "doutorRuntimeRows": 9,
-    "reviewedOfficialDoutorRows": 9,
-    "alreadyRecommendedDoutorRows": 7,
-    "recommendationGapRestaurants": 2,
-    "recommendationItems": 4,
+    "reviewedRules": 11,
+    "skippedAlreadyRecommendedRules": 9,
+    "recommendationRestaurants": 2,
+    "recommendationItems": 2,
     "previousEvidence": {
-      "recommendationRestaurants": 558,
+      "recommendationRestaurants": 560,
       "featuredRestaurants": 647,
       "evidenceRestaurants": 715,
-      "recommendationItems": 979,
+      "recommendationItems": 983,
       "featuredItems": 2504
     },
     "freshCrawlEvidence": {
       "recommendationRestaurants": 2,
       "featuredRestaurants": 0,
       "evidenceRestaurants": 2,
-      "recommendationItems": 4,
+      "recommendationItems": 2,
       "featuredItems": 0
     },
     "mergedEvidence": {
-      "recommendationRestaurants": 560,
+      "recommendationRestaurants": 562,
       "featuredRestaurants": 647,
-      "evidenceRestaurants": 715,
-      "recommendationItems": 983,
+      "evidenceRestaurants": 717,
+      "recommendationItems": 985,
       "featuredItems": 2504
     },
     "specificityCorrection": {
@@ -185,7 +186,7 @@
       "correctedItems": 0,
       "duplicateItemsRemoved": 0,
       "ruleCounts": {},
-      "recommendationItemsAfterCorrection": 983,
+      "recommendationItemsAfterCorrection": 985,
       "featuredItemsAfterCorrection": 2504
     }
   },
@@ -19341,6 +19342,23 @@
       ]
     },
     {
+      "googlePlaceId": "ChIJJ_D4jRmMGGARMpn_E26qUCA",
+      "name": "リンガーハット",
+      "recommendedDishes": [
+        {
+          "nameZh": "夏辣长崎什锦面",
+          "nameJa": "夏辛ちゃんぽん",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.ringerhut.jp/menu/seasonal/natsukara_cp_2026/",
+          "checkedAt": "2026-09-10",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "reviewed-current-chain:ringerhut-2026-natsukara-champon",
+          "evidenceSnippet": "夏辛ちゃんぽん。唐辛子と花椒オイルの辛味が溶けだしたとんこつスープ。辛党必食の一杯。"
+        }
+      ],
+      "featuredDishes": []
+    },
+    {
       "googlePlaceId": "ChIJj_lfWv2NGGARCofziNJc6j4",
       "name": "ラフェス神田小川町店",
       "recommendedDishes": [
@@ -35105,6 +35123,23 @@
           "evidenceSnippet": "渋皮栗のどら焼き 渋皮栗の餡の上に熊本・山江村産の和栗渋皮煮を贅沢にトッピング！ 650円（税込）"
         }
       ]
+    },
+    {
+      "googlePlaceId": "ChIJVaTZmWqMGGARH0x_mvWNJuc",
+      "name": "ガスト",
+      "recommendedDishes": [
+        {
+          "nameZh": "黑醋塔塔酱大份鸡排套餐",
+          "nameJa": "黒酢タルタルのビッグチキンカツ定食",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.skylark.co.jp/gusto/",
+          "checkedAt": "2026-09-10",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "reviewed-current-chain:gusto-current-big-chicken-katsu-recommendation",
+          "evidenceSnippet": "2026/07/16 おすすめメニュー：ガスト食堂。黒酢タルタルのビッグチキンカツ定食など、食欲そそるボリューム満点メニュー。"
+        }
+      ],
+      "featuredDishes": []
     },
     {
       "googlePlaceId": "ChIJVbq7MACNGGARy-x9zge2RrM",

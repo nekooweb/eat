@@ -7,20 +7,20 @@
     "publicRuntimeTotal": 1422,
     "unpublishedPlaceIdOnly": 1382,
     "runtimeBaselineComplete": true,
-    "recommendedDishesKnown": 588,
+    "recommendedDishesKnown": 590,
     "featuredDishesKnown": 656,
-    "displayDishKnown": 723,
-    "noDishGap": 699,
-    "recommendationGap": 834,
-    "recommendationGapWithAnyKnownSourceUrl": 560,
-    "recommendationGapWithCrawlableOfficialUrl": 226,
+    "displayDishKnown": 725,
+    "noDishGap": 697,
+    "recommendationGap": 832,
+    "recommendationGapWithAnyKnownSourceUrl": 558,
+    "recommendationGapWithCrawlableOfficialUrl": 224,
     "recommendationGapWithRetainedThirdPartyOnly": 318,
     "recommendationGapNeedingNewDishSource": 290,
     "actionCounts": {
-      "collect_strict_recommended_dishes": 226,
+      "collect_strict_recommended_dishes": 224,
       "extract_retained_dish_source": 318,
       "find_independent_dish_source": 290,
-      "collect_source_backed_featured_dishes": 67,
+      "collect_source_backed_featured_dishes": 69,
       "dish_complete": 521
     },
     "primaryGoal": "source-backed dish coverage",
@@ -922,31 +922,6 @@
       "priorityScore": 1150
     },
     {
-      "googlePlaceId": "ChIJVaTZmWqMGGARH0x_mvWNJuc",
-      "name": "ガスト",
-      "basicInfoState": "canonical",
-      "cuisine": "日式",
-      "distanceMeters": 653,
-      "sourceUrlCount": 1,
-      "crawlableOfficialUrlCount": 1,
-      "retainedThirdPartyUrlCount": 0,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "dishGaps": [
-        "recommendedDishes",
-        "featuredDishes"
-      ],
-      "secondaryMetadata": {
-        "openingHoursKnown": false,
-        "lunchBudgetKnown": false,
-        "dinnerBudgetKnown": false,
-        "addressKnown": false,
-        "cuisineKnown": true
-      },
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1150
-    },
-    {
       "googlePlaceId": "ChIJn1tmVgCNGGARIE-0f0iVnsQ",
       "name": "なぜ蕎麦にラー油を入れるのか。",
       "basicInfoState": "canonical",
@@ -1027,31 +1002,6 @@
       "basicInfoState": "canonical",
       "cuisine": "咖啡",
       "distanceMeters": 719,
-      "sourceUrlCount": 1,
-      "crawlableOfficialUrlCount": 1,
-      "retainedThirdPartyUrlCount": 0,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "dishGaps": [
-        "recommendedDishes",
-        "featuredDishes"
-      ],
-      "secondaryMetadata": {
-        "openingHoursKnown": false,
-        "lunchBudgetKnown": false,
-        "dinnerBudgetKnown": false,
-        "addressKnown": false,
-        "cuisineKnown": true
-      },
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1150
-    },
-    {
-      "googlePlaceId": "ChIJJ_D4jRmMGGARMpn_E26qUCA",
-      "name": "リンガーハット",
-      "basicInfoState": "canonical",
-      "cuisine": "日式",
-      "distanceMeters": 724,
       "sourceUrlCount": 1,
       "crawlableOfficialUrlCount": 1,
       "retainedThirdPartyUrlCount": 0,
@@ -21344,6 +21294,30 @@
       "priorityScore": 710
     },
     {
+      "googlePlaceId": "ChIJVaTZmWqMGGARH0x_mvWNJuc",
+      "name": "ガスト",
+      "basicInfoState": "canonical",
+      "cuisine": "日式",
+      "distanceMeters": 653,
+      "sourceUrlCount": 1,
+      "crawlableOfficialUrlCount": 1,
+      "retainedThirdPartyUrlCount": 0,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 0,
+      "dishGaps": [
+        "featuredDishes"
+      ],
+      "secondaryMetadata": {
+        "openingHoursKnown": false,
+        "lunchBudgetKnown": false,
+        "dinnerBudgetKnown": false,
+        "addressKnown": false,
+        "cuisineKnown": true
+      },
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
       "googlePlaceId": "ChIJ6ZXq3RqMGGARJ2QQ0TvtC4o",
       "name": "興隆",
       "basicInfoState": "source_matched",
@@ -21401,6 +21375,30 @@
       "crawlableOfficialUrlCount": 1,
       "retainedThirdPartyUrlCount": 0,
       "recommendedDishesKnown": 3,
+      "featuredDishesKnown": 0,
+      "dishGaps": [
+        "featuredDishes"
+      ],
+      "secondaryMetadata": {
+        "openingHoursKnown": false,
+        "lunchBudgetKnown": false,
+        "dinnerBudgetKnown": false,
+        "addressKnown": false,
+        "cuisineKnown": true
+      },
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
+      "googlePlaceId": "ChIJJ_D4jRmMGGARMpn_E26qUCA",
+      "name": "リンガーハット",
+      "basicInfoState": "canonical",
+      "cuisine": "日式",
+      "distanceMeters": 724,
+      "sourceUrlCount": 1,
+      "crawlableOfficialUrlCount": 1,
+      "retainedThirdPartyUrlCount": 0,
+      "recommendedDishesKnown": 1,
       "featuredDishesKnown": 0,
       "dishGaps": [
         "featuredDishes"

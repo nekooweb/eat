@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-10T00:38:47.140Z",
+  "generatedAt": "2026-09-10T06:12:43.311Z",
   "policy": {
     "catalogIdentityKey": "frozen Place ID only",
     "catalogTotal": 2804,
@@ -15,24 +15,24 @@
   },
   "summary": {
     "publicRuntimeTotal": 1422,
-    "recommendationGap": 834,
+    "recommendationGap": 832,
     "dishWorkRows": 901,
     "shards": 8,
     "laneCounts": {
-      "official_crawl": 226,
+      "official_crawl": 224,
       "retained_source_mining": 318,
       "independent_source_discovery": 290,
-      "official_or_retained_featured": 67
+      "official_or_retained_featured": 69
     },
     "shardCounts": [
       {
         "shard": 0,
         "total": 124,
         "lanes": {
-          "official_crawl": 30,
+          "official_crawl": 28,
           "retained_source_mining": 46,
           "independent_source_discovery": 41,
-          "official_or_retained_featured": 7
+          "official_or_retained_featured": 9
         }
       },
       {
@@ -123,20 +123,6 @@
       "featuredDishesKnown": 0
     },
     {
-      "googlePlaceId": "ChIJJ_D4jRmMGGARMpn_E26qUCA",
-      "name": "リンガーハット",
-      "lane": "official_crawl",
-      "nextAction": "collect_strict_recommended_dishes",
-      "shard": 0,
-      "priorityScore": 1150,
-      "cuisine": "日式",
-      "crawlableOfficialUrlCount": 1,
-      "retainedThirdPartyUrlCount": 0,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0
-    },
-    {
       "googlePlaceId": "ChIJn1tmVgCNGGARIE-0f0iVnsQ",
       "name": "なぜ蕎麦にラー油を入れるのか。",
       "lane": "official_crawl",
@@ -147,20 +133,6 @@
       "crawlableOfficialUrlCount": 1,
       "retainedThirdPartyUrlCount": 1,
       "sourceUrlCount": 2,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0
-    },
-    {
-      "googlePlaceId": "ChIJVaTZmWqMGGARH0x_mvWNJuc",
-      "name": "ガスト",
-      "lane": "official_crawl",
-      "nextAction": "collect_strict_recommended_dishes",
-      "shard": 0,
-      "priorityScore": 1150,
-      "cuisine": "日式",
-      "crawlableOfficialUrlCount": 1,
-      "retainedThirdPartyUrlCount": 0,
-      "sourceUrlCount": 1,
       "recommendedDishesKnown": 0,
       "featuredDishesKnown": 0
     },
@@ -1789,6 +1761,20 @@
       "featuredDishesKnown": 0
     },
     {
+      "googlePlaceId": "ChIJJ_D4jRmMGGARMpn_E26qUCA",
+      "name": "リンガーハット",
+      "lane": "official_or_retained_featured",
+      "nextAction": "collect_source_backed_featured_dishes",
+      "shard": 0,
+      "priorityScore": 710,
+      "cuisine": "日式",
+      "crawlableOfficialUrlCount": 1,
+      "retainedThirdPartyUrlCount": 0,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 1,
+      "featuredDishesKnown": 0
+    },
+    {
       "googlePlaceId": "ChIJV6aN40CMGGARrvS6UIfFCVA",
       "name": "おむすび権米衛飯田橋アイガーデンテラス店",
       "lane": "official_or_retained_featured",
@@ -1800,6 +1786,20 @@
       "retainedThirdPartyUrlCount": 0,
       "sourceUrlCount": 1,
       "recommendedDishesKnown": 2,
+      "featuredDishesKnown": 0
+    },
+    {
+      "googlePlaceId": "ChIJVaTZmWqMGGARH0x_mvWNJuc",
+      "name": "ガスト",
+      "lane": "official_or_retained_featured",
+      "nextAction": "collect_source_backed_featured_dishes",
+      "shard": 0,
+      "priorityScore": 710,
+      "cuisine": "日式",
+      "crawlableOfficialUrlCount": 1,
+      "retainedThirdPartyUrlCount": 0,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 1,
       "featuredDishesKnown": 0
     },
     {
