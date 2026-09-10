@@ -11,6 +11,7 @@ import {
   extractStructuredMenuItems,
   htmlToTextBlocks
 } from './recommended_dish_extractor.mjs';
+import { sameBoundMenuDomainFamily } from './official_menu_domain_policy.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, '..');
@@ -152,7 +153,7 @@ function menuLinks(html, baseUrl, limit = MENU_LINK_LIMIT) {
     try {
       const url = new URL(match[1], baseUrl);
       const base = new URL(baseUrl);
-      if (!['http:', 'https:'].includes(url.protocol) || url.hostname !== base.hostname) continue;
+      if (!['http:', 'https:'].includes(url.protocol) || !sameBoundMenuDomainFamily(url, base)) continue;
       url.hash = '';
       const key = url.toString();
       if (seen.has(key) || key === baseUrl) continue;
@@ -222,7 +223,7 @@ function structuredMenuLinks(html, baseUrl, limit = MENU_LINK_LIMIT) {
   for (const raw of candidates) {
     try {
       const url = new URL(raw, baseUrl);
-      if (!['http:', 'https:'].includes(url.protocol) || url.hostname !== base.hostname) continue;
+      if (!['http:', 'https:'].includes(url.protocol) || !sameBoundMenuDomainFamily(url, base)) continue;
       url.hash = '';
       const key = url.toString();
       if (key === baseUrl || NON_HTML_MENU_ASSET.test(key) || seen.has(key)) continue;
@@ -426,9 +427,10 @@ async function main() {
       publicNamedRuntimeOnly: true,
       paidGoogleDataApiCalls: 0,
       websiteEligibility: 'already-bound independent official/provider websites only; Google/Tabelog/Hot Pepper/social URLs excluded from direct crawl',
-      structuredMenuDiscoveryRule: 'homepage schema.org hasMenu/menu URL only; same-origin http(s), bounded by existing menu-link and site-page limits; no guessed menu paths',
+      menuLinkDomainPolicy: 'follow only the already-bound hostname, its normalized root/parent, or a child of that root; sibling and unrelated domains are rejected',
+      structuredMenuDiscoveryRule: 'homepage schema.org hasMenu/menu URL only; bound root/subdomain-family http(s), bounded by existing menu-link and site-page limits; no guessed menu paths',
       strictRecommendationRule: 'concrete dish term in a local HTML/text block carrying explicit recommendation/signature wording',
-      featuredRule: 'retained Hot Pepper promotional text, schema.org MenuItem, or concrete dish text on an already-bound same-origin menu page; never promoted to recommended without recommendation wording',
+      featuredRule: 'retained Hot Pepper promotional text, schema.org MenuItem, or concrete dish text on an already-bound root/subdomain-family menu page; never promoted to recommended without recommendation wording',
       plainMenuTextRule: 'only menu-context pages discovered from the bound source; source-native text is normalized to zh-CN while original text and URL remain evidence',
       cuisineNameBrandInferenceAllowed: false,
       maxSameHostMenuLinksFollowed: MENU_LINK_LIMIT,
