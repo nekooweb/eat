@@ -1,0 +1,54 @@
+name: Rank recommendation adjacency candidates
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.recommendation-adjacency-rank-run'
+
+permissions:
+  contents: read
+  actions: read
+
+env:
+  SOURCE_RUN_ID: '34372222834'
+
+jobs:
+  rank:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Enforce zero-paid policy
+        run: node scripts/audit_no_paid_apis.mjs
+      - name: Download reviewed adjacency audit artifact
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: nekooweb/eat
+          run-id: ${{ env.SOURCE_RUN_ID }}
+          name: recommendation-marker-adjacency
+          path: /tmp/adjacency
+      - name: Rank existing-dish recommendation adjacency candidates
+        run: |
+          set -euo pipefail
+          node scripts/rank_recommendation_adjacency_candidates.mjs \
+            /tmp/adjacency/recommendation-adjacency.json \
+            /tmp/adjacency-ranked.json | tee /tmp/adjacency-ranked.log
+          node - <<'NODE'
+          const fs=require('fs');
+          const x=JSON.parse(fs.readFileSync('/tmp/adjacency-ranked.json','utf8'));
+          if(x.policy?.auditOnly!==true||x.policy?.networkRequests!==0||x.policy?.paidGoogleDataApiCalls!==0||x.policy?.automaticPromotionAllowed!==false) throw new Error('rank audit boundary failed');
+          console.log('ADJACENCY_RANK_SUMMARY='+JSON.stringify(x.summary));
+          NODE
+      - uses: actions/upload-artifact@v4
+        with:
+          name: recommendation-adjacency-ranked
+          path: |
+            /tmp/adjacency-ranked.json
+            /tmp/adjacency-ranked.log
+          retention-days: 7
