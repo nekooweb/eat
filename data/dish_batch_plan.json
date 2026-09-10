@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-09T15:47:55.777Z",
+  "generatedAt": "2026-09-10T00:35:29.419Z",
   "policy": {
     "catalogIdentityKey": "frozen Place ID only",
     "catalogTotal": 2804,
@@ -15,14 +15,14 @@
   },
   "summary": {
     "publicRuntimeTotal": 1422,
-    "recommendationGap": 845,
-    "dishWorkRows": 911,
+    "recommendationGap": 836,
+    "dishWorkRows": 903,
     "shards": 8,
     "laneCounts": {
-      "official_crawl": 238,
+      "official_crawl": 228,
       "retained_source_mining": 318,
-      "independent_source_discovery": 289,
-      "official_or_retained_featured": 66
+      "independent_source_discovery": 290,
+      "official_or_retained_featured": 67
     },
     "shardCounts": [
       {
@@ -37,19 +37,19 @@
       },
       {
         "shard": 1,
-        "total": 118,
+        "total": 117,
         "lanes": {
-          "official_crawl": 30,
+          "official_crawl": 28,
           "retained_source_mining": 37,
           "independent_source_discovery": 39,
-          "official_or_retained_featured": 12
+          "official_or_retained_featured": 13
         }
       },
       {
         "shard": 2,
-        "total": 126,
+        "total": 125,
         "lanes": {
-          "official_crawl": 30,
+          "official_crawl": 29,
           "retained_source_mining": 47,
           "independent_source_discovery": 41,
           "official_or_retained_featured": 8
@@ -57,9 +57,9 @@
       },
       {
         "shard": 3,
-        "total": 112,
+        "total": 111,
         "lanes": {
-          "official_crawl": 23,
+          "official_crawl": 22,
           "retained_source_mining": 39,
           "independent_source_discovery": 40,
           "official_or_retained_featured": 10
@@ -67,9 +67,9 @@
       },
       {
         "shard": 4,
-        "total": 119,
+        "total": 117,
         "lanes": {
-          "official_crawl": 34,
+          "official_crawl": 32,
           "retained_source_mining": 42,
           "independent_source_discovery": 36,
           "official_or_retained_featured": 7
@@ -77,9 +77,9 @@
       },
       {
         "shard": 5,
-        "total": 102,
+        "total": 101,
         "lanes": {
-          "official_crawl": 35,
+          "official_crawl": 34,
           "retained_source_mining": 33,
           "independent_source_discovery": 27,
           "official_or_retained_featured": 7
@@ -87,19 +87,19 @@
       },
       {
         "shard": 6,
-        "total": 89,
+        "total": 88,
         "lanes": {
-          "official_crawl": 23,
+          "official_crawl": 21,
           "retained_source_mining": 31,
-          "independent_source_discovery": 29,
+          "independent_source_discovery": 30,
           "official_or_retained_featured": 6
         }
       },
       {
         "shard": 7,
-        "total": 120,
+        "total": 119,
         "lanes": {
-          "official_crawl": 32,
+          "official_crawl": 31,
           "retained_source_mining": 43,
           "independent_source_discovery": 36,
           "official_or_retained_featured": 9
@@ -1873,20 +1873,6 @@
       "featuredDishesKnown": 6
     },
     {
-      "googlePlaceId": "ChIJ7wAjrBuMGGARHOWStkoMVCI",
-      "name": "NEW YORKER'S Cafe 駿河台4丁目店",
-      "lane": "official_crawl",
-      "nextAction": "collect_strict_recommended_dishes",
-      "shard": 1,
-      "priorityScore": 1150,
-      "cuisine": "咖啡",
-      "crawlableOfficialUrlCount": 1,
-      "retainedThirdPartyUrlCount": 0,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0
-    },
-    {
       "googlePlaceId": "ChIJA7vjSxCMGGARpf4TitkGqMk",
       "name": "タリーズコーヒー",
       "lane": "official_crawl",
@@ -1955,20 +1941,6 @@
       "sourceUrlCount": 3,
       "recommendedDishesKnown": 0,
       "featuredDishesKnown": 4
-    },
-    {
-      "googlePlaceId": "ChIJqxsi-ECMGGAR9MgoPJ4JWHw",
-      "name": "タリーズコーヒー 飯田橋ガーデンエアタワー店",
-      "lane": "official_crawl",
-      "nextAction": "collect_strict_recommended_dishes",
-      "shard": 1,
-      "priorityScore": 1145,
-      "cuisine": "咖啡",
-      "crawlableOfficialUrlCount": 2,
-      "retainedThirdPartyUrlCount": 0,
-      "sourceUrlCount": 2,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 6
     },
     {
       "googlePlaceId": "ChIJ_4xlJmuMGGARhFL231XHlnU",
@@ -3441,6 +3413,20 @@
       "featuredDishesKnown": 0
     },
     {
+      "googlePlaceId": "ChIJ7wAjrBuMGGARHOWStkoMVCI",
+      "name": "NEW YORKER'S Cafe 駿河台4丁目店",
+      "lane": "official_or_retained_featured",
+      "nextAction": "collect_source_backed_featured_dishes",
+      "shard": 1,
+      "priorityScore": 710,
+      "cuisine": "咖啡",
+      "crawlableOfficialUrlCount": 1,
+      "retainedThirdPartyUrlCount": 0,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 2,
+      "featuredDishesKnown": 0
+    },
+    {
       "googlePlaceId": "ChIJfYV20zqNGGARrB2wp5fqEPo",
       "name": "晴れ舞亭 水道橋駅前店",
       "lane": "official_or_retained_featured",
@@ -3565,20 +3551,6 @@
       "sourceUrlCount": 1,
       "recommendedDishesKnown": 0,
       "featuredDishesKnown": 0
-    },
-    {
-      "googlePlaceId": "ChIJH8GYiROMGGARAjxscGAOoIA",
-      "name": "タリーズコーヒー 神保町店",
-      "lane": "official_crawl",
-      "nextAction": "collect_strict_recommended_dishes",
-      "shard": 2,
-      "priorityScore": 1145,
-      "cuisine": "咖啡",
-      "crawlableOfficialUrlCount": 2,
-      "retainedThirdPartyUrlCount": 0,
-      "sourceUrlCount": 2,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 6
     },
     {
       "googlePlaceId": "ChIJyb94PwOMGGARtDDndNvDe9Y",
@@ -5429,20 +5401,6 @@
       "featuredDishesKnown": 2
     },
     {
-      "googlePlaceId": "ChIJHc25sgSMGGARAqITOEMtNxk",
-      "name": "タリーズコーヒー 淡路町靖国通り店",
-      "lane": "official_crawl",
-      "nextAction": "collect_strict_recommended_dishes",
-      "shard": 3,
-      "priorityScore": 1145,
-      "cuisine": "咖啡",
-      "crawlableOfficialUrlCount": 2,
-      "retainedThirdPartyUrlCount": 0,
-      "sourceUrlCount": 2,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 6
-    },
-    {
       "googlePlaceId": "ChIJMcHsGRGMGGAR6N5SJOHGdls",
       "name": "神田伯剌西爾",
       "lane": "official_crawl",
@@ -7277,34 +7235,6 @@
       "featuredDishesKnown": 0
     },
     {
-      "googlePlaceId": "ChIJdaJiORONGGARDd15rhczE28",
-      "name": "Tully's Coffee",
-      "lane": "official_crawl",
-      "nextAction": "collect_strict_recommended_dishes",
-      "shard": 4,
-      "priorityScore": 1115,
-      "cuisine": "咖啡",
-      "crawlableOfficialUrlCount": 1,
-      "retainedThirdPartyUrlCount": 0,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 6
-    },
-    {
-      "googlePlaceId": "ChIJV6X7zcWNGGARyT1xchJ9ukA",
-      "name": "Tully's Coffee",
-      "lane": "official_crawl",
-      "nextAction": "collect_strict_recommended_dishes",
-      "shard": 4,
-      "priorityScore": 1115,
-      "cuisine": "咖啡",
-      "crawlableOfficialUrlCount": 1,
-      "retainedThirdPartyUrlCount": 0,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 6
-    },
-    {
       "googlePlaceId": "ChIJVTolURyMGGARM7UFohexOMQ",
       "name": "Jeanne D'Arc 秋葉原",
       "lane": "official_crawl",
@@ -8507,20 +8437,6 @@
       "sourceUrlCount": 1,
       "recommendedDishesKnown": 1,
       "featuredDishesKnown": 0
-    },
-    {
-      "googlePlaceId": "ChIJJ9zW1BqMGGARfIp-qxuT1pg",
-      "name": "ドトールコーヒーショップ",
-      "lane": "official_crawl",
-      "nextAction": "collect_strict_recommended_dishes",
-      "shard": 5,
-      "priorityScore": 1205,
-      "cuisine": "咖啡",
-      "crawlableOfficialUrlCount": 5,
-      "retainedThirdPartyUrlCount": 0,
-      "sourceUrlCount": 5,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 6
     },
     {
       "googlePlaceId": "ChIJxaFliBWMGGARsF0TD5NiBH0",
@@ -10035,20 +9951,6 @@
       "featuredDishesKnown": 0
     },
     {
-      "googlePlaceId": "ChIJM1B1zgWMGGAR04DJYO1QtR0",
-      "name": "タリーズコーヒー 神田橋本郷通り店",
-      "lane": "official_crawl",
-      "nextAction": "collect_strict_recommended_dishes",
-      "shard": 6,
-      "priorityScore": 1145,
-      "cuisine": "咖啡",
-      "crawlableOfficialUrlCount": 2,
-      "retainedThirdPartyUrlCount": 1,
-      "sourceUrlCount": 3,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 6
-    },
-    {
       "googlePlaceId": "ChIJVwXD9E6NGGARkHzeYVBeacw",
       "name": "タリーズコーヒー 住友不動産秋葉原ファーストビル・テラス店",
       "lane": "official_crawl",
@@ -10126,20 +10028,6 @@
       "shard": 6,
       "priorityScore": 1140,
       "cuisine": "餐厅",
-      "crawlableOfficialUrlCount": 1,
-      "retainedThirdPartyUrlCount": 0,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0
-    },
-    {
-      "googlePlaceId": "ChIJ73iZqQeMGGAR1UPN4hA0-bA",
-      "name": "Minatoya",
-      "lane": "official_crawl",
-      "nextAction": "collect_strict_recommended_dishes",
-      "shard": 6,
-      "priorityScore": 1140,
-      "cuisine": "日式",
       "crawlableOfficialUrlCount": 1,
       "retainedThirdPartyUrlCount": 0,
       "sourceUrlCount": 1,
@@ -10945,6 +10833,20 @@
       "featuredDishesKnown": 0
     },
     {
+      "googlePlaceId": "ChIJ73iZqQeMGGAR1UPN4hA0-bA",
+      "name": "Minatoya",
+      "lane": "independent_source_discovery",
+      "nextAction": "find_independent_dish_source",
+      "shard": 6,
+      "priorityScore": 1040,
+      "cuisine": "日式",
+      "crawlableOfficialUrlCount": 0,
+      "retainedThirdPartyUrlCount": 0,
+      "sourceUrlCount": 0,
+      "recommendedDishesKnown": 0,
+      "featuredDishesKnown": 0
+    },
+    {
       "googlePlaceId": "ChIJ7UdXoEOMGGARtvLt39mMWRk",
       "name": "たまりば飯田橋店",
       "lane": "independent_source_discovery",
@@ -11363,20 +11265,6 @@
       "sourceUrlCount": 2,
       "recommendedDishesKnown": 0,
       "featuredDishesKnown": 0
-    },
-    {
-      "googlePlaceId": "ChIJCRf6uziMGGARPOpXUziKe7s",
-      "name": "タリーズコーヒー",
-      "lane": "official_crawl",
-      "nextAction": "collect_strict_recommended_dishes",
-      "shard": 7,
-      "priorityScore": 1145,
-      "cuisine": "咖啡",
-      "crawlableOfficialUrlCount": 2,
-      "retainedThirdPartyUrlCount": 0,
-      "sourceUrlCount": 2,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 6
     },
     {
       "googlePlaceId": "ChIJTTQAOBGMGGARXRYbp0wUyAM",

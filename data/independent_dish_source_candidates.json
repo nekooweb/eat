@@ -1,6 +1,6 @@
 {
   "schemaVersion": 3,
-  "generatedAt": "2026-09-09T15:47:56.040Z",
+  "generatedAt": "2026-09-10T00:35:29.697Z",
   "policy": {
     "proposalOnly": true,
     "identityBindingChanges": 0,
@@ -60,20 +60,20 @@
     "schemaVersion": 3,
     "catalogTotal": 2804,
     "publicRuntimeTotal": 1422,
-    "currentIndependentDishSourceGap": 289,
+    "currentIndependentDishSourceGap": 290,
     "officialCandidateIndexRecords": 194,
     "overtureSnapshotRows": 3908,
     "overtureRowsWithIndependentUrls": 2383,
-    "proposalRows": 29,
+    "proposalRows": 30,
     "retainedIndexProposalRows": 0,
-    "overtureProposalRows": 29,
-    "highConfidenceOvertureProposalRows": 18,
+    "overtureProposalRows": 30,
+    "highConfidenceOvertureProposalRows": 19,
     "proposalRowsWithExplicitMenuUrls": 0,
-    "proposalRowsPageOnly": 29,
-    "proposalCoverageOfIndependentGapPct": 10,
+    "proposalRowsPageOnly": 30,
+    "proposalCoverageOfIndependentGapPct": 10.3,
     "explicitMenuCoverageOfIndependentGapPct": 0,
     "overtureTargetsWithoutCoordinates": 0,
-    "overtureTargetsWithNearbyCandidates": 289,
+    "overtureTargetsWithNearbyCandidates": 290,
     "overtureRejectedName": 248,
     "overtureRejectedWeak": 12,
     "overtureRejectedAmbiguous": 0,
@@ -122,9 +122,9 @@
       },
       {
         "shard": 6,
-        "total": 2,
+        "total": 3,
         "withMenuUrl": 0,
-        "overture": 2
+        "overture": 3
       },
       {
         "shard": 7,
@@ -135,6 +135,41 @@
     ]
   },
   "rows": [
+    {
+      "googlePlaceId": "ChIJ73iZqQeMGGAR1UPN4hA0-bA",
+      "name": "Minatoya",
+      "distanceMeters": 1147,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "http://www.yumeji-minatoya.co.jp/",
+      "menuUrls": [],
+      "candidateHosts": [
+        "yumeji-minatoya.co.jp"
+      ],
+      "checkedAt": "2026-08-19.0",
+      "candidateName": "Minatoya",
+      "candidateProvider": "Overture Maps",
+      "candidateProviderId": "afc0e565-78bf-42da-be0e-33898c9ddd8c",
+      "candidateDistanceMeters": 0,
+      "nameSimilarity": 1,
+      "candidateMargin": 0.8232,
+      "proposalScore": 1,
+      "overtureConfidence": 0.9944591522216797,
+      "proposalState": "review_high_confidence_overture_website_candidate",
+      "confidenceSignals": [
+        "current_public_identity_has_independent_name_and_coordinates",
+        "retained_overture_candidate_with_independent_http_url",
+        "normalized_name_similarity_above_proposal_threshold",
+        "candidate_within_bounded_coordinate_distance",
+        "best_candidate_margin_above_ambiguity_threshold"
+      ],
+      "candidateUrls": [
+        "http://www.yumeji-minatoya.co.jp/"
+      ],
+      "shard": 6,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
     {
       "googlePlaceId": "ChIJswfCsA-MGGARIz1Zn1TprVs",
       "name": "Tully's Coffee",

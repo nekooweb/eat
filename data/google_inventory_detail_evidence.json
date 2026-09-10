@@ -1,6 +1,6 @@
 {
   "schemaVersion": 4,
-  "checkedAt": "2026-09-09",
+  "checkedAt": "2026-09-10",
   "policy": {
     "googleIdentityKey": "frozen Place ID only",
     "paidGoogleDataApiCalls": 0,
@@ -32,7 +32,7 @@
     "ordinaryMenuDishBecomesFeaturedOnly": true,
     "shardIndex": 0,
     "shardCount": 1,
-    "source": "reviewed bound source page structural adjacency evidence",
+    "source": "current official chain pages whose domain is already bound to each target identity",
     "eligibleBindings": [
       "strict_auto",
       "manual_exact"
@@ -141,34 +141,36 @@
     "reviewedStructuralAdjacencyRequired": true,
     "exactSourceNativeProductRequired": true,
     "explicitRecommendationOrPrideMarkerRequired": true,
-    "automaticAdjacencyPromotionAllowed": false
+    "automaticAdjacencyPromotionAllowed": false,
+    "currentOfficialRecommendationHeadingOrPairingRequired": true,
+    "chainWideApplicationAllowedOnlyForCurrentChainMenuOrCampaign": true,
+    "automaticPromotionAllowed": false
   },
   "summary": {
     "catalogTotal": 2804,
     "publicRuntimeTotal": 1422,
-    "auditRunId": "34372222834",
-    "reviewedRules": 3,
-    "recommendationRestaurants": 3,
-    "recommendationItems": 3,
+    "reviewedRules": 9,
+    "recommendationRestaurants": 9,
+    "recommendationItems": 11,
     "previousEvidence": {
-      "recommendationRestaurants": 546,
-      "featuredRestaurants": 647,
-      "evidenceRestaurants": 714,
-      "recommendationItems": 965,
-      "featuredItems": 2504
-    },
-    "freshCrawlEvidence": {
-      "recommendationRestaurants": 3,
-      "featuredRestaurants": 0,
-      "evidenceRestaurants": 3,
-      "recommendationItems": 3,
-      "featuredItems": 0
-    },
-    "mergedEvidence": {
       "recommendationRestaurants": 549,
       "featuredRestaurants": 647,
       "evidenceRestaurants": 714,
       "recommendationItems": 968,
+      "featuredItems": 2504
+    },
+    "freshCrawlEvidence": {
+      "recommendationRestaurants": 9,
+      "featuredRestaurants": 0,
+      "evidenceRestaurants": 9,
+      "recommendationItems": 11,
+      "featuredItems": 0
+    },
+    "mergedEvidence": {
+      "recommendationRestaurants": 558,
+      "featuredRestaurants": 647,
+      "evidenceRestaurants": 715,
+      "recommendationItems": 979,
       "featuredItems": 2504
     },
     "specificityCorrection": {
@@ -176,7 +178,7 @@
       "correctedItems": 0,
       "duplicateItemsRemoved": 0,
       "ruleCounts": {},
-      "recommendationItemsAfterCorrection": 968,
+      "recommendationItemsAfterCorrection": 979,
       "featuredItemsAfterCorrection": 2504
     }
   },
@@ -6679,6 +6681,33 @@
       ]
     },
     {
+      "googlePlaceId": "ChIJ7wAjrBuMGGARHOWStkoMVCI",
+      "name": "NEW YORKER'S Cafe 駿河台4丁目店",
+      "recommendedDishes": [
+        {
+          "nameZh": "咖啡香巧克力榛子蛋糕",
+          "nameJa": "コーヒー香るチョコとヘーゼルナッツ",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.ginza-renoir.co.jp/newyorkers/season_recommend/",
+          "checkedAt": "2026-09-10",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "reviewed-current-chain:newyorkers-current-season-cakes",
+          "evidenceSnippet": "季節限定おすすめケーキ：コーヒー香るチョコとヘーゼルナッツ／バニラ香るキャラメルとアーモンドのズコット"
+        },
+        {
+          "nameZh": "香草焦糖杏仁祖科托蛋糕",
+          "nameJa": "バニラ香るキャラメルとアーモンドのズコット",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.ginza-renoir.co.jp/newyorkers/season_recommend/",
+          "checkedAt": "2026-09-10",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "reviewed-current-chain:newyorkers-current-season-cakes",
+          "evidenceSnippet": "季節限定おすすめケーキ：コーヒー香るチョコとヘーゼルナッツ／バニラ香るキャラメルとアーモンドのズコット"
+        }
+      ],
+      "featuredDishes": []
+    },
+    {
       "googlePlaceId": "ChIJ7YEOVRuMGGARtNwxZ_imq9E",
       "name": "南国亭",
       "recommendedDishes": [
@@ -11673,7 +11702,18 @@
     {
       "googlePlaceId": "ChIJCRf6uziMGGARPOpXUziKe7s",
       "name": "タリーズコーヒー",
-      "recommendedDishes": [],
+      "recommendedDishes": [
+        {
+          "nameZh": "红薯甜甜圈配法式烘焙咖啡",
+          "nameJa": "彩りOIMOドーナツ × フレンチロースト",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.tullys.co.jp/company/pressrelease/2026/08/newsletter0826.html",
+          "checkedAt": "2026-09-10",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "reviewed-current-chain:tullys-oimo-frenchroast-ziKe7s",
+          "evidenceSnippet": "秋スイーツとコーヒーのおいしい関係。彩りOIMOドーナツ × フレンチローストをおすすめの組み合わせとして紹介。"
+        }
+      ],
       "featuredDishes": [
         {
           "nameZh": "三明治",
@@ -12670,7 +12710,18 @@
     {
       "googlePlaceId": "ChIJdaJiORONGGARDd15rhczE28",
       "name": "Tully's Coffee",
-      "recommendedDishes": [],
+      "recommendedDishes": [
+        {
+          "nameZh": "红薯甜甜圈配法式烘焙咖啡",
+          "nameJa": "彩りOIMOドーナツ × フレンチロースト",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.tullys.co.jp/company/pressrelease/2026/08/newsletter0826.html",
+          "checkedAt": "2026-09-10",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "reviewed-current-chain:tullys-oimo-frenchroast-hczE28",
+          "evidenceSnippet": "秋スイーツとコーヒーのおいしい関係。彩りOIMOドーナツ × フレンチローストをおすすめの組み合わせとして紹介。"
+        }
+      ],
       "featuredDishes": [
         {
           "nameZh": "三明治",
@@ -17294,7 +17345,18 @@
     {
       "googlePlaceId": "ChIJH8GYiROMGGARAjxscGAOoIA",
       "name": "タリーズコーヒー 神保町店",
-      "recommendedDishes": [],
+      "recommendedDishes": [
+        {
+          "nameZh": "红薯甜甜圈配法式烘焙咖啡",
+          "nameJa": "彩りOIMOドーナツ × フレンチロースト",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.tullys.co.jp/company/pressrelease/2026/08/newsletter0826.html",
+          "checkedAt": "2026-09-10",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "reviewed-current-chain:tullys-oimo-frenchroast-GAOoIA",
+          "evidenceSnippet": "秋スイーツとコーヒーのおいしい関係。彩りOIMOドーナツ × フレンチローストをおすすめの組み合わせとして紹介。"
+        }
+      ],
       "featuredDishes": [
         {
           "nameZh": "三明治",
@@ -17361,7 +17423,18 @@
     {
       "googlePlaceId": "ChIJHc25sgSMGGARAqITOEMtNxk",
       "name": "タリーズコーヒー 淡路町靖国通り店",
-      "recommendedDishes": [],
+      "recommendedDishes": [
+        {
+          "nameZh": "红薯甜甜圈配法式烘焙咖啡",
+          "nameJa": "彩りOIMOドーナツ × フレンチロースト",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.tullys.co.jp/company/pressrelease/2026/08/newsletter0826.html",
+          "checkedAt": "2026-09-10",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "reviewed-current-chain:tullys-oimo-frenchroast-EMtNxk",
+          "evidenceSnippet": "秋スイーツとコーヒーのおいしい関係。彩りOIMOドーナツ × フレンチローストをおすすめの組み合わせとして紹介。"
+        }
+      ],
       "featuredDishes": [
         {
           "nameZh": "三明治",
@@ -19823,7 +19896,28 @@
     {
       "googlePlaceId": "ChIJJ9zW1BqMGGARfIp-qxuT1pg",
       "name": "ドトールコーヒーショップ",
-      "recommendedDishes": [],
+      "recommendedDishes": [
+        {
+          "nameZh": "桃芒果路易波士茶",
+          "nameJa": "ピーチ＆マンゴー ルイボス",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.doutor.co.jp/dcs/menu/season.html",
+          "checkedAt": "2026-09-10",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "reviewed-current-chain:doutor-current-season-recommendations",
+          "evidenceSnippet": "季節のおすすめ：ピーチ＆マンゴー ルイボス／ライチレモネードソーダ"
+        },
+        {
+          "nameZh": "荔枝柠檬汽水",
+          "nameJa": "ライチレモネードソーダ",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.doutor.co.jp/dcs/menu/season.html",
+          "checkedAt": "2026-09-10",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "reviewed-current-chain:doutor-current-season-recommendations",
+          "evidenceSnippet": "季節のおすすめ：ピーチ＆マンゴー ルイボス／ライチレモネードソーダ"
+        }
+      ],
       "featuredDishes": [
         {
           "nameZh": "三明治",
@@ -23290,7 +23384,18 @@
     {
       "googlePlaceId": "ChIJM1B1zgWMGGAR04DJYO1QtR0",
       "name": "タリーズコーヒー 神田橋本郷通り店",
-      "recommendedDishes": [],
+      "recommendedDishes": [
+        {
+          "nameZh": "红薯甜甜圈配法式烘焙咖啡",
+          "nameJa": "彩りOIMOドーナツ × フレンチロースト",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.tullys.co.jp/company/pressrelease/2026/08/newsletter0826.html",
+          "checkedAt": "2026-09-10",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "reviewed-current-chain:tullys-oimo-frenchroast-O1QtR0",
+          "evidenceSnippet": "秋スイーツとコーヒーのおいしい関係。彩りOIMOドーナツ × フレンチローストをおすすめの組み合わせとして紹介。"
+        }
+      ],
       "featuredDishes": [
         {
           "nameZh": "三明治",
@@ -29206,7 +29311,18 @@
     {
       "googlePlaceId": "ChIJqxsi-ECMGGAR9MgoPJ4JWHw",
       "name": "タリーズコーヒー 飯田橋ガーデンエアタワー店",
-      "recommendedDishes": [],
+      "recommendedDishes": [
+        {
+          "nameZh": "红薯甜甜圈配法式烘焙咖啡",
+          "nameJa": "彩りOIMOドーナツ × フレンチロースト",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.tullys.co.jp/company/pressrelease/2026/08/newsletter0826.html",
+          "checkedAt": "2026-09-10",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "reviewed-current-chain:tullys-oimo-frenchroast-J4JWHw",
+          "evidenceSnippet": "秋スイーツとコーヒーのおいしい関係。彩りOIMOドーナツ × フレンチローストをおすすめの組み合わせとして紹介。"
+        }
+      ],
       "featuredDishes": [
         {
           "nameZh": "三明治",
@@ -34620,7 +34736,18 @@
     {
       "googlePlaceId": "ChIJV6X7zcWNGGARyT1xchJ9ukA",
       "name": "Tully's Coffee",
-      "recommendedDishes": [],
+      "recommendedDishes": [
+        {
+          "nameZh": "红薯甜甜圈配法式烘焙咖啡",
+          "nameJa": "彩りOIMOドーナツ × フレンチロースト",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.tullys.co.jp/company/pressrelease/2026/08/newsletter0826.html",
+          "checkedAt": "2026-09-10",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "reviewed-current-chain:tullys-oimo-frenchroast-hJ9ukA",
+          "evidenceSnippet": "秋スイーツとコーヒーのおいしい関係。彩りOIMOドーナツ × フレンチローストをおすすめの組み合わせとして紹介。"
+        }
+      ],
       "featuredDishes": [
         {
           "nameZh": "三明治",
