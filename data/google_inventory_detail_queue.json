@@ -7,20 +7,20 @@
     "publicRuntimeTotal": 1422,
     "unpublishedPlaceIdOnly": 1382,
     "runtimeBaselineComplete": true,
-    "recommendedDishesKnown": 590,
+    "recommendedDishesKnown": 592,
     "featuredDishesKnown": 656,
-    "displayDishKnown": 725,
-    "noDishGap": 697,
-    "recommendationGap": 832,
-    "recommendationGapWithAnyKnownSourceUrl": 558,
-    "recommendationGapWithCrawlableOfficialUrl": 224,
+    "displayDishKnown": 727,
+    "noDishGap": 695,
+    "recommendationGap": 830,
+    "recommendationGapWithAnyKnownSourceUrl": 556,
+    "recommendationGapWithCrawlableOfficialUrl": 222,
     "recommendationGapWithRetainedThirdPartyOnly": 318,
     "recommendationGapNeedingNewDishSource": 290,
     "actionCounts": {
-      "collect_strict_recommended_dishes": 224,
+      "collect_strict_recommended_dishes": 222,
       "extract_retained_dish_source": 318,
       "find_independent_dish_source": 290,
-      "collect_source_backed_featured_dishes": 69,
+      "collect_source_backed_featured_dishes": 71,
       "dish_complete": 521
     },
     "primaryGoal": "source-backed dish coverage",
@@ -497,31 +497,6 @@
       "priorityScore": 1150
     },
     {
-      "googlePlaceId": "ChIJGwjljhWMGGARjLafECSEbqA",
-      "name": "吉野家",
-      "basicInfoState": "canonical",
-      "cuisine": "快餐",
-      "distanceMeters": 466,
-      "sourceUrlCount": 1,
-      "crawlableOfficialUrlCount": 1,
-      "retainedThirdPartyUrlCount": 0,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "dishGaps": [
-        "recommendedDishes",
-        "featuredDishes"
-      ],
-      "secondaryMetadata": {
-        "openingHoursKnown": true,
-        "lunchBudgetKnown": false,
-        "dinnerBudgetKnown": false,
-        "addressKnown": false,
-        "cuisineKnown": true
-      },
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1150
-    },
-    {
       "googlePlaceId": "ChIJN0VWZhWMGGARLvOMzqiFHWI",
       "name": "モスバーガー",
       "basicInfoState": "canonical",
@@ -891,31 +866,6 @@
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": false,
         "addressKnown": true,
-        "cuisineKnown": true
-      },
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1150
-    },
-    {
-      "googlePlaceId": "ChIJ38dCzRqMGGAR9Awruuaqr_A",
-      "name": "吉野家",
-      "basicInfoState": "canonical",
-      "cuisine": "快餐",
-      "distanceMeters": 642,
-      "sourceUrlCount": 1,
-      "crawlableOfficialUrlCount": 1,
-      "retainedThirdPartyUrlCount": 0,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0,
-      "dishGaps": [
-        "recommendedDishes",
-        "featuredDishes"
-      ],
-      "secondaryMetadata": {
-        "openingHoursKnown": false,
-        "lunchBudgetKnown": false,
-        "dinnerBudgetKnown": false,
-        "addressKnown": false,
         "cuisineKnown": true
       },
       "nextAction": "collect_strict_recommended_dishes",
@@ -21246,6 +21196,30 @@
       "priorityScore": 710
     },
     {
+      "googlePlaceId": "ChIJGwjljhWMGGARjLafECSEbqA",
+      "name": "吉野家",
+      "basicInfoState": "canonical",
+      "cuisine": "快餐",
+      "distanceMeters": 466,
+      "sourceUrlCount": 1,
+      "crawlableOfficialUrlCount": 1,
+      "retainedThirdPartyUrlCount": 0,
+      "recommendedDishesKnown": 2,
+      "featuredDishesKnown": 0,
+      "dishGaps": [
+        "featuredDishes"
+      ],
+      "secondaryMetadata": {
+        "openingHoursKnown": true,
+        "lunchBudgetKnown": false,
+        "dinnerBudgetKnown": false,
+        "addressKnown": false,
+        "cuisineKnown": true
+      },
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
       "googlePlaceId": "ChIJU-bJQwCNGGARG2tj8zrf1F0",
       "name": "讃岐うどん",
       "basicInfoState": "source_matched",
@@ -21288,6 +21262,30 @@
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": false,
         "addressKnown": true,
+        "cuisineKnown": true
+      },
+      "nextAction": "collect_source_backed_featured_dishes",
+      "priorityScore": 710
+    },
+    {
+      "googlePlaceId": "ChIJ38dCzRqMGGAR9Awruuaqr_A",
+      "name": "吉野家",
+      "basicInfoState": "canonical",
+      "cuisine": "快餐",
+      "distanceMeters": 642,
+      "sourceUrlCount": 1,
+      "crawlableOfficialUrlCount": 1,
+      "retainedThirdPartyUrlCount": 0,
+      "recommendedDishesKnown": 2,
+      "featuredDishesKnown": 0,
+      "dishGaps": [
+        "featuredDishes"
+      ],
+      "secondaryMetadata": {
+        "openingHoursKnown": false,
+        "lunchBudgetKnown": false,
+        "dinnerBudgetKnown": false,
+        "addressKnown": false,
         "cuisineKnown": true
       },
       "nextAction": "collect_source_backed_featured_dishes",

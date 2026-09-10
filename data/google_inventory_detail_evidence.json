@@ -8,7 +8,7 @@
     "strictRecommendationRule": "concrete dish term in a local HTML/text block carrying explicit recommendation/signature wording",
     "maxSameHostMenuLinksFollowed": 4,
     "maxEvidenceSnippetChars": 90,
-    "evidenceRetention": "monotonic union; previously verified source-backed evidence is retained when later crawls fail or return no match",
+    "evidenceRetention": "complete monotonic union; previously verified source-backed evidence is retained when later crawls fail, return no match, or add newer distinct evidence",
     "networkRequests": 0,
     "usesRetainedProviderFactsOnly": true,
     "recommendationRequiresExplicitSourceField": true,
@@ -151,34 +151,37 @@
     "currentOfficialRecommendationSectionRequired": true,
     "automaticCrossBrandPromotionAllowed": false,
     "alreadyRecommendedTargetsSkipped": true,
-    "outputOnlyCurrentRecommendationGaps": true
+    "outputOnlyCurrentRecommendationGaps": true,
+    "publicRuntimeCountPolicy": "dynamic; validate runtime stats and public+unpublished catalog reconciliation instead of a fixed named-row count",
+    "evidenceStorageItemLimit": null,
+    "presentationItemLimitAppliedHere": false
   },
   "summary": {
     "catalogTotal": 2804,
     "publicRuntimeTotal": 1422,
-    "reviewedRules": 11,
-    "skippedAlreadyRecommendedRules": 9,
+    "reviewedRules": 13,
+    "skippedAlreadyRecommendedRules": 11,
     "recommendationRestaurants": 2,
-    "recommendationItems": 2,
+    "recommendationItems": 4,
     "previousEvidence": {
-      "recommendationRestaurants": 560,
+      "recommendationRestaurants": 562,
       "featuredRestaurants": 647,
-      "evidenceRestaurants": 715,
-      "recommendationItems": 983,
+      "evidenceRestaurants": 717,
+      "recommendationItems": 985,
       "featuredItems": 2504
     },
     "freshCrawlEvidence": {
       "recommendationRestaurants": 2,
       "featuredRestaurants": 0,
       "evidenceRestaurants": 2,
-      "recommendationItems": 2,
+      "recommendationItems": 4,
       "featuredItems": 0
     },
     "mergedEvidence": {
-      "recommendationRestaurants": 562,
+      "recommendationRestaurants": 564,
       "featuredRestaurants": 647,
-      "evidenceRestaurants": 717,
-      "recommendationItems": 985,
+      "evidenceRestaurants": 719,
+      "recommendationItems": 989,
       "featuredItems": 2504
     },
     "specificityCorrection": {
@@ -186,7 +189,7 @@
       "correctedItems": 0,
       "duplicateItemsRemoved": 0,
       "ruleCounts": {},
-      "recommendationItemsAfterCorrection": 985,
+      "recommendationItemsAfterCorrection": 989,
       "featuredItemsAfterCorrection": 2504
     }
   },
@@ -4121,6 +4124,33 @@
           "evidenceSnippet": "ABOUT SOBA"
         }
       ]
+    },
+    {
+      "googlePlaceId": "ChIJ38dCzRqMGGAR9Awruuaqr_A",
+      "name": "吉野家",
+      "recommendedDishes": [
+        {
+          "nameZh": "月见牛肉滑蛋御膳",
+          "nameJa": "月見牛とじ御膳",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.yoshinoya.com/menu/",
+          "checkedAt": "2026-09-10",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "reviewed-current-chain:yoshinoya-current-recommended-menu-uaqr_A",
+          "evidenceSnippet": "おすすめメニュー RECOMMENDED：月見牛とじ御膳/月見牛とじ丼、極旨牛鉄板ステーキ定食"
+        },
+        {
+          "nameZh": "极旨铁板牛排套餐",
+          "nameJa": "極旨牛鉄板ステーキ定食",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.yoshinoya.com/menu/",
+          "checkedAt": "2026-09-10",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "reviewed-current-chain:yoshinoya-current-recommended-menu-uaqr_A",
+          "evidenceSnippet": "おすすめメニュー RECOMMENDED：月見牛とじ御膳/月見牛とじ丼、極旨牛鉄板ステーキ定食"
+        }
+      ],
+      "featuredDishes": []
     },
     {
       "googlePlaceId": "ChIJ38OBKhqMGGARv2PCpjtd6uI",
@@ -16970,6 +17000,33 @@
           "evidenceSnippet": "肉豆腐 1,089円（税込）"
         }
       ]
+    },
+    {
+      "googlePlaceId": "ChIJGwjljhWMGGARjLafECSEbqA",
+      "name": "吉野家",
+      "recommendedDishes": [
+        {
+          "nameZh": "月见牛肉滑蛋御膳",
+          "nameJa": "月見牛とじ御膳",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.yoshinoya.com/menu/",
+          "checkedAt": "2026-09-10",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "reviewed-current-chain:yoshinoya-current-recommended-menu-CSEbqA",
+          "evidenceSnippet": "おすすめメニュー RECOMMENDED：月見牛とじ御膳/月見牛とじ丼、極旨牛鉄板ステーキ定食"
+        },
+        {
+          "nameZh": "极旨铁板牛排套餐",
+          "nameJa": "極旨牛鉄板ステーキ定食",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.yoshinoya.com/menu/",
+          "checkedAt": "2026-09-10",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "reviewed-current-chain:yoshinoya-current-recommended-menu-CSEbqA",
+          "evidenceSnippet": "おすすめメニュー RECOMMENDED：月見牛とじ御膳/月見牛とじ丼、極旨牛鉄板ステーキ定食"
+        }
+      ],
+      "featuredDishes": []
     },
     {
       "googlePlaceId": "ChIJh0dxyhGNGGARZk9BsIhLQkE",

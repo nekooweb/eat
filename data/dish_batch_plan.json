@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-10T06:12:43.311Z",
+  "generatedAt": "2026-09-10T06:25:33.334Z",
   "policy": {
     "catalogIdentityKey": "frozen Place ID only",
     "catalogTotal": 2804,
@@ -15,14 +15,14 @@
   },
   "summary": {
     "publicRuntimeTotal": 1422,
-    "recommendationGap": 832,
+    "recommendationGap": 830,
     "dishWorkRows": 901,
     "shards": 8,
     "laneCounts": {
-      "official_crawl": 224,
+      "official_crawl": 222,
       "retained_source_mining": 318,
       "independent_source_discovery": 290,
-      "official_or_retained_featured": 69
+      "official_or_retained_featured": 71
     },
     "shardCounts": [
       {
@@ -39,10 +39,10 @@
         "shard": 1,
         "total": 117,
         "lanes": {
-          "official_crawl": 28,
+          "official_crawl": 27,
           "retained_source_mining": 37,
           "independent_source_discovery": 39,
-          "official_or_retained_featured": 13
+          "official_or_retained_featured": 14
         }
       },
       {
@@ -99,10 +99,10 @@
         "shard": 7,
         "total": 119,
         "lanes": {
-          "official_crawl": 31,
+          "official_crawl": 30,
           "retained_source_mining": 43,
           "independent_source_discovery": 36,
-          "official_or_retained_featured": 9
+          "official_or_retained_featured": 10
         }
       }
     ]
@@ -1887,20 +1887,6 @@
       "featuredDishesKnown": 0
     },
     {
-      "googlePlaceId": "ChIJGwjljhWMGGARjLafECSEbqA",
-      "name": "吉野家",
-      "lane": "official_crawl",
-      "nextAction": "collect_strict_recommended_dishes",
-      "shard": 1,
-      "priorityScore": 1150,
-      "cuisine": "快餐",
-      "crawlableOfficialUrlCount": 1,
-      "retainedThirdPartyUrlCount": 0,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0
-    },
-    {
       "googlePlaceId": "ChIJq6pq1xyMGGAR-lolaDOLzUU",
       "name": "RESTAURANT PLATINUM FISH マーチエキュート神田万世橋店",
       "lane": "official_crawl",
@@ -3438,6 +3424,20 @@
       "retainedThirdPartyUrlCount": 1,
       "sourceUrlCount": 1,
       "recommendedDishesKnown": 3,
+      "featuredDishesKnown": 0
+    },
+    {
+      "googlePlaceId": "ChIJGwjljhWMGGARjLafECSEbqA",
+      "name": "吉野家",
+      "lane": "official_or_retained_featured",
+      "nextAction": "collect_source_backed_featured_dishes",
+      "shard": 1,
+      "priorityScore": 710,
+      "cuisine": "快餐",
+      "crawlableOfficialUrlCount": 1,
+      "retainedThirdPartyUrlCount": 0,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 2,
       "featuredDishesKnown": 0
     },
     {
@@ -11113,20 +11113,6 @@
       "featuredDishesKnown": 0
     },
     {
-      "googlePlaceId": "ChIJ38dCzRqMGGAR9Awruuaqr_A",
-      "name": "吉野家",
-      "lane": "official_crawl",
-      "nextAction": "collect_strict_recommended_dishes",
-      "shard": 7,
-      "priorityScore": 1150,
-      "cuisine": "快餐",
-      "crawlableOfficialUrlCount": 1,
-      "retainedThirdPartyUrlCount": 0,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0
-    },
-    {
       "googlePlaceId": "ChIJ691AFxGMGGARcy68k9PycGc",
       "name": "Bordeaux Wine Bar L'EPIQUE",
       "lane": "official_crawl",
@@ -12594,6 +12580,20 @@
       "retainedThirdPartyUrlCount": 0,
       "sourceUrlCount": 0,
       "recommendedDishesKnown": 0,
+      "featuredDishesKnown": 0
+    },
+    {
+      "googlePlaceId": "ChIJ38dCzRqMGGAR9Awruuaqr_A",
+      "name": "吉野家",
+      "lane": "official_or_retained_featured",
+      "nextAction": "collect_source_backed_featured_dishes",
+      "shard": 7,
+      "priorityScore": 710,
+      "cuisine": "快餐",
+      "crawlableOfficialUrlCount": 1,
+      "retainedThirdPartyUrlCount": 0,
+      "sourceUrlCount": 1,
+      "recommendedDishesKnown": 2,
       "featuredDishesKnown": 0
     },
     {
