@@ -53,8 +53,13 @@ jobs:
           const x=JSON.parse(fs.readFileSync('/tmp/current-chain-evidence.json','utf8'));
           if(x.policy?.networkRequests!==0||x.policy?.paidGoogleDataApiCalls!==0||x.policy?.identityMutationAllowed!==false) throw new Error('current-chain batch crossed mutation boundary');
           if(x.policy?.sourceDomainMustAlreadyBeBoundToIdentity!==true||x.policy?.currentOfficialRecommendationHeadingOrPairingRequired!==true||x.policy?.automaticPromotionAllowed!==false) throw new Error('current-chain recommendation semantics weakened');
-          if(x.summary?.recommendationRestaurants!==9||x.summary?.recommendationItems!==11) throw new Error(`unexpected reviewed chain batch: ${JSON.stringify(x.summary)}`);
-          console.log('CURRENT_CHAIN_BUILD='+JSON.stringify(x.summary));
+          if(x.policy?.alreadyRecommendedTargetsSkipped!==true||x.policy?.outputOnlyCurrentRecommendationGaps!==true) throw new Error('current-chain updater must be gap-only and idempotent');
+          const s=x.summary||{};
+          if(s.reviewedRules!==11) throw new Error(`unexpected reviewed rule registry size: ${JSON.stringify(s)}`);
+          if(Number(s.skippedAlreadyRecommendedRules||0)+Number(s.recommendationRestaurants||0)!==Number(s.reviewedRules||0)) throw new Error(`reviewed rule reconciliation failed: ${JSON.stringify(s)}`);
+          if(Number(s.recommendationRestaurants||0)!==(x.rows||[]).length) throw new Error('current-chain output row count mismatch');
+          if((x.rows||[]).some(row=>!row.googlePlaceId||!row.name||!(row.recommendedDishes||[]).length)) throw new Error('invalid current-chain evidence row');
+          console.log('CURRENT_CHAIN_BUILD='+JSON.stringify(s));
           NODE
       - name: Merge and audit evidence
         run: |
@@ -70,14 +75,16 @@ jobs:
           node - <<'NODE'
           const fs=require('fs'),vm=require('vm');
           const before=JSON.parse(fs.readFileSync('/tmp/current-chain-before.json','utf8'));
+          const built=JSON.parse(fs.readFileSync('/tmp/current-chain-evidence.json','utf8'));
           const sandbox={window:{},console};vm.createContext(sandbox);
           vm.runInContext(fs.readFileSync('data/google_inventory_runtime.js','utf8'),sandbox);
           const after=sandbox.window.GOOGLE_INVENTORY_STATS||{};
           const delta=Number(after.recommendedDishesKnown||0)-Number(before.recommendedDishesKnown||0);
-          if(delta!==9) throw new Error(`current-chain recommendation delta mismatch: ${delta}`);
+          const expected=Number(built.summary?.recommendationRestaurants||0);
+          if(delta!==expected) throw new Error(`current-chain recommendation delta mismatch: actual=${delta} expected=${expected}`);
           if(Number(after.featuredDishesKnown||0)<Number(before.featuredDishesKnown||0)||Number(after.chineseDishDisplayRows||0)<Number(before.chineseDishDisplayRows||0)) throw new Error('non-monotonic dish coverage');
-          fs.writeFileSync('/tmp/current-chain-delta.json',JSON.stringify({before,after,delta},null,2)+'\n');
-          console.log('CURRENT_CHAIN_DELTA='+JSON.stringify({recommended:delta,afterRecommended:after.recommendedDishesKnown,afterFeatured:after.featuredDishesKnown,afterDisplay:after.chineseDishDisplayRows,afterNoDish:after.unfilledDishRows}));
+          fs.writeFileSync('/tmp/current-chain-delta.json',JSON.stringify({before,after,expected,delta},null,2)+'\n');
+          console.log('CURRENT_CHAIN_DELTA='+JSON.stringify({recommended:delta,expected,afterRecommended:after.recommendedDishesKnown,afterFeatured:after.featuredDishesKnown,afterDisplay:after.chineseDishDisplayRows,afterNoDish:after.unfilledDishRows}));
           NODE
           node scripts/audit_google_inventory_detail_evidence.mjs
           node scripts/audit_no_paid_apis.mjs
