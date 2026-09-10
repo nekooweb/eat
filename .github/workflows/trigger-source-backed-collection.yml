@@ -1,0 +1,29 @@
+name: Trigger controlled source-backed collection
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.source-backed-dish-collection-run'
+
+permissions:
+  actions: write
+  contents: read
+
+concurrency:
+  group: trigger-source-backed-dish-collection
+  cancel-in-progress: false
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dispatch existing manual collection workflow
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          gh workflow run collect-google-inventory-details.yml \
+            --repo "${GITHUB_REPOSITORY}" \
+            --ref main
+          echo "Dispatched collect-google-inventory-details.yml from explicit marker ${GITHUB_SHA}."
