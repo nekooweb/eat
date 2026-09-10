@@ -7,21 +7,21 @@
     "publicRuntimeTotal": 1422,
     "unpublishedPlaceIdOnly": 1382,
     "runtimeBaselineComplete": true,
-    "recommendedDishesKnown": 586,
+    "recommendedDishesKnown": 588,
     "featuredDishesKnown": 656,
     "displayDishKnown": 723,
     "noDishGap": 699,
-    "recommendationGap": 836,
-    "recommendationGapWithAnyKnownSourceUrl": 562,
-    "recommendationGapWithCrawlableOfficialUrl": 228,
+    "recommendationGap": 834,
+    "recommendationGapWithAnyKnownSourceUrl": 560,
+    "recommendationGapWithCrawlableOfficialUrl": 226,
     "recommendationGapWithRetainedThirdPartyOnly": 318,
     "recommendationGapNeedingNewDishSource": 290,
     "actionCounts": {
-      "collect_strict_recommended_dishes": 228,
+      "collect_strict_recommended_dishes": 226,
       "extract_retained_dish_source": 318,
       "find_independent_dish_source": 290,
       "collect_source_backed_featured_dishes": 67,
-      "dish_complete": 519
+      "dish_complete": 521
     },
     "primaryGoal": "source-backed dish coverage",
     "nonDishMetadataCreatesTasks": false,
@@ -124,54 +124,6 @@
       },
       "nextAction": "collect_strict_recommended_dishes",
       "priorityScore": 1210
-    },
-    {
-      "googlePlaceId": "ChIJxaFliBWMGGARsF0TD5NiBH0",
-      "name": "ドトールコーヒーショップ",
-      "basicInfoState": "canonical",
-      "cuisine": "咖啡",
-      "distanceMeters": 494,
-      "sourceUrlCount": 5,
-      "crawlableOfficialUrlCount": 5,
-      "retainedThirdPartyUrlCount": 0,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 6,
-      "dishGaps": [
-        "recommendedDishes"
-      ],
-      "secondaryMetadata": {
-        "openingHoursKnown": true,
-        "lunchBudgetKnown": false,
-        "dinnerBudgetKnown": false,
-        "addressKnown": true,
-        "cuisineKnown": true
-      },
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1205
-    },
-    {
-      "googlePlaceId": "ChIJW9bTbxqMGGARzrp71TKW5lU",
-      "name": "ドトールコーヒーショップ",
-      "basicInfoState": "canonical",
-      "cuisine": "咖啡",
-      "distanceMeters": 546,
-      "sourceUrlCount": 5,
-      "crawlableOfficialUrlCount": 5,
-      "retainedThirdPartyUrlCount": 0,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 6,
-      "dishGaps": [
-        "recommendedDishes"
-      ],
-      "secondaryMetadata": {
-        "openingHoursKnown": true,
-        "lunchBudgetKnown": false,
-        "dinnerBudgetKnown": false,
-        "addressKnown": true,
-        "cuisineKnown": true
-      },
-      "nextAction": "collect_strict_recommended_dishes",
-      "priorityScore": 1205
     },
     {
       "googlePlaceId": "ChIJIeDGY_6NGGARWCyGYme_2bA",
@@ -25128,6 +25080,28 @@
       "priorityScore": 0
     },
     {
+      "googlePlaceId": "ChIJxaFliBWMGGARsF0TD5NiBH0",
+      "name": "ドトールコーヒーショップ",
+      "basicInfoState": "canonical",
+      "cuisine": "咖啡",
+      "distanceMeters": 494,
+      "sourceUrlCount": 5,
+      "crawlableOfficialUrlCount": 5,
+      "retainedThirdPartyUrlCount": 0,
+      "recommendedDishesKnown": 2,
+      "featuredDishesKnown": 6,
+      "dishGaps": [],
+      "secondaryMetadata": {
+        "openingHoursKnown": true,
+        "lunchBudgetKnown": false,
+        "dinnerBudgetKnown": false,
+        "addressKnown": true,
+        "cuisineKnown": true
+      },
+      "nextAction": "dish_complete",
+      "priorityScore": 0
+    },
+    {
       "googlePlaceId": "ChIJNRfophqMGGARU_M1YQ8LZPo",
       "name": "成都正宗担々麺 つじ田",
       "basicInfoState": "canonical",
@@ -25474,6 +25448,28 @@
         "lunchBudgetKnown": false,
         "dinnerBudgetKnown": false,
         "addressKnown": false,
+        "cuisineKnown": true
+      },
+      "nextAction": "dish_complete",
+      "priorityScore": 0
+    },
+    {
+      "googlePlaceId": "ChIJW9bTbxqMGGARzrp71TKW5lU",
+      "name": "ドトールコーヒーショップ",
+      "basicInfoState": "canonical",
+      "cuisine": "咖啡",
+      "distanceMeters": 546,
+      "sourceUrlCount": 5,
+      "crawlableOfficialUrlCount": 5,
+      "retainedThirdPartyUrlCount": 0,
+      "recommendedDishesKnown": 2,
+      "featuredDishesKnown": 6,
+      "dishGaps": [],
+      "secondaryMetadata": {
+        "openingHoursKnown": true,
+        "lunchBudgetKnown": false,
+        "dinnerBudgetKnown": false,
+        "addressKnown": true,
         "cuisineKnown": true
       },
       "nextAction": "dish_complete",

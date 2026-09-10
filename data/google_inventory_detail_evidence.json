@@ -32,7 +32,7 @@
     "ordinaryMenuDishBecomesFeaturedOnly": true,
     "shardIndex": 0,
     "shardCount": 1,
-    "source": "current official chain pages whose domain is already bound to each target identity",
+    "source": "current official DOUTOR seasonal recommendation menu",
     "eligibleBindings": [
       "strict_auto",
       "manual_exact"
@@ -144,33 +144,40 @@
     "automaticAdjacencyPromotionAllowed": false,
     "currentOfficialRecommendationHeadingOrPairingRequired": true,
     "chainWideApplicationAllowedOnlyForCurrentChainMenuOrCampaign": true,
-    "automaticPromotionAllowed": false
+    "automaticPromotionAllowed": false,
+    "targetNameMustBeDoutor": true,
+    "reviewedOfficialDoutorDomainRequired": true,
+    "existingStrictRecommendationMustBeAbsent": true,
+    "currentOfficialRecommendationSectionRequired": true,
+    "automaticCrossBrandPromotionAllowed": false
   },
   "summary": {
     "catalogTotal": 2804,
     "publicRuntimeTotal": 1422,
-    "reviewedRules": 9,
-    "recommendationRestaurants": 9,
-    "recommendationItems": 11,
+    "doutorRuntimeRows": 9,
+    "reviewedOfficialDoutorRows": 9,
+    "alreadyRecommendedDoutorRows": 7,
+    "recommendationGapRestaurants": 2,
+    "recommendationItems": 4,
     "previousEvidence": {
-      "recommendationRestaurants": 549,
-      "featuredRestaurants": 647,
-      "evidenceRestaurants": 714,
-      "recommendationItems": 968,
-      "featuredItems": 2504
-    },
-    "freshCrawlEvidence": {
-      "recommendationRestaurants": 9,
-      "featuredRestaurants": 0,
-      "evidenceRestaurants": 9,
-      "recommendationItems": 11,
-      "featuredItems": 0
-    },
-    "mergedEvidence": {
       "recommendationRestaurants": 558,
       "featuredRestaurants": 647,
       "evidenceRestaurants": 715,
       "recommendationItems": 979,
+      "featuredItems": 2504
+    },
+    "freshCrawlEvidence": {
+      "recommendationRestaurants": 2,
+      "featuredRestaurants": 0,
+      "evidenceRestaurants": 2,
+      "recommendationItems": 4,
+      "featuredItems": 0
+    },
+    "mergedEvidence": {
+      "recommendationRestaurants": 560,
+      "featuredRestaurants": 647,
+      "evidenceRestaurants": 715,
+      "recommendationItems": 983,
       "featuredItems": 2504
     },
     "specificityCorrection": {
@@ -178,7 +185,7 @@
       "correctedItems": 0,
       "duplicateItemsRemoved": 0,
       "ruleCounts": {},
-      "recommendationItemsAfterCorrection": 979,
+      "recommendationItemsAfterCorrection": 983,
       "featuredItemsAfterCorrection": 2504
     }
   },
@@ -36239,7 +36246,28 @@
     {
       "googlePlaceId": "ChIJW9bTbxqMGGARzrp71TKW5lU",
       "name": "ドトールコーヒーショップ",
-      "recommendedDishes": [],
+      "recommendedDishes": [
+        {
+          "nameJa": "ピーチ＆マンゴー ルイボス",
+          "nameZh": "桃芒果路易波士茶",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.doutor.co.jp/dcs/menu/season.html",
+          "checkedAt": "2026-09-10",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "reviewed-doutor-current-season-chain-gap",
+          "evidenceSnippet": "季節のおすすめ：ピーチ＆マンゴー ルイボス／ライチレモネードソーダ"
+        },
+        {
+          "nameJa": "ライチレモネードソーダ",
+          "nameZh": "荔枝柠檬汽水",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.doutor.co.jp/dcs/menu/season.html",
+          "checkedAt": "2026-09-10",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "reviewed-doutor-current-season-chain-gap",
+          "evidenceSnippet": "季節のおすすめ：ピーチ＆マンゴー ルイボス／ライチレモネードソーダ"
+        }
+      ],
       "featuredDishes": [
         {
           "nameZh": "三明治",
@@ -37611,7 +37639,28 @@
     {
       "googlePlaceId": "ChIJxaFliBWMGGARsF0TD5NiBH0",
       "name": "ドトールコーヒーショップ",
-      "recommendedDishes": [],
+      "recommendedDishes": [
+        {
+          "nameJa": "ピーチ＆マンゴー ルイボス",
+          "nameZh": "桃芒果路易波士茶",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.doutor.co.jp/dcs/menu/season.html",
+          "checkedAt": "2026-09-10",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "reviewed-doutor-current-season-chain-gap",
+          "evidenceSnippet": "季節のおすすめ：ピーチ＆マンゴー ルイボス／ライチレモネードソーダ"
+        },
+        {
+          "nameJa": "ライチレモネードソーダ",
+          "nameZh": "荔枝柠檬汽水",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.doutor.co.jp/dcs/menu/season.html",
+          "checkedAt": "2026-09-10",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "reviewed-doutor-current-season-chain-gap",
+          "evidenceSnippet": "季節のおすすめ：ピーチ＆マンゴー ルイボス／ライチレモネードソーダ"
+        }
+      ],
       "featuredDishes": [
         {
           "nameZh": "三明治",
