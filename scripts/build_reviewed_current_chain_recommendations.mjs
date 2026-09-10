@@ -54,6 +54,28 @@ const RULES=[
     ],
     evidenceSnippet:'季節限定おすすめケーキ：コーヒー香るチョコとヘーゼルナッツ／バニラ香るキャラメルとアーモンドのズコット',
     evidenceBasis:'official current page explicitly titled 季節限定おすすめケーキ'
+  },
+  {
+    googlePlaceId:'ChIJVaTZmWqMGGARH0x_mvWNJuc',
+    id:'gusto-current-big-chicken-katsu-recommendation',
+    hostSuffix:'skylark.co.jp',
+    sourceUrl:'https://www.skylark.co.jp/gusto/',
+    dishes:[
+      {nameJa:'黒酢タルタルのビッグチキンカツ定食',nameZh:'黑醋塔塔酱大份鸡排套餐'}
+    ],
+    evidenceSnippet:'2026/07/16 おすすめメニュー：ガスト食堂。黒酢タルタルのビッグチキンカツ定食など、食欲そそるボリューム満点メニュー。',
+    evidenceBasis:'official current Gusto page labels the section おすすめメニュー and names the concrete dish in the recommendation copy'
+  },
+  {
+    googlePlaceId:'ChIJJ_D4jRmMGGARMpn_E26qUCA',
+    id:'ringerhut-2026-natsukara-champon',
+    hostSuffix:'ringerhut.jp',
+    sourceUrl:'https://www.ringerhut.jp/menu/seasonal/natsukara_cp_2026/',
+    dishes:[
+      {nameJa:'夏辛ちゃんぽん',nameZh:'夏辣长崎什锦面'}
+    ],
+    evidenceSnippet:'夏辛ちゃんぽん。唐辛子と花椒オイルの辛味が溶けだしたとんこつスープ。辛党必食の一杯。',
+    evidenceBasis:'official current seasonal product page explicitly calls 夏辛ちゃんぽん a 辛党必食の一杯'
   }
 ];
 
@@ -78,16 +100,20 @@ function boundHosts(pid,row){
   return hosts;
 }
 const rows=[];
+const skippedAlreadyRecommended=[];
 for(const rule of RULES){
   const row=runtimeById.get(rule.googlePlaceId);
   if(!row) throw new Error(`Target missing runtime: ${rule.googlePlaceId}`);
-  if(Array.isArray(row.recommendedDishes)&&row.recommendedDishes.length) throw new Error(`Target already recommended: ${rule.googlePlaceId}`);
   const hosts=boundHosts(rule.googlePlaceId,row);
   if(![...hosts].some(h=>hostMatches(h,rule.hostSuffix))) throw new Error(`Official chain domain not bound to target: ${rule.googlePlaceId}; bound=${[...hosts].join(',')}`);
   if(!hostMatches(hostOf(rule.sourceUrl),rule.hostSuffix)) throw new Error(`Source URL domain mismatch: ${rule.id}`);
   if(!rule.evidenceSnippet||!rule.evidenceBasis||!rule.dishes?.length||rule.dishes.length>2) throw new Error(`Invalid rule: ${rule.id}`);
+  if(Array.isArray(row.recommendedDishes)&&row.recommendedDishes.length){
+    skippedAlreadyRecommended.push({googlePlaceId:rule.googlePlaceId,id:rule.id,name:row.name});
+    continue;
+  }
   rows.push({googlePlaceId:rule.googlePlaceId,name:row.name,recommendedDishes:rule.dishes.map(d=>({nameZh:d.nameZh,nameJa:d.nameJa,provider:'sourceWebsite',sourceUrl:rule.sourceUrl,checkedAt:CHECKED_AT,evidenceClass:'source_recommendation_text',evidenceRule:`reviewed-current-chain:${rule.id}`,evidenceSnippet:rule.evidenceSnippet.slice(0,90)})),featuredDishes:[]});
 }
-const payload={schemaVersion:1,checkedAt:CHECKED_AT,policy:{source:'current official chain pages whose domain is already bound to each target identity',networkRequests:0,paidGoogleDataApiCalls:0,catalogIdentityKey:'frozen Place ID only',toolIdentityNameSource:'runtime_catalog_name',identityMutationAllowed:false,sourceDomainMustAlreadyBeBoundToIdentity:true,currentOfficialRecommendationHeadingOrPairingRequired:true,chainWideApplicationAllowedOnlyForCurrentChainMenuOrCampaign:true,genericCuisinePromotionAllowed:false,automaticPromotionAllowed:false},summary:{catalogTotal:2804,publicRuntimeTotal:runtimeRows.length,reviewedRules:RULES.length,recommendationRestaurants:rows.length,recommendationItems:rows.reduce((s,r)=>s+r.recommendedDishes.length,0)},rows};
+const payload={schemaVersion:2,checkedAt:CHECKED_AT,policy:{source:'current official chain pages whose domain is already bound to each target identity',networkRequests:0,paidGoogleDataApiCalls:0,catalogIdentityKey:'frozen Place ID only',toolIdentityNameSource:'runtime_catalog_name',identityMutationAllowed:false,sourceDomainMustAlreadyBeBoundToIdentity:true,currentOfficialRecommendationHeadingOrPairingRequired:true,chainWideApplicationAllowedOnlyForCurrentChainMenuOrCampaign:true,genericCuisinePromotionAllowed:false,automaticPromotionAllowed:false,alreadyRecommendedTargetsSkipped:true,outputOnlyCurrentRecommendationGaps:true},summary:{catalogTotal:2804,publicRuntimeTotal:runtimeRows.length,reviewedRules:RULES.length,skippedAlreadyRecommendedRules:skippedAlreadyRecommended.length,recommendationRestaurants:rows.length,recommendationItems:rows.reduce((s,r)=>s+r.recommendedDishes.length,0)},skippedAlreadyRecommended,rows};
 fs.mkdirSync(path.dirname(path.resolve(OUTPUT)),{recursive:true});fs.writeFileSync(OUTPUT,JSON.stringify(payload,null,2)+'\n','utf8');
 console.log(JSON.stringify(payload.summary));for(const row of rows)console.log(JSON.stringify({googlePlaceId:row.googlePlaceId,name:row.name,dishes:row.recommendedDishes.map(d=>d.nameZh)}));
