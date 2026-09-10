@@ -45,3 +45,6 @@ jobs:
             node scripts/audit_repository.mjs
             node scripts/audit_normalized_fields.mjs
           fi
+
+      - name: Public UI simplification regression
+        run: node --test scripts/test_public_ui_simplification.mjs
