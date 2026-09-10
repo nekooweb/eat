@@ -7,15 +7,18 @@ if(!INPUT) throw new Error('Usage: node audit_quoted_recommendation_adjacency.mj
 const doc=JSON.parse(fs.readFileSync(INPUT,'utf8'));
 const STRONG=/名物|看板|自慢|一番人気|人気(?:No\.?1|NO\.?1|ナンバー1|メニュー|商品)?|イチオシ|一押し|おすすめ|オススメ|お勧め/iu;
 const BAD=/おすすめ記事|おすすめスポット|ランキング|求人|採用|ニュース|お知らせ|ブログ|キャンペーン|フェア|ギフト|通販|オンライン|グッズ|アクセス|営業時間|予約|ドリンク|ワイン|ビール|日本酒|焼酎|サワー|カクテル/iu;
-const QUOTED=/[「『“\"]([^」』”\"]{2,48})[」』”\"]/gu;
+const QUOTED_PATTERNS=[/「([^」]{2,48})」/gu,/『([^』]{2,48})』/gu,/“([^”]{2,48})”/gu,/"([^"]{2,48})"/gu];
 const TITLEISH=/^[^。！？!?]{2,60}$/u;
 function clean(v){return String(v||'').replace(/\s+/g,' ').trim();}
 function candidatesFrom(text){
   const out=[]; const seen=new Set(); const t=clean(text);
-  for(const m of t.matchAll(QUOTED)){
-    const c=clean(m[1]);
-    if(!c||BAD.test(c)||/^\d|円|税込|http|www\./iu.test(c)||seen.has(c)) continue;
-    seen.add(c); out.push(c);
+  for(const pattern of QUOTED_PATTERNS){
+    pattern.lastIndex=0;
+    for(const m of t.matchAll(pattern)){
+      const c=clean(m[1]);
+      if(!c||BAD.test(c)||/^(?:\d|.*(?:円|税込)|https?:|www\.)/iu.test(c)||seen.has(c)) continue;
+      seen.add(c); out.push(c);
+    }
   }
   return out;
 }
