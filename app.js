@@ -36,11 +36,38 @@
     .replaceAll('"', '&quot;')
     .replaceAll("'", '&#39;');
 
-  const cuisineLabels = [...new Set(
-    production
-      .map((restaurant) => restaurant.cuisine)
-      .filter((cuisine) => cuisine && cuisine !== '餐厅')
-  )].sort((a, b) => a.localeCompare(b, 'zh-CN'));
+  // Display/filter aliases only. Keep all source restaurant objects unchanged.
+  const CUISINE_ALIASES = Object.freeze({
+    '中華': '中华', '中華料理': '中华',
+    '韓国料理': '韩国菜', '台湾料理': '台湾菜',
+    '冲绳料理': '冲绳菜', '沖縄料理': '冲绳菜',
+    'ラーメン': '拉面', '乌冬面': '乌冬', 'うどん': '乌冬',
+    '烧肉': '烤肉', '焼肉': '烤肉', '焼肉・ホルモン': '烤肉',
+    '烧鸟': '烤鸡', '焼き鳥': '烤鸡',
+    '和食': '日式', '洋食': '西式', '西餐': '西式',
+    'バー・カクテル': '酒吧',
+    'ダイニングバー・バル': '餐酒馆',
+    'カフェ・スイーツ': '咖啡·甜品',
+    'イタリアン・フレンチ': '意大利·法国菜',
+    'アジア・エスニック料理': '亚洲料理',
+    'お好み焼き・もんじゃ': '御好烧·文字烧',
+    '創作料理': '创意料理', 'カラオケ・パーティ': '聚会餐饮'
+  });
+  const GENERIC_CUISINES = new Set(['', '餐厅', 'restaurant', 'その他グルメ']);
+  function displayCuisine(restaurant) {
+    const raw = String(restaurant.cuisine || '').normalize('NFKC').trim();
+    if (GENERIC_CUISINES.has(raw.toLowerCase())) return '';
+    return CUISINE_ALIASES[raw] || raw;
+  }
+  const cuisineCounts = new Map();
+  production.forEach((restaurant) => {
+    const label = displayCuisine(restaurant);
+    if (label) cuisineCounts.set(label, (cuisineCounts.get(label) || 0) + 1);
+  });
+  const cuisineLabels = [...cuisineCounts.keys()].sort((a, b) =>
+    cuisineCounts.get(b) - cuisineCounts.get(a) || a.localeCompare(b, 'zh-CN'));
+  const PRIMARY_CUISINE_COUNT = 12;
+  const secondaryCuisines = cuisineLabels.slice(PRIMARY_CUISINE_COUNT);
 
   function rand01() {
     const bytes = new Uint32Array(1);
@@ -89,7 +116,7 @@
 
     const byCuisine = new Map();
     pool.forEach((restaurant) => {
-      const cuisine = restaurant.cuisine || '餐厅';
+      const cuisine = displayCuisine(restaurant) || '未分类';
       if (!byCuisine.has(cuisine)) byCuisine.set(cuisine, []);
       byCuisine.get(cuisine).push(restaurant);
     });
@@ -217,6 +244,7 @@
     const price = budgetText(restaurant);
     const schedule = scheduleText(restaurant);
     const map = renderStoreMap(restaurant, index);
+    const cuisine = displayCuisine(restaurant);
     return `<article class="card result-card">
       <div class="card-main">
         <div class="result-heading">
@@ -225,10 +253,9 @@
         </div>
         <div class="meta">
           ${awardBadge(restaurant)}
-          ${restaurant.cuisine ? `<span class="pill">${escapeHtml(restaurant.cuisine)}</span>` : '<span class="pill">菜系待补</span>'}
+          ${cuisine ? `<span class="pill">${escapeHtml(cuisine)}</span>` : ''}
           <span class="pill">${escapeHtml(distanceText(restaurant))}</span>
         </div>
-        ${restaurant.basicInfoState === 'google_place_id_only' ? '<p class="note"><b>基础信息：</b>Google Maps 已收录；店名、地址和详细资料补全中。</p>' : ''}
         ${price ? `<p class="budget"><b>预算：</b>${escapeHtml(price)}</p>` : ''}
         ${dish.text ? `<p class="dish"><b>${escapeHtml(dish.label)}：</b>${escapeHtml(dish.text)}</p>` : ''}
         ${schedule ? `<p class="hours"><b>营业时间：</b>${escapeHtml(schedule)}</p>` : ''}
@@ -244,37 +271,31 @@
 
   function renderComparison(restaurants) {
     const rows = [
-      ['菜系', ...restaurants.map((restaurant) => restaurant.cuisine || '餐厅')],
+      ['菜系', ...restaurants.map(displayCuisine)],
       ['距离', ...restaurants.map(distanceText)],
-      ['预算', ...restaurants.map((restaurant) => budgetText(restaurant) || '—')],
-      ['推荐/特色菜', ...restaurants.map((restaurant) => recommendationText(restaurant) || '—')],
-      ['营业时间', ...restaurants.map((restaurant) => scheduleText(restaurant) || '—')],
+      ['预算', ...restaurants.map(budgetText)],
+      ['推荐/特色菜', ...restaurants.map(recommendationText)],
+      ['营业时间', ...restaurants.map(scheduleText)],
       ['百名店', ...restaurants.map((restaurant) => restaurant.hyakumeiten
         ? [restaurant.hyakumeitenYear, restaurant.hyakumeitenCategory].filter(Boolean).join(' · ') || '是'
-        : '—')]
-    ];
+        : '')]
+    ].filter(([, ...values]) => values.some((value) => value != null && String(value).trim()));
 
-    return `<section class="panel compare-panel">
-      <div class="section-heading">
-        <div>
-          <div class="eyebrow">COMPARE</div>
-          <h2>三家快速对比</h2>
-        </div>
-      </div>
+    return `<details class="panel compare-panel">
+      <summary>展开三家对比</summary>
       <div class="compare-scroll">
         <table class="compare-table">
-          <thead>
-            <tr>
-              <th>项目</th>
-              ${restaurants.map((restaurant, index) => `<th><span class="compare-number">${index + 1}</span>${escapeHtml(restaurant.name)}</th>`).join('')}
-            </tr>
-          </thead>
+          <caption class="sr-only">三家餐厅快速对比</caption>
+          <thead><tr>
+            <th scope="col">项目</th>
+            ${restaurants.map((restaurant, index) => `<th scope="col"><span class="compare-number">${index + 1}</span>${escapeHtml(restaurant.name)}</th>`).join('')}
+          </tr></thead>
           <tbody>
-            ${rows.map(([label, ...values]) => `<tr><th>${escapeHtml(label)}</th>${values.map((value) => `<td>${compareCell(value)}</td>`).join('')}</tr>`).join('')}
+            ${rows.map(([label, ...values]) => `<tr><th scope="row">${escapeHtml(label)}</th>${values.map((value) => `<td>${compareCell(value)}</td>`).join('')}</tr>`).join('')}
           </tbody>
         </table>
       </div>
-    </section>`;
+    </details>`;
   }
 
   function renderOverviewMapShell(restaurants) {
@@ -282,7 +303,6 @@
     return `<section class="panel overview-panel">
       <div class="section-heading">
         <div>
-          <div class="eyebrow">OVERVIEW</div>
           <h2>三家位置总览</h2>
         </div>
       </div>
@@ -303,7 +323,7 @@
       if (!frozenInventory || distanceLimit !== MAX_DISTANCE) return false;
     }
     if (!validCoords(restaurant) && !frozenInventory) return false;
-    if (restaurant.cuisine && rejected.has(restaurant.cuisine)) return false;
+    if (rejected.has(displayCuisine(restaurant))) return false;
     return budgetOK(restaurant);
   }
 
@@ -350,7 +370,7 @@
       mappable.forEach(({ restaurant, index }) => {
         const point = [restaurant.lat, restaurant.lng];
         bounds.push(point);
-        const popup = `<b>${escapeHtml(restaurant.name)}</b><br>${escapeHtml(restaurant.cuisine || '菜系待补')} · ${escapeHtml(distanceText(restaurant))}<br><a href="${escapeHtml(mapsUrl(restaurant))}" target="_blank" rel="noopener">在 Google Maps 查看 ↗</a>`;
+        const popup = `<b>${escapeHtml(restaurant.name)}</b><br>${escapeHtml([displayCuisine(restaurant), distanceText(restaurant)].filter(Boolean).join(' · '))}<br><a href="${escapeHtml(mapsUrl(restaurant))}" target="_blank" rel="noopener">在 Google Maps 查看 ↗</a>`;
         L.marker(point, { icon: numberIcon(index + 1) })
           .addTo(overview)
           .bindPopup(popup);
@@ -392,17 +412,32 @@
 
   function renderCuisineFilters() {
     const box = $('#rejects');
-    box.innerHTML = cuisineLabels
-      .map((label) => `<button type="button" class="chip" data-tag="${escapeHtml(label)}">${escapeHtml(label)}</button>`)
-      .join('');
-
+    const buttonFor = (label) => `<button type="button" class="chip" data-tag="${escapeHtml(label)}" aria-pressed="false">${escapeHtml(label)}</button>`;
+    const common = cuisineLabels.slice(0, PRIMARY_CUISINE_COUNT).map(buttonFor).join('');
+    const more = secondaryCuisines.length
+      ? `<details class="more-cuisines"><summary id="more-cuisines-summary">更多菜系（${secondaryCuisines.length}）</summary><div class="chips secondary-cuisines">${secondaryCuisines.map(buttonFor).join('')}</div></details>`
+      : '';
+    box.innerHTML = common + more;
+    if (!cuisineLabels.length) {
+      const module = $('[data-filter-module="food"]');
+      if (module) module.hidden = true;
+    }
     box.addEventListener('click', (event) => {
       const button = event.target.closest('[data-tag]');
       if (!button) return;
       const cuisine = button.dataset.tag;
       if (rejected.has(cuisine)) rejected.delete(cuisine);
       else rejected.add(cuisine);
-      button.classList.toggle('active', rejected.has(cuisine));
+      const selected = rejected.has(cuisine);
+      button.classList.toggle('active', selected);
+      button.setAttribute('aria-pressed', String(selected));
+      if (secondaryCuisines.length) {
+        const count = secondaryCuisines.filter((label) => rejected.has(label)).length;
+        const summary = $('#more-cuisines-summary');
+        if (summary) summary.textContent = count
+          ? `更多菜系（已排除 ${count} 项）`
+          : `更多菜系（${secondaryCuisines.length}）`;
+      }
     });
   }
 
@@ -416,21 +451,8 @@
   }
 
   function renderStats() {
-    const runtimeStats = window.GOOGLE_INVENTORY_STATS || null;
-    const stats = runtimeStats || window.PRODUCTION_STATS || {};
-    const total = production.length;
-    const cuisineKnown = production.filter((restaurant) =>
-      restaurant.cuisine && restaurant.cuisine !== '餐厅').length;
-    const recommendedKnown = production.filter((restaurant) =>
-      Array.isArray(restaurant.recommendedDishes) && restaurant.recommendedDishes.length).length;
-    const featuredKnown = production.filter((restaurant) =>
-      Array.isArray(restaurant.featuredDishes) && restaurant.featuredDishes.length).length;
-    if (runtimeStats) {
-      $('#stats').innerHTML = `Google Maps 1.2km 库存 <b>${total.toLocaleString()}</b> 家 · 已有基础资料 <b>${runtimeStats.namedBasic.toLocaleString()}</b> · 仅 Place ID 待补 <b>${runtimeStats.placeIdOnly.toLocaleString()}</b> · 推荐菜 <b>${recommendedKnown.toLocaleString()}</b> · 特色菜 <b>${featuredKnown.toLocaleString()}</b> · 已知菜系 <b>${cuisineKnown.toLocaleString()}</b>`;
-      return;
-    }
-    const awards = stats.awards ?? production.filter((restaurant) => restaurant.hyakumeiten).length;
-    $('#stats').innerHTML = `Google Maps 已核验 <b>${total.toLocaleString()}</b> 家 · 推荐菜 <b>${recommendedKnown.toLocaleString()}</b> · 特色菜 <b>${featuredKnown.toLocaleString()}</b> · 已知菜系 <b>${cuisineKnown.toLocaleString()}</b> · 百名店 <b>${awards.toLocaleString()}</b>`;
+    const node = $('#stats');
+    if (node) node.textContent = `当前可选 ${production.length.toLocaleString()} 家餐厅`;
   }
 
   function showMessage(message) {
@@ -448,7 +470,7 @@
     const result = pickThree(pool);
     clearMaps();
     $('#results').innerHTML = `
-      <div class="result-summary">从 ${pool.length} 家符合条件的店里随机选出 3 家；优先避免重复菜系。</div>
+      <div class="result-summary">从 ${pool.length.toLocaleString()} 家中选出 3 家</div>
       ${renderOverviewMapShell(result)}
       <div class="result-cards">${result.map(renderCard).join('')}</div>
       ${renderComparison(result)}

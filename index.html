@@ -7,7 +7,7 @@
   <title>Eat — 今天吃什么？</title>
   <meta name="description" content="在附近餐厅里随机给出三个不同方向，减少选择困难。">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-  <link rel="stylesheet" href="./styles.css?v=20260905-review4">
+  <link rel="stylesheet" href="./styles.css?v=20260910-concise-ui">
   <link rel="stylesheet" href="./effects.css?v=20260906-mascot2">
 </head>
 <body>
@@ -19,7 +19,6 @@
 
     <section class="panel scope-panel" aria-label="当前可用区域">
       <div>
-        <div class="eyebrow">CURRENT AREA</div>
         <h2>TOKYO · 地区1️⃣</h2>
       </div>
       <span class="scope-distance">1.2 km</span>
@@ -62,18 +61,13 @@
     </section>
 
     <section class="dataset-stats">
-      <div class="stats-label">RESTAURANT DATABASE</div>
       <div id="stats">正在读取数据库…</div>
     </section>
 
     <footer class="footer">
-      <p>当前开放 TOKYO · 地区1️⃣，使用已完成覆盖核验的 Google Maps 1.2 km 冻结库存，共 2,804 个唯一 Place ID。</p>
-      <p>“推荐菜”优先展示严格来源支持的推荐条目；“特色菜”仅在有明确来源证据时展示。没有可靠菜品证据时不做菜系推断。</p>
-      <p>Place ID 仅作为冻结目录身份和外部导航兼容键；可持久化的店名、坐标和其他资料来自独立来源。尚未完成独立来源匹配的记录保留在主目录但不在前台展示。</p>
-      <p>页面内嵌地图统一使用 Leaflet + OpenStreetMap，不注入 Google Maps API key，也不通过 Google Maps 数据 API 读取地点资料。</p>
-      <p>地图基础图层 © OpenStreetMap contributors（ODbL）。</p>
-      <p>Powered by <a href="https://webservice.recruit.co.jp/">ホットペッパーグルメ Webサービス</a></p>
-      <p><a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> · Google Maps 仅作为普通外部导航链接 · <a href="./privacy.html">隐私说明</a> · <a href="./terms.html">使用条款</a></p>
+      <p>资料可能变化，出发前请向店铺确认。</p>
+      <p>Powered by <a href="https://webservice.recruit.co.jp/">ホットペッパーグルメ Webサービス</a> · © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>（ODbL）</p>
+      <p><a href="./privacy.html">隐私说明</a> · <a href="./terms.html">使用条款</a></p>
     </footer>
   </main>
 
@@ -83,7 +77,7 @@
   <script src="./data/source_provenance.js?v=20260907-strictgoogle1"></script>
   <script src="./data/source_facts.js?v=20260907-strictgoogle1"></script>
   <script src="./data/hotpepper_rich_metadata.js?v=20260907-strictgoogle1"></script>
-  <script src="./app.js?v=20260907-osm-map3"></script>
+  <script src="./app.js?v=20260910-concise-ui"></script>
   <script src="./effects.js?v=20260906-voice3"></script>
 </body>
 </html>

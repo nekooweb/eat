@@ -142,15 +142,15 @@ body {
 .compare-table tr:last-child th, .compare-table tr:last-child td { border-bottom: 0; }
 .compare-table th:last-child, .compare-table td:last-child { border-right: 0; }
 
-.dataset-stats {
-  margin-top: 22px;
-  padding: 18px;
-  text-align: center;
-  background: var(--yellow2);
-  border: 2px solid #dfc74e;
-  border-radius: 22px;
-}
-.dataset-stats b { font-size: 1.2rem; }
+.dataset-stats { margin-top: 20px; text-align: center; color: var(--muted); font-size: .82rem; }
+.more-cuisines { flex-basis: 100%; margin-top: 2px; }
+.more-cuisines summary, .compare-panel summary { cursor: pointer; font-weight: 700; }
+.more-cuisines summary { color: var(--muted); font-size: .9rem; padding: 8px 0; }
+.secondary-cuisines { padding-top: 4px; }
+.compare-panel summary { padding: 2px 0; }
+.compare-panel[open] summary { margin-bottom: 14px; }
+.chip:focus-visible, summary:focus-visible { outline: 3px solid #2f5fd0; outline-offset: 3px; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
 .footer { text-align: center; font-size: .76rem; padding: 16px 8px; }
 .footer p { margin: 7px 0; }
 .footer a, .legal-copy a { color: #3459a7; }
