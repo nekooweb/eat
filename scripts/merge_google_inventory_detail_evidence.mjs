@@ -9,6 +9,27 @@ if (!previousPath || !currentPath) {
 const previous = fs.existsSync(previousPath) ? JSON.parse(fs.readFileSync(previousPath, 'utf8')) : { rows: [], summary: {} };
 const current = JSON.parse(fs.readFileSync(currentPath, 'utf8'));
 
+function validateInput(payload, label) {
+  if (!Array.isArray(payload.rows)) throw new Error(`Invalid evidence rows: ${label}`);
+  const ids = new Set();
+  for (const row of payload.rows) {
+    if (typeof row?.googlePlaceId !== 'string' || !row.googlePlaceId.trim()) throw new Error(`Missing evidence identity: ${label}`);
+    if (ids.has(row.googlePlaceId)) throw new Error(`Duplicate evidence row: ${label}: ${row.googlePlaceId}`);
+    ids.add(row.googlePlaceId);
+    for (const field of ['recommendedDishes', 'featuredDishes']) {
+      if (row[field] !== undefined && !Array.isArray(row[field])) throw new Error(`Invalid dish array: ${label}/${field}`);
+      for (const item of row[field] || []) {
+        if (typeof item?.nameZh !== 'string' || !item.nameZh.trim() || typeof item.sourceUrl !== 'string' || !/^https?:\/\//.test(item.sourceUrl)) {
+          throw new Error(`Malformed evidence item: ${label}/${row.googlePlaceId}/${field}`);
+        }
+        if (item.reviewedSourceEvidence !== undefined && !Array.isArray(item.reviewedSourceEvidence)) throw new Error('Invalid review provenance array');
+      }
+    }
+  }
+}
+validateInput(previous, 'previous');
+validateInput(current, 'current');
+
 // Public dish identity is the Chinese label + provider + source page + evidence
 // class. Source-native spellings remain metadata; they must not create duplicate
 // public evidence rows for the same dish on the same source page.

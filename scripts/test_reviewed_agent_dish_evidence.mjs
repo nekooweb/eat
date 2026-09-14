@@ -2,10 +2,15 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { fileURLToPath } from 'node:url';
+import { spawnSync } from 'node:child_process';
 
 const moduleUrl = new URL('./build_reviewed_agent_dish_evidence.mjs', import.meta.url);
 assert.ok(fs.existsSync(fileURLToPath(moduleUrl)), 'A fail-closed reviewed proposal adapter must exist');
 const { buildReviewedEvidence, auditReviewCoverage, translateExactDish } = await import(moduleUrl);
+const stdinImport = spawnSync(process.execPath, ['--input-type=module', '-'], {
+  input: `await import(${JSON.stringify(moduleUrl.href)});`, encoding: 'utf8'
+});
+assert.equal(stdinImport.status, 0, `Adapter helpers must be importable from stdin: ${stdinImport.stderr}`);
 const date = '2026-09-14';
 const assignment = { googlePlaceId: 'test-place', name: 'Frozen catalog name', lane: 'official_crawl', shard: 0 };
 const dish = {
@@ -32,7 +37,8 @@ const document = {
 const options = (doc = document, extra = {}) => ({
   documents: [{ path: 'data/agent_reviews/DISH-R-OFFICIAL/S0.json', document: doc }],
   assignments: [assignment], catalogNames: new Map([[assignment.googlePlaceId, assignment.name]]),
-  checkedAt: date, translations: { 'ビーフカレー': { nameZh: '牛肉咖喱', rationale: 'Literal translation: beef + curry.' } }, ...extra
+  checkedAt: date, sourceQueueCommit: 'a'.repeat(40),
+  translations: { 'ビーフカレー': { nameZh: '牛肉咖喱', rationale: 'Literal translation: beef + curry.' } }, ...extra
 });
 const changed = (mutate) => { const doc = structuredClone(document); mutate(doc); return doc; };
 
@@ -44,12 +50,18 @@ assert.equal(accepted.evidence.rows[0].featuredDishes.length, 0, 'R/F counts are
 assert.equal(accepted.evidence.rows[0].recommendedDishes[0].provider, 'sourceWebsite');
 assert.equal(accepted.evidence.policy.paidGoogleDataApiCalls, 0);
 assert.equal(accepted.coverage.reviewedRows, 1);
+const confidenceDoc = changed(d => Object.assign(d.records[0].dishProposals[0], {
+  recommendationSemantics: '自信の一品', evidenceText: 'ビーフカレー 自信の一品'
+}));
+assert.equal(buildReviewedEvidence(options(confidenceDoc)).evidence.rows[0].recommendedDishes.length, 1,
+  'Explicit house-confidence attached to a dish is equivalent recommendation wording');
 
 assert.throws(() => auditReviewCoverage([assignment], []), /missing/i);
 assert.throws(() => auditReviewCoverage([assignment], [...options().documents, ...options().documents]), /duplicate/i);
 assert.throws(() => buildReviewedEvidence(options(changed(d => d.records[0].googlePlaceId = 'other'))), /assignment|outside/i);
 assert.throws(() => buildReviewedEvidence(options(changed(d => d.records[0].restaurantName = 'Source alias'))), /identity|catalog|name/i);
 assert.throws(() => buildReviewedEvidence(options(changed(d => d.shard = 'S1'))), /shard|assignment/i);
+assert.throws(() => buildReviewedEvidence(options(changed(d => d.sourceQueueCommit = 'b'.repeat(40)))), /queue.*commit|provenance/i);
 assert.throws(() => buildReviewedEvidence(options(changed(d => d.summary.reviewedRows = 2))), /summary/i);
 assert.throws(() => buildReviewedEvidence(options(changed(d => d.policyAttestation.paidGoogleDataApiCalls = 1))), /policy|paid/i);
 assert.throws(() => buildReviewedEvidence(options(changed(d => d.records[0].identity.evidence = []))), /identity/i);

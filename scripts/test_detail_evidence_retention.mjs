@@ -66,4 +66,15 @@ assert.equal(laterCrawl.status,0,laterCrawl.stderr);
 assert.deepEqual(JSON.parse(fs.readFileSync(emptyOutput)).rows[0].recommendedDishes[0].reviewedSourceEvidence,snapshots,
   'A newer ordinary collector item must retain the prior central-review snapshots');
 
+for (const invalid of [
+  {rows:[provenanceCurrent.rows[0],provenanceCurrent.rows[0]]},
+  {rows:[{googlePlaceId:pid,recommendedDishes:[{}]}]}
+]) {
+  fs.writeFileSync(currentPath,JSON.stringify(invalid));
+  const beforeOutput=fs.readFileSync(outputPath,'utf8');
+  const rejected=spawnSync(process.execPath,[path.join(ROOT,'scripts/merge_google_inventory_detail_evidence.mjs'),previousPath,currentPath,outputPath],{encoding:'utf8'});
+  assert.notEqual(rejected.status,0,'Duplicate rows and malformed dishes must fail instead of silently dropping evidence');
+  assert.equal(fs.readFileSync(outputPath,'utf8'),beforeOutput,'Invalid input must not overwrite the output');
+}
+
 console.log(JSON.stringify({status:'pass',retainedItems:7,distinctNewItemPreserved:true,richerDuplicateSelected:true,noMatchRefreshPreserved:true}));

@@ -2,10 +2,15 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { fileURLToPath } from 'node:url';
+import { spawnSync } from 'node:child_process';
 
 const moduleUrl = new URL('./audit_agent_dish_integration.mjs', import.meta.url);
 assert.ok(fs.existsSync(fileURLToPath(moduleUrl)), 'An item-level integration delta audit must exist');
 const { snapshotState, auditIntegration } = await import(moduleUrl);
+const stdinImport = spawnSync(process.execPath, ['--input-type=module', '-'], {
+  input: `await import(${JSON.stringify(moduleUrl.href)});`, encoding: 'utf8'
+});
+assert.equal(stdinImport.status, 0, `Integration helpers must be importable from stdin: ${stdinImport.stderr}`);
 const r = { nameZh: '牛肉咖喱', nameJa: 'ビーフカレー', provider: 'sourceWebsite',
   sourceUrl: 'https://example.com/menu', evidenceClass: 'source_recommendation_text' };
 const f = { ...r, nameZh: '蛋包饭', nameJa: 'オムライス', evidenceClass: 'source_menu_text' };
@@ -37,6 +42,12 @@ assert.throws(() => snapshotState(repeatedRuntimeDish, afterEvidence, ['p1', 'p2
   'Do not silently deduplicate a runtime regression during the audit');
 const missingRuntimeDishName = structuredClone(afterRuntime); missingRuntimeDishName[0].recommendedDishes = [{}];
 assert.throws(() => snapshotState(missingRuntimeDishName, afterEvidence, ['p1', 'p2', 'p3']), /dish.*name/i);
+const malformedEvidence = {rows:[{googlePlaceId:'p1',name:'Frozen One',recommendedDishes:[{}]}]};
+assert.throws(() => snapshotState(runtime, malformedEvidence, ['p1','p2','p3']), /evidence.*shape|dish.*name/i);
+const renamedEvidence = structuredClone(afterEvidence); renamedEvidence.rows[1].name = 'Source alias';
+assert.throws(() => auditIntegration(before,snapshotState(afterRuntime,renamedEvidence,['p1','p2','p3']),accepted), /evidence.*name|identity/i);
+const replacedProvider = structuredClone(afterRuntime); replacedProvider[1].featuredDishes[0].sourceUrl = 'https://other.example/menu';
+assert.throws(() => auditIntegration(before,snapshotState(replacedProvider,afterEvidence,['p1','p2','p3']),accepted), /provenance|unapproved/i);
 const invalid = structuredClone(runtime); invalid[0].name = 'None';
 assert.throws(() => snapshotState(invalid, evidence, ['p1', 'p2', 'p3']), /name/i);
 const downgraded = { rows: [{ ...accepted.rows[0], recommendedDishes: [], featuredDishes: [r] }] };

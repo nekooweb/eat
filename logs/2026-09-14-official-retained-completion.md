@@ -115,3 +115,29 @@ The resumed Luna worker completed and subset-validated all three missing shards.
 - Worker reports subset adapter validation passed for all three shards, and the full Official219 membership/duplicate/summary audit passed. Independent central content review remains required.
 - Worker checkpoints: `_audit/official-missing-S0-checkpoint.json`, `_audit/official-missing-S5-checkpoint.json`, `_audit/official-missing-S6-checkpoint.json`.
 - Assigned cross-review: the Retained worker independently audits accepted Official evidence; the completed Official worker independently audits Retained evidence. Root retains responsibility for final approval and integration, without bulk-reading the payloads.
+
+## Full logical structural coverage — semantic approval pending
+
+The root ran the maintained adapter's `auditReviewCoverage` function against the explicit rebuilt assignment snapshot and all 16 full-template review files, returning compact counts only (bulk source reading stays with Luna):
+
+- Official: 219/219 unique logical reviews.
+- Retained: 318/318 unique logical reviews.
+- Combined: 537/537; no duplicate assignment, missing terminal state, shard/name mismatch or summary mismatch.
+- Provisional terminal counts: accepted105, candidate48, no_evidence319, blocked65, skipped0.
+
+These are **structural draft results**, not final semantic acceptance or canonical coverage. The independent cross-review and digest approval are still pending; the canonical evidence store remains unchanged.
+
+## Retained318 worker checkpoint and independent review findings
+
+- Retained worker completed all 318 rows, including new S3/S5/S6/S7 proposals and S0/S1 reconciliation; coverage/build adapter and current regression tests passed.
+- Worker-stage counts: accepted70, candidate6, no_evidence240, blocked2, skipped0; R43 / F229 source-native evidence items; 107 items require exact Chinese normalization before emission. Independent R43 traceability review is specifically checking that compact PR #66 labels were not simply concatenated with semantic tags to manufacture source quotations.
+- Independent Official219 cross-review reported 9 blocked rows needing exact attempted-source URLs/results and 7 S4 rows missing notes. Original Official owner is correcting these from actual source/attempt evidence, not inventing visits. These issues keep central approval pending.
+- Official existing138 subset now has accepted32, candidate35, no_evidence42, blocked29; R20 across14 restaurants and F24, with18 F-only restaurants. The `神田ぶれんど` item remains R after verifying the direct branch quote `神田ぶれんど・・・濃く苦く甘い 自信の一品`; regex coverage was extended with a regression rather than letting an incomplete marker list override semantic review. `かわな`'s original-product wording alone remains F.
+
+## Independent code review corrections
+
+- Reproduced and fixed import-from-stdin failure in both helper modules; subprocess regression passes.
+- Reproduced and fixed silent malformed-item/duplicate-row acceptance in the maintained merge; invalid inputs fail before touching output.
+- Integration snapshots now validate evidence shape; comparisons reject new/changed evidence identity names and unauthorized same-label runtime provenance changes. Existing legacy evidence aliases remain unchanged, rather than rewriting historical source metadata.
+- Review documents must match the explicit approved assignment queue commit, not merely contain a syntactically valid SHA. All 16 review files currently refer to `5179badcdb58ba176cf2d9cf834a02e24c86e736`.
+- All three new/expanded regressions and zero-paid-API checks pass after these fixes. Actual baseline snapshot still passes with unchanged evidence and public counts. Semantic truth of branch/source notes remains an explicit independent manual-review responsibility.

@@ -21,7 +21,7 @@ const PROVIDERS = new Map([
   ['tabelog', 'Tabelog'], ['Tabelog', 'Tabelog'], ['hotpepper', 'Hot Pepper'], ['Hot Pepper', 'Hot Pepper']
 ]);
 // Explicit equivalents in the assignment contract supplement the shared extractor.
-const EQUIVALENT_SEMANTICS = /定番|ご好評|自信作|一番の売り商品|一押し|お勧め|お薦め|おススメ|一番のおすすめ/i;
+const EQUIVALENT_SEMANTICS = /定番|ご好評|自信作|自信の一品|一番の売り商品|一押し|お勧め|お薦め|おススメ|一番のおすすめ/i;
 const HOLD_NAMES = new Set(['えびず焼き', 'ソルベージュ®エスプレッソ']);
 
 function required(value, label) {
@@ -60,7 +60,8 @@ function checkPolicy(doc) {
   }
 }
 
-export function auditReviewCoverage(assignments, documents) {
+export function auditReviewCoverage(assignments, documents, { sourceQueueCommit } = {}) {
+  const expectedQueueCommit = sourceQueueCommit || documents[0]?.document.sourceQueueCommit;
   const expected = new Map();
   for (const row of assignments) {
     if (!Object.values(LANES).includes(row.lane)) throw new Error('Assignment outside Official/Retained scope');
@@ -77,6 +78,7 @@ export function auditReviewCoverage(assignments, documents) {
     if (doc.sourceQueue !== 'data/dish_batch_plan.json' || !/^[0-9a-f]{40}$/.test(doc.sourceQueueCommit || '')) {
       throw new Error('Missing source queue provenance');
     }
+    if (doc.sourceQueueCommit !== expectedQueueCommit) throw new Error('Review source queue commit differs from the approved assignment provenance');
     if (!Array.isArray(doc.records)) throw new Error('Full-template records required');
     const shardRows = assignments.filter(row => row.lane === LANES[doc.marker] && row.shard === Number(doc.shard.slice(1)));
     const local = Object.fromEntries(Object.values(STATUS_FIELDS).map(key => [key, 0]));
@@ -126,9 +128,9 @@ export function translateExactDish(raw, translations = {}) {
   return null;
 }
 
-export function buildReviewedEvidence({ documents, assignments, catalogNames, translations = {}, checkedAt }) {
+export function buildReviewedEvidence({ documents, assignments, catalogNames, translations = {}, checkedAt, sourceQueueCommit }) {
   validDate(checkedAt, 'adapter date');
-  const coverage = auditReviewCoverage(assignments, documents);
+  const coverage = auditReviewCoverage(assignments, documents, { sourceQueueCommit });
   const rows = [];
   const pending = [];
   let acceptedRItems = 0, acceptedFItems = 0;
@@ -235,6 +237,7 @@ function main() {
   const currentQueue = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/google_inventory_detail_queue.json')));
   const currentPlan = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/dish_batch_plan.json')));
   const assignments = manifest.assignmentSnapshot.rows;
+  if (!/^[0-9a-f]{40}$/.test(manifest.assignmentSnapshot.sourceQueueCommit || '')) throw new Error('Explicit assignment queue commit provenance required');
   const expected = new Map(assignments.map(row => [row.googlePlaceId, row]));
   const currentRows = currentPlan.rows.filter(row => Object.values(LANES).includes(row.lane));
   for (const row of currentRows) {
@@ -253,7 +256,8 @@ function main() {
   }
   const result = buildReviewedEvidence({ documents, assignments,
     catalogNames: new Map(currentQueue.rows.map(row => [row.googlePlaceId, row.name])),
-    translations: manifest.translations || {}, checkedAt: manifest.reviewedAt });
+    translations: manifest.translations || {}, checkedAt: manifest.reviewedAt,
+    sourceQueueCommit: manifest.assignmentSnapshot.sourceQueueCommit });
   result.coverage.currentAssignmentRows = currentRows.length;
   result.coverage.currentReviewedRows = currentRows.length;
   result.coverage.completedAssignmentsRemovedByRebuild = assignments.length - currentRows.length;
@@ -264,4 +268,5 @@ function main() {
   console.log(JSON.stringify(result.coverage));
 }
 
-if (process.argv[1] && fs.realpathSync(process.argv[1]) === fs.realpathSync(fileURLToPath(import.meta.url))) main();
+if (process.argv[1] && fs.existsSync(process.argv[1]) &&
+    fs.realpathSync(process.argv[1]) === fs.realpathSync(fileURLToPath(import.meta.url))) main();
