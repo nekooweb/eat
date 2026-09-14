@@ -10,7 +10,9 @@ import { DISH_RULES, RECOMMENDATION_MARKER, normalizePlainText } from './recomme
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 export const LANES = Object.freeze({
   'DISH-R-OFFICIAL': 'official_crawl',
-  'DISH-R-RETAINED': 'retained_source_mining'
+  'DISH-R-RETAINED': 'retained_source_mining',
+  'DISH-R-DISCOVERY': 'independent_source_discovery',
+  'DISH-F-SOURCE': 'official_or_retained_featured'
 });
 const STATUS_FIELDS = Object.freeze({
   accepted_evidence: 'acceptedEvidenceRows', candidate: 'candidateRows', no_evidence: 'noEvidenceRows',
@@ -39,8 +41,12 @@ function validDate(value, label) {
 function sourceUrl(value) {
   let url;
   try { url = new URL(required(value, 'source URL')); } catch { throw new Error('Invalid source URL'); }
+  const googleDataHost = /(^|\.)(?:googleapis\.com|google\.com|google\.co\.jp|gstatic\.com)$/.test(url.hostname);
+  // Public Google Sites is ordinary publisher-hosted web content, not a Maps/Places
+  // data endpoint. Keep all other Google hosts fail-closed at this adapter.
+  const allowedPublisherHost = url.hostname === 'sites.google.com';
   if (!['http:', 'https:'].includes(url.protocol) || url.username || url.password ||
-      /(^|\.)(?:googleapis\.com|google\.com|google\.co\.jp|gstatic\.com)$/.test(url.hostname)) {
+      (googleDataHost && !allowedPublisherHost)) {
     throw new Error('Invalid or Google data source URL');
   }
   if (/\/(?:dtlrvwlst|rvw|reviews?)(?:\/|$)/i.test(url.pathname)) throw new Error('Customer review is not menu evidence');
@@ -64,7 +70,7 @@ export function auditReviewCoverage(assignments, documents, { sourceQueueCommit 
   const expectedQueueCommit = sourceQueueCommit || documents[0]?.document.sourceQueueCommit;
   const expected = new Map();
   for (const row of assignments) {
-    if (!Object.values(LANES).includes(row.lane)) throw new Error('Assignment outside Official/Retained scope');
+    if (!Object.values(LANES).includes(row.lane)) throw new Error('Assignment outside supported reviewed dish scope');
     if (expected.has(row.googlePlaceId)) throw new Error('Duplicate assignment Place ID');
     expected.set(row.googlePlaceId, row);
   }
@@ -239,7 +245,11 @@ function main() {
   const assignments = manifest.assignmentSnapshot.rows;
   if (!/^[0-9a-f]{40}$/.test(manifest.assignmentSnapshot.sourceQueueCommit || '')) throw new Error('Explicit assignment queue commit provenance required');
   const expected = new Map(assignments.map(row => [row.googlePlaceId, row]));
-  const currentRows = currentPlan.rows.filter(row => Object.values(LANES).includes(row.lane));
+  const scopeKeys = new Set(assignments.map(row => {
+    if (!Object.values(LANES).includes(row.lane) || !Number.isInteger(row.shard)) throw new Error('Invalid approved assignment scope');
+    return `${row.lane}:${row.shard}`;
+  }));
+  const currentRows = currentPlan.rows.filter(row => scopeKeys.has(`${row.lane}:${row.shard}`));
   for (const row of currentRows) {
     const original = expected.get(row.googlePlaceId);
     if (!original || original.lane !== row.lane || original.shard !== row.shard) {
@@ -250,7 +260,7 @@ function main() {
   const currentIds = new Set(currentRows.map(row => row.googlePlaceId));
   for (const original of assignments) if (!currentIds.has(original.googlePlaceId)) {
     const current = queueById.get(original.googlePlaceId);
-    if (!current || !(current.recommendedDishesKnown > 0 || current.nextAction === 'dish_complete')) {
+    if (!current || !(current.recommendedDishesKnown > 0 || current.featuredDishesKnown > 0 || current.nextAction === 'dish_complete')) {
       throw new Error(`Assignment disappeared without canonical completion: ${original.googlePlaceId}`);
     }
   }
