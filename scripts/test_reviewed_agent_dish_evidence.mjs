@@ -6,7 +6,7 @@ import { spawnSync } from 'node:child_process';
 
 const moduleUrl = new URL('./build_reviewed_agent_dish_evidence.mjs', import.meta.url);
 assert.ok(fs.existsSync(fileURLToPath(moduleUrl)), 'A fail-closed reviewed proposal adapter must exist');
-const { buildReviewedEvidence, auditReviewCoverage, translateExactDish } = await import(moduleUrl);
+const { buildReviewedEvidence, auditReviewCoverage, translateExactDish, selectCurrentAssignmentRows } = await import(moduleUrl);
 const stdinImport = spawnSync(process.execPath, ['--input-type=module', '-'], {
   input: `await import(${JSON.stringify(moduleUrl.href)});`, encoding: 'utf8'
 });
@@ -117,4 +117,33 @@ const secondSourceDoc = changed(d => d.records[0].dishProposals.push({ ...d.reco
 const secondSource = buildReviewedEvidence(options(secondSourceDoc));
 assert.equal(secondSource.coverage.acceptedRItems, 2, 'Two sources are two evidence items');
 assert.equal(secondSource.coverage.acceptedRDistinctDishes, 1, 'Multiple sources must not inflate the logical dish count');
+
+const signatureDoc = changed(d => Object.assign(d.records[0].dishProposals[0], {
+  recommendationSemantics: '代名詞', evidenceText: 'ビーフカレー は当店の代名詞'
+}));
+assert.equal(buildReviewedEvidence(options(signatureDoc)).evidence.rows[0].recommendedDishes.length, 1,
+  'Explicit signature-equivalent wording 代名詞 is valid strict recommendation semantics');
+for (const [markerName, laneName] of [
+  ['DISH-R-DISCOVERY', 'independent_source_discovery'],
+  ['DISH-F-SOURCE', 'official_or_retained_featured']
+]) {
+  const scopedAssignment = { ...assignment, lane: laneName, shard: 5 };
+  const scopedDoc = structuredClone(document);
+  scopedDoc.marker = markerName;
+  scopedDoc.shard = 'S5';
+  const result = buildReviewedEvidence({
+    documents: [{ path: `data/agent_reviews/${markerName}/S5.json`, document: scopedDoc }],
+    assignments: [scopedAssignment], catalogNames: new Map([[scopedAssignment.googlePlaceId, scopedAssignment.name]]),
+    checkedAt: date, sourceQueueCommit: 'a'.repeat(40),
+    translations: { 'ビーフカレー': { nameZh: '牛肉咖喱', rationale: 'Literal translation: beef + curry.' } }
+  });
+  assert.equal(result.coverage.reviewedRows, 1, `${markerName} must pass the same fail-closed adapter`);
+}
+const scopedRows = selectCurrentAssignmentRows([
+  { googlePlaceId: 'a', lane: 'independent_source_discovery', shard: 5 },
+  { googlePlaceId: 'b', lane: 'independent_source_discovery', shard: 4 },
+  { googlePlaceId: 'c', lane: 'official_or_retained_featured', shard: 5 }
+], [{ googlePlaceId: 'a', lane: 'independent_source_discovery', shard: 5 }]);
+assert.deepEqual(scopedRows.map(row => row.googlePlaceId), ['a'], 'CLI current-row guard must stay scoped to approved lane/shard');
+
 console.log(JSON.stringify({ status: 'pass', checks: 'coverage, fail-closed identity/policy/semantics, R/F/C separation, exact translation, full provenance, deduplication' }));
