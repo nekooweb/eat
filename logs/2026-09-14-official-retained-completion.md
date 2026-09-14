@@ -79,3 +79,39 @@ Pending the evidence, coverage, integration and validation gates above. Ending c
 
 - The integration snapshot now rejects duplicate or missing runtime dish names instead of silently deduplicating them. Red/green tests passed, and the strict snapshot succeeded on the current 1,422-row public baseline with unchanged R595 / F675 / display740 counts.
 - This is an audit-tool correction only; no canonical evidence or runtime dishes were added.
+
+## 20:23 JST — missing-proposal drafts arriving
+
+- Filesystem checkpoint shows newly written Official S0/S5 and Retained S3/S5/S6/S7 proposal files, plus Retained review outputs. The root did not bulk-read these payloads; Luna owns the bulk evidence review and will supply validated per-shard summaries.
+- File presence is not a central approval or completion count. The approval manifest remains pending, all original submissions remain preserved, and no canonical dish evidence has been merged.
+
+## Official existing-proposal semantic corrections saved
+
+Luna returned the following bounded checkpoint after saving owned review files; coverage validation and independent code review are still in progress:
+
+- ARBOL: rejected Kagurazaka TableCheck dish transfer to the frozen Awajicho identity; candidate, with exact Awajicho identity retained and no accepted dish.
+- Sta. Kanda: stale 404 source, candidate.
+- Sombreuil: the 7/1–9/4 course menu is expired at the review date, candidate.
+- 文銭堂 いちご大福: page availability is December–early May, not current September; candidate.
+- らくごカフェ: historical exblog menu, candidate.
+- べっぴん舎: current special/unique wording alone was not treated as strict recommendation semantics; conservative candidate.
+- Keidanren マロンシャンティイ: `伝統` is descriptive, not sufficient recommendation semantics; R → F.
+- Point Et Ligne source was updated to its exact linked article. KKR, Midtown and Wine208 source-native quotes were rechecked. Accepted S4 identities were supplemented with actual branch address/phone details; original provider labels are retained in `sourceProviderNative` when normalized for the maintained adapter.
+
+No conclusion in this checkpoint has been integrated. Raw independent proposals remain unchanged for reproducible reconciliation.
+
+## Missing Official shards completed — worker review, not ingestion approval
+
+The resumed Luna worker completed and subset-validated all three missing shards. Original proposals and corresponding full-template review files are both retained.
+
+| Shard | Assigned / reviewed | Accepted | Candidate | No evidence | Blocked | Skipped |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| S0 | 28 / 28 | 1 | 3 | 12 | 12 | 0 |
+| S5 | 33 / 33 | 1 | 3 | 13 | 16 | 0 |
+| S6 | 20 / 20 | 1 | 1 | 12 | 6 | 0 |
+| Total | 81 / 81 | 3 | 7 | 37 | 34 | 0 |
+
+- All three accepted restaurant findings are F-only; strict R findings: 0. Dish-item counts will be taken from the final adapter audit, not inferred from restaurant counts.
+- Worker reports subset adapter validation passed for all three shards, and the full Official219 membership/duplicate/summary audit passed. Independent central content review remains required.
+- Worker checkpoints: `_audit/official-missing-S0-checkpoint.json`, `_audit/official-missing-S5-checkpoint.json`, `_audit/official-missing-S6-checkpoint.json`.
+- Assigned cross-review: the Retained worker independently audits accepted Official evidence; the completed Official worker independently audits Retained evidence. Root retains responsibility for final approval and integration, without bulk-reading the payloads.

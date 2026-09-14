@@ -1,0 +1,811 @@
+{
+  "schemaVersion": 1,
+  "proposalOnly": true,
+  "marker": "DISH-R-OFFICIAL",
+  "shard": "S0",
+  "sourceQueue": "data/dish_batch_plan.json",
+  "sourceQueueCommit": "5179badcdb58ba176cf2d9cf834a02e24c86e736",
+  "generatedAt": "2026-09-14T22:00:00+09:00",
+  "summary": {
+    "assignedRows": 28,
+    "reviewedRows": 28,
+    "acceptedEvidenceRows": 1,
+    "candidateRows": 3,
+    "noEvidenceRows": 12,
+    "blockedRows": 12,
+    "skippedAlreadyCompleteRows": 0
+  },
+  "policyAttestation": {
+    "paidGoogleDataApiCalls": 0,
+    "canonicalMasterEditedDirectly": false,
+    "proximityOnlyIdentityBindingUsed": false,
+    "recommendationWithoutExplicitSemanticsAdded": false,
+    "accessRestrictionBypassUsed": false
+  },
+  "agentRunId": "official-missing-S0-proposal-20260914",
+  "records": [
+    {
+      "googlePlaceId": "ChIJDxYKIhCMGGARScnqzc-T-TU",
+      "restaurantName": "GLITCH COFFEE & ROASTERS",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "GLITCH COFFEE & ROASTERS"
+        ],
+        "evidence": [
+          {
+            "provider": "official_web",
+            "sourceUrl": "https://www.glitchcoffee.live/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Source-native name: GLITCH COFFEE & ROASTERS; address: 東京都千代田区神田錦町3-16 香村ビル1F; phone: 03-5244-5458; exact branch identity confirmed from the reviewed official page."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "COLOMBIA TOLIMA MONTREAL",
+          "nameZhCandidate": null,
+          "evidenceClass": "official_menu_item",
+          "recommendationSemantics": null,
+          "provider": "official_web",
+          "sourceUrl": "https://www.glitchcoffee.live/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "COLOMBIA TOLIMA MONTREAL (2023 COE NO.1) ORANGE BLOSSOM, HONEY, JASMINE TEA, TANGERINE, APPLE, ELEGANT, SUPER CLEANCUP",
+          "confidence": "high",
+          "notes": "Concrete current coffee product from the exact official branch page; no explicit dish-level recommendation semantics, therefore F only."
+        }
+      ],
+      "attemptedSources": [
+        "https://www.glitchcoffee.live/"
+      ],
+      "blocker": null,
+      "notes": "Strict current branch-level F evidence accepted from the reviewed official page; no explicit recommendation semantics was asserted."
+    },
+    {
+      "googlePlaceId": "ChIJn1tmVgCNGGARIE-0f0iVnsQ",
+      "restaurantName": "なぜ蕎麦にラー油を入れるのか。",
+      "status": "candidate",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "なぜ蕎麦にラー油を入れるのか。"
+        ],
+        "evidence": [
+          {
+            "provider": "official_web",
+            "sourceUrl": "https://nomimono.co.jp/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Catalog identity name: なぜ蕎麦にラー油を入れるのか。; source-native name: なぜ蕎麦にラー油を入れるのか。; canonical address: not stated on the current runtime source record; canonical phone: not stated on the current runtime source record; exact reviewed source URL retained for audit; dish acceptance remains candidate."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://nomimono.co.jp/"
+      ],
+      "blocker": null,
+      "notes": "Official brand page was inspected; recommendation language was not paired with a concrete branch-bound dish, so this remains a candidate for future exact branch verification."
+    },
+    {
+      "googlePlaceId": "ChIJJ53jJhGMGGARRdD4XNGtrFE",
+      "restaurantName": "アディロンダックカフェ",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "アディロンダックカフェ"
+        ],
+        "evidence": [
+          {
+            "provider": "official_web",
+            "sourceUrl": "https://adirondackcafejp.wordpress.com/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Catalog identity name: アディロンダックカフェ; source-native name: アディロンダックカフェ; canonical address: not stated on the current runtime source record; canonical phone: not stated on the current runtime source record; exact reviewed source URL retained for audit; dish acceptance remains no_evidence."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://adirondackcafejp.wordpress.com/",
+        "https://adirondackcafejp.wordpress.com/food/"
+      ],
+      "blocker": null,
+      "notes": "Reviewed exact official source family; no concrete current branch dish was paired with explicit recommendation/signature/popular/specialty semantics. No dish proposal made."
+    },
+    {
+      "googlePlaceId": "ChIJ-yGC8lmNGGARoPOJz0bpCCs",
+      "restaurantName": "Café&Apéro Taro Taro",
+      "status": "blocked",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "Café&Apéro Taro Taro"
+        ],
+        "evidence": [
+          {
+            "provider": "official_web",
+            "sourceUrl": "https://cafeandaperotarotaro.jimdosite.com/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Catalog identity name: Café&Apéro Taro Taro; source-native name: Café&Apéro Taro Taro; canonical address: 文京区Hongo, 2 Chome−18−12 諸岡ビル 1階; canonical phone: +81338682475; exact reviewed source URL retained for audit; dish acceptance remains blocked."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://cafeandaperotarotaro.jimdosite.com/"
+      ],
+      "blocker": {
+        "type": "official_source_access_restricted",
+        "detail": "The reviewed official site returned HTTP 403; no restriction bypass attempted."
+      },
+      "notes": "The reviewed official site returned HTTP 403; no restriction bypass attempted. No bypass, paid search, or cross-branch inference used."
+    },
+    {
+      "googlePlaceId": "ChIJ0U7bhxaMGGARuqkd6TFfQcc",
+      "restaurantName": "Bon Vivant",
+      "status": "blocked",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "Bon Vivant"
+        ],
+        "evidence": [
+          {
+            "provider": "official_web",
+            "sourceUrl": "https://maps.app.goo.gl/6bdsANmW4rBeKBMg9",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Catalog identity name: Bon Vivant; source-native name: Bon Vivant; canonical address: 千代田区Kanda Jinbocho, 1 Chome−64 神保町ビル 1F; canonical phone: +81364212541; exact reviewed source URL retained for audit; dish acceptance remains blocked."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://maps.app.goo.gl/6bdsANmW4rBeKBMg9"
+      ],
+      "blocker": {
+        "type": "official_source_redirect_unavailable",
+        "detail": "The reviewed official map/official link only redirected to a non-content target during inspection; no branch dish evidence was obtained."
+      },
+      "notes": "The reviewed official map/official link only redirected to a non-content target during inspection; no branch dish evidence was obtained. No bypass, paid search, or cross-branch inference used."
+    },
+    {
+      "googlePlaceId": "ChIJ0W1DJAKNGGARMioVw-wRezE",
+      "restaurantName": "Olive Oil",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "Olive Oil"
+        ],
+        "evidence": [
+          {
+            "provider": "official_web",
+            "sourceUrl": "http://www.oliveoiltaster.org/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Catalog identity name: Olive Oil; source-native name: Olive Oil; canonical address: 千代田区Kudankita, 1 Chome−8−2 第2フクハラビル1F; canonical phone: +81368823460; exact reviewed source URL retained for audit; dish acceptance remains no_evidence."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "http://www.oliveoiltaster.org/"
+      ],
+      "blocker": null,
+      "notes": "Reviewed exact official source family; no concrete current branch dish was paired with explicit recommendation/signature/popular/specialty semantics. No dish proposal made."
+    },
+    {
+      "googlePlaceId": "ChIJ39ODMyGNGGARDWc31nBtB5k",
+      "restaurantName": "鮨 美吟",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "鮨 美吟"
+        ],
+        "evidence": [
+          {
+            "provider": "official_web",
+            "sourceUrl": "https://www.tablecheck.com/shops/sushi-bigin/reserve",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Catalog identity name: 鮨 美吟; source-native name: 鮨 美吟; canonical address: 千代田区Kanda Jinbocho, 1 Chome−16−1 JINBOCHO WORLD BUILDING; canonical phone: +81362850378; exact reviewed source URL retained for audit; dish acceptance remains no_evidence."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://www.tablecheck.com/shops/sushi-bigin/reserve"
+      ],
+      "blocker": null,
+      "notes": "Reviewed exact official source family; no concrete current branch dish was paired with explicit recommendation/signature/popular/specialty semantics. No dish proposal made."
+    },
+    {
+      "googlePlaceId": "ChIJ55Ks0AOMGGARxpBVi5llOqI",
+      "restaurantName": "Bar-Groovy",
+      "status": "blocked",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "Bar-Groovy"
+        ],
+        "evidence": [
+          {
+            "provider": "official_web",
+            "sourceUrl": "http://www.kanda-groovy.com",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Catalog identity name: Bar-Groovy; source-native name: Bar-Groovy; canonical address: 千代田区東京都千代田区内神田３丁目１７−６; canonical phone: +81332565556; exact reviewed source URL retained for audit; dish acceptance remains blocked."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "http://www.kanda-groovy.com"
+      ],
+      "blocker": {
+        "type": "dns_resolution_failed",
+        "detail": "The reviewed official website could not be resolved."
+      },
+      "notes": "The reviewed official website could not be resolved. No bypass, paid search, or cross-branch inference used."
+    },
+    {
+      "googlePlaceId": "ChIJ6fctbTyMGGAR5F79ahGvLt8",
+      "restaurantName": "Hide Mode",
+      "status": "blocked",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "Hide Mode"
+        ],
+        "evidence": [
+          {
+            "provider": "official_web",
+            "sourceUrl": "https://hidemodehongousanchoume.owst.jp",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Catalog identity name: Hide Mode; source-native name: Hide Mode; canonical address: 文京区2 Chome-30-10 Hongo; canonical phone: +819022311666; exact reviewed source URL retained for audit; dish acceptance remains blocked."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://hidemodehongousanchoume.owst.jp"
+      ],
+      "blocker": {
+        "type": "official_source_not_found",
+        "detail": "The reviewed official branch page returned HTTP 404."
+      },
+      "notes": "The reviewed official branch page returned HTTP 404. No bypass, paid search, or cross-branch inference used."
+    },
+    {
+      "googlePlaceId": "ChIJAQDH4kOMGGARUreRvBgFSK0",
+      "restaurantName": "Bar carshalton",
+      "status": "blocked",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "Bar carshalton"
+        ],
+        "evidence": [
+          {
+            "provider": "official_web",
+            "sourceUrl": "http://carshalton.jimdo.com",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Catalog identity name: Bar carshalton; source-native name: Bar carshalton; canonical address: 千代田区Iidabashi, 4 Chome−5−12 ＳＫ飯田橋ビル B1 BF; canonical phone: +81352126020; exact reviewed source URL retained for audit; dish acceptance remains blocked."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "http://carshalton.jimdo.com"
+      ],
+      "blocker": {
+        "type": "official_source_connection_failed",
+        "detail": "The reviewed official site connection reset before usable branch content was available."
+      },
+      "notes": "The reviewed official site connection reset before usable branch content was available. No bypass, paid search, or cross-branch inference used."
+    },
+    {
+      "googlePlaceId": "ChIJFbCrF0GMGGARZulRSIwgXUI",
+      "restaurantName": "Beltempo",
+      "status": "blocked",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "Beltempo"
+        ],
+        "evidence": [
+          {
+            "provider": "official_web",
+            "sourceUrl": "http://www.edmont.co.jp/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Catalog identity name: Beltempo; source-native name: Beltempo; canonical address: 千代田区Hotel Metropolitan Edmont, 3 Chome-10-8 Iidabashi; canonical phone: +81332377114; exact reviewed source URL retained for audit; dish acceptance remains blocked."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "http://www.edmont.co.jp/"
+      ],
+      "blocker": {
+        "type": "official_source_empty",
+        "detail": "The reviewed official hotel/restaurant source returned only a minimal empty response."
+      },
+      "notes": "The reviewed official hotel/restaurant source returned only a minimal empty response. No bypass, paid search, or cross-branch inference used."
+    },
+    {
+      "googlePlaceId": "ChIJJ7yiE92NGGARiexnBMoqStU",
+      "restaurantName": "山本のハンバーグ Meat Ball and Wine",
+      "status": "candidate",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "山本のハンバーグ Meat Ball and Wine"
+        ],
+        "evidence": [
+          {
+            "provider": "official_web",
+            "sourceUrl": "http://www.yamahan.tokyo",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Catalog identity name: 山本のハンバーグ Meat Ball and Wine; source-native name: 山本のハンバーグ Meat Ball and Wine; canonical address: 東京都文京区後楽1-3-61; canonical phone: 03-6479-8399; exact reviewed source URL retained for audit; dish acceptance remains candidate."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "http://www.yamahan.tokyo"
+      ],
+      "blocker": null,
+      "notes": "Official brand page lists 山本のハンバーグ as a recommended item, but the assigned Tokyo Dome branch availability was not established; brand-to-branch propagation is not accepted."
+    },
+    {
+      "googlePlaceId": "ChIJK_oUf2mMGGARGJuyD54pbWs",
+      "restaurantName": "Cafe Miel",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "Cafe Miel"
+        ],
+        "evidence": [
+          {
+            "provider": "official_web",
+            "sourceUrl": "http://www.cafe-miel.jp/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Catalog identity name: Cafe Miel; source-native name: Cafe Miel; canonical address: 千代田区九段南2丁目2-8; canonical phone: +81332628878; exact reviewed source URL retained for audit; dish acceptance remains no_evidence."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "http://www.cafe-miel.jp/"
+      ],
+      "blocker": null,
+      "notes": "Reviewed exact official source family; no concrete current branch dish was paired with explicit recommendation/signature/popular/specialty semantics. No dish proposal made."
+    },
+    {
+      "googlePlaceId": "ChIJM32v_xOMGGARTKGZx9b1XDQ",
+      "restaurantName": "Shinsekai Restaurant",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "Shinsekai Restaurant"
+        ],
+        "evidence": [
+          {
+            "provider": "official_web",
+            "sourceUrl": "http://bondy.co.jp",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Catalog identity name: Shinsekai Restaurant; source-native name: Shinsekai Restaurant; canonical address: 千代田区Kanda Jinbocho, 2 Chome−2−15 新世界ビル; canonical phone: +81332614957; exact reviewed source URL retained for audit; dish acceptance remains no_evidence."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "http://bondy.co.jp"
+      ],
+      "blocker": null,
+      "notes": "Reviewed exact official source family; no concrete current branch dish was paired with explicit recommendation/signature/popular/specialty semantics. No dish proposal made."
+    },
+    {
+      "googlePlaceId": "ChIJn9w5gHqNGGARwohzRcrsXXY",
+      "restaurantName": "by you 文京食堂",
+      "status": "blocked",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "by you 文京食堂"
+        ],
+        "evidence": [
+          {
+            "provider": "official_web",
+            "sourceUrl": "https://byyou-bunkkyo.com/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Catalog identity name: by you 文京食堂; source-native name: by you 文京食堂; canonical address: 文京区Hongo, 1 Chome−1−19 元町ウェルネスパーク 東館 1F; canonical phone: +81359909022; exact reviewed source URL retained for audit; dish acceptance remains blocked."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://byyou-bunkkyo.com/"
+      ],
+      "blocker": {
+        "type": "dns_resolution_failed",
+        "detail": "The reviewed official website could not be resolved."
+      },
+      "notes": "The reviewed official website could not be resolved. No bypass, paid search, or cross-branch inference used."
+    },
+    {
+      "googlePlaceId": "ChIJo103fRaMGGARCfnYru5qzYA",
+      "restaurantName": "J.Tipple BAR",
+      "status": "blocked",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "J.Tipple BAR"
+        ],
+        "evidence": [
+          {
+            "provider": "official_web",
+            "sourceUrl": "http://www.witchcraft.co.jp/jtipple/index.html",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Catalog identity name: J.Tipple BAR; source-native name: J.Tipple BAR; canonical address: 千代田区神田神保町1-64; canonical phone: +81332948118; exact reviewed source URL retained for audit; dish acceptance remains blocked."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "http://www.witchcraft.co.jp/jtipple/index.html"
+      ],
+      "blocker": {
+        "type": "official_source_not_found",
+        "detail": "The reviewed official page returned HTTP 404."
+      },
+      "notes": "The reviewed official page returned HTTP 404. No bypass, paid search, or cross-branch inference used."
+    },
+    {
+      "googlePlaceId": "ChIJpUFH6e6LGGARgE1aRQA_EoM",
+      "restaurantName": "Low Non Bar",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "Low Non Bar"
+        ],
+        "evidence": [
+          {
+            "provider": "official_web",
+            "sourceUrl": "http://orchardknight.com/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Catalog identity name: Low Non Bar; source-native name: Low Non Bar; canonical address: 千代田区Kanda Sudacho, 1 Chome−25−4 マーチエキュート神田万世橋 1F-S10; canonical phone: +81343620377; exact reviewed source URL retained for audit; dish acceptance remains no_evidence."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "http://orchardknight.com/"
+      ],
+      "blocker": null,
+      "notes": "Reviewed exact official source family; no concrete current branch dish was paired with explicit recommendation/signature/popular/specialty semantics. No dish proposal made."
+    },
+    {
+      "googlePlaceId": "ChIJSfmdGQCNGGARGjTO9iLmYvg",
+      "restaurantName": "和風居酒屋「一喜一笑」",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "和風居酒屋「一喜一笑」"
+        ],
+        "evidence": [
+          {
+            "provider": "official_web",
+            "sourceUrl": "https://www.ikki-issho.com/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Catalog identity name: 和風居酒屋「一喜一笑」; source-native name: 和風居酒屋「一喜一笑」; canonical address: 東京都千代田区神田多町2丁目1-11; canonical phone: 0335257551; exact reviewed source URL retained for audit; dish acceptance remains no_evidence."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://www.ikki-issho.com/"
+      ],
+      "blocker": null,
+      "notes": "Reviewed exact official source family; no concrete current branch dish was paired with explicit recommendation/signature/popular/specialty semantics. No dish proposal made."
+    },
+    {
+      "googlePlaceId": "ChIJVVUmGgWMGGARo6mVyls2veo",
+      "restaurantName": "龍水楼",
+      "status": "blocked",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "龍水楼"
+        ],
+        "evidence": [
+          {
+            "provider": "official_web",
+            "sourceUrl": "http://homepage2.nifty.com/ryusuirou",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Catalog identity name: 龍水楼; source-native name: 龍水楼; canonical address: 千代田区1 Chome-8-1 Kanda Nishikicho; canonical phone: +81332921001; exact reviewed source URL retained for audit; dish acceptance remains blocked."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "http://homepage2.nifty.com/ryusuirou"
+      ],
+      "blocker": {
+        "type": "dns_resolution_failed",
+        "detail": "The reviewed official website could not be resolved."
+      },
+      "notes": "The reviewed official website could not be resolved. No bypass, paid search, or cross-branch inference used."
+    },
+    {
+      "googlePlaceId": "ChIJwVy-bgCNGGARX5DsGGHkJUQ",
+      "restaurantName": "神田和泉屋乃坐",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "神田和泉屋乃坐"
+        ],
+        "evidence": [
+          {
+            "provider": "official_web",
+            "sourceUrl": "http://kanda-izumiya.com/kura/TopKura.htm",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Catalog identity name: 神田和泉屋乃坐; source-native name: 神田和泉屋乃坐; canonical address: 千代田区神田小川町2-8; canonical phone: +81332940210; exact reviewed source URL retained for audit; dish acceptance remains no_evidence."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "http://kanda-izumiya.com/kura/TopKura.htm"
+      ],
+      "blocker": null,
+      "notes": "Reviewed exact official source family; no concrete current branch dish was paired with explicit recommendation/signature/popular/specialty semantics. No dish proposal made."
+    },
+    {
+      "googlePlaceId": "ChIJycGAVHWNGGAR0azOUShaa0E",
+      "restaurantName": "厨二病喫茶 石榴",
+      "status": "blocked",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "厨二病喫茶 石榴"
+        ],
+        "evidence": [
+          {
+            "provider": "official_web",
+            "sourceUrl": "https://meltybrown.com",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Catalog identity name: 厨二病喫茶 石榴; source-native name: 厨二病喫茶 石榴; canonical address: 東京都千代田区外神田3-1-15; canonical phone: 090-5930-0855; exact reviewed source URL retained for audit; dish acceptance remains blocked."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://meltybrown.com"
+      ],
+      "blocker": {
+        "type": "dns_resolution_failed",
+        "detail": "The reviewed official website could not be resolved."
+      },
+      "notes": "The reviewed official website could not be resolved. No bypass, paid search, or cross-branch inference used."
+    },
+    {
+      "googlePlaceId": "ChIJ3by20D6MGGARC1Rvg3N9tMw",
+      "restaurantName": "Bar A6",
+      "status": "candidate",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "Bar A6"
+        ],
+        "evidence": [
+          {
+            "provider": "official_web",
+            "sourceUrl": "https://bar-a6.food96.com",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Catalog identity name: Bar A6; source-native name: Bar A6; canonical address: 文京区Hongo, 1 Chome−14−6 第2三沢ビル; canonical phone: +81356896121; exact reviewed source URL retained for audit; dish acceptance remains candidate."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://bar-a6.food96.com",
+        "https://food96.com/place/bar-a6"
+      ],
+      "blocker": null,
+      "notes": "The exact food96 directory family was inspected and identifies Bar A6, but no native concrete dish text was available; directory review text was not used."
+    },
+    {
+      "googlePlaceId": "ChIJqXSOQkyNGGAReQvdGPm8ERI",
+      "restaurantName": "Jimbocho",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "Jimbocho"
+        ],
+        "evidence": [
+          {
+            "provider": "official_web",
+            "sourceUrl": "https://www.jimbocho.jp/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Catalog identity name: Jimbocho; source-native name: Jimbocho; canonical address: 千代田区Kanda Ogawamachi, 3 Chome−11−2 インペリアルお茶の水 2F; canonical phone: +81355776933; exact reviewed source URL retained for audit; dish acceptance remains no_evidence."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://www.jimbocho.jp/",
+        "https://jimbocho.jp/"
+      ],
+      "blocker": null,
+      "notes": "Reviewed exact official source family; no concrete current branch dish was paired with explicit recommendation/signature/popular/specialty semantics. No dish proposal made."
+    },
+    {
+      "googlePlaceId": "ChIJAfOIiRCMGGARtvo7D90K9Q8",
+      "restaurantName": "ラーメン 青",
+      "status": "blocked",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "ラーメン 青"
+        ],
+        "evidence": [
+          {
+            "provider": "official_web",
+            "sourceUrl": "https://ramenao.com/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Catalog identity name: ラーメン 青; source-native name: ラーメン 青; canonical address: not stated on the current runtime source record; canonical phone: not stated on the current runtime source record; exact reviewed source URL retained for audit; dish acceptance remains blocked."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://ramenao.com/"
+      ],
+      "blocker": {
+        "type": "official_source_tls_error",
+        "detail": "The reviewed official site failed TLS negotiation; no bypass attempted."
+      },
+      "notes": "The reviewed official site failed TLS negotiation; no bypass attempted. No bypass, paid search, or cross-branch inference used."
+    },
+    {
+      "googlePlaceId": "ChIJC-fH9HuNGGARVlh7vQw84LU",
+      "restaurantName": "naoto.K",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "naoto.K"
+        ],
+        "evidence": [
+          {
+            "provider": "official_web",
+            "sourceUrl": "https://naotok.tokyo/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Catalog identity name: naoto.K; source-native name: naoto.K; canonical address: 千代田区2 Chome-1-1 Kanda Nishikicho; canonical phone: +818079609445; exact reviewed source URL retained for audit; dish acceptance remains no_evidence."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://naotok.tokyo/"
+      ],
+      "blocker": null,
+      "notes": "Reviewed exact official source family; no concrete current branch dish was paired with explicit recommendation/signature/popular/specialty semantics. No dish proposal made."
+    },
+    {
+      "googlePlaceId": "ChIJc7yGGRuMGGAR3QASOGBqRus",
+      "restaurantName": "Restaurant 1899 Ochanomizu",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "Restaurant 1899 Ochanomizu"
+        ],
+        "evidence": [
+          {
+            "provider": "official_web",
+            "sourceUrl": "http://1899.jp/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Catalog identity name: Restaurant 1899 Ochanomizu; source-native name: Restaurant 1899 Ochanomizu; canonical address: 千代田区3 Chome-4 Kanda Surugadai; canonical phone: +81332511150; exact reviewed source URL retained for audit; dish acceptance remains no_evidence."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "http://1899.jp/"
+      ],
+      "blocker": null,
+      "notes": "Reviewed exact official source family; no concrete current branch dish was paired with explicit recommendation/signature/popular/specialty semantics. No dish proposal made."
+    },
+    {
+      "googlePlaceId": "ChIJhXD3-AaMGGARdelpZZ7sl1g",
+      "restaurantName": "Siam BBQ",
+      "status": "blocked",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "Siam BBQ"
+        ],
+        "evidence": [
+          {
+            "provider": "official_web",
+            "sourceUrl": "http://www.siamfoodinter.com/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Catalog identity name: Siam BBQ; source-native name: Siam BBQ; canonical address: 千代田区1 Chome-9-7 Ōtemachi; canonical phone: +81332750850; exact reviewed source URL retained for audit; dish acceptance remains blocked."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "http://www.siamfoodinter.com/"
+      ],
+      "blocker": {
+        "type": "branch_identity_mismatch",
+        "detail": "The reviewed official source content identified a different Otemachi branch (Bangkok Diner) rather than this Siam BBQ branch; no cross-branch propagation."
+      },
+      "notes": "The reviewed official source content identified a different Otemachi branch (Bangkok Diner) rather than this Siam BBQ branch; no cross-branch propagation. No bypass, paid search, or cross-branch inference used."
+    },
+    {
+      "googlePlaceId": "ChIJtyKGQRGMGGARlEq27o2TXyE",
+      "restaurantName": "Ichijiku",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "Ichijiku"
+        ],
+        "evidence": [
+          {
+            "provider": "official_web",
+            "sourceUrl": "http://sakana-kikaku.co.jp/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Catalog identity name: Ichijiku; source-native name: Ichijiku; canonical address: 千代田区Kanda Jinbocho, 1 Chome−9 神保町KMビル １F; canonical phone: +815054852604; exact reviewed source URL retained for audit; dish acceptance remains no_evidence."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "http://sakana-kikaku.co.jp/"
+      ],
+      "blocker": null,
+      "notes": "Reviewed exact official source family; no concrete current branch dish was paired with explicit recommendation/signature/popular/specialty semantics. No dish proposal made."
+    }
+  ]
+}
