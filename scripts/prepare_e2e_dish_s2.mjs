@@ -91,7 +91,7 @@ const acceptedFSource = new Map(Object.entries({
     identityNote: 'Current official branch page states 水道橋店, address 神田三崎町3-10-1 and phone 03-6910-0977, and directly links the branch menu PDF.',
     dish: ['F','featuredDishes','ツナアボカドサンドイッチ','official_web','https://cdn.shopify.com/s/files/1/0297/5193/5024/files/25.10_449104fc-cf2c-43d4-97be-11ea946656d4.pdf?v=1761025103','official_menu_item','TUNA & AVOCADO SANDWICH ツナアボカドサンドイッチ','', 'Current PDF linked directly from the exact 水道橋店 page; ordinary menu item, F only.']
   },
-  ChIJi8oOa_-NGGARI5gh6aSXNxs: {
+  'ChIJi8oOa_-NGGARI5gh6aSXNxs': {
     identityUrl: 'https://www.hotpepper.jp/strJ004445138/', provider: 'Hot Pepper',
     identityNote: 'Exact current Hot Pepper branch page names タチエイト and address 神田小川町1-10-1 AUSPICE 1F.',
     dish: ['F','featuredDishes','SABA＆青ネギ','Hot Pepper','https://www.hotpepper.jp/strJ004445138/','hotpepper_menu_text','SABA＆青ネギ 500円（税込）','', 'Concrete branch menu item, updated 2025-09-25; no strict recommendation semantics.']
