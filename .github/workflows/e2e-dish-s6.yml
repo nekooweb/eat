@@ -16,11 +16,9 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -44,7 +42,7 @@ jobs:
           p.write_text(s)
           PY
 
-      - name: Apply conservative freshness correction for Yume Ichirin
+      - name: Apply conservative S6 semantic and freshness corrections
         run: |
           python - <<'PY'
           from pathlib import Path
@@ -60,6 +58,9 @@ jobs:
           block = block.replace("notes:'Accepted only a concrete non-expired item with direct おすすめ wording; seasonal candidates were not integrated.'", "notes:'Candidate only: dish-level recommendation semantics are explicit, but conflicting 2026 relocation/temporary-closure status prevents treating the old branch menu as current canonical truth.'", 1)
           s = s[:start] + block + s[end:]
           s = s.replace("- 夢いち輪: exact branch menu; 海老真丈のサクサク揚げ / おすすめ -> R; seasonal alternatives deliberately excluded.\\n", "- 夢いち輪: direct おすすめ evidence exists, but conflicting 2026 relocation/temporary-closure signals -> C/candidate; not integrated.\\n")
+          # The adapter's conservative Chinese-label guard rejects the character 約 even inside 紐約/纽约.
+          # Preserve the source-native acronym instead of weakening that global guard.
+          s = s.replace("nameZh:'纽约贝果三明治'", "nameZh:'NYC贝果三明治'")
           p.write_text(s)
           PY
 
@@ -101,8 +102,7 @@ jobs:
           node scripts/build_dish_batch_plan.mjs data/dish_batch_plan.json 8
 
       - name: Prepare proposals, self-review and approval
-        run: |
-          node scripts/prepare_e2e_dish_s6.mjs "$GITHUB_SHA" | tee _audit/s6-prepare.json
+        run: node scripts/prepare_e2e_dish_s6.mjs "$GITHUB_SHA" | tee _audit/s6-prepare.json
 
       - name: Baseline integration snapshot
         run: node scripts/audit_agent_dish_integration.mjs --snapshot _audit/s6-before.json
@@ -118,16 +118,14 @@ jobs:
       - name: Merge, specificity-correct and audit evidence
         run: |
           cp data/google_inventory_detail_evidence.json _audit/s6-canonical-before.json
-          node scripts/merge_google_inventory_detail_evidence.mjs \
-            data/google_inventory_detail_evidence.json _audit/s6-reviewed-evidence.json data/google_inventory_detail_evidence.json
+          node scripts/merge_google_inventory_detail_evidence.mjs data/google_inventory_detail_evidence.json _audit/s6-reviewed-evidence.json data/google_inventory_detail_evidence.json
           node scripts/correct_dish_specificity_evidence.mjs data/google_inventory_detail_evidence.json data/google_inventory_detail_evidence.json
           node scripts/audit_google_inventory_detail_evidence.mjs
 
       - name: Rebuild runtime and audit integration
         run: |
           python scripts/reload_data.py --public-only --outdir _audit/s6-post-reload
-          node scripts/audit_agent_dish_integration.mjs --compare \
-            _audit/s6-before.json _audit/s6-reviewed-evidence.json _audit/s6-integration-audit.json
+          node scripts/audit_agent_dish_integration.mjs --compare _audit/s6-before.json _audit/s6-reviewed-evidence.json _audit/s6-integration-audit.json
 
       - name: Regression tests
         run: |
@@ -139,14 +137,12 @@ jobs:
       - name: Replay idempotence
         run: |
           sha256sum data/google_inventory_detail_evidence.json data/google_inventory_runtime.js data/dish_batch_plan.json > _audit/s6-first-hashes.txt
-          node scripts/merge_google_inventory_detail_evidence.mjs \
-            data/google_inventory_detail_evidence.json _audit/s6-reviewed-evidence.json data/google_inventory_detail_evidence.json
+          node scripts/merge_google_inventory_detail_evidence.mjs data/google_inventory_detail_evidence.json _audit/s6-reviewed-evidence.json data/google_inventory_detail_evidence.json
           node scripts/correct_dish_specificity_evidence.mjs data/google_inventory_detail_evidence.json data/google_inventory_detail_evidence.json
           python scripts/reload_data.py --public-only --outdir _audit/s6-replay
           sha256sum data/google_inventory_detail_evidence.json data/google_inventory_runtime.js data/dish_batch_plan.json > _audit/s6-second-hashes.txt
           diff -u _audit/s6-first-hashes.txt _audit/s6-second-hashes.txt
-          node scripts/audit_agent_dish_integration.mjs --compare \
-            _audit/s6-before.json _audit/s6-reviewed-evidence.json _audit/s6-integration-replay-audit.json
+          node scripts/audit_agent_dish_integration.mjs --compare _audit/s6-before.json _audit/s6-reviewed-evidence.json _audit/s6-integration-replay-audit.json
 
       - name: Finalize shard log
         run: |
@@ -163,8 +159,7 @@ jobs:
           accepted_r = sum(d.get('classification')=='R' for r in proposals if r['status']=='accepted_evidence' for d in r.get('dishProposals',[]))
           accepted_f = sum(d.get('classification')=='F' for r in proposals if r['status']=='accepted_evidence' for d in r.get('dishProposals',[]))
           tail = f'''\n## Executed final integration results\n\n- Review coverage: Discovery 30/30; F-source 6/6; combined 36/36.\n- Terminal states: accepted={statuses['accepted_evidence']}, candidate={statuses['candidate']}, no_evidence={statuses['no_evidence']}, blocked={statuses['blocked']}, skipped={statuses['skipped_already_complete']}.\n- Approved source items before canonical dedupe: R={accepted_r}, F={accepted_f}.\n- Adapter emitted: R={review.get('emittedRItems',0)}, F={review.get('emittedFItems',0)}, translation-pending={review.get('translationPendingItems',0)}.\n- Canonical/runtime before: {json.dumps(integration['before'], ensure_ascii=False)}\n- Canonical/runtime after: {json.dumps(integration['after'], ensure_ascii=False)}\n- Delta: {json.dumps(integration['delta'], ensure_ascii=False)}\n- New canonical evidence: R={integration['newRecommendationEvidenceItems']}, F={integration['newFeaturedEvidenceItems']}.\n- Frozen identity set/names: preserved. Historical evidence and review provenance: preserved.\n- Replay/idempotence: pass; evidence/runtime/plan SHA-256 hashes unchanged on second merge+rebuild.\n- Relevant adapter/integration/evidence regressions: pass.\n- Paid Google Data API calls: 0.\n- Access/CAPTCHA/robots bypasses: 0.\n'''
-          text = log.read_text()
-          text = text.replace('_Populated by the integration workflow after successful rebuild and audit._', tail.strip())
+          text = log.read_text().replace('_Populated by the integration workflow after successful rebuild and audit._', tail.strip())
           log.write_text(text)
           PY
 
