@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "proposalOnly": true,
+  "marker": "DISH-R-OFFICIAL",
+  "shard": "S0",
+  "agentRunId": "",
+  "sourceQueue": "data/dish_batch_plan.json",
+  "sourceQueueCommit": "",
+  "generatedAt": "",
+  "summary": {
+    "assignedRows": 0,
+    "reviewedRows": 0,
+    "acceptedEvidenceRows": 0,
+    "candidateRows": 0,
+    "noEvidenceRows": 0,
+    "blockedRows": 0,
+    "skippedAlreadyCompleteRows": 0
+  },
+  "records": [
+    {
+      "googlePlaceId": "",
+      "restaurantName": "",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": [
+          {
+            "provider": "",
+            "sourceUrl": "",
+            "checkedAt": "YYYY-MM-DD",
+            "evidenceType": "branch_page",
+            "note": ""
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "recommendedDishes",
+          "classification": "R",
+          "nameOriginal": "",
+          "nameZhCandidate": null,
+          "evidenceClass": "",
+          "recommendationSemantics": "",
+          "provider": "",
+          "sourceUrl": "",
+          "checkedAt": "YYYY-MM-DD",
+          "sourceScope": "branch",
+          "evidenceText": "",
+          "confidence": "high",
+          "notes": ""
+        }
+      ],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": ""
+    }
+  ],
+  "policyAttestation": {
+    "paidGoogleDataApiCalls": 0,
+    "canonicalMasterEditedDirectly": false,
+    "proximityOnlyIdentityBindingUsed": false,
+    "recommendationWithoutExplicitSemanticsAdded": false,
+    "accessRestrictionBypassUsed": false
+  }
+}
