@@ -1,0 +1,196 @@
+name: E2E dish S2 integration
+
+on:
+  push:
+    branches: [agent-e2e-dish-s2-20260914]
+    paths:
+      - '.e2e-dish-s2-run'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: e2e-dish-s2-20260914
+  cancel-in-progress: false
+
+jobs:
+  integrate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Syntax and policy preflight
+        run: |
+          set -euo pipefail
+          node --check scripts/prepare_e2e_dish_s2.mjs
+          node --check scripts/build_reviewed_agent_dish_evidence.mjs
+          node --check scripts/audit_agent_dish_integration.mjs
+          node scripts/audit_no_paid_apis.mjs
+
+      - name: Maintained baseline rebuild and snapshot
+        run: |
+          set -euo pipefail
+          python scripts/reload_data.py --public-only --outdir /tmp/s2-baseline
+          node scripts/audit_google_inventory_detail_evidence.mjs
+          node scripts/audit_agent_dish_integration.mjs --snapshot /tmp/s2-before.json
+          git diff -- data > /tmp/s2-baseline-rebuild.diff
+
+      - name: Recompute current S2 assignment and materialize research/review/approval
+        run: |
+          set -euo pipefail
+          export SOURCE_QUEUE_COMMIT="$(git rev-parse HEAD)"
+          node scripts/prepare_e2e_dish_s2.mjs | tee /tmp/s2-prepare.log
+          node - <<'NODE'
+          const fs=require('fs');
+          const d=JSON.parse(fs.readFileSync('data/agent_reviews/DISH-R-DISCOVERY/S2.json'));
+          const f=JSON.parse(fs.readFileSync('data/agent_reviews/DISH-F-SOURCE/S2.json'));
+          const total=d.records.length+f.records.length;
+          const unique=new Set([...d.records,...f.records].map(r=>r.googlePlaceId));
+          if(unique.size!==total) throw new Error(`unique reviewed rows mismatch ${unique.size}/${total}`);
+          if(d.summary.reviewedRows!==d.summary.assignedRows||f.summary.reviewedRows!==f.summary.assignedRows) throw new Error('review coverage is not 100%');
+          console.log('S2_CURRENT_DENOMINATOR='+JSON.stringify({discovery:d.summary,fSource:f.summary,combined:total}));
+          NODE
+
+      - name: Review adapter regression suite and approval gate
+        run: |
+          set -euo pipefail
+          node scripts/test_reviewed_agent_dish_evidence.mjs
+          node scripts/test_e2e_dish_scope_support.mjs
+          node scripts/test_agent_dish_integration.mjs
+          mkdir -p _audit
+          node scripts/build_reviewed_agent_dish_evidence.mjs \
+            data/agent_reviews/e2e-dish-s2.json \
+            _audit/s2-reviewed-evidence.json \
+            _audit/s2-translation-pending.json \
+            _audit/s2-review-coverage.json | tee /tmp/s2-adapter.log
+          node - <<'NODE'
+          const fs=require('fs');
+          const p=JSON.parse(fs.readFileSync('_audit/s2-translation-pending.json'));
+          if(p.rows.length) throw new Error(`Unexpected S2 translation-pending rows: ${p.rows.length}`);
+          const e=JSON.parse(fs.readFileSync('_audit/s2-reviewed-evidence.json'));
+          if(e.policy.paidGoogleDataApiCalls!==0||e.policy.networkRequests!==0) throw new Error('adapter crossed zero-paid/offline boundary');
+          NODE
+
+      - name: Maintained canonical integration and first rebuild
+        run: |
+          set -euo pipefail
+          node scripts/merge_google_inventory_detail_evidence.mjs \
+            data/google_inventory_detail_evidence.json \
+            _audit/s2-reviewed-evidence.json \
+            /tmp/s2-merged.json | tee /tmp/s2-merge.log
+          cp /tmp/s2-merged.json data/google_inventory_detail_evidence.json
+          node scripts/correct_dish_specificity_evidence.mjs \
+            data/google_inventory_detail_evidence.json \
+            data/google_inventory_detail_evidence.json | tee /tmp/s2-specificity.log
+          node scripts/audit_google_inventory_detail_evidence.mjs
+          python scripts/reload_data.py --public-only --outdir /tmp/s2-after
+          node scripts/audit_agent_dish_integration.mjs --compare \
+            /tmp/s2-before.json _audit/s2-reviewed-evidence.json _audit/s2-integration-audit.json
+          node scripts/audit_agent_dish_integration.mjs --snapshot /tmp/s2-after-first.json
+          node scripts/audit_no_paid_apis.mjs
+          node scripts/test_source_field_quarantine.mjs
+          git diff -- data > /tmp/s2-before-replay.diff
+
+      - name: Idempotent replay
+        run: |
+          set -euo pipefail
+          node scripts/merge_google_inventory_detail_evidence.mjs \
+            data/google_inventory_detail_evidence.json \
+            _audit/s2-reviewed-evidence.json \
+            /tmp/s2-replay-merged.json | tee /tmp/s2-replay-merge.log
+          cp /tmp/s2-replay-merged.json data/google_inventory_detail_evidence.json
+          node scripts/correct_dish_specificity_evidence.mjs \
+            data/google_inventory_detail_evidence.json \
+            data/google_inventory_detail_evidence.json > /tmp/s2-replay-specificity.log
+          python scripts/reload_data.py --public-only --outdir /tmp/s2-replay
+          node scripts/audit_agent_dish_integration.mjs --compare \
+            /tmp/s2-after-first.json _audit/s2-reviewed-evidence.json _audit/s2-replay-audit.json
+          node - <<'NODE'
+          const fs=require('fs');
+          const x=JSON.parse(fs.readFileSync('_audit/s2-replay-audit.json'));
+          const bad=Object.entries(x.delta).filter(([,v])=>v!==0);
+          if(bad.length) throw new Error('replay changed canonical/runtime counts: '+JSON.stringify(bad));
+          if(x.newRecommendationEvidenceItems!==0||x.newFeaturedEvidenceItems!==0) throw new Error('replay added logical evidence');
+          NODE
+          git diff -- data > /tmp/s2-after-replay.diff
+          cmp /tmp/s2-before-replay.diff /tmp/s2-after-replay.diff
+          node scripts/audit_google_inventory_detail_evidence.mjs
+          node scripts/audit_no_paid_apis.mjs
+          node scripts/test_reviewed_agent_dish_evidence.mjs
+          node scripts/test_e2e_dish_scope_support.mjs
+          node scripts/test_agent_dish_integration.mjs
+
+      - name: Write S2 lifecycle log
+        run: |
+          set -euo pipefail
+          mkdir -p logs
+          node - <<'NODE'
+          const fs=require('fs');
+          const before=JSON.parse(fs.readFileSync('/tmp/s2-before.json'));
+          const after=JSON.parse(fs.readFileSync('/tmp/s2-after-first.json'));
+          const cov=JSON.parse(fs.readFileSync('_audit/s2-review-coverage.json'));
+          const integ=JSON.parse(fs.readFileSync('_audit/s2-integration-audit.json'));
+          const d=JSON.parse(fs.readFileSync('data/agent_reviews/DISH-R-DISCOVERY/S2.json'));
+          const f=JSON.parse(fs.readFileSync('data/agent_reviews/DISH-F-SOURCE/S2.json'));
+          const accepted=JSON.parse(fs.readFileSync('_audit/s2-reviewed-evidence.json'));
+          const gainedR=after.runtime.filter((r,i)=>!before.runtime[i].recommendedDishes.length&&r.recommendedDishes.length).length;
+          const gainedF=after.runtime.filter((r,i)=>!before.runtime[i].featuredDishes.length&&r.featuredDishes.length).length;
+          const gainedFOnly=after.runtime.filter((r,i)=>!before.runtime[i].featuredDishes.length&&r.featuredDishes.length&&!r.recommendedDishes.length).length;
+          const c=[...d.records,...f.records];
+          const count=s=>c.filter(r=>r.status===s).length;
+          const log=`# E2E-DISH:S2 lifecycle log — 2026-09-14\n\n`+
+          `- Base/start commit: ${process.env.GITHUB_SHA}\n`+
+          `- Source queue: maintained rebuild of \`data/dish_batch_plan.json\`\n`+
+          `- Current assignment denominator: Discovery ${d.records.length}, F-source ${f.records.length}, combined ${c.length}\n`+
+          `- Review coverage: Discovery ${d.summary.reviewedRows}/${d.summary.assignedRows}; F-source ${f.summary.reviewedRows}/${f.summary.assignedRows}; combined ${c.length}/${c.length}\n`+
+          `- Baseline runtime: R ${before.counts.recommendedRestaurants}, F ${before.counts.featuredRestaurants}, display ${before.counts.displayRestaurants}, recommendation gap ${before.counts.recommendationGap}\n`+
+          `- Terminal states: accepted ${count('accepted_evidence')}, candidate ${count('candidate')}, no_evidence ${count('no_evidence')}, blocked ${count('blocked')}, skipped ${count('skipped_already_complete')}\n`+
+          `- Approved evidence items: R ${cov.acceptedRItems}, F ${cov.acceptedFItems}; emitted R ${cov.emittedRItems}, emitted F ${cov.emittedFItems}; translation-pending ${cov.translationPendingItems}\n`+
+          `- Canonical additions: R ${integ.newRecommendationEvidenceItems}, F ${integ.newFeaturedEvidenceItems}\n`+
+          `- Restaurants gaining R: ${gainedR}; restaurants gaining F: ${gainedF}; F-only gains: ${gainedFOnly}\n`+
+          `- After runtime: R ${after.counts.recommendedRestaurants}, F ${after.counts.featuredRestaurants}, display ${after.counts.displayRestaurants}, recommendation gap ${after.counts.recommendationGap}\n`+
+          `- Research/self-review corrections: Discovery research pass tentatively accepted 10 rows; final review accepted ${d.summary.acceptedEvidenceRows} and moved branch/freshness-unsafe leads to candidate. F-source research tentatively accepted 8; final review accepted ${f.summary.acceptedEvidenceRows}, downgrading stale 中よし and daily/seasonal atacu-cafe evidence.\n`+
+          `- Identity/freshness corrections: no brand→branch, branch→branch, or course→component recommendation propagation was allowed. Sevens, Brozers' and 坂内大手町 were retained as candidates when branch/current-menu binding was insufficient.\n`+
+          `- Translation: exact reviewed source-native text preserved; approved deterministic Chinese normalizations emitted; zero translation-pending accepted items.\n`+
+          `- Integration path: reviewed evidence → explicit approved digest manifest → reviewed-evidence adapter → maintained detail merge → specificity correction → evidence audit → public rebuild → integration audit.\n`+
+          `- Validation: frozen IDs/names preserved; historical evidence and review snapshots retained; accepted-only additions enforced; candidate/no-evidence leakage rejected; source-field quarantine, adapter tests and integration tests passed; second replay produced zero logical/count changes.\n`+
+          `- Paid Google Data API calls: 0 (attested and repository audit passed).\n`+
+          `- Ending commit: WORKFLOW_COMMIT_PENDING\n`;
+          fs.writeFileSync('logs/2026-09-14-e2e-dish-s2.md',log);
+          NODE
+
+      - name: Commit verified S2 lifecycle
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data logs
+          if git diff --cached --quiet; then echo 'No S2 lifecycle changes to commit'; exit 0; fi
+          git commit -m 'Integrate reviewed S2 dish evidence'
+          git push origin HEAD:agent-e2e-dish-s2-20260914
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: e2e-dish-s2-audit
+          path: |
+            _audit/s2-reviewed-evidence.json
+            _audit/s2-review-coverage.json
+            _audit/s2-integration-audit.json
+            _audit/s2-replay-audit.json
+            /tmp/s2-prepare.log
+            /tmp/s2-adapter.log
+            /tmp/s2-merge.log
+            /tmp/s2-replay-merge.log
+            /tmp/s2-baseline-rebuild.diff
+          if-no-files-found: ignore
+          retention-days: 7
