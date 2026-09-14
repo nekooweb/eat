@@ -1,0 +1,189 @@
+{
+  "schemaVersion": 1,
+  "proposalOnly": true,
+  "marker": "DISH-R-OFFICIAL",
+  "shard": "S7",
+  "agentRunId": "DISH-R-OFFICIAL:S7:20260914T1852JST",
+  "sourceQueue": "data/dish_batch_plan.json",
+  "sourceQueueCommit": "820b11aa5384d5aa548463b9f730df68d94000b0",
+  "generatedAt": "2026-09-14T18:52:00+09:00",
+  "summary": {
+    "assignedRows": 29,
+    "reviewedRows": 29,
+    "acceptedEvidenceRows": 6,
+    "candidateRows": 5,
+    "noEvidenceRows": 12,
+    "blockedRows": 6,
+    "skippedAlreadyCompleteRows": 0
+  },
+  "records": [
+    {
+      "googlePlaceId": "ChIJ2ZVGFQGMGGARmN1lf5qU8MU",
+      "restaurantName": "神田 木花",
+      "status": "accepted_evidence",
+      "identity": {"state":"verified","sourceAliases":["神田 木花"],"evidence":[{"provider":"official_web","sourceUrl":"https://www.kono-hana.com/food/launch/","checkedAt":"2026-09-14","evidenceType":"branch_menu","note":"Reviewed official domain is bound to this Place ID; page is the restaurant's current lunch menu."}]},
+      "dishProposals": [
+        {"targetField":"featuredDishes","classification":"F","nameOriginal":"山賊焼き定食","nameZhCandidate":null,"evidenceClass":"official_menu_item","recommendationSemantics":null,"provider":"official_web","sourceUrl":"https://www.kono-hana.com/food/launch/","checkedAt":"2026-09-14","sourceScope":"branch","evidenceText":"山賊焼き定食","confidence":"high","notes":"Concrete current menu item only; no recommendation semantics."},
+        {"targetField":"featuredDishes","classification":"F","nameOriginal":"鯖炭火焼定食","nameZhCandidate":null,"evidenceClass":"official_menu_item","recommendationSemantics":null,"provider":"official_web","sourceUrl":"https://www.kono-hana.com/food/launch/","checkedAt":"2026-09-14","sourceScope":"branch","evidenceText":"鯖炭火焼定食","confidence":"high","notes":"Concrete current menu item only; no recommendation semantics. Variable 日替わりランチ was not promoted despite おススメ wording."}
+      ],
+      "attemptedSources":["https://www.kono-hana.com/","https://www.kono-hana.com/food/launch/"],"blocker":null,"notes":"F-only."
+    },
+    {
+      "googlePlaceId":"ChIJ3y5QeBWMGGARHZnUMus6Gdo","restaurantName":"サブウェイ","status":"candidate",
+      "identity":{"state":"partial","sourceAliases":["サブウェイ"],"evidence":[{"provider":"official_web","sourceUrl":"https://subway.co.jp/","checkedAt":"2026-09-14","evidenceType":"brand_page","note":"Reviewed official binding is brand-level; catalog name has no branch suffix."}]},
+      "dishProposals":[{"targetField":"recommendedDishes","classification":"C","nameOriginal":"えびアボカド","nameZhCandidate":null,"evidenceClass":"official_brand_recommendation","recommendationSemantics":"人気No.1","provider":"official_web","sourceUrl":"https://www.subway.co.jp/upload/press/9aa9266dbe0230f44b801f99284dc94da6bdc573.pdf","checkedAt":"2026-09-14","sourceScope":"brand","evidenceText":"サブウェイ人気No.1メニュー「えびアボカド」","confidence":"medium","notes":"Explicit recommendation exists, but the assigned Place ID's exact branch and current branch availability are not established by the brand evidence."}],
+      "attemptedSources":["https://subway.co.jp/"],"blocker":"Exact branch identity/availability is insufficient for R.","notes":"Candidate only; no brand-to-branch inference."
+    },
+    {
+      "googlePlaceId":"ChIJ8X1X0FSNGGAR9y3HrPtiS3A","restaurantName":"est","status":"accepted_evidence",
+      "identity":{"state":"verified","sourceAliases":["est"],"evidence":[{"provider":"official_web","sourceUrl":"https://www.fourseasons.com/otemachi/dining/restaurants/est/","checkedAt":"2026-09-14","evidenceType":"branch_page","note":"Exact Four Seasons Hotel Tokyo at Otemachi est restaurant page from reviewed binding."}]},
+      "dishProposals":[{"targetField":"featuredDishes","classification":"F","nameOriginal":"Pork and Summer Vegetables","nameZhCandidate":null,"evidenceClass":"official_menu_item","recommendationSemantics":null,"provider":"official_web","sourceUrl":"https://www.fourseasons.com/otemachi/dining/restaurants/est/","checkedAt":"2026-09-14","sourceScope":"branch","evidenceText":"Pork and Summer Vegetables","confidence":"high","notes":"Concrete current est offering; no explicit recommendation semantics."}],
+      "attemptedSources":["https://www.fourseasons.com/otemachi/dining/restaurants/est/"],"blocker":null,"notes":"F-only."
+    },
+    {
+      "googlePlaceId":"ChIJNwRqpBaMGGAR07TdHcGkY5w","restaurantName":"アソビCafe","status":"no_evidence",
+      "identity":{"state":"verified","sourceAliases":["アソビCafe"],"evidence":[{"provider":"official_web","sourceUrl":"https://asobicafe.com/","checkedAt":"2026-09-14","evidenceType":"branch_page","note":"Reviewed official page and exact 神田神保町 identity verified."}]},
+      "dishProposals":[],"attemptedSources":["https://asobicafe.com/","https://asobicafe.com/food_drink"],"blocker":null,"notes":"Official food/drink page checked; accessible text did not provide a concrete dish with recommendation semantics."
+    },
+    {
+      "googlePlaceId":"ChIJ691AFxGMGGARcy68k9PycGc","restaurantName":"Bordeaux Wine Bar L'EPIQUE","status":"no_evidence",
+      "identity":{"state":"verified","sourceAliases":["Bordeaux Wine Bar L'EPIQUE"],"evidence":[{"provider":"official_web","sourceUrl":"https://sa-astre.com/shop","checkedAt":"2026-09-14","evidenceType":"branch_page","note":"Repository-reviewed official source identifies L'EPIQUE at 神田神保町1-7-1 1F."}]},
+      "dishProposals":[],"attemptedSources":["https://sa-astre.com/shop"],"blocker":null,"notes":"Official shop page describes wine selection but no concrete recommended dish."
+    },
+    {
+      "googlePlaceId":"ChIJa5UiawCNGGARCrGQJqAnng8","restaurantName":"80's Cafe","status":"no_evidence",
+      "identity":{"state":"verified","sourceAliases":["80's Cafe"],"evidence":[{"provider":"official_web","sourceUrl":"https://community.welearn.co.jp/ja/cafe","checkedAt":"2026-09-14","evidenceType":"branch_page","note":"Reviewed official page is specifically 80's Cafe."}]},
+      "dishProposals":[],"attemptedSources":["https://community.welearn.co.jp/ja/cafe"],"blocker":null,"notes":"Official page checked; only generic drinks/cafe information, no concrete recommended dish."
+    },
+    {
+      "googlePlaceId":"ChIJC4ofDxCMGGARWaogIKxHSCw","restaurantName":"ENGLISH ONLY CAFE","status":"no_evidence",
+      "identity":{"state":"verified","sourceAliases":["ENGLISH ONLY CAFE"],"evidence":[{"provider":"official_web","sourceUrl":"https://englishonlycafe.com/about/","checkedAt":"2026-09-14","evidenceType":"branch_page","note":"Official page gives exact 神田小川町3-1-14 address and cafe identity."}]},
+      "dishProposals":[],"attemptedSources":["https://englishonlycafe.com/about/","https://englishonlycafe.com/info/"],"blocker":null,"notes":"Official pages checked; one-drink/light-meal descriptions are generic and not concrete recommended dishes."
+    },
+    {
+      "googlePlaceId":"ChIJFSK1jQSMGGAR65B_QUQSRBk","restaurantName":"Jazz Bar Gugan","status":"no_evidence",
+      "identity":{"state":"verified","sourceAliases":["Jazz Bar Gugan"],"evidence":[{"provider":"official_directory","sourceUrl":"https://bar-navi.suntory.co.jp/shop/0X00111275/","checkedAt":"2026-09-14","evidenceType":"exact_shop_page","note":"Repository-reviewed source matches exact name/address; drink subpage fetch failed but shop page was accessible."}]},
+      "dishProposals":[],"attemptedSources":["https://bar-navi.suntory.co.jp/shop/0X00111275/","https://bar-navi.suntory.co.jp/shop/0X00111275/drink.html"],"blocker":null,"notes":"No concrete recommendation evidence on accessible exact-shop page."
+    },
+    {
+      "googlePlaceId":"ChIJgwB6yw-MGGARz1e_MPGRIlM","restaurantName":"ボルツ","status":"accepted_evidence",
+      "identity":{"state":"verified","sourceAliases":["ボルツ"],"evidence":[{"provider":"reviewed_official_directory","sourceUrl":"https://kanda-curry.com/%e3%83%9c%e3%83%ab%e3%83%84/","checkedAt":"2026-09-14","evidenceType":"exact_shop_page","note":"Reviewed source identifies exact shop and menu."}]},
+      "dishProposals":[{"targetField":"featuredDishes","classification":"F","nameOriginal":"ビーフとトマト","nameZhCandidate":null,"evidenceClass":"reviewed_exact_menu_item","recommendationSemantics":null,"provider":"reviewed_official_directory","sourceUrl":"https://kanda-curry.com/%e3%83%9c%e3%83%ab%e3%83%84/","checkedAt":"2026-09-14","sourceScope":"branch","evidenceText":"ビーフとトマト","confidence":"high","notes":"Concrete menu item; no recommendation semantics."}],
+      "attemptedSources":["https://kanda-curry.com/%e3%83%9c%e3%83%ab%e3%83%84/"],"blocker":null,"notes":"F-only."
+    },
+    {
+      "googlePlaceId":"ChIJUbftRRyMGGARi3P1XkxGJFM","restaurantName":"フラペコ","status":"blocked",
+      "identity":{"state":"unverified","sourceAliases":["フラペコ"],"evidence":[{"provider":"reviewed_candidate_index","sourceUrl":"https://concafechan.com/shop/frapeco/","checkedAt":"2026-09-14","evidenceType":"hosted_listing","note":"Queue retains this as crawlable, but it is not a safely established first-party official domain for strict dish promotion."}]},
+      "dishProposals":[],"attemptedSources":["https://concafechan.com/shop/frapeco/"],"blocker":"First-party official source family / exact identity could not be safely established.","notes":"No inference from the hosted listing."
+    },
+    {
+      "googlePlaceId":"ChIJvbFXB92NGGARsYSlPXym1-M","restaurantName":"Bottos 没頭作業カフェ","status":"no_evidence",
+      "identity":{"state":"verified","sourceAliases":["BOTTOS(ボットス) 没頭作業カフェ 御茶ノ水駅前店"],"evidence":[{"provider":"official_web","sourceUrl":"https://aiflowk.co.jp/bottos/","checkedAt":"2026-09-14","evidenceType":"branch_page","note":"Exact official branch page gives 神田駿河台2丁目6-10 and shop name."}]},
+      "dishProposals":[],"attemptedSources":["https://aiflowk.co.jp/bottos/"],"blocker":null,"notes":"Official page only establishes generic self-service drink access; no source-native concrete recommended drink/dish name."
+    },
+    {
+      "googlePlaceId":"ChIJZ6SQLBqMGGARplk-lI9Quc0","restaurantName":"リトルマーメイド 新御茶ノ水店","status":"candidate",
+      "identity":{"state":"verified","sourceAliases":["リトルマーメイド 新御茶ノ水店"],"evidence":[{"provider":"official_facility","sourceUrl":"https://s-clair.com/shop/134","checkedAt":"2026-09-14","evidenceType":"branch_page","note":"Repository-reviewed exact branch source gives 神田駿河台4-3 新御茶ノ水ビル B1F."}]},
+      "dishProposals":[{"targetField":"recommendedDishes","classification":"C","nameOriginal":"ビスワッサン（紫いも）","nameZhCandidate":null,"evidenceClass":"official_brand_recommendation","recommendationSemantics":"9月のおすすめ","provider":"official_brand_web","sourceUrl":"https://www.littlemermaid.jp/","checkedAt":"2026-09-14","sourceScope":"brand","evidenceText":"9月のおすすめ…「ビスワッサン（紫いも）」","confidence":"medium","notes":"Explicit current recommendation at brand level; exact 新御茶ノ水店 availability is not proven."}],
+      "attemptedSources":["https://s-clair.com/shop/134","https://www.littlemermaid.jp/"],"blocker":"Branch availability not proven.","notes":"Candidate only."
+    },
+    {
+      "googlePlaceId":"ChIJTTQAOBGMGGARXRYbp0wUyAM","restaurantName":"カフェ・ベローチェ 神保町店","status":"candidate",
+      "identity":{"state":"verified","sourceAliases":["カフェ・ベローチェ 神保町店"],"evidence":[{"provider":"official_web","sourceUrl":"https://c-united.co.jp/store/detail/000340/","checkedAt":"2026-09-14","evidenceType":"branch_page","note":"Reviewed exact branch page."}]},
+      "dishProposals":[{"targetField":"recommendedDishes","classification":"C","nameOriginal":"焼きたてサンド 合鴨と国産きのこ","nameZhCandidate":null,"evidenceClass":"official_brand_recommendation","recommendationSemantics":"季節のオススメ","provider":"official_web","sourceUrl":"https://c-united.co.jp/veloce/","checkedAt":"2026-09-14","sourceScope":"brand","evidenceText":"季節のオススメ…焼きたてサンド 合鴨と国産きのこ","confidence":"medium","notes":"Current brand recommendation; exact branch page does not prove this item is served at 神保町店."}],
+      "attemptedSources":["https://c-united.co.jp/store/detail/000340/","https://c-united.co.jp/veloce/"],"blocker":"Branch item availability not established.","notes":"Candidate only."
+    },
+    {
+      "googlePlaceId":"ChIJ_3o6-xyMGGARl-r-ZJUuDPA","restaurantName":"Gauge","status":"blocked",
+      "identity":{"state":"partial","sourceAliases":["Gauge"],"evidence":[{"provider":"third_party_discovery","sourceUrl":"https://tabelog.com/tokyo/A1310/A131001/13199532/","checkedAt":"2026-09-14","evidenceType":"identity_discovery","note":"Exact phone/address found, but no safe first-party official source was established; current third-party note says food is not provided."}]},
+      "dishProposals":[],"attemptedSources":["https://tabelog.com/tokyo/A1310/A131001/13199532/"],"blocker":"Official source inaccessible/not established for strict official crawl.","notes":"No third-party dish promotion."
+    },
+    {
+      "googlePlaceId":"ChIJ85oU5fyNGGARWJqF2dOGKxo","restaurantName":"Gravy","status":"candidate",
+      "identity":{"state":"verified","sourceAliases":["Gravy"],"evidence":[{"provider":"reviewed_official_directory","sourceUrl":"https://kanda-curry.com/gravy/","checkedAt":"2026-09-14","evidenceType":"exact_shop_page","note":"Exact name, address and phone match the assigned restaurant."}]},
+      "dishProposals":[{"targetField":"recommendedDishes","classification":"C","nameOriginal":"ベジタブルダルバート","nameZhCandidate":null,"evidenceClass":"near_match_recommendation_semantics","recommendationSemantics":"ダルバートは…大好評","provider":"reviewed_official_directory","sourceUrl":"https://kanda-curry.com/gravy/","checkedAt":"2026-09-14","sourceScope":"branch","evidenceText":"「ダルバート」は…大好評！／メインメニュー：ベジタブルダルバート","confidence":"medium","notes":"The popularity statement is for generic ダルバート, while the concrete menu name is ベジタブルダルバート; semantic granularity is insufficient for R."}],
+      "attemptedSources":["https://kanda-curry.com/gravy/"],"blocker":"Recommendation wording does not unambiguously name the concrete menu item.","notes":"Candidate only."
+    },
+    {
+      "googlePlaceId":"ChIJa8s8VACNGGAR0bpS4aUPbYw","restaurantName":"Eigetsu","status":"no_evidence",
+      "identity":{"state":"verified","sourceAliases":["御料理 盈月","Eigetsu"],"evidence":[{"provider":"official_web","sourceUrl":"https://www.oryouri-eigetsu.com/","checkedAt":"2026-09-14","evidenceType":"branch_page","note":"Phone 090-5517-0141 matches bound contact; exact current restaurant page."}]},
+      "dishProposals":[],"attemptedSources":["https://www.oryouri-eigetsu.com/"],"blocker":null,"notes":"Official site checked; no concrete recommended dish text found."
+    },
+    {
+      "googlePlaceId":"ChIJC1JlZxeMGGAR1JLtJTH9Eas","restaurantName":"Eikaiwakafe LanCul Ochanomizu","status":"no_evidence",
+      "identity":{"state":"verified","sourceAliases":["英会話カフェ LanCul 御茶ノ水"],"evidence":[{"provider":"official_web","sourceUrl":"https://lancul.com/store/och","checkedAt":"2026-09-14","evidenceType":"branch_page","note":"Exact LanCul 御茶ノ水 page at Delifrance, 神田駿河台2-1."}]},
+      "dishProposals":[],"attemptedSources":["https://lancul.com/store/och"],"blocker":null,"notes":"Official page is a language-cafe service page; no concrete recommended dish evidence."
+    },
+    {
+      "googlePlaceId":"ChIJD08xTvWNGGARi0jG3F2DL2I","restaurantName":"神田錦町酒菜家 かずいち","status":"no_evidence",
+      "identity":{"state":"verified","sourceAliases":["神田錦町酒菜家かずいち","酒菜家かずいち"],"evidence":[{"provider":"industry_association","sourceUrl":"https://kanda-ajisen.com/union/","checkedAt":"2026-09-14","evidenceType":"exact_member_listing","note":"Exact name/address 神田錦町3-17 and phone 03-3296-7177."}]},
+      "dishProposals":[],"attemptedSources":["https://kanda-ajisen.com/union/"],"blocker":null,"notes":"Exact reviewed public source checked; no concrete recommended dish evidence."
+    },
+    {
+      "googlePlaceId":"ChIJDxOJyBWMGGARZjSlfNDAnZs","restaurantName":"Miyabi Cafe","status":"accepted_evidence",
+      "identity":{"state":"verified","sourceAliases":["カフェ＆ベーカリー ミヤビ 神保町店","Miyabi Cafe"],"evidence":[{"provider":"official_web","sourceUrl":"https://www.daisyo.co.jp/whatsnew/new_img/smp/tenpo.php?code=1856","checkedAt":"2026-09-14","evidenceType":"branch_page","note":"Exact branch page, phone 03-5212-6286 and 西神田2-1-13 match bound identity."}]},
+      "dishProposals":[{"targetField":"recommendedDishes","classification":"R","nameOriginal":"MIYABIハニートースト","nameZhCandidate":null,"evidenceClass":"official_branch_recommendation","recommendationSemantics":"必食","provider":"official_web","sourceUrl":"https://www.daisyo.co.jp/whatsnew/new_img/smp/tenpo.php?code=1856","checkedAt":"2026-09-14","sourceScope":"branch","evidenceText":"宮家献上食パン「MIYABI」の“ハニートースト”は必食です!!","confidence":"high","notes":"Concrete dish and explicit recommendation semantics on exact branch page."}],
+      "attemptedSources":["https://www.daisyo.co.jp/whatsnew/new_img/smp/tenpo.php?code=1856","https://www.daisyo.co.jp/brand/miyabi/index.html"],"blocker":null,"notes":"Strict R accepted."
+    },
+    {
+      "googlePlaceId":"ChIJfeo0A5SNGGARTTOyyr2bNrc","restaurantName":"wata軒","status":"no_evidence",
+      "identity":{"state":"verified","sourceAliases":["wata軒","九段下 wata軒"],"evidence":[{"provider":"operator_web","sourceUrl":"https://few-inc.jp/","checkedAt":"2026-09-14","evidenceType":"operator_location","note":"Operator source binds wata軒 to 九段北1-3-12; no recommendation menu text found."}]},
+      "dishProposals":[],"attemptedSources":["https://few-inc.jp/"],"blocker":null,"notes":"Official/operator source checked; no valid strict recommended dish evidence."
+    },
+    {
+      "googlePlaceId":"ChIJfUq2JhuMGGARgXzsyb4TIc4","restaurantName":"暫","status":"blocked",
+      "identity":{"state":"partial","sourceAliases":["暫","しばらく"],"evidence":[{"provider":"third_party_discovery","sourceUrl":"https://tabelog.com/tokyo/A1310/A131002/13017263/","checkedAt":"2026-09-14","evidenceType":"official_url_discovery","note":"Exact phone/address point to homepage http://www.sibaraku.com/."}]},
+      "dishProposals":[],"attemptedSources":["http://www.sibaraku.com/","https://www.sibaraku.com/"],"blocker":"Official homepage fetch returned 502; no access bypass attempted.","notes":"Blocked by inaccessible official source."
+    },
+    {
+      "googlePlaceId":"ChIJjeszixmMGGARlrYbC7jjDDI","restaurantName":"HUB","status":"blocked",
+      "identity":{"state":"partial","sourceAliases":["HUB 御茶ノ水店"],"evidence":[{"provider":"historical_official_record","sourceUrl":"https://www.pub-hub.com/index.php/shop","checkedAt":"2026-09-14","evidenceType":"current_store_list","note":"Bound phone 03-5283-8782 historically identifies HUB 御茶ノ水店, but the current official store list does not list that branch."}]},
+      "dishProposals":[],"attemptedSources":["https://www.pub-hub.com/index.php/shop","https://www.pub-hub.com/index.php/en/menu/detail/HUB/151"],"blocker":"Exact current branch identity/status cannot be safely established; brand menu must not be reused.","notes":"No chain inference."
+    },
+    {
+      "googlePlaceId":"ChIJKfi1vWqMGGARx6m1rP-zYVQ","restaurantName":"文庫Cafe みねるばの森","status":"no_evidence",
+      "identity":{"state":"verified","sourceAliases":["文庫Caféみねるばの森"],"evidence":[{"provider":"official_web","sourceUrl":"https://www.terashima-bunko.com/bunko-cafe.html","checkedAt":"2026-09-14","evidenceType":"branch_page","note":"Exact official cafe page."}]},
+      "dishProposals":[],"attemptedSources":["https://www.terashima-bunko.com/bunko-cafe.html","https://terashima-bunko.com/181-cafe.html"],"blocker":null,"notes":"Official pages show lunch/menu links and rotating month-one items, but no current concrete dish with explicit recommendation semantics."
+    },
+    {
+      "googlePlaceId":"ChIJVXsOMRGMGGARt5Lit4yGmZI","restaurantName":"Bistro Aligot","status":"accepted_evidence",
+      "identity":{"state":"verified","sourceAliases":["Bistro Aligot","ビストロ アリゴ"],"evidence":[{"provider":"official_hosted_web","sourceUrl":"https://ghu6307.gorp.jp/","checkedAt":"2026-09-14","evidenceType":"branch_page","note":"Exact shop page at 神田神保町1-18-7; same hosted restaurant record exposes menu."}]},
+      "dishProposals":[{"targetField":"recommendedDishes","classification":"R","nameOriginal":"アリゴの「アリゴ」","nameZhCandidate":null,"evidenceClass":"official_hosted_branch_recommendation","recommendationSemantics":"おすすめ","provider":"official_hosted_web","sourceUrl":"https://r.gnavi.co.jp/pec4eesf0000/menu1/","checkedAt":"2026-09-14","sourceScope":"branch","evidenceText":"アリゴの「アリゴ」　おすすめ","confidence":"high","notes":"Concrete dish explicitly marked おすすめ on exact restaurant's hosted menu."}],
+      "attemptedSources":["https://ghu6307.gorp.jp/","https://r.gnavi.co.jp/pec4eesf0000/menu1/"],"blocker":null,"notes":"Strict R accepted."
+    },
+    {
+      "googlePlaceId":"ChIJwfc-TWuMGGARKVj_Q0SQ5Fo","restaurantName":"SPQR Cafe and Space","status":"blocked",
+      "identity":{"state":"unverified","sourceAliases":["SPQR Cafe and Space"],"evidence":[]},
+      "dishProposals":[],"attemptedSources":[],"blocker":"No safe first-party official source family could be established from the reviewed/current evidence without relying on third-party discovery.","notes":"No identity or dish inference."
+    },
+    {
+      "googlePlaceId":"ChIJzWgC5oaNGGAR3-KMpjvoIfE","restaurantName":"CLOVER CLUB","status":"no_evidence",
+      "identity":{"state":"verified","sourceAliases":["CLOVER CLUB"],"evidence":[{"provider":"official_web","sourceUrl":"https://clover-club-jimbocho.com/","checkedAt":"2026-09-14","evidenceType":"branch_page","note":"Exact official page gives 神田錦町3-16-11 and phone 03-6773-7069."}]},
+      "dishProposals":[],"attemptedSources":["https://clover-club-jimbocho.com/"],"blocker":null,"notes":"Official page mentions generic cheese, nuts and chocolate plus whisky categories, but no concrete recommended dish name."
+    },
+    {
+      "googlePlaceId":"ChIJq7Cosb2NGGARKNrijY_We80","restaurantName":"A destra Salvatore","status":"candidate",
+      "identity":{"state":"verified","sourceAliases":["Italian Kitchen A destra Salvatore"],"evidence":[{"provider":"official_web","sourceUrl":"https://www.salvatore.jp/restaurant/tokyodome/","checkedAt":"2026-09-14","evidenceType":"branch_page","note":"Exact Tokyo Dome branch page."}]},
+      "dishProposals":[{"targetField":"recommendedDishes","classification":"C","nameOriginal":"マルゲリータ","nameZhCandidate":null,"evidenceClass":"official_brand_recommendation","recommendationSemantics":"サルヴァトーレのおすすめメニュー／代表的No.1ピッツァ","provider":"official_web","sourceUrl":"https://www.salvatore.jp/about_pizza/","checkedAt":"2026-09-14","sourceScope":"brand","evidenceText":"サルヴァトーレのおすすめメニュー…マルゲリータ","confidence":"medium","notes":"Exact branch lunch menu contains a Margherita variant, but brand page warns some stores may not carry listed items; not enough for R."}],
+      "attemptedSources":["https://www.salvatore.jp/restaurant/tokyodome/","https://www.salvatore.jp/about_pizza/","https://www.salvatore.jp/restaurant/tokyodome/pdf/lu.pdf"],"blocker":"Brand recommendation is not safely branch-bound.","notes":"Candidate only."
+    },
+    {
+      "googlePlaceId":"ChIJMXNbfZCNGGARA2fy1rGY0KA","restaurantName":"ビリヤニ大澤","status":"accepted_evidence",
+      "identity":{"state":"verified","sourceAliases":["ビリヤニ大澤"],"evidence":[{"provider":"official_web","sourceUrl":"https://osawa.biriyani.co.jp/","checkedAt":"2026-09-14","evidenceType":"branch_page","note":"Exact official Tokyo/Kanda restaurant page."}]},
+      "dishProposals":[{"targetField":"featuredDishes","classification":"F","nameOriginal":"マトンビリヤニ","nameZhCandidate":null,"evidenceClass":"official_menu_item","recommendationSemantics":null,"provider":"official_web","sourceUrl":"https://osawa.biriyani.co.jp/","checkedAt":"2026-09-14","sourceScope":"branch","evidenceText":"マトンビリヤニ　レギュラーメニュー","confidence":"high","notes":"Concrete regular menu item; no explicit recommendation semantics."},{"targetField":"featuredDishes","classification":"F","nameOriginal":"チキンビリヤニ","nameZhCandidate":null,"evidenceClass":"official_menu_item","recommendationSemantics":null,"provider":"official_web","sourceUrl":"https://osawa.biriyani.co.jp/","checkedAt":"2026-09-14","sourceScope":"branch","evidenceText":"チキンビリヤニ　レギュラーメニュー","confidence":"high","notes":"Concrete regular menu item; no explicit recommendation semantics."}],
+      "attemptedSources":["https://osawa.biriyani.co.jp/"],"blocker":null,"notes":"F-only."
+    },
+    {
+      "googlePlaceId":"ChIJRRGtFQCNGGARsxmE_-rP-Aw","restaurantName":"日比谷 Bar 神保町 別邸","status":"blocked",
+      "identity":{"state":"partial","sourceAliases":["日比谷 Bar 神保町 別邸"],"evidence":[{"provider":"third_party_discovery","sourceUrl":"https://tabelog.com/","checkedAt":"2026-09-14","evidenceType":"official_url_discovery","note":"Discovery identifies official URL family hibiya-bar.com for the exact branch."}]},
+      "dishProposals":[],"attemptedSources":["http://www.hibiya-bar.com/jinbocho2/","https://www.hibiya-bar.com/jinbocho2/"],"blocker":"Exact official branch URL returned 502; no access bypass attempted.","notes":"Third-party recommendation text was not promoted."
+    }
+  ],
+  "policyAttestation": {
+    "paidGoogleDataApiCalls": 0,
+    "canonicalMasterEditedDirectly": false,
+    "proximityOnlyIdentityBindingUsed": false,
+    "recommendationWithoutExplicitSemanticsAdded": false,
+    "accessRestrictionBypassUsed": false
+  }
+}

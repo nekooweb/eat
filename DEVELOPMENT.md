@@ -1,6 +1,56 @@
 # Eat 开发状态与后续计划
 
-更新日期：2026-09-10。
+更新日期：2026-09-14。
+
+## 2026-09-14：并行 Agent 数据补全层
+
+当前在 `agent-data-library-2026-09-14` / PR #65 上新增了并行数据补全层。该层只负责分配任务、保存来源证据和 proposal，不直接修改 canonical runtime、`data/production_area1.js` 或 SQLite master。
+
+本轮公开 dish-work 基线来自 2026-09-14 snapshot：冻结目录 2,804、公开 runtime 1,422、推荐菜已知 595、特色菜已知 675、任一展示菜已知 740、recommendation gap 827、可执行 dish-work 共 892 行。892 行按已有 `data/dish_batch_plan.json` 划分为 4 个互斥 lane：
+
+| Marker | 工作类型 | 总行数 |
+| --- | --- | ---: |
+| `DISH-R-OFFICIAL` | 已知官方来源上的严格推荐菜证据 | 220 |
+| `DISH-R-RETAINED` | 仓库已保留来源中的菜品证据挖掘 | 318 |
+| `DISH-R-DISCOVERY` | 为缺少可用菜品来源的记录寻找独立来源 | 289 |
+| `DISH-F-SOURCE` | 官方/保留来源上的普通菜单项（F） | 65 |
+| **合计** |  | **892** |
+
+每个 lane 使用现有 deterministic S0-S7 shard；worker 在开始前重读当前 row，已完成的 row 必须跳过。Place ID 是冻结 identity key，来源别名只作为 identity evidence，不允许替换 catalog/tool identity name。
+
+### 当前 proposal 进度（2026-09-14 19:24 JST 检查点）
+
+进度按“唯一 assignment row 已经形成可审查 proposal”计数，不按文件数或 Agent 次数计数；同一 shard 的独立复核不能重复计算。
+
+| Lane | 已形成 proposal | 总行数 | 进度 | 已完成 shard |
+| --- | ---: | ---: | ---: | --- |
+| `DISH-R-OFFICIAL` | 138 | 220 | 62.7% | S1, S2, S3, S4, S7 |
+| `DISH-R-RETAINED` | 172 | 318 | 54.1% | S0, S1, S2, S4 |
+| `DISH-R-DISCOVERY` | 36 | 289 | 12.5% | S7 |
+| `DISH-F-SOURCE` | 0 | 65 | 0.0% | - |
+| **合计** | **346** | **892** | **38.8%** |  |
+
+其中 central branch 已经落盘 300 行：Official S1/S2/S3/S4/S7、Retained S1/S2/S4、Discovery S7。Retained S0 的 46 行已经在 PR #66 完成并提交，因此计入“全局已提交 346”，但尚未进入 central branch；central branch 本身的可见进度是 300/892（33.6%）。剩余尚未形成 proposal 的唯一 row 为 546。
+
+Official S3 当前有两份独立 Agent 结果。两份都覆盖同一 21 个 assignment row，所以进度只计 21 行；其 accepted/candidate/no-evidence/blocked 分类存在少量差异，必须在 central review 中逐 Place ID reconciliation，不能任选一份直接作为 canonical truth。
+
+当前尚未形成 proposal 的 shard：Official S0/S5/S6；Retained S3/S5/S6/S7；Discovery S0-S6；F-source S0-S7。
+
+### 并行开发逻辑
+
+1. **Assignment/index**：`data/agent_library/manifest.json` 记录 marker、lane、总量和 shard 分布；`data/dish_batch_plan.json` 继续是 dish row source of truth，不复制另一套任务表。
+2. **Worker scope**：Agent 只能处理指定 `MARKER:Sx`，开始前重新检查当前 row，不能扩展到其他 shard/餐厅。
+3. **Evidence-first**：保留 provider、精确 URL、checked date、source-native dish text、evidence class 和 branch/identity evidence。禁止付费 Google data API、登录/CAPTCHA 绕过、访问限制规避和 proximity-only identity binding。
+4. **R/F/C 语义**：R 必须同时有具体菜名和明确的おすすめ/名物/看板/人気/signature/specialty 等语义；普通菜单项只能是 F；身份或语义不确定时保持 C/candidate、blocked 或 no_evidence。
+5. **Proposal-only handoff**：结果写入 `data/agent_proposals/<marker>/<shard-or-batch>.json`。worker 不直接修改 canonical runtime、production data 或 SQLite master。
+6. **Central review**：按 frozen Place ID 检查 shard membership、branch identity、R/F/C 分类、source provenance、重复 evidence、跨分店传播、course-level semantics 误传播及 policy attestation。独立重复结果用于 reconciliation，不增加完成量。
+7. **Canonical merge/rebuild**：只有 central review 通过的 evidence 才能进入现有 canonical merge；随后通过正常 pipeline 重建 runtime/queue、运行 regression/audit，再决定是否发布。proposal 文件存在本身不代表 production 已改变。
+
+状态口径固定为：`unassigned/working -> proposal submitted -> central reviewed -> canonical merged/rebuilt`。对外报告必须同时说明处在哪一层，禁止把 proposal completion 当成 canonical coverage 增长。
+
+当前 PR #65 最新 proposal checkpoint 的 PR Review 与 Pages preview 均通过；CI 通过只证明现有代码/数据约束未被 proposal 文件破坏，不代表 proposal 内容已经完成 central semantic review。
+
+详细 assignment contract 见 [`data/agent_library/README.md`](data/agent_library/README.md)，proposal schema 见 [`data/agent_library/proposal-template.json`](data/agent_library/proposal-template.json)，本轮过程与逐 shard 检查点见 [`logs/2026-09-14-parallel-agent-data-completion.md`](logs/2026-09-14-parallel-agent-data-completion.md)。
 
 ## 2026-09-10：页面精简与问题清单
 
