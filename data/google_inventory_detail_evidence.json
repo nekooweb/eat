@@ -1,6 +1,6 @@
 {
   "schemaVersion": 4,
-  "checkedAt": "2026-09-10",
+  "checkedAt": "2026-09-14",
   "policy": {
     "googleIdentityKey": "frozen Place ID only",
     "paidGoogleDataApiCalls": 0,
@@ -32,7 +32,7 @@
     "ordinaryMenuDishBecomesFeaturedOnly": true,
     "shardIndex": 0,
     "shardCount": 1,
-    "source": "already-bound independent official/source websites only",
+    "source": "digest-approved full-template agent reviews",
     "eligibleBindings": [
       "strict_auto",
       "manual_exact"
@@ -155,54 +155,77 @@
     "publicRuntimeCountPolicy": "dynamic; validate runtime stats and public+unpublished catalog reconciliation instead of a fixed named-row count",
     "evidenceStorageItemLimit": null,
     "presentationItemLimitAppliedHere": false,
-    "menuLinkDomainPolicy": "follow only the already-bound hostname, its normalized root/parent, or a child of that root; sibling and unrelated domains are rejected"
+    "menuLinkDomainPolicy": "follow only the already-bound hostname, its normalized root/parent, or a child of that root; sibling and unrelated domains are rejected",
+    "fullSourceEvidenceRetained": true
   },
   "summary": {
-    "catalogTotal": 2804,
-    "publicRuntimeTotal": 1422,
-    "queueEligibleIds": 294,
-    "targets": 266,
-    "uniqueOrigins": 242,
-    "sitemapFilesFetched": 507,
-    "menuUrlsDiscovered": 64,
-    "menuPagesFetched": 54,
-    "errorTargets": 3,
-    "evidenceRestaurants": 18,
-    "recommendationRestaurants": 2,
-    "featuredRestaurants": 16,
-    "recommendationItems": 4,
-    "featuredItems": 62,
+    "assignedRows": 36,
+    "reviewedRows": 36,
+    "byMarker": {
+      "DISH-R-OFFICIAL": {
+        "assignedRows": 0,
+        "reviewedRows": 0
+      },
+      "DISH-R-RETAINED": {
+        "assignedRows": 0,
+        "reviewedRows": 0
+      },
+      "DISH-R-DISCOVERY": {
+        "assignedRows": 30,
+        "reviewedRows": 30
+      },
+      "DISH-F-SOURCE": {
+        "assignedRows": 6,
+        "reviewedRows": 6
+      }
+    },
+    "statusCounts": {
+      "accepted_evidence": 7,
+      "candidate": 5,
+      "no_evidence": 23,
+      "blocked": 1,
+      "skipped_already_complete": 0
+    },
+    "acceptedRItems": 5,
+    "acceptedFItems": 2,
+    "acceptedRRestaurants": 5,
+    "acceptedRDistinctDishes": 5,
+    "acceptedFDistinctDishes": 2,
+    "acceptedFOnlyRestaurants": 2,
+    "emittedRItems": 5,
+    "emittedFItems": 1,
+    "translationPendingItems": 1,
+    "currentAssignmentRows": 36,
+    "currentReviewedRows": 36,
+    "completedAssignmentsRemovedByRebuild": 0,
     "previousEvidence": {
-      "recommendationRestaurants": 567,
-      "featuredRestaurants": 666,
-      "evidenceRestaurants": 732,
-      "recommendationItems": 1000,
-      "featuredItems": 2662
+      "recommendationRestaurants": 570,
+      "featuredRestaurants": 667,
+      "evidenceRestaurants": 736,
+      "recommendationItems": 1005,
+      "featuredItems": 2664
     },
     "freshCrawlEvidence": {
-      "recommendationRestaurants": 2,
-      "featuredRestaurants": 16,
-      "evidenceRestaurants": 18,
-      "recommendationItems": 4,
-      "featuredItems": 62
+      "recommendationRestaurants": 5,
+      "featuredRestaurants": 1,
+      "evidenceRestaurants": 6,
+      "recommendationItems": 5,
+      "featuredItems": 1
     },
     "mergedEvidence": {
-      "recommendationRestaurants": 567,
-      "featuredRestaurants": 666,
-      "evidenceRestaurants": 732,
-      "recommendationItems": 1000,
-      "featuredItems": 2666
+      "recommendationRestaurants": 570,
+      "featuredRestaurants": 667,
+      "evidenceRestaurants": 736,
+      "recommendationItems": 1005,
+      "featuredItems": 2664
     },
     "specificityCorrection": {
-      "correctedRestaurants": 5,
-      "correctedItems": 5,
-      "duplicateItemsRemoved": 3,
-      "ruleCounts": {
-        "meat-sushi-over-sushi": 1,
-        "yakisoba-over-soba": 4
-      },
-      "recommendationItemsAfterCorrection": 1000,
-      "featuredItemsAfterCorrection": 2663
+      "correctedRestaurants": 0,
+      "correctedItems": 0,
+      "duplicateItemsRemoved": 0,
+      "ruleCounts": {},
+      "recommendationItemsAfterCorrection": 1005,
+      "featuredItemsAfterCorrection": 2664
     }
   },
   "rows": [
@@ -14908,6 +14931,66 @@
       ]
     },
     {
+      "googlePlaceId": "ChIJEdkVMgSMGGARsTT85lCQ7xk",
+      "name": "Bondy",
+      "recommendedDishes": [
+        {
+          "nameZh": "牛肉咖喱",
+          "nameJa": "ビーフカレー",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13000439/dtlmenu/",
+          "checkedAt": "2026-09-14",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "central-reviewed:R:reviewed-exact-source-native-translation",
+          "evidenceSnippet": "おすすめ ビーフカレー 1,800円",
+          "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-DISCOVERY/S6.json",
+              "marker": "DISH-R-DISCOVERY",
+              "shard": "S6",
+              "sourceQueueCommit": "e59794d58423e11d39d6c22d53c893a619274826",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [
+                  "欧風カレー ボンディ 神保町本店",
+                  "Bondy"
+                ],
+                "evidence": [
+                  {
+                    "provider": "Tabelog",
+                    "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13000439/",
+                    "sourceTitle": "欧風カレー ボンディ 神保町本店",
+                    "checkedAt": "2026-09-14",
+                    "evidenceType": "exact_branch_identity",
+                    "note": "Exact current branch is restaurant-published on Tabelog; address 東京都千代田区神田神保町2-3 神田古書センター2F and phone 03-3234-2080."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "recommendedDishes",
+                "classification": "R",
+                "nameOriginal": "ビーフカレー",
+                "nameZhCandidate": null,
+                "evidenceClass": "branch_recommendation_text",
+                "recommendationSemantics": "おすすめ",
+                "provider": "Tabelog",
+                "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13000439/dtlmenu/",
+                "sourceTitle": "料理メニュー : 欧風カレー ボンディ 神保町本店",
+                "checkedAt": "2026-09-14",
+                "sourceScope": "branch",
+                "evidenceText": "おすすめ ビーフカレー 1,800円",
+                "freshness": "menu update 2026-05-11; crawled 2026-09-13",
+                "seasonality": "not_expired_or_explicitly_seasonal",
+                "confidence": "high",
+                "notes": "Corporate/official Tabelog menu, exact branch, explicit item-level recommendation."
+              }
+            }
+          ]
+        }
+      ],
+      "featuredDishes": []
+    },
+    {
       "googlePlaceId": "ChIJedxoFiaNGGAR4UAbgIfgSS4",
       "name": "焼肉 美かさ",
       "recommendedDishes": [
@@ -20719,6 +20802,21 @@
           "evidenceSnippet": "アディロンダックバーガー"
         },
         {
+          "nameZh": "炒面",
+          "nameJa": "そば",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://adirondackcafejp.wordpress.com/food/",
+          "checkedAt": "2026-09-10",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "specificity:yakisoba-over-soba:menu-page-text:蕎麦|そば|soba",
+          "evidenceSnippet": "焼きそば Fried Noodle （税込み１４３０）",
+          "specificityCorrection": {
+            "rule": "yakisoba-over-soba",
+            "previousNameZh": "荞麦面",
+            "sourceNativeCompositeRequired": true
+          }
+        },
+        {
           "nameZh": "炒饭",
           "nameJa": "チャーハン",
           "provider": "sourceWebsite",
@@ -20737,21 +20835,6 @@
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:ステーキ|steak",
           "evidenceSnippet": "マグロステーキ丼"
-        },
-        {
-          "nameZh": "炒面",
-          "nameJa": "そば",
-          "provider": "sourceWebsite",
-          "sourceUrl": "https://adirondackcafejp.wordpress.com/food/",
-          "checkedAt": "2026-09-10",
-          "evidenceClass": "source_menu_text",
-          "evidenceRule": "specificity:yakisoba-over-soba:menu-page-text:蕎麦|そば|soba",
-          "evidenceSnippet": "焼きそば Fried Noodle （税込み１４３０）",
-          "specificityCorrection": {
-            "rule": "yakisoba-over-soba",
-            "previousNameZh": "荞麦面",
-            "sourceNativeCompositeRequired": true
-          }
         }
       ]
     },
@@ -22992,6 +23075,59 @@
       "name": "Think Coffee",
       "recommendedDishes": [
         {
+          "nameZh": "NYC贝果三明治",
+          "nameJa": "NYCベーグルサンド",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://thinkcoffee.jp/nyc_bagel_sandwich/",
+          "checkedAt": "2026-09-14",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "central-reviewed:R:reviewed-exact-source-native-translation",
+          "evidenceSnippet": "thinkcoffeeのNYCベーグルサンド。thinkcoffeeのシグネチャー・サンドイッチです。ぜひ一度ご賞味ください。",
+          "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-F-SOURCE/S6.json",
+              "marker": "DISH-F-SOURCE",
+              "shard": "S6",
+              "sourceQueueCommit": "e59794d58423e11d39d6c22d53c893a619274826",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [
+                  "think coffee",
+                  "Think Coffee"
+                ],
+                "evidence": [
+                  {
+                    "provider": "official_web",
+                    "sourceUrl": "https://thinkcoffee.jp/cafe/",
+                    "sourceTitle": "Think Coffee Japan 店舗情報",
+                    "checkedAt": "2026-09-14",
+                    "evidenceType": "exact_branch_identity",
+                    "note": "Official branch page gives 〒101-0054 東京都千代田区神田錦町2-9-15 1F-2F and current 8:00-19:00 hours."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "recommendedDishes",
+                "classification": "R",
+                "nameOriginal": "NYCベーグルサンド",
+                "nameZhCandidate": null,
+                "evidenceClass": "branch_recommendation_text",
+                "recommendationSemantics": "シグネチャー",
+                "provider": "official_web",
+                "sourceUrl": "https://thinkcoffee.jp/nyc_bagel_sandwich/",
+                "sourceTitle": "NYCベーグルサンド - Think Coffee Japan",
+                "checkedAt": "2026-09-14",
+                "sourceScope": "branch",
+                "evidenceText": "thinkcoffeeのNYCベーグルサンド。thinkcoffeeのシグネチャー・サンドイッチです。ぜひ一度ご賞味ください。",
+                "freshness": "official page remains live and official site is current in 2026",
+                "seasonality": "not_expired_or_explicitly_seasonal",
+                "confidence": "high",
+                "notes": "Exact branch official site and explicit signature semantics; no brand-to-branch propagation because the Japan site publishes a single Kanda address on the same page family."
+              }
+            }
+          ]
+        },
+        {
           "nameZh": "三明治",
           "nameJa": "サンドイッチ",
           "provider": "sourceWebsite",
@@ -24628,6 +24764,65 @@
           "evidenceSnippet": "・季節のお浸し ・肉豆腐 ・パリパリサラダ"
         }
       ]
+    },
+    {
+      "googlePlaceId": "ChIJm_L1ZwaMGGARItmByJT3IxE",
+      "name": "焼鳥・炙り炭火焼き をどり 大手町店",
+      "recommendedDishes": [
+        {
+          "nameZh": "九条葱盐味亲子盖饭",
+          "nameJa": "九条ねぎの塩親子丼",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1302/A130201/13195411/dtlmenu/lunch/",
+          "checkedAt": "2026-09-14",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "central-reviewed:R:reviewed-exact-source-native-translation",
+          "evidenceSnippet": "九条ねぎの塩親子丼 980円 おすすめ",
+          "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-DISCOVERY/S6.json",
+              "marker": "DISH-R-DISCOVERY",
+              "shard": "S6",
+              "sourceQueueCommit": "e59794d58423e11d39d6c22d53c893a619274826",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [
+                  "焼き鳥・炙り炭焼き をどり 大手町店"
+                ],
+                "evidence": [
+                  {
+                    "provider": "Tabelog",
+                    "sourceUrl": "https://tabelog.com/tokyo/A1302/A130201/13195411/",
+                    "sourceTitle": "焼き鳥・炙り炭焼き をどり 大手町店",
+                    "checkedAt": "2026-09-14",
+                    "evidenceType": "exact_branch_identity",
+                    "note": "Exact branch name, 〒100-0004 東京都千代田区大手町1-9-2 大手町フィナンシャルシティ・グランキューブ B1F and 050-5593-6129; current hours are published."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "recommendedDishes",
+                "classification": "R",
+                "nameOriginal": "九条ねぎの塩親子丼",
+                "nameZhCandidate": null,
+                "evidenceClass": "branch_recommendation_text",
+                "recommendationSemantics": "おすすめ",
+                "provider": "Tabelog",
+                "sourceUrl": "https://tabelog.com/tokyo/A1302/A130201/13195411/dtlmenu/lunch/",
+                "sourceTitle": "ランチメニュー : 焼き鳥・炙り炭焼き をどり 大手町店",
+                "checkedAt": "2026-09-14",
+                "sourceScope": "branch",
+                "evidenceText": "九条ねぎの塩親子丼 980円 おすすめ",
+                "freshness": "branch current in 2026; branch-specific lunch menu remains published",
+                "seasonality": "not_expired_or_explicitly_seasonal",
+                "confidence": "medium",
+                "notes": "Recommendation marker is attached directly to the concrete lunch item; no review prose used."
+              }
+            }
+          ]
+        }
+      ],
+      "featuredDishes": []
     },
     {
       "googlePlaceId": "ChIJM-SSCwCNGGARaHvoZLneFj0",
@@ -31577,6 +31772,66 @@
           "checkedAt": "2026-09-06",
           "evidenceClass": "source_recommendation_text",
           "evidenceSnippet": "かご 買い物かごに商品がありません お知らせ 閲覧履歴 お気に入り 購入履歴 myクーポン ショップカテゴリ ご自宅用 ご自宅用 2025年母の日 季節の蜜芋パウンドケーキ 人気ベ"
+        }
+      ],
+      "featuredDishes": []
+    },
+    {
+      "googlePlaceId": "ChIJRcu6ggOMGGAR62_THvo-ho4",
+      "name": "KAMAYOSHI",
+      "recommendedDishes": [
+        {
+          "nameZh": "热鸡肉竹轮天妇罗乌冬面",
+          "nameJa": "（温）とりちくわ天うどん",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13201863/dtlmenu/",
+          "checkedAt": "2026-09-14",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "central-reviewed:R:reviewed-exact-source-native-translation",
+          "evidenceSnippet": "おすすめ （温）とりちくわ天うどん 1,050円",
+          "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-DISCOVERY/S6.json",
+              "marker": "DISH-R-DISCOVERY",
+              "shard": "S6",
+              "sourceQueueCommit": "e59794d58423e11d39d6c22d53c893a619274826",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [
+                  "麺匠 釜善",
+                  "KAMAYOSHI"
+                ],
+                "evidence": [
+                  {
+                    "provider": "Tabelog",
+                    "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13201863/",
+                    "sourceTitle": "麺匠 釜善（KAMAYOSHI）",
+                    "checkedAt": "2026-09-14",
+                    "evidenceType": "exact_branch_identity",
+                    "note": "Exact branch name, 東京都千代田区神田司町2-14-15 高梨ビル1F and 050-5872-3360; current listing crawled in September 2026."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "recommendedDishes",
+                "classification": "R",
+                "nameOriginal": "（温）とりちくわ天うどん",
+                "nameZhCandidate": null,
+                "evidenceClass": "branch_recommendation_text",
+                "recommendationSemantics": "おすすめ",
+                "provider": "Tabelog",
+                "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13201863/dtlmenu/",
+                "sourceTitle": "料理メニュー : 麺匠 釜善（KAMAYOSHI）",
+                "checkedAt": "2026-09-14",
+                "sourceScope": "branch",
+                "evidenceText": "おすすめ （温）とりちくわ天うどん 1,050円",
+                "freshness": "menu published/updated in 2026 and crawled last week",
+                "seasonality": "not_expired_or_explicitly_seasonal",
+                "confidence": "high",
+                "notes": "Current exact-branch menu; explicit recommendation marker immediately precedes the item."
+              }
+            }
+          ]
         }
       ],
       "featuredDishes": []
@@ -40998,6 +41253,59 @@
       "name": "RECORD BAR JBC レコードバー ジェイビーシー",
       "recommendedDishes": [
         {
+          "nameZh": "拿坡里意面",
+          "nameJa": "ナポリタン",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ003516624/",
+          "checkedAt": "2026-09-14",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "central-reviewed:R:reviewed-exact-source-native-translation",
+          "evidenceSnippet": "店長のおすすめ料理 ナポリタン フードメニューも豊富にご用意しております。ソーセージたっぷりのナポリタンがおすすめです。",
+          "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-F-SOURCE/S6.json",
+              "marker": "DISH-F-SOURCE",
+              "shard": "S6",
+              "sourceQueueCommit": "e59794d58423e11d39d6c22d53c893a619274826",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [
+                  "RECORD BAR JBC",
+                  "RECORD BAR JBC レコードバー ジェイビーシー"
+                ],
+                "evidence": [
+                  {
+                    "provider": "Hot Pepper",
+                    "sourceUrl": "https://www.hotpepper.jp/strJ003516624/map/",
+                    "sourceTitle": "RECORD BAR JBC 地図",
+                    "checkedAt": "2026-09-14",
+                    "evidenceType": "exact_branch_identity",
+                    "note": "Exact current branch address 東京都千代田区神田神保町1-12-6 B1F and current opening information; repository Hot Pepper binding is high-confidence/auto-eligible."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "recommendedDishes",
+                "classification": "R",
+                "nameOriginal": "ナポリタン",
+                "nameZhCandidate": null,
+                "evidenceClass": "branch_recommendation_text",
+                "recommendationSemantics": "店長のおすすめ料理 / おすすめ",
+                "provider": "Hot Pepper",
+                "sourceUrl": "https://www.hotpepper.jp/strJ003516624/",
+                "sourceTitle": "RECORD BAR JBC レコードバー ジェイビーシー",
+                "checkedAt": "2026-09-14",
+                "sourceScope": "branch",
+                "evidenceText": "店長のおすすめ料理 ナポリタン フードメニューも豊富にご用意しております。ソーセージたっぷりのナポリタンがおすすめです。",
+                "freshness": "current branch page crawled in September 2026",
+                "seasonality": "not_expired_or_explicitly_seasonal",
+                "confidence": "high",
+                "notes": "Direct concrete item-level recommendation on current exact branch page."
+              }
+            }
+          ]
+        },
+        {
           "nameZh": "咖喱",
           "nameJa": "カレー",
           "provider": "Hot Pepper",
@@ -42264,6 +42572,66 @@
         }
       ],
       "featuredDishes": []
+    },
+    {
+      "googlePlaceId": "ChIJZYTCzBWMGGARIpip-V_r6ks",
+      "name": "Osacanajack",
+      "recommendedDishes": [],
+      "featuredDishes": [
+        {
+          "nameZh": "海鲜午餐拼盘",
+          "nameJa": "オサカナランチ",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13209155/dtlmenu/lunch/",
+          "checkedAt": "2026-09-14",
+          "evidenceClass": "tabelog_menu_text",
+          "evidenceRule": "central-reviewed:F:reviewed-exact-source-native-translation",
+          "evidenceSnippet": "オサカナランチ 1,100円 オサカナジャックが色々楽しめるプレートランチ★",
+          "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-DISCOVERY/S6.json",
+              "marker": "DISH-R-DISCOVERY",
+              "shard": "S6",
+              "sourceQueueCommit": "e59794d58423e11d39d6c22d53c893a619274826",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [
+                  "オサカナジャック",
+                  "OSACANA JACK"
+                ],
+                "evidence": [
+                  {
+                    "provider": "Tabelog",
+                    "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13209155/dtlmenu/lunch/",
+                    "sourceTitle": "ランチメニュー : オサカナジャック",
+                    "checkedAt": "2026-09-14",
+                    "evidenceType": "exact_branch_identity",
+                    "note": "Exact branch menu identifies オサカナジャック at 東京都千代田区神田神保町2-48, phone 03-6272-6634; lunch menu updated 2026-05-09."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "オサカナランチ",
+                "nameZhCandidate": null,
+                "evidenceClass": "branch_menu_text",
+                "recommendationSemantics": "",
+                "provider": "Tabelog",
+                "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13209155/dtlmenu/lunch/",
+                "sourceTitle": "ランチメニュー : オサカナジャック",
+                "checkedAt": "2026-09-14",
+                "sourceScope": "branch",
+                "evidenceText": "オサカナランチ 1,100円 オサカナジャックが色々楽しめるプレートランチ★",
+                "freshness": "menu update 2026-05-09",
+                "seasonality": "not_expired_or_explicitly_seasonal",
+                "confidence": "high",
+                "notes": "Concrete current ordinary menu item. No strict recommendation marker is attached, so it remains F."
+              }
+            }
+          ]
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJzzrWJWuMGGARXDyRYYR1JJ0",
