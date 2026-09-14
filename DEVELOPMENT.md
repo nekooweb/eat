@@ -2,6 +2,25 @@
 
 更新日期：2026-09-14。
 
+## 2026-09-14 20:06 JST：Official / Retained 逐步完成检查点
+
+工作分支为 `codex/official-retained-completion-20260914`，基于 `agent-data-library-2026-09-14` 的 `5179bad`。本节随已验证的阶段更新；下方 19:24 检查点保留为历史状态。
+
+当前阶段：基线已重建、审查适配器与回归已验证，菜品证据仍在审查。尚未完成全量中央审查，尚未导入新菜品证据或提交最终 PR。
+
+| 已核实事项 | 当前结果 |
+| --- | --- |
+| 实际重建后范围 | Official 219、Retained 318，合计 537 个唯一 assignment |
+| 旧队列差异 | Minatoya 的已隔离错误官网被移除；Official S6 → Discovery S6，本任务不继续处理该行 |
+| 外部分支复用 | PR #66 的 Retained S0 原始 46 行已 cherry-pick 到完成分支，仍待内容审查 |
+| 重复提交 | Official S3 两份 21 行；Retained S1 中央版与独立分支版 37 行，均需按 Place ID 协调 |
+| 公开基线 | 冻结目录 2,804、命名 runtime 1,422；R 595 家、F 675 家、任一展示菜 740 家，推荐缺口 827 家 |
+| SQLite 审计副本基线 | R 559 家、F 657 家；单独通过维护入口构建，未替换用户主库 |
+| 工程门禁 | 离线审查适配器、逐证据增量审计、完整来源快照保留回归通过；公开与 10 项主库校验基线通过 |
+| 付费 Google Data API | 0 次 |
+
+批量读取、来源挖掘和逐行审查由 Luna worker 执行。主进程负责关键争议复核、审查批准、维护管线集成、验证和文档。每完成一个 shard 或一次验证，就将结果补充到[本轮日志](logs/2026-09-14-official-retained-completion.md)。草稿、已审查、已导入、已重建和 CI 通过分别记录；不以 proposal 数量替代实际覆盖增量。
+
 ## 2026-09-14：并行 Agent 数据补全层
 
 当前在 `agent-data-library-2026-09-14` / PR #65 上新增了并行数据补全层。该层只负责分配任务、保存来源证据和 proposal，不直接修改 canonical runtime、`data/production_area1.js` 或 SQLite master。

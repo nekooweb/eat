@@ -5,6 +5,14 @@ Snapshot commit: `820b11aa5384d5aa548463b9f730df68d94000b0`
 
 This directory is the assignment/index layer for parallel data-completion agents. It does **not** duplicate the canonical queues. Agents select work from the existing source-of-truth files by marker and shard, collect proposal/evidence, and leave canonical merge/resolution to the central pipeline.
 
+## Current completion-run checkpoint (2026-09-14 20:06 JST)
+
+The historical counts below are not refreshed assignment truth. The maintained baseline rebuild on `codex/official-retained-completion-20260914` yields **219 Official + 318 Retained = 537** assignments: existing source-field quarantine removes Minatoya's incorrect website and reroutes that S6 row to out-of-scope Discovery. Read the current regenerated queues before working.
+
+Original proposals remain in `data/agent_proposals/`. Reconciled full-template reviews are written separately to `data/agent_reviews/<marker>/Sx.json`; one file per logical shard. Draft `accepted_evidence` statuses are not ingestion approval. The central manifest `data/agent_reviews/official-retained-completion.json` must explicitly approve exact reviewed file hashes before the offline adapter can emit an input for the maintained merge pipeline. The adapter must never write canonical/runtime/SQLite data directly.
+
+Use `scripts/test_reviewed_agent_dish_evidence.mjs` and `scripts/test_agent_dish_integration.mjs` for the adapter and integration-audit contract. Exact source-native evidence, branch identity and R/F/C semantics remain mandatory. Do not overwrite original independent reviews during reconciliation. Log each completed shard, reconciliation and validation as it happens in `logs/2026-09-14-official-retained-completion.md`; separate proposal review coverage from canonical/runtime improvements.
+
 ## Current scope
 
 The frozen catalog contains 2,804 Place IDs. The current public named runtime contains 1,422 restaurants and 1,382 unpublished Place-ID-only records.
