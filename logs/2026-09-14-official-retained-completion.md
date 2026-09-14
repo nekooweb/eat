@@ -55,3 +55,9 @@ Pending the evidence, coverage, integration and validation gates above. Ending c
 - Fresh adapter, integration audit, provenance-retention and zero-paid-API checks passed. Base branch remote head is still `5179badcdb58ba176cf2d9cf834a02e24c86e736`.
 - Root flagged the draft ARBOL recommendation as a cross-branch conflict (frozen Awajicho record versus Kagurazaka source), expired Sombreuil 7/1–9/4 menu claims, and incomplete source/seasonal provenance for re-review. These draft claims are not approved for ingestion. Other raw submissions remain preserved.
 - Canonical dish evidence has not changed. Public baseline stays R595 / F675 / any-display740; source-store items stay R1000 / F2663. Do not count draft reviewer statuses as completed central review.
+
+## 20:11 JST — baseline database repeat-import gate
+
+- Re-ran `python3 scripts/database/build_master.py --output _audit/official-retained-baseline/eat-master.sqlite` without reset.
+- Exact before/after counts matched for all 8 checked tables: `catalog_entries=2804`, `source_records=9969`, `source_bindings=9969`, `field_observations=57540`, `field_resolutions=37252`, `retained_exceptions=3`, `ingestion_tasks=2308`, `ingestion_task_details=2308`.
+- Earlier code/docs checkpoints are locally committed as `3920104` and `0066edf`; no completion evidence approval or production push has occurred.
