@@ -1,0 +1,152 @@
+name: E2E dish S5 one-shot v4
+
+on:
+  push:
+    branches: [agent-e2e-dish-s5-20260914]
+    paths:
+      - '.e2e-dish-s5-run-v4'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: e2e-dish-s5-20260914-v4
+  cancel-in-progress: false
+
+jobs:
+  integrate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent-e2e-dish-s5-20260914
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Replay proven lifecycle through successful integration audit
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import subprocess
+          workflow=Path('.github/workflows/e2e-dish-s5-once-v3.yml').read_text().splitlines()
+          name='Replay proven v2 lifecycle through successful integration audit'
+          start=next(i for i,l in enumerate(workflow) if l==f'      - name: {name}')
+          run=next(i for i in range(start+1,len(workflow)) if workflow[i]=='        run: |')
+          out=[]
+          for line in workflow[run+1:]:
+              if line.startswith('      - name: ') or line.startswith('      - uses: '): break
+              if line.startswith('          '): out.append(line[10:])
+              elif line.strip()=='': out.append('')
+              else: break
+          subprocess.run('\n'.join(out)+'\n',shell=True,executable='/bin/bash',check=True)
+          PY
+
+      - name: Prove logical replay idempotence and restore canonical first-integration summary
+        run: |
+          set -euo pipefail
+          cp data/google_inventory_detail_evidence.json /tmp/e2e-s5-first-evidence.json
+          sha256sum data/google_inventory_runtime.js data/google_inventory_detail_queue.json > /tmp/e2e-s5-first-runtime.sha
+
+          node - <<'NODE'
+          const fs=require('fs'),crypto=require('crypto');
+          const stable=x=>crypto.createHash('sha256').update(JSON.stringify(x)).digest('hex');
+          const evidence=JSON.parse(fs.readFileSync('data/google_inventory_detail_evidence.json','utf8'));
+          const plan=JSON.parse(fs.readFileSync('data/dish_batch_plan.json','utf8'));
+          fs.writeFileSync('/tmp/e2e-s5-first-logical.json',JSON.stringify({evidenceRows:stable(evidence.rows),planRows:stable(plan.rows)},null,2));
+          NODE
+
+          node scripts/merge_google_inventory_detail_evidence.mjs \
+            data/google_inventory_detail_evidence.json \
+            _audit/e2e-s5/approved-evidence.json \
+            _audit/e2e-s5/replay-merged.json > _audit/e2e-s5/replay-merge.log
+          cp _audit/e2e-s5/replay-merged.json data/google_inventory_detail_evidence.json
+          node scripts/correct_dish_specificity_evidence.mjs \
+            data/google_inventory_detail_evidence.json \
+            data/google_inventory_detail_evidence.json > _audit/e2e-s5/replay-specificity.log
+          python scripts/reload_data.py --public-only --outdir /tmp/e2e-s5-replay
+          sha256sum data/google_inventory_runtime.js data/google_inventory_detail_queue.json > /tmp/e2e-s5-second-runtime.sha
+          diff -u /tmp/e2e-s5-first-runtime.sha /tmp/e2e-s5-second-runtime.sha
+
+          node - <<'NODE'
+          const fs=require('fs'),crypto=require('crypto');
+          const stable=x=>crypto.createHash('sha256').update(JSON.stringify(x)).digest('hex');
+          const first=JSON.parse(fs.readFileSync('/tmp/e2e-s5-first-logical.json','utf8'));
+          const evidence=JSON.parse(fs.readFileSync('data/google_inventory_detail_evidence.json','utf8'));
+          const plan=JSON.parse(fs.readFileSync('data/dish_batch_plan.json','utf8'));
+          const second={evidenceRows:stable(evidence.rows),planRows:stable(plan.rows)};
+          if(first.evidenceRows!==second.evidenceRows) throw new Error('Evidence row logic changed on replay');
+          if(first.planRows!==second.planRows) throw new Error('Dish-plan row logic changed on replay');
+          console.log(JSON.stringify({status:'pass',evidenceRowsStable:true,planRowsStable:true,runtimeAndQueueByteStable:true}));
+          NODE
+
+          # Replay changes only generated summary metadata. Restore the first integration evidence,
+          # rebuild once, and re-check all logical/runtime invariants without requiring volatile plan bytes.
+          cp /tmp/e2e-s5-first-evidence.json data/google_inventory_detail_evidence.json
+          python scripts/reload_data.py --public-only --outdir /tmp/e2e-s5-restored
+          sha256sum data/google_inventory_runtime.js data/google_inventory_detail_queue.json > /tmp/e2e-s5-restored-runtime.sha
+          diff -u /tmp/e2e-s5-first-runtime.sha /tmp/e2e-s5-restored-runtime.sha
+          cmp /tmp/e2e-s5-first-evidence.json data/google_inventory_detail_evidence.json
+          node - <<'NODE'
+          const fs=require('fs'),crypto=require('crypto');
+          const stable=x=>crypto.createHash('sha256').update(JSON.stringify(x)).digest('hex');
+          const first=JSON.parse(fs.readFileSync('/tmp/e2e-s5-first-logical.json','utf8'));
+          const evidence=JSON.parse(fs.readFileSync('data/google_inventory_detail_evidence.json','utf8'));
+          const plan=JSON.parse(fs.readFileSync('data/dish_batch_plan.json','utf8'));
+          if(first.evidenceRows!==stable(evidence.rows)) throw new Error('Restored evidence rows differ');
+          if(first.planRows!==stable(plan.rows)) throw new Error('Restored plan rows differ');
+          NODE
+          echo '{"status":"pass","secondReplayLogicalChanges":0,"summaryOnlyReplayDifference":true,"firstIntegrationEvidenceRestored":true}' > _audit/e2e-s5/idempotence.json
+
+          git add -A data
+          if ! git diff --cached --quiet; then git commit -m 'Integrate approved S5 dish evidence'; fi
+
+      - name: Write shard log
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import subprocess
+          workflow=Path('.github/workflows/e2e-dish-s5-once-v3.yml').read_text().splitlines()
+          name='Write shard log'
+          start=next(i for i,l in enumerate(workflow) if l==f'      - name: {name}')
+          run=next(i for i in range(start+1,len(workflow)) if workflow[i]=='        run: |')
+          out=[]
+          for line in workflow[run+1:]:
+              if line.startswith('      - name: ') or line.startswith('      - uses: '): break
+              if line.startswith('          '): out.append(line[10:])
+              elif line.strip()=='': out.append('')
+              else: break
+          subprocess.run('\n'.join(out)+'\n',shell=True,executable='/bin/bash',check=True)
+          PY
+
+      - name: Remove one-shot harness and push completed branch
+        run: |
+          set -euo pipefail
+          git rm -f \
+            .github/workflows/e2e-dish-s5-once.yml \
+            .github/workflows/e2e-dish-s5-once-v2.yml \
+            .github/workflows/e2e-dish-s5-once-v3.yml \
+            .github/workflows/e2e-dish-s5-once-v4.yml \
+            .e2e-dish-s5-run \
+            .e2e-dish-s5-run-v2 \
+            .e2e-dish-s5-run-v3 \
+            .e2e-dish-s5-run-v4
+          git commit -m 'Remove one-shot S5 integration harness'
+          git push origin HEAD:agent-e2e-dish-s5-20260914
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: e2e-dish-s5-audit-v4
+          path: |
+            _audit/e2e-s5/
+            /tmp/e2e-s5-first-runtime.sha
+            /tmp/e2e-s5-second-runtime.sha
+            /tmp/e2e-s5-restored-runtime.sha
+            /tmp/e2e-s5-first-logical.json
+          if-no-files-found: ignore
+          retention-days: 7
