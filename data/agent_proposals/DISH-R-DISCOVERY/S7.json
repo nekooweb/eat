@@ -1,0 +1,533 @@
+{
+  "schemaVersion": 1,
+  "proposalOnly": true,
+  "marker": "DISH-R-DISCOVERY",
+  "shard": "S7",
+  "agentRunId": "DISH-R-DISCOVERY:S7:20260914T1908JST",
+  "sourceQueue": "data/dish_batch_plan.json",
+  "sourceQueueCommit": "820b11aa5384d5aa548463b9f730df68d94000b0",
+  "generatedAt": "2026-09-14T19:08:24+09:00",
+  "summary": {
+    "assignedRows": 36,
+    "reviewedRows": 36,
+    "acceptedEvidenceRows": 9,
+    "candidateRows": 3,
+    "noEvidenceRows": 15,
+    "blockedRows": 9,
+    "skippedAlreadyCompleteRows": 0
+  },
+  "records": [
+    {
+      "googlePlaceId": "ChIJ0eXw4hiMGGARGOrfnjnLzHk",
+      "restaurantName": "こなから本店",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": ["こなから 本店"],
+        "evidence": [
+          {"provider":"current_directory","sourceUrl":"https://map.yahoo.co.jp/v3/place/TLMrLv9fT7-","sourceTitle":"こなから 本店 - 文京区湯島/おでん店","checkedAt":"2026-09-14","evidenceType":"exact_branch_identity","note":"Exact name, 湯島1-9-6 address and 03-3816-0997 phone. Repository already held http://konakara.com/ only as an unreviewed Overture website candidate."}
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "repository candidate: http://konakara.com/ (known candidate; live fetch timed out)",
+        "https://r.gnavi.co.jp/12dr7eu50000/ (menu explicitly says it is based on user review information; rejected)",
+        "https://map.yahoo.co.jp/v3/place/TLMrLv9fT7-/menu (explicitly user-submitted menu; rejected)",
+        "web search: こなから本店 おでん メニュー 公式"
+      ],
+      "blocker": null,
+      "notes": "Exact identity was established, but no acceptable source-native current menu could be reproduced without relying on user-submitted/review-derived menu truth."
+    },
+    {
+      "googlePlaceId": "ChIJ0VksokOMGGARWPZDL8AF4XY",
+      "restaurantName": "魂心家",
+      "status": "blocked",
+      "identity": {
+        "state": "partial",
+        "sourceAliases": ["魂心家"],
+        "evidence": [
+          {"provider":"repository_review","sourceUrl":"http://www.konshinya.com/","sourceTitle":"魂心家 generic brand root","checkedAt":"2026-09-14","evidenceType":"known_rejected_candidate","note":"data/reviewed_osm_independent_dish_sources.json already rejected this exact Place-ID website candidate as generic_root_missing_location_confirmation."}
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "repository reviewed OSM candidate: http://www.konshinya.com/",
+        "web search: 魂心家 店舗一覧 東京 御茶ノ水 神田",
+        "current official brand/store pages checked for an exact branch binding"
+      ],
+      "blocker": "Generic chain homepage cannot establish the exact assigned branch; current nearby/legacy branch evidence is ambiguous, so chain menu evidence was not attached.",
+      "notes": "No proximity-only or brand-only binding used."
+    },
+    {
+      "googlePlaceId": "ChIJ5_oeyTmNGGAR0INuyci-AWc",
+      "restaurantName": "とんかつ かつ善",
+      "status": "no_evidence",
+      "identity": {"state":"partial","sourceAliases":["とんかつ かつ善"],"evidence":[]},
+      "dishProposals": [],
+      "attemptedSources": [
+        "web search: とんかつ かつ善 東京 本郷 メニュー",
+        "web search: とんかつ かつ善 公式",
+        "same-name 埼玉/別店舗 results were explicitly excluded"
+      ],
+      "blocker": null,
+      "notes": "Reasonable exact-name searches found same-name noise but no reproducible branch-specific menu source safe for this Place ID."
+    },
+    {
+      "googlePlaceId": "ChIJ7aCmgBuMGGARQGT-kFw_KtI",
+      "restaurantName": "あけびの実",
+      "status": "no_evidence",
+      "identity": {"state":"verified","sourceAliases":["あけびの実"],"evidence":[{"provider":"official_hotel_web","sourceUrl":"https://www.hotel-juraku.co.jp/ocha/","sourceTitle":"お茶の水ホテルジュラク","checkedAt":"2026-09-14","evidenceType":"operator_identity","note":"Current hotel/operator family identifies あけびの実; no current text menu with source-native dish labels was found in the inspected pages."}]},
+      "dishProposals": [],
+      "attemptedSources": [
+        "official hotel/operator pages for あけびの実",
+        "web search: あけびの実 御茶ノ水 メニュー 公式",
+        "older/archived promotional menu leads were not treated as current menu truth"
+      ],
+      "blocker": null,
+      "notes": "No acceptable current concrete dish evidence reproduced."
+    },
+    {
+      "googlePlaceId": "ChIJ91MNSBmMGGARf9g3vxDjoM4",
+      "restaurantName": "乙カフェ",
+      "status": "blocked",
+      "identity": {"state":"conflict","sourceAliases":["乙カフェ","乙コーヒー"],"evidence":[]},
+      "dishProposals": [],
+      "attemptedSources": [
+        "web search: 乙カフェ 御茶ノ水",
+        "web search: 乙コーヒー 御茶ノ水 メニュー",
+        "current directory and old menu pages checked; user-submitted menus rejected"
+      ],
+      "blocker": "The catalog label 乙カフェ could not be safely proven to be the current 乙コーヒー entity for this Place ID using non-proximity identity evidence.",
+      "notes": "No alias assumption was made."
+    },
+    {
+      "googlePlaceId": "ChIJAQALSQGMGGARSP9jwTsW9sk",
+      "restaurantName": "妻地鶏とおでん 居酒屋ちょろっと",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": ["居酒屋 ちょろっと","妻地鶏とおでん 居酒屋ちょろっと"],
+        "evidence": [
+          {"provider":"repository_bound_open_data","sourceUrl":"https://www.openstreetmap.org/node/12090542918","sourceTitle":"repository reviewed native identity evidence","checkedAt":"2026-09-14","evidenceType":"existing_exact_place_binding","note":"Exact Place-ID binding exists in reviewed_native_contact_runtime_overlay.json."},
+          {"provider":"Rakuten Gurunavi","sourceUrl":"https://r.gnavi.co.jp/n424js170000/menu1/","sourceTitle":"居酒屋 ちょろっと メニュー：アラカルト - 楽天ぐるなび","checkedAt":"2026-09-14","evidenceType":"merchant_hosted_branch_menu","note":"Exact restaurant menu page; source-native 妻地鶏 and 黒おでん sections match the catalog identity."}
+        ]
+      },
+      "dishProposals": [
+        {"targetField":"recommendedDishes","classification":"R","nameOriginal":"黒おでん盛り合わせ 5点","nameZhCandidate":null,"evidenceClass":"merchant_hosted_branch_recommendation","recommendationSemantics":"おすすめ・売れ筋","provider":"Rakuten Gurunavi","sourceUrl":"https://r.gnavi.co.jp/n424js170000/menu1/","sourceTitle":"居酒屋 ちょろっと メニュー：アラカルト - 楽天ぐるなび","checkedAt":"2026-09-14","sourceScope":"branch","evidenceText":"黒おでん盛り合わせ 5点　おすすめ　売れ筋","confidence":"high","notes":"Concrete item and two explicit recommendation/popularity markers on the exact branch menu."}
+      ],
+      "attemptedSources": ["repository evidence checked first", "https://r.gnavi.co.jp/n424js170000/menu1/"],
+      "blocker": null,
+      "notes": "New usable independent dish source established."
+    },
+    {
+      "googlePlaceId": "ChIJfb3UoQaMGGARrJrGKjzbA3M",
+      "restaurantName": "あぶくま亭",
+      "status": "no_evidence",
+      "identity": {"state":"verified","sourceAliases":["あぶくま亭"],"evidence":[{"provider":"current_directory","sourceUrl":"https://map.yahoo.co.jp/v3/place/hENK4LOfGwA","sourceTitle":"あぶくま亭 - 千代田区内神田/牛肉料理店","checkedAt":"2026-09-14","evidenceType":"exact_branch_identity","note":"Exact current name, 内神田1-7-7 address and 03-3293-3080 phone."}]},
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://map.yahoo.co.jp/v3/place/hENK4LOfGwA/menu (explicitly user-submitted menu; rejected)",
+        "web search: あぶくま亭 メニュー 公式",
+        "web search: あぶくま亭 和牛煮込み"
+      ],
+      "blocker": null,
+      "notes": "Current identity is clear, but available concrete menu labels were user-submitted rather than source-native merchant/menu evidence."
+    },
+    {
+      "googlePlaceId": "ChIJKSq4ewOMGGARvdJFWODrifw",
+      "restaurantName": "巴里の介",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": ["巴里の介","パリノスケ"],
+        "evidence": [
+          {"provider":"official_web","sourceUrl":"https://www.parinosuke.com/","sourceTitle":"巴里の介｜神田の老舗西洋料理レストランで肉料理をディナーに｜小川町","checkedAt":"2026-09-14","evidenceType":"official_branch_page","note":"Official page gives 巴里の介 identity and 03-3254-1237; current independent directory confirms 神田司町2-14 大鷹ビル1F. URL existed in repository only as an unreviewed Overture website candidate."}
+        ]
+      },
+      "dishProposals": [
+        {"targetField":"recommendedDishes","classification":"R","nameOriginal":"4時間煮込んだ国産牛ホホ肉と風呂吹き大根の赤ワイン煮","nameZhCandidate":null,"evidenceClass":"official_branch_signature","recommendationSemantics":"名物の人気ベスト3 No.1・看板メニュー","provider":"official_web","sourceUrl":"https://www.parinosuke.com/","sourceTitle":"巴里の介｜神田の老舗西洋料理レストランで肉料理をディナーに｜小川町","checkedAt":"2026-09-14","sourceScope":"branch","evidenceText":"＼初めての方必食／巴里の介名物の人気ベスト3／No.1…4時間煮込んだ国産牛ホホ肉と風呂吹き大根の赤ワイン煮／創業以来、5万食以上オーダーされている看板メニュー！","confidence":"high","notes":"Specific dish, ranking, popularity and signature semantics are all first-party."}
+      ],
+      "attemptedSources": ["repository candidate https://www.parinosuke.com/ manually re-reviewed", "current exact phone/address corroboration"],
+      "blocker": null,
+      "notes": "The URL itself was a known candidate, but this run established it as a usable exact-branch dish source rather than duplicating it as a new candidate."
+    },
+    {
+      "googlePlaceId": "ChIJm8MBHByMGGARjzCPRS5TV3U",
+      "restaurantName": "明神下焼き鳥とし",
+      "status": "no_evidence",
+      "identity": {"state":"verified","sourceAliases":["明神下焼き鳥とし"],"evidence":[]},
+      "dishProposals": [],
+      "attemptedSources": ["web search: 明神下焼き鳥とし メニュー", "current exact restaurant directory pages checked; no structured merchant menu found"],
+      "blocker": null,
+      "notes": "No acceptable independently reproducible dish source found."
+    },
+    {
+      "googlePlaceId": "ChIJmX7UZ-qNGGARFZVN4leqQJg",
+      "restaurantName": "酒処 政",
+      "status": "no_evidence",
+      "identity": {"state":"verified","sourceAliases":["酒処 政","酒処政"],"evidence":[{"provider":"Yahoo! Place","sourceUrl":"https://map.yahoo.co.jp/v3/place/nqFUhm8QZnY","sourceTitle":"酒処 政 - 千代田区内神田/居酒屋","checkedAt":"2026-09-14","evidenceType":"exact_branch_identity","note":"Exact current address 内神田2-8-1 and phone 03-6260-7223."}]},
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://map.yahoo.co.jp/v3/place/nqFUhm8QZnY (merchant description only says regular/daily handmade menus; no concrete item names)",
+        "https://tabelog.com/tokyo/A1310/A131002/13282128/ (料理0)",
+        "web search: 酒処 政 神田 メニュー"
+      ],
+      "blocker": null,
+      "notes": "Identity is safe; concrete source-native dish labels are absent from acceptable text sources."
+    },
+    {
+      "googlePlaceId": "ChIJpRYOHUWNGGAR-hMMND46JMs",
+      "restaurantName": "Grand Time Café",
+      "status": "blocked",
+      "identity": {
+        "state": "conflict",
+        "sourceAliases": ["Grand Time Café","キッチン グラン"],
+        "evidence": [
+          {"provider":"repository_resolution_ledger","sourceUrl":"https://github.com/nekooweb/eat/blob/agent-data-library-2026-09-14/data/source_resolution.js","sourceTitle":"source_resolution.js","checkedAt":"2026-09-14","evidenceType":"identity_conflict","note":"The same Place ID is recorded in the repository as キッチン グラン with listing_hold because operating status could not be confirmed."}
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": ["repository source_resolution.js checked before web discovery", "web search: Grand Time Café 神保町", "potential Grand Time Café sources were not attached after Place-ID conflict was found"],
+      "blocker": "Catalog name conflicts with the repository's current Place-ID resolution ledger; exact entity cannot safely be established.",
+      "notes": "Dish collection stopped after identity conflict."
+    },
+    {
+      "googlePlaceId": "ChIJPwXvEraNGGARLI4u5n0hLBs",
+      "restaurantName": "SPAIN bar Caliente",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": ["SPAIN bar Caliente","スペインバル カリエンテ","Spain bar Caliente"],
+        "evidence": [
+          {"provider":"official_web","sourceUrl":"https://zetman.amebaownd.com/","sourceTitle":"SPAIN bar Caliente","checkedAt":"2026-09-14","evidenceType":"official_branch_page","note":"Exact 本郷三丁目 restaurant; first-party page gives 03-3868-2323 and describes its lamb grill."},
+          {"provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131004/13162301/dtlmenu/","sourceTitle":"料理メニュー : スペインバル カリエンテ","checkedAt":"2026-09-14","evidenceType":"merchant_managed_structured_menu","note":"Exact 本郷2-39-10 branch; page is updated 2026-04-22 and the restaurant is registered so users cannot edit it."}
+        ]
+      },
+      "dishProposals": [
+        {"targetField":"recommendedDishes","classification":"R","nameOriginal":"ラムチョップ","nameZhCandidate":null,"evidenceClass":"merchant_managed_structured_recommendation","recommendationSemantics":"おすすめ・当店が一番オススメ","provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131004/13162301/dtlmenu/","sourceTitle":"料理メニュー : スペインバル カリエンテ","checkedAt":"2026-09-14","sourceScope":"branch","evidenceText":"おすすめ　ラムチョップ／まずはこれから！当店が一番オススメする…最高品質のラムチョップ","confidence":"high","notes":"Current merchant-managed exact-branch menu; official site independently confirms the same branch and lamb specialty."}
+      ],
+      "attemptedSources": ["https://zetman.amebaownd.com/", "https://tabelog.com/tokyo/A1310/A131004/13162301/dtlmenu/"],
+      "blocker": null,
+      "notes": "New usable independent/first-party corroborated source established."
+    },
+    {
+      "googlePlaceId": "ChIJpxBIqxqMGGARKKlZXmRt-vA",
+      "restaurantName": "カフェ ド クルーセ",
+      "status": "blocked",
+      "identity": {"state":"partial","sourceAliases":["カフェ ド クルーセ"],"evidence":[]},
+      "dishProposals": [],
+      "attemptedSources": ["web search: カフェ ド クルーセ 神田", "current directory/Tabelog status checks indicated a closed/legacy listing; no current branch-owned menu source found"],
+      "blocker": "Current operating branch could not be safely established; available sources are closed/legacy listings.",
+      "notes": "No stale menu promotion."
+    },
+    {
+      "googlePlaceId": "ChIJWb7t8jyMGGARvCkS7hBdGOQ",
+      "restaurantName": "我流担々麺",
+      "status": "no_evidence",
+      "identity": {"state":"verified","sourceAliases":["我流担々麺","我流担々麺 竹子 本郷本店"],"evidence":[]},
+      "dishProposals": [],
+      "attemptedSources": ["web search: 我流担々麺 竹子 本郷本店 メニュー", "current directory identity pages checked", "old/user-registered Tabelog menu data rejected"],
+      "blocker": null,
+      "notes": "Exact restaurant identity can be established, but acceptable current source-native dish evidence was not found without relying on user/review content."
+    },
+    {
+      "googlePlaceId": "ChIJyeNp1B6MGGARWkbMOlyn7JA",
+      "restaurantName": "柳ばし 喜川",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": ["柳ばし 喜川","神田明神下 喜川","鰻 神田明神下 喜川"],
+        "evidence": [
+          {"provider":"official_web","sourceUrl":"https://kandakigawa.com/","sourceTitle":"喜川のうなぎ","checkedAt":"2026-09-14","evidenceType":"official_identity_and_alias_history","note":"Official site says the business opened in 柳橋 in 1896 and later moved to Kanda; current address 外神田2-16-2 and phone 03-3253-3210 establish the alias/branch identity."},
+          {"provider":"Rakuten Gurunavi","sourceUrl":"https://r.gnavi.co.jp/e640300/menu3/","sourceTitle":"喜川 メニュー：コース料理 - 楽天ぐるなび","checkedAt":"2026-09-14","evidenceType":"branch_menu","note":"Exact 喜川 branch menu."}
+        ]
+      },
+      "dishProposals": [
+        {"targetField":"recommendedDishes","classification":"R","nameOriginal":"帆立しゅうまい","nameZhCandidate":null,"evidenceClass":"merchant_hosted_branch_recommendation","recommendationSemantics":"当店の定番人気・おすすめ","provider":"Rakuten Gurunavi","sourceUrl":"https://r.gnavi.co.jp/e640300/menu3/","sourceTitle":"喜川 メニュー：コース料理 - 楽天ぐるなび","checkedAt":"2026-09-14","sourceScope":"branch","evidenceText":"当店の定番人気!帆立しゅうまい　おすすめ","confidence":"high","notes":"Official identity history resolves 柳ばし/神田明神下 alias; exact branch menu supplies strict recommendation semantics."}
+      ],
+      "attemptedSources": ["https://kandakigawa.com/", "https://r.gnavi.co.jp/e640300/menu3/"],
+      "blocker": null,
+      "notes": "New usable source established with independent first-party identity corroboration."
+    },
+    {
+      "googlePlaceId": "ChIJ3WS8BhmMGGARrp4AreewPEc",
+      "restaurantName": "グリル、セインツ",
+      "status": "no_evidence",
+      "identity": {"state":"verified","sourceAliases":["グリル セインツ","グリル、セインツ"],"evidence":[]},
+      "dishProposals": [],
+      "attemptedSources": ["web search: グリル セインツ メニュー 神田", "current official/social and directory pages checked", "image-only/user menu leads were not converted into source-native text"],
+      "blocker": null,
+      "notes": "No acceptable stable text menu source with reproducible dish labels found."
+    },
+    {
+      "googlePlaceId": "ChIJ5R-mDQCNGGAR6nPJe91LLe0",
+      "restaurantName": "北ノ醤油チーホー",
+      "status": "no_evidence",
+      "identity": {"state":"verified","sourceAliases":["北ノ醤油チーホー"],"evidence":[]},
+      "dishProposals": [],
+      "attemptedSources": ["web search: 北ノ醤油チーホー メニュー", "current exact-name directory/search results checked; no branch-owned or stable structured menu source found"],
+      "blocker": null,
+      "notes": "No acceptable independent dish source located."
+    },
+    {
+      "googlePlaceId": "ChIJ5UbSQ0GMGGARpLFZbQuB02Y",
+      "restaurantName": "Curry & Spice Bar",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": ["Curry & Spice Bar カリービト","カリ～ アンド スパイスバル カリ～ビト"],
+        "evidence": [
+          {"provider":"repository_bound_contact","sourceUrl":"https://github.com/nekooweb/eat/blob/agent-data-library-2026-09-14/data/reviewed_native_contact_runtime_overlay.json","sourceTitle":"reviewed_native_contact_runtime_overlay.json","checkedAt":"2026-09-14","evidenceType":"exact_phone_binding","note":"Repository binds this Place ID to telephone 03-6265-6960."},
+          {"provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1309/A130905/13186472/dtlmenu/","sourceTitle":"料理メニュー : カリ～ アンド スパイスバル カリ～ビト","checkedAt":"2026-09-14","evidenceType":"merchant_managed_structured_menu","note":"Exact phone 03-6265-6960 and 飯田橋3-2-6 address; updated recently. Restaurant is registered so users cannot edit it."}
+        ]
+      },
+      "dishProposals": [
+        {"targetField":"recommendedDishes","classification":"R","nameOriginal":"おまかせ前菜盛合わせ6種","nameZhCandidate":null,"evidenceClass":"merchant_managed_structured_recommendation","recommendationSemantics":"おすすめ（ディナー限定）","provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1309/A130905/13186472/dtlmenu/","sourceTitle":"料理メニュー : カリ～ アンド スパイスバル カリ～ビト","checkedAt":"2026-09-14","sourceScope":"branch","evidenceText":"●おすすめ（ディナー限定）／おまかせ前菜盛合わせ6種","confidence":"high","notes":"Exact branch and explicit recommendation section."}
+      ],
+      "attemptedSources": ["repository phone evidence checked first", "https://tabelog.com/tokyo/A1309/A130905/13186472/dtlmenu/"],
+      "blocker": null,
+      "notes": "New usable independent structured menu source established."
+    },
+    {
+      "googlePlaceId": "ChIJ5yvq0VyNGGAR3tuFr0zC94o",
+      "restaurantName": "スナック LUNA",
+      "status": "no_evidence",
+      "identity": {"state":"verified","sourceAliases":["スナック LUNA","LUNA"],"evidence":[]},
+      "dishProposals": [],
+      "attemptedSources": ["existing sourceUrlCount=1 repository evidence checked first", "web search: スナック LUNA 神田 メニュー", "accessible current pages only exposed generic drink categories, not concrete dish labels"],
+      "blocker": null,
+      "notes": "Existing non-dish source was not duplicated; no new acceptable dish source found."
+    },
+    {
+      "googlePlaceId": "ChIJAQDU8EOMGGARE976uhmYe-A",
+      "restaurantName": "Le Ginglet",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": ["Le Ginglet","ワインと日本酒のお店 ル ジャングレ"],
+        "evidence": [
+          {"provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1309/A130905/13194299/dtlmenu/","sourceTitle":"料理メニュー : ワインと日本酒のお店 ル ジャングレ","checkedAt":"2026-09-14","evidenceType":"merchant_managed_structured_menu","note":"Exact 飯田橋4-7-4 branch and direct phone 03-6261-6233; updated 2025-09-18. Restaurant is registered so users cannot edit it."}
+        ]
+      },
+      "dishProposals": [
+        {"targetField":"recommendedDishes","classification":"R","nameOriginal":"自家製生ハム、サラミの盛り合わせ（レギュラーサイズ、ハーフサイズ）","nameZhCandidate":null,"evidenceClass":"merchant_managed_structured_recommendation","recommendationSemantics":"このお店で一番の人気メニュー","provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1309/A130905/13194299/dtlmenu/","sourceTitle":"料理メニュー : ワインと日本酒のお店 ル ジャングレ","checkedAt":"2026-09-14","sourceScope":"branch","evidenceText":"自家製生ハム、サラミの盛り合わせ（レギュラーサイズ、ハーフサイズ）／このお店で一番の人気メニューとなっています。","confidence":"high","notes":"Concrete current menu label with explicit No.1 popularity semantics."}
+      ],
+      "attemptedSources": ["https://tabelog.com/tokyo/A1309/A130905/13194299/dtlmenu/"],
+      "blocker": null,
+      "notes": "New usable independent structured menu source established."
+    },
+    {
+      "googlePlaceId": "ChIJc9lS6QSMGGARxttX09XUAkM",
+      "restaurantName": "Jazz Bar Gugan",
+      "status": "blocked",
+      "identity": {
+        "state": "conflict",
+        "sourceAliases": ["Jazz Bar Gugan"],
+        "evidence": [
+          {"provider":"repository_cross_place_review","sourceUrl":"https://github.com/nekooweb/eat/blob/agent-data-library-2026-09-14/data/source_enrichment_outer10.js","sourceTitle":"source_enrichment_outer10.js","checkedAt":"2026-09-14","evidenceType":"duplicate_identity_conflict","note":"Repository already binds Jazz Bar Gugan and its Suntory BAR-NAVI source to a different Place ID, ChIJFSK1jQSMGGAR65B_QUQSRBk."}
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": ["repository search for Jazz Bar Gugan and both Place IDs", "Suntory BAR-NAVI exact-shop source belongs to the other reviewed Place ID and was not reused"],
+      "blocker": "Same restaurant name is already reviewed under another Place ID; assigned Place ID cannot be safely bound without identity resolution.",
+      "notes": "No source transfer across Place IDs."
+    },
+    {
+      "googlePlaceId": "ChIJcfQrT1CNGGARuwXBsoV2hjg",
+      "restaurantName": "LUZZ",
+      "status": "no_evidence",
+      "identity": {"state":"verified","sourceAliases":["LUZZ"],"evidence":[]},
+      "dishProposals": [],
+      "attemptedSources": ["web search: LUZZ 外神田 メニュー", "current exact-location directory results checked", "no stable branch menu or first-party dish page located"],
+      "blocker": null,
+      "notes": "No acceptable dish source found."
+    },
+    {
+      "googlePlaceId": "ChIJga6a_wOMGGARoK1IGfxP_oU",
+      "restaurantName": "cozy",
+      "status": "candidate",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": ["cozy","Cozy","コージー"],
+        "evidence": [
+          {"provider":"Kanda Curry Grand Prix","sourceUrl":"https://kanda-curry.com/cozy/","sourceTitle":"Cozy | 神田カレーグランプリ","checkedAt":"2026-09-14","evidenceType":"exact_independent_profile","note":"Exact 内神田2-12-3 address and 03-5256-4566 phone match current listings."}
+        ]
+      },
+      "dishProposals": [
+        {"targetField":"featuredDishes","classification":"C","nameOriginal":"キーマカレー","nameZhCandidate":null,"evidenceClass":"stale_exact_independent_menu_lead","recommendationSemantics":null,"provider":"Kanda Curry Grand Prix","sourceUrl":"https://kanda-curry.com/cozy/","sourceTitle":"Cozy | 神田カレーグランプリ","checkedAt":"2026-09-14","sourceScope":"branch","evidenceText":"メインメニューおよびその他メニュー　キーマカレー ￥1,400","confidence":"medium","notes":"Exact independent page is still reproducible, but it was published years ago and its hours conflict with current directory hours; keep candidate until current menu availability is confirmed."}
+      ],
+      "attemptedSources": ["https://kanda-curry.com/cozy/", "current Tabelog/Yahoo identity corroboration", "https://www.cozycurry.com/ was discoverable as an official URL but not reproducibly inspectable in this run"],
+      "blocker": null,
+      "notes": "Candidate only because menu recency is not strong enough for accepted F."
+    },
+    {
+      "googlePlaceId": "ChIJH1h7KvCNGGARTZdOMWzr-O4",
+      "restaurantName": "Noodle Meister Genk",
+      "status": "no_evidence",
+      "identity": {"state":"verified","sourceAliases":["Noodle Meister Genk","ヌードル マイスター 源九","noodle meister GENK"],"evidence":[{"provider":"current_directory","sourceUrl":"https://tabelog.com/tokyo/A1309/A130906/13221885/","sourceTitle":"ヌードル マイスター 源九","checkedAt":"2026-09-14","evidenceType":"exact_branch_identity","note":"Exact 九段北1-8-3 and 03-6265-6513 identity; repository already had one non-usable source URL."}]},
+      "dishProposals": [],
+      "attemptedSources": ["existing sourceUrlCount=1 repository evidence checked first", "https://tabelog.com/tokyo/A1309/A130906/13221885/dtlmenu/ (2018 user-registered menu; rejected)", "official social links were not bypassed/scraped"],
+      "blocker": null,
+      "notes": "Current identity is clear, but the only text menu found is explicitly user-registered historical content."
+    },
+    {
+      "googlePlaceId": "ChIJk3VKWpyLGGARTbYDoNy9JCI",
+      "restaurantName": "Luida'S Bar",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": ["Luida'S Bar","LUIDA'S BAR","ルイーダの酒場"],
+        "evidence": [
+          {"provider":"repository_bound_contact","sourceUrl":"https://github.com/nekooweb/eat/blob/agent-data-library-2026-09-14/data/reviewed_native_contact_runtime_overlay.json","sourceTitle":"reviewed_native_contact_runtime_overlay.json","checkedAt":"2026-09-14","evidenceType":"exact_phone_binding","note":"Repository binds this Place ID to 0120-610-372."},
+          {"provider":"official_web","sourceUrl":"https://paselabo.pasela.co.jp/luidas_bar/menu/","sourceTitle":"LUIDA'S BAR - ルイーダの酒場のフード・ドリンクメニュー","checkedAt":"2026-09-14","evidenceType":"official_current_menu","note":"Official collaboration cafe page explicitly scopes the menu to TOKYO AKIHABARA; current directory gives 外神田1-1-10 and the same 0120-610-372 phone."}
+        ]
+      },
+      "dishProposals": [
+        {"targetField":"featuredDishes","classification":"F","nameOriginal":"メダル王のちいさなメダルPIZZA～5枚入り～","nameZhCandidate":null,"evidenceClass":"official_current_menu_item","recommendationSemantics":null,"provider":"official_web","sourceUrl":"https://paselabo.pasela.co.jp/luidas_bar/menu/","sourceTitle":"LUIDA'S BAR - ルイーダの酒場のフード・ドリンクメニュー","checkedAt":"2026-09-14","sourceScope":"branch","evidenceText":"メダル王のちいさなメダルPIZZA～5枚入り～ 1320G","confidence":"high","notes":"Current first-party menu proves a concrete item; no recommendation semantics on the official page, so F only."}
+      ],
+      "attemptedSources": ["repository phone evidence checked first", "https://paselabo.pasela.co.jp/luidas_bar/menu/"],
+      "blocker": null,
+      "notes": "New first-party menu source established."
+    },
+    {
+      "googlePlaceId": "ChIJmaZb4TiMGGARvtBDfXWNibY",
+      "restaurantName": "味の店後楽",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": ["味の店後楽","味の店 後楽"],
+        "evidence": [
+          {"provider":"repository_bound_contact","sourceUrl":"https://github.com/nekooweb/eat/blob/agent-data-library-2026-09-14/data/reviewed_native_contact_runtime_overlay.json","sourceTitle":"reviewed_native_contact_runtime_overlay.json","checkedAt":"2026-09-14","evidenceType":"exact_phone_binding","note":"Repository binds this Place ID to 03-3812-6733."},
+          {"provider":"official_web","sourceUrl":"https://www.kouraku.tokyo/","sourceTitle":"お弁当・味の店の「後楽」｜配達可｜東京都文京区","checkedAt":"2026-09-14","evidenceType":"official_business_and_menu_page","note":"Official 味の店 後楽 page gives the same 03-3812-6733 phone and current 本郷 address."}
+        ]
+      },
+      "dishProposals": [
+        {"targetField":"recommendedDishes","classification":"R","nameOriginal":"特製幕の内弁当 さくら","nameZhCandidate":null,"evidenceClass":"official_popularity_ranking","recommendationSemantics":"売れ筋ランキング","provider":"official_web","sourceUrl":"https://www.kouraku.tokyo/","sourceTitle":"お弁当・味の店の「後楽」｜配達可｜東京都文京区","checkedAt":"2026-09-14","sourceScope":"branch","evidenceText":"売れ筋ランキング　特製幕の内弁当 さくら","confidence":"high","notes":"Concrete product appears directly under the first-party 売れ筋 ranking heading."}
+      ],
+      "attemptedSources": ["repository phone evidence checked first", "https://www.kouraku.tokyo/", "https://kouraku.tokyo/ec/user_data/list"],
+      "blocker": null,
+      "notes": "New first-party dish source established."
+    },
+    {
+      "googlePlaceId": "ChIJMwAohAWMGGARICCHbOUVhK4",
+      "restaurantName": "Chat",
+      "status": "no_evidence",
+      "identity": {"state":"verified","sourceAliases":["Chat","CHAT"],"evidence":[{"provider":"repository_bound_contact","sourceUrl":"https://github.com/nekooweb/eat/blob/agent-data-library-2026-09-14/data/reviewed_native_contact_runtime_overlay.json","sourceTitle":"reviewed_native_contact_runtime_overlay.json","checkedAt":"2026-09-14","evidenceType":"exact_phone_binding","note":"Repository binds this Place ID to 03-3295-2716."}]},
+      "dishProposals": [],
+      "attemptedSources": ["current Yahoo menu/search results rejected because original menu provenance is mixed/unclear", "Tabelog review-derived menu terms rejected", "Rakuten Gurunavi identity page exposed only generic food categories, not source-native concrete labels"],
+      "blocker": null,
+      "notes": "Identity is established, but no permitted concrete menu source with clear original provenance was found."
+    },
+    {
+      "googlePlaceId": "ChIJq4knKmuMGGARVX_PtDsZOgY",
+      "restaurantName": "風土木",
+      "status": "no_evidence",
+      "identity": {"state":"verified","sourceAliases":["風土木","フウドキ"],"evidence":[{"provider":"current_directory","sourceUrl":"https://tabelog.com/tokyo/A1309/A130906/13175830/","sourceTitle":"風土木 - 九段下/居酒屋","checkedAt":"2026-09-14","evidenceType":"exact_branch_identity","note":"Exact assigned restaurant is 九段北1-2-11, phone 03-3239-8688."}]},
+      "dishProposals": [],
+      "attemptedSources": ["https://www.hotpepper.jp/strJ000115496/ (exact 九段北 identity but no concrete source menu)", "https://tabelog.com/tokyo/A1309/A130906/13175830/", "web results for a different 大門 PHO/CURRY 風土木 were explicitly excluded"],
+      "blocker": null,
+      "notes": "Same-name restaurant noise was excluded; no acceptable exact-branch dish source found."
+    },
+    {
+      "googlePlaceId": "ChIJqycj9QSMGGARNdrnxfyg4L8",
+      "restaurantName": "蕎麦処米むら",
+      "status": "no_evidence",
+      "identity": {"state":"verified","sourceAliases":["蕎麦処 米むら","米むら"],"evidence":[{"provider":"Rakuten Gurunavi","sourceUrl":"https://r.gnavi.co.jp/70hwfhfn0000/","sourceTitle":"蕎麦処 米むら - 楽天ぐるなび","checkedAt":"2026-09-14","evidenceType":"exact_branch_identity","note":"Exact 神田司町2-19 米むらビル1F and 03-3294-5726."}]},
+      "dishProposals": [],
+      "attemptedSources": ["https://r.gnavi.co.jp/70hwfhfn0000/ (identity only; no dish menu)", "https://tabelog.com/tokyo/A1310/A131002/13041098/dtlmenu/ (historical/user-editable menu; rejected)", "web search: 蕎麦処 米むら メニュー 神田司町"],
+      "blocker": null,
+      "notes": "Exact identity found but no permitted current source-native dish list."
+    },
+    {
+      "googlePlaceId": "ChIJRcwhrgaMGGARSl5RKcMjxc4",
+      "restaurantName": "十八番",
+      "status": "candidate",
+      "identity": {"state":"verified","sourceAliases":["十八番","中国料理 十八番"],"evidence":[{"provider":"repository_bound_contact","sourceUrl":"https://github.com/nekooweb/eat/blob/agent-data-library-2026-09-14/data/reviewed_native_contact_runtime_overlay.json","sourceTitle":"reviewed_native_contact_runtime_overlay.json","checkedAt":"2026-09-14","evidenceType":"exact_phone_binding","note":"Repository binds this Place ID to 03-3258-1566; current exact directory matches 内神田2-6-6."}]},
+      "dishProposals": [
+        {"targetField":"featuredDishes","classification":"C","nameOriginal":"焼き餃子５個","nameZhCandidate":null,"evidenceClass":"stale_user_editable_menu_lead","recommendationSemantics":null,"provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131002/13025285/dtlmenu/","sourceTitle":"料理メニュー : 中国料理 十八番","checkedAt":"2026-09-14","sourceScope":"branch","evidenceText":"焼き餃子５個 450円","confidence":"low","notes":"Menu was registered about 15 years ago and is user-editable; retained only as candidate lead, never F/R."}
+      ],
+      "attemptedSources": ["repository phone evidence checked first", "https://tabelog.com/tokyo/A1310/A131002/13025285/dtlmenu/", "web search: 中国料理 十八番 内神田 メニュー"],
+      "blocker": null,
+      "notes": "Candidate only; stale user-editable menu cannot serve as menu truth."
+    },
+    {
+      "googlePlaceId": "ChIJScOXJAOMGGAR2r0gscpu1ms",
+      "restaurantName": "丼豚まる須揚串",
+      "status": "blocked",
+      "identity": {"state":"unverified","sourceAliases":["丼豚まる須揚串"],"evidence":[]},
+      "dishProposals": [],
+      "attemptedSources": ["web search: 丼豚まる須揚串", "web search: 丼豚 まる 須揚串 神田", "repository search for exact Place ID/name"],
+      "blocker": "No independently verifiable current entity/source could be found to establish exact restaurant identity.",
+      "notes": "No name/cuisine inference used."
+    },
+    {
+      "googlePlaceId": "ChIJswfCsA-MGGARIz1Zn1TprVs",
+      "restaurantName": "Tully's Coffee",
+      "status": "blocked",
+      "identity": {"state":"partial","sourceAliases":["Tully's Coffee","タリーズコーヒー"],"evidence":[{"provider":"repository_candidate","sourceUrl":"http://www.tullys.co.jp/","sourceTitle":"TULLY'S COFFEE generic brand site","checkedAt":"2026-09-14","evidenceType":"known_unreviewed_candidate","note":"Repository already stores this exact Place-ID URL only as an Overture candidate and explicitly requires identity review before dish evidence."}]},
+      "dishProposals": [],
+      "attemptedSources": ["repository independent_dish_source_candidates.json checked first", "http://www.tullys.co.jp/", "official store/brand searches; multiple nearby branches prevent safe branch binding from the generic catalog name"],
+      "blocker": "Exact branch is not established; generic brand menu cannot be applied to a Place ID with no safe branch binding.",
+      "notes": "Known generic candidate not duplicated or promoted."
+    },
+    {
+      "googlePlaceId": "ChIJSxh6ABGMGGARbX9DDbeZ-ek",
+      "restaurantName": "Re Mare",
+      "status": "candidate",
+      "identity": {"state":"verified","sourceAliases":["Re Mare","リマーレ 神保町","Chef's table RE:MARE"],"evidence":[{"provider":"Hot Pepper","sourceUrl":"https://www.hotpepper.jp/strJ000659054/","sourceTitle":"リマーレ 神保町 Chef's table RE:MARE","checkedAt":"2026-09-14","evidenceType":"exact_branch_structured_page","note":"Exact branch source remains accessible, but its recommendation content is old."}]},
+      "dishProposals": [
+        {"targetField":"recommendedDishes","classification":"C","nameOriginal":"ミートソースを包んだ揚げニョッキ","nameZhCandidate":null,"evidenceClass":"stale_structured_recommendation_lead","recommendationSemantics":"店長のおすすめ料理","provider":"Hot Pepper","sourceUrl":"https://www.hotpepper.jp/strJ000659054/","sourceTitle":"リマーレ 神保町 Chef's table RE:MARE","checkedAt":"2026-09-14","sourceScope":"branch","evidenceText":"店長のおすすめ料理／ミートソースを包んだ揚げニョッキ","confidence":"low","notes":"Recommendation is explicit but the top page dates to 2020 and the food page to 2013; current menu availability is insufficiently established."}
+      ],
+      "attemptedSources": ["https://www.hotpepper.jp/strJ000659054/", "https://www.hotpepper.jp/strJ000659054/food/", "current branch identity checks"],
+      "blocker": null,
+      "notes": "Candidate only due source/menu age."
+    },
+    {
+      "googlePlaceId": "ChIJU1aqIGuMGGAR5GbC3D0OIPk",
+      "restaurantName": "Hinoya Curry",
+      "status": "blocked",
+      "identity": {"state":"partial","sourceAliases":["Hinoya Curry","日乃屋カレー"],"evidence":[]},
+      "dishProposals": [],
+      "attemptedSources": ["existing sourceUrlCount=1 repository evidence checked first", "official 日乃屋 store list/menu family searched", "multiple Chiyoda branches and generic catalog name prevented exact branch applicability"],
+      "blocker": "Exact branch cannot be established safely from the generic catalog label and existing source; chain menu was not applied.",
+      "notes": "No brand-level inference."
+    },
+    {
+      "googlePlaceId": "ChIJxwDTjDqNGGARCHrt1zB-76w",
+      "restaurantName": "くいものやじゃぽん分店パレサイドビル",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": ["くいものやじゃぽん分店パレサイドビル","くいものや じゃぽん 分店 パレスサイドビル","くいものや じゃぽん 分店"],
+        "evidence": [
+          {"provider":"repository_bound_contact","sourceUrl":"https://github.com/nekooweb/eat/blob/agent-data-library-2026-09-14/data/reviewed_native_contact_runtime_overlay.json","sourceTitle":"reviewed_native_contact_runtime_overlay.json","checkedAt":"2026-09-14","evidenceType":"exact_phone_binding","note":"Repository binds this Place ID to 03-6812-2130."},
+          {"provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1302/A130201/13290329/","sourceTitle":"くいものや じゃぽん 分店 - 竹橋/居酒屋","checkedAt":"2026-09-14","evidenceType":"exact_branch_identity","note":"Exact 一ツ橋1-1-1 パレスサイドビルB1F branch and 03-6812-2130; page explicitly notes another same-name shop in the building has a different menu."},
+          {"provider":"Rakuten Gurunavi","sourceUrl":"https://r.gnavi.co.jp/2pgfdehr0000/kodawari/?sc_lid=r-smp_top_kodawari_list","sourceTitle":"くいものや じゃぽん 分店 パレスサイドビル こだわり情報","checkedAt":"2026-09-14","evidenceType":"merchant_hosted_exact_branch_page","note":"Exact branch title; describes its 名物チーズナン."}
+        ]
+      },
+      "dishProposals": [
+        {"targetField":"recommendedDishes","classification":"R","nameOriginal":"名物チーズナン","nameZhCandidate":null,"evidenceClass":"independent_exact_branch_popularity","recommendationSemantics":"一番人気・名物","provider":"Let's Enjoy Tokyo","sourceUrl":"https://www.enjoytokyo.jp/spot/g_gjvh700/","sourceTitle":"くいものや じゃぽん 分店 パレスサイドビル","checkedAt":"2026-09-14","sourceScope":"branch","evidenceText":"一番人気は、女性にも大好評のとろ〜り濃厚な「名物チーズナン」。","confidence":"high","notes":"Exact branch is independently locked by catalog name plus repository-bound 03-6812-2130 and matching branch pages; the other same-name B1 store was explicitly excluded."}
+      ],
+      "attemptedSources": ["repository phone evidence checked first", "https://r.gnavi.co.jp/2pgfdehr0000/kodawari/?sc_lid=r-smp_top_kodawari_list", "https://www.enjoytokyo.jp/spot/g_gjvh700/", "same-building 03-5219-3055 じゃぽん本店/分店 listing excluded"],
+      "blocker": null,
+      "notes": "New acceptable exact-branch recommendation source established despite same-building name collision."
+    },
+    {
+      "googlePlaceId": "ChIJy1bEyDyMGGAR1YV7AF0Owvw",
+      "restaurantName": "FIRE HOUSE",
+      "status": "blocked",
+      "identity": {"state":"conflict","sourceAliases":["FIRE HOUSE","FIRE HOUSE 本郷"],"evidence":[]},
+      "dishProposals": [],
+      "attemptedSources": ["web search: FIRE HOUSE 本郷 公式 メニュー", "current Hongo FIRE HOUSE identity/source checks", "repository/current-place comparison showed the current Hongo business is associated with a different Place ID"],
+      "blocker": "The assigned Place ID could not be safely shown to be the current Hongo FIRE HOUSE entity; current exact restaurant evidence points to a different Place ID.",
+      "notes": "No same-name source transfer across Place IDs."
+    }
+  ],
+  "policyAttestation": {
+    "paidGoogleDataApiCalls": 0,
+    "canonicalMasterEditedDirectly": false,
+    "proximityOnlyIdentityBindingUsed": false,
+    "recommendationWithoutExplicitSemanticsAdded": false,
+    "accessRestrictionBypassUsed": false
+  }
+}
