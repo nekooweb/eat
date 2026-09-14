@@ -1,0 +1,60 @@
+name: E2E DISH S3 finalize
+
+on:
+  push:
+    branches: [agent-e2e-dish-s3-20260914]
+    paths:
+      - '.e2e-dish-s3-finalize'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: e2e-dish-s3-finalize-20260914
+  cancel-in-progress: false
+
+jobs:
+  finalize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run full S3 lifecycle and deterministic validation
+        run: bash scripts/run_e2e_dish_s3_integration.sh
+      - name: Commit verified S3 lifecycle output
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A data scripts/build_reviewed_agent_dish_evidence.mjs scripts/test_reviewed_agent_dish_evidence.mjs
+          if git diff --cached --quiet; then echo 'No S3 lifecycle changes'; exit 0; fi
+          git commit -m 'Complete reviewed S3 dish lifecycle'
+          git push origin HEAD:agent-e2e-dish-s3-20260914
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: e2e-dish-s3-final-audit
+          path: |
+            /tmp/e2e-s3-assignment.json
+            /tmp/e2e-s3-before-stats.json
+            /tmp/e2e-s3-result.json
+            /tmp/e2e-s3-adapter.log
+            /tmp/e2e-s3-merge.log
+            /tmp/e2e-s3-specificity.log
+            /tmp/e2e-s3-integration.log
+            /tmp/e2e-s3-replay.log
+            /tmp/e2e-s3-stable-hashes.txt
+            _audit/e2e-s3-reviewed-evidence.json
+            _audit/e2e-s3-translation-pending.json
+            _audit/e2e-s3-review-audit.json
+            _audit/e2e-s3-integration-audit.json
+          if-no-files-found: ignore
+          retention-days: 7
