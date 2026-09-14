@@ -132,7 +132,7 @@ export function buildReviewedEvidence({ documents, assignments, catalogNames, tr
   const rows = [];
   const pending = [];
   let acceptedRItems = 0, acceptedFItems = 0;
-  const restaurantsR = new Set(), restaurantsF = new Set();
+  const restaurantsR = new Set(), restaurantsF = new Set(), distinctR = new Set(), distinctF = new Set();
   for (const { path: proposalPath, document: doc } of documents) for (const record of doc.records) {
     if (catalogNames.get(record.googlePlaceId) !== record.restaurantName) throw new Error('Current catalog identity name mismatch');
     if (record.status !== 'accepted_evidence') continue;
@@ -172,8 +172,9 @@ export function buildReviewedEvidence({ documents, assignments, catalogNames, tr
       const nativeKey = JSON.stringify([dish.classification, native, provider, dish.sourceUrl]);
       if (seen.has(nativeKey)) continue;
       seen.add(nativeKey);
-      if (dish.classification === 'R') { acceptedRItems++; restaurantsR.add(record.googlePlaceId); }
-      else { acceptedFItems++; restaurantsF.add(record.googlePlaceId); }
+      const logicalDish = JSON.stringify([record.googlePlaceId, normalizePlainText(native).normalize('NFKC')]);
+      if (dish.classification === 'R') { acceptedRItems++; restaurantsR.add(record.googlePlaceId); distinctR.add(logicalDish); }
+      else { acceptedFItems++; restaurantsF.add(record.googlePlaceId); distinctF.add(logicalDish); }
       const provenance = { proposalPath, marker: doc.marker, shard: doc.shard,
         sourceQueueCommit: doc.sourceQueueCommit, identity: record.identity, dishProposal: dish };
       const translated = translateExactDish(native, translations);
@@ -197,6 +198,7 @@ export function buildReviewedEvidence({ documents, assignments, catalogNames, tr
   }
   rows.sort((a, b) => a.googlePlaceId.localeCompare(b.googlePlaceId));
   const summary = { ...coverage, acceptedRItems, acceptedFItems, acceptedRRestaurants: restaurantsR.size,
+    acceptedRDistinctDishes: distinctR.size, acceptedFDistinctDishes: distinctF.size,
     acceptedFOnlyRestaurants: [...restaurantsF].filter(id => !restaurantsR.has(id)).length,
     emittedRItems: rows.reduce((sum, row) => sum + row.recommendedDishes.length, 0),
     emittedFItems: rows.reduce((sum, row) => sum + row.featuredDishes.length, 0), translationPendingItems: pending.length };

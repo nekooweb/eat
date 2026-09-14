@@ -61,3 +61,16 @@ Pending the evidence, coverage, integration and validation gates above. Ending c
 - Re-ran `python3 scripts/database/build_master.py --output _audit/official-retained-baseline/eat-master.sqlite` without reset.
 - Exact before/after counts matched for all 8 checked tables: `catalog_entries=2804`, `source_records=9969`, `source_bindings=9969`, `field_observations=57540`, `field_resolutions=37252`, `retained_exceptions=3`, `ingestion_tasks=2308`, `ingestion_task_details=2308`.
 - Earlier code/docs checkpoints are locally committed as `3920104` and `0066edf`; no completion evidence approval or production push has occurred.
+
+## Draft PR / CI handoff
+
+- Pushed committed review tooling, source-proposal reuse and progress documentation at `83cfc1f14f78f082c8ebff659244f73bb5405469` to the dedicated completion branch.
+- Opened [draft PR #67](https://github.com/nekooweb/eat/pull/67) against `agent-data-library-2026-09-14` to run early CI. This is not a production merge or evidence-completion claim. The PR remains draft while the review manifest is unapproved.
+- Generated runtime/queue baseline files and worker review drafts were not included in this first push.
+- Initial head `83cfc1f` CI passed: [PR Review validate](https://github.com/nekooweb/eat/actions/runs/34837029149/job/103953069323), [Pages preview build](https://github.com/nekooweb/eat/actions/runs/34837029128/job/103953069670), and [policy](https://github.com/nekooweb/eat/actions/runs/34837029222/job/103953069689). Pages deployment was skipped, as expected for this PR. These checks do not approve draft evidence semantics or prove production integration.
+
+## 20:15–20:16 JST — export, backup and counting checks
+
+- Baseline shadow export and `validate_export.py` passed: catalog 2,804; SQLite-eligible recommendation export 1,403. This eligibility denominator is not the public runtime's 1,422.
+- Created a backup of the disposable audit database via SQLite backup, then checked integrity, foreign keys and `validate_master.py`: pass. The user's existing master was not read or replaced.
+- Added a red/green counter regression: two verified source URLs for the same native dish count as two evidence items but only one logical restaurant/dish. The adapter reports both metrics separately.

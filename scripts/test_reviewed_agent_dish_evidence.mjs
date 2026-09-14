@@ -100,4 +100,9 @@ assert.deepEqual(longItem.reviewedSourceEvidence[0].identity, row.identity);
 
 const duplicateDishDoc = changed(d => d.records[0].dishProposals.push(structuredClone(d.records[0].dishProposals[0])));
 assert.equal(buildReviewedEvidence(options(duplicateDishDoc)).evidence.rows[0].recommendedDishes.length, 1);
+const secondSourceDoc = changed(d => d.records[0].dishProposals.push({ ...d.records[0].dishProposals[0],
+  sourceUrl: 'https://example.com/branch/signatures' }));
+const secondSource = buildReviewedEvidence(options(secondSourceDoc));
+assert.equal(secondSource.coverage.acceptedRItems, 2, 'Two sources are two evidence items');
+assert.equal(secondSource.coverage.acceptedRDistinctDishes, 1, 'Multiple sources must not inflate the logical dish count');
 console.log(JSON.stringify({ status: 'pass', checks: 'coverage, fail-closed identity/policy/semantics, R/F/C separation, exact translation, full provenance, deduplication' }));

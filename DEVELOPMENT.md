@@ -6,7 +6,9 @@
 
 工作分支为 `codex/official-retained-completion-20260914`，基于 `agent-data-library-2026-09-14` 的 `5179bad`。本节随已验证的阶段更新；下方 19:24 检查点保留为历史状态。
 
-当前阶段：基线已重建、审查适配器与回归已验证，菜品证据仍在审查。尚未完成全量中央审查，尚未导入新菜品证据或提交最终 PR。
+当前阶段：基线已重建、审查适配器与回归已验证，菜品证据仍在审查。[草稿 PR #67](https://github.com/nekooweb/eat/pull/67) 已开启，用于提前运行 CI；尚未完成全量中央审查或导入新菜品证据，不可标为完成或合并。
+
+草稿首个 head `83cfc1f` 的 PR Review、Pages 预览构建和 policy 检查已通过，部署跳过。具体 run 链接见[本轮日志](logs/2026-09-14-official-retained-completion.md)；CI 通过不替代逐行证据审查。
 
 | 已核实事项 | 当前结果 |
 | --- | --- |
