@@ -1,0 +1,287 @@
+{
+  "schemaVersion": 1,
+  "proposalOnly": true,
+  "marker": "DISH-R-RETAINED",
+  "shard": "S4",
+  "agentRunId": "DISH-R-RETAINED:S4:20260914",
+  "sourceQueue": "data/dish_batch_plan.json",
+  "sourceQueueCommit": "3ba4dc1246a58ad2e052a90e385e5da9c56fbd24",
+  "generatedAt": "2026-09-14",
+  "summary": {
+    "assignedRows": 42,
+    "reviewedRows": 42,
+    "acceptedEvidenceRows": 7,
+    "candidateRows": 0,
+    "noEvidenceRows": 35,
+    "blockedRows": 0,
+    "skippedAlreadyCompleteRows": 0
+  },
+  "records": [
+    {
+      "googlePlaceId": "ChIJIYKmMACNGGARv6barwuJRws",
+      "restaurantName": "霞舫酒家",
+      "status": "no_evidence",
+      "identity": {"state":"verified","sourceAliases":["霞舫酒家"],"evidence":[{"provider":"Hot Pepper","sourceUrl":"https://www.hotpepper.jp/strJ000770854/?vos=nhppalsa000016","checkedAt":"2026-09-06","evidenceType":"retained_provider_placeid_binding","note":"Repository-retained provider record is bound to this exact Place ID."},{"provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131002/13040473/","checkedAt":"2026-09-05","evidenceType":"retained_provider_placeid_binding","note":"Repository-retained provider record is bound to this exact Place ID."}]},
+      "dishProposals": [],
+      "attemptedSources": [{"provider":"Hot Pepper","sourceUrl":"https://www.hotpepper.jp/strJ000770854/?vos=nhppalsa000016","checkedAt":"2026-09-06","result":"Retained source artifacts inspected; metadata is present but no allowed concrete dish evidence or strict recommendation semantics were retained."},{"provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131002/13040473/","checkedAt":"2026-09-05","result":"Retained source artifacts inspected; no dishes/recommendedDishes field is attached to this bound row."}],
+      "blocker": null,
+      "notes": "No review prose was converted into menu evidence."
+    },
+    {
+      "googlePlaceId": "ChIJzQVI5xqMGGARt9mInzgGLIg",
+      "restaurantName": "葡萄酒場 ICHIGOYA",
+      "status": "no_evidence",
+      "identity": {"state":"verified","sourceAliases":["葡萄酒場 ICHIGOYA"],"evidence":[{"provider":"Hot Pepper","sourceUrl":"https://www.hotpepper.jp/strJ000003303/?vos=nhppalsa000016","checkedAt":"2026-09-06","evidenceType":"retained_provider_placeid_binding","note":"Exact Place-ID-bound retained provider record."},{"provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131002/13021503/","checkedAt":"2026-09-05","evidenceType":"retained_provider_placeid_binding","note":"Exact Place-ID-bound retained provider record."}]},
+      "dishProposals": [],
+      "attemptedSources": [{"provider":"Hot Pepper","sourceUrl":"https://www.hotpepper.jp/strJ000003303/?vos=nhppalsa000016","checkedAt":"2026-09-06","result":"Retained metadata/promotional artifacts contain no accepted concrete dish evidence."},{"provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131002/13021503/","checkedAt":"2026-09-05","result":"Bound retained row has no allowed dish field."}],
+      "blocker": null,
+      "notes": "No inference from wine-bar identity."
+    },
+    {
+      "googlePlaceId": "ChIJ18cV4xOMGGARjNGyZdh33Ik",
+      "restaurantName": "神房",
+      "status": "no_evidence",
+      "identity": {"state":"verified","sourceAliases":["神房"],"evidence":[{"provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13218314/","checkedAt":"2026-09-05","evidenceType":"retained_provider_placeid_binding","note":"Exact Place-ID-bound retained row."}]},
+      "dishProposals": [],
+      "attemptedSources": [{"provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13218314/","checkedAt":"2026-09-05","result":"Retained row contains no accepted dish field or strict recommendation claim."}],
+      "blocker": null,"notes":""
+    },
+    {
+      "googlePlaceId": "ChIJ5xWMolyNGGARAMCqKahm6eE","restaurantName":"キング軒 神保町店","status":"no_evidence",
+      "identity":{"state":"verified","sourceAliases":["キング軒 神保町店"],"evidence":[{"provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13197662/","checkedAt":"2026-09-05","evidenceType":"retained_provider_placeid_binding","note":"Exact Place-ID-bound retained row."}]},
+      "dishProposals":[],"attemptedSources":[{"provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13197662/","checkedAt":"2026-09-05","result":"Retained row contains no allowed concrete dish evidence."}],"blocker":null,"notes":""
+    },
+    {
+      "googlePlaceId":"ChIJ6edLOD6MGGARse6qSI5hyn8","restaurantName":"I-kousya","status":"no_evidence",
+      "identity":{"state":"verified","sourceAliases":["I-kousya"],"evidence":[{"provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13311990/","checkedAt":"2026-09-05","evidenceType":"retained_provider_placeid_binding","note":"Exact Place-ID-bound retained row."}]},
+      "dishProposals":[],"attemptedSources":[{"provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13311990/","checkedAt":"2026-09-05","result":"Name/source binding retained; no allowed dish evidence."}],"blocker":null,"notes":""
+    },
+    {
+      "googlePlaceId":"ChIJ76bDAV6NGGARo8pwOA_Yqq8","restaurantName":"源泉煮干しらーめん 初代にぼ助","status":"no_evidence",
+      "identity":{"state":"verified","sourceAliases":["源泉煮干しらーめん 初代にぼ助"],"evidence":[{"provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13229354/","checkedAt":"2026-09-05","evidenceType":"retained_provider_placeid_binding","note":"Exact Place-ID-bound retained row."}]},
+      "dishProposals":[],"attemptedSources":[{"provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13229354/","checkedAt":"2026-09-05","result":"No allowed retained dish field; restaurant name was not treated as a dish."}],"blocker":null,"notes":""
+    },
+    {
+      "googlePlaceId":"ChIJ88kY7BOMGGARlcxHyHJELCM","restaurantName":"げんぱち","status":"no_evidence",
+      "identity":{"state":"verified","sourceAliases":["げんぱち"],"evidence":[{"provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13011365/","checkedAt":"2026-09-05","evidenceType":"retained_provider_placeid_binding","note":"Exact Place-ID-bound retained row."}]},
+      "dishProposals":[],"attemptedSources":[{"provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13011365/","checkedAt":"2026-09-05","result":"Retained metadata checked; no accepted dish evidence."}],"blocker":null,"notes":""
+    },
+    {
+      "googlePlaceId":"ChIJA-B1wBCMGGARiJOAkIDd08I","restaurantName":"スタイルズケイクス＆カンパニー","status":"no_evidence",
+      "identity":{"state":"verified","sourceAliases":["スタイルズケイクス＆カンパニー"],"evidence":[{"provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13125138/","checkedAt":"2026-09-05","evidenceType":"retained_provider_placeid_binding","note":"Exact Place-ID-bound retained row."}]},
+      "dishProposals":[],"attemptedSources":[{"provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13125138/","checkedAt":"2026-09-05","result":"No retained allowed concrete dish field; shop category/name not used as dish evidence."}],"blocker":null,"notes":""
+    },
+    {
+      "googlePlaceId":"ChIJB5R3HBCMGGAReQWzC9wHBQU","restaurantName":"神田餃子屋 本店","status":"no_evidence",
+      "identity":{"state":"verified","sourceAliases":["神田餃子屋 本店"],"evidence":[{"provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13025041/","checkedAt":"2026-09-05","evidenceType":"retained_provider_placeid_binding","note":"Exact Place-ID-bound retained row."}]},
+      "dishProposals":[],"attemptedSources":[{"provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13025041/","checkedAt":"2026-09-05","result":"No retained dishes/recommendedDishes field; 餃子 was not inferred from the restaurant name."}],"blocker":null,"notes":""
+    },
+    {
+      "googlePlaceId":"ChIJBWEEgTyNGGARxwL8sd7Nz-k","restaurantName":"鯖匠","status":"no_evidence",
+      "identity":{"state":"verified","sourceAliases":["鯖匠"],"evidence":[{"provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13265562/","checkedAt":"2026-09-05","evidenceType":"retained_provider_placeid_binding","note":"Exact Place-ID-bound retained row."}]},
+      "dishProposals":[],"attemptedSources":[{"provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13265562/","checkedAt":"2026-09-05","result":"No accepted retained dish evidence; no inference from shop name."}],"blocker":null,"notes":""
+    },
+    {
+      "googlePlaceId":"ChIJc5NU7RCMGGARaUBiEd5FcIY","restaurantName":"ザ・ハンバーグ","status":"no_evidence",
+      "identity":{"state":"verified","sourceAliases":["ザ・ハンバーグ"],"evidence":[{"provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13011645/","checkedAt":"2026-09-05","evidenceType":"retained_provider_placeid_binding","note":"Exact Place-ID-bound retained row."}]},
+      "dishProposals":[],"attemptedSources":[{"provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13011645/","checkedAt":"2026-09-05","result":"No accepted retained dish field; ハンバーグ was not inferred from shop name."}],"blocker":null,"notes":""
+    },
+    {
+      "googlePlaceId":"ChIJCWbHOxuMGGAR2kploamZOV0","restaurantName":"Bar Cocopelli","status":"no_evidence",
+      "identity":{"state":"verified","sourceAliases":["Bar Cocopelli"],"evidence":[{"provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13166642/","checkedAt":"2026-09-05","evidenceType":"retained_provider_placeid_binding","note":"Exact Place-ID-bound retained row."}]},
+      "dishProposals":[],"attemptedSources":[{"provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13166642/","checkedAt":"2026-09-05","result":"Retained metadata inspected; no concrete food/menu evidence."}],"blocker":null,"notes":""
+    },
+    {
+      "googlePlaceId":"ChIJEfklHACNGGAR0_iz81VJlnM","restaurantName":"JAZZ COFFEE INCUS","status":"no_evidence",
+      "identity":{"state":"verified","sourceAliases":["JAZZ COFFEE INCUS"],"evidence":[{"provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13307662/","checkedAt":"2026-09-05","evidenceType":"retained_provider_placeid_binding","note":"Exact Place-ID-bound retained row."}]},
+      "dishProposals":[],"attemptedSources":[{"provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13307662/","checkedAt":"2026-09-05","result":"No accepted retained dish evidence; coffee/category was not inferred as a menu item."}],"blocker":null,"notes":""
+    },
+    {
+      "googlePlaceId":"ChIJf4aggBSMGGARnRzv8ieddRo","restaurantName":"アルフィーネ","status":"no_evidence",
+      "identity":{"state":"verified","sourceAliases":["アルフィーネ"],"evidence":[{"provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13060500/","checkedAt":"2026-09-05","evidenceType":"retained_provider_placeid_binding","note":"Exact Place-ID-bound retained row."}]},
+      "dishProposals":[],"attemptedSources":[{"provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13060500/","checkedAt":"2026-09-05","result":"Retained row has no allowed dish evidence."}],"blocker":null,"notes":""
+    },
+    {
+      "googlePlaceId":"ChIJFSH6vS6NGGARdSH0OM-Nt_Y","restaurantName":"アンテップ　ケバブ","status":"no_evidence",
+      "identity":{"state":"verified","sourceAliases":["アンテップ　ケバブ"],"evidence":[{"provider":"Hot Pepper","sourceUrl":"https://www.hotpepper.jp/strJ001284520/?vos=nhppalsa000016","checkedAt":"2026-09-06","evidenceType":"retained_provider_placeid_binding","note":"Exact Place-ID-bound retained Hot Pepper record."}]},
+      "dishProposals":[],"attemptedSources":[{"provider":"Hot Pepper","sourceUrl":"https://www.hotpepper.jp/strJ001284520/?vos=nhppalsa000016","checkedAt":"2026-09-06","result":"Retained catalog/promotional artifacts contain no accepted concrete dish evidence; ケバブ was not inferred from shop name."}],"blocker":null,"notes":""
+    },
+    {
+      "googlePlaceId":"ChIJhwFmahGMGGARrvegvD-kfvk","restaurantName":"Jazz Big Boy","status":"no_evidence",
+      "identity":{"state":"verified","sourceAliases":["Jazz Big Boy"],"evidence":[{"provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13058508/","checkedAt":"2026-09-05","evidenceType":"retained_provider_placeid_binding","note":"Exact Place-ID-bound retained row."}]},
+      "dishProposals":[],"attemptedSources":[{"provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13058508/","checkedAt":"2026-09-05","result":"No allowed retained dish field."}],"blocker":null,"notes":""
+    },
+    {
+      "googlePlaceId":"ChIJhY1xIUCMGGAR2O8YuA9YrEE","restaurantName":"まさみ","status":"no_evidence",
+      "identity":{"state":"verified","sourceAliases":["まさみ"],"evidence":[{"provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1309/A130906/13106014/","checkedAt":"2026-09-05","evidenceType":"retained_provider_placeid_binding","note":"Repository retains this source against the exact Place ID."}]},
+      "dishProposals":[],"attemptedSources":[{"provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1309/A130906/13106014/","checkedAt":"2026-09-05","result":"Retained binding inspected; no accepted dish field. No additional identity assumption was made."}],"blocker":null,"notes":""
+    },
+    {
+      "googlePlaceId":"ChIJib0TiByMGGARoxZpQdO40dM","restaurantName":"エル・チャテオ・デル・プエンテ","status":"no_evidence",
+      "identity":{"state":"verified","sourceAliases":["エル・チャテオ・デル・プエンテ"],"evidence":[{"provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13040507/","checkedAt":"2026-09-05","evidenceType":"retained_provider_placeid_binding","note":"Exact Place-ID-bound retained row."}]},
+      "dishProposals":[],"attemptedSources":[{"provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13040507/","checkedAt":"2026-09-05","result":"Retained metadata has no accepted concrete dish evidence."}],"blocker":null,"notes":""
+    },
+    {
+      "googlePlaceId":"ChIJj9ssjxOMGGAROjlItEqEn-o","restaurantName":"大丸やき茶房","status":"no_evidence",
+      "identity":{"state":"verified","sourceAliases":["大丸やき茶房"],"evidence":[{"provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13006439/","checkedAt":"2026-09-05","evidenceType":"retained_provider_placeid_binding","note":"Exact Place-ID-bound retained row."}]},
+      "dishProposals":[],"attemptedSources":[{"provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13006439/","checkedAt":"2026-09-05","result":"No accepted retained dish evidence; shop name not treated as dish evidence."}],"blocker":null,"notes":""
+    },
+    {
+      "googlePlaceId":"ChIJJalWqUSNGGARs8tMWoE5tM4","restaurantName":"Royal Korean Dining & Bar","status":"no_evidence",
+      "identity":{"state":"verified","sourceAliases":["Royal Korean Dining & Bar"],"evidence":[{"provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13221993/","checkedAt":"2026-09-05","evidenceType":"retained_provider_placeid_binding","note":"Exact Place-ID-bound retained row."}]},
+      "dishProposals":[],"attemptedSources":[{"provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13221993/","checkedAt":"2026-09-05","result":"No retained allowed dish field; cuisine/name not used to infer dishes."}],"blocker":null,"notes":""
+    },
+    {
+      "googlePlaceId":"ChIJLcg58ZGNGGARYZN4OyS9Zc0","restaurantName":"ラーメン 盛太郎 神保町店","status":"no_evidence",
+      "identity":{"state":"verified","sourceAliases":["ラーメン 盛太郎 神保町店"],"evidence":[{"provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13235542/","checkedAt":"2026-09-05","evidenceType":"retained_provider_placeid_binding","note":"Exact Place-ID-bound retained row."}]},
+      "dishProposals":[],"attemptedSources":[{"provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13235542/","checkedAt":"2026-09-05","result":"No allowed retained dish field; ラーメン was not inferred from the restaurant name."}],"blocker":null,"notes":""
+    },
+    {
+      "googlePlaceId":"ChIJPcGWk7KNGGARIfPAha9epnw","restaurantName":"きのね堂","status":"no_evidence",
+      "identity":{"state":"verified","sourceAliases":["きのね堂"],"evidence":[{"provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13269308/","checkedAt":"2026-09-05","evidenceType":"retained_provider_placeid_binding","note":"Exact Place-ID-bound retained row."}]},
+      "dishProposals":[],"attemptedSources":[{"provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13269308/","checkedAt":"2026-09-05","result":"Retained source inspected; no allowed concrete dish evidence."}],"blocker":null,"notes":""
+    },
+    {
+      "googlePlaceId":"ChIJpZBYkxCMGGARkgC19Bee3WU","restaurantName":"SPICE KITCHEN3","status":"no_evidence",
+      "identity":{"state":"verified","sourceAliases":["SPICE KITCHEN3"],"evidence":[{"provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13048756/","checkedAt":"2026-09-05","evidenceType":"retained_provider_placeid_binding","note":"Exact Place-ID-bound retained row."}]},
+      "dishProposals":[],"attemptedSources":[{"provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13048756/","checkedAt":"2026-09-05","result":"No allowed retained dish evidence."}],"blocker":null,"notes":""
+    },
+    {
+      "googlePlaceId":"ChIJQ14qKRuMGGARI-zUcxD_aZ4","restaurantName":"インド料理 Gandhi Mahal","status":"no_evidence",
+      "identity":{"state":"verified","sourceAliases":["インド料理 Gandhi Mahal"],"evidence":[{"provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13017262/","checkedAt":"2026-09-05","evidenceType":"retained_provider_placeid_binding","note":"Exact Place-ID-bound retained row."}]},
+      "dishProposals":[],"attemptedSources":[{"provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13017262/","checkedAt":"2026-09-05","result":"No retained concrete dish field; Indian cuisine was not used to infer dishes."}],"blocker":null,"notes":""
+    },
+    {
+      "googlePlaceId":"ChIJt0K6H0KNGGARxz0yiOKOzw0","restaurantName":"春味屋","status":"no_evidence",
+      "identity":{"state":"verified","sourceAliases":["春味屋"],"evidence":[{"provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13262226/","checkedAt":"2026-09-05","evidenceType":"retained_provider_placeid_binding","note":"Exact Place-ID-bound retained row."}]},
+      "dishProposals":[],"attemptedSources":[{"provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13262226/","checkedAt":"2026-09-05","result":"No accepted retained dish field."}],"blocker":null,"notes":""
+    },
+    {
+      "googlePlaceId":"ChIJu8q72Q2NGGARBN4O5hwNfps","restaurantName":"カフェダイニング クレアンテ 御茶ノ水店","status":"no_evidence",
+      "identity":{"state":"verified","sourceAliases":["カフェダイニング クレアンテ 御茶ノ水店"],"evidence":[{"provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13244285/","checkedAt":"2026-09-05","evidenceType":"retained_provider_placeid_binding","note":"Exact Place-ID-bound retained row."}]},
+      "dishProposals":[],"attemptedSources":[{"provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13244285/","checkedAt":"2026-09-05","result":"Retained metadata inspected; no allowed concrete dish evidence."}],"blocker":null,"notes":""
+    },
+    {
+      "googlePlaceId":"ChIJuXVmKxqMGGARCRq6B6mN_BE","restaurantName":"スープストックトーキョー お茶の水店","status":"no_evidence",
+      "identity":{"state":"verified","sourceAliases":["スープストックトーキョー お茶の水店"],"evidence":[{"provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13019243/","checkedAt":"2026-09-05","evidenceType":"retained_provider_placeid_binding","note":"Exact Place-ID-bound retained row."}]},
+      "dishProposals":[],"attemptedSources":[{"provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13019243/","checkedAt":"2026-09-05","result":"No retained allowed dish field; soup was not inferred from brand name."}],"blocker":null,"notes":""
+    },
+    {
+      "googlePlaceId":"ChIJxaRNtlGNGGARSO4KOTp96Y0","restaurantName":"茶房きゃんどる","status":"no_evidence",
+      "identity":{"state":"verified","sourceAliases":["茶房きゃんどる"],"evidence":[{"provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13006529/","checkedAt":"2026-09-05","evidenceType":"retained_provider_placeid_binding","note":"Exact Place-ID-bound retained row."}]},
+      "dishProposals":[],"attemptedSources":[{"provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13006529/","checkedAt":"2026-09-05","result":"No accepted retained dish evidence."}],"blocker":null,"notes":""
+    },
+    {
+      "googlePlaceId":"ChIJYX9ENRSMGGARAfxcN1MYUbA","restaurantName":"炭火ビストロ ゴーバル 神保町店","status":"no_evidence",
+      "identity":{"state":"verified","sourceAliases":["炭火ビストロ ゴーバル 神保町店"],"evidence":[{"provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13204470/","checkedAt":"2026-09-05","evidenceType":"retained_provider_placeid_binding","note":"Exact Place-ID-bound retained row."}]},
+      "dishProposals":[],"attemptedSources":[{"provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13204470/","checkedAt":"2026-09-05","result":"Retained metadata inspected; no allowed concrete dish evidence."}],"blocker":null,"notes":""
+    },
+    {
+      "googlePlaceId":"ChIJ2VjLuz-MGGARGC3YKL-wO0Q","restaurantName":"焼肉ホルモンがく 水道橋本店","status":"accepted_evidence",
+      "identity":{"state":"verified","sourceAliases":["焼肉ホルモンがく 水道橋本店"],"evidence":[{"provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13153349/","checkedAt":"2026-09-05","evidenceType":"retained_provider_placeid_binding","note":"Exact Place-ID-bound retained source row with dishes field."},{"provider":"Hot Pepper","sourceUrl":"https://www.hotpepper.jp/strJ004469033/?vos=nhppalsa000016","checkedAt":"2026-09-06","evidenceType":"retained_provider_placeid_binding","note":"High-confidence exact Place-ID binding retained in repository."}]},
+      "dishProposals":[
+        {"targetField":"featuredDishes","classification":"F","nameOriginal":"上レバー","nameZhCandidate":null,"evidenceClass":"retained_source_menu_item","recommendationSemantics":"","provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13153349/","checkedAt":"2026-09-05","sourceScope":"retained_source","evidenceText":"上レバー","confidence":"high","notes":"Concrete retained menu item; no strict recommendation semantics."},
+        {"targetField":"featuredDishes","classification":"F","nameOriginal":"盛岡冷麺","nameZhCandidate":null,"evidenceClass":"retained_source_menu_item","recommendationSemantics":"","provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13153349/","checkedAt":"2026-09-05","sourceScope":"retained_source","evidenceText":"盛岡冷麺","confidence":"high","notes":"Concrete retained menu item; no strict recommendation semantics."}
+      ],
+      "attemptedSources":[{"provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13153349/","checkedAt":"2026-09-05","result":"Bound retained dishes field supplies two concrete menu items."},{"provider":"Hot Pepper","sourceUrl":"https://www.hotpepper.jp/strJ004469033/?vos=nhppalsa000016","checkedAt":"2026-09-06","result":"Retained genre catch only says 水道橋/焼肉/ホルモン; generic category words were not treated as concrete dishes."}],
+      "blocker":null,"notes":""
+    },
+    {
+      "googlePlaceId":"ChIJa61kq_yNGGARHS6QJxe7Hws","restaurantName":"dining bar スナックゆうこ","status":"no_evidence",
+      "identity":{"state":"verified","sourceAliases":["dining bar スナックゆうこ"],"evidence":[{"provider":"Hot Pepper","sourceUrl":"https://www.hotpepper.jp/strJ003693261/?vos=nhppalsa000016","checkedAt":"2026-09-06","evidenceType":"retained_provider_placeid_binding","note":"High-confidence exact Place-ID binding retained in repository."}]},
+      "dishProposals":[],"attemptedSources":[{"provider":"Hot Pepper","sourceUrl":"https://www.hotpepper.jp/strJ003693261/?vos=nhppalsa000016","checkedAt":"2026-09-06","result":"Retained provider record inspected; no accepted concrete dish evidence."}],"blocker":null,"notes":""
+    },
+    {
+      "googlePlaceId":"ChIJITsXUxaMGGAREtKypQBMSXI","restaurantName":"ライスカレー まんてん","status":"accepted_evidence",
+      "identity":{"state":"verified","sourceAliases":["ライスカレー まんてん"],"evidence":[{"provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13000603/dtlmenu/","checkedAt":"2026-09-05","evidenceType":"retained_provider_placeid_binding","note":"Exact Place-ID-bound Tabelog menu row with dishes field."}]},
+      "dishProposals":[
+        {"targetField":"featuredDishes","classification":"F","nameOriginal":"かつカレー","nameZhCandidate":null,"evidenceClass":"retained_source_menu_item","recommendationSemantics":"","provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13000603/dtlmenu/","checkedAt":"2026-09-05","sourceScope":"retained_source","evidenceText":"かつカレー","confidence":"high","notes":"Concrete retained menu item; no strict recommendation semantics."},
+        {"targetField":"featuredDishes","classification":"F","nameOriginal":"ジャンボカレー","nameZhCandidate":null,"evidenceClass":"retained_source_menu_item","recommendationSemantics":"","provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13000603/dtlmenu/","checkedAt":"2026-09-05","sourceScope":"retained_source","evidenceText":"ジャンボカレー","confidence":"high","notes":"Concrete retained menu item; no strict recommendation semantics."}
+      ],
+      "attemptedSources":[{"provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13000603/dtlmenu/","checkedAt":"2026-09-05","result":"Retained menu channel contains two concrete dishes; no explicit recommendation semantics."}],"blocker":null,"notes":""
+    },
+    {
+      "googlePlaceId":"ChIJK8pI2gOMGGARhZdt3JArwik","restaurantName":"居酒屋 頑虎","status":"no_evidence",
+      "identity":{"state":"verified","sourceAliases":["居酒屋 頑虎"],"evidence":[{"provider":"Hot Pepper","sourceUrl":"https://www.hotpepper.jp/strJ003433243/?vos=nhppalsa000016","checkedAt":"2026-09-06","evidenceType":"retained_provider_placeid_binding","note":"High-confidence exact Place-ID binding retained in repository."}]},
+      "dishProposals":[],"attemptedSources":[{"provider":"Hot Pepper","sourceUrl":"https://www.hotpepper.jp/strJ003433243/?vos=nhppalsa000016","checkedAt":"2026-09-06","result":"Retained provider artifacts inspected; no accepted concrete dish evidence."}],"blocker":null,"notes":""
+    },
+    {
+      "googlePlaceId":"ChIJld72PRCMGGARd2qlymcYP5A","restaurantName":"Cocktail Works","status":"no_evidence",
+      "identity":{"state":"verified","sourceAliases":["Cocktail Works"],"evidence":[{"provider":"Tabelog","sourceUrl":"https://s.tabelog.com/tokyo/A1310/A131003/13200202/","checkedAt":"2026-09-06","evidenceType":"retained_provider_placeid_binding","note":"Repository-retained Tabelog source is bound to this exact Place ID."}]},
+      "dishProposals":[],"attemptedSources":[{"provider":"Tabelog","sourceUrl":"https://s.tabelog.com/tokyo/A1310/A131003/13200202/","checkedAt":"2026-09-06","result":"Retained source inspected; no allowed concrete dish evidence."}],"blocker":null,"notes":""
+    },
+    {
+      "googlePlaceId":"ChIJVclizDeNGGAR7z9GVmPxT0Y","restaurantName":"牡蠣いのうえ 九段下","status":"no_evidence",
+      "identity":{"state":"verified","sourceAliases":["牡蠣いのうえ 九段下"],"evidence":[{"provider":"Hot Pepper","sourceUrl":"https://www.hotpepper.jp/strJ004026227/?vos=nhppalsa000016","checkedAt":"2026-09-06","evidenceType":"retained_provider_placeid_binding","note":"High-confidence exact Place-ID binding retained in repository."}]},
+      "dishProposals":[],"attemptedSources":[{"provider":"Hot Pepper","sourceUrl":"https://www.hotpepper.jp/strJ004026227/?vos=nhppalsa000016","checkedAt":"2026-09-06","result":"No accepted concrete dish evidence in retained provider artifacts; 牡蠣 was not inferred from restaurant name."}],"blocker":null,"notes":""
+    },
+    {
+      "googlePlaceId":"ChIJwa5kKgCNGGARKr3eSps597U","restaurantName":"老舗刀削麺","status":"no_evidence",
+      "identity":{"state":"verified","sourceAliases":["老舗刀削麺"],"evidence":[{"provider":"Hot Pepper","sourceUrl":"https://www.hotpepper.jp/strJ004536196/?vos=nhppalsa000016","checkedAt":"2026-09-06","evidenceType":"retained_provider_placeid_binding","note":"High-confidence exact Place-ID binding retained in repository."}]},
+      "dishProposals":[],"attemptedSources":[{"provider":"Hot Pepper","sourceUrl":"https://www.hotpepper.jp/strJ004536196/?vos=nhppalsa000016","checkedAt":"2026-09-06","result":"No accepted concrete dish evidence retained; 刀削麺 was not inferred from restaurant name."}],"blocker":null,"notes":""
+    },
+    {
+      "googlePlaceId":"ChIJwY32YgGMGGARgAwIEtPAeko","restaurantName":"SF-BAR 神田FLUX　（神田フラックス）","status":"no_evidence",
+      "identity":{"state":"verified","sourceAliases":["SF-BAR 神田FLUX　（神田フラックス）"],"evidence":[{"provider":"Hot Pepper","sourceUrl":"https://www.hotpepper.jp/strJ003884001/?vos=nhppalsa000016","checkedAt":"2026-09-06","evidenceType":"retained_provider_placeid_binding","note":"Exact Place-ID Hot Pepper binding retained in repository."}]},
+      "dishProposals":[],"attemptedSources":[{"provider":"Hot Pepper","sourceUrl":"https://www.hotpepper.jp/strJ003884001/?vos=nhppalsa000016","checkedAt":"2026-09-06","result":"Retained provider artifacts inspected; no accepted concrete dish evidence."}],"blocker":null,"notes":""
+    },
+    {
+      "googlePlaceId":"ChIJhxn3rgiNGGARsGxcKSDDzQg","restaurantName":"欲張りバル CANTINA","status":"accepted_evidence",
+      "identity":{"state":"verified","sourceAliases":["欲張りバル CANTINA"],"evidence":[{"provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13266325/","checkedAt":"2026-09-05","evidenceType":"retained_provider_placeid_binding","note":"Exact Place-ID-bound retained Tabelog row supplies dish evidence."}]},
+      "dishProposals":[
+        {"targetField":"featuredDishes","classification":"F","nameOriginal":"ティラミス","nameZhCandidate":null,"evidenceClass":"retained_source_menu_item","recommendationSemantics":"","provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13266325/","checkedAt":"2026-09-05","sourceScope":"retained_source","evidenceText":"ティラミス","confidence":"high","notes":"Concrete retained menu item; no strict recommendation semantics."},
+        {"targetField":"featuredDishes","classification":"F","nameOriginal":"丸ごとワタリガニのトマトクリーム","nameZhCandidate":null,"evidenceClass":"retained_source_menu_item","recommendationSemantics":"","provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13266325/","checkedAt":"2026-09-05","sourceScope":"retained_source","evidenceText":"丸ごとワタリガニのトマトクリーム","confidence":"high","notes":"Concrete retained menu item; no strict recommendation semantics."}
+      ],
+      "attemptedSources":[{"provider":"Tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13266325/","checkedAt":"2026-09-05","result":"Two retained concrete menu items found; no recommendation semantics."}],"blocker":null,"notes":""
+    },
+    {
+      "googlePlaceId":"ChIJcUWI9h2NGGARkiQ5jdqPero","restaurantName":"焼肉あきら","status":"accepted_evidence",
+      "identity":{"state":"verified","sourceAliases":["焼肉あきら"],"evidence":[{"provider":"Hot Pepper","sourceUrl":"https://www.hotpepper.jp/strJ001261110/food/","checkedAt":"2026-09-09","evidenceType":"retained_provider_placeid_binding","note":"Exact Place-ID-bound Hot Pepper menu evidence retained in inventory evidence."}]},
+      "dishProposals":[
+        {"targetField":"featuredDishes","classification":"F","nameOriginal":"牛すじ冷麺","nameZhCandidate":null,"evidenceClass":"hotpepper_menu_text","recommendationSemantics":"","provider":"Hot Pepper","sourceUrl":"https://www.hotpepper.jp/strJ001261110/food/","checkedAt":"2026-09-09","sourceScope":"retained_source","evidenceText":"牛すじ冷麺 1,250円（税込）","confidence":"high","notes":"Source-native concrete item preserved instead of normalized generic label 冷麺."},
+        {"targetField":"featuredDishes","classification":"F","nameOriginal":"タテバラ炙り寿司（２貫）","nameZhCandidate":null,"evidenceClass":"hotpepper_menu_text","recommendationSemantics":"","provider":"Hot Pepper","sourceUrl":"https://www.hotpepper.jp/strJ001261110/food/","checkedAt":"2026-09-09","sourceScope":"retained_source","evidenceText":"タテバラ炙り寿司（２貫） 1,100円（税込）","confidence":"high","notes":"Source-native concrete item preserved."},
+        {"targetField":"featuredDishes","classification":"F","nameOriginal":"石焼ビビンバ","nameZhCandidate":null,"evidenceClass":"hotpepper_menu_text","recommendationSemantics":"","provider":"Hot Pepper","sourceUrl":"https://www.hotpepper.jp/strJ001261110/food/","checkedAt":"2026-09-09","sourceScope":"retained_source","evidenceText":"石焼ビビンバ 1,100円（税込）","confidence":"high","notes":"Source-native concrete item preserved."}
+      ],
+      "attemptedSources":[{"provider":"Hot Pepper","sourceUrl":"https://www.hotpepper.jp/strJ001261110/food/","checkedAt":"2026-09-09","result":"Price-backed retained menu text supplies three concrete food dishes; none carries strict recommendation semantics."},{"provider":"Hot Pepper","sourceUrl":"https://www.hotpepper.jp/strJ001261110/?vos=nhppalsa000016","checkedAt":"2026-09-06","result":"Generic catalog catch '水道橋 焼肉 肉料理 ランチ 宴会' was not treated as a concrete dish."}],"blocker":null,"notes":""
+    },
+    {
+      "googlePlaceId":"ChIJd76VJWuMGGAR-N8oBqjI0mM","restaurantName":"浅草姉妹 Garden企画","status":"accepted_evidence",
+      "identity":{"state":"verified","sourceAliases":["浅草姉妹 Garden企画"],"evidence":[{"provider":"Hot Pepper","sourceUrl":"https://www.hotpepper.jp/strJ000718125/food/","checkedAt":"2026-09-09","evidenceType":"retained_provider_placeid_binding","note":"Exact Place-ID-bound retained Hot Pepper menu evidence."}]},
+      "dishProposals":[
+        {"targetField":"featuredDishes","classification":"F","nameOriginal":"おばんざい6品盛り","nameZhCandidate":null,"evidenceClass":"hotpepper_menu_text","recommendationSemantics":"","provider":"Hot Pepper","sourceUrl":"https://www.hotpepper.jp/strJ000718125/food/","checkedAt":"2026-09-09","sourceScope":"retained_source","evidenceText":"おばんざい6品盛り 1,650円（税込）","confidence":"high","notes":"Concrete retained menu item."},
+        {"targetField":"featuredDishes","classification":"F","nameOriginal":"エビチリソース","nameZhCandidate":null,"evidenceClass":"hotpepper_menu_text","recommendationSemantics":"","provider":"Hot Pepper","sourceUrl":"https://www.hotpepper.jp/strJ000718125/food/","checkedAt":"2026-09-09","sourceScope":"retained_source","evidenceText":"エビチリソース 800円（税込）","confidence":"high","notes":"Concrete retained menu item."},
+        {"targetField":"featuredDishes","classification":"F","nameOriginal":"粗びきハンバーグ","nameZhCandidate":null,"evidenceClass":"hotpepper_menu_text","recommendationSemantics":"","provider":"Hot Pepper","sourceUrl":"https://www.hotpepper.jp/strJ000718125/food/","checkedAt":"2026-09-09","sourceScope":"retained_source","evidenceText":"粗びきハンバーグ 850円（税込）","confidence":"high","notes":"Concrete retained menu item."},
+        {"targetField":"featuredDishes","classification":"F","nameOriginal":"肉豆腐","nameZhCandidate":null,"evidenceClass":"hotpepper_menu_text","recommendationSemantics":"","provider":"Hot Pepper","sourceUrl":"https://www.hotpepper.jp/strJ000718125/food/","checkedAt":"2026-09-09","sourceScope":"retained_source","evidenceText":"肉豆腐 ハーフ700円 1,200円（税込）","confidence":"high","notes":"Concrete retained menu item."}
+      ],
+      "attemptedSources":[{"provider":"Hot Pepper","sourceUrl":"https://www.hotpepper.jp/strJ000718125/food/","checkedAt":"2026-09-09","result":"Four price-backed concrete menu items found; none has strict recommendation semantics."}],"blocker":null,"notes":""
+    },
+    {
+      "googlePlaceId":"ChIJdx_I5hiMGGARN5YdV3PI46M","restaurantName":"アイキッチン","status":"accepted_evidence",
+      "identity":{"state":"verified","sourceAliases":["アイキッチン"],"evidence":[{"provider":"Hot Pepper","sourceUrl":"https://www.hotpepper.jp/strJ003942921/food/","checkedAt":"2026-09-09","evidenceType":"retained_provider_placeid_binding","note":"Exact Place-ID-bound retained Hot Pepper menu evidence."}]},
+      "dishProposals":[
+        {"targetField":"featuredDishes","classification":"F","nameOriginal":"チキンの唐揚げ","nameZhCandidate":null,"evidenceClass":"hotpepper_menu_text","recommendationSemantics":"","provider":"Hot Pepper","sourceUrl":"https://www.hotpepper.jp/strJ003942921/food/","checkedAt":"2026-09-09","sourceScope":"retained_source","evidenceText":"チキンの唐揚げ カリッとあがったチキンのからあげ 660円（税込）","confidence":"high","notes":"Source-native concrete item retained."},
+        {"targetField":"featuredDishes","classification":"F","nameOriginal":"アジフライ 2P","nameZhCandidate":null,"evidenceClass":"hotpepper_menu_text","recommendationSemantics":"","provider":"Hot Pepper","sourceUrl":"https://www.hotpepper.jp/strJ003942921/food/","checkedAt":"2026-09-09","sourceScope":"retained_source","evidenceText":"アジフライ 2P アジフライになります 495円（税込）","confidence":"high","notes":"Source-native concrete item retained."}
+      ],
+      "attemptedSources":[{"provider":"Hot Pepper","sourceUrl":"https://www.hotpepper.jp/strJ003942921/food/","checkedAt":"2026-09-09","result":"Two concrete price-backed menu items found; no strict recommendation semantics."}],"blocker":null,"notes":""
+    },
+    {
+      "googlePlaceId":"ChIJwx-ibW2NGGAR-GYw9WEkDkw","restaurantName":"中華厨房 一歩","status":"accepted_evidence",
+      "identity":{"state":"verified","sourceAliases":["中華厨房 一歩"],"evidence":[{"provider":"Hot Pepper","sourceUrl":"https://www.hotpepper.jp/strJ003433052/food/","checkedAt":"2026-09-09","evidenceType":"retained_provider_placeid_binding","note":"Exact Place-ID-bound retained Hot Pepper menu evidence."}]},
+      "dishProposals":[
+        {"targetField":"featuredDishes","classification":"F","nameOriginal":"胡桃の担々麺","nameZhCandidate":null,"evidenceClass":"hotpepper_menu_text","recommendationSemantics":"","provider":"Hot Pepper","sourceUrl":"https://www.hotpepper.jp/strJ003433052/food/","checkedAt":"2026-09-09","sourceScope":"retained_source","evidenceText":"胡桃の担々麺 1300円","confidence":"high","notes":"Source-native concrete item retained."},
+        {"targetField":"featuredDishes","classification":"F","nameOriginal":"ふかひれ拉麺","nameZhCandidate":null,"evidenceClass":"hotpepper_menu_text","recommendationSemantics":"","provider":"Hot Pepper","sourceUrl":"https://www.hotpepper.jp/strJ003433052/food/","checkedAt":"2026-09-09","sourceScope":"retained_source","evidenceText":"ふかひれ拉麺 1900円","confidence":"high","notes":"Source-native concrete item retained."},
+        {"targetField":"featuredDishes","classification":"F","nameOriginal":"鶏もも揚げ～油淋鶏ソースで～","nameZhCandidate":null,"evidenceClass":"hotpepper_menu_text","recommendationSemantics":"","provider":"Hot Pepper","sourceUrl":"https://www.hotpepper.jp/strJ003433052/food/","checkedAt":"2026-09-09","sourceScope":"retained_source","evidenceText":"鶏もも揚げ～油淋鶏ソースで～ 1300円","confidence":"high","notes":"Source-native concrete item retained."},
+        {"targetField":"featuredDishes","classification":"F","nameOriginal":"チャーシュー炒飯","nameZhCandidate":null,"evidenceClass":"hotpepper_menu_text","recommendationSemantics":"","provider":"Hot Pepper","sourceUrl":"https://www.hotpepper.jp/strJ003433052/food/","checkedAt":"2026-09-09","sourceScope":"retained_source","evidenceText":"チャーシュー炒飯 1500円","confidence":"high","notes":"Source-native concrete item retained."},
+        {"targetField":"featuredDishes","classification":"F","nameOriginal":"麻婆豆腐","nameZhCandidate":null,"evidenceClass":"hotpepper_menu_text","recommendationSemantics":"","provider":"Hot Pepper","sourceUrl":"https://www.hotpepper.jp/strJ003433052/food/","checkedAt":"2026-09-09","sourceScope":"retained_source","evidenceText":"麻婆豆腐 1300円","confidence":"high","notes":"Source-native concrete item retained."}
+      ],
+      "attemptedSources":[{"provider":"Hot Pepper","sourceUrl":"https://www.hotpepper.jp/strJ003433052/food/","checkedAt":"2026-09-09","result":"Five concrete price-backed menu items found; no strict recommendation semantics."}],"blocker":null,"notes":""
+    }
+  ],
+  "policyAttestation": {
+    "paidGoogleDataApiCalls": 0,
+    "canonicalMasterEditedDirectly": false,
+    "proximityOnlyIdentityBindingUsed": false,
+    "recommendationWithoutExplicitSemanticsAdded": false,
+    "accessRestrictionBypassUsed": false
+  }
+}
