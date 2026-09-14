@@ -1,0 +1,66 @@
+name: Audit public runtime hours decisions (PR)
+
+on:
+  pull_request:
+    paths:
+      - "scripts/audit_public_hours_runtime_decisions.mjs"
+      - ".github/workflows/_audit-public-hours-runtime-pr.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout PR merge commit
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Enforce zero-paid policy and syntax
+        run: |
+          set -euo pipefail
+          node scripts/audit_no_paid_apis.mjs
+          node --check scripts/audit_public_hours_runtime_decisions.mjs
+      - name: Rebuild through raw runtime identity audit only
+        run: |
+          set -euo pipefail
+          node scripts/build_hotpepper_rich_core_fallback.mjs
+          node scripts/build_production_dataset.mjs
+          node scripts/build_source_provenance.mjs
+          node scripts/build_source_facts.mjs
+          python3 scripts/database/export_reviewed_official_runtime_sources.py
+          python3 scripts/database/export_reviewed_native_contact_runtime_overlay.py
+          python3 scripts/database/export_reviewed_official_practical_runtime_overlay.py
+          node scripts/build_hotpepper_catalog_practical_overlay.mjs data/hotpepper_catalog_practical_overlay.json
+          node scripts/build_google_inventory_runtime.mjs
+          node scripts/apply_reviewed_independent_source_overlay.mjs
+          node scripts/audit_reviewed_independent_source_overlay.mjs
+          node scripts/materialize_runtime_native_contact_fields.mjs overture
+          node scripts/materialize_runtime_native_contact_fields.mjs osm-basic-practical
+          node scripts/materialize_runtime_practical_fields.mjs
+          node scripts/materialize_runtime_official_practical_fields.mjs
+          node scripts/materialize_runtime_native_contact_fields.mjs osm
+          node scripts/audit_google_inventory_runtime.mjs
+      - name: Diagnose public hours decisions before legacy-field stripping
+        run: |
+          set -euo pipefail
+          node scripts/audit_public_hours_runtime_decisions.mjs /tmp/public-hours-runtime-decisions.json | tee /tmp/public-hours-runtime-decisions.log
+          node - <<'NODE'
+          const fs=require('fs');
+          const x=JSON.parse(fs.readFileSync('/tmp/public-hours-runtime-decisions.json','utf8'));
+          if(x.policy?.auditOnly!==true||x.policy?.runtimeMutations!==0||x.policy?.parserMutations!==0||x.policy?.paidGoogleDataApiCalls!==0) throw new Error('hours diagnostic crossed mutation boundary');
+          if(x.summary?.catalogTotal!==2804||x.summary?.publicRuntimeTotal!==1422) throw new Error('hours diagnostic baseline mismatch');
+          console.log('PUBLIC_HOURS_DECISION_SUMMARY='+JSON.stringify(x.summary));
+          NODE
+      - name: Upload audit
+        uses: actions/upload-artifact@v4
+        with:
+          name: public-runtime-hours-decision-audit
+          path: |
+            /tmp/public-hours-runtime-decisions.json
+            /tmp/public-hours-runtime-decisions.log
+          retention-days: 7
