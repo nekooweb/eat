@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-10T06:43:53.606Z",
+  "generatedAt": "2026-09-14T12:41:23.865Z",
   "policy": {
     "catalogIdentityKey": "frozen Place ID only",
     "catalogTotal": 2804,
@@ -19,9 +19,9 @@
     "dishWorkRows": 892,
     "shards": 8,
     "laneCounts": {
-      "official_crawl": 220,
+      "official_crawl": 219,
       "retained_source_mining": 318,
-      "independent_source_discovery": 289,
+      "independent_source_discovery": 290,
       "official_or_retained_featured": 65
     },
     "shardCounts": [
@@ -89,9 +89,9 @@
         "shard": 6,
         "total": 87,
         "lanes": {
-          "official_crawl": 21,
+          "official_crawl": 20,
           "retained_source_mining": 31,
-          "independent_source_discovery": 29,
+          "independent_source_discovery": 30,
           "official_or_retained_featured": 6
         }
       },
@@ -9895,20 +9895,6 @@
       "featuredDishesKnown": 0
     },
     {
-      "googlePlaceId": "ChIJ73iZqQeMGGAR1UPN4hA0-bA",
-      "name": "Minatoya",
-      "lane": "official_crawl",
-      "nextAction": "collect_strict_recommended_dishes",
-      "shard": 6,
-      "priorityScore": 1140,
-      "cuisine": "日式",
-      "crawlableOfficialUrlCount": 1,
-      "retainedThirdPartyUrlCount": 0,
-      "sourceUrlCount": 1,
-      "recommendedDishesKnown": 0,
-      "featuredDishesKnown": 0
-    },
-    {
       "googlePlaceId": "ChIJge_Vi4qNGGARUSVRmK8P39M",
       "name": "Hub Tokyo Dome City LaQua",
       "lane": "official_crawl",
@@ -10695,6 +10681,20 @@
     {
       "googlePlaceId": "ChIJ5-vLPkKNGGARQA0BDgfPFi4",
       "name": "夢いち輪",
+      "lane": "independent_source_discovery",
+      "nextAction": "find_independent_dish_source",
+      "shard": 6,
+      "priorityScore": 1040,
+      "cuisine": "日式",
+      "crawlableOfficialUrlCount": 0,
+      "retainedThirdPartyUrlCount": 0,
+      "sourceUrlCount": 0,
+      "recommendedDishesKnown": 0,
+      "featuredDishesKnown": 0
+    },
+    {
+      "googlePlaceId": "ChIJ73iZqQeMGGAR1UPN4hA0-bA",
+      "name": "Minatoya",
       "lane": "independent_source_discovery",
       "nextAction": "find_independent_dish_source",
       "shard": 6,
