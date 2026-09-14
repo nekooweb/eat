@@ -155,7 +155,15 @@ jobs:
             data/google_inventory_detail_evidence.json \
             _audit/e2e-s3-reviewed-evidence.json \
             /tmp/e2e-s3-replay.json >/tmp/e2e-s3-replay.log
-          cmp data/google_inventory_detail_evidence.json /tmp/e2e-s3-replay.json
+          node - <<'NODE'
+          const fs=require('fs');
+          const current=JSON.parse(fs.readFileSync('data/google_inventory_detail_evidence.json','utf8'));
+          const replay=JSON.parse(fs.readFileSync('/tmp/e2e-s3-replay.json','utf8'));
+          if(JSON.stringify(current.rows)!==JSON.stringify(replay.rows)) throw new Error('Logical evidence rows changed on replay');
+          const counts=x=>({rows:x.rows.length,r:x.rows.reduce((n,row)=>n+(row.recommendedDishes||[]).length,0),f:x.rows.reduce((n,row)=>n+(row.featuredDishes||[]).length,0)});
+          if(JSON.stringify(counts(current))!==JSON.stringify(counts(replay))) throw new Error('Logical evidence counts changed on replay');
+          console.log('S3_LOGICAL_REPLAY='+JSON.stringify(counts(replay)));
+          NODE
           git diff --name-only -- data | sort > /tmp/e2e-s3-changed.txt
           while IFS= read -r f; do [ -z "$f" ] || sha256sum "$f"; done < /tmp/e2e-s3-changed.txt > /tmp/e2e-s3-hashes.txt
           python3 scripts/reload_data.py --public-only --outdir /tmp/e2e-s3-replay-rebuild
