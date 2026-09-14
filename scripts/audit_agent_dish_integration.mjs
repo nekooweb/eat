@@ -11,6 +11,15 @@ const key = (id, field, dish) => JSON.stringify([id, field, dish.nameZh, dish.pr
 const label = dish => typeof dish === 'string' ? dish : dish?.nameZh;
 const sha = text => crypto.createHash('sha256').update(text).digest('hex');
 
+function runtimeDishNames(items, id, field) {
+  const names = (items || []).map(label);
+  if (names.some(name => typeof name !== 'string' || !name.trim() || /^(none|null|undefined)$/i.test(name))) {
+    throw new Error(`Missing/invalid runtime dish name: ${id}/${field}`);
+  }
+  if (new Set(names).size !== names.length) throw new Error(`Duplicate runtime dish name: ${id}/${field}`);
+  return names.sort();
+}
+
 export function snapshotState(runtimeRows, evidence, catalogIds) {
   const seen = new Set();
   const runtime = runtimeRows.map(row => {
@@ -18,7 +27,7 @@ export function snapshotState(runtimeRows, evidence, catalogIds) {
     seen.add(row.googlePlaceId);
     if (typeof row.name !== 'string' || !row.name.trim() || /^(none|null|undefined)$/i.test(row.name)) throw new Error('Invalid runtime name');
     return { googlePlaceId: row.googlePlaceId, name: row.name,
-      ...Object.fromEntries(FIELDS.map(field => [field, [...new Set((row[field] || []).map(label))].sort()])) };
+      ...Object.fromEntries(FIELDS.map(field => [field, runtimeDishNames(row[field], row.googlePlaceId, field)])) };
   }).sort((a, b) => a.googlePlaceId.localeCompare(b.googlePlaceId));
   const catalog = [...catalogIds].sort();
   if (new Set(catalog).size !== catalog.length || runtime.some(row => !catalog.includes(row.googlePlaceId))) {

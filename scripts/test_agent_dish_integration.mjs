@@ -32,6 +32,11 @@ const missing = snapshotState(afterRuntime.slice(0, 1), afterEvidence, ['p1', 'p
 assert.throws(() => auditIntegration(before, missing, accepted), /identity/i);
 assert.throws(() => auditIntegration(before, snapshotState(afterRuntime, afterEvidence, ['p1', 'p2']), accepted), /catalog/i);
 assert.throws(() => snapshotState([...runtime, runtime[0]], evidence, ['p1', 'p2', 'p3']), /duplicate/i);
+const repeatedRuntimeDish = structuredClone(afterRuntime); repeatedRuntimeDish[0].recommendedDishes.push(r);
+assert.throws(() => snapshotState(repeatedRuntimeDish, afterEvidence, ['p1', 'p2', 'p3']), /duplicate/i,
+  'Do not silently deduplicate a runtime regression during the audit');
+const missingRuntimeDishName = structuredClone(afterRuntime); missingRuntimeDishName[0].recommendedDishes = [{}];
+assert.throws(() => snapshotState(missingRuntimeDishName, afterEvidence, ['p1', 'p2', 'p3']), /dish.*name/i);
 const invalid = structuredClone(runtime); invalid[0].name = 'None';
 assert.throws(() => snapshotState(invalid, evidence, ['p1', 'p2', 'p3']), /name/i);
 const downgraded = { rows: [{ ...accepted.rows[0], recommendedDishes: [], featuredDishes: [r] }] };

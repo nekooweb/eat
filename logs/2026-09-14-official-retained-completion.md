@@ -74,3 +74,8 @@ Pending the evidence, coverage, integration and validation gates above. Ending c
 - Baseline shadow export and `validate_export.py` passed: catalog 2,804; SQLite-eligible recommendation export 1,403. This eligibility denominator is not the public runtime's 1,422.
 - Created a backup of the disposable audit database via SQLite backup, then checked integrity, foreign keys and `validate_master.py`: pass. The user's existing master was not read or replaced.
 - Added a red/green counter regression: two verified source URLs for the same native dish count as two evidence items but only one logical restaurant/dish. The adapter reports both metrics separately.
+
+## Additional runtime audit regression
+
+- The integration snapshot now rejects duplicate or missing runtime dish names instead of silently deduplicating them. Red/green tests passed, and the strict snapshot succeeded on the current 1,422-row public baseline with unchanged R595 / F675 / display740 counts.
+- This is an audit-tool correction only; no canonical evidence or runtime dishes were added.
