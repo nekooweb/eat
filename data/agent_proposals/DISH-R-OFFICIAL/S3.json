@@ -1,0 +1,1123 @@
+{
+  "schemaVersion": 1,
+  "proposalOnly": true,
+  "marker": "DISH-R-OFFICIAL",
+  "shard": "S3",
+  "agentRunId": "DISH-R-OFFICIAL-S3-20260914-01",
+  "sourceQueue": "data/dish_batch_plan.json",
+  "sourceQueueCommit": "ed1abac13429bb76303b2327c0df8a93f9ff3c00",
+  "generatedAt": "2026-09-14T09:24:00Z",
+  "summary": {
+    "assignedRows": 21,
+    "reviewedRows": 21,
+    "acceptedEvidenceRows": 9,
+    "candidateRows": 6,
+    "noEvidenceRows": 4,
+    "blockedRows": 2,
+    "skippedAlreadyCompleteRows": 0
+  },
+  "records": [
+    {
+      "googlePlaceId": "ChIJRWeZ93uNGGARPN9JYVQpOKs",
+      "restaurantName": "ON A SLOW BOAT TO...",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": ["ON A SLOW BOAT TO..."],
+        "evidence": [
+          {
+            "provider": "official",
+            "sourceUrl": "https://slwboat.com/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Official page identifies the same cafe and branch/location."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        {
+          "provider": "official",
+          "sourceUrl": "https://slwboat.com/",
+          "checkedAt": "2026-09-14",
+          "result": "Official page and menu section checked; no concrete dish was paired with explicit recommendation/signature/popularity semantics."
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "https://slwboat.com/#menu",
+          "checkedAt": "2026-09-14",
+          "result": "Menu content is primarily image-based; no reproducible source-native strict R evidence was established."
+        }
+      ],
+      "blocker": null,
+      "notes": "The page contains general promotional/award language, but it does not attach strict recommendation semantics to a concrete dish."
+    },
+    {
+      "googlePlaceId": "ChIJ6QXNGBuMGGARoa9gDeTHnEs",
+      "restaurantName": "カフェ・ベローチェ",
+      "status": "candidate",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": ["カフェ・ベローチェ 新御茶ノ水店"],
+        "evidence": [
+          {
+            "provider": "official",
+            "sourceUrl": "https://c-united.co.jp/store/detail/000258/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Official store page identifies the exact 新御茶ノ水 branch."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "recommendedDishes",
+          "classification": "C",
+          "nameOriginal": "安納芋ロイヤルミルクティー",
+          "nameZhCandidate": null,
+          "evidenceClass": "official_brand_recommendation_candidate",
+          "recommendationSemantics": "季節のオススメ",
+          "provider": "official",
+          "sourceUrl": "https://c-united.co.jp/veloce/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "brand",
+          "evidenceText": "季節のオススメ／安納芋ロイヤルミルクティー",
+          "confidence": "medium",
+          "notes": "Official brand menu is explicit, but product pages state that some stores may not carry some products; exact-branch availability was not established."
+        },
+        {
+          "targetField": "recommendedDishes",
+          "classification": "C",
+          "nameOriginal": "アイス安納芋ロイヤルミルクティー",
+          "nameZhCandidate": null,
+          "evidenceClass": "official_brand_recommendation_candidate",
+          "recommendationSemantics": "季節のオススメ",
+          "provider": "official",
+          "sourceUrl": "https://c-united.co.jp/veloce/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "brand",
+          "evidenceText": "季節のオススメ／アイス安納芋ロイヤルミルクティー",
+          "confidence": "medium",
+          "notes": "Brand-level recommendation only; exact-branch availability unresolved."
+        },
+        {
+          "targetField": "recommendedDishes",
+          "classification": "C",
+          "nameOriginal": "焼きたてサンド 合鴨と国産きのこ",
+          "nameZhCandidate": null,
+          "evidenceClass": "official_brand_recommendation_candidate",
+          "recommendationSemantics": "季節のオススメ",
+          "provider": "official",
+          "sourceUrl": "https://c-united.co.jp/veloce/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "brand",
+          "evidenceText": "季節のオススメ／焼きたてサンド 合鴨と国産きのこ",
+          "confidence": "medium",
+          "notes": "Brand-level recommendation only; exact-branch availability unresolved."
+        },
+        {
+          "targetField": "recommendedDishes",
+          "classification": "C",
+          "nameOriginal": "王道モンブラン～焼き栗使用～",
+          "nameZhCandidate": null,
+          "evidenceClass": "official_brand_recommendation_candidate",
+          "recommendationSemantics": "季節のオススメ",
+          "provider": "official",
+          "sourceUrl": "https://c-united.co.jp/veloce/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "brand",
+          "evidenceText": "季節のオススメ／王道モンブラン～焼き栗使用～",
+          "confidence": "medium",
+          "notes": "Brand-level recommendation only; exact-branch availability unresolved."
+        }
+      ],
+      "attemptedSources": [
+        {
+          "provider": "official",
+          "sourceUrl": "https://c-united.co.jp/store/detail/000258/",
+          "checkedAt": "2026-09-14",
+          "result": "Exact branch verified."
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "https://c-united.co.jp/veloce/",
+          "checkedAt": "2026-09-14",
+          "result": "Current brand menu has explicit 季節のオススメ, but exact-branch applicability is not proven."
+        }
+      ],
+      "blocker": null,
+      "notes": "Kept as candidate instead of R because chain-wide recommendation semantics cannot safely be bound to this exact branch without availability evidence."
+    },
+    {
+      "googlePlaceId": "ChIJge8QphmMGGARCt0jMR1hgao",
+      "restaurantName": "MD Bakery",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": ["MD Bakery"],
+        "evidence": [
+          {
+            "provider": "official",
+            "sourceUrl": "https://www.isct.ac.jp/ja/news/awfqldid9g2v",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "official_location_article",
+            "note": "Science Tokyo identifies MD Bakery at 湯島キャンパス C棟1階 U AREA and describes its current food service."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "ハンバーガー",
+          "nameZhCandidate": null,
+          "evidenceClass": "official_location_menu_text",
+          "recommendationSemantics": "",
+          "provider": "official",
+          "sourceUrl": "https://www.isct.ac.jp/ja/news/awfqldid9g2v",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "ランチタイムではボリューミーなハンバーガーを販売",
+          "confidence": "high",
+          "notes": "Concrete current food item, but no recommendation semantics; F only."
+        }
+      ],
+      "attemptedSources": [
+        {
+          "provider": "official",
+          "sourceUrl": "https://www.isct.ac.jp/ja/news/awfqldid9g2v",
+          "checkedAt": "2026-09-14",
+          "result": "Exact venue and concrete food items found; no strict recommendation language."
+        }
+      ],
+      "blocker": null,
+      "notes": "No R promoted."
+    },
+    {
+      "googlePlaceId": "ChIJhae4jz-MGGARVDKWzSuUHUk",
+      "restaurantName": "勝本",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": ["中華そば勝本"],
+        "evidence": [
+          {
+            "provider": "official",
+            "sourceUrl": "https://katsumoto-japan.com/ja/chukasoba_katsumoto.html",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Official page identifies 中華そば勝本 at 神田三崎町2-15-5 and provides the branch menu."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "特製中華そば",
+          "nameZhCandidate": null,
+          "evidenceClass": "official_menu_item",
+          "recommendationSemantics": "",
+          "provider": "official",
+          "sourceUrl": "https://katsumoto-japan.com/ja/chukasoba_katsumoto.html",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "お品書き／特製中華そば",
+          "confidence": "high",
+          "notes": "Concrete menu item; F only."
+        },
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "味玉中華そば",
+          "nameZhCandidate": null,
+          "evidenceClass": "official_menu_item",
+          "recommendationSemantics": "",
+          "provider": "official",
+          "sourceUrl": "https://katsumoto-japan.com/ja/chukasoba_katsumoto.html",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "お品書き／味玉中華そば",
+          "confidence": "high",
+          "notes": "Concrete menu item; F only."
+        },
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "中華そば",
+          "nameZhCandidate": null,
+          "evidenceClass": "official_menu_item",
+          "recommendationSemantics": "",
+          "provider": "official",
+          "sourceUrl": "https://katsumoto-japan.com/ja/chukasoba_katsumoto.html",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "お品書き／中華そば",
+          "confidence": "high",
+          "notes": "The page calls the soup 名物, but that semantic attaches to a soup component rather than a specific orderable dish; no R inflation."
+        }
+      ],
+      "attemptedSources": [
+        {
+          "provider": "official",
+          "sourceUrl": "https://katsumoto-japan.com/ja/chukasoba_katsumoto.html",
+          "checkedAt": "2026-09-14",
+          "result": "Exact branch menu verified; 名物 wording applies to the soup component, so concrete dishes remain F."
+        }
+      ],
+      "blocker": null,
+      "notes": "Strict semantics intentionally kept below R."
+    },
+    {
+      "googlePlaceId": "ChIJp52jo0OMGGAR6L7VsZ1y3MY",
+      "restaurantName": "ルノアール",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": ["喫茶室ルノアール 飯田橋西口店"],
+        "evidence": [
+          {
+            "provider": "official",
+            "sourceUrl": "https://www.ginza-renoir.co.jp/myspace/booking/shops/view/29",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Official MySpace/store page identifies the attached 喫茶室ルノアール branch."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        {
+          "provider": "official",
+          "sourceUrl": "https://www.ginza-renoir.co.jp/myspace/booking/shops/view/29",
+          "checkedAt": "2026-09-14",
+          "result": "Exact branch identity verified; no strict dish recommendation evidence on branch page."
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "https://www.ginza-renoir.co.jp/renoir/menu/",
+          "checkedAt": "2026-09-14",
+          "result": "Brand menu checked; menu varies by store and no safely branch-bound strict recommendation was established."
+        }
+      ],
+      "blocker": null,
+      "notes": "No concrete branch-scoped R evidence found."
+    },
+    {
+      "googlePlaceId": "ChIJPZPNgpiNGGARgF1jBcT9ocQ",
+      "restaurantName": "Melty Charm",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": ["Melty Charm"],
+        "evidence": [
+          {
+            "provider": "official",
+            "sourceUrl": "https://dotsweet.jp/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Official site identifies Melty Charm and its Akihabara location."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        {
+          "provider": "official",
+          "sourceUrl": "https://dotsweet.jp/",
+          "checkedAt": "2026-09-14",
+          "result": "Official site accessible but no concrete dish with strict recommendation semantics found."
+        }
+      ],
+      "blocker": null,
+      "notes": "Site content is sparse/stale and does not provide reproducible strict dish evidence."
+    },
+    {
+      "googlePlaceId": "ChIJXx3AlhqMGGARpPWLfvZyAoA",
+      "restaurantName": "飛騨居酒屋 蔵助",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": ["飛騨居酒屋 蔵助"],
+        "evidence": [
+          {
+            "provider": "official",
+            "sourceUrl": "https://hida-kurasuke.com/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Current official site identifies the same restaurant at 神田駿河台3丁目5-15 荒井ビル2F; retained legacy official URL has moved/failed."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "recommendedDishes",
+          "classification": "R",
+          "nameOriginal": "飛騨牛カルビの 朴葉みそ焼き",
+          "nameZhCandidate": null,
+          "evidenceClass": "official_popularity_statement",
+          "recommendationSemantics": "人気No.1／当店一番の人気メニュー",
+          "provider": "official",
+          "sourceUrl": "https://hida-kurasuke.com/menu/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "人気No.1　飛騨牛カルビの 朴葉みそ焼き",
+          "confidence": "high",
+          "notes": "Direct item-level popularity semantics."
+        },
+        {
+          "targetField": "recommendedDishes",
+          "classification": "R",
+          "nameOriginal": "漬け物ステーキ",
+          "nameZhCandidate": null,
+          "evidenceClass": "official_popularity_statement",
+          "recommendationSemantics": "人気No.2",
+          "provider": "official",
+          "sourceUrl": "https://hida-kurasuke.com/menu/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "人気No.2　漬け物ステーキ",
+          "confidence": "high",
+          "notes": "Direct item-level popularity semantics."
+        },
+        {
+          "targetField": "recommendedDishes",
+          "classification": "R",
+          "nameOriginal": "モッツァレラ チーズの たまり醤油漬け",
+          "nameZhCandidate": null,
+          "evidenceClass": "official_popularity_statement",
+          "recommendationSemantics": "人気No.3",
+          "provider": "official",
+          "sourceUrl": "https://hida-kurasuke.com/menu/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "人気No.3　モッツァレラ チーズの たまり醤油漬け",
+          "confidence": "high",
+          "notes": "Direct item-level popularity semantics."
+        },
+        {
+          "targetField": "recommendedDishes",
+          "classification": "R",
+          "nameOriginal": "飛騨牛ステーキ",
+          "nameZhCandidate": null,
+          "evidenceClass": "official_staff_recommendation",
+          "recommendationSemantics": "店主お勧めのメニュー",
+          "provider": "official",
+          "sourceUrl": "https://hida-kurasuke.com/menu/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "飛騨牛ステーキ！ 店主お勧めのメニューです！",
+          "confidence": "high",
+          "notes": "Direct proprietor recommendation."
+        }
+      ],
+      "attemptedSources": [
+        {
+          "provider": "official",
+          "sourceUrl": "https://www.kurasuke.jp/",
+          "checkedAt": "2026-09-14",
+          "result": "Retained legacy official URL was not usable."
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "https://hida-kurasuke.com/",
+          "checkedAt": "2026-09-14",
+          "result": "Current official identity verified."
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "https://hida-kurasuke.com/menu/",
+          "checkedAt": "2026-09-14",
+          "result": "Multiple item-level popularity/recommendation statements found."
+        }
+      ],
+      "blocker": null,
+      "notes": "Official-domain drift discovered: retained legacy domain is no longer the useful current source, but the replacement site matches name, address and phone."
+    },
+    {
+      "googlePlaceId": "ChIJEQJq8xCMGGAR2BT_MqkTt-A",
+      "restaurantName": "カリー＆ワイン ビストロべっぴん舎 お茶の水店",
+      "status": "candidate",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": ["ビストロべっぴん舎 お茶の水本店"],
+        "evidence": [
+          {
+            "provider": "official",
+            "sourceUrl": "https://www.beppinsya.com/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Official site identifies お茶の水本店 and current operation."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "recommendedDishes",
+          "classification": "C",
+          "nameOriginal": "べっぴんカリー",
+          "nameZhCandidate": null,
+          "evidenceClass": "official_specialty_candidate",
+          "recommendationSemantics": "特別なカレー／他にはないカレー",
+          "provider": "official",
+          "sourceUrl": "https://www.beppinsya.com/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "20種の薬膳スパイス！『べっぴんカリー』",
+          "confidence": "medium",
+          "notes": "The official site frames べっぴんカリー as a special/unique curry concept, but the current orderable menu consists of named variants; the umbrella label is not safely promoted to R."
+        }
+      ],
+      "attemptedSources": [
+        {
+          "provider": "official",
+          "sourceUrl": "https://www.beppinsya.com/",
+          "checkedAt": "2026-09-14",
+          "result": "Exact branch and specialty concept verified."
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "https://www.beppinsya.com/%E3%83%A1%E3%83%8B%E3%83%A5%E3%83%BC/",
+          "checkedAt": "2026-09-14",
+          "result": "Current concrete variants verified, but no item-level recommendation semantics found."
+        }
+      ],
+      "blocker": null,
+      "notes": "Candidate only; no variant was promoted to R from umbrella specialty wording."
+    },
+    {
+      "googlePlaceId": "ChIJMcHsGRGMGGAR6N5SJOHGdls",
+      "restaurantName": "神田伯剌西爾",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": ["神田伯剌西爾", "神田ぶらじる"],
+        "evidence": [
+          {
+            "provider": "official",
+            "sourceUrl": "https://k-brazil.jp/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Official site is the same 神保町 cafe."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "recommendedDishes",
+          "classification": "R",
+          "nameOriginal": "神田ぶれんど",
+          "nameZhCandidate": null,
+          "evidenceClass": "official_house_recommendation",
+          "recommendationSemantics": "自信の一品",
+          "provider": "official",
+          "sourceUrl": "https://k-brazil.jp/%E5%BA%97%E5%86%85%E3%83%A1%E3%83%8B%E3%83%A5%E3%83%BC/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "神田ぶれんど・・・濃く苦く甘い 自信の一品",
+          "confidence": "high",
+          "notes": "Concrete menu item with explicit house endorsement."
+        }
+      ],
+      "attemptedSources": [
+        {
+          "provider": "official",
+          "sourceUrl": "https://k-brazil.jp/",
+          "checkedAt": "2026-09-14",
+          "result": "Restaurant identity verified."
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "https://k-brazil.jp/%E5%BA%97%E5%86%85%E3%83%A1%E3%83%8B%E3%83%A5%E3%83%BC/",
+          "checkedAt": "2026-09-14",
+          "result": "Strict item-level house recommendation found."
+        }
+      ],
+      "blocker": null,
+      "notes": "Strict R accepted."
+    },
+    {
+      "googlePlaceId": "ChIJTy1GTG-NGGAR4WUtZrMr1mE",
+      "restaurantName": "ゼッテリア",
+      "status": "candidate",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": ["ゼッテリア お茶の水駅前店"],
+        "evidence": [
+          {
+            "provider": "official",
+            "sourceUrl": "https://www.zetteria.jp/shop/shop1022.html",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Official store page verifies the exact お茶の水駅前 branch."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "recommendedDishes",
+          "classification": "C",
+          "nameOriginal": "絶品バーガー",
+          "nameZhCandidate": null,
+          "evidenceClass": "official_brand_signature_candidate",
+          "recommendationSemantics": "看板商品",
+          "provider": "official",
+          "sourceUrl": "https://www.zetteria.jp/menu/burger020028.html",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "brand",
+          "evidenceText": "ゼッテリアの看板商品『絶品バーガー』",
+          "confidence": "medium",
+          "notes": "Brand flagship semantics are explicit, but exact-branch availability was not independently established on the store page."
+        }
+      ],
+      "attemptedSources": [
+        {
+          "provider": "official",
+          "sourceUrl": "https://www.zetteria.jp/shop/shop1022.html",
+          "checkedAt": "2026-09-14",
+          "result": "Exact branch verified."
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "https://www.zetteria.jp/menu/burger020028.html",
+          "checkedAt": "2026-09-14",
+          "result": "Official brand source explicitly calls 絶品バーガー the flagship product; branch applicability unresolved."
+        }
+      ],
+      "blocker": null,
+      "notes": "Kept candidate rather than R under exact-branch rule."
+    },
+    {
+      "googlePlaceId": "ChIJ_88bxkGMGGARU7PM3wGBTK4",
+      "restaurantName": "かわな",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": ["かわな"],
+        "evidence": [
+          {
+            "provider": "official",
+            "sourceUrl": "https://www.kawana4.com/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Official restaurant site; current season schedule shows 穴子屋 active on the check date."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "recommendedDishes",
+          "classification": "R",
+          "nameOriginal": "穴子トースト",
+          "nameZhCandidate": null,
+          "evidenceClass": "official_signature_item",
+          "recommendationSemantics": "当店オリジナル",
+          "provider": "official",
+          "sourceUrl": "https://www.kawana4.com/cgi-bin/kawana4/siteup.cgi?category=1&page=1",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "当店オリジナル！！／穴子トースト",
+          "confidence": "high",
+          "notes": "Concrete current-season dish with explicit restaurant-original signature semantics."
+        }
+      ],
+      "attemptedSources": [
+        {
+          "provider": "official",
+          "sourceUrl": "https://www.kawana4.com/",
+          "checkedAt": "2026-09-14",
+          "result": "Exact restaurant and current seasonal concept verified."
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "https://www.kawana4.com/cgi-bin/kawana4/siteup.cgi?category=1&page=1",
+          "checkedAt": "2026-09-14",
+          "result": "Strict signature item found."
+        }
+      ],
+      "blocker": null,
+      "notes": "Strict R accepted for the active 穴子屋 season."
+    },
+    {
+      "googlePlaceId": "ChIJAQC7-haMGGARgemAl85yVGM",
+      "restaurantName": "ony's bar",
+      "status": "blocked",
+      "identity": {
+        "state": "verified_retained",
+        "sourceAliases": ["ony's bar"],
+        "evidence": [
+          {
+            "provider": "Overture Maps",
+            "sourceUrl": "http://onys.jp/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "retained_official_binding",
+            "note": "Repository-retained strong binding supplies the official domain and matching telephone, but the live site could not be inspected."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        {
+          "provider": "official",
+          "sourceUrl": "http://onys.jp/",
+          "checkedAt": "2026-09-14",
+          "result": "Source inaccessible for reproducible dish inspection."
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "https://onys.jp/",
+          "checkedAt": "2026-09-14",
+          "result": "Source inaccessible; no bypass attempted."
+        }
+      ],
+      "blocker": "official_source_inaccessible",
+      "notes": "Blocked rather than guessed; no login/CAPTCHA/access-limit bypass attempted."
+    },
+    {
+      "googlePlaceId": "ChIJHSuxoNqNGGARSz9EYrZT3Ss",
+      "restaurantName": "レストラン ケイダンレン",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": ["レストラン ケイダンレン（3階）"],
+        "evidence": [
+          {
+            "provider": "official",
+            "sourceUrl": "https://www.keidanren-kaikan.jp/syokuji.html#restaurant",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_section",
+            "note": "Official Keidanren Kaikan page has a dedicated レストラン ケイダンレン（3階） section and matching contact number."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "recommendedDishes",
+          "classification": "R",
+          "nameOriginal": "マロンシャンティイ",
+          "nameZhCandidate": null,
+          "evidenceClass": "official_specialty_statement",
+          "recommendationSemantics": "パレスホテル伝統のスイーツ",
+          "provider": "official",
+          "sourceUrl": "https://www.keidanren-kaikan.jp/syokuji.html#restaurant",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "マロンシャンティイ／パレスホテル伝統のスイーツ",
+          "confidence": "high",
+          "notes": "Concrete restaurant tea-time item with explicit traditional-specialty semantics."
+        }
+      ],
+      "attemptedSources": [
+        {
+          "provider": "official",
+          "sourceUrl": "https://www.keidanren-kaikan.jp/syokuji.html#restaurant",
+          "checkedAt": "2026-09-14",
+          "result": "Exact restaurant section and strict specialty dish found."
+        }
+      ],
+      "blocker": null,
+      "notes": "Conference catering dishes elsewhere on the page were not attributed to the restaurant; only the restaurant section was used."
+    },
+    {
+      "googlePlaceId": "ChIJVbznbAWMGGARJOxTzfe2hSA",
+      "restaurantName": "Tantanmen Lashowhan",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": ["担々麺 辣椒漢 神田本店"],
+        "evidence": [
+          {
+            "provider": "official",
+            "sourceUrl": "https://tantanmen.online/html/company.html",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "operator_company_page",
+            "note": "Official online shop company page explicitly identifies 東京おいしい株式会社（担々麺 辣椒漢 神田本店） at 神田錦町1-4-8."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "recommendedDishes",
+          "classification": "R",
+          "nameOriginal": "正宗担々麺　冷凍　：　汁なし担々麺",
+          "nameZhCandidate": null,
+          "evidenceClass": "official_recommend_section",
+          "recommendationSemantics": "RECOMMEND",
+          "provider": "official",
+          "sourceUrl": "https://tantanmen.online/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "operator_shop",
+          "evidenceText": "RECOMMEND／正宗担々麺　冷凍　：　汁なし担々麺",
+          "confidence": "high",
+          "notes": "Explicit recommendation on the official operator shop. The product is a frozen take-home form; central review may decide display suitability, but R semantics themselves are explicit and the operator page ties the shop to 神田本店."
+        }
+      ],
+      "attemptedSources": [
+        {
+          "provider": "official",
+          "sourceUrl": "http://www.tantanmen.shop",
+          "checkedAt": "2026-09-14",
+          "result": "Retained legacy domain was not usable."
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "https://tantanmen.online/html/company.html",
+          "checkedAt": "2026-09-14",
+          "result": "Exact operator/神田本店 identity established."
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "https://tantanmen.online/",
+          "checkedAt": "2026-09-14",
+          "result": "Official homepage RECOMMEND section directly names 正宗担々麺."
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "https://tantanmen.online/shopdetail/000000000001/",
+          "checkedAt": "2026-09-14",
+          "result": "Concrete product/dish identity confirmed."
+        }
+      ],
+      "blocker": null,
+      "notes": "Strict R evidence exists on the official operator shop; frozen-product scope is preserved explicitly rather than silently normalized."
+    },
+    {
+      "googlePlaceId": "ChIJVVVVFSKMGGAR4B8aDnlRBdM",
+      "restaurantName": "東京洋食バル・TOMOSHIBI",
+      "status": "blocked",
+      "identity": {
+        "state": "conflict",
+        "sourceAliases": ["東京洋食バル・TOMOSHIBI"],
+        "evidence": [
+          {
+            "provider": "Overture Maps",
+            "sourceUrl": "http://www.tomoshibi.biz",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "retained_official_binding",
+            "note": "Repository-retained binding points to this domain, but current domain content no longer represents the restaurant."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        {
+          "provider": "official",
+          "sourceUrl": "http://www.tomoshibi.biz",
+          "checkedAt": "2026-09-14",
+          "result": "Current domain identity does not match the restaurant."
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "https://tomoshibi.biz/",
+          "checkedAt": "2026-09-14",
+          "result": "Domain is currently used by unrelated 株式会社燈 business content; treated as stale/reused source, not restaurant evidence."
+        }
+      ],
+      "blocker": "retained_official_domain_reused_identity_mismatch",
+      "notes": "No third-party/nearby restaurant evidence was substituted for the stale official source."
+    },
+    {
+      "googlePlaceId": "ChIJ5aGwSBuMGGARULgI61LmWyI",
+      "restaurantName": "京おばんざい はんなり",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": ["京おばんざい はんなり"],
+        "evidence": [
+          {
+            "provider": "official",
+            "sourceUrl": "https://www.han-nari.net/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Official page identifies the restaurant at 神田淡路町1-9 ニューお茶の水ビル1F."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "おぼろ豆腐",
+          "nameZhCandidate": null,
+          "evidenceClass": "official_menu_text",
+          "recommendationSemantics": "",
+          "provider": "official",
+          "sourceUrl": "https://www.han-nari.net/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "京都から仕入れるおぼろ豆腐",
+          "confidence": "high",
+          "notes": "Concrete food served by the restaurant; no recommendation semantics, so F only."
+        }
+      ],
+      "attemptedSources": [
+        {
+          "provider": "official",
+          "sourceUrl": "https://www.han-nari.net/",
+          "checkedAt": "2026-09-14",
+          "result": "Exact branch and concrete food text found; no explicit recommendation/signature/popularity semantics."
+        }
+      ],
+      "blocker": null,
+      "notes": "No R promoted."
+    },
+    {
+      "googlePlaceId": "ChIJ67ggdxeMGGAR5uSOMBBDfHU",
+      "restaurantName": "スターバックス",
+      "status": "candidate",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": ["スターバックス コーヒー お茶の水村田ビル店"],
+        "evidence": [
+          {
+            "provider": "official",
+            "sourceUrl": "https://store.starbucks.co.jp/detail-2/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Official store page verifies the exact お茶の水村田ビル店."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "recommendedDishes",
+          "classification": "C",
+          "nameOriginal": "紅はるかと安納芋の焼き蜜芋ケーキ",
+          "nameZhCandidate": null,
+          "evidenceClass": "official_brand_campaign_candidate",
+          "recommendationSemantics": "このケーキのおすすめは、冷やして味わうこと",
+          "provider": "official",
+          "sourceUrl": "https://stories.starbucks.co.jp/press/2026/pr-2026-0826/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "brand",
+          "evidenceText": "『紅はるかと安納芋の焼き蜜芋ケーキ』／全国のスターバックス店舗（一部店舗を除く）",
+          "confidence": "low",
+          "notes": "The official campaign has recommendation wording about serving style, not a branch-specific dish recommendation; exact branch inclusion is unconfirmed, and the current product page says temporary stock-out until around late September."
+        }
+      ],
+      "attemptedSources": [
+        {
+          "provider": "official",
+          "sourceUrl": "https://store.starbucks.co.jp/detail-2/",
+          "checkedAt": "2026-09-14",
+          "result": "Exact branch verified."
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "https://stories.starbucks.co.jp/press/2026/pr-2026-0826/",
+          "checkedAt": "2026-09-14",
+          "result": "Current nationwide campaign checked; explicit branch inclusion not established."
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "https://menu.starbucks.co.jp/4524785644830",
+          "checkedAt": "2026-09-14",
+          "result": "Concrete product confirmed; product page currently reports temporary stock-out."
+        }
+      ],
+      "blocker": null,
+      "notes": "Candidate only; no chain-wide campaign item promoted to branch R."
+    },
+    {
+      "googlePlaceId": "ChIJeyhzHCqNGGAR0xIHxa7pEM0",
+      "restaurantName": "神保町 Stylish Bar o",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": ["神保町 Stylish Bar o", "神保町オー"],
+        "evidence": [
+          {
+            "provider": "official",
+            "sourceUrl": "https://r.goope.jp/jinbocho/about",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Official page identifies the same bar at 神田神保町1-19-1 KTビル3F."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        {
+          "provider": "official",
+          "sourceUrl": "https://r.goope.jp/jinbocho/about",
+          "checkedAt": "2026-09-14",
+          "result": "Exact branch identity verified; no concrete recommended dish on page."
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "https://r.goope.jp/jinbocho/menu",
+          "checkedAt": "2026-09-14",
+          "result": "Menu endpoint could not be reproducibly inspected from available access; no bypass attempted."
+        }
+      ],
+      "blocker": null,
+      "notes": "Official identity is clear, but no valid strict recommendation evidence was found."
+    },
+    {
+      "googlePlaceId": "ChIJf9IQHWuMGGAR3tH7Sw31YX0",
+      "restaurantName": "スターバックス",
+      "status": "candidate",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": ["スターバックス コーヒー 北の丸スクエア店"],
+        "evidence": [
+          {
+            "provider": "official",
+            "sourceUrl": "https://store.starbucks.co.jp/detail-657/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Official store page verifies the exact 北の丸スクエア店."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "recommendedDishes",
+          "classification": "C",
+          "nameOriginal": "紅はるかと安納芋の焼き蜜芋ケーキ",
+          "nameZhCandidate": null,
+          "evidenceClass": "official_brand_campaign_candidate",
+          "recommendationSemantics": "このケーキのおすすめは、冷やして味わうこと",
+          "provider": "official",
+          "sourceUrl": "https://stories.starbucks.co.jp/press/2026/pr-2026-0826/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "brand",
+          "evidenceText": "『紅はるかと安納芋の焼き蜜芋ケーキ』／全国のスターバックス店舗（一部店舗を除く）",
+          "confidence": "low",
+          "notes": "Brand campaign wording and availability do not prove this exact branch; current product page also reports temporary stock-out."
+        }
+      ],
+      "attemptedSources": [
+        {
+          "provider": "official",
+          "sourceUrl": "https://store.starbucks.co.jp/detail-657/",
+          "checkedAt": "2026-09-14",
+          "result": "Exact branch verified."
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "https://stories.starbucks.co.jp/press/2026/pr-2026-0826/",
+          "checkedAt": "2026-09-14",
+          "result": "Current nationwide campaign checked; exact branch inclusion not established."
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "https://menu.starbucks.co.jp/4524785644830",
+          "checkedAt": "2026-09-14",
+          "result": "Concrete product confirmed; temporary stock-out noted."
+        }
+      ],
+      "blocker": null,
+      "notes": "Candidate only."
+    },
+    {
+      "googlePlaceId": "ChIJrQJoMmuMGGARJ8q86MIn6_I",
+      "restaurantName": "スターバックス",
+      "status": "candidate",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": ["スターバックス コーヒー 九段下店"],
+        "evidence": [
+          {
+            "provider": "official",
+            "sourceUrl": "https://store.starbucks.co.jp/detail-111/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Official store page verifies the exact 九段下店."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "recommendedDishes",
+          "classification": "C",
+          "nameOriginal": "紅はるかと安納芋の焼き蜜芋ケーキ",
+          "nameZhCandidate": null,
+          "evidenceClass": "official_brand_campaign_candidate",
+          "recommendationSemantics": "このケーキのおすすめは、冷やして味わうこと",
+          "provider": "official",
+          "sourceUrl": "https://stories.starbucks.co.jp/press/2026/pr-2026-0826/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "brand",
+          "evidenceText": "『紅はるかと安納芋の焼き蜜芋ケーキ』／全国のスターバックス店舗（一部店舗を除く）",
+          "confidence": "low",
+          "notes": "Brand campaign wording and availability do not prove this exact branch; current product page also reports temporary stock-out."
+        }
+      ],
+      "attemptedSources": [
+        {
+          "provider": "official",
+          "sourceUrl": "https://store.starbucks.co.jp/detail-111/",
+          "checkedAt": "2026-09-14",
+          "result": "Exact branch verified."
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "https://stories.starbucks.co.jp/press/2026/pr-2026-0826/",
+          "checkedAt": "2026-09-14",
+          "result": "Current nationwide campaign checked; exact branch inclusion not established."
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "https://menu.starbucks.co.jp/4524785644830",
+          "checkedAt": "2026-09-14",
+          "result": "Concrete product confirmed; temporary stock-out noted."
+        }
+      ],
+      "blocker": null,
+      "notes": "Candidate only."
+    },
+    {
+      "googlePlaceId": "ChIJfQfeJgOMGGARWQWfZEgZoYg",
+      "restaurantName": "竹隆庵岡埜神田店",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": ["竹隆庵岡埜 神田店"],
+        "evidence": [
+          {
+            "provider": "official",
+            "sourceUrl": "https://www.chikuryuan-okano.com/info.html",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Official store guide identifies 神田店 at 神田須田町1-5, TEL 03-5296-5555."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "カリーどら焼き",
+          "nameZhCandidate": null,
+          "evidenceClass": "official_branch_limited_menu_item",
+          "recommendationSemantics": "",
+          "provider": "official",
+          "sourceUrl": "https://www.chikuryuan-okano.com/info.html",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "神田店／店舗限定の商品／カリーどら焼き",
+          "confidence": "high",
+          "notes": "Concrete branch-limited product, but no recommendation/signature/popularity semantics; F only."
+        }
+      ],
+      "attemptedSources": [
+        {
+          "provider": "official",
+          "sourceUrl": "https://www.chikuryuan-okano.com/info.html",
+          "checkedAt": "2026-09-14",
+          "result": "Exact 神田店 and branch-limited concrete item verified; no strict recommendation wording."
+        }
+      ],
+      "blocker": null,
+      "notes": "No R promoted."
+    }
+  ],
+  "policyAttestation": {
+    "paidGoogleDataApiCalls": 0,
+    "canonicalMasterEditedDirectly": false,
+    "proximityOnlyIdentityBindingUsed": false,
+    "recommendationWithoutExplicitSemanticsAdded": false,
+    "accessRestrictionBypassUsed": false
+  }
+}
