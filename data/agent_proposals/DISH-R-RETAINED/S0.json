@@ -1,0 +1,281 @@
+{
+  "schemaVersion": 1,
+  "proposalOnly": true,
+  "marker": "DISH-R-RETAINED",
+  "shard": "S0",
+  "recordEncoding": "compact-v1",
+  "expansionContract": "data/agent_library/proposal-template.json",
+  "agentRunId": "chatgpt-retained-s0-20260914",
+  "sourceQueue": "data/dish_batch_plan.json",
+  "sourceQueueCommit": "820b11aa5384d5aa548463b9f730df68d94000b0",
+  "generatedAt": "2026-09-14T18:36:57+09:00",
+  "summary": {
+    "assignedRows": 46,
+    "reviewedRows": 46,
+    "acceptedEvidenceRows": 12,
+    "candidateRows": 5,
+    "noEvidenceRows": 29,
+    "blockedRows": 0,
+    "skippedAlreadyCompleteRows": 0,
+    "recommendedDishProposalsR": 43,
+    "featuredDishProposalsF": 6,
+    "candidateDishProposalsC": 2
+  },
+  "acceptedRecords": [
+    {
+      "googlePlaceId": "ChIJBfClgBCMGGAR2sN5CvGoDrU",
+      "restaurantName": "JAZZ OLYMPUS!",
+      "provider": "tabelog",
+      "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13315798/dtlmenu/",
+      "dishes": [
+        {"class":"R","nameOriginal":"一関スモーク生ハム","semantics":"おすすめ"},
+        {"class":"R","nameOriginal":"ブルーチーズとドライフルーツ","semantics":"おすすめ"}
+      ],
+      "note": "Structured retained menu marks both concrete items as おすすめ."
+    },
+    {
+      "googlePlaceId": "ChIJbS0GS2uMGGARE_vV-2kWt08",
+      "restaurantName": "寿司政",
+      "provider": "tabelog",
+      "sourceUrl": "https://tabelog.com/tokyo/A1309/A130906/13000407/dtlmenu/lunch/",
+      "dishes": [
+        {"class":"F","nameOriginal":"梅にぎり","semantics":""},
+        {"class":"F","nameOriginal":"竹にぎり","semantics":""},
+        {"class":"F","nameOriginal":"松にぎり","semantics":""},
+        {"class":"F","nameOriginal":"おまかせにぎり","semantics":""},
+        {"class":"F","nameOriginal":"梅ちらし","semantics":""},
+        {"class":"F","nameOriginal":"松ちらし","semantics":""}
+      ],
+      "note": "Current structured lunch menu supports F only. The recommended omakase course was not transferred to component dishes."
+    },
+    {
+      "googlePlaceId": "ChIJqzUQMNeNGGARKaFqd4nH7c4",
+      "restaurantName": "肉盛ホルモン",
+      "provider": "tabelog",
+      "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13273257/",
+      "dishes": [
+        {"class":"R","nameOriginal":"網レバー","semantics":"人気・自慢"},
+        {"class":"R","nameOriginal":"和牛ハツ","semantics":"人気・自慢"},
+        {"class":"R","nameOriginal":"低温調理レバー","semantics":"人気・自慢"}
+      ],
+      "note": "Restaurant-operated page explicitly identifies these as popular items and dishes to try."
+    },
+    {
+      "googlePlaceId": "ChIJjxCnlD-MGGARerygZLVT-m4",
+      "restaurantName": "とりちゅう 水道橋店",
+      "provider": "tabelog",
+      "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13217314/dtlmenu/",
+      "dishes": [
+        {"class":"R","nameOriginal":"2種黒焼き（並）","semantics":"大人気"},
+        {"class":"R","nameOriginal":"せせり黒焼き","semantics":"人気"},
+        {"class":"R","nameOriginal":"骨なし手羽黒焼き","semantics":"人気"},
+        {"class":"R","nameOriginal":"皮西京味噌漬け","semantics":"スタッフ人気No.1"},
+        {"class":"R","nameOriginal":"若鶏漬け南蛮","semantics":"名物"},
+        {"class":"R","nameOriginal":"鶏出汁香る鶏飯","semantics":"名物"}
+      ],
+      "note": "Retained structured menu contains explicit popularity and specialty semantics."
+    },
+    {
+      "googlePlaceId": "ChIJkX3sF0GMGGARR-L4Og4cNBU",
+      "restaurantName": "日本料理 平川 ホテルメトポリタン エドモント",
+      "provider": "official",
+      "sourceUrl": "https://jrdc204.nihonhotel.com/restaurant/list/hirakawa/hirakawa/fair_recommend.html",
+      "dishes": [
+        {"class":"R","nameOriginal":"黒毛和牛きのこ鍋","semantics":"料理長おすすめの逸品"},
+        {"class":"R","nameOriginal":"きのこ土瓶蒸し","semantics":"料理長おすすめの逸品"},
+        {"class":"R","nameOriginal":"そばがき揚げ出汁　粒そばあん掛け","semantics":"料理長おすすめの逸品"}
+      ],
+      "note": "Targeted exact-branch check found an official seasonal chef-recommendation page."
+    },
+    {
+      "googlePlaceId": "ChIJRxygEQCNGGARapvEL04ggA4",
+      "restaurantName": "中華風創作ダイニングGokuh",
+      "provider": "tabelog",
+      "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13304648/dtlmenu/",
+      "dishes": [
+        {"class":"R","nameOriginal":"ネギワンタン","semantics":"おすすめ"},
+        {"class":"R","nameOriginal":"中華サラダ","semantics":"おすすめ"},
+        {"class":"R","nameOriginal":"挽肉納豆炒め","semantics":"おすすめ"},
+        {"class":"R","nameOriginal":"カボチャのニンニク炒め","semantics":"おすすめ"},
+        {"class":"R","nameOriginal":"ナスのニンニク炒め","semantics":"おすすめ"},
+        {"class":"R","nameOriginal":"エビと玉子炒め","semantics":"おすすめ"}
+      ],
+      "note": "Operator-published retained menu explicitly marks all six concrete items おすすめ."
+    },
+    {
+      "googlePlaceId": "ChIJvX_t7eONGGARXncKVb9I85E",
+      "restaurantName": "Gracia",
+      "provider": "tabelog",
+      "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13155300/dtlmenu/",
+      "dishes": [
+        {"class":"R","nameOriginal":"タパスの盛り合わせ","semantics":"おすすめ・大人気"},
+        {"class":"R","nameOriginal":"薪焼バックリブ","semantics":"おすすめ"},
+        {"class":"R","nameOriginal":"焼野菜のサラダ（薪焼仕上げ）","semantics":"おすすめ"},
+        {"class":"R","nameOriginal":"ラムチョップのグリル","semantics":"当店1番の売り商品"},
+        {"class":"R","nameOriginal":"「ラムラックのロースト」","semantics":"おすすめ"},
+        {"class":"R","nameOriginal":"揚げたてチュロス","semantics":"おすすめ"}
+      ],
+      "note": "Current operator-published menu contains explicit recommendation or strongest-seller semantics."
+    },
+    {
+      "googlePlaceId": "ChIJr3knVhCMGGARzV5mJJqG8_c",
+      "restaurantName": "はちまき",
+      "provider": "tabelog",
+      "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13022740/dtlmenu/lunch/",
+      "dishes": [
+        {"class":"R","nameOriginal":"野菜天丼","semantics":"大人気"},
+        {"class":"R","nameOriginal":"名物穴子海老天丼","semantics":"名物"},
+        {"class":"R","nameOriginal":"松天麩羅重","semantics":"一押し"}
+      ],
+      "note": "Structured retained menu provides explicit popularity/specialty/push semantics."
+    },
+    {
+      "googlePlaceId": "ChIJufenb1iNGGARHcVIujzaKDw",
+      "restaurantName": "座135 神保町店",
+      "provider": "tabelog",
+      "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13255328/dtlmenu/",
+      "dishes": [
+        {"class":"R","nameOriginal":"海鮮の麻辣湯","semantics":"おすすめ"}
+      ],
+      "note": "Current operator-published menu explicitly marks the dish おすすめ."
+    },
+    {
+      "googlePlaceId": "ChIJ_5AELhqMGGARmyQyTWPFbJg",
+      "restaurantName": "大衆IZAKAYAエイト 御茶ノ水店",
+      "provider": "tabelog",
+      "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13033304/dtlmenu/",
+      "dishes": [
+        {"class":"R","nameOriginal":"エイトの海賊蒸し","semantics":"名物"},
+        {"class":"R","nameOriginal":"本鮪入り　刺身盛り合わせ","semantics":"名物"},
+        {"class":"R","nameOriginal":"大盛り！もやし炒め","semantics":"名物"},
+        {"class":"R","nameOriginal":"エイトのオリジナル餃子","semantics":"名物"},
+        {"class":"R","nameOriginal":"青唐辛子入り麻婆豆腐","semantics":"名物"},
+        {"class":"R","nameOriginal":"牛肉コロッケぽてさら","semantics":"名物"}
+      ],
+      "note": "All six are under the explicit エイトの名物 menu section."
+    },
+    {
+      "googlePlaceId": "ChIJ24WeeD-MGGARwdUwZC9A19E",
+      "restaurantName": "大衆IZAKAYAエイト 水道橋店",
+      "provider": "tabelog",
+      "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13029544/dtlmenu/",
+      "dishes": [
+        {"class":"R","nameOriginal":"エイトの海賊蒸し","semantics":"名物"},
+        {"class":"R","nameOriginal":"本鮪入り　刺身盛り合わせ","semantics":"名物"},
+        {"class":"R","nameOriginal":"大盛り！もやし炒め","semantics":"名物"},
+        {"class":"R","nameOriginal":"エイトのオリジナル餃子","semantics":"名物"},
+        {"class":"R","nameOriginal":"青唐辛子入り麻婆豆腐","semantics":"名物"},
+        {"class":"R","nameOriginal":"牛肉コロッケぽてさら","semantics":"名物"}
+      ],
+      "note": "All six are under the explicit エイトの名物 menu section."
+    },
+    {
+      "googlePlaceId": "ChIJ5xbNmR6NGGARxdGxYV8ulBo",
+      "restaurantName": "誉 ほまれ 水道橋駅前店",
+      "provider": "hotpepper",
+      "sourceUrl": "https://www.hotpepper.jp/strJ004537277/food/",
+      "dishes": [
+        {"class":"R","nameOriginal":"串カツ盛り合わせ3種/串カツ盛り合わせ5種/串カツ盛り合わせ7種/串カツ盛り合わせ10種","semantics":"お勧め"}
+      ],
+      "note": "Food page explicitly recommends starting with this concrete assortment menu entry."
+    }
+  ],
+  "candidateRecords": [
+    {
+      "googlePlaceId":"ChIJFecIYxaMGGAR9L6nuctXV38",
+      "restaurantName":"冨多葉",
+      "provider":"tabelog",
+      "sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13068810/",
+      "blocker":"Usable dish list is historical takeout-era material; current validity and strict recommendation semantics are not established.",
+      "dishes":[]
+    },
+    {
+      "googlePlaceId":"ChIJNeiJsjqNGGARUwCL2ZS0u34",
+      "restaurantName":"日本式カレー 弐番亭",
+      "provider":"tabelog",
+      "sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13309507/",
+      "blocker":"Retained Tabelog restaurant ID differs from the currently discoverable page; automatic rebinding is prohibited.",
+      "alternateUrl":"https://tabelog.com/tokyo/A1310/A131003/13296863/",
+      "dishes":[]
+    },
+    {
+      "googlePlaceId":"ChIJi5rmZBeMGGAR6KMwBn12uqk",
+      "restaurantName":"Ochanomizu Terrace SUPER DRY",
+      "provider":"tabelog",
+      "sourceUrl":"https://tabelog.com/tokyo/A1310/A131002/13293541/",
+      "sourceAlias":"KEEL'S BAR",
+      "blocker":"Possible rename/successor; frozen Place ID continuity is not yet proven.",
+      "dishes":[{"class":"C","nameOriginal":"チキンバスケットランチ","semantics":"人気・おすすめ"}]
+    },
+    {
+      "googlePlaceId":"ChIJp3be1AeMGGARgyQQWnBT42s",
+      "restaurantName":"大手町ワインバル 八十郎商店",
+      "provider":"tabelog",
+      "sourceUrl":"https://tabelog.com/tokyo/A1302/A130201/13205852/dtlmenu/",
+      "blocker":"Recommendation wording may attach to the components selected by the chef rather than the assortment item itself.",
+      "dishes":[{"class":"C","nameOriginal":"本日の前菜盛り合わせ ３種","semantics":"chef-selected recommendations"}]
+    },
+    {
+      "googlePlaceId":"ChIJu2DH_ASMGGARm2aRtwA0sms",
+      "restaurantName":"ミトシロバル",
+      "provider":"tabelog",
+      "sourceUrl":"https://tabelog.com/tokyo/A1310/A131002/13122107/",
+      "blocker":"Retained listing is 掲載保留 / operational status uncertain; recommendation evidence is course-level or stale.",
+      "dishes":[]
+    }
+  ],
+  "noEvidenceRecords": [
+    {"googlePlaceId":"ChIJTXiCRgCNGGARvWgJGZvFcME","restaurantName":"ちゃちゃ屋","provider":"hotpepper","sourceUrl":"https://www.hotpepper.jp/strJ004576187/","reason":"no_strict_dish_r"},
+    {"googlePlaceId":"ChIJ0_2CIRGMGGARZxuMcOPWxwk","restaurantName":"俺の創作らぁめん 極や 神田 神保町店","provider":"tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13132295/","reason":"review_only_popularity_excluded"},
+    {"googlePlaceId":"ChIJ4V3UcxSMGGAR6WFCu53DN_k","restaurantName":"鶴八","provider":"tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13000419/","reason":"review_only_dishes_excluded"},
+    {"googlePlaceId":"ChIJ95nhlhaMGGARIziH3PEAOqY","restaurantName":"焼鳥 酉たけ","provider":"tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13169956/","reason":"no_strict_dish_r"},
+    {"googlePlaceId":"ChIJcduc-w2MGGARbhku_r53Png","restaurantName":"Mamma Mia!","provider":"tabelog","sourceUrl":"https://tabelog.com/tokyo/A1302/A130201/13010997/","reason":"no_structured_dish_menu"},
+    {"googlePlaceId":"ChIJd9-v6RqMGGAR3IJy6wiM0aI","restaurantName":"とんかつ かつ屋","provider":"tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131002/13077854/","reason":"menu_photos_or_reviews_only"},
+    {"googlePlaceId":"ChIJg98k8D-MGGARi_SjDVTZlGs","restaurantName":"横浜家系ラーメン田中","provider":"tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13019056/","reason":"review_only_dishes_excluded"},
+    {"googlePlaceId":"ChIJHR3eZRyMGGARIuKl5cgd_vs","restaurantName":"萬楽飯店","provider":"tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13139541/","reason":"no_structured_dish_menu"},
+    {"googlePlaceId":"ChIJJdyitLiNGGARk0wEjxFkuKM","restaurantName":"鰹が昇るまで","provider":"tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13290110/","reason":"review_only_dishes_excluded"},
+    {"googlePlaceId":"ChIJJQtsNtCNGGARXHMI26d4tG4","restaurantName":"力也商店","provider":"tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13235012/","reason":"changing_lunch_info_not_stable_r"},
+    {"googlePlaceId":"ChIJK-zPABCMGGARXZAJ9C8lHCY","restaurantName":"青新軒","provider":"tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131002/13037282/","reason":"review_only_recommendation_excluded"},
+    {"googlePlaceId":"ChIJMYM_ELeNGGAR4_Rjpux4b9k","restaurantName":"Cafe Lish","provider":"tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13287276/","reason":"no_strict_dish_r"},
+    {"googlePlaceId":"ChIJQ0pBHBCMGGARFmZBTA87HQA","restaurantName":"神田錦町 更科","provider":"tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131002/13040724/","reason":"no_strict_dish_r"},
+    {"googlePlaceId":"ChIJQypjX7ONGGARijJegx9USMg","restaurantName":"祭","provider":"tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131002/13021575/","reason":"review_recommendation_excluded"},
+    {"googlePlaceId":"ChIJSQlU7RCMGGARZBwoPe_ciQw","restaurantName":"レストラン カロリー","provider":"tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13000602/","reason":"review_recommendation_excluded"},
+    {"googlePlaceId":"ChIJTTQAOBGMGGARqZjri8Wchto","restaurantName":"豚大学 神保町校舎","provider":"tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13160504/","reason":"no_strict_dish_r"},
+    {"googlePlaceId":"ChIJWTLuiBaMGGARYTzFFpLy_f8","restaurantName":"仙臺","provider":"tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13186446/","reason":"no_structured_dish_r"},
+    {"googlePlaceId":"ChIJy-K2ixaMGGAR_j1VN4FzFj8","restaurantName":"肥後一文字や","provider":"tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13126581/","reason":"review_only_dishes_excluded"},
+    {"googlePlaceId":"ChIJzQVI5xqMGGAR88irvCKhTyk","restaurantName":"鳥益","provider":"tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131002/13064380/","reason":"no_strict_dish_r"},
+    {"googlePlaceId":"ChIJ2336NQCNGGARMhx9jwZ4BI4","restaurantName":"ワイルドレッドパスタ神保町店","provider":"tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13308781/","reason":"no_structured_dish_menu"},
+    {"googlePlaceId":"ChIJ52UnSsmNGGARPg_XbR0VpS4","restaurantName":"上海味道 水道橋","provider":"hotpepper","sourceUrl":"https://www.hotpepper.jp/strJ001262977/","reason":"no_strict_dish_r_in_retained_source"},
+    {"googlePlaceId":"ChIJbTOaERGMGGAR0Me4b7PxZ7o","restaurantName":"キッチン南海 神保町店","provider":"tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13249021/dtlmenu/","reason":"structured_menu_but_no_strict_r"},
+    {"googlePlaceId":"ChIJ17dALKONGGARwpbTKxQ1_Mw","restaurantName":"餃子酒場・吉","provider":"tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13272984/","reason":"existing_f_no_strict_r"},
+    {"googlePlaceId":"ChIJQ7aufj-MGGARdknUqae7iTo","restaurantName":"台北","provider":"tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13011063/","reason":"existing_f_no_strict_r"},
+    {"googlePlaceId":"ChIJd7U9HSKNGGARCU6Piavo7VY","restaurantName":"Osteria FELME","provider":"hotpepper","sourceUrl":"https://www.hotpepper.jp/strJ004544845/","reason":"course_or_general_recommendation_only"},
+    {"googlePlaceId":"ChIJdSv8aRGNGGAR45ZkkRbeOMY","restaurantName":"新中華 李記","provider":"tabelog","sourceUrl":"https://tabelog.com/tokyo/A1309/A130906/13276273/","reason":"structured_menu_but_no_strict_r"},
+    {"googlePlaceId":"ChIJIxVise2NGGARKlUSF6LV2y4","restaurantName":"ごまいち 飯田橋店","provider":"tabelog","sourceUrl":"https://tabelog.com/tokyo/A1309/A130905/13276064/","reason":"structured_menu_but_no_strict_r"},
+    {"googlePlaceId":"ChIJkUInPFWNGGARv72wfB8qGgM","restaurantName":"マロリーポークステーキ 大手町ホトリア店","provider":"tabelog","sourceUrl":"https://tabelog.com/tokyo/A1302/A130201/13269735/","reason":"side_set_course_or_review_semantics_only"},
+    {"googlePlaceId":"ChIJN9mduz-MGGAR53bCFr3JZro","restaurantName":"SAPANA サパナ 水道橋駅西口店","provider":"hotpepper","sourceUrl":"https://www.hotpepper.jp/strJ001126936/","reason":"course_or_general_recommendation_only"}
+  ],
+  "reasonCodes": {
+    "no_strict_dish_r":"No explicit recommendation/popularity/signature semantics tied to a concrete dish.",
+    "no_structured_dish_menu":"Retained branch source exposes no stable structured dish menu.",
+    "review_only_popularity_excluded":"Popularity exists only in user review prose and is excluded.",
+    "review_only_dishes_excluded":"Dish claims exist only in user review prose and are excluded.",
+    "review_recommendation_excluded":"Recommendation exists only in user review prose and is excluded.",
+    "review_only_recommendation_excluded":"Recommendation exists only in user review prose and is excluded.",
+    "menu_photos_or_reviews_only":"Only menu photos/reviews are available; no structured retained evidence.",
+    "changing_lunch_info_not_stable_r":"Changing lunch information is not a stable strict recommendation source.",
+    "no_structured_dish_r":"No structured retained dish-level recommendation evidence.",
+    "no_strict_dish_r_in_retained_source":"Exact retained source has no strict dish-level R evidence.",
+    "structured_menu_but_no_strict_r":"Concrete menu exists but no strict recommendation semantics; do not promote F to R.",
+    "existing_f_no_strict_r":"Existing featured/menu evidence remains F; no strict R semantics.",
+    "course_or_general_recommendation_only":"Recommendation language applies to a course or general dining context, not a concrete dish.",
+    "side_set_course_or_review_semantics_only":"Only side-set/course/review recommendation language was found; not promoted to R."
+  },
+  "policyAttestation": {
+    "paidGoogleDataApiCalls": 0,
+    "canonicalMasterEditedDirectly": false,
+    "proximityOnlyIdentityBindingUsed": false,
+    "recommendationWithoutExplicitSemanticsAdded": false,
+    "accessRestrictionBypassUsed": false
+  }
+}

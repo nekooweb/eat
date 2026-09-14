@@ -48,4 +48,33 @@ assert.equal(rerun.status,0,rerun.stderr||rerun.stdout);
 const retained=JSON.parse(fs.readFileSync(emptyOutput,'utf8'));
 assert.equal(retained.rows[0].recommendedDishes.length,7,'no-match refresh must not truncate retained evidence');
 
+// Central-review source snapshots are additive provenance. A later crawl or
+// repeated central review must not erase them while refreshing the same key.
+const snapshotA={proposalPath:'data/agent_reviews/DISH-R-OFFICIAL/S0.json',dishProposal:{nameOriginal:'テスト1',evidenceText:'first retained source text'}};
+const snapshotB={proposalPath:'data/agent_reviews/DISH-R-OFFICIAL/S0.json',dishProposal:{nameOriginal:'テスト1',evidenceText:'second independently retained source text'}};
+const provenancePrevious={rows:[{googlePlaceId:pid,recommendedDishes:[dish(1,'2026-09-01',{reviewedSourceEvidence:[snapshotA]})]}]};
+const provenanceCurrent={rows:[{googlePlaceId:pid,recommendedDishes:[dish(1,'2026-09-14',{reviewedSourceEvidence:[snapshotB,snapshotB]})]}]};
+fs.writeFileSync(previousPath,JSON.stringify(provenancePrevious));
+fs.writeFileSync(currentPath,JSON.stringify(provenanceCurrent));
+const reviewedMerge=spawnSync(process.execPath,[path.join(ROOT,'scripts/merge_google_inventory_detail_evidence.mjs'),previousPath,currentPath,outputPath],{encoding:'utf8'});
+assert.equal(reviewedMerge.status,0,reviewedMerge.stderr);
+const snapshots=JSON.parse(fs.readFileSync(outputPath)).rows[0].recommendedDishes[0].reviewedSourceEvidence;
+assert.equal(snapshots.length,2,'Distinct full source snapshots survive same-key merge without duplicates');
+fs.writeFileSync(currentPath,JSON.stringify({rows:[{googlePlaceId:pid,recommendedDishes:[dish(1,'2026-09-15')]}]}));
+const laterCrawl=spawnSync(process.execPath,[path.join(ROOT,'scripts/merge_google_inventory_detail_evidence.mjs'),outputPath,currentPath,emptyOutput],{encoding:'utf8'});
+assert.equal(laterCrawl.status,0,laterCrawl.stderr);
+assert.deepEqual(JSON.parse(fs.readFileSync(emptyOutput)).rows[0].recommendedDishes[0].reviewedSourceEvidence,snapshots,
+  'A newer ordinary collector item must retain the prior central-review snapshots');
+
+for (const invalid of [
+  {rows:[provenanceCurrent.rows[0],provenanceCurrent.rows[0]]},
+  {rows:[{googlePlaceId:pid,recommendedDishes:[{}]}]}
+]) {
+  fs.writeFileSync(currentPath,JSON.stringify(invalid));
+  const beforeOutput=fs.readFileSync(outputPath,'utf8');
+  const rejected=spawnSync(process.execPath,[path.join(ROOT,'scripts/merge_google_inventory_detail_evidence.mjs'),previousPath,currentPath,outputPath],{encoding:'utf8'});
+  assert.notEqual(rejected.status,0,'Duplicate rows and malformed dishes must fail instead of silently dropping evidence');
+  assert.equal(fs.readFileSync(outputPath,'utf8'),beforeOutput,'Invalid input must not overwrite the output');
+}
+
 console.log(JSON.stringify({status:'pass',retainedItems:7,distinctNewItemPreserved:true,richerDuplicateSelected:true,noMatchRefreshPreserved:true}));

@@ -2,6 +2,31 @@
 
 更新日期：2026-09-14。
 
+## 2026-09-14 20:06 JST：中央审查入口实施中
+
+本轮基于最新基线执行 `reload_data.py --public-only` 后，实际范围为 Official 219、Retained 318，共 537 行。旧队列的 Minatoya 官网已被既有字段隔离规则移除，该行转入 Discovery；不再沿用错误来源。原 220 / 318 数量仅是下文保留的历史快照。
+
+新增审查层保持原始 proposal 不变：
+
+```text
+data/agent_proposals/<marker>/*
+  -> 完整原文、身份、时效与 R/F/C 审查及重复协调
+  -> data/agent_reviews/<marker>/Sx.json
+  -> 中央 reviewer 批准每份文件的 SHA-256
+  -> build_reviewed_agent_dish_evidence.mjs（仅输出 _audit 文件）
+  -> merge_google_inventory_detail_evidence.mjs
+  -> correct_dish_specificity_evidence.mjs + evidence audit
+  -> reload_data.py + 逐证据保留/身份/实际增量审计
+```
+
+审查适配器与增量审计已有通过的回归测试，但本轮 manifest 仍为 `pending_central_review`，禁止直接导入。适配器不会把候选、无证据、访问受限或跳过行写进 R/F。只有精确匹配或逐项审查的原菜名中文规范化可以输出，不能用泛称吞掉具体菜品。
+
+自动校验检查结构、队列版本、批准文件哈希、身份名称、来源字段、日期和推荐语义标记；它不能证明网页原文或分店对应关系真实。独立 reviewer 必须读取实际来源并核对上下文。明确的等价表达不能仅因关键词表漏收而降级，例如直接修饰具体菜品的「自信の一品」；反之，「伝統」「当店オリジナル」等描述不自动形成 R。
+
+维护合并器已增加完整中央审查来源快照的去重保留：较新采集记录更新同一 evidence key 时，也必须保留既有 `reviewedSourceEvidence`。原文、来源身份及证据快照保留在维护层，公开展示限量不改变证据存储。
+
+每个 shard 的真实完成状态和每次验证结果持续更新到[Official / Retained 日志](logs/2026-09-14-official-retained-completion.md)，而不是在全部结束后追填。当前公开覆盖仍为 R 595、F 675、展示 740；尚无本轮新证据导致的覆盖增量。
+
 ## 2026-09-14 并行 Agent proposal 层
 
 当前推荐菜补全新增一个 proposal-only 并行层，目的不是让多个 Agent 直接写生产数据，而是让它们在固定 shard 内收集可重放的来源证据，再由中央 reviewer 统一决定是否进入 canonical merge。
