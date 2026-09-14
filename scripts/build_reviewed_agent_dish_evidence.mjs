@@ -10,7 +10,9 @@ import { DISH_RULES, RECOMMENDATION_MARKER, normalizePlainText } from './recomme
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 export const LANES = Object.freeze({
   'DISH-R-OFFICIAL': 'official_crawl',
-  'DISH-R-RETAINED': 'retained_source_mining'
+  'DISH-R-RETAINED': 'retained_source_mining',
+  'DISH-R-DISCOVERY': 'independent_source_discovery',
+  'DISH-F-SOURCE': 'official_or_retained_featured'
 });
 const STATUS_FIELDS = Object.freeze({
   accepted_evidence: 'acceptedEvidenceRows', candidate: 'candidateRows', no_evidence: 'noEvidenceRows',
@@ -64,7 +66,7 @@ export function auditReviewCoverage(assignments, documents, { sourceQueueCommit 
   const expectedQueueCommit = sourceQueueCommit || documents[0]?.document.sourceQueueCommit;
   const expected = new Map();
   for (const row of assignments) {
-    if (!Object.values(LANES).includes(row.lane)) throw new Error('Assignment outside Official/Retained scope');
+    if (!Object.values(LANES).includes(row.lane)) throw new Error('Assignment outside supported reviewed-evidence scope');
     if (expected.has(row.googlePlaceId)) throw new Error('Duplicate assignment Place ID');
     expected.set(row.googlePlaceId, row);
   }
@@ -239,7 +241,8 @@ function main() {
   const assignments = manifest.assignmentSnapshot.rows;
   if (!/^[0-9a-f]{40}$/.test(manifest.assignmentSnapshot.sourceQueueCommit || '')) throw new Error('Explicit assignment queue commit provenance required');
   const expected = new Map(assignments.map(row => [row.googlePlaceId, row]));
-  const currentRows = currentPlan.rows.filter(row => Object.values(LANES).includes(row.lane));
+  const assignmentScopes = new Set(assignments.map(row => `${row.lane}:${row.shard}`));
+  const currentRows = currentPlan.rows.filter(row => assignmentScopes.has(`${row.lane}:${row.shard}`));
   for (const row of currentRows) {
     const original = expected.get(row.googlePlaceId);
     if (!original || original.lane !== row.lane || original.shard !== row.shard) {
