@@ -1,0 +1,323 @@
+{
+  "schemaVersion": 1,
+  "proposalOnly": false,
+  "marker": "DISH-F-SOURCE",
+  "shard": "S5",
+  "agentRunId": "DISH-F-SOURCE:S5:20260914-e2e-self-review",
+  "sourceQueue": "data/dish_batch_plan.json",
+  "sourceQueueCommit": "91a85bb3cf4c49a8e64181eeeafdbecd96e14e50",
+  "generatedAt": "2026-09-14T22:35:00+09:00",
+  "summary": {
+    "assignedRows": 7,
+    "reviewedRows": 7,
+    "acceptedEvidenceRows": 3,
+    "candidateRows": 1,
+    "noEvidenceRows": 3,
+    "blockedRows": 0,
+    "skippedAlreadyCompleteRows": 0
+  },
+  "records": [
+    {
+      "googlePlaceId": "ChIJ____DxGMGGARxguBsW1lnd0",
+      "restaurantName": "かねいち",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "かねいち"
+        ],
+        "evidence": [
+          {
+            "provider": "sourceWebsite",
+            "sourceUrl": "https://r.gnavi.co.jp/gcu3400/menu2/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "exact_branch_identity",
+            "note": "Exact branch menu and phone 050-5484-1926; service listing identifies かねいち."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "うな玉丼",
+          "nameZhCandidate": null,
+          "evidenceClass": "merchant_hosted_branch_menu",
+          "recommendationSemantics": "",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://r.gnavi.co.jp/gcu3400/menu2/",
+          "sourceTitle": "かねいち メニュー：昼の部",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "うな玉丼 上 1,500円 並 1,200円",
+          "confidence": "high",
+          "notes": ""
+        },
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "うなぎ白焼き膳",
+          "nameZhCandidate": null,
+          "evidenceClass": "merchant_hosted_branch_menu",
+          "recommendationSemantics": "",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://r.gnavi.co.jp/gcu3400/menu2/",
+          "sourceTitle": "かねいち メニュー：昼の部",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "うなぎ白焼き膳 3,500円",
+          "confidence": "high",
+          "notes": ""
+        }
+      ],
+      "attemptedSources": [
+        "https://r.gnavi.co.jp/gcu3400/menu2/",
+        "https://r.gnavi.co.jp/gcu3400/menu1/"
+      ],
+      "blocker": null,
+      "notes": "Exact current branch menu provides ordinary concrete menu items. Items explicitly marked おすすめ were not misclassified as F.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-F-SOURCE/S5.json",
+          "recordIndex": 0,
+          "sourceStatus": "accepted_evidence"
+        }
+      ],
+      "reviewReasoning": "Independent second pass confirmed current assignment membership, frozen identity, exact branch binding, concrete source-native dish text, correct R/F semantics, freshness, reproducible URL, and no review-prose or cross-branch contamination."
+    },
+    {
+      "googlePlaceId": "ChIJ4SygCUSMGGAR5k9kG84PJi8",
+      "restaurantName": "しゃぶしゃぶ温野菜",
+      "status": "candidate",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "しゃぶしゃぶ温野菜 飯田橋店"
+        ],
+        "evidence": [
+          {
+            "provider": "official_web",
+            "sourceUrl": "https://map.reins.co.jp/onyasai/detail/353571229",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "exact_branch_identity",
+            "note": "Official exact branch page: 飯田橋4-7-8 第3山商ビルiタワー2F, phone 03-5357-1229; 2026-09-14 hours shown."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://map.reins.co.jp/onyasai/detail/353571229",
+        "https://www.onyasai.com/menu/"
+      ],
+      "blocker": null,
+      "notes": "Official 飯田橋店 page confirms this exact branch and says 〔休日昼営業〕通常メニュー, but concrete product names live only on the brand menu; no brand→branch dish propagation was performed.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-F-SOURCE/S5.json",
+          "recordIndex": 1,
+          "sourceStatus": "candidate"
+        }
+      ],
+      "reviewReasoning": "Independent second pass retained this only as candidate because currentness, branch availability, or safe branch-level menu binding is insufficient for canonical integration."
+    },
+    {
+      "googlePlaceId": "ChIJ4V7HsByMGGAR3-Klt48CI28",
+      "restaurantName": "吟ばん",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "吟ばん"
+        ],
+        "evidence": [
+          {
+            "provider": "sourceWebsite",
+            "sourceUrl": "https://r.gnavi.co.jp/a352300/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "exact_branch_identity",
+            "note": "Exact branch at 神田須田町1-17 神田須田町117ビルディングB1; phone 050-5486-0921."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "上ビジネスランチ　上海鮮重か上天婦羅重のセット",
+          "nameZhCandidate": null,
+          "evidenceClass": "merchant_hosted_branch_menu",
+          "recommendationSemantics": "",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://r.gnavi.co.jp/a352300/lunch/",
+          "sourceTitle": "吟ばん ランチメニュー",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "上ビジネスランチ　上海鮮重か上天婦羅重のセット ４４００円 メインが選べる、上海鮮重 か 上天婦羅重",
+          "confidence": "high",
+          "notes": ""
+        }
+      ],
+      "attemptedSources": [
+        "https://r.gnavi.co.jp/a352300/",
+        "https://r.gnavi.co.jp/a352300/lunch/"
+      ],
+      "blocker": null,
+      "notes": "Exact current branch page and recently updated lunch menu provide a concrete ordinary lunch product.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-F-SOURCE/S5.json",
+          "recordIndex": 2,
+          "sourceStatus": "accepted_evidence"
+        }
+      ],
+      "reviewReasoning": "Independent second pass confirmed current assignment membership, frozen identity, exact branch binding, concrete source-native dish text, correct R/F semantics, freshness, reproducible URL, and no review-prose or cross-branch contamination."
+    },
+    {
+      "googlePlaceId": "ChIJeyv8ydyNGGARioyjbHzl6Ec",
+      "restaurantName": "食堂 新",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "食堂 新"
+        ],
+        "evidence": [
+          {
+            "provider": "Hot Pepper",
+            "sourceUrl": "https://www.hotpepper.jp/strJ003648087/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "exact_branch_identity",
+            "note": "Exact current branch at 神田猿楽町1-2-4 冨田屋ビル1F; current availability shown."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://www.hotpepper.jp/strJ003648087/"
+      ],
+      "blocker": null,
+      "notes": "Exact current branch page has strict R wording for 鯖黒煮 and course products, but no suitable ordinary F item text was reproduced; existing R was not duplicated merely to close the F-source lane.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-F-SOURCE/S5.json",
+          "recordIndex": 3,
+          "sourceStatus": "no_evidence"
+        }
+      ],
+      "reviewReasoning": "Independent second pass confirmed no safe current source-native branch dish evidence remained after rejecting stale, user-submitted, review-derived, generic, or cross-branch material."
+    },
+    {
+      "googlePlaceId": "ChIJNwlWn_GNGGARTuUhu_-lydM",
+      "restaurantName": "鮪のシマハラプラス",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "鮪のシマハラプラス"
+        ],
+        "evidence": [
+          {
+            "provider": "Hot Pepper",
+            "sourceUrl": "https://www.hotpepper.jp/strJ003894048/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "exact_branch_identity",
+            "note": "Exact current branch at 神田小川町3-1-19 1階 with current hours."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "シャカシャカポテト　自家製まぐろ節風味",
+          "nameZhCandidate": null,
+          "evidenceClass": "merchant_hosted_branch_menu",
+          "recommendationSemantics": "",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13302217/dtlmenu/",
+          "sourceTitle": "料理メニュー : 鮪のシマハラプラス 小川町店",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "シャカシャカポテト　自家製まぐろ節風味 長時間乾燥させた自家製のまぐろ節を揚げたてのポテトにからめた遊び心ある一皿。",
+          "confidence": "high",
+          "notes": ""
+        }
+      ],
+      "attemptedSources": [
+        "https://www.hotpepper.jp/strJ003894048/",
+        "https://tabelog.com/tokyo/A1310/A131002/13302217/dtlmenu/"
+      ],
+      "blocker": null,
+      "notes": "Exact current branch identity is corroborated by Hot Pepper; current branch menu provides ordinary concrete items. An item without おすすめ marker was selected as F.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-F-SOURCE/S5.json",
+          "recordIndex": 4,
+          "sourceStatus": "accepted_evidence"
+        }
+      ],
+      "reviewReasoning": "Independent second pass confirmed current assignment membership, frozen identity, exact branch binding, concrete source-native dish text, correct R/F semantics, freshness, reproducible URL, and no review-prose or cross-branch contamination."
+    },
+    {
+      "googlePlaceId": "ChIJpTVwIc2NGGARUO8yWk55igw",
+      "restaurantName": "とんかつ檍のカレー屋 いっぺこっぺ神田小川町店",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "とんかつ檍のカレー屋 いっぺこっぺ神田小川町店"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "web search: いっぺこっぺ神田小川町店 メニュー",
+        "Yahoo/Tabelog menu surfaces inspected"
+      ],
+      "blocker": null,
+      "notes": "Concrete menu content available in inspected providers was user-submitted/photo/review-derived rather than a reproducible merchant menu; no leakage into canonical F.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-F-SOURCE/S5.json",
+          "recordIndex": 5,
+          "sourceStatus": "no_evidence"
+        }
+      ],
+      "reviewReasoning": "Independent second pass confirmed no safe current source-native branch dish evidence remained after rejecting stale, user-submitted, review-derived, generic, or cross-branch material."
+    },
+    {
+      "googlePlaceId": "ChIJwVPZogOMGGARJe7b3LBQPsM",
+      "restaurantName": "三政",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "三政"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "web search: 三政 神田 メニュー",
+        "Yahoo/Tabelog menu surfaces inspected"
+      ],
+      "blocker": null,
+      "notes": "Exact branch identity is current, but concrete menu evidence found was user-submitted/review-derived; no merchant/source-native current F item was reproduced.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-F-SOURCE/S5.json",
+          "recordIndex": 6,
+          "sourceStatus": "no_evidence"
+        }
+      ],
+      "reviewReasoning": "Independent second pass confirmed no safe current source-native branch dish evidence remained after rejecting stale, user-submitted, review-derived, generic, or cross-branch material."
+    }
+  ],
+  "policyAttestation": {
+    "paidGoogleDataApiCalls": 0,
+    "canonicalMasterEditedDirectly": false,
+    "proximityOnlyIdentityBindingUsed": false,
+    "recommendationWithoutExplicitSemanticsAdded": false,
+    "accessRestrictionBypassUsed": false
+  }
+}
