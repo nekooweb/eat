@@ -1,6 +1,6 @@
 {
   "schemaVersion": 4,
-  "checkedAt": "2026-09-10",
+  "checkedAt": "2026-09-14",
   "policy": {
     "googleIdentityKey": "frozen Place ID only",
     "paidGoogleDataApiCalls": 0,
@@ -32,7 +32,7 @@
     "ordinaryMenuDishBecomesFeaturedOnly": true,
     "shardIndex": 0,
     "shardCount": 1,
-    "source": "already-bound independent official/source websites only",
+    "source": "digest-approved full-template agent reviews",
     "eligibleBindings": [
       "strict_auto",
       "manual_exact"
@@ -155,54 +155,77 @@
     "publicRuntimeCountPolicy": "dynamic; validate runtime stats and public+unpublished catalog reconciliation instead of a fixed named-row count",
     "evidenceStorageItemLimit": null,
     "presentationItemLimitAppliedHere": false,
-    "menuLinkDomainPolicy": "follow only the already-bound hostname, its normalized root/parent, or a child of that root; sibling and unrelated domains are rejected"
+    "menuLinkDomainPolicy": "follow only the already-bound hostname, its normalized root/parent, or a child of that root; sibling and unrelated domains are rejected",
+    "fullSourceEvidenceRetained": true
   },
   "summary": {
-    "catalogTotal": 2804,
-    "publicRuntimeTotal": 1422,
-    "queueEligibleIds": 294,
-    "targets": 266,
-    "uniqueOrigins": 242,
-    "sitemapFilesFetched": 507,
-    "menuUrlsDiscovered": 64,
-    "menuPagesFetched": 54,
-    "errorTargets": 3,
-    "evidenceRestaurants": 18,
-    "recommendationRestaurants": 2,
-    "featuredRestaurants": 16,
-    "recommendationItems": 4,
-    "featuredItems": 62,
+    "assignedRows": 49,
+    "reviewedRows": 49,
+    "byMarker": {
+      "DISH-R-OFFICIAL": {
+        "assignedRows": 0,
+        "reviewedRows": 0
+      },
+      "DISH-R-RETAINED": {
+        "assignedRows": 0,
+        "reviewedRows": 0
+      },
+      "DISH-R-DISCOVERY": {
+        "assignedRows": 40,
+        "reviewedRows": 40
+      },
+      "DISH-F-SOURCE": {
+        "assignedRows": 9,
+        "reviewedRows": 9
+      }
+    },
+    "statusCounts": {
+      "accepted_evidence": 7,
+      "candidate": 7,
+      "no_evidence": 34,
+      "blocked": 1,
+      "skipped_already_complete": 0
+    },
+    "acceptedRItems": 1,
+    "acceptedFItems": 6,
+    "acceptedRRestaurants": 1,
+    "acceptedRDistinctDishes": 1,
+    "acceptedFDistinctDishes": 6,
+    "acceptedFOnlyRestaurants": 6,
+    "emittedRItems": 1,
+    "emittedFItems": 6,
+    "translationPendingItems": 0,
+    "currentAssignmentRows": 49,
+    "currentReviewedRows": 49,
+    "completedAssignmentsRemovedByRebuild": 0,
     "previousEvidence": {
       "recommendationRestaurants": 567,
       "featuredRestaurants": 666,
       "evidenceRestaurants": 732,
       "recommendationItems": 1000,
-      "featuredItems": 2662
+      "featuredItems": 2663
     },
     "freshCrawlEvidence": {
-      "recommendationRestaurants": 2,
-      "featuredRestaurants": 16,
-      "evidenceRestaurants": 18,
-      "recommendationItems": 4,
-      "featuredItems": 62
+      "recommendationRestaurants": 1,
+      "featuredRestaurants": 6,
+      "evidenceRestaurants": 7,
+      "recommendationItems": 1,
+      "featuredItems": 6
     },
     "mergedEvidence": {
-      "recommendationRestaurants": 567,
-      "featuredRestaurants": 666,
-      "evidenceRestaurants": 732,
-      "recommendationItems": 1000,
-      "featuredItems": 2666
+      "recommendationRestaurants": 568,
+      "featuredRestaurants": 672,
+      "evidenceRestaurants": 735,
+      "recommendationItems": 1001,
+      "featuredItems": 2669
     },
     "specificityCorrection": {
-      "correctedRestaurants": 5,
-      "correctedItems": 5,
-      "duplicateItemsRemoved": 3,
-      "ruleCounts": {
-        "meat-sushi-over-sushi": 1,
-        "yakisoba-over-soba": 4
-      },
-      "recommendationItemsAfterCorrection": 1000,
-      "featuredItemsAfterCorrection": 2663
+      "correctedRestaurants": 0,
+      "correctedItems": 0,
+      "duplicateItemsRemoved": 0,
+      "ruleCounts": {},
+      "recommendationItemsAfterCorrection": 1001,
+      "featuredItemsAfterCorrection": 2669
     }
   },
   "rows": [
@@ -1880,7 +1903,56 @@
           "evidenceSnippet": "手羽先"
         }
       ],
-      "featuredDishes": []
+      "featuredDishes": [
+        {
+          "nameZh": "鸡翅",
+          "nameJa": "手羽先",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ003559076/food/",
+          "checkedAt": "2026-09-14",
+          "evidenceClass": "hotpepper_menu_text",
+          "evidenceRule": "central-reviewed:F:reviewed-exact-source-native-translation",
+          "evidenceSnippet": "手羽先",
+          "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-F-SOURCE/S3.json",
+              "marker": "DISH-F-SOURCE",
+              "shard": "S3",
+              "sourceQueueCommit": "5179badcdb58ba176cf2d9cf834a02e24c86e736",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [
+                  "かんだば~"
+                ],
+                "evidence": [
+                  {
+                    "provider": "hotpepper",
+                    "sourceUrl": "https://www.hotpepper.jp/strJ003559076/",
+                    "checkedAt": "2026-09-14",
+                    "evidenceType": "branch_page",
+                    "note": "Repository Hot Pepper binding maps frozen Place ID ChIJ04KNRjSNGGARslQbhxXD9As to J003559076 with high confidence/autoEligible; reviewed current provider page retained as exact branch evidence."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "手羽先",
+                "nameZhCandidate": "鸡翅",
+                "evidenceClass": "source_menu_text",
+                "recommendationSemantics": "",
+                "provider": "hotpepper",
+                "sourceUrl": "https://www.hotpepper.jp/strJ003559076/food/",
+                "checkedAt": "2026-09-14",
+                "sourceScope": "branch",
+                "evidenceText": "手羽先",
+                "confidence": "high",
+                "notes": "Exact bound Hot Pepper food page supplies a concrete ordinary menu item; F only."
+              }
+            }
+          ]
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJ08lD_gOMGGAR8oYpyY0SS6w",
@@ -5571,7 +5643,56 @@
           "evidenceSnippet": "国産の鳥を使った炭火焼鳥が自慢の大衆酒場"
         }
       ],
-      "featuredDishes": []
+      "featuredDishes": [
+        {
+          "nameZh": "炸鸡块",
+          "nameJa": "鶏のから揚げ",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ003916931/food/",
+          "checkedAt": "2026-09-14",
+          "evidenceClass": "hotpepper_menu_text",
+          "evidenceRule": "central-reviewed:F:reviewed-exact-source-native-translation",
+          "evidenceSnippet": "鶏のから揚げ",
+          "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-F-SOURCE/S3.json",
+              "marker": "DISH-F-SOURCE",
+              "shard": "S3",
+              "sourceQueueCommit": "5179badcdb58ba176cf2d9cf834a02e24c86e736",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [
+                  "鳥一番"
+                ],
+                "evidence": [
+                  {
+                    "provider": "hotpepper",
+                    "sourceUrl": "https://www.hotpepper.jp/strJ003916931/",
+                    "checkedAt": "2026-09-14",
+                    "evidenceType": "branch_page",
+                    "note": "Repository Hot Pepper binding maps this frozen Place ID to J003916931 with high confidence/autoEligible; provider branch page was reviewed before accepting menu evidence."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "鶏のから揚げ",
+                "nameZhCandidate": "炸鸡块",
+                "evidenceClass": "source_menu_text",
+                "recommendationSemantics": "",
+                "provider": "hotpepper",
+                "sourceUrl": "https://www.hotpepper.jp/strJ003916931/food/",
+                "checkedAt": "2026-09-14",
+                "sourceScope": "branch",
+                "evidenceText": "鶏のから揚げ",
+                "confidence": "high",
+                "notes": "Concrete branch-bound menu item from the retained provider; F only."
+              }
+            }
+          ]
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJ5RaPmGqMGGARKhZB9_FIvPs",
@@ -6090,6 +6211,61 @@
           "evidenceSnippet": "イタリアンハンバーグ 2,178円（税込）"
         }
       ]
+    },
+    {
+      "googlePlaceId": "ChIJ6cAc-AaMGGARENpbvkjOucs",
+      "name": "カルネジーオ",
+      "recommendedDishes": [
+        {
+          "nameZh": "厚切烤牛肉200克",
+          "nameJa": "厚切り！ローストビーフ 200g",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13225836/dtlmenu/",
+          "checkedAt": "2026-09-14",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "central-reviewed:R:reviewed-exact-source-native-translation",
+          "evidenceSnippet": "おすすめ！厚切り！ローストビーフ 200g 当店自慢の肉料理",
+          "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-DISCOVERY/S3.json",
+              "marker": "DISH-R-DISCOVERY",
+              "shard": "S3",
+              "sourceQueueCommit": "5179badcdb58ba176cf2d9cf834a02e24c86e736",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [
+                  "カルネジーオ"
+                ],
+                "evidence": [
+                  {
+                    "provider": "official_web",
+                    "sourceUrl": "https://www.carnesio.jp/",
+                    "checkedAt": "2026-09-14",
+                    "evidenceType": "branch_page",
+                    "note": "Exact Carnesio restaurant identity was cross-checked against the repository reviewed OSM binding for this frozen Place ID and the current Carnesio official/site family; branch identity is sufficiently specific for the reviewed current menu evidence."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "recommendedDishes",
+                "classification": "R",
+                "nameOriginal": "厚切り！ローストビーフ 200g",
+                "nameZhCandidate": "厚切烤牛肉200克",
+                "evidenceClass": "source_recommendation_text",
+                "recommendationSemantics": "おすすめ / 自慢",
+                "provider": "tabelog",
+                "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13225836/dtlmenu/",
+                "checkedAt": "2026-09-14",
+                "sourceScope": "branch",
+                "evidenceText": "おすすめ！厚切り！ローストビーフ 200g 当店自慢の肉料理",
+                "confidence": "high",
+                "notes": "Current branch menu explicitly marks the concrete roast-beef dish as recommended/house-pride; accepted as strict R."
+              }
+            }
+          ]
+        }
+      ],
+      "featuredDishes": []
     },
     {
       "googlePlaceId": "ChIJ6eEHmziMGGARZb0rRUApRm0",
@@ -9767,7 +9943,56 @@
           "evidenceSnippet": "タレカツ/人気店/カツ丼"
         }
       ],
-      "featuredDishes": []
+      "featuredDishes": [
+        {
+          "nameZh": "炸猪排盖饭",
+          "nameJa": "カツ丼",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.tarekatsu.jp/menu.html",
+          "checkedAt": "2026-09-14",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "central-reviewed:F:reviewed-exact-source-native-translation",
+          "evidenceSnippet": "カツ丼",
+          "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-F-SOURCE/S3.json",
+              "marker": "DISH-F-SOURCE",
+              "shard": "S3",
+              "sourceQueueCommit": "5179badcdb58ba176cf2d9cf834a02e24c86e736",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [
+                  "新潟カツ丼 タレカツ 本店"
+                ],
+                "evidence": [
+                  {
+                    "provider": "official_web",
+                    "sourceUrl": "https://www.tarekatsu.jp/map.html",
+                    "checkedAt": "2026-09-14",
+                    "evidenceType": "branch_page",
+                    "note": "Repository Hot Pepper binding maps this frozen Place ID to J001292453 with high confidence; official Tarakatsu store page identifies the 本店 and official menu family was cross-checked before acceptance."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "カツ丼",
+                "nameZhCandidate": "炸猪排盖饭",
+                "evidenceClass": "source_menu_text",
+                "recommendationSemantics": "",
+                "provider": "official_web",
+                "sourceUrl": "https://www.tarekatsu.jp/menu.html",
+                "checkedAt": "2026-09-14",
+                "sourceScope": "branch",
+                "evidenceText": "カツ丼",
+                "confidence": "high",
+                "notes": "Concrete current standard item on the exact brand/store menu family; accepted as F only."
+              }
+            }
+          ]
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJaWTGbgCNGGARtQOwZEga_oM",
@@ -11264,7 +11489,56 @@
           "evidenceSnippet": "SANDWICH & TOAST 厚切りハムサンド Ham Sandwich たっぷりタマゴサンド Plenty Egg Sandwich ミックスサンド Mix Sandwich"
         }
       ],
-      "featuredDishes": []
+      "featuredDishes": [
+        {
+          "nameZh": "肉酱意大利面",
+          "nameJa": "ミートソーススパゲティ",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://gallerykogure.com/cafe-lounge-boro-food/",
+          "checkedAt": "2026-09-14",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "central-reviewed:F:reviewed-exact-source-native-translation",
+          "evidenceSnippet": "ミートソーススパゲティ",
+          "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-F-SOURCE/S3.json",
+              "marker": "DISH-F-SOURCE",
+              "shard": "S3",
+              "sourceQueueCommit": "5179badcdb58ba176cf2d9cf834a02e24c86e736",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [
+                  "喫茶トお酒 襤褸"
+                ],
+                "evidence": [
+                  {
+                    "provider": "official_web",
+                    "sourceUrl": "https://gallerykogure.com/cafe-lounge-boro-2024-2/",
+                    "checkedAt": "2026-09-14",
+                    "evidenceType": "branch_page",
+                    "note": "Repository reviewed official runtime source binds this exact frozen Place ID to 喫茶トお酒 襤褸 and retains the official food menu URL."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "ミートソーススパゲティ",
+                "nameZhCandidate": "肉酱意大利面",
+                "evidenceClass": "source_menu_text",
+                "recommendationSemantics": "",
+                "provider": "official_web",
+                "sourceUrl": "https://gallerykogure.com/cafe-lounge-boro-food/",
+                "checkedAt": "2026-09-14",
+                "sourceScope": "branch",
+                "evidenceText": "ミートソーススパゲティ",
+                "confidence": "high",
+                "notes": "Official exact-branch food page supplies a concrete ordinary dish; F only."
+              }
+            }
+          ]
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJBUlY0bWNGGART0Zwi7Y0nH8",
@@ -12557,6 +12831,61 @@
           "evidenceClass": "retained_source_menu_item",
           "evidenceRule": "retained:dishes:刀削麺|刀削面",
           "evidenceSnippet": "刀削麺"
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJcx3KJhqMGGARHucXiIK0GKw",
+      "name": "ピッコロティガー",
+      "recommendedDishes": [],
+      "featuredDishes": [
+        {
+          "nameZh": "前菜拼盘",
+          "nameJa": "前菜盛り合わせ",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://piccolotigre.com/menu/",
+          "checkedAt": "2026-09-14",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "central-reviewed:F:reviewed-exact-source-native-translation",
+          "evidenceSnippet": "前菜盛り合わせ",
+          "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-DISCOVERY/S3.json",
+              "marker": "DISH-R-DISCOVERY",
+              "shard": "S3",
+              "sourceQueueCommit": "5179badcdb58ba176cf2d9cf834a02e24c86e736",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [
+                  "ピッコロティガー"
+                ],
+                "evidence": [
+                  {
+                    "provider": "official_web",
+                    "sourceUrl": "https://piccolotigre.com/",
+                    "checkedAt": "2026-09-14",
+                    "evidenceType": "branch_page",
+                    "note": "Frozen Place ID has a reviewed Overture binding with telephone +81332943866; current Piccolo Tigre official/site identity was cross-checked before accepting menu evidence."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "前菜盛り合わせ",
+                "nameZhCandidate": "前菜拼盘",
+                "evidenceClass": "source_menu_text",
+                "recommendationSemantics": "",
+                "provider": "official_web",
+                "sourceUrl": "https://piccolotigre.com/menu/",
+                "checkedAt": "2026-09-14",
+                "sourceScope": "branch",
+                "evidenceText": "前菜盛り合わせ",
+                "confidence": "high",
+                "notes": "Concrete ordinary current menu item from the exact restaurant source; no strict recommendation semantics, therefore F only."
+              }
+            }
+          ]
         }
       ]
     },
@@ -20719,6 +21048,21 @@
           "evidenceSnippet": "アディロンダックバーガー"
         },
         {
+          "nameZh": "炒面",
+          "nameJa": "そば",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://adirondackcafejp.wordpress.com/food/",
+          "checkedAt": "2026-09-10",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "specificity:yakisoba-over-soba:menu-page-text:蕎麦|そば|soba",
+          "evidenceSnippet": "焼きそば Fried Noodle （税込み１４３０）",
+          "specificityCorrection": {
+            "rule": "yakisoba-over-soba",
+            "previousNameZh": "荞麦面",
+            "sourceNativeCompositeRequired": true
+          }
+        },
+        {
           "nameZh": "炒饭",
           "nameJa": "チャーハン",
           "provider": "sourceWebsite",
@@ -20737,21 +21081,6 @@
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:ステーキ|steak",
           "evidenceSnippet": "マグロステーキ丼"
-        },
-        {
-          "nameZh": "炒面",
-          "nameJa": "そば",
-          "provider": "sourceWebsite",
-          "sourceUrl": "https://adirondackcafejp.wordpress.com/food/",
-          "checkedAt": "2026-09-10",
-          "evidenceClass": "source_menu_text",
-          "evidenceRule": "specificity:yakisoba-over-soba:menu-page-text:蕎麦|そば|soba",
-          "evidenceSnippet": "焼きそば Fried Noodle （税込み１４３０）",
-          "specificityCorrection": {
-            "rule": "yakisoba-over-soba",
-            "previousNameZh": "荞麦面",
-            "sourceNativeCompositeRequired": true
-          }
         }
       ]
     },
@@ -25775,6 +26104,61 @@
           "evidenceClass": "provider_promotional_dish_text",
           "evidenceRule": "hotpepper-retained-catalogGenreCatch:焼肉|yakiniku",
           "evidenceSnippet": "神保町 飲み会 食べ放題 焼肉 記念日 宴会"
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJN8sLKICNGGARkp_JZ6NWnSc",
+      "name": "青森割烹あずましく",
+      "recommendedDishes": [],
+      "featuredDishes": [
+        {
+          "nameZh": "青森县产刺身拼盘",
+          "nameJa": "青森県産刺身盛り合わせ",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://azumashiku.com/menu/",
+          "checkedAt": "2026-09-14",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "central-reviewed:F:reviewed-exact-source-native-translation",
+          "evidenceSnippet": "青森県産刺身盛り合わせ",
+          "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-DISCOVERY/S3.json",
+              "marker": "DISH-R-DISCOVERY",
+              "shard": "S3",
+              "sourceQueueCommit": "5179badcdb58ba176cf2d9cf834a02e24c86e736",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [
+                  "青森割烹あずましく"
+                ],
+                "evidence": [
+                  {
+                    "provider": "official_web",
+                    "sourceUrl": "https://azumashiku.com/",
+                    "checkedAt": "2026-09-14",
+                    "evidenceType": "branch_page",
+                    "note": "Frozen Place ID has a reviewed Overture binding with telephone +81352445618; current 青森割烹あずましく official identity/menu source was cross-checked before acceptance."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "青森県産刺身盛り合わせ",
+                "nameZhCandidate": "青森县产刺身拼盘",
+                "evidenceClass": "source_menu_text",
+                "recommendationSemantics": "",
+                "provider": "official_web",
+                "sourceUrl": "https://azumashiku.com/menu/",
+                "checkedAt": "2026-09-14",
+                "sourceScope": "branch",
+                "evidenceText": "青森県産刺身盛り合わせ",
+                "confidence": "high",
+                "notes": "Concrete current branch menu item accepted as F; no explicit recommendation semantics."
+              }
+            }
+          ]
         }
       ]
     },

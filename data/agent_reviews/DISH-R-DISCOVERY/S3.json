@@ -1,0 +1,794 @@
+{
+  "schemaVersion": 1,
+  "proposalOnly": true,
+  "marker": "DISH-R-DISCOVERY",
+  "shard": "S3",
+  "agentRunId": "e2e-dish-s3-dish-r-discovery-20260914",
+  "sourceQueue": "data/dish_batch_plan.json",
+  "sourceQueueCommit": "5179badcdb58ba176cf2d9cf834a02e24c86e736",
+  "generatedAt": "2026-09-14T23:00:00+09:00",
+  "summary": {
+    "assignedRows": 40,
+    "reviewedRows": 40,
+    "acceptedEvidenceRows": 3,
+    "candidateRows": 4,
+    "noEvidenceRows": 32,
+    "blockedRows": 1,
+    "skippedAlreadyCompleteRows": 0
+  },
+  "records": [
+    {
+      "googlePlaceId": "ChIJ_QokJD2MGGARJ851-pb3WtI",
+      "restaurantName": "栄児家庭料理",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "栄児家庭料理"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "Current free-source discovery/review did not produce a reproducible exact-branch current menu item that survived identity, freshness and provenance checks. Search-engine snippets/customer-review prose/nearby or brand-only evidence were not promoted.",
+      "reviewReasoning": "Second pass found no acceptable exact-branch current dish evidence under the project contract."
+    },
+    {
+      "googlePlaceId": "ChIJ3dbqYxyMGGARb2P34SniXRw",
+      "restaurantName": "まぐろ亭",
+      "status": "candidate",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "まぐろ亭"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "A historical menu/result refers to a No.1 dish, but freshness/current branch state was not strong enough for canonical truth.",
+      "reviewReasoning": "Second pass rejected canonical acceptance because identity/freshness/branch scope was not sufficiently closed."
+    },
+    {
+      "googlePlaceId": "ChIJ4V7HsByMGGARBtgj9hHtMIw",
+      "restaurantName": "六文そば",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "六文そば"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "Current free-source discovery/review did not produce a reproducible exact-branch current menu item that survived identity, freshness and provenance checks. Search-engine snippets/customer-review prose/nearby or brand-only evidence were not promoted.",
+      "reviewReasoning": "Second pass found no acceptable exact-branch current dish evidence under the project contract."
+    },
+    {
+      "googlePlaceId": "ChIJ6cAc-AaMGGARENpbvkjOucs",
+      "restaurantName": "カルネジーオ",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "カルネジーオ"
+        ],
+        "evidence": [
+          {
+            "provider": "official_web",
+            "sourceUrl": "https://www.carnesio.jp/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Exact Carnesio restaurant identity was cross-checked against the repository reviewed OSM binding for this frozen Place ID and the current Carnesio official/site family; branch identity is sufficiently specific for the reviewed current menu evidence."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "recommendedDishes",
+          "classification": "R",
+          "nameOriginal": "厚切り！ローストビーフ 200g",
+          "nameZhCandidate": "厚切烤牛肉200克",
+          "evidenceClass": "source_recommendation_text",
+          "recommendationSemantics": "おすすめ / 自慢",
+          "provider": "tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13225836/dtlmenu/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "おすすめ！厚切り！ローストビーフ 200g 当店自慢の肉料理",
+          "confidence": "high",
+          "notes": "Current branch menu explicitly marks the concrete roast-beef dish as recommended/house-pride; accepted as strict R."
+        }
+      ],
+      "attemptedSources": [
+        "https://www.carnesio.jp/",
+        "https://tabelog.com/tokyo/A1310/A131002/13225836/dtlmenu/"
+      ],
+      "blocker": null,
+      "notes": "Current branch menu explicitly marks the concrete roast-beef dish as recommended/house-pride; accepted as strict R.",
+      "reviewReasoning": "Independent second pass confirmed current assignment membership, frozen identity, exact source scope, source-native dish, R/F semantics, freshness and provenance."
+    },
+    {
+      "googlePlaceId": "ChIJ9XhQqmmMGGARMGTXDZDOYlU",
+      "restaurantName": "酔絲香",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "酔絲香"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "Current free-source discovery/review did not produce a reproducible exact-branch current menu item that survived identity, freshness and provenance checks. Search-engine snippets/customer-review prose/nearby or brand-only evidence were not promoted.",
+      "reviewReasoning": "Second pass found no acceptable exact-branch current dish evidence under the project contract."
+    },
+    {
+      "googlePlaceId": "ChIJb0Y8nQaMGGARyZhC2p1tRuM",
+      "restaurantName": "ど丼がぁドン",
+      "status": "candidate",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "ど丼がぁドン"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "A current menu-like source was found, but exact frozen-branch identity could not be independently closed without proximity/name-only reasoning.",
+      "reviewReasoning": "Second pass rejected canonical acceptance because identity/freshness/branch scope was not sufficiently closed."
+    },
+    {
+      "googlePlaceId": "ChIJDfJf3h6NGGARtQIZWjL8FfA",
+      "restaurantName": "福園",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "福園"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "Current free-source discovery/review did not produce a reproducible exact-branch current menu item that survived identity, freshness and provenance checks. Search-engine snippets/customer-review prose/nearby or brand-only evidence were not promoted.",
+      "reviewReasoning": "Second pass found no acceptable exact-branch current dish evidence under the project contract."
+    },
+    {
+      "googlePlaceId": "ChIJdWsnphyMGGAR3P8tKgIW1zA",
+      "restaurantName": "麺巧 潮",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "麺巧 潮"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "Current free-source discovery/review did not produce a reproducible exact-branch current menu item that survived identity, freshness and provenance checks. Search-engine snippets/customer-review prose/nearby or brand-only evidence were not promoted.",
+      "reviewReasoning": "Second pass found no acceptable exact-branch current dish evidence under the project contract."
+    },
+    {
+      "googlePlaceId": "ChIJdx7kXAGMGGARKu7Y4nibeSE",
+      "restaurantName": "あわへい",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "あわへい"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "Current free-source discovery/review did not produce a reproducible exact-branch current menu item that survived identity, freshness and provenance checks. Search-engine snippets/customer-review prose/nearby or brand-only evidence were not promoted.",
+      "reviewReasoning": "Second pass found no acceptable exact-branch current dish evidence under the project contract."
+    },
+    {
+      "googlePlaceId": "ChIJDzunRgCNGGAR8Om7zl6I8ew",
+      "restaurantName": "キャリオッツ",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "キャリオッツ"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "Current free-source discovery/review did not produce a reproducible exact-branch current menu item that survived identity, freshness and provenance checks. Search-engine snippets/customer-review prose/nearby or brand-only evidence were not promoted.",
+      "reviewReasoning": "Second pass found no acceptable exact-branch current dish evidence under the project contract."
+    },
+    {
+      "googlePlaceId": "ChIJeS5N6hiMGGARefJMORLgr68",
+      "restaurantName": "ラーメン大至",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "ラーメン大至"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "Current free-source discovery/review did not produce a reproducible exact-branch current menu item that survived identity, freshness and provenance checks. Search-engine snippets/customer-review prose/nearby or brand-only evidence were not promoted.",
+      "reviewReasoning": "Second pass found no acceptable exact-branch current dish evidence under the project contract."
+    },
+    {
+      "googlePlaceId": "ChIJh4GBhxyMGGARpCh-VZ4SsEY",
+      "restaurantName": "じゅらく 酒亭",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "じゅらく 酒亭"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "Current free-source discovery/review did not produce a reproducible exact-branch current menu item that survived identity, freshness and provenance checks. Search-engine snippets/customer-review prose/nearby or brand-only evidence were not promoted.",
+      "reviewReasoning": "Second pass found no acceptable exact-branch current dish evidence under the project contract."
+    },
+    {
+      "googlePlaceId": "ChIJhYJN9OuNGGARWrd1qlB8v9M",
+      "restaurantName": "タコリッコ大手町ビル店",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "タコリッコ大手町ビル店"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "Current free-source discovery/review did not produce a reproducible exact-branch current menu item that survived identity, freshness and provenance checks. Search-engine snippets/customer-review prose/nearby or brand-only evidence were not promoted.",
+      "reviewReasoning": "Second pass found no acceptable exact-branch current dish evidence under the project contract."
+    },
+    {
+      "googlePlaceId": "ChIJJewQGByMGGARpyijWgWJNb0",
+      "restaurantName": "明神下神田川 本店",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "明神下神田川 本店"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "Current free-source discovery/review did not produce a reproducible exact-branch current menu item that survived identity, freshness and provenance checks. Search-engine snippets/customer-review prose/nearby or brand-only evidence were not promoted.",
+      "reviewReasoning": "Second pass found no acceptable exact-branch current dish evidence under the project contract."
+    },
+    {
+      "googlePlaceId": "ChIJkQRp_xCMGGARep60lmMjYiA",
+      "restaurantName": "花の樹",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "花の樹"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "Current free-source discovery/review did not produce a reproducible exact-branch current menu item that survived identity, freshness and provenance checks. Search-engine snippets/customer-review prose/nearby or brand-only evidence were not promoted.",
+      "reviewReasoning": "Second pass found no acceptable exact-branch current dish evidence under the project contract."
+    },
+    {
+      "googlePlaceId": "ChIJNUM68hiMGGARna62wHgI_kQ",
+      "restaurantName": "青林檎",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "青林檎"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "Current free-source discovery/review did not produce a reproducible exact-branch current menu item that survived identity, freshness and provenance checks. Search-engine snippets/customer-review prose/nearby or brand-only evidence were not promoted.",
+      "reviewReasoning": "Second pass found no acceptable exact-branch current dish evidence under the project contract."
+    },
+    {
+      "googlePlaceId": "ChIJo-sAt2mMGGARLRqsIDjM3mw",
+      "restaurantName": "靖国八千代食堂",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "靖国八千代食堂"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "Current free-source discovery/review did not produce a reproducible exact-branch current menu item that survived identity, freshness and provenance checks. Search-engine snippets/customer-review prose/nearby or brand-only evidence were not promoted.",
+      "reviewReasoning": "Second pass found no acceptable exact-branch current dish evidence under the project contract."
+    },
+    {
+      "googlePlaceId": "ChIJT0ch89qNGGARMo_RQfRp1U4",
+      "restaurantName": "AMUSEMENT BAR ROOF",
+      "status": "blocked",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "AMUSEMENT BAR ROOF"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://amusementbarroof.jp/"
+      ],
+      "blocker": {
+        "type": "source_access_or_readability",
+        "detail": "Repository source-resolution review records the current official site as unreadable and no current durable branch menu source was located; no bypass attempted."
+      },
+      "notes": "Repository source-resolution review records the current official site as unreadable and no current durable branch menu source was located; no bypass attempted.",
+      "reviewReasoning": "Second pass preserved the access/readability restriction and did not attempt evasion."
+    },
+    {
+      "googlePlaceId": "ChIJU0bKcKuNGGARtQEXK9k5o4w",
+      "restaurantName": "エンジェルドロップス",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "エンジェルドロップス"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "Current free-source discovery/review did not produce a reproducible exact-branch current menu item that survived identity, freshness and provenance checks. Search-engine snippets/customer-review prose/nearby or brand-only evidence were not promoted.",
+      "reviewReasoning": "Second pass found no acceptable exact-branch current dish evidence under the project contract."
+    },
+    {
+      "googlePlaceId": "ChIJx2UcUhmMGGARod1OU_7a55I",
+      "restaurantName": "大国屋治助",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "大国屋治助"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "Current free-source discovery/review did not produce a reproducible exact-branch current menu item that survived identity, freshness and provenance checks. Search-engine snippets/customer-review prose/nearby or brand-only evidence were not promoted.",
+      "reviewReasoning": "Second pass found no acceptable exact-branch current dish evidence under the project contract."
+    },
+    {
+      "googlePlaceId": "ChIJy65GrQaMGGARMBALI0bVdmU",
+      "restaurantName": "RISTORANTE CHAILLY",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "RISTORANTE CHAILLY"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "Current free-source discovery/review did not produce a reproducible exact-branch current menu item that survived identity, freshness and provenance checks. Search-engine snippets/customer-review prose/nearby or brand-only evidence were not promoted.",
+      "reviewReasoning": "Second pass found no acceptable exact-branch current dish evidence under the project contract."
+    },
+    {
+      "googlePlaceId": "ChIJz-BTvUOMGGAR_Ln6HwlP9SA",
+      "restaurantName": "Hop-Scotch Tokyo",
+      "status": "candidate",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "Hop-Scotch Tokyo"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "Repository Overture candidate points to hopscotchtokyo.com, but this is still a candidate binding and no exact current branch menu evidence was safely accepted.",
+      "reviewReasoning": "Second pass rejected canonical acceptance because identity/freshness/branch scope was not sufficiently closed."
+    },
+    {
+      "googlePlaceId": "ChIJ7yI0ZUGMGGAR5QAsqA_hNgY",
+      "restaurantName": "スナックバー紅(本店)",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "スナックバー紅(本店)"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "Current free-source discovery/review did not produce a reproducible exact-branch current menu item that survived identity, freshness and provenance checks. Search-engine snippets/customer-review prose/nearby or brand-only evidence were not promoted.",
+      "reviewReasoning": "Second pass found no acceptable exact-branch current dish evidence under the project contract."
+    },
+    {
+      "googlePlaceId": "ChIJ9eo9uUGMGGAR8zAEboJTYPY",
+      "restaurantName": "RAKURAKU",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "RAKURAKU"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "Current free-source discovery/review did not produce a reproducible exact-branch current menu item that survived identity, freshness and provenance checks. Search-engine snippets/customer-review prose/nearby or brand-only evidence were not promoted.",
+      "reviewReasoning": "Second pass found no acceptable exact-branch current dish evidence under the project contract."
+    },
+    {
+      "googlePlaceId": "ChIJcduc-w2MGGARWCGsY34ouvM",
+      "restaurantName": "赤坂飯店 パレスサイドビル店",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "赤坂飯店 パレスサイドビル店"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "Current free-source discovery/review did not produce a reproducible exact-branch current menu item that survived identity, freshness and provenance checks. Search-engine snippets/customer-review prose/nearby or brand-only evidence were not promoted.",
+      "reviewReasoning": "Second pass found no acceptable exact-branch current dish evidence under the project contract."
+    },
+    {
+      "googlePlaceId": "ChIJcx3KJhqMGGARHucXiIK0GKw",
+      "restaurantName": "ピッコロティガー",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "ピッコロティガー"
+        ],
+        "evidence": [
+          {
+            "provider": "official_web",
+            "sourceUrl": "https://piccolotigre.com/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Frozen Place ID has a reviewed Overture binding with telephone +81332943866; current Piccolo Tigre official/site identity was cross-checked before accepting menu evidence."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "前菜盛り合わせ",
+          "nameZhCandidate": "前菜拼盘",
+          "evidenceClass": "source_menu_text",
+          "recommendationSemantics": "",
+          "provider": "official_web",
+          "sourceUrl": "https://piccolotigre.com/menu/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "前菜盛り合わせ",
+          "confidence": "high",
+          "notes": "Concrete ordinary current menu item from the exact restaurant source; no strict recommendation semantics, therefore F only."
+        }
+      ],
+      "attemptedSources": [
+        "https://piccolotigre.com/",
+        "https://piccolotigre.com/menu/"
+      ],
+      "blocker": null,
+      "notes": "Concrete ordinary current menu item from the exact restaurant source; no strict recommendation semantics, therefore F only.",
+      "reviewReasoning": "Independent second pass confirmed current assignment membership, frozen identity, exact source scope, source-native dish, R/F semantics, freshness and provenance."
+    },
+    {
+      "googlePlaceId": "ChIJDf7UKdyNGGARwZ2bedwHGts",
+      "restaurantName": "Venchi Otemachi One Store",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "Venchi Otemachi One Store"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "Current free-source discovery/review did not produce a reproducible exact-branch current menu item that survived identity, freshness and provenance checks. Search-engine snippets/customer-review prose/nearby or brand-only evidence were not promoted.",
+      "reviewReasoning": "Second pass found no acceptable exact-branch current dish evidence under the project contract."
+    },
+    {
+      "googlePlaceId": "ChIJh2q9FVONGGARVTIemAFTdyo",
+      "restaurantName": "Yo-Fu-Izakaya Kitchen Jiro",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "Yo-Fu-Izakaya Kitchen Jiro"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "Current free-source discovery/review did not produce a reproducible exact-branch current menu item that survived identity, freshness and provenance checks. Search-engine snippets/customer-review prose/nearby or brand-only evidence were not promoted.",
+      "reviewReasoning": "Second pass found no acceptable exact-branch current dish evidence under the project contract."
+    },
+    {
+      "googlePlaceId": "ChIJI1EpLe2NGGARLpfuv4KEc78",
+      "restaurantName": "小舟津",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "小舟津"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "Current free-source discovery/review did not produce a reproducible exact-branch current menu item that survived identity, freshness and provenance checks. Search-engine snippets/customer-review prose/nearby or brand-only evidence were not promoted.",
+      "reviewReasoning": "Second pass found no acceptable exact-branch current dish evidence under the project contract."
+    },
+    {
+      "googlePlaceId": "ChIJJxvwE1GNGGAR2u6f95eCQLM",
+      "restaurantName": "スナックあさこ",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "スナックあさこ"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "Current free-source discovery/review did not produce a reproducible exact-branch current menu item that survived identity, freshness and provenance checks. Search-engine snippets/customer-review prose/nearby or brand-only evidence were not promoted.",
+      "reviewReasoning": "Second pass found no acceptable exact-branch current dish evidence under the project contract."
+    },
+    {
+      "googlePlaceId": "ChIJMxRR6WWNGGARk2mNPLpxepY",
+      "restaurantName": "横浜家系らーめん輝道家 水道橋駅前店",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "横浜家系らーめん輝道家 水道橋駅前店"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "Current free-source discovery/review did not produce a reproducible exact-branch current menu item that survived identity, freshness and provenance checks. Search-engine snippets/customer-review prose/nearby or brand-only evidence were not promoted.",
+      "reviewReasoning": "Second pass found no acceptable exact-branch current dish evidence under the project contract."
+    },
+    {
+      "googlePlaceId": "ChIJN8sLKICNGGARkp_JZ6NWnSc",
+      "restaurantName": "青森割烹あずましく",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "青森割烹あずましく"
+        ],
+        "evidence": [
+          {
+            "provider": "official_web",
+            "sourceUrl": "https://azumashiku.com/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Frozen Place ID has a reviewed Overture binding with telephone +81352445618; current 青森割烹あずましく official identity/menu source was cross-checked before acceptance."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "青森県産刺身盛り合わせ",
+          "nameZhCandidate": "青森县产刺身拼盘",
+          "evidenceClass": "source_menu_text",
+          "recommendationSemantics": "",
+          "provider": "official_web",
+          "sourceUrl": "https://azumashiku.com/menu/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "青森県産刺身盛り合わせ",
+          "confidence": "high",
+          "notes": "Concrete current branch menu item accepted as F; no explicit recommendation semantics."
+        }
+      ],
+      "attemptedSources": [
+        "https://azumashiku.com/",
+        "https://azumashiku.com/menu/"
+      ],
+      "blocker": null,
+      "notes": "Concrete current branch menu item accepted as F; no explicit recommendation semantics.",
+      "reviewReasoning": "Independent second pass confirmed current assignment membership, frozen identity, exact source scope, source-native dish, R/F semantics, freshness and provenance."
+    },
+    {
+      "googlePlaceId": "ChIJNaZsYReMGGARCAy68ykWn3s",
+      "restaurantName": "Tengu Bar Ochanomizu",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "Tengu Bar Ochanomizu"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "Current free-source discovery/review did not produce a reproducible exact-branch current menu item that survived identity, freshness and provenance checks. Search-engine snippets/customer-review prose/nearby or brand-only evidence were not promoted.",
+      "reviewReasoning": "Second pass found no acceptable exact-branch current dish evidence under the project contract."
+    },
+    {
+      "googlePlaceId": "ChIJnebvhxaMGGARQbU3z0B8_mE",
+      "restaurantName": "萱",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "萱"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "Current free-source discovery/review did not produce a reproducible exact-branch current menu item that survived identity, freshness and provenance checks. Search-engine snippets/customer-review prose/nearby or brand-only evidence were not promoted.",
+      "reviewReasoning": "Second pass found no acceptable exact-branch current dish evidence under the project contract."
+    },
+    {
+      "googlePlaceId": "ChIJnflEs52NGGARM2qM_R1DRzg",
+      "restaurantName": "Minutes Coffee",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "Minutes Coffee"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "Current free-source discovery/review did not produce a reproducible exact-branch current menu item that survived identity, freshness and provenance checks. Search-engine snippets/customer-review prose/nearby or brand-only evidence were not promoted.",
+      "reviewReasoning": "Second pass found no acceptable exact-branch current dish evidence under the project contract."
+    },
+    {
+      "googlePlaceId": "ChIJv3eRrVuNGGARTVkV0xgbepI",
+      "restaurantName": "らーめん大本郷店",
+      "status": "candidate",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "らーめん大本郷店"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "Current searches indicate the former らーめん大 本郷店 identity/menu has changed (current source shows らーめん安); old menu evidence is not current truth.",
+      "reviewReasoning": "Second pass rejected canonical acceptance because identity/freshness/branch scope was not sufficiently closed."
+    },
+    {
+      "googlePlaceId": "ChIJx-oV12qMGGARujNjSF3dPNI",
+      "restaurantName": "おまえにチェックイン",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "おまえにチェックイン"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "Current free-source discovery/review did not produce a reproducible exact-branch current menu item that survived identity, freshness and provenance checks. Search-engine snippets/customer-review prose/nearby or brand-only evidence were not promoted.",
+      "reviewReasoning": "Second pass found no acceptable exact-branch current dish evidence under the project contract."
+    },
+    {
+      "googlePlaceId": "ChIJZ0ntHT6MGGARJLAZGY2Hgac",
+      "restaurantName": "Yukuri",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "Yukuri"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "Current free-source discovery/review did not produce a reproducible exact-branch current menu item that survived identity, freshness and provenance checks. Search-engine snippets/customer-review prose/nearby or brand-only evidence were not promoted.",
+      "reviewReasoning": "Second pass found no acceptable exact-branch current dish evidence under the project contract."
+    },
+    {
+      "googlePlaceId": "ChIJZ4gBZwGMGGARYMBmW60wrqo",
+      "restaurantName": "Tee Time",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "Tee Time"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "Current free-source discovery/review did not produce a reproducible exact-branch current menu item that survived identity, freshness and provenance checks. Search-engine snippets/customer-review prose/nearby or brand-only evidence were not promoted.",
+      "reviewReasoning": "Second pass found no acceptable exact-branch current dish evidence under the project contract."
+    },
+    {
+      "googlePlaceId": "ChIJzVdY3ASMGGARfO32dfzkEsI",
+      "restaurantName": "ムラタヤ珈琲店",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "ムラタヤ珈琲店"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "Current free-source discovery/review did not produce a reproducible exact-branch current menu item that survived identity, freshness and provenance checks. Search-engine snippets/customer-review prose/nearby or brand-only evidence were not promoted.",
+      "reviewReasoning": "Second pass found no acceptable exact-branch current dish evidence under the project contract."
+    }
+  ],
+  "policyAttestation": {
+    "paidGoogleDataApiCalls": 0,
+    "canonicalMasterEditedDirectly": false,
+    "proximityOnlyIdentityBindingUsed": false,
+    "recommendationWithoutExplicitSemanticsAdded": false,
+    "accessRestrictionBypassUsed": false
+  }
+}

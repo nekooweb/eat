@@ -6,11 +6,13 @@ import { spawnSync } from 'node:child_process';
 
 const moduleUrl = new URL('./build_reviewed_agent_dish_evidence.mjs', import.meta.url);
 assert.ok(fs.existsSync(fileURLToPath(moduleUrl)), 'A fail-closed reviewed proposal adapter must exist');
-const { buildReviewedEvidence, auditReviewCoverage, translateExactDish } = await import(moduleUrl);
+const { buildReviewedEvidence, auditReviewCoverage, translateExactDish, LANES } = await import(moduleUrl);
 const stdinImport = spawnSync(process.execPath, ['--input-type=module', '-'], {
   input: `await import(${JSON.stringify(moduleUrl.href)});`, encoding: 'utf8'
 });
 assert.equal(stdinImport.status, 0, `Adapter helpers must be importable from stdin: ${stdinImport.stderr}`);
+assert.equal(LANES['DISH-R-DISCOVERY'], 'independent_source_discovery');
+assert.equal(LANES['DISH-F-SOURCE'], 'official_or_retained_featured');
 const date = '2026-09-14';
 const assignment = { googlePlaceId: 'test-place', name: 'Frozen catalog name', lane: 'official_crawl', shard: 0 };
 const dish = {
@@ -118,3 +120,16 @@ const secondSource = buildReviewedEvidence(options(secondSourceDoc));
 assert.equal(secondSource.coverage.acceptedRItems, 2, 'Two sources are two evidence items');
 assert.equal(secondSource.coverage.acceptedRDistinctDishes, 1, 'Multiple sources must not inflate the logical dish count');
 console.log(JSON.stringify({ status: 'pass', checks: 'coverage, fail-closed identity/policy/semantics, R/F/C separation, exact translation, full provenance, deduplication' }));
+
+for (const [marker, lane] of [['DISH-R-DISCOVERY', 'independent_source_discovery'], ['DISH-F-SOURCE', 'official_or_retained_featured']]) {
+  const assignmentLane = { googlePlaceId: `test-${marker}`, name: `Frozen ${marker}`, lane, shard: 3 };
+  const laneRecord = { googlePlaceId: assignmentLane.googlePlaceId, restaurantName: assignmentLane.name,
+    status: 'no_evidence', identity: { state: 'unverified', sourceAliases: [], evidence: [] },
+    dishProposals: [], attemptedSources: [], blocker: null, notes: 'Regression terminal outcome.' };
+  const laneDoc = { marker, shard: 'S3', sourceQueue: 'data/dish_batch_plan.json', sourceQueueCommit: 'b'.repeat(40),
+    generatedAt: date, policyAttestation: document.policyAttestation, records: [laneRecord],
+    summary: { assignedRows: 1, reviewedRows: 1, acceptedEvidenceRows: 0, candidateRows: 0,
+      noEvidenceRows: 1, blockedRows: 0, skippedAlreadyCompleteRows: 0 } };
+  const coverage = auditReviewCoverage([assignmentLane], [{ document: laneDoc }], { sourceQueueCommit: 'b'.repeat(40) });
+  assert.equal(coverage.reviewedRows, 1, `${marker} must be accepted by the fail-closed coverage gate`);
+}

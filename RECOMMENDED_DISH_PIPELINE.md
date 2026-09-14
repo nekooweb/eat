@@ -2,6 +2,12 @@
 
 更新日期：2026-09-14。
 
+## 2026-09-14 21:29 JST：reviewed-evidence 入口扩展到四个 dish lane
+
+`build_reviewed_agent_dish_evidence.mjs` 现支持 `DISH-R-OFFICIAL`、`DISH-R-RETAINED`、`DISH-R-DISCOVERY` 和 `DISH-F-SOURCE`。覆盖门禁不再假定一次 manifest 必须审查全部已支持 lane；它从 manifest 的 assignment snapshot 派生 `lane + shard` scope，只对该明确 scope 的当前重建行做 1:1 coverage 校验。因此 Discovery / F-source shard 可以复用与 Official / Retained 相同的 fail-closed approval、SHA-256 reviewed-file 校验、R/F/C 分离、翻译和 integration audit，而不会把其他 shard 误报为漏审。
+
+该扩展不改变 canonical 写入路径：只有 `accepted_evidence` 且通过显式批准的证据才会由 adapter 进入维护 merge；`candidate`、`no_evidence`、`blocked` 和 `skipped_already_complete` 仍不会泄漏到 R/F。每个运行的实际分母仍必须来自同一次 `reload_data.py --public-only` 重建后的 current queue。
+
 ## 2026-09-14 20:06 JST：中央审查入口实施中
 
 本轮基于最新基线执行 `reload_data.py --public-only` 后，实际范围为 Official 219、Retained 318，共 537 行。旧队列的 Minatoya 官网已被既有字段隔离规则移除，该行转入 Discovery；不再沿用错误来源。原 220 / 318 数量仅是下文保留的历史快照。
