@@ -146,3 +146,8 @@ python3 scripts/reload_data.py --public-only --outdir _audit/data-reload
 - central merge 前必须去重同一 Place ID 的重复 proposal，并显式处理独立 Agent 判断冲突。
 
 完整载入、重置、备份和发布说明以 [DATA_PIPELINE](DATA_PIPELINE.md) 为准；并行 Agent 当前进度与逐 shard 结果见 [2026-09-14 parallel agent log](logs/2026-09-14-parallel-agent-data-completion.md)。
+
+
+## 2026-09-15 S7 Discovery/F-source reviewed-evidence adapter
+
+The reviewed-evidence adapter applies the same fail-closed contract to `DISH-R-DISCOVERY` / `independent_source_discovery` and `DISH-F-SOURCE` / `official_or_retained_featured`. Current assignment matching is scoped by exact `(lane, shard)` pairs present in the approved manifest.

@@ -117,4 +117,11 @@ const secondSourceDoc = changed(d => d.records[0].dishProposals.push({ ...d.reco
 const secondSource = buildReviewedEvidence(options(secondSourceDoc));
 assert.equal(secondSource.coverage.acceptedRItems, 2, 'Two sources are two evidence items');
 assert.equal(secondSource.coverage.acceptedRDistinctDishes, 1, 'Multiple sources must not inflate the logical dish count');
+const { LANES: laneMappingsS7 } = await import('./build_reviewed_agent_dish_evidence.mjs');
+assert.equal(laneMappingsS7['DISH-R-DISCOVERY'], 'independent_source_discovery');
+assert.equal(laneMappingsS7['DISH-F-SOURCE'], 'official_or_retained_featured');
 console.log(JSON.stringify({ status: 'pass', checks: 'coverage, fail-closed identity/policy/semantics, R/F/C separation, exact translation, full provenance, deduplication' }));
+
+const reviewedIndependentProviderPolicyS7 = await import('./dish_evidence_provider_policy.mjs');
+assert.ok(reviewedIndependentProviderPolicyS7.allowedDishEvidenceProviderSet().has('Reviewed independent'),
+  'Centrally reviewed independent evidence must use the proven closed provider label');
