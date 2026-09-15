@@ -30,6 +30,7 @@ jobs:
           node scripts/complete_e2e_dish_s1.mjs
           python3 - <<'PY'
           from pathlib import Path
+          import hashlib, json
           p=Path('scripts/build_reviewed_agent_dish_evidence.mjs')
           s=p.read_text()
           old="const EQUIVALENT_SEMANTICS = /定番|ご好評|自信作|自信の一品|一番の売り商品|一押し|お勧め|お薦め|おススメ|一番のおすすめ/i;"
@@ -42,6 +43,20 @@ jobs:
           if old_scope not in s and new_scope not in s:
               raise SystemExit('current assignment scope line not found')
           p.write_text(s.replace(old_scope,new_scope))
+
+          review_path=Path('data/agent_reviews/DISH-R-DISCOVERY/S1.json')
+          review=json.loads(review_path.read_text())
+          target=next(r for r in review['records'] if r['googlePlaceId']=='ChIJp5DhBQ2NGGARIzyIvtbL5o0')
+          target['dishProposals'][0]['evidenceText']='GRAND PYRAMIDでは、コシャリはヴィーガン対応メニューとしても人気があり、ハラル認証の食材のみを使用しています。エジプト料理を初めて食べる方はもちろん、肉を使わない満足感のある料理を探している方にもおすすめです。'
+          target['dishProposals'][0]['recommendationSemantics']='人気 / おすすめ'
+          review_path.write_text(json.dumps(review, ensure_ascii=False, indent=2)+'\n')
+
+          manifest_path=Path('data/agent_reviews/e2e-dish-s1.json')
+          manifest=json.loads(manifest_path.read_text())
+          for ref in manifest['reviewedFiles']:
+              raw=Path(ref['path']).read_bytes()
+              ref['sha256']=hashlib.sha256(raw).hexdigest()
+          manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2)+'\n')
           PY
 
       - name: Regression before integration
