@@ -1,0 +1,38 @@
+name: Repair old-format final review containment
+
+on:
+  push:
+    branches: [final-dish-integration-20260915]
+    paths: ['.github/workflows/final-review-old-format-repair.yml']
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: final-dish-integration-20260915
+          fetch-depth: 0
+      - name: Apply source-native containment to old proposal conversion
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('scripts/finalize_official_retained_reviews.py')
+          s=p.read_text()
+          anchor='''        if cls not in {"R", "F"} or not native or not text or not branch_exact or not valid_url(url) or not provider:\n            continue\n        if BAD_SOURCE.search'''
+          replacement='''        if cls not in {"R", "F"} or not native or not text or not branch_exact or not valid_url(url) or not provider:\n            continue\n        if re.sub(r"\\s+", "", native) not in re.sub(r"\\s+", "", text):\n            continue\n        if BAD_SOURCE.search'''
+          if anchor not in s:
+              raise SystemExit('old-format containment anchor missing')
+          p.write_text(s.replace(anchor,replacement,1))
+          PY
+          python -m py_compile scripts/finalize_official_retained_reviews.py
+          git add scripts/finalize_official_retained_reviews.py
+          git diff --cached --check
+          git commit -m 'fix: validate old proposal dish provenance text'
+          git push origin HEAD:final-dish-integration-20260915
