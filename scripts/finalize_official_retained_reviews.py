@@ -180,6 +180,8 @@ def sanitize_full_record(record: dict, terminal: str, source_ref: str) -> dict:
             text = dish.get("evidenceText") or ""
             if not native or not text:
                 continue
+            if re.sub(r"\s+", "", native) not in re.sub(r"\s+", "", text):
+                continue
             provider = norm_provider(dish.get("provider") or "", url, dish.get("sourceOrigin") or "")
             if not provider:
                 continue
