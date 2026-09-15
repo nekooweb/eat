@@ -67,7 +67,7 @@ jobs:
           root=pathlib.Path('.')
           source_commit=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
           bad=re.compile(r'customer|consumer|user[ ._-]*review|review[ ._-]*prose',re.I)
-          strict_r=re.compile(r'おすすめ|お勧め|名物|看板|人気|大人気|一番人気|人気No\.?1|自慢|イチオシ|一押し|signature|specialty|recommended|house specialty',re.I)
+          strict_r=re.compile(r'おすすめ|お勧め|名物|看板|人気|大人気|一番人気|人気No\.?1|売れ筋|自慢|イチオシ|一押し|signature|specialty|recommended|house specialty',re.I)
           def review(raw, marker):
             doc=json.loads(json.dumps(raw))
             doc['proposalOnly']=False
