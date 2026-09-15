@@ -1,0 +1,48 @@
+name: Repair final dish integration v2
+
+on:
+  push:
+    branches: [final-dish-integration-20260915]
+    paths: ['.github/workflows/final-dish-integration-repair-v2.yml']
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: final-dish-integration-20260915
+          fetch-depth: 0
+      - name: Preserve mixed-form sourceProposalRefs and retrigger
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('scripts/finalize_official_retained_reviews.py')
+          s=p.read_text()
+          old='    rec["sourceProposalRefs"] = sorted(set((rec.get("sourceProposalRefs") or []) + [source_ref]), key=str)\n'
+          new='''    refs = list(rec.get("sourceProposalRefs") or [])
+    existing_paths = {r if isinstance(r, str) else r.get("path") for r in refs if isinstance(r, (str, dict))}
+    if source_ref not in existing_paths:
+        refs.append(source_ref)
+    rec["sourceProposalRefs"] = refs
+'''
+          if old not in s:
+              raise SystemExit('sourceProposalRefs patch anchor missing')
+          p.write_text(s.replace(old,new,1))
+          wf=Path('.github/workflows/final-dish-integration-once.yml')
+          text=wf.read_text()
+          if '# repair-v2' not in text:
+              wf.write_text(text+'\n# repair-v2: preserve mixed sourceProposalRefs without relaxing semantic gates\n')
+          PY
+          python -m py_compile scripts/finalize_official_retained_reviews.py
+          git rm .github/workflows/final-dish-integration-repair-v2.yml
+          git add scripts/finalize_official_retained_reviews.py .github/workflows/final-dish-integration-once.yml
+          git diff --cached --check
+          git commit -m 'fix: preserve mixed review source refs'
+          git push origin HEAD:final-dish-integration-20260915
