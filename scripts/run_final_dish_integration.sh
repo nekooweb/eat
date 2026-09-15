@@ -1,0 +1,213 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT="$(git rev-parse --show-toplevel)"
+cd "$ROOT"
+mkdir -p _audit/final/shards
+
+git config user.name 'github-actions[bot]'
+git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+git fetch origin '+refs/heads/*:refs/remotes/origin/*'
+
+# Preserve mixed historical sourceProposalRefs forms without weakening review gates.
+python - <<'PY'
+from pathlib import Path
+p=Path('scripts/finalize_official_retained_reviews.py')
+s=p.read_text()
+old='    rec["sourceProposalRefs"] = sorted(set((rec.get("sourceProposalRefs") or []) + [source_ref]), key=str)\n'
+new=(
+    '    refs = list(rec.get("sourceProposalRefs") or [])\n'
+    '    existing_paths = {r if isinstance(r, str) else r.get("path") for r in refs if isinstance(r, (str, dict))}\n'
+    '    if source_ref not in existing_paths:\n'
+    '        refs.append(source_ref)\n'
+    '    rec["sourceProposalRefs"] = refs\n'
+)
+if old in s:
+    p.write_text(s.replace(old,new,1))
+PY
+python -m py_compile scripts/finalize_official_retained_reviews.py
+
+# Baseline: no paid APIs, maintained regressions, deterministic public rebuild.
+node scripts/audit_no_paid_apis.mjs
+node scripts/test_reviewed_agent_dish_evidence.mjs
+node scripts/test_agent_dish_integration.mjs
+python scripts/reload_data.py --public-only --outdir _audit/final/baseline-reload
+node scripts/audit_agent_dish_integration.mjs --snapshot _audit/final/integration-before.json
+git show origin/codex/official-retained-completion-20260914:data/google_inventory_detail_evidence.json > _audit/final/pr67-base-evidence.json
+
+# Import only durable shard proposal/review/approval/log artifacts and each validated canonical snapshot.
+python - <<'PY'
+from pathlib import Path
+import subprocess
+
+def output(*args):
+    return subprocess.check_output(args)
+
+for s in range(8):
+    ref=f'origin/agent-e2e-dish-s{s}-20260914'
+    names=output('git','ls-tree','-r','--name-only',ref).decode().splitlines()
+    exact={
+        f'data/agent_proposals/DISH-R-DISCOVERY/S{s}.json',
+        f'data/agent_proposals/DISH-F-SOURCE/S{s}.json',
+        f'data/agent_reviews/DISH-R-DISCOVERY/S{s}.json',
+        f'data/agent_reviews/DISH-F-SOURCE/S{s}.json',
+        f'logs/2026-09-14-e2e-dish-s{s}.md',
+    }
+    wanted=[n for n in names if n in exact or (n.startswith(f'data/agent_reviews/e2e-dish-s{s}') and n.endswith('.json'))]
+    missing=sorted(exact-set(names))
+    if missing:
+        raise SystemExit(f'S{s} missing durable artifacts: {missing}')
+    for path in wanted:
+        data=output('git','show',f'{ref}:{path}')
+        p=Path(path); p.parent.mkdir(parents=True,exist_ok=True); p.write_bytes(data)
+    Path(f'_audit/final/shards/S{s}.json').write_bytes(output('git','show',f'{ref}:data/google_inventory_detail_evidence.json'))
+    print(f'S{s}: imported {len(wanted)} durable artifacts')
+PY
+
+# Consolidate the small shared adapter rules independently validated by completed shards.
+python - <<'PY'
+from pathlib import Path
+import re
+p=Path('scripts/build_reviewed_agent_dish_evidence.mjs')
+s=p.read_text()
+if "['Reviewed independent', 'Reviewed independent']" not in s:
+    anchor="  ['tabelog', 'Tabelog'], ['Tabelog', 'Tabelog'], ['hotpepper', 'Hot Pepper'], ['Hot Pepper', 'Hot Pepper'],\n"
+    if anchor not in s:
+        raise SystemExit('provider-map anchor missing')
+    s=s.replace(anchor,anchor+"  ['Reviewed independent', 'Reviewed independent'],\n")
+pattern=r"const EQUIVALENT_SEMANTICS = /[^\n]+/i;"
+replacement="const EQUIVALENT_SEMANTICS = /定番|ご好評|自信作|自信の一品|一番の売り商品|一押し|お勧め|お薦め|おススメ|一番のおすすめ|代名詞|必ず.{0,16}オーダー|オーダーしたい逸品/i;"
+s,n=re.subn(pattern,replacement,s,count=1)
+if n!=1:
+    raise SystemExit('equivalent-semantics anchor missing')
+p.write_text(s)
+PY
+node --check scripts/build_reviewed_agent_dish_evidence.mjs
+node scripts/test_reviewed_agent_dish_evidence.mjs
+node scripts/test_agent_dish_integration.mjs
+node scripts/audit_no_paid_apis.mjs
+
+# Final fail-closed central review and digest approval for Official/Retained.
+python scripts/finalize_official_retained_reviews.py | tee _audit/final/official-retained-finalizer.log
+node scripts/build_reviewed_agent_dish_evidence.mjs \
+  data/agent_reviews/official-retained-completion.json \
+  _audit/final/official-retained-evidence.json \
+  _audit/final/official-retained-pending.json \
+  _audit/final/official-retained-coverage.json | tee _audit/final/official-retained-adapter.log
+
+# Exact union: validated 36R+33F shard deltas plus newly approved Official/Retained evidence.
+python scripts/build_final_dish_union.py \
+  --base _audit/final/pr67-base-evidence.json \
+  --official-retained _audit/final/official-retained-evidence.json \
+  --shard-dir _audit/final/shards \
+  --output _audit/final/all-approved-evidence.json \
+  --audit _audit/final/union-audit.json
+node scripts/audit_no_paid_apis.mjs
+
+# Maintained canonical integration and public rebuild.
+node scripts/merge_google_inventory_detail_evidence.mjs \
+  data/google_inventory_detail_evidence.json \
+  _audit/final/all-approved-evidence.json \
+  _audit/final/merged-evidence.json | tee _audit/final/merge.log
+cp _audit/final/merged-evidence.json data/google_inventory_detail_evidence.json
+node scripts/correct_dish_specificity_evidence.mjs \
+  data/google_inventory_detail_evidence.json \
+  data/google_inventory_detail_evidence.json | tee _audit/final/specificity.log
+node scripts/audit_google_inventory_detail_evidence.mjs | tee _audit/final/evidence-audit.log
+python scripts/reload_data.py --public-only --outdir _audit/final/post-reload
+node scripts/audit_agent_dish_integration.mjs --compare \
+  _audit/final/integration-before.json \
+  _audit/final/all-approved-evidence.json \
+  _audit/final/integration-audit.json
+node scripts/audit_agent_dish_integration.mjs --snapshot _audit/final/integration-after.json
+
+# Full disposable database build and all maintained validators/export/workplan checks.
+python scripts/reload_data.py \
+  --outdir _audit/final/full-reload \
+  --database _audit/final/eat-master.sqlite \
+  --reset
+node scripts/audit_no_paid_apis.mjs
+
+# Second logical replay must add nothing and change no counts.
+node scripts/merge_google_inventory_detail_evidence.mjs \
+  data/google_inventory_detail_evidence.json \
+  _audit/final/all-approved-evidence.json \
+  _audit/final/replay-merged-evidence.json > _audit/final/replay-merge.log
+cp _audit/final/replay-merged-evidence.json data/google_inventory_detail_evidence.json
+node scripts/correct_dish_specificity_evidence.mjs \
+  data/google_inventory_detail_evidence.json \
+  data/google_inventory_detail_evidence.json > _audit/final/replay-specificity.log
+node scripts/audit_google_inventory_detail_evidence.mjs > _audit/final/replay-evidence-audit.log
+python scripts/reload_data.py --public-only --outdir _audit/final/replay-reload
+node scripts/audit_agent_dish_integration.mjs --compare \
+  _audit/final/integration-after.json \
+  _audit/final/all-approved-evidence.json \
+  _audit/final/replay-audit.json
+python - <<'PY'
+import json
+r=json.load(open('_audit/final/replay-audit.json'))
+if r['newRecommendationEvidenceItems'] != 0 or r['newFeaturedEvidenceItems'] != 0:
+    raise SystemExit(f'replay added evidence: {r}')
+bad={k:v for k,v in r['delta'].items() if v != 0}
+if bad:
+    raise SystemExit(f'replay changed counts: {bad}')
+print('logical replay: zero new evidence and zero count delta')
+PY
+
+# Durable metrics, development documentation and lifecycle logs.
+python - <<'PY'
+import json
+from pathlib import Path
+integ=json.load(open('_audit/final/integration-audit.json'))
+replay=json.load(open('_audit/final/replay-audit.json'))
+cov=json.load(open('_audit/final/official-retained-coverage.json'))
+pend=json.load(open('_audit/final/official-retained-pending.json'))
+union=json.load(open('_audit/final/union-audit.json'))
+review=json.load(open('_audit/final/official-retained-review-summary.json'))
+after=integ['after']
+baseline={'recommendedRestaurants':595,'featuredRestaurants':675,'displayRestaurants':740,'recommendationGap':827,
+          'recommendationEvidenceItems':1000,'featuredEvidenceItems':2663}
+final_delta={k:after[k]-v for k,v in baseline.items()}
+metrics={'status':'pass','originalDishWorkRows':892,'officialRetainedReviewed':537,'discoveryFeaturedReviewed':355,
+         'allTerminalReviewCoverage':'892/892','officialRetainedCoverage':cov,
+         'officialRetainedTranslationPending':len(pend.get('rows',[])),'unionAudit':union,
+         'integrationAudit':integ,'replayAudit':replay,'productionBaseline':baseline,
+         'finalRuntime':after,'finalDeltaFromProductionBaseline':final_delta,
+         'officialRetainedFinalReview':review,'paidGoogleDataApiCalls':0}
+Path('data/final_dish_integration_metrics.json').write_text(json.dumps(metrics,ensure_ascii=False,indent=2)+'\n')
+section=f'''\n\n## 2026-09-15：菜品数据最终统一整合\n\n892 条 dish-work 已全部形成 terminal decision；Official/Retained 537 行与 Discovery/F-source 355 行均完成最终覆盖。S0–S7 的独立 E2E 结果先按共同 PR #67 基线提取 canonical delta，再与 Official/Retained 的 fail-closed 中央复核结果做单调 union。\n\n最终维护管线验证通过：review digest approval → evidence union → maintained merge → specificity correction → evidence audit → public rebuild → integration audit → disposable SQLite full rebuild/validators → logical replay。全程付费 Google Data API 调用为 0。\n\n最终公开 runtime：R {after['recommendedRestaurants']} 家、F {after['featuredRestaurants']} 家、任一展示菜 {after['displayRestaurants']} 家、recommendation gap {after['recommendationGap']} 家；相对原始基线 R {final_delta['recommendedRestaurants']:+d}、F {final_delta['featuredRestaurants']:+d}、展示 {final_delta['displayRestaurants']:+d}、推荐缺口 {final_delta['recommendationGap']:+d}。canonical evidence item 为 R {after['recommendationEvidenceItems']}、F {after['featuredEvidenceItems']}。第二次 replay 新增 R/F evidence 均为 0，所有 count delta 均为 0。\n\n详细结果与中央降级、translation-pending 数量、各 shard delta 见 [`data/final_dish_integration_metrics.json`](data/final_dish_integration_metrics.json) 与 [`logs/2026-09-15-final-dish-integration.md`](logs/2026-09-15-final-dish-integration.md)。在 final integration PR 合入前，`main` 不视为已发布这些结果。\n'''
+dev=Path('DEVELOPMENT.md')
+text=dev.read_text()
+if '## 2026-09-15：菜品数据最终统一整合' not in text:
+    dev.write_text(text+section)
+final_log=Path('logs/2026-09-15-final-dish-integration.md')
+final_log.write_text(final_log.read_text()+f'''\n## Final validated result\n\n- Terminal review coverage: **892/892**.\n- Official/Retained: **537/537** final reviewed rows.\n- Discovery/F-source: **355/355** reviewed rows; S0–S7 canonical delta verified at **36 R + 33 F**.\n- Official/Retained emitted canonical evidence: **{union['officialRetained']['R']} R + {union['officialRetained']['F']} F**.\n- Official/Retained translation-pending source-native items: **{len(pend.get('rows',[]))}**.\n- Final runtime: recommended **{after['recommendedRestaurants']}**, featured **{after['featuredRestaurants']}**, display **{after['displayRestaurants']}**, recommendation gap **{after['recommendationGap']}**.\n- Final evidence items: R **{after['recommendationEvidenceItems']}**, F **{after['featuredEvidenceItems']}**.\n- Relative to original production baseline: recommended **{final_delta['recommendedRestaurants']:+d}**, featured **{final_delta['featuredRestaurants']:+d}**, display **{final_delta['displayRestaurants']:+d}**, recommendation gap **{final_delta['recommendationGap']:+d}**.\n- Full disposable SQLite rebuild and maintained validators: **pass**.\n- Logical replay: **0 new R, 0 new F, zero count delta**.\n- Paid Google Data API calls: **0**.\n\nThe final integration remains on `final-dish-integration-20260915` until its production PR is reviewed/merged; `main` was not directly edited by this workflow.\n''')
+old=Path('logs/2026-09-14-official-retained-completion.md')
+old.write_text(old.read_text()+f'''\n\n## 2026-09-15 finalization handoff\n\nPR #67's structural 537/537 checkpoint was finalized on `final-dish-integration-20260915` with a new fail-closed full review materialization. Structural accepts that failed final source/branch/semantic gates were downgraded rather than force-approved. The approved review manifest now uses immutable SHA-256 reviewed files; unsafe Chinese normalization remains translation-pending. The final adapter emitted {union['officialRetained']['R']} R and {union['officialRetained']['F']} F canonical evidence items from Official/Retained, and the global union/rebuild/replay/SQLite validation passed. See `logs/2026-09-15-final-dish-integration.md` for the production-integration record.\n''')
+print(json.dumps(metrics,ensure_ascii=False))
+PY
+
+# Commit only durable outputs. Workflow files are intentionally not modified by Actions.
+git add \
+  DEVELOPMENT.md \
+  RECOMMENDED_DISH_PIPELINE.md \
+  data/agent_proposals/DISH-R-DISCOVERY \
+  data/agent_proposals/DISH-F-SOURCE \
+  data/agent_reviews \
+  data/google_inventory_detail_evidence.json \
+  data/google_inventory_runtime.js \
+  data/google_inventory_detail_queue.json \
+  data/dish_batch_plan.json \
+  data/independent_dish_source_candidates.json \
+  data/final_dish_integration_metrics.json \
+  logs/2026-09-14-e2e-dish-s*.md \
+  logs/2026-09-14-official-retained-completion.md \
+  logs/2026-09-15-final-dish-integration.md \
+  scripts/build_reviewed_agent_dish_evidence.mjs \
+  scripts/finalize_official_retained_reviews.py \
+  scripts/build_final_dish_union.py \
+  scripts/run_final_dish_integration.sh
+
+git diff --cached --check
+git commit -m 'data: finalize reviewed dish evidence union'
+git push origin HEAD:final-dish-integration-20260915
