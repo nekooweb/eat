@@ -1,0 +1,67 @@
+{
+  "assignment": "E2E-DISH:S4",
+  "reviewCoverage": {
+    "discovery": "36/36",
+    "featuredSource": "7/7",
+    "combined": "43/43"
+  },
+  "terminalStatus": {
+    "accepted_evidence": 4,
+    "candidate": 11,
+    "no_evidence": 28,
+    "blocked": 0,
+    "skipped_already_complete": 0
+  },
+  "approvedEvidence": {
+    "R": 2,
+    "F": 2,
+    "RRestaurants": 2,
+    "FOnlyRestaurants": 2
+  },
+  "canonicalImpact": {
+    "status": "pass",
+    "before": {
+      "catalogTotal": 2804,
+      "publicRestaurants": 1422,
+      "recommendedRestaurants": 595,
+      "featuredRestaurants": 675,
+      "displayRestaurants": 740,
+      "recommendationGap": 827,
+      "recommendationEvidenceItems": 1000,
+      "featuredEvidenceItems": 2663
+    },
+    "after": {
+      "catalogTotal": 2804,
+      "publicRestaurants": 1422,
+      "recommendedRestaurants": 595,
+      "featuredRestaurants": 677,
+      "displayRestaurants": 740,
+      "recommendationGap": 827,
+      "recommendationEvidenceItems": 1002,
+      "featuredEvidenceItems": 2665
+    },
+    "delta": {
+      "catalogTotal": 0,
+      "publicRestaurants": 0,
+      "recommendedRestaurants": 0,
+      "featuredRestaurants": 2,
+      "displayRestaurants": 0,
+      "recommendationGap": 0,
+      "recommendationEvidenceItems": 2,
+      "featuredEvidenceItems": 2
+    },
+    "frozenIdentitySetPreserved": true,
+    "publicIdentityNamesPreserved": true,
+    "allOldEvidenceKeysRetained": true,
+    "oldEvidenceItems": 3663,
+    "newRecommendationEvidenceItems": 2,
+    "newFeaturedEvidenceItems": 2,
+    "allReviewProvenanceSnapshotsRetained": true,
+    "allAdditionsApproved": true,
+    "paidGoogleDataApiCalls": 0
+  },
+  "paidGoogleDataApiCalls": 0,
+  "replayIdempotent": true,
+  "generatedBaselineDriftCommitted": false,
+  "generatedBaselineDriftReason": "PR #67 pre-existing Minatoya source-quarantine rebuild drift is validated but excluded from the S4 commit."
+}

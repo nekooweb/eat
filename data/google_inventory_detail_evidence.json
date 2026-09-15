@@ -1,6 +1,6 @@
 {
   "schemaVersion": 4,
-  "checkedAt": "2026-09-10",
+  "checkedAt": "2026-09-15",
   "policy": {
     "googleIdentityKey": "frozen Place ID only",
     "paidGoogleDataApiCalls": 0,
@@ -32,7 +32,7 @@
     "ordinaryMenuDishBecomesFeaturedOnly": true,
     "shardIndex": 0,
     "shardCount": 1,
-    "source": "already-bound independent official/source websites only",
+    "source": "digest-approved full-template agent reviews",
     "eligibleBindings": [
       "strict_auto",
       "manual_exact"
@@ -155,54 +155,77 @@
     "publicRuntimeCountPolicy": "dynamic; validate runtime stats and public+unpublished catalog reconciliation instead of a fixed named-row count",
     "evidenceStorageItemLimit": null,
     "presentationItemLimitAppliedHere": false,
-    "menuLinkDomainPolicy": "follow only the already-bound hostname, its normalized root/parent, or a child of that root; sibling and unrelated domains are rejected"
+    "menuLinkDomainPolicy": "follow only the already-bound hostname, its normalized root/parent, or a child of that root; sibling and unrelated domains are rejected",
+    "fullSourceEvidenceRetained": true
   },
   "summary": {
-    "catalogTotal": 2804,
-    "publicRuntimeTotal": 1422,
-    "queueEligibleIds": 294,
-    "targets": 266,
-    "uniqueOrigins": 242,
-    "sitemapFilesFetched": 507,
-    "menuUrlsDiscovered": 64,
-    "menuPagesFetched": 54,
-    "errorTargets": 3,
-    "evidenceRestaurants": 18,
-    "recommendationRestaurants": 2,
-    "featuredRestaurants": 16,
-    "recommendationItems": 4,
-    "featuredItems": 62,
+    "assignedRows": 43,
+    "reviewedRows": 43,
+    "byMarker": {
+      "DISH-R-OFFICIAL": {
+        "assignedRows": 0,
+        "reviewedRows": 0
+      },
+      "DISH-R-RETAINED": {
+        "assignedRows": 0,
+        "reviewedRows": 0
+      },
+      "DISH-R-DISCOVERY": {
+        "assignedRows": 36,
+        "reviewedRows": 36
+      },
+      "DISH-F-SOURCE": {
+        "assignedRows": 7,
+        "reviewedRows": 7
+      }
+    },
+    "statusCounts": {
+      "accepted_evidence": 4,
+      "candidate": 11,
+      "no_evidence": 28,
+      "blocked": 0,
+      "skipped_already_complete": 0
+    },
+    "acceptedRItems": 2,
+    "acceptedFItems": 2,
+    "acceptedRRestaurants": 2,
+    "acceptedRDistinctDishes": 2,
+    "acceptedFDistinctDishes": 2,
+    "acceptedFOnlyRestaurants": 2,
+    "emittedRItems": 2,
+    "emittedFItems": 2,
+    "translationPendingItems": 0,
+    "currentAssignmentRows": 43,
+    "currentReviewedRows": 43,
+    "completedAssignmentsRemovedByRebuild": 0,
     "previousEvidence": {
       "recommendationRestaurants": 567,
       "featuredRestaurants": 666,
       "evidenceRestaurants": 732,
       "recommendationItems": 1000,
-      "featuredItems": 2662
+      "featuredItems": 2663
     },
     "freshCrawlEvidence": {
       "recommendationRestaurants": 2,
-      "featuredRestaurants": 16,
-      "evidenceRestaurants": 18,
-      "recommendationItems": 4,
-      "featuredItems": 62
+      "featuredRestaurants": 2,
+      "evidenceRestaurants": 4,
+      "recommendationItems": 2,
+      "featuredItems": 2
     },
     "mergedEvidence": {
       "recommendationRestaurants": 567,
-      "featuredRestaurants": 666,
+      "featuredRestaurants": 668,
       "evidenceRestaurants": 732,
-      "recommendationItems": 1000,
-      "featuredItems": 2666
+      "recommendationItems": 1002,
+      "featuredItems": 2665
     },
     "specificityCorrection": {
-      "correctedRestaurants": 5,
-      "correctedItems": 5,
-      "duplicateItemsRemoved": 3,
-      "ruleCounts": {
-        "meat-sushi-over-sushi": 1,
-        "yakisoba-over-soba": 4
-      },
-      "recommendationItemsAfterCorrection": 1000,
-      "featuredItemsAfterCorrection": 2663
+      "correctedRestaurants": 0,
+      "correctedItems": 0,
+      "duplicateItemsRemoved": 0,
+      "ruleCounts": {},
+      "recommendationItemsAfterCorrection": 1002,
+      "featuredItemsAfterCorrection": 2665
     }
   },
   "rows": [
@@ -4941,7 +4964,57 @@
           "evidenceSnippet": "美味しい自慢の火鍋!!"
         }
       ],
-      "featuredDishes": []
+      "featuredDishes": [
+        {
+          "nameZh": "热腾腾海鲜砂锅",
+          "nameJa": "アツアツ海鮮土鍋",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://zuienshanghichubo.gorp.jp/",
+          "checkedAt": "2026-09-15",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "central-reviewed:F:reviewed-exact-source-native-translation",
+          "evidenceSnippet": "アツアツ海鮮土鍋 新鮮な海鮮がたくさん入ってます！！2480円！！ホタテ、大正エビ、牡蠣、アサリ、イカ全部付いてます！！",
+          "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-F-SOURCE/S4.json",
+              "marker": "DISH-F-SOURCE",
+              "shard": "S4",
+              "sourceQueueCommit": "e41ff3435bb4bcf5a6574df95424512280ec86d4",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [
+                  "随苑 上海厨房",
+                  "上海厨房"
+                ],
+                "evidence": [
+                  {
+                    "provider": "official_web",
+                    "sourceUrl": "https://zuienshanghichubo.gorp.jp/",
+                    "checkedAt": "2026-09-15",
+                    "evidenceType": "reviewed_official_branch_page",
+                    "note": "Second pass confirmed the repository-reviewed official binding for this frozen Place ID; the page identifies 随苑 上海厨房 at 東京都文京区本郷3-32-7 with telephone 03-6801-8166."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "アツアツ海鮮土鍋",
+                "nameZhCandidate": "热腾腾海鲜砂锅",
+                "evidenceClass": "official_branch_menu_item",
+                "recommendationSemantics": "",
+                "provider": "official_web",
+                "sourceUrl": "https://zuienshanghichubo.gorp.jp/",
+                "checkedAt": "2026-09-15",
+                "sourceScope": "branch",
+                "evidenceText": "アツアツ海鮮土鍋 新鮮な海鮮がたくさん入ってます！！2480円！！ホタテ、大正エビ、牡蠣、アサリ、イカ全部付いてます！！",
+                "confidence": "high",
+                "notes": "Second pass confirms a concrete current ordinary menu item; no recommendation semantics are attached to this item, so F is retained."
+              }
+            }
+          ]
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJ4e3_CQ6MGGARgbvLFz2U9kQ",
@@ -17437,6 +17510,54 @@
       "name": "虎子担々 淡路町ワテラス店",
       "recommendedDishes": [
         {
+          "nameZh": "石锅麻婆豆腐",
+          "nameJa": "石鍋焼き麻婆豆腐",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ004678468/food/",
+          "checkedAt": "2026-09-15",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "central-reviewed:R:reviewed-exact-source-native-translation",
+          "evidenceSnippet": "〖当店看板メニュー〗四川山椒のしびれと香りが食欲をそそる「石鍋焼き麻婆豆腐」 当店自慢の「石鍋焼き麻婆豆腐」。",
+          "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-F-SOURCE/S4.json",
+              "marker": "DISH-F-SOURCE",
+              "shard": "S4",
+              "sourceQueueCommit": "e41ff3435bb4bcf5a6574df95424512280ec86d4",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [
+                  "虎子担々 淡路町ワテラス店"
+                ],
+                "evidence": [
+                  {
+                    "provider": "Hot Pepper",
+                    "sourceUrl": "https://www.hotpepper.jp/strJ004678468/food/",
+                    "checkedAt": "2026-09-15",
+                    "evidenceType": "existing_high_confidence_hotpepper_binding",
+                    "note": "Second pass rechecked repository hotpepper_bindings.json: this frozen Place ID is bound to J004678468 with high confidence and autoEligible=true; the page is the exact ワテラス branch."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "recommendedDishes",
+                "classification": "R",
+                "nameOriginal": "石鍋焼き麻婆豆腐",
+                "nameZhCandidate": "石锅麻婆豆腐",
+                "evidenceClass": "hotpepper_branch_recommendation",
+                "recommendationSemantics": "当店看板メニュー・当店自慢・必食の逸品",
+                "provider": "Hot Pepper",
+                "sourceUrl": "https://www.hotpepper.jp/strJ004678468/food/",
+                "checkedAt": "2026-09-15",
+                "sourceScope": "branch",
+                "evidenceText": "〖当店看板メニュー〗四川山椒のしびれと香りが食欲をそそる「石鍋焼き麻婆豆腐」 当店自慢の「石鍋焼き麻婆豆腐」。",
+                "confidence": "high",
+                "notes": "Second pass confirms concrete item plus explicit 看板/自慢 semantics on the exact current branch source."
+              }
+            }
+          ]
+        },
+        {
           "nameZh": "小笼包",
           "nameJa": "小籠包",
           "provider": "Hot Pepper",
@@ -17494,7 +17615,57 @@
           "evidenceSnippet": "マトン・カレー 羊肉のカレーです。男性人気NO.1 キーマ・カレー チキンひき肉カレーです。女性人気NO.1"
         }
       ],
-      "featuredDishes": []
+      "featuredDishes": [
+        {
+          "nameZh": "帕尼普里（8个）",
+          "nameJa": "パ二プリ（８P）",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://himalaya-table.info/",
+          "checkedAt": "2026-09-15",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "central-reviewed:F:reviewed-exact-source-native-translation",
+          "evidenceSnippet": "パ二プリ（８P） 一口サイズの揚げ玉に、ポテトの具と酸味の効いたソースを入れて。",
+          "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-F-SOURCE/S4.json",
+              "marker": "DISH-F-SOURCE",
+              "shard": "S4",
+              "sourceQueueCommit": "e41ff3435bb4bcf5a6574df95424512280ec86d4",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [
+                  "Himalaya Table",
+                  "ヒマラヤテーブル"
+                ],
+                "evidence": [
+                  {
+                    "provider": "official_web",
+                    "sourceUrl": "https://himalaya-table.info/",
+                    "checkedAt": "2026-09-15",
+                    "evidenceType": "reviewed_official_branch_page",
+                    "note": "Second pass confirmed the repository-reviewed official binding; the current page gives 東京都千代田区内神田3-5-5 大同ビル2F and 03-3525-4110."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "パ二プリ（８P）",
+                "nameZhCandidate": "帕尼普里（8个）",
+                "evidenceClass": "official_branch_menu_item",
+                "recommendationSemantics": "",
+                "provider": "official_web",
+                "sourceUrl": "https://himalaya-table.info/",
+                "checkedAt": "2026-09-15",
+                "sourceScope": "branch",
+                "evidenceText": "パ二プリ（８P） 一口サイズの揚げ玉に、ポテトの具と酸味の効いたソースを入れて。",
+                "confidence": "high",
+                "notes": "Second pass confirms a concrete ordinary menu item; no item-level recommendation marker is attached, so F is retained."
+              }
+            }
+          ]
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJgf3tagGMGGARkEwmHXAshfQ",
@@ -20719,6 +20890,21 @@
           "evidenceSnippet": "アディロンダックバーガー"
         },
         {
+          "nameZh": "炒面",
+          "nameJa": "そば",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://adirondackcafejp.wordpress.com/food/",
+          "checkedAt": "2026-09-10",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "specificity:yakisoba-over-soba:menu-page-text:蕎麦|そば|soba",
+          "evidenceSnippet": "焼きそば Fried Noodle （税込み１４３０）",
+          "specificityCorrection": {
+            "rule": "yakisoba-over-soba",
+            "previousNameZh": "荞麦面",
+            "sourceNativeCompositeRequired": true
+          }
+        },
+        {
           "nameZh": "炒饭",
           "nameJa": "チャーハン",
           "provider": "sourceWebsite",
@@ -20737,21 +20923,6 @@
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:ステーキ|steak",
           "evidenceSnippet": "マグロステーキ丼"
-        },
-        {
-          "nameZh": "炒面",
-          "nameJa": "そば",
-          "provider": "sourceWebsite",
-          "sourceUrl": "https://adirondackcafejp.wordpress.com/food/",
-          "checkedAt": "2026-09-10",
-          "evidenceClass": "source_menu_text",
-          "evidenceRule": "specificity:yakisoba-over-soba:menu-page-text:蕎麦|そば|soba",
-          "evidenceSnippet": "焼きそば Fried Noodle （税込み１４３０）",
-          "specificityCorrection": {
-            "rule": "yakisoba-over-soba",
-            "previousNameZh": "荞麦面",
-            "sourceNativeCompositeRequired": true
-          }
         }
       ]
     },
@@ -40310,6 +40481,54 @@
       "googlePlaceId": "ChIJy06huh6MGGARMUq5_yEeC-E",
       "name": "Hakkou Cafe 章太亭",
       "recommendedDishes": [
+        {
+          "nameZh": "发酵时令菜膳",
+          "nameJa": "発酵 旬菜膳",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ000115713/food/",
+          "checkedAt": "2026-09-15",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "central-reviewed:R:reviewed-exact-source-native-translation",
+          "evidenceSnippet": "Hakkou Cafe 章太亭 おすすめ料理 発酵 旬菜膳 旬の食材を使った御膳をご用意しています。９月は厚切り銀だらの西京焼きをメインに、フルーツ甘酒、小鉢３種、香の物、味噌汁、",
+          "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-F-SOURCE/S4.json",
+              "marker": "DISH-F-SOURCE",
+              "shard": "S4",
+              "sourceQueueCommit": "e41ff3435bb4bcf5a6574df95424512280ec86d4",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [
+                  "Hakkou Cafe 章太亭"
+                ],
+                "evidence": [
+                  {
+                    "provider": "Hot Pepper",
+                    "sourceUrl": "https://www.hotpepper.jp/strJ000115713/food/",
+                    "checkedAt": "2026-09-15",
+                    "evidenceType": "existing_high_confidence_hotpepper_binding",
+                    "note": "Second pass rechecked repository binding to J000115713 and the exact branch page; current September availability is explicitly described."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "recommendedDishes",
+                "classification": "R",
+                "nameOriginal": "発酵 旬菜膳",
+                "nameZhCandidate": "发酵时令菜膳",
+                "evidenceClass": "hotpepper_branch_recommendation",
+                "recommendationSemantics": "おすすめ料理",
+                "provider": "Hot Pepper",
+                "sourceUrl": "https://www.hotpepper.jp/strJ000115713/food/",
+                "checkedAt": "2026-09-15",
+                "sourceScope": "branch",
+                "evidenceText": "Hakkou Cafe 章太亭 おすすめ料理 発酵 旬菜膳 旬の食材を使った御膳をご用意しています。９月は厚切り銀だらの西京焼きをメインに、フルーツ甘酒、小鉢３種、香の物、味噌汁、発酵玄米ご飯の豪華なお膳になります。",
+                "confidence": "high",
+                "notes": "Second pass confirms concrete item, explicit おすすめ料理 semantics, and current September composition."
+              }
+            }
+          ]
+        },
         {
           "nameZh": "咖喱",
           "nameJa": "カレー",
