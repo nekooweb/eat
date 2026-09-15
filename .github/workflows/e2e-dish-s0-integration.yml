@@ -55,15 +55,18 @@ jobs:
           node scripts/test_reviewed_agent_dish_evidence.mjs
           node scripts/test_agent_dish_integration.mjs
           node scripts/audit_no_paid_apis.mjs
-      - name: Replay merge and verify tracked idempotence
+      - name: Replay merge and verify semantic idempotence
         run: |
           set -euo pipefail
-          git diff -- data > _audit/e2e-dish-s0/first.diff
           node scripts/merge_google_inventory_detail_evidence.mjs data/google_inventory_detail_evidence.json _audit/e2e-dish-s0/accepted.json data/google_inventory_detail_evidence.json
           node scripts/correct_dish_specificity_evidence.mjs data/google_inventory_detail_evidence.json data/google_inventory_detail_evidence.json
+          node scripts/audit_google_inventory_detail_evidence.mjs
           python3 scripts/reload_data.py --public-only --outdir _audit/e2e-dish-s0/reload-replay
-          git diff -- data > _audit/e2e-dish-s0/replay.diff
-          cmp _audit/e2e-dish-s0/first.diff _audit/e2e-dish-s0/replay.diff
+          node scripts/audit_agent_dish_integration.mjs --compare \
+            _audit/e2e-dish-s0/before.json \
+            _audit/e2e-dish-s0/accepted.json \
+            _audit/e2e-dish-s0/replay-integration-audit.json
+          node scripts/test_agent_dish_integration.mjs
       - name: Commit maintained generated data
         run: |
           set -euo pipefail
