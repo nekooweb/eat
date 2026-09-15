@@ -44,6 +44,14 @@ jobs:
               raise SystemExit('current assignment scope line not found')
           p.write_text(s.replace(old_scope,new_scope))
 
+          runner=Path('scripts/complete_e2e_dish_s1.mjs')
+          rs=runner.read_text()
+          old_guard="if (discoveryAssignments.length !== 39 || featuredAssignments.length !== 13) {"
+          new_guard="if (!process.argv.includes('--finalize') && (discoveryAssignments.length !== 39 || featuredAssignments.length !== 13)) {"
+          if old_guard not in rs and new_guard not in rs:
+              raise SystemExit('S1 denominator guard not found')
+          runner.write_text(rs.replace(old_guard,new_guard))
+
           review_path=Path('data/agent_reviews/DISH-R-DISCOVERY/S1.json')
           review=json.loads(review_path.read_text())
           target=next(r for r in review['records'] if r['googlePlaceId']=='ChIJp5DhBQ2NGGARIzyIvtbL5o0')
