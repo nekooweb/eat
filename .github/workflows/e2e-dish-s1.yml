@@ -109,7 +109,7 @@ jobs:
       - name: Replay idempotence
         run: |
           set -euo pipefail
-          sha256sum data/google_inventory_detail_evidence.json > _audit/s1-evidence-first.sha
+          cp data/google_inventory_detail_evidence.json _audit/s1-evidence-first.json
           node scripts/merge_google_inventory_detail_evidence.mjs \
             data/google_inventory_detail_evidence.json \
             _audit/s1-approved.json \
@@ -117,7 +117,27 @@ jobs:
           node scripts/correct_dish_specificity_evidence.mjs \
             _audit/s1-replay-merged.json \
             _audit/s1-replay-corrected.json
-          cmp data/google_inventory_detail_evidence.json _audit/s1-replay-corrected.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          def logical(path):
+              doc=json.loads(Path(path).read_text())
+              keys=set(); snapshots=set(); names=set()
+              for row in doc.get('rows',[]):
+                  names.add((row['googlePlaceId'], row.get('name')))
+                  for field in ('recommendedDishes','featuredDishes'):
+                      for dish in row.get(field,[]):
+                          key=(row['googlePlaceId'],field,dish.get('nameZh'),dish.get('provider'),dish.get('sourceUrl'),dish.get('evidenceClass'))
+                          keys.add(key)
+                          for snap in dish.get('reviewedSourceEvidence',[]):
+                              snapshots.add((key,json.dumps(snap,ensure_ascii=False,sort_keys=True,separators=(',',':'))))
+              return names,keys,snapshots
+          first=logical('_audit/s1-evidence-first.json')
+          replay=logical('_audit/s1-replay-corrected.json')
+          if first != replay:
+              raise SystemExit('Replay changed logical dish evidence or reviewed provenance')
+          print(json.dumps({'status':'pass','logicalEvidenceItems':len(first[1]),'reviewSnapshots':len(first[2])}))
+          PY
           sha256sum data/google_inventory_runtime.js data/dish_batch_plan.json data/google_inventory_detail_queue.json > _audit/s1-runtime-first.sha
           python3 scripts/reload_data.py --public-only --outdir _audit/s1-reload-replay
           sha256sum data/google_inventory_runtime.js data/dish_batch_plan.json data/google_inventory_detail_queue.json > _audit/s1-runtime-second.sha
