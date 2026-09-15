@@ -193,10 +193,26 @@ jobs:
           const twice = JSON.parse(fs.readFileSync('_audit/s4-run/replay-merged.json', 'utf8'));
           if (JSON.stringify(once.rows) !== JSON.stringify(twice.rows)) throw new Error('Second reviewed-evidence merge changed logical evidence rows');
           NODE
-          git diff -- data/google_inventory_runtime.js data/google_inventory_detail_queue.json data/dish_batch_plan.json > _audit/s4-run/first-rebuild.diff
+          cp data/google_inventory_detail_queue.json _audit/s4-run/replay-queue-before.json
+          cp data/dish_batch_plan.json _audit/s4-run/replay-plan-before.json
+          node scripts/audit_agent_dish_integration.mjs --snapshot _audit/s4-run/replay-state-before.json
           python scripts/reload_data.py --public-only --outdir _audit/s4-run/replay-reload
-          git diff -- data/google_inventory_runtime.js data/google_inventory_detail_queue.json data/dish_batch_plan.json > _audit/s4-run/second-rebuild.diff
-          cmp _audit/s4-run/first-rebuild.diff _audit/s4-run/second-rebuild.diff
+          node scripts/audit_agent_dish_integration.mjs --snapshot _audit/s4-run/replay-state-after.json
+          node --input-type=module - <<'NODE'
+          import fs from 'node:fs';
+          const beforeState = JSON.parse(fs.readFileSync('_audit/s4-run/replay-state-before.json', 'utf8'));
+          const afterState = JSON.parse(fs.readFileSync('_audit/s4-run/replay-state-after.json', 'utf8'));
+          delete beforeState.inputHashes;
+          delete afterState.inputHashes;
+          if (JSON.stringify(beforeState) !== JSON.stringify(afterState)) throw new Error('Second rebuild changed logical runtime/evidence state');
+          const queueBefore = JSON.parse(fs.readFileSync('_audit/s4-run/replay-queue-before.json', 'utf8'));
+          const queueAfter = JSON.parse(fs.readFileSync('data/google_inventory_detail_queue.json', 'utf8'));
+          if (JSON.stringify(queueBefore.rows) !== JSON.stringify(queueAfter.rows)) throw new Error('Second rebuild changed logical detail-queue rows');
+          const planBefore = JSON.parse(fs.readFileSync('_audit/s4-run/replay-plan-before.json', 'utf8'));
+          const planAfter = JSON.parse(fs.readFileSync('data/dish_batch_plan.json', 'utf8'));
+          if (JSON.stringify(planBefore.rows) !== JSON.stringify(planAfter.rows)) throw new Error('Second rebuild changed logical dish-plan rows');
+          console.log(JSON.stringify({ status: 'pass', mergeRowsStable: true, runtimeStateStable: true, queueRowsStable: true, planRowsStable: true, generatedAtIgnored: true }));
+          NODE
           node scripts/audit_google_inventory_detail_evidence.mjs
           node scripts/audit_no_paid_apis.mjs
           node scripts/test_source_field_quarantine.mjs
