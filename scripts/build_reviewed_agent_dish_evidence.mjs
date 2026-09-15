@@ -10,7 +10,9 @@ import { DISH_RULES, RECOMMENDATION_MARKER, normalizePlainText } from './recomme
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 export const LANES = Object.freeze({
   'DISH-R-OFFICIAL': 'official_crawl',
-  'DISH-R-RETAINED': 'retained_source_mining'
+  'DISH-R-RETAINED': 'retained_source_mining',
+  'DISH-R-DISCOVERY': 'independent_source_discovery',
+  'DISH-F-SOURCE': 'official_or_retained_featured'
 });
 const STATUS_FIELDS = Object.freeze({
   accepted_evidence: 'acceptedEvidenceRows', candidate: 'candidateRows', no_evidence: 'noEvidenceRows',
@@ -18,7 +20,9 @@ const STATUS_FIELDS = Object.freeze({
 });
 const PROVIDERS = new Map([
   ['official', 'sourceWebsite'], ['official_web', 'sourceWebsite'], ['sourceWebsite', 'sourceWebsite'],
-  ['tabelog', 'Tabelog'], ['Tabelog', 'Tabelog'], ['hotpepper', 'Hot Pepper'], ['Hot Pepper', 'Hot Pepper']
+  ['tabelog', 'Tabelog'], ['Tabelog', 'Tabelog'], ['hotpepper', 'Hot Pepper'], ['Hot Pepper', 'Hot Pepper'],
+  ["Let's Enjoy Tokyo", 'Reviewed independent'],
+  ['Kanda Curry Grand Prix', 'Reviewed independent']
 ]);
 // Explicit equivalents in the assignment contract supplement the shared extractor.
 const EQUIVALENT_SEMANTICS = /定番|ご好評|自信作|自信の一品|一番の売り商品|一押し|お勧め|お薦め|おススメ|一番のおすすめ/i;
@@ -240,7 +244,8 @@ function main() {
   const assignments = manifest.assignmentSnapshot.rows;
   if (!/^[0-9a-f]{40}$/.test(manifest.assignmentSnapshot.sourceQueueCommit || '')) throw new Error('Explicit assignment queue commit provenance required');
   const expected = new Map(assignments.map(row => [row.googlePlaceId, row]));
-  const currentRows = currentPlan.rows.filter(row => Object.values(LANES).includes(row.lane));
+  const selectedScopes = new Set(documents.map(({ document }) => `${LANES[document.marker]}:${Number(document.shard.slice(1))}`));
+  const currentRows = currentPlan.rows.filter(row => selectedScopes.has(`${row.lane}:${row.shard}`));
   for (const row of currentRows) {
     const original = expected.get(row.googlePlaceId);
     if (!original || original.lane !== row.lane || original.shard !== row.shard) {
