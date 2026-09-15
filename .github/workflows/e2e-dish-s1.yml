@@ -190,6 +190,7 @@ jobs:
           set -euo pipefail
           git config user.name 'NekoHe'
           git config user.email '142577695+NekoHe@users.noreply.github.com'
+          sed -i 's/[[:space:]]\+$//' logs/2026-09-14-e2e-dish-s1.md
           git add \
             scripts/build_reviewed_agent_dish_evidence.mjs \
             scripts/test_reviewed_agent_dish_evidence.mjs \
