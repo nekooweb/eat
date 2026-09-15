@@ -1,0 +1,347 @@
+{
+  "status": "pass",
+  "originalDishWorkRows": 892,
+  "officialRetainedReviewed": 537,
+  "discoveryFeaturedReviewed": 355,
+  "allTerminalReviewCoverage": "892/892",
+  "officialRetainedCoverage": {
+    "assignedRows": 537,
+    "reviewedRows": 537,
+    "byMarker": {
+      "DISH-R-OFFICIAL": {
+        "assignedRows": 219,
+        "reviewedRows": 219
+      },
+      "DISH-R-RETAINED": {
+        "assignedRows": 318,
+        "reviewedRows": 318
+      },
+      "DISH-R-DISCOVERY": {
+        "assignedRows": 0,
+        "reviewedRows": 0
+      },
+      "DISH-F-SOURCE": {
+        "assignedRows": 0,
+        "reviewedRows": 0
+      }
+    },
+    "statusCounts": {
+      "accepted_evidence": 83,
+      "candidate": 59,
+      "no_evidence": 329,
+      "blocked": 66,
+      "skipped_already_complete": 0
+    },
+    "acceptedRItems": 54,
+    "acceptedFItems": 137,
+    "acceptedRRestaurants": 22,
+    "acceptedRDistinctDishes": 54,
+    "acceptedFDistinctDishes": 137,
+    "acceptedFOnlyRestaurants": 61,
+    "emittedRItems": 0,
+    "emittedFItems": 71,
+    "translationPendingItems": 120,
+    "currentAssignmentRows": 537,
+    "currentReviewedRows": 537,
+    "completedAssignmentsRemovedByRebuild": 0
+  },
+  "officialRetainedTranslationPending": 120,
+  "unionAudit": {
+    "status": "pass",
+    "commonBaseEvidenceItems": 3663,
+    "shards": {
+      "S0": {
+        "R": 2,
+        "F": 2,
+        "total": 4
+      },
+      "S1": {
+        "R": 6,
+        "F": 7,
+        "total": 13
+      },
+      "S2": {
+        "R": 6,
+        "F": 7,
+        "total": 13
+      },
+      "S3": {
+        "R": 1,
+        "F": 6,
+        "total": 7
+      },
+      "S4": {
+        "R": 2,
+        "F": 2,
+        "total": 4
+      },
+      "S5": {
+        "R": 3,
+        "F": 5,
+        "total": 8
+      },
+      "S6": {
+        "R": 5,
+        "F": 1,
+        "total": 6
+      },
+      "S7": {
+        "R": 11,
+        "F": 3,
+        "total": 14
+      }
+    },
+    "shardTotals": {
+      "R": 36,
+      "F": 33
+    },
+    "officialRetained": {
+      "R": 0,
+      "F": 71
+    },
+    "totalApprovedEvidenceItems": 140,
+    "crossShardDuplicateKeys": 0,
+    "officialShardOverlapKeys": 0,
+    "paidGoogleDataApiCalls": 0
+  },
+  "integrationAudit": {
+    "status": "pass",
+    "before": {
+      "catalogTotal": 2804,
+      "publicRestaurants": 1422,
+      "recommendedRestaurants": 601,
+      "featuredRestaurants": 678,
+      "displayRestaurants": 747,
+      "recommendationGap": 821,
+      "recommendationEvidenceItems": 1011,
+      "featuredEvidenceItems": 2666
+    },
+    "after": {
+      "catalogTotal": 2804,
+      "publicRestaurants": 1422,
+      "recommendedRestaurants": 619,
+      "featuredRestaurants": 707,
+      "displayRestaurants": 774,
+      "recommendationGap": 803,
+      "recommendationEvidenceItems": 1036,
+      "featuredEvidenceItems": 2722
+    },
+    "delta": {
+      "catalogTotal": 0,
+      "publicRestaurants": 0,
+      "recommendedRestaurants": 18,
+      "featuredRestaurants": 29,
+      "displayRestaurants": 27,
+      "recommendationGap": -18,
+      "recommendationEvidenceItems": 25,
+      "featuredEvidenceItems": 56
+    },
+    "frozenIdentitySetPreserved": true,
+    "publicIdentityNamesPreserved": true,
+    "allOldEvidenceKeysRetained": true,
+    "oldEvidenceItems": 3677,
+    "newRecommendationEvidenceItems": 25,
+    "newFeaturedEvidenceItems": 56,
+    "allReviewProvenanceSnapshotsRetained": true,
+    "allAdditionsApproved": true,
+    "paidGoogleDataApiCalls": 0
+  },
+  "replayAudit": {
+    "status": "pass",
+    "before": {
+      "catalogTotal": 2804,
+      "publicRestaurants": 1422,
+      "recommendedRestaurants": 619,
+      "featuredRestaurants": 707,
+      "displayRestaurants": 774,
+      "recommendationGap": 803,
+      "recommendationEvidenceItems": 1036,
+      "featuredEvidenceItems": 2722
+    },
+    "after": {
+      "catalogTotal": 2804,
+      "publicRestaurants": 1422,
+      "recommendedRestaurants": 619,
+      "featuredRestaurants": 707,
+      "displayRestaurants": 774,
+      "recommendationGap": 803,
+      "recommendationEvidenceItems": 1036,
+      "featuredEvidenceItems": 2722
+    },
+    "delta": {
+      "catalogTotal": 0,
+      "publicRestaurants": 0,
+      "recommendedRestaurants": 0,
+      "featuredRestaurants": 0,
+      "displayRestaurants": 0,
+      "recommendationGap": 0,
+      "recommendationEvidenceItems": 0,
+      "featuredEvidenceItems": 0
+    },
+    "frozenIdentitySetPreserved": true,
+    "publicIdentityNamesPreserved": true,
+    "allOldEvidenceKeysRetained": true,
+    "oldEvidenceItems": 3758,
+    "newRecommendationEvidenceItems": 0,
+    "newFeaturedEvidenceItems": 0,
+    "allReviewProvenanceSnapshotsRetained": true,
+    "allAdditionsApproved": true,
+    "paidGoogleDataApiCalls": 0
+  },
+  "productionBaseline": {
+    "recommendedRestaurants": 595,
+    "featuredRestaurants": 675,
+    "displayRestaurants": 740,
+    "recommendationGap": 827,
+    "recommendationEvidenceItems": 1000,
+    "featuredEvidenceItems": 2663
+  },
+  "finalRuntime": {
+    "catalogTotal": 2804,
+    "publicRestaurants": 1422,
+    "recommendedRestaurants": 619,
+    "featuredRestaurants": 707,
+    "displayRestaurants": 774,
+    "recommendationGap": 803,
+    "recommendationEvidenceItems": 1036,
+    "featuredEvidenceItems": 2722
+  },
+  "finalDeltaFromProductionBaseline": {
+    "recommendedRestaurants": 24,
+    "featuredRestaurants": 32,
+    "displayRestaurants": 34,
+    "recommendationGap": -24,
+    "recommendationEvidenceItems": 36,
+    "featuredEvidenceItems": 59
+  },
+  "officialRetainedFinalReview": {
+    "assignments": 537,
+    "laneCounts": {
+      "official_crawl": 219,
+      "retained_source_mining": 318
+    },
+    "terminalStatusCounts": {
+      "accepted_evidence": 83,
+      "candidate": 59,
+      "no_evidence": 329,
+      "blocked": 66
+    },
+    "centralDowngrades": [
+      {
+        "googlePlaceId": "ChIJBZZPagCNGGARCU7ycOpVCJY",
+        "name": "restaurant Kiro;",
+        "marker": "DISH-R-OFFICIAL",
+        "shard": 1,
+        "reason": "structural accept failed final exact-branch/source/semantic gate"
+      },
+      {
+        "googlePlaceId": "ChIJl4L3VEKMGGARE_n5R1r39lY",
+        "name": "Sombreuil",
+        "marker": "DISH-R-OFFICIAL",
+        "shard": 1,
+        "reason": "structural accept failed final exact-branch/source/semantic gate"
+      },
+      {
+        "googlePlaceId": "ChIJZQZwfxWMGGARoD8aXy_2l3Q",
+        "name": "カフェ・ベローチェ",
+        "marker": "DISH-R-OFFICIAL",
+        "shard": 2,
+        "reason": "structural accept failed final exact-branch/source/semantic gate"
+      },
+      {
+        "googlePlaceId": "ChIJyb94PwOMGGARtDDndNvDe9Y",
+        "name": "カフェ・ベローチェ",
+        "marker": "DISH-R-OFFICIAL",
+        "shard": 2,
+        "reason": "structural accept failed final exact-branch/source/semantic gate"
+      },
+      {
+        "googlePlaceId": "ChIJ1YYWBweMGGARIY5pvEdxPto",
+        "name": "Brussels",
+        "marker": "DISH-R-OFFICIAL",
+        "shard": 2,
+        "reason": "structural accept failed final exact-branch/source/semantic gate"
+      },
+      {
+        "googlePlaceId": "ChIJa8C-Cj-MGGARcz8KabQrSu0",
+        "name": "ワイン処　Ｏａｓｉ",
+        "marker": "DISH-R-OFFICIAL",
+        "shard": 2,
+        "reason": "structural accept failed final exact-branch/source/semantic gate"
+      },
+      {
+        "googlePlaceId": "ChIJze_wuziMGGAR6MRiJbQ-LV4",
+        "name": "BAR 2000",
+        "marker": "DISH-R-OFFICIAL",
+        "shard": 2,
+        "reason": "structural accept failed final exact-branch/source/semantic gate"
+      },
+      {
+        "googlePlaceId": "ChIJHSuxoNqNGGARSz9EYrZT3Ss",
+        "name": "レストラン ケイダンレン",
+        "marker": "DISH-R-OFFICIAL",
+        "shard": 3,
+        "reason": "structural accept failed final exact-branch/source/semantic gate"
+      },
+      {
+        "googlePlaceId": "ChIJDxOJyBWMGGARZjSlfNDAnZs",
+        "name": "Miyabi Cafe",
+        "marker": "DISH-R-OFFICIAL",
+        "shard": 7,
+        "reason": "structural accept failed final exact-branch/source/semantic gate"
+      },
+      {
+        "googlePlaceId": "ChIJ2VjLuz-MGGARGC3YKL-wO0Q",
+        "name": "焼肉ホルモンがく 水道橋本店",
+        "marker": "DISH-R-RETAINED",
+        "shard": 4,
+        "reason": "structural accept failed final exact-branch/source/semantic gate"
+      },
+      {
+        "googlePlaceId": "ChIJITsXUxaMGGAREtKypQBMSXI",
+        "name": "ライスカレー まんてん",
+        "marker": "DISH-R-RETAINED",
+        "shard": 4,
+        "reason": "structural accept failed final exact-branch/source/semantic gate"
+      },
+      {
+        "googlePlaceId": "ChIJhxn3rgiNGGARsGxcKSDDzQg",
+        "name": "欲張りバル CANTINA",
+        "marker": "DISH-R-RETAINED",
+        "shard": 4,
+        "reason": "structural accept failed final exact-branch/source/semantic gate"
+      },
+      {
+        "googlePlaceId": "ChIJcUWI9h2NGGARkiQ5jdqPero",
+        "name": "焼肉あきら",
+        "marker": "DISH-R-RETAINED",
+        "shard": 4,
+        "reason": "structural accept failed final exact-branch/source/semantic gate"
+      },
+      {
+        "googlePlaceId": "ChIJd76VJWuMGGAR-N8oBqjI0mM",
+        "name": "浅草姉妹 Garden企画",
+        "marker": "DISH-R-RETAINED",
+        "shard": 4,
+        "reason": "structural accept failed final exact-branch/source/semantic gate"
+      },
+      {
+        "googlePlaceId": "ChIJdx_I5hiMGGARN5YdV3PI46M",
+        "name": "アイキッチン",
+        "marker": "DISH-R-RETAINED",
+        "shard": 4,
+        "reason": "structural accept failed final exact-branch/source/semantic gate"
+      },
+      {
+        "googlePlaceId": "ChIJwx-ibW2NGGAR-GYw9WEkDkw",
+        "name": "中華厨房 一歩",
+        "marker": "DISH-R-RETAINED",
+        "shard": 4,
+        "reason": "structural accept failed final exact-branch/source/semantic gate"
+      }
+    ],
+    "deterministicTranslations": 0,
+    "reviewedFiles": 16
+  },
+  "paidGoogleDataApiCalls": 0
+}

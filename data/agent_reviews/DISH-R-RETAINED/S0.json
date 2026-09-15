@@ -1,0 +1,1778 @@
+{
+  "schemaVersion": 1,
+  "proposalOnly": false,
+  "marker": "DISH-R-RETAINED",
+  "shard": "S0",
+  "agentRunId": "FINAL-DISH-R-RETAINED:S0:20260915",
+  "sourceQueue": "data/dish_batch_plan.json",
+  "sourceQueueCommit": "97f07e274e07854952da45fe264ab43ddea7d986",
+  "generatedAt": "2026-09-15T22:00:00+09:00",
+  "reviewedAt": "2026-09-15",
+  "reviewedBy": "final-dish-integration central fail-closed review",
+  "summary": {
+    "assignedRows": 46,
+    "reviewedRows": 46,
+    "acceptedEvidenceRows": 12,
+    "candidateRows": 5,
+    "noEvidenceRows": 29,
+    "blockedRows": 0,
+    "skippedAlreadyCompleteRows": 0
+  },
+  "records": [
+    {
+      "googlePlaceId": "ChIJTXiCRgCNGGARvWgJGZvFcME",
+      "restaurantName": "ちゃちゃ屋",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://www.hotpepper.jp/strJ004576187/"
+      ],
+      "blocker": null,
+      "notes": "no_strict_dish_r",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJ0_2CIRGMGGARZxuMcOPWxwk",
+      "restaurantName": "俺の創作らぁめん 極や 神田 神保町店",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131003/13132295/"
+      ],
+      "blocker": null,
+      "notes": "review_only_popularity_excluded",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJ4V3UcxSMGGAR6WFCu53DN_k",
+      "restaurantName": "鶴八",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131003/13000419/"
+      ],
+      "blocker": null,
+      "notes": "review_only_dishes_excluded",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJ95nhlhaMGGARIziH3PEAOqY",
+      "restaurantName": "焼鳥 酉たけ",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131003/13169956/"
+      ],
+      "blocker": null,
+      "notes": "no_strict_dish_r",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJBfClgBCMGGAR2sN5CvGoDrU",
+      "restaurantName": "ジャズ オリンパス！",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": [
+          {
+            "provider": "tabelog",
+            "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13315798/dtlmenu/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "exact_retained_branch_binding",
+            "note": "Exact frozen Place-ID retained-source binding from the worker proposal."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "recommendedDishes",
+          "classification": "R",
+          "nameOriginal": "一関スモーク生ハム",
+          "nameZhCandidate": null,
+          "evidenceClass": "retained_structured_recommendation",
+          "recommendationSemantics": "おすすめ",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13315798/dtlmenu/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "一関スモーク生ハム おすすめ",
+          "confidence": "medium",
+          "notes": "Structured retained menu marks both concrete items as おすすめ."
+        },
+        {
+          "targetField": "recommendedDishes",
+          "classification": "R",
+          "nameOriginal": "ブルーチーズとドライフルーツ",
+          "nameZhCandidate": null,
+          "evidenceClass": "retained_structured_recommendation",
+          "recommendationSemantics": "おすすめ",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13315798/dtlmenu/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "ブルーチーズとドライフルーツ おすすめ",
+          "confidence": "medium",
+          "notes": "Structured retained menu marks both concrete items as おすすめ."
+        }
+      ],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131002/13315798/dtlmenu/"
+      ],
+      "blocker": null,
+      "notes": "Structured retained menu marks both concrete items as おすすめ.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJbS0GS2uMGGARE_vV-2kWt08",
+      "restaurantName": "寿司政",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": [
+          {
+            "provider": "tabelog",
+            "sourceUrl": "https://tabelog.com/tokyo/A1309/A130906/13000407/dtlmenu/lunch/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "exact_retained_branch_binding",
+            "note": "Exact frozen Place-ID retained-source binding from the worker proposal."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "梅にぎり",
+          "nameZhCandidate": null,
+          "evidenceClass": "retained_structured_menu_item",
+          "recommendationSemantics": null,
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1309/A130906/13000407/dtlmenu/lunch/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "梅にぎり",
+          "confidence": "medium",
+          "notes": "Current structured lunch menu supports F only. The recommended omakase course was not transferred to component dishes."
+        },
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "竹にぎり",
+          "nameZhCandidate": null,
+          "evidenceClass": "retained_structured_menu_item",
+          "recommendationSemantics": null,
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1309/A130906/13000407/dtlmenu/lunch/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "竹にぎり",
+          "confidence": "medium",
+          "notes": "Current structured lunch menu supports F only. The recommended omakase course was not transferred to component dishes."
+        },
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "松にぎり",
+          "nameZhCandidate": null,
+          "evidenceClass": "retained_structured_menu_item",
+          "recommendationSemantics": null,
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1309/A130906/13000407/dtlmenu/lunch/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "松にぎり",
+          "confidence": "medium",
+          "notes": "Current structured lunch menu supports F only. The recommended omakase course was not transferred to component dishes."
+        },
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "おまかせにぎり",
+          "nameZhCandidate": null,
+          "evidenceClass": "retained_structured_menu_item",
+          "recommendationSemantics": null,
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1309/A130906/13000407/dtlmenu/lunch/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "おまかせにぎり",
+          "confidence": "medium",
+          "notes": "Current structured lunch menu supports F only. The recommended omakase course was not transferred to component dishes."
+        },
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "梅ちらし",
+          "nameZhCandidate": null,
+          "evidenceClass": "retained_structured_menu_item",
+          "recommendationSemantics": null,
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1309/A130906/13000407/dtlmenu/lunch/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "梅ちらし",
+          "confidence": "medium",
+          "notes": "Current structured lunch menu supports F only. The recommended omakase course was not transferred to component dishes."
+        },
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "松ちらし",
+          "nameZhCandidate": null,
+          "evidenceClass": "retained_structured_menu_item",
+          "recommendationSemantics": null,
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1309/A130906/13000407/dtlmenu/lunch/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "松ちらし",
+          "confidence": "medium",
+          "notes": "Current structured lunch menu supports F only. The recommended omakase course was not transferred to component dishes."
+        }
+      ],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1309/A130906/13000407/dtlmenu/lunch/"
+      ],
+      "blocker": null,
+      "notes": "Current structured lunch menu supports F only. The recommended omakase course was not transferred to component dishes.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJcduc-w2MGGARbhku_r53Png",
+      "restaurantName": "Mamma Mia!",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1302/A130201/13010997/"
+      ],
+      "blocker": null,
+      "notes": "no_structured_dish_menu",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJd9-v6RqMGGAR3IJy6wiM0aI",
+      "restaurantName": "とんかつ かつ屋",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131002/13077854/"
+      ],
+      "blocker": null,
+      "notes": "menu_photos_or_reviews_only",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJFecIYxaMGGAR9L6nuctXV38",
+      "restaurantName": "冨多葉",
+      "status": "candidate",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131003/13068810/"
+      ],
+      "blocker": null,
+      "notes": "Usable dish list is historical takeout-era material; current validity and strict recommendation semantics are not established.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJg98k8D-MGGARi_SjDVTZlGs",
+      "restaurantName": "横浜家系ラーメン田中",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131003/13019056/"
+      ],
+      "blocker": null,
+      "notes": "review_only_dishes_excluded",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJHR3eZRyMGGARIuKl5cgd_vs",
+      "restaurantName": "萬楽飯店",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131003/13139541/"
+      ],
+      "blocker": null,
+      "notes": "no_structured_dish_menu",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJJdyitLiNGGARk0wEjxFkuKM",
+      "restaurantName": "鰹が昇るまで",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131003/13290110/"
+      ],
+      "blocker": null,
+      "notes": "review_only_dishes_excluded",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJJQtsNtCNGGARXHMI26d4tG4",
+      "restaurantName": "力也商店",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131003/13235012/"
+      ],
+      "blocker": null,
+      "notes": "changing_lunch_info_not_stable_r",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJK-zPABCMGGARXZAJ9C8lHCY",
+      "restaurantName": "青新軒",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131002/13037282/"
+      ],
+      "blocker": null,
+      "notes": "review_only_recommendation_excluded",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJMYM_ELeNGGAR4_Rjpux4b9k",
+      "restaurantName": "Cafe Lish",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131003/13287276/"
+      ],
+      "blocker": null,
+      "notes": "no_strict_dish_r",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJNeiJsjqNGGARUwCL2ZS0u34",
+      "restaurantName": "日本式カレー 弐番亭",
+      "status": "candidate",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131003/13309507/"
+      ],
+      "blocker": null,
+      "notes": "Retained Tabelog restaurant ID differs from the currently discoverable page; automatic rebinding is prohibited.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJQ0pBHBCMGGARFmZBTA87HQA",
+      "restaurantName": "神田錦町 更科",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131002/13040724/"
+      ],
+      "blocker": null,
+      "notes": "no_strict_dish_r",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJQypjX7ONGGARijJegx9USMg",
+      "restaurantName": "祭",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131002/13021575/"
+      ],
+      "blocker": null,
+      "notes": "review_recommendation_excluded",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJqzUQMNeNGGARKaFqd4nH7c4",
+      "restaurantName": "肉盛ホルモン",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": [
+          {
+            "provider": "tabelog",
+            "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13273257/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "exact_retained_branch_binding",
+            "note": "Exact frozen Place-ID retained-source binding from the worker proposal."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "recommendedDishes",
+          "classification": "R",
+          "nameOriginal": "網レバー",
+          "nameZhCandidate": null,
+          "evidenceClass": "retained_structured_recommendation",
+          "recommendationSemantics": "人気・自慢",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13273257/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "網レバー 人気・自慢",
+          "confidence": "medium",
+          "notes": "Restaurant-operated page explicitly identifies these as popular items and dishes to try."
+        },
+        {
+          "targetField": "recommendedDishes",
+          "classification": "R",
+          "nameOriginal": "和牛ハツ",
+          "nameZhCandidate": null,
+          "evidenceClass": "retained_structured_recommendation",
+          "recommendationSemantics": "人気・自慢",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13273257/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "和牛ハツ 人気・自慢",
+          "confidence": "medium",
+          "notes": "Restaurant-operated page explicitly identifies these as popular items and dishes to try."
+        },
+        {
+          "targetField": "recommendedDishes",
+          "classification": "R",
+          "nameOriginal": "低温調理レバー",
+          "nameZhCandidate": null,
+          "evidenceClass": "retained_structured_recommendation",
+          "recommendationSemantics": "人気・自慢",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13273257/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "低温調理レバー 人気・自慢",
+          "confidence": "medium",
+          "notes": "Restaurant-operated page explicitly identifies these as popular items and dishes to try."
+        }
+      ],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131003/13273257/"
+      ],
+      "blocker": null,
+      "notes": "Restaurant-operated page explicitly identifies these as popular items and dishes to try.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJSQlU7RCMGGARZBwoPe_ciQw",
+      "restaurantName": "レストラン カロリー",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131003/13000602/"
+      ],
+      "blocker": null,
+      "notes": "review_recommendation_excluded",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJTTQAOBGMGGARqZjri8Wchto",
+      "restaurantName": "豚大学 神保町校舎",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131003/13160504/"
+      ],
+      "blocker": null,
+      "notes": "no_strict_dish_r",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJWTLuiBaMGGARYTzFFpLy_f8",
+      "restaurantName": "仙臺",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131003/13186446/"
+      ],
+      "blocker": null,
+      "notes": "no_structured_dish_r",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJy-K2ixaMGGAR_j1VN4FzFj8",
+      "restaurantName": "肥後一文字や",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131003/13126581/"
+      ],
+      "blocker": null,
+      "notes": "review_only_dishes_excluded",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJzQVI5xqMGGAR88irvCKhTyk",
+      "restaurantName": "鳥益",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131002/13064380/"
+      ],
+      "blocker": null,
+      "notes": "no_strict_dish_r",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJ2336NQCNGGARMhx9jwZ4BI4",
+      "restaurantName": "ワイルドレッドパスタ神保町店",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131003/13308781/"
+      ],
+      "blocker": null,
+      "notes": "no_structured_dish_menu",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJ52UnSsmNGGARPg_XbR0VpS4",
+      "restaurantName": "上海味道 水道橋",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://www.hotpepper.jp/strJ001262977/"
+      ],
+      "blocker": null,
+      "notes": "no_strict_dish_r_in_retained_source",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJbTOaERGMGGAR0Me4b7PxZ7o",
+      "restaurantName": "キッチン南海 神保町店",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131003/13249021/dtlmenu/"
+      ],
+      "blocker": null,
+      "notes": "structured_menu_but_no_strict_r",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJi5rmZBeMGGAR6KMwBn12uqk",
+      "restaurantName": "Ochanomizu Terrace SUPER DRY",
+      "status": "candidate",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131002/13293541/"
+      ],
+      "blocker": null,
+      "notes": "Possible rename/successor; frozen Place ID continuity is not yet proven.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJjxCnlD-MGGARerygZLVT-m4",
+      "restaurantName": "とりちゅう 水道橋店",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": [
+          {
+            "provider": "tabelog",
+            "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13217314/dtlmenu/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "exact_retained_branch_binding",
+            "note": "Exact frozen Place-ID retained-source binding from the worker proposal."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "recommendedDishes",
+          "classification": "R",
+          "nameOriginal": "2種黒焼き（並）",
+          "nameZhCandidate": null,
+          "evidenceClass": "retained_structured_recommendation",
+          "recommendationSemantics": "大人気",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13217314/dtlmenu/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "2種黒焼き（並） 大人気",
+          "confidence": "medium",
+          "notes": "Retained structured menu contains explicit popularity and specialty semantics."
+        },
+        {
+          "targetField": "recommendedDishes",
+          "classification": "R",
+          "nameOriginal": "せせり黒焼き",
+          "nameZhCandidate": null,
+          "evidenceClass": "retained_structured_recommendation",
+          "recommendationSemantics": "人気",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13217314/dtlmenu/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "せせり黒焼き 人気",
+          "confidence": "medium",
+          "notes": "Retained structured menu contains explicit popularity and specialty semantics."
+        },
+        {
+          "targetField": "recommendedDishes",
+          "classification": "R",
+          "nameOriginal": "骨なし手羽黒焼き",
+          "nameZhCandidate": null,
+          "evidenceClass": "retained_structured_recommendation",
+          "recommendationSemantics": "人気",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13217314/dtlmenu/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "骨なし手羽黒焼き 人気",
+          "confidence": "medium",
+          "notes": "Retained structured menu contains explicit popularity and specialty semantics."
+        },
+        {
+          "targetField": "recommendedDishes",
+          "classification": "R",
+          "nameOriginal": "皮西京味噌漬け",
+          "nameZhCandidate": null,
+          "evidenceClass": "retained_structured_recommendation",
+          "recommendationSemantics": "スタッフ人気No.1",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13217314/dtlmenu/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "皮西京味噌漬け スタッフ人気No.1",
+          "confidence": "medium",
+          "notes": "Retained structured menu contains explicit popularity and specialty semantics."
+        },
+        {
+          "targetField": "recommendedDishes",
+          "classification": "R",
+          "nameOriginal": "若鶏漬け南蛮",
+          "nameZhCandidate": null,
+          "evidenceClass": "retained_structured_recommendation",
+          "recommendationSemantics": "名物",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13217314/dtlmenu/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "若鶏漬け南蛮 名物",
+          "confidence": "medium",
+          "notes": "Retained structured menu contains explicit popularity and specialty semantics."
+        },
+        {
+          "targetField": "recommendedDishes",
+          "classification": "R",
+          "nameOriginal": "鶏出汁香る鶏飯",
+          "nameZhCandidate": null,
+          "evidenceClass": "retained_structured_recommendation",
+          "recommendationSemantics": "名物",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13217314/dtlmenu/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "鶏出汁香る鶏飯 名物",
+          "confidence": "medium",
+          "notes": "Retained structured menu contains explicit popularity and specialty semantics."
+        }
+      ],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131003/13217314/dtlmenu/"
+      ],
+      "blocker": null,
+      "notes": "Retained structured menu contains explicit popularity and specialty semantics.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJkX3sF0GMGGARR-L4Og4cNBU",
+      "restaurantName": "日本料理 平川 ホテルメトロポリタン エドモント",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": [
+          {
+            "provider": "official",
+            "sourceUrl": "https://jrdc204.nihonhotel.com/restaurant/list/hirakawa/hirakawa/fair_recommend.html",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "exact_retained_branch_binding",
+            "note": "Exact frozen Place-ID retained-source binding from the worker proposal."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "recommendedDishes",
+          "classification": "R",
+          "nameOriginal": "黒毛和牛きのこ鍋",
+          "nameZhCandidate": null,
+          "evidenceClass": "retained_structured_recommendation",
+          "recommendationSemantics": "料理長おすすめの逸品",
+          "provider": "official_web",
+          "sourceUrl": "https://jrdc204.nihonhotel.com/restaurant/list/hirakawa/hirakawa/fair_recommend.html",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "黒毛和牛きのこ鍋 料理長おすすめの逸品",
+          "confidence": "medium",
+          "notes": "Targeted exact-branch check found an official seasonal chef-recommendation page."
+        },
+        {
+          "targetField": "recommendedDishes",
+          "classification": "R",
+          "nameOriginal": "きのこ土瓶蒸し",
+          "nameZhCandidate": null,
+          "evidenceClass": "retained_structured_recommendation",
+          "recommendationSemantics": "料理長おすすめの逸品",
+          "provider": "official_web",
+          "sourceUrl": "https://jrdc204.nihonhotel.com/restaurant/list/hirakawa/hirakawa/fair_recommend.html",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "きのこ土瓶蒸し 料理長おすすめの逸品",
+          "confidence": "medium",
+          "notes": "Targeted exact-branch check found an official seasonal chef-recommendation page."
+        },
+        {
+          "targetField": "recommendedDishes",
+          "classification": "R",
+          "nameOriginal": "そばがき揚げ出汁　粒そばあん掛け",
+          "nameZhCandidate": null,
+          "evidenceClass": "retained_structured_recommendation",
+          "recommendationSemantics": "料理長おすすめの逸品",
+          "provider": "official_web",
+          "sourceUrl": "https://jrdc204.nihonhotel.com/restaurant/list/hirakawa/hirakawa/fair_recommend.html",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "そばがき揚げ出汁　粒そばあん掛け 料理長おすすめの逸品",
+          "confidence": "medium",
+          "notes": "Targeted exact-branch check found an official seasonal chef-recommendation page."
+        }
+      ],
+      "attemptedSources": [
+        "https://jrdc204.nihonhotel.com/restaurant/list/hirakawa/hirakawa/fair_recommend.html"
+      ],
+      "blocker": null,
+      "notes": "Targeted exact-branch check found an official seasonal chef-recommendation page.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJp3be1AeMGGARgyQQWnBT42s",
+      "restaurantName": "大手町ワインバル 八十郎商店",
+      "status": "candidate",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1302/A130201/13205852/dtlmenu/"
+      ],
+      "blocker": null,
+      "notes": "Recommendation wording may attach to the components selected by the chef rather than the assortment item itself.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJRxygEQCNGGARapvEL04ggA4",
+      "restaurantName": "中華風創作ダイニングGokuh",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": [
+          {
+            "provider": "tabelog",
+            "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13304648/dtlmenu/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "exact_retained_branch_binding",
+            "note": "Exact frozen Place-ID retained-source binding from the worker proposal."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "recommendedDishes",
+          "classification": "R",
+          "nameOriginal": "ネギワンタン",
+          "nameZhCandidate": null,
+          "evidenceClass": "retained_structured_recommendation",
+          "recommendationSemantics": "おすすめ",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13304648/dtlmenu/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "ネギワンタン おすすめ",
+          "confidence": "medium",
+          "notes": "Operator-published retained menu explicitly marks all six concrete items おすすめ."
+        },
+        {
+          "targetField": "recommendedDishes",
+          "classification": "R",
+          "nameOriginal": "中華サラダ",
+          "nameZhCandidate": null,
+          "evidenceClass": "retained_structured_recommendation",
+          "recommendationSemantics": "おすすめ",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13304648/dtlmenu/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "中華サラダ おすすめ",
+          "confidence": "medium",
+          "notes": "Operator-published retained menu explicitly marks all six concrete items おすすめ."
+        },
+        {
+          "targetField": "recommendedDishes",
+          "classification": "R",
+          "nameOriginal": "挽肉納豆炒め",
+          "nameZhCandidate": null,
+          "evidenceClass": "retained_structured_recommendation",
+          "recommendationSemantics": "おすすめ",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13304648/dtlmenu/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "挽肉納豆炒め おすすめ",
+          "confidence": "medium",
+          "notes": "Operator-published retained menu explicitly marks all six concrete items おすすめ."
+        },
+        {
+          "targetField": "recommendedDishes",
+          "classification": "R",
+          "nameOriginal": "カボチャのニンニク炒め",
+          "nameZhCandidate": null,
+          "evidenceClass": "retained_structured_recommendation",
+          "recommendationSemantics": "おすすめ",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13304648/dtlmenu/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "カボチャのニンニク炒め おすすめ",
+          "confidence": "medium",
+          "notes": "Operator-published retained menu explicitly marks all six concrete items おすすめ."
+        },
+        {
+          "targetField": "recommendedDishes",
+          "classification": "R",
+          "nameOriginal": "ナスのニンニク炒め",
+          "nameZhCandidate": null,
+          "evidenceClass": "retained_structured_recommendation",
+          "recommendationSemantics": "おすすめ",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13304648/dtlmenu/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "ナスのニンニク炒め おすすめ",
+          "confidence": "medium",
+          "notes": "Operator-published retained menu explicitly marks all six concrete items おすすめ."
+        },
+        {
+          "targetField": "recommendedDishes",
+          "classification": "R",
+          "nameOriginal": "エビと玉子炒め",
+          "nameZhCandidate": null,
+          "evidenceClass": "retained_structured_recommendation",
+          "recommendationSemantics": "おすすめ",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13304648/dtlmenu/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "エビと玉子炒め おすすめ",
+          "confidence": "medium",
+          "notes": "Operator-published retained menu explicitly marks all six concrete items おすすめ."
+        }
+      ],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131002/13304648/dtlmenu/"
+      ],
+      "blocker": null,
+      "notes": "Operator-published retained menu explicitly marks all six concrete items おすすめ.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJu2DH_ASMGGARm2aRtwA0sms",
+      "restaurantName": "ミトシロバル",
+      "status": "candidate",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131002/13122107/"
+      ],
+      "blocker": null,
+      "notes": "Retained listing is 掲載保留 / operational status uncertain; recommendation evidence is course-level or stale.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJvX_t7eONGGARXncKVb9I85E",
+      "restaurantName": "Gracia",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": [
+          {
+            "provider": "tabelog",
+            "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13155300/dtlmenu/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "exact_retained_branch_binding",
+            "note": "Exact frozen Place-ID retained-source binding from the worker proposal."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "recommendedDishes",
+          "classification": "R",
+          "nameOriginal": "タパスの盛り合わせ",
+          "nameZhCandidate": null,
+          "evidenceClass": "retained_structured_recommendation",
+          "recommendationSemantics": "おすすめ・大人気",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13155300/dtlmenu/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "タパスの盛り合わせ おすすめ・大人気",
+          "confidence": "medium",
+          "notes": "Current operator-published menu contains explicit recommendation or strongest-seller semantics."
+        },
+        {
+          "targetField": "recommendedDishes",
+          "classification": "R",
+          "nameOriginal": "薪焼バックリブ",
+          "nameZhCandidate": null,
+          "evidenceClass": "retained_structured_recommendation",
+          "recommendationSemantics": "おすすめ",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13155300/dtlmenu/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "薪焼バックリブ おすすめ",
+          "confidence": "medium",
+          "notes": "Current operator-published menu contains explicit recommendation or strongest-seller semantics."
+        },
+        {
+          "targetField": "recommendedDishes",
+          "classification": "R",
+          "nameOriginal": "焼野菜のサラダ（薪焼仕上げ）",
+          "nameZhCandidate": null,
+          "evidenceClass": "retained_structured_recommendation",
+          "recommendationSemantics": "おすすめ",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13155300/dtlmenu/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "焼野菜のサラダ（薪焼仕上げ） おすすめ",
+          "confidence": "medium",
+          "notes": "Current operator-published menu contains explicit recommendation or strongest-seller semantics."
+        },
+        {
+          "targetField": "recommendedDishes",
+          "classification": "R",
+          "nameOriginal": "「ラムラックのロースト」",
+          "nameZhCandidate": null,
+          "evidenceClass": "retained_structured_recommendation",
+          "recommendationSemantics": "おすすめ",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13155300/dtlmenu/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "「ラムラックのロースト」 おすすめ",
+          "confidence": "medium",
+          "notes": "Current operator-published menu contains explicit recommendation or strongest-seller semantics."
+        },
+        {
+          "targetField": "recommendedDishes",
+          "classification": "R",
+          "nameOriginal": "揚げたてチュロス",
+          "nameZhCandidate": null,
+          "evidenceClass": "retained_structured_recommendation",
+          "recommendationSemantics": "おすすめ",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13155300/dtlmenu/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "揚げたてチュロス おすすめ",
+          "confidence": "medium",
+          "notes": "Current operator-published menu contains explicit recommendation or strongest-seller semantics."
+        }
+      ],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131003/13155300/dtlmenu/"
+      ],
+      "blocker": null,
+      "notes": "Current operator-published menu contains explicit recommendation or strongest-seller semantics.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJ17dALKONGGARwpbTKxQ1_Mw",
+      "restaurantName": "餃子酒場・吉",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131003/13272984/"
+      ],
+      "blocker": null,
+      "notes": "existing_f_no_strict_r",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJQ7aufj-MGGARdknUqae7iTo",
+      "restaurantName": "台北",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131003/13011063/"
+      ],
+      "blocker": null,
+      "notes": "existing_f_no_strict_r",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJr3knVhCMGGARzV5mJJqG8_c",
+      "restaurantName": "はちまき",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": [
+          {
+            "provider": "tabelog",
+            "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13022740/dtlmenu/lunch/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "exact_retained_branch_binding",
+            "note": "Exact frozen Place-ID retained-source binding from the worker proposal."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "recommendedDishes",
+          "classification": "R",
+          "nameOriginal": "野菜天丼",
+          "nameZhCandidate": null,
+          "evidenceClass": "retained_structured_recommendation",
+          "recommendationSemantics": "大人気",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13022740/dtlmenu/lunch/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "野菜天丼 大人気",
+          "confidence": "medium",
+          "notes": "Structured retained menu provides explicit popularity/specialty/push semantics."
+        },
+        {
+          "targetField": "recommendedDishes",
+          "classification": "R",
+          "nameOriginal": "名物穴子海老天丼",
+          "nameZhCandidate": null,
+          "evidenceClass": "retained_structured_recommendation",
+          "recommendationSemantics": "名物",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13022740/dtlmenu/lunch/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "名物穴子海老天丼 名物",
+          "confidence": "medium",
+          "notes": "Structured retained menu provides explicit popularity/specialty/push semantics."
+        },
+        {
+          "targetField": "recommendedDishes",
+          "classification": "R",
+          "nameOriginal": "松天麩羅重",
+          "nameZhCandidate": null,
+          "evidenceClass": "retained_structured_recommendation",
+          "recommendationSemantics": "一押し",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13022740/dtlmenu/lunch/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "松天麩羅重 一押し",
+          "confidence": "medium",
+          "notes": "Structured retained menu provides explicit popularity/specialty/push semantics."
+        }
+      ],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131003/13022740/dtlmenu/lunch/"
+      ],
+      "blocker": null,
+      "notes": "Structured retained menu provides explicit popularity/specialty/push semantics.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJufenb1iNGGARHcVIujzaKDw",
+      "restaurantName": "座135 神保町店",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": [
+          {
+            "provider": "tabelog",
+            "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13255328/dtlmenu/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "exact_retained_branch_binding",
+            "note": "Exact frozen Place-ID retained-source binding from the worker proposal."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "recommendedDishes",
+          "classification": "R",
+          "nameOriginal": "海鮮の麻辣湯",
+          "nameZhCandidate": null,
+          "evidenceClass": "retained_structured_recommendation",
+          "recommendationSemantics": "おすすめ",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13255328/dtlmenu/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "海鮮の麻辣湯 おすすめ",
+          "confidence": "medium",
+          "notes": "Current operator-published menu explicitly marks the dish おすすめ."
+        }
+      ],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131003/13255328/dtlmenu/"
+      ],
+      "blocker": null,
+      "notes": "Current operator-published menu explicitly marks the dish おすすめ.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJ_5AELhqMGGARmyQyTWPFbJg",
+      "restaurantName": "大衆IZAKAYAエイト 御茶ノ水店",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": [
+          {
+            "provider": "tabelog",
+            "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13033304/dtlmenu/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "exact_retained_branch_binding",
+            "note": "Exact frozen Place-ID retained-source binding from the worker proposal."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "recommendedDishes",
+          "classification": "R",
+          "nameOriginal": "エイトの海賊蒸し",
+          "nameZhCandidate": null,
+          "evidenceClass": "retained_structured_recommendation",
+          "recommendationSemantics": "名物",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13033304/dtlmenu/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "エイトの海賊蒸し 名物",
+          "confidence": "medium",
+          "notes": "All six are under the explicit エイトの名物 menu section."
+        },
+        {
+          "targetField": "recommendedDishes",
+          "classification": "R",
+          "nameOriginal": "本鮪入り　刺身盛り合わせ",
+          "nameZhCandidate": null,
+          "evidenceClass": "retained_structured_recommendation",
+          "recommendationSemantics": "名物",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13033304/dtlmenu/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "本鮪入り　刺身盛り合わせ 名物",
+          "confidence": "medium",
+          "notes": "All six are under the explicit エイトの名物 menu section."
+        },
+        {
+          "targetField": "recommendedDishes",
+          "classification": "R",
+          "nameOriginal": "大盛り！もやし炒め",
+          "nameZhCandidate": null,
+          "evidenceClass": "retained_structured_recommendation",
+          "recommendationSemantics": "名物",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13033304/dtlmenu/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "大盛り！もやし炒め 名物",
+          "confidence": "medium",
+          "notes": "All six are under the explicit エイトの名物 menu section."
+        },
+        {
+          "targetField": "recommendedDishes",
+          "classification": "R",
+          "nameOriginal": "エイトのオリジナル餃子",
+          "nameZhCandidate": null,
+          "evidenceClass": "retained_structured_recommendation",
+          "recommendationSemantics": "名物",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13033304/dtlmenu/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "エイトのオリジナル餃子 名物",
+          "confidence": "medium",
+          "notes": "All six are under the explicit エイトの名物 menu section."
+        },
+        {
+          "targetField": "recommendedDishes",
+          "classification": "R",
+          "nameOriginal": "青唐辛子入り麻婆豆腐",
+          "nameZhCandidate": null,
+          "evidenceClass": "retained_structured_recommendation",
+          "recommendationSemantics": "名物",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13033304/dtlmenu/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "青唐辛子入り麻婆豆腐 名物",
+          "confidence": "medium",
+          "notes": "All six are under the explicit エイトの名物 menu section."
+        },
+        {
+          "targetField": "recommendedDishes",
+          "classification": "R",
+          "nameOriginal": "牛肉コロッケぽてさら",
+          "nameZhCandidate": null,
+          "evidenceClass": "retained_structured_recommendation",
+          "recommendationSemantics": "名物",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13033304/dtlmenu/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "牛肉コロッケぽてさら 名物",
+          "confidence": "medium",
+          "notes": "All six are under the explicit エイトの名物 menu section."
+        }
+      ],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131002/13033304/dtlmenu/"
+      ],
+      "blocker": null,
+      "notes": "All six are under the explicit エイトの名物 menu section.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJ24WeeD-MGGARwdUwZC9A19E",
+      "restaurantName": "大衆IZAKAYAエイト 水道橋店",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": [
+          {
+            "provider": "tabelog",
+            "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13029544/dtlmenu/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "exact_retained_branch_binding",
+            "note": "Exact frozen Place-ID retained-source binding from the worker proposal."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "recommendedDishes",
+          "classification": "R",
+          "nameOriginal": "エイトの海賊蒸し",
+          "nameZhCandidate": null,
+          "evidenceClass": "retained_structured_recommendation",
+          "recommendationSemantics": "名物",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13029544/dtlmenu/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "エイトの海賊蒸し 名物",
+          "confidence": "medium",
+          "notes": "All six are under the explicit エイトの名物 menu section."
+        },
+        {
+          "targetField": "recommendedDishes",
+          "classification": "R",
+          "nameOriginal": "本鮪入り　刺身盛り合わせ",
+          "nameZhCandidate": null,
+          "evidenceClass": "retained_structured_recommendation",
+          "recommendationSemantics": "名物",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13029544/dtlmenu/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "本鮪入り　刺身盛り合わせ 名物",
+          "confidence": "medium",
+          "notes": "All six are under the explicit エイトの名物 menu section."
+        },
+        {
+          "targetField": "recommendedDishes",
+          "classification": "R",
+          "nameOriginal": "大盛り！もやし炒め",
+          "nameZhCandidate": null,
+          "evidenceClass": "retained_structured_recommendation",
+          "recommendationSemantics": "名物",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13029544/dtlmenu/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "大盛り！もやし炒め 名物",
+          "confidence": "medium",
+          "notes": "All six are under the explicit エイトの名物 menu section."
+        },
+        {
+          "targetField": "recommendedDishes",
+          "classification": "R",
+          "nameOriginal": "エイトのオリジナル餃子",
+          "nameZhCandidate": null,
+          "evidenceClass": "retained_structured_recommendation",
+          "recommendationSemantics": "名物",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13029544/dtlmenu/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "エイトのオリジナル餃子 名物",
+          "confidence": "medium",
+          "notes": "All six are under the explicit エイトの名物 menu section."
+        },
+        {
+          "targetField": "recommendedDishes",
+          "classification": "R",
+          "nameOriginal": "青唐辛子入り麻婆豆腐",
+          "nameZhCandidate": null,
+          "evidenceClass": "retained_structured_recommendation",
+          "recommendationSemantics": "名物",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13029544/dtlmenu/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "青唐辛子入り麻婆豆腐 名物",
+          "confidence": "medium",
+          "notes": "All six are under the explicit エイトの名物 menu section."
+        },
+        {
+          "targetField": "recommendedDishes",
+          "classification": "R",
+          "nameOriginal": "牛肉コロッケぽてさら",
+          "nameZhCandidate": null,
+          "evidenceClass": "retained_structured_recommendation",
+          "recommendationSemantics": "名物",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13029544/dtlmenu/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "牛肉コロッケぽてさら 名物",
+          "confidence": "medium",
+          "notes": "All six are under the explicit エイトの名物 menu section."
+        }
+      ],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131003/13029544/dtlmenu/"
+      ],
+      "blocker": null,
+      "notes": "All six are under the explicit エイトの名物 menu section.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJ5xbNmR6NGGARxdGxYV8ulBo",
+      "restaurantName": "誉 ほまれ 水道橋駅前店",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": [
+          {
+            "provider": "hotpepper",
+            "sourceUrl": "https://www.hotpepper.jp/strJ004537277/food/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "exact_retained_branch_binding",
+            "note": "Exact frozen Place-ID retained-source binding from the worker proposal."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "recommendedDishes",
+          "classification": "R",
+          "nameOriginal": "串カツ盛り合わせ3種/串カツ盛り合わせ5種/串カツ盛り合わせ7種/串カツ盛り合わせ10種",
+          "nameZhCandidate": null,
+          "evidenceClass": "retained_structured_recommendation",
+          "recommendationSemantics": "お勧め",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ004537277/food/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "串カツ盛り合わせ3種/串カツ盛り合わせ5種/串カツ盛り合わせ7種/串カツ盛り合わせ10種 お勧め",
+          "confidence": "medium",
+          "notes": "Food page explicitly recommends starting with this concrete assortment menu entry."
+        }
+      ],
+      "attemptedSources": [
+        "https://www.hotpepper.jp/strJ004537277/food/"
+      ],
+      "blocker": null,
+      "notes": "Food page explicitly recommends starting with this concrete assortment menu entry.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJd7U9HSKNGGARCU6Piavo7VY",
+      "restaurantName": "Osteria FELME",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://www.hotpepper.jp/strJ004544845/"
+      ],
+      "blocker": null,
+      "notes": "course_or_general_recommendation_only",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJdSv8aRGNGGAR45ZkkRbeOMY",
+      "restaurantName": "新中華 李記",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1309/A130906/13276273/"
+      ],
+      "blocker": null,
+      "notes": "structured_menu_but_no_strict_r",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJIxVise2NGGARKlUSF6LV2y4",
+      "restaurantName": "ごまいち 飯田橋店",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1309/A130905/13276064/"
+      ],
+      "blocker": null,
+      "notes": "structured_menu_but_no_strict_r",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJkUInPFWNGGARv72wfB8qGgM",
+      "restaurantName": "マロリーポークステーキ　大手町ホトリア店",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1302/A130201/13269735/"
+      ],
+      "blocker": null,
+      "notes": "side_set_course_or_review_semantics_only",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJN9mduz-MGGAR53bCFr3JZro",
+      "restaurantName": "SAPANA サパナ 水道橋駅西口店",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://www.hotpepper.jp/strJ001126936/"
+      ],
+      "blocker": null,
+      "notes": "course_or_general_recommendation_only",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    }
+  ],
+  "policyAttestation": {
+    "paidGoogleDataApiCalls": 0,
+    "canonicalMasterEditedDirectly": false,
+    "proximityOnlyIdentityBindingUsed": false,
+    "recommendationWithoutExplicitSemanticsAdded": false,
+    "accessRestrictionBypassUsed": false
+  }
+}

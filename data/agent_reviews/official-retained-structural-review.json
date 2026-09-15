@@ -1,12 +1,22 @@
 {
-  "schemaVersion": 2,
-  "approvalState": "approved",
-  "reviewer": "final-dish-integration central fail-closed review",
-  "reviewedAt": "2026-09-15",
-  "startingCommit": "97f07e274e07854952da45fe264ab43ddea7d986",
+  "schemaVersion": 1,
+  "approvalState": "pending_central_review",
+  "reviewer": null,
+  "reviewedAt": "2026-09-14",
+  "startingCommit": "5179badcdb58ba176cf2d9cf834a02e24c86e736",
+  "baselineRebuildCommit": "8f5e455cdd62031e8e2914d1fc42eabfff7a39d2",
   "assignmentSnapshot": {
     "sourceQueue": "data/dish_batch_plan.json",
-    "sourceQueueCommit": "97f07e274e07854952da45fe264ab43ddea7d986",
+    "sourceQueueCommit": "5179badcdb58ba176cf2d9cf834a02e24c86e736",
+    "originalQueueSha256": "86e00528683d1b2e0bcdb56e154cb633a21321581db50826900d56c278c1f2e4",
+    "rebuiltQueueSha256": "490cf19af2f5283e03564a5e3c6069c54d2d5ec485282ea80a877afee2439519",
+    "excludedAfterRebuild": [
+      {
+        "googlePlaceId": "ChIJ73iZqQeMGGAR1UPN4hA0-bA",
+        "name": "Minatoya",
+        "reason": "Existing source-field quarantine removes wrong website; maintained rebuild moves row to out-of-scope Discovery S6."
+      }
+    ],
     "rows": [
       {
         "googlePlaceId": "ChIJDxYKIhCMGGARScnqzc-T-TU",
@@ -3232,197 +3242,10 @@
       }
     ]
   },
-  "reviewedFiles": [
-    {
-      "path": "data/agent_reviews/DISH-R-OFFICIAL/S0.json",
-      "sha256": "5f548d6b7e66b280df0ab3b85394ea4e62fee54f52f4cb5816f2802637f95a9c"
-    },
-    {
-      "path": "data/agent_reviews/DISH-R-OFFICIAL/S1.json",
-      "sha256": "b9b7a35d5830a893ffd245f9614a2db374ebc326d842a58baa4ce52fed5f0de7"
-    },
-    {
-      "path": "data/agent_reviews/DISH-R-OFFICIAL/S2.json",
-      "sha256": "71e59857bcf842f177f43f2d1911baa72795a24d2a00f1ee6f9c23b053276cf1"
-    },
-    {
-      "path": "data/agent_reviews/DISH-R-OFFICIAL/S3.json",
-      "sha256": "a0ecf6e9c30b346e40fcaebd8ed6a23da6e0046061a624bf8cc3771aa80c7f6b"
-    },
-    {
-      "path": "data/agent_reviews/DISH-R-OFFICIAL/S4.json",
-      "sha256": "d7322e6ca0b3efe51897f4bca384a96b0fbe44242dfa37c5f54598c9653e0ccb"
-    },
-    {
-      "path": "data/agent_reviews/DISH-R-OFFICIAL/S5.json",
-      "sha256": "3bee1fd1522c841b50fb3bef7ef893ea2c591369eccdb32f500a467e92f15fd5"
-    },
-    {
-      "path": "data/agent_reviews/DISH-R-OFFICIAL/S6.json",
-      "sha256": "2dfd202d2580ef7bfd446ab71fdf2a5afbab76508ed917322f300b77c3c0268c"
-    },
-    {
-      "path": "data/agent_reviews/DISH-R-OFFICIAL/S7.json",
-      "sha256": "7dfebed902bc5aef3ef7a236ebe2323a6253cb7be9bd44cc5bcbcbb46a1a995f"
-    },
-    {
-      "path": "data/agent_reviews/DISH-R-RETAINED/S0.json",
-      "sha256": "17574dac550a4fad103c09a22ace658f988f7c9ee699fedf7feeb1ff2d2db038"
-    },
-    {
-      "path": "data/agent_reviews/DISH-R-RETAINED/S1.json",
-      "sha256": "6536c46705076ddc4ac9d9f6637c824f6bc26f0f8edc574b446f973bb52ee9e9"
-    },
-    {
-      "path": "data/agent_reviews/DISH-R-RETAINED/S2.json",
-      "sha256": "2b0c52ebaa14cd47d0d3895de5f99cfc8318357587a1a5d3abdcb90546e875af"
-    },
-    {
-      "path": "data/agent_reviews/DISH-R-RETAINED/S3.json",
-      "sha256": "b0a8cc07773fe7849ae8e290398be4639a83db8099ca1d3a8463b60a025914a5"
-    },
-    {
-      "path": "data/agent_reviews/DISH-R-RETAINED/S4.json",
-      "sha256": "6837bba68c393e97243821c10ba926db2b0fc3bb4fec22654c0c078509f9bf00"
-    },
-    {
-      "path": "data/agent_reviews/DISH-R-RETAINED/S5.json",
-      "sha256": "da774aadc4b9c50593a68d9b61853a53ffa66d87f42649df541cf9ef9a5336ff"
-    },
-    {
-      "path": "data/agent_reviews/DISH-R-RETAINED/S6.json",
-      "sha256": "28067d000a165e58b8e7d2b63ecee4f3130223854209278b951451e941a9e916"
-    },
-    {
-      "path": "data/agent_reviews/DISH-R-RETAINED/S7.json",
-      "sha256": "e1d3d58e8ceeb24c029b381bda745f2f91c43ad3822b3a12c09f47aef54f7b42"
-    }
-  ],
+  "reviewedFiles": [],
   "translations": {},
-  "terminalStatusCounts": {
-    "accepted_evidence": 83,
-    "candidate": 59,
-    "no_evidence": 329,
-    "blocked": 66
-  },
-  "centralDowngrades": [
-    {
-      "googlePlaceId": "ChIJBZZPagCNGGARCU7ycOpVCJY",
-      "name": "restaurant Kiro;",
-      "marker": "DISH-R-OFFICIAL",
-      "shard": 1,
-      "reason": "structural accept failed final exact-branch/source/semantic gate"
-    },
-    {
-      "googlePlaceId": "ChIJl4L3VEKMGGARE_n5R1r39lY",
-      "name": "Sombreuil",
-      "marker": "DISH-R-OFFICIAL",
-      "shard": 1,
-      "reason": "structural accept failed final exact-branch/source/semantic gate"
-    },
-    {
-      "googlePlaceId": "ChIJZQZwfxWMGGARoD8aXy_2l3Q",
-      "name": "カフェ・ベローチェ",
-      "marker": "DISH-R-OFFICIAL",
-      "shard": 2,
-      "reason": "structural accept failed final exact-branch/source/semantic gate"
-    },
-    {
-      "googlePlaceId": "ChIJyb94PwOMGGARtDDndNvDe9Y",
-      "name": "カフェ・ベローチェ",
-      "marker": "DISH-R-OFFICIAL",
-      "shard": 2,
-      "reason": "structural accept failed final exact-branch/source/semantic gate"
-    },
-    {
-      "googlePlaceId": "ChIJ1YYWBweMGGARIY5pvEdxPto",
-      "name": "Brussels",
-      "marker": "DISH-R-OFFICIAL",
-      "shard": 2,
-      "reason": "structural accept failed final exact-branch/source/semantic gate"
-    },
-    {
-      "googlePlaceId": "ChIJa8C-Cj-MGGARcz8KabQrSu0",
-      "name": "ワイン処　Ｏａｓｉ",
-      "marker": "DISH-R-OFFICIAL",
-      "shard": 2,
-      "reason": "structural accept failed final exact-branch/source/semantic gate"
-    },
-    {
-      "googlePlaceId": "ChIJze_wuziMGGAR6MRiJbQ-LV4",
-      "name": "BAR 2000",
-      "marker": "DISH-R-OFFICIAL",
-      "shard": 2,
-      "reason": "structural accept failed final exact-branch/source/semantic gate"
-    },
-    {
-      "googlePlaceId": "ChIJHSuxoNqNGGARSz9EYrZT3Ss",
-      "name": "レストラン ケイダンレン",
-      "marker": "DISH-R-OFFICIAL",
-      "shard": 3,
-      "reason": "structural accept failed final exact-branch/source/semantic gate"
-    },
-    {
-      "googlePlaceId": "ChIJDxOJyBWMGGARZjSlfNDAnZs",
-      "name": "Miyabi Cafe",
-      "marker": "DISH-R-OFFICIAL",
-      "shard": 7,
-      "reason": "structural accept failed final exact-branch/source/semantic gate"
-    },
-    {
-      "googlePlaceId": "ChIJ2VjLuz-MGGARGC3YKL-wO0Q",
-      "name": "焼肉ホルモンがく 水道橋本店",
-      "marker": "DISH-R-RETAINED",
-      "shard": 4,
-      "reason": "structural accept failed final exact-branch/source/semantic gate"
-    },
-    {
-      "googlePlaceId": "ChIJITsXUxaMGGAREtKypQBMSXI",
-      "name": "ライスカレー まんてん",
-      "marker": "DISH-R-RETAINED",
-      "shard": 4,
-      "reason": "structural accept failed final exact-branch/source/semantic gate"
-    },
-    {
-      "googlePlaceId": "ChIJhxn3rgiNGGARsGxcKSDDzQg",
-      "name": "欲張りバル CANTINA",
-      "marker": "DISH-R-RETAINED",
-      "shard": 4,
-      "reason": "structural accept failed final exact-branch/source/semantic gate"
-    },
-    {
-      "googlePlaceId": "ChIJcUWI9h2NGGARkiQ5jdqPero",
-      "name": "焼肉あきら",
-      "marker": "DISH-R-RETAINED",
-      "shard": 4,
-      "reason": "structural accept failed final exact-branch/source/semantic gate"
-    },
-    {
-      "googlePlaceId": "ChIJd76VJWuMGGAR-N8oBqjI0mM",
-      "name": "浅草姉妹 Garden企画",
-      "marker": "DISH-R-RETAINED",
-      "shard": 4,
-      "reason": "structural accept failed final exact-branch/source/semantic gate"
-    },
-    {
-      "googlePlaceId": "ChIJdx_I5hiMGGARN5YdV3PI46M",
-      "name": "アイキッチン",
-      "marker": "DISH-R-RETAINED",
-      "shard": 4,
-      "reason": "structural accept failed final exact-branch/source/semantic gate"
-    },
-    {
-      "googlePlaceId": "ChIJwx-ibW2NGGAR-GYw9WEkDkw",
-      "name": "中華厨房 一歩",
-      "marker": "DISH-R-RETAINED",
-      "shard": 4,
-      "reason": "structural accept failed final exact-branch/source/semantic gate"
-    }
-  ],
   "policy": {
     "paidGoogleDataApiCalls": 0,
-    "canonicalHandEdits": false,
-    "duplicateIndependentAcceptanceRequiresAgreement": true,
-    "unsafeTranslationPolicy": "translation-pending"
+    "canonicalHandEdits": false
   }
 }

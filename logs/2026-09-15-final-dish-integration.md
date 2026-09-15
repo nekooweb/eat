@@ -33,3 +33,19 @@ PR #67 is not treated as approved merely because structural coverage is 537/537.
 ## Status
 
 Final integration started. No change has been made to `main`; production merge is blocked until the global validation run is green.
+
+## Final validated result
+
+- Terminal review coverage: **892/892**.
+- Official/Retained: **537/537** final reviewed rows.
+- Discovery/F-source: **355/355** reviewed rows; S0–S7 canonical delta verified at **36 R + 33 F**.
+- Official/Retained emitted canonical evidence: **0 R + 71 F**.
+- Official/Retained translation-pending source-native items: **120**.
+- Final runtime: recommended **619**, featured **707**, display **774**, recommendation gap **803**.
+- Final evidence items: R **1036**, F **2722**.
+- Relative to original production baseline: recommended **+24**, featured **+32**, display **+34**, recommendation gap **-24**.
+- Full disposable SQLite rebuild and maintained validators: **pass**.
+- Logical replay: **0 new R, 0 new F, zero count delta**.
+- Paid Google Data API calls: **0**.
+
+The final integration remains on `final-dish-integration-20260915` until its production PR is reviewed/merged; `main` was not directly edited by this workflow.

@@ -21,11 +21,12 @@ const STATUS_FIELDS = Object.freeze({
 const PROVIDERS = new Map([
   ['official', 'sourceWebsite'], ['official_web', 'sourceWebsite'], ['sourceWebsite', 'sourceWebsite'],
   ['tabelog', 'Tabelog'], ['Tabelog', 'Tabelog'], ['hotpepper', 'Hot Pepper'], ['Hot Pepper', 'Hot Pepper'],
+  ['Reviewed independent', 'Reviewed independent'],
   ["Let's Enjoy Tokyo", 'Reviewed independent'],
   ['Kanda Curry Grand Prix', 'Reviewed independent']
 ]);
 // Explicit equivalents in the assignment contract supplement the shared extractor.
-const EQUIVALENT_SEMANTICS = /定番|ご好評|自信作|自信の一品|一番の売り商品|一押し|お勧め|お薦め|おススメ|一番のおすすめ/i;
+const EQUIVALENT_SEMANTICS = /定番|ご好評|自信作|自信の一品|一番の売り商品|一押し|お勧め|お薦め|おススメ|一番のおすすめ|代名詞|必ず.{0,16}オーダー|オーダーしたい逸品/i;
 const HOLD_NAMES = new Set(['えびず焼き', 'ソルベージュ®エスプレッソ']);
 
 function required(value, label) {

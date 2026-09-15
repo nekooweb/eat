@@ -141,3 +141,8 @@ These are **structural draft results**, not final semantic acceptance or canonic
 - Integration snapshots now validate evidence shape; comparisons reject new/changed evidence identity names and unauthorized same-label runtime provenance changes. Existing legacy evidence aliases remain unchanged, rather than rewriting historical source metadata.
 - Review documents must match the explicit approved assignment queue commit, not merely contain a syntactically valid SHA. All 16 review files currently refer to `5179badcdb58ba176cf2d9cf834a02e24c86e736`.
 - All three new/expanded regressions and zero-paid-API checks pass after these fixes. Actual baseline snapshot still passes with unchanged evidence and public counts. Semantic truth of branch/source notes remains an explicit independent manual-review responsibility.
+
+
+## 2026-09-15 finalization handoff
+
+PR #67's structural 537/537 checkpoint was finalized on `final-dish-integration-20260915` with a new fail-closed full review materialization. Structural accepts that failed final source/branch/semantic gates were downgraded rather than force-approved. The approved review manifest now uses immutable SHA-256 reviewed files; unsafe Chinese normalization remains translation-pending. The final adapter emitted 0 R and 71 F canonical evidence items from Official/Retained, and the global union/rebuild/replay/SQLite validation passed. See `logs/2026-09-15-final-dish-integration.md` for the production-integration record.

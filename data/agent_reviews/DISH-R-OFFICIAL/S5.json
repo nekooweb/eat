@@ -1,11 +1,14 @@
 {
   "schemaVersion": 1,
-  "proposalOnly": true,
+  "proposalOnly": false,
   "marker": "DISH-R-OFFICIAL",
   "shard": "S5",
+  "agentRunId": "FINAL-DISH-R-OFFICIAL:S5:20260915",
   "sourceQueue": "data/dish_batch_plan.json",
-  "sourceQueueCommit": "5179badcdb58ba176cf2d9cf834a02e24c86e736",
-  "generatedAt": "2026-09-14T22:15:00+09:00",
+  "sourceQueueCommit": "97f07e274e07854952da45fe264ab43ddea7d986",
+  "generatedAt": "2026-09-15T22:00:00+09:00",
+  "reviewedAt": "2026-09-15",
+  "reviewedBy": "final-dish-integration central fail-closed review",
   "summary": {
     "assignedRows": 33,
     "reviewedRows": 33,
@@ -15,14 +18,6 @@
     "blockedRows": 16,
     "skippedAlreadyCompleteRows": 0
   },
-  "policyAttestation": {
-    "paidGoogleDataApiCalls": 0,
-    "canonicalMasterEditedDirectly": false,
-    "proximityOnlyIdentityBindingUsed": false,
-    "recommendationWithoutExplicitSemanticsAdded": false,
-    "accessRestrictionBypassUsed": false
-  },
-  "agentRunId": "official-missing-S5-review-20260914",
   "records": [
     {
       "googlePlaceId": "ChIJ2beQAhmMGGARZcWdx1PBwuo",
@@ -58,9 +53,10 @@
           "path": "data/agent_proposals/DISH-R-OFFICIAL/S5.json",
           "recordIndex": 0,
           "sourceStatus": "blocked"
-        }
+        },
+        "data/agent_reviews/DISH-R-OFFICIAL/S5.json"
       ],
-      "reviewReasoning": "Reviewed current assignment membership, exact source URL family, branch identity, native source text, and strict R/F/C classification."
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
     },
     {
       "googlePlaceId": "ChIJryNhokOMGGAR-1vsR_Por58",
@@ -94,9 +90,10 @@
           "path": "data/agent_proposals/DISH-R-OFFICIAL/S5.json",
           "recordIndex": 1,
           "sourceStatus": "candidate"
-        }
+        },
+        "data/agent_reviews/DISH-R-OFFICIAL/S5.json"
       ],
-      "reviewReasoning": "Reviewed current assignment membership, exact source URL family, branch identity, native source text, and strict R/F/C classification."
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
     },
     {
       "googlePlaceId": "ChIJA3cvTRuMGGARs_9D7PJIUgg",
@@ -128,9 +125,10 @@
           "path": "data/agent_proposals/DISH-R-OFFICIAL/S5.json",
           "recordIndex": 2,
           "sourceStatus": "no_evidence"
-        }
+        },
+        "data/agent_reviews/DISH-R-OFFICIAL/S5.json"
       ],
-      "reviewReasoning": "Reviewed current assignment membership, exact source URL family, branch identity, native source text, and strict R/F/C classification."
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
     },
     {
       "googlePlaceId": "ChIJF3IItgOMGGAR_1EfWn8cjb0",
@@ -162,9 +160,10 @@
           "path": "data/agent_proposals/DISH-R-OFFICIAL/S5.json",
           "recordIndex": 3,
           "sourceStatus": "no_evidence"
-        }
+        },
+        "data/agent_reviews/DISH-R-OFFICIAL/S5.json"
       ],
-      "reviewReasoning": "Reviewed current assignment membership, exact source URL family, branch identity, native source text, and strict R/F/C classification."
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
     },
     {
       "googlePlaceId": "ChIJL8DQtDCNGGARIh369M82ZnU",
@@ -199,9 +198,10 @@
           "path": "data/agent_proposals/DISH-R-OFFICIAL/S5.json",
           "recordIndex": 4,
           "sourceStatus": "blocked"
-        }
+        },
+        "data/agent_reviews/DISH-R-OFFICIAL/S5.json"
       ],
-      "reviewReasoning": "Reviewed current assignment membership, exact source URL family, branch identity, native source text, and strict R/F/C classification."
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
     },
     {
       "googlePlaceId": "ChIJN0VWZhWMGGARLvOMzqiFHWI",
@@ -233,9 +233,10 @@
           "path": "data/agent_proposals/DISH-R-OFFICIAL/S5.json",
           "recordIndex": 5,
           "sourceStatus": "no_evidence"
-        }
+        },
+        "data/agent_reviews/DISH-R-OFFICIAL/S5.json"
       ],
-      "reviewReasoning": "Reviewed current assignment membership, exact source URL family, branch identity, native source text, and strict R/F/C classification."
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
     },
     {
       "googlePlaceId": "ChIJd7fvogSMGGARfHdtBLSTq_k",
@@ -267,9 +268,10 @@
           "path": "data/agent_proposals/DISH-R-OFFICIAL/S5.json",
           "recordIndex": 6,
           "sourceStatus": "no_evidence"
-        }
+        },
+        "data/agent_reviews/DISH-R-OFFICIAL/S5.json"
       ],
-      "reviewReasoning": "Reviewed current assignment membership, exact source URL family, branch identity, native source text, and strict R/F/C classification."
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
     },
     {
       "googlePlaceId": "ChIJ_dlidcCNGGARaps03scrCg0",
@@ -304,9 +306,10 @@
           "path": "data/agent_proposals/DISH-R-OFFICIAL/S5.json",
           "recordIndex": 7,
           "sourceStatus": "blocked"
-        }
+        },
+        "data/agent_reviews/DISH-R-OFFICIAL/S5.json"
       ],
-      "reviewReasoning": "Reviewed current assignment membership, exact source URL family, branch identity, native source text, and strict R/F/C classification."
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
     },
     {
       "googlePlaceId": "ChIJ3_t2kgSMGGARJCwOCZuHIFs",
@@ -338,9 +341,10 @@
           "path": "data/agent_proposals/DISH-R-OFFICIAL/S5.json",
           "recordIndex": 8,
           "sourceStatus": "no_evidence"
-        }
+        },
+        "data/agent_reviews/DISH-R-OFFICIAL/S5.json"
       ],
-      "reviewReasoning": "Reviewed current assignment membership, exact source URL family, branch identity, native source text, and strict R/F/C classification."
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
     },
     {
       "googlePlaceId": "ChIJ9_P_5XqNGGARJMABpDT87w0",
@@ -375,9 +379,10 @@
           "path": "data/agent_proposals/DISH-R-OFFICIAL/S5.json",
           "recordIndex": 9,
           "sourceStatus": "blocked"
-        }
+        },
+        "data/agent_reviews/DISH-R-OFFICIAL/S5.json"
       ],
-      "reviewReasoning": "Reviewed current assignment membership, exact source URL family, branch identity, native source text, and strict R/F/C classification."
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
     },
     {
       "googlePlaceId": "ChIJCbGXTvKNGGARcihEl8ls5o0",
@@ -409,9 +414,10 @@
           "path": "data/agent_proposals/DISH-R-OFFICIAL/S5.json",
           "recordIndex": 10,
           "sourceStatus": "candidate"
-        }
+        },
+        "data/agent_reviews/DISH-R-OFFICIAL/S5.json"
       ],
-      "reviewReasoning": "Reviewed current assignment membership, exact source URL family, branch identity, native source text, and strict R/F/C classification."
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
     },
     {
       "googlePlaceId": "ChIJeTjbKQCNGGARWG1nfjIrAd4",
@@ -446,9 +452,10 @@
           "path": "data/agent_proposals/DISH-R-OFFICIAL/S5.json",
           "recordIndex": 11,
           "sourceStatus": "blocked"
-        }
+        },
+        "data/agent_reviews/DISH-R-OFFICIAL/S5.json"
       ],
-      "reviewReasoning": "Reviewed current assignment membership, exact source URL family, branch identity, native source text, and strict R/F/C classification."
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
     },
     {
       "googlePlaceId": "ChIJIzMo196NGGARKZvQrljQcKo",
@@ -497,9 +504,10 @@
           "path": "data/agent_proposals/DISH-R-OFFICIAL/S5.json",
           "recordIndex": 12,
           "sourceStatus": "accepted_evidence"
-        }
+        },
+        "data/agent_reviews/DISH-R-OFFICIAL/S5.json"
       ],
-      "reviewReasoning": "Reviewed current assignment membership, exact source URL family, branch identity, native source text, and strict R/F/C classification."
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
     },
     {
       "googlePlaceId": "ChIJLzil9BGNGGARwHhOtpVzRqQ",
@@ -534,9 +542,10 @@
           "path": "data/agent_proposals/DISH-R-OFFICIAL/S5.json",
           "recordIndex": 13,
           "sourceStatus": "blocked"
-        }
+        },
+        "data/agent_reviews/DISH-R-OFFICIAL/S5.json"
       ],
-      "reviewReasoning": "Reviewed current assignment membership, exact source URL family, branch identity, native source text, and strict R/F/C classification."
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
     },
     {
       "googlePlaceId": "ChIJM-lzZACNGGARQ3_LcZ0tl8E",
@@ -571,9 +580,10 @@
           "path": "data/agent_proposals/DISH-R-OFFICIAL/S5.json",
           "recordIndex": 14,
           "sourceStatus": "blocked"
-        }
+        },
+        "data/agent_reviews/DISH-R-OFFICIAL/S5.json"
       ],
-      "reviewReasoning": "Reviewed current assignment membership, exact source URL family, branch identity, native source text, and strict R/F/C classification."
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
     },
     {
       "googlePlaceId": "ChIJq6qq-gKMGGARSXO2iPG_NLU",
@@ -608,9 +618,10 @@
           "path": "data/agent_proposals/DISH-R-OFFICIAL/S5.json",
           "recordIndex": 15,
           "sourceStatus": "blocked"
-        }
+        },
+        "data/agent_reviews/DISH-R-OFFICIAL/S5.json"
       ],
-      "reviewReasoning": "Reviewed current assignment membership, exact source URL family, branch identity, native source text, and strict R/F/C classification."
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
     },
     {
       "googlePlaceId": "ChIJQY0zZhSMGGAR1t-2u0FM1b8",
@@ -645,9 +656,10 @@
           "path": "data/agent_proposals/DISH-R-OFFICIAL/S5.json",
           "recordIndex": 16,
           "sourceStatus": "blocked"
-        }
+        },
+        "data/agent_reviews/DISH-R-OFFICIAL/S5.json"
       ],
-      "reviewReasoning": "Reviewed current assignment membership, exact source URL family, branch identity, native source text, and strict R/F/C classification."
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
     },
     {
       "googlePlaceId": "ChIJQyg2WQOMGGARWGwc25WSAQE",
@@ -682,9 +694,10 @@
           "path": "data/agent_proposals/DISH-R-OFFICIAL/S5.json",
           "recordIndex": 17,
           "sourceStatus": "blocked"
-        }
+        },
+        "data/agent_reviews/DISH-R-OFFICIAL/S5.json"
       ],
-      "reviewReasoning": "Reviewed current assignment membership, exact source URL family, branch identity, native source text, and strict R/F/C classification."
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
     },
     {
       "googlePlaceId": "ChIJR5q-rHaNGGAR-KzLmTo2LQ4",
@@ -719,9 +732,10 @@
           "path": "data/agent_proposals/DISH-R-OFFICIAL/S5.json",
           "recordIndex": 18,
           "sourceStatus": "blocked"
-        }
+        },
+        "data/agent_reviews/DISH-R-OFFICIAL/S5.json"
       ],
-      "reviewReasoning": "Reviewed current assignment membership, exact source URL family, branch identity, native source text, and strict R/F/C classification."
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
     },
     {
       "googlePlaceId": "ChIJtWcYUACNGGAR_8DpdQ8HJI8",
@@ -756,9 +770,10 @@
           "path": "data/agent_proposals/DISH-R-OFFICIAL/S5.json",
           "recordIndex": 19,
           "sourceStatus": "blocked"
-        }
+        },
+        "data/agent_reviews/DISH-R-OFFICIAL/S5.json"
       ],
-      "reviewReasoning": "Reviewed current assignment membership, exact source URL family, branch identity, native source text, and strict R/F/C classification."
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
     },
     {
       "googlePlaceId": "ChIJv-aPLC6NGGAR5xSp7TkvNCU",
@@ -793,9 +808,10 @@
           "path": "data/agent_proposals/DISH-R-OFFICIAL/S5.json",
           "recordIndex": 20,
           "sourceStatus": "blocked"
-        }
+        },
+        "data/agent_reviews/DISH-R-OFFICIAL/S5.json"
       ],
-      "reviewReasoning": "Reviewed current assignment membership, exact source URL family, branch identity, native source text, and strict R/F/C classification."
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
     },
     {
       "googlePlaceId": "ChIJVU7OsO6NGGAROzKrCp5C9gI",
@@ -827,9 +843,10 @@
           "path": "data/agent_proposals/DISH-R-OFFICIAL/S5.json",
           "recordIndex": 21,
           "sourceStatus": "no_evidence"
-        }
+        },
+        "data/agent_reviews/DISH-R-OFFICIAL/S5.json"
       ],
-      "reviewReasoning": "Reviewed current assignment membership, exact source URL family, branch identity, native source text, and strict R/F/C classification."
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
     },
     {
       "googlePlaceId": "ChIJyUOGtRyMGGAR65Vpj-ScfC0",
@@ -864,9 +881,10 @@
           "path": "data/agent_proposals/DISH-R-OFFICIAL/S5.json",
           "recordIndex": 22,
           "sourceStatus": "blocked"
-        }
+        },
+        "data/agent_reviews/DISH-R-OFFICIAL/S5.json"
       ],
-      "reviewReasoning": "Reviewed current assignment membership, exact source URL family, branch identity, native source text, and strict R/F/C classification."
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
     },
     {
       "googlePlaceId": "ChIJzQVI5xqMGGARIm6tFNbsjW4",
@@ -901,9 +919,10 @@
           "path": "data/agent_proposals/DISH-R-OFFICIAL/S5.json",
           "recordIndex": 23,
           "sourceStatus": "blocked"
-        }
+        },
+        "data/agent_reviews/DISH-R-OFFICIAL/S5.json"
       ],
-      "reviewReasoning": "Reviewed current assignment membership, exact source URL family, branch identity, native source text, and strict R/F/C classification."
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
     },
     {
       "googlePlaceId": "ChIJ4e3_CQ6MGGARgbvLFz2U9kQ",
@@ -935,9 +954,10 @@
           "path": "data/agent_proposals/DISH-R-OFFICIAL/S5.json",
           "recordIndex": 24,
           "sourceStatus": "no_evidence"
-        }
+        },
+        "data/agent_reviews/DISH-R-OFFICIAL/S5.json"
       ],
-      "reviewReasoning": "Reviewed current assignment membership, exact source URL family, branch identity, native source text, and strict R/F/C classification."
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
     },
     {
       "googlePlaceId": "ChIJay-cC0SMGGARCJcjuM2PyA4",
@@ -969,9 +989,10 @@
           "path": "data/agent_proposals/DISH-R-OFFICIAL/S5.json",
           "recordIndex": 25,
           "sourceStatus": "no_evidence"
-        }
+        },
+        "data/agent_reviews/DISH-R-OFFICIAL/S5.json"
       ],
-      "reviewReasoning": "Reviewed current assignment membership, exact source URL family, branch identity, native source text, and strict R/F/C classification."
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
     },
     {
       "googlePlaceId": "ChIJBWY0oOONGGARfDSN38wt5l0",
@@ -1004,9 +1025,10 @@
           "path": "data/agent_proposals/DISH-R-OFFICIAL/S5.json",
           "recordIndex": 26,
           "sourceStatus": "candidate"
-        }
+        },
+        "data/agent_reviews/DISH-R-OFFICIAL/S5.json"
       ],
-      "reviewReasoning": "Reviewed current assignment membership, exact source URL family, branch identity, native source text, and strict R/F/C classification."
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
     },
     {
       "googlePlaceId": "ChIJKQlfZLaNGGARTe95b99jJXE",
@@ -1038,9 +1060,10 @@
           "path": "data/agent_proposals/DISH-R-OFFICIAL/S5.json",
           "recordIndex": 27,
           "sourceStatus": "no_evidence"
-        }
+        },
+        "data/agent_reviews/DISH-R-OFFICIAL/S5.json"
       ],
-      "reviewReasoning": "Reviewed current assignment membership, exact source URL family, branch identity, native source text, and strict R/F/C classification."
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
     },
     {
       "googlePlaceId": "ChIJp5cOrBqMGGARMCiyzZVc7B8",
@@ -1072,9 +1095,10 @@
           "path": "data/agent_proposals/DISH-R-OFFICIAL/S5.json",
           "recordIndex": 28,
           "sourceStatus": "no_evidence"
-        }
+        },
+        "data/agent_reviews/DISH-R-OFFICIAL/S5.json"
       ],
-      "reviewReasoning": "Reviewed current assignment membership, exact source URL family, branch identity, native source text, and strict R/F/C classification."
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
     },
     {
       "googlePlaceId": "ChIJAQAbqByMGGARv1Rpxd63ZXM",
@@ -1106,9 +1130,10 @@
           "path": "data/agent_proposals/DISH-R-OFFICIAL/S5.json",
           "recordIndex": 29,
           "sourceStatus": "no_evidence"
-        }
+        },
+        "data/agent_reviews/DISH-R-OFFICIAL/S5.json"
       ],
-      "reviewReasoning": "Reviewed current assignment membership, exact source URL family, branch identity, native source text, and strict R/F/C classification."
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
     },
     {
       "googlePlaceId": "ChIJe-dOtniNGGAReWerHXlFSps",
@@ -1143,9 +1168,10 @@
           "path": "data/agent_proposals/DISH-R-OFFICIAL/S5.json",
           "recordIndex": 30,
           "sourceStatus": "blocked"
-        }
+        },
+        "data/agent_reviews/DISH-R-OFFICIAL/S5.json"
       ],
-      "reviewReasoning": "Reviewed current assignment membership, exact source URL family, branch identity, native source text, and strict R/F/C classification."
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
     },
     {
       "googlePlaceId": "ChIJnedLWAiNGGAR70nVeNdvT58",
@@ -1177,9 +1203,10 @@
           "path": "data/agent_proposals/DISH-R-OFFICIAL/S5.json",
           "recordIndex": 31,
           "sourceStatus": "no_evidence"
-        }
+        },
+        "data/agent_reviews/DISH-R-OFFICIAL/S5.json"
       ],
-      "reviewReasoning": "Reviewed current assignment membership, exact source URL family, branch identity, native source text, and strict R/F/C classification."
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
     },
     {
       "googlePlaceId": "ChIJp3be1AeMGGAR2k9SBumlu2w",
@@ -1211,9 +1238,17 @@
           "path": "data/agent_proposals/DISH-R-OFFICIAL/S5.json",
           "recordIndex": 32,
           "sourceStatus": "no_evidence"
-        }
+        },
+        "data/agent_reviews/DISH-R-OFFICIAL/S5.json"
       ],
-      "reviewReasoning": "Reviewed current assignment membership, exact source URL family, branch identity, native source text, and strict R/F/C classification."
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
     }
-  ]
+  ],
+  "policyAttestation": {
+    "paidGoogleDataApiCalls": 0,
+    "canonicalMasterEditedDirectly": false,
+    "proximityOnlyIdentityBindingUsed": false,
+    "recommendationWithoutExplicitSemanticsAdded": false,
+    "accessRestrictionBypassUsed": false
+  }
 }

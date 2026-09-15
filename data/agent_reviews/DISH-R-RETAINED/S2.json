@@ -1,0 +1,1958 @@
+{
+  "schemaVersion": 1,
+  "proposalOnly": false,
+  "marker": "DISH-R-RETAINED",
+  "shard": "S2",
+  "agentRunId": "FINAL-DISH-R-RETAINED:S2:20260915",
+  "sourceQueue": "data/dish_batch_plan.json",
+  "sourceQueueCommit": "97f07e274e07854952da45fe264ab43ddea7d986",
+  "generatedAt": "2026-09-15T22:00:00+09:00",
+  "reviewedAt": "2026-09-15",
+  "reviewedBy": "final-dish-integration central fail-closed review",
+  "summary": {
+    "assignedRows": 47,
+    "reviewedRows": 47,
+    "acceptedEvidenceRows": 13,
+    "candidateRows": 1,
+    "noEvidenceRows": 32,
+    "blockedRows": 1,
+    "skippedAlreadyCompleteRows": 0
+  },
+  "records": [
+    {
+      "googlePlaceId": "ChIJ06Y7zmmNGGARO-ajG7EusUA",
+      "restaurantName": "スパイシービストロ タップロボーン 神保町店",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": [
+          {
+            "provider": "Tabelog retained source binding",
+            "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13245676/",
+            "checkedAt": "2026-09-05",
+            "evidenceType": "exact_place_id_source_row",
+            "note": "Retained source row is keyed to this exact Place ID; retained dish aggregate contains no accepted dish evidence."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131003/13245676/",
+        "data/google_inventory_detail_evidence.json"
+      ],
+      "blocker": null,
+      "notes": "Retained Tabelog row contains identity/basic fields but no provenance-backed dish field.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S2.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJ20wrgRmMGGARluo4JoLb8Q8",
+      "restaurantName": "おきなわ軒",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": [
+          {
+            "provider": "repository retained source binding",
+            "sourceUrl": "https://github.com/nekooweb/eat/blob/agent-data-library-2026-09-14/data/google_inventory_detail_evidence.json",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "exact_place_id_repository_check",
+            "note": "Exact Place ID retained/source artifacts inspected; no accepted dish evidence row is present."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "data/source_enrichment_outer1.js",
+        "data/google_inventory_detail_evidence.json"
+      ],
+      "blocker": null,
+      "notes": "No usable source-native dish evidence found in retained material.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S2.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJ93J8IxSMGGARcOixOZM4jwQ",
+      "restaurantName": "神保町 やきそば みかさ",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": [
+          {
+            "provider": "Tabelog retained source binding",
+            "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13163715/",
+            "checkedAt": "2026-09-05",
+            "evidenceType": "exact_place_id_source_row",
+            "note": "Exact retained branch row; sourceRef covers identity/basic fields but not dishes."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131003/13163715/",
+        "data/google_inventory_detail_evidence.json"
+      ],
+      "blocker": null,
+      "notes": "Restaurant name/cuisine was not used to infer yakisoba as a dish.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S2.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJAQBfjxmMGGARuwYTJoyKXv4",
+      "restaurantName": "豚野郎",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": [
+          {
+            "provider": "repository retained source index",
+            "sourceUrl": "https://github.com/nekooweb/eat/blob/agent-data-library-2026-09-14/data/dish_batch_plan.json",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "frozen_place_id_assignment",
+            "note": "Assigned exact Place ID retained row checked together with retained dish aggregate."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "data/google_inventory_detail_evidence.json",
+        "data/source_enrichment*.js"
+      ],
+      "blocker": null,
+      "notes": "No provenance-backed concrete dish located; no inference from restaurant name.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S2.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJAQBZcxSMGGARUdzEjQ6AtTc",
+      "restaurantName": "Bar 37℃",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": [
+          {
+            "provider": "Tabelog retained source binding",
+            "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13220440/",
+            "checkedAt": "2026-09-05",
+            "evidenceType": "exact_place_id_source_row",
+            "note": "Exact branch row has dishes:[] and sourceRef fields exclude dishes."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131003/13220440/",
+        "data/google_inventory_detail_evidence.json"
+      ],
+      "blocker": null,
+      "notes": "No usable dish evidence.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S2.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJB_WeKhqMGGAR4IwXOJ-iUCk",
+      "restaurantName": "カレー屋ジョニー",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": [
+          {
+            "provider": "Tabelog retained source binding",
+            "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13035298/",
+            "checkedAt": "2026-09-05",
+            "evidenceType": "exact_place_id_source_row",
+            "note": "Exact branch retained row; sourceRef contains name/cuisine/address/budget/hours only."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131002/13035298/",
+        "data/google_inventory_detail_evidence.json"
+      ],
+      "blocker": null,
+      "notes": "No dish inferred from カレー屋 name.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S2.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJBxe2VhSMGGARNDL1zRW0H4c",
+      "restaurantName": "SOUP DELI",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": [
+          {
+            "provider": "Tabelog retained source binding",
+            "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13048252/",
+            "checkedAt": "2026-09-05",
+            "evidenceType": "exact_place_id_source_row",
+            "note": "Retained exact sourceRef covers name/cuisine only; no dishes."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131003/13048252/",
+        "data/google_inventory_detail_evidence.json"
+      ],
+      "blocker": null,
+      "notes": "No usable dish evidence.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S2.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJC69wrxyMGGARRfwOxHOPJUc",
+      "restaurantName": "松榮亭",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": [
+          {
+            "provider": "repository retained source binding",
+            "sourceUrl": "https://github.com/nekooweb/eat/blob/agent-data-library-2026-09-14/data/source_enrichment_pr16-gap-migration.js",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "exact_place_id_repository_check",
+            "note": "Exact retained source artifact inspected; no accepted dish evidence appears in aggregate."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "data/source_enrichment_pr16-gap-migration.js",
+        "data/google_inventory_detail_evidence.json"
+      ],
+      "blocker": null,
+      "notes": "No usable dish evidence.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S2.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJcSkHaT2MGGAR0KV1Q0mBPhE",
+      "restaurantName": "豊住",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": [
+          {
+            "provider": "Tabelog retained source row",
+            "sourceUrl": "https://github.com/nekooweb/eat/blob/agent-data-library-2026-09-14/data/source_enrichment_outer10.js",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "provenance_gap_review",
+            "note": "Row contains dishes:['定食'], but its sourceRefs.fields does not include dishes; build_retained_dish_evidence therefore correctly rejects it."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "data/source_enrichment_outer10.js",
+        "data/google_inventory_detail_evidence.json"
+      ],
+      "blocker": null,
+      "notes": "Cached dish-like value lacks dish provenance and is not accepted as F. This is a systematic extraction/provenance gap.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S2.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJfX4IJxqMGGARSVQyEy4i_QI",
+      "restaurantName": "中華料理 やまだ",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": [
+          {
+            "provider": "repository retained source index",
+            "sourceUrl": "https://github.com/nekooweb/eat/blob/agent-data-library-2026-09-14/data/dish_batch_plan.json",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "frozen_place_id_assignment",
+            "note": "Exact retained assignment and evidence aggregate inspected."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "data/google_inventory_detail_evidence.json",
+        "data/source_enrichment*.js"
+      ],
+      "blocker": null,
+      "notes": "No provenance-backed concrete dish found.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S2.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJFyagDQCNGGARWdwB4nwh47g",
+      "restaurantName": "笠岡ラーメン 一元堂 神保町店",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": [
+          {
+            "provider": "Tabelog retained source binding",
+            "sourceUrl": "https://github.com/nekooweb/eat/blob/agent-data-library-2026-09-14/data/source_enrichment_near7.js",
+            "checkedAt": "2026-09-05",
+            "evidenceType": "exact_place_id_source_row",
+            "note": "Exact branch retained row inspected; no accepted dish evidence in aggregate."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "data/source_enrichment_near7.js",
+        "data/google_inventory_detail_evidence.json"
+      ],
+      "blocker": null,
+      "notes": "No dish inferred from ラーメン in restaurant name.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S2.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJg6zdBxSMGGAR6sOeTmTTces",
+      "restaurantName": "大戸屋 神田神保町店",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": [
+          {
+            "provider": "Tabelog retained source binding",
+            "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13035658/",
+            "checkedAt": "2026-09-05",
+            "evidenceType": "exact_place_id_source_row",
+            "note": "Exact branch row sourceRef covers name/cuisine/budget/hours, not dishes."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131003/13035658/",
+        "data/google_inventory_detail_evidence.json"
+      ],
+      "blocker": null,
+      "notes": "No usable dish evidence.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S2.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJg96PHRGMGGARBK5mBzz9N04",
+      "restaurantName": "馬子禄 牛肉面 神保町店",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": [
+          {
+            "provider": "Tabelog retained source binding",
+            "sourceUrl": "https://github.com/nekooweb/eat/blob/agent-data-library-2026-09-14/data/source_enrichment_near5.js",
+            "checkedAt": "2026-09-05",
+            "evidenceType": "exact_place_id_source_row",
+            "note": "Exact retained branch row checked; no accepted dish evidence."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "data/source_enrichment_near5.js",
+        "data/google_inventory_detail_evidence.json"
+      ],
+      "blocker": null,
+      "notes": "No dish inferred from 牛肉面 in name/tags.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S2.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJgRZVxxWMGGARzlentlXZoHw",
+      "restaurantName": "北京亭",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": [
+          {
+            "provider": "repository retained source index",
+            "sourceUrl": "https://github.com/nekooweb/eat/blob/agent-data-library-2026-09-14/data/dish_batch_plan.json",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "frozen_place_id_assignment",
+            "note": "Exact retained assignment and aggregate inspected."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "data/google_inventory_detail_evidence.json",
+        "data/source_enrichment*.js"
+      ],
+      "blocker": null,
+      "notes": "No usable dish evidence.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S2.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJhe6RUq6NGGARfoxLiDaF1tg",
+      "restaurantName": "すし庄",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": [
+          {
+            "provider": "repository retained source index",
+            "sourceUrl": "https://github.com/nekooweb/eat/blob/agent-data-library-2026-09-14/data/dish_batch_plan.json",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "frozen_place_id_assignment",
+            "note": "Exact retained assignment and aggregate inspected."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "data/google_inventory_detail_evidence.json",
+        "data/source_enrichment*.js"
+      ],
+      "blocker": null,
+      "notes": "No sushi/menu item inferred from the restaurant name.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S2.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJjY134BCMGGAR9h4cOpHB94U",
+      "restaurantName": "マクドナルド 神保町店",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": [
+          {
+            "provider": "repository retained source index",
+            "sourceUrl": "https://github.com/nekooweb/eat/blob/agent-data-library-2026-09-14/data/dish_batch_plan.json",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "frozen_place_id_assignment",
+            "note": "Exact retained assignment and aggregate inspected."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "data/google_inventory_detail_evidence.json",
+        "data/source_enrichment*.js"
+      ],
+      "blocker": null,
+      "notes": "No brand/menu knowledge used; retained source has no usable dish evidence.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S2.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJL85mABSMGGARZ5qPibIpDnk",
+      "restaurantName": "覆麺 智",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": [
+          {
+            "provider": "repository retained source index",
+            "sourceUrl": "https://github.com/nekooweb/eat/blob/agent-data-library-2026-09-14/data/dish_batch_plan.json",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "frozen_place_id_assignment",
+            "note": "Exact retained assignment and evidence aggregate inspected."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "data/google_inventory_detail_evidence.json",
+        "data/source_enrichment*.js"
+      ],
+      "blocker": null,
+      "notes": "No usable dish evidence.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S2.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJlfvjSWuNGGAR4N9r9wSbuSI",
+      "restaurantName": "あつ盛",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": [
+          {
+            "provider": "Tabelog retained source binding",
+            "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13249017/",
+            "checkedAt": "2026-09-05",
+            "evidenceType": "exact_place_id_source_row",
+            "note": "Exact branch row has dishes:[] and sourceRef fields exclude dishes."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131003/13249017/",
+        "data/google_inventory_detail_evidence.json"
+      ],
+      "blocker": null,
+      "notes": "No usable dish evidence.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S2.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJNRdnDRGMGGAReEOlgaAWYB8",
+      "restaurantName": "四川料理 川国志 神保町店",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": [
+          {
+            "provider": "repository retained source index",
+            "sourceUrl": "https://github.com/nekooweb/eat/blob/agent-data-library-2026-09-14/data/dish_batch_plan.json",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "frozen_place_id_assignment",
+            "note": "Exact retained assignment and evidence aggregate inspected."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "data/google_inventory_detail_evidence.json",
+        "data/source_enrichment*.js"
+      ],
+      "blocker": null,
+      "notes": "No dish inferred from cuisine.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S2.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJo_azaxGMGGAR0GBf-GC_pFc",
+      "restaurantName": "揚子江菜館",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": [
+          {
+            "provider": "repository retained source index",
+            "sourceUrl": "https://github.com/nekooweb/eat/blob/agent-data-library-2026-09-14/data/dish_batch_plan.json",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "frozen_place_id_assignment",
+            "note": "Exact retained assignment and evidence aggregate inspected."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "data/google_inventory_detail_evidence.json",
+        "data/source_enrichment*.js"
+      ],
+      "blocker": null,
+      "notes": "No usable dish evidence.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S2.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJObINgd2NGGAR3eAYGc4JZnM",
+      "restaurantName": "ばんびカレー屋",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": [
+          {
+            "provider": "repository retained source index",
+            "sourceUrl": "https://github.com/nekooweb/eat/blob/agent-data-library-2026-09-14/data/dish_batch_plan.json",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "frozen_place_id_assignment",
+            "note": "Exact retained assignment and aggregate inspected; no accepted dish evidence is keyed to this Place ID."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "data/google_inventory_detail_evidence.json",
+        "data/hotpepper_bindings.json"
+      ],
+      "blocker": null,
+      "notes": "No dish inferred from カレー屋 in name. A separate rejected Hot Pepper binding incorrectly associates カレー屋 ばんび with サラファン; not reused here without exact binding.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S2.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJR2OBNXeNGGARhAF7VgqR7Fo",
+      "restaurantName": "Pizza K",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": [
+          {
+            "provider": "repository retained source index",
+            "sourceUrl": "https://github.com/nekooweb/eat/blob/agent-data-library-2026-09-14/data/dish_batch_plan.json",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "frozen_place_id_assignment",
+            "note": "Exact retained assignment and evidence aggregate inspected."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "data/google_inventory_detail_evidence.json",
+        "data/source_enrichment*.js"
+      ],
+      "blocker": null,
+      "notes": "No pizza inferred from restaurant name.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S2.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJrZPAHBGMGGARge1vNIrQh80",
+      "restaurantName": "ラドリオ",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": [
+          {
+            "provider": "Tabelog retained source binding",
+            "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13006555/",
+            "checkedAt": "2026-09-05",
+            "evidenceType": "exact_place_id_source_row",
+            "note": "Exact retained branch row contains no provenance-backed dishes."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131003/13006555/",
+        "data/google_inventory_detail_evidence.json"
+      ],
+      "blocker": null,
+      "notes": "No usable dish evidence.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S2.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJsw2B-mqNGGARnGg5qLOjwFk",
+      "restaurantName": "南インドの定食と軽食 三燈舎",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": [
+          {
+            "provider": "repository retained source index",
+            "sourceUrl": "https://github.com/nekooweb/eat/blob/agent-data-library-2026-09-14/data/dish_batch_plan.json",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "frozen_place_id_assignment",
+            "note": "Exact retained assignment and evidence aggregate inspected."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "data/google_inventory_detail_evidence.json",
+        "data/source_enrichment*.js"
+      ],
+      "blocker": null,
+      "notes": "No dish inferred from cuisine/name.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S2.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJ-z77UACNGGARBpjUPiHWK1E",
+      "restaurantName": "SAPANA サパナ 九段下店",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": [
+          {
+            "provider": "repository retained source index",
+            "sourceUrl": "https://github.com/nekooweb/eat/blob/agent-data-library-2026-09-14/data/dish_batch_plan.json",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "frozen_place_id_assignment",
+            "note": "Exact retained assignment and evidence aggregate inspected."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "data/google_inventory_detail_evidence.json",
+        "data/hotpepper_bindings.json",
+        "data/source_enrichment*.js"
+      ],
+      "blocker": null,
+      "notes": "No usable concrete dish evidence.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S2.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJ6T1XCJyNGGARz2n95fYZGLE",
+      "restaurantName": "神保町シーシャカフェべー太",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": [
+          {
+            "provider": "repository retained source index",
+            "sourceUrl": "https://github.com/nekooweb/eat/blob/agent-data-library-2026-09-14/data/dish_batch_plan.json",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "frozen_place_id_assignment",
+            "note": "Exact retained assignment and evidence aggregate inspected."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "data/google_inventory_detail_evidence.json",
+        "data/source_enrichment*.js"
+      ],
+      "blocker": null,
+      "notes": "No usable dish evidence.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S2.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJB9QXfgCNGGARyfvgiZm3Sao",
+      "restaurantName": "漁師直送海鮮 相天",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": [
+          {
+            "provider": "repository retained source index",
+            "sourceUrl": "https://github.com/nekooweb/eat/blob/agent-data-library-2026-09-14/data/dish_batch_plan.json",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "frozen_place_id_assignment",
+            "note": "Exact retained assignment and evidence aggregate inspected."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "data/google_inventory_detail_evidence.json",
+        "data/source_enrichment*.js"
+      ],
+      "blocker": null,
+      "notes": "No seafood dish inferred from restaurant name.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S2.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJCxkYTsuNGGARjXXEzI2Mtz0",
+      "restaurantName": "SADEC TOKYO",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": [
+          {
+            "provider": "repository retained source index",
+            "sourceUrl": "https://github.com/nekooweb/eat/blob/agent-data-library-2026-09-14/data/dish_batch_plan.json",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "frozen_place_id_assignment",
+            "note": "Exact retained assignment and evidence aggregate inspected."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "data/google_inventory_detail_evidence.json",
+        "data/source_enrichment*.js"
+      ],
+      "blocker": null,
+      "notes": "No usable dish evidence.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S2.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJeQvERXyNGGARbLBGmh3OONw",
+      "restaurantName": "Hifumi",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": [
+          {
+            "provider": "repository retained source index",
+            "sourceUrl": "https://github.com/nekooweb/eat/blob/agent-data-library-2026-09-14/data/dish_batch_plan.json",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "frozen_place_id_assignment",
+            "note": "Exact retained assignment and evidence aggregate inspected."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "data/google_inventory_detail_evidence.json",
+        "data/source_enrichment*.js"
+      ],
+      "blocker": null,
+      "notes": "No usable dish evidence.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S2.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJh9mRJACNGGARijltDRxUZ_o",
+      "restaurantName": "地鶏と焼酎とりちゅう 小川町店",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": [
+          {
+            "provider": "repository retained source index",
+            "sourceUrl": "https://github.com/nekooweb/eat/blob/agent-data-library-2026-09-14/data/dish_batch_plan.json",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "frozen_place_id_assignment",
+            "note": "Exact retained assignment and evidence aggregate inspected."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "data/google_inventory_detail_evidence.json",
+        "data/source_enrichment*.js"
+      ],
+      "blocker": null,
+      "notes": "No chicken dish inferred from restaurant name.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S2.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJHwt-nNuNGGARlEmNSwoaPTY",
+      "restaurantName": "重慶料理 東々包",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": [
+          {
+            "provider": "repository retained source index",
+            "sourceUrl": "https://github.com/nekooweb/eat/blob/agent-data-library-2026-09-14/data/dish_batch_plan.json",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "frozen_place_id_assignment",
+            "note": "Exact retained assignment and evidence aggregate inspected."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "data/google_inventory_detail_evidence.json",
+        "data/source_enrichment*.js"
+      ],
+      "blocker": null,
+      "notes": "No dish inferred from cuisine.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S2.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJYZkPP1qNGGARsUjRcyOGz1Q",
+      "restaurantName": "居酒屋 道らく 水道橋東京ドーム店",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": [
+          {
+            "provider": "repository retained source index",
+            "sourceUrl": "https://github.com/nekooweb/eat/blob/agent-data-library-2026-09-14/data/dish_batch_plan.json",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "frozen_place_id_assignment",
+            "note": "Exact retained assignment and evidence aggregate inspected."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "data/google_inventory_detail_evidence.json",
+        "data/hotpepper_bindings.json",
+        "data/source_enrichment*.js"
+      ],
+      "blocker": null,
+      "notes": "No usable source-native dish evidence.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S2.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJ0XebMyCNGGAR8WL746mu114",
+      "restaurantName": "Re時屋",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "Re時屋"
+        ],
+        "evidence": [
+          {
+            "provider": "Tabelog",
+            "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13044561/",
+            "checkedAt": "2026-09-05",
+            "evidenceType": "exact_place_id_menu_source",
+            "note": "Retained source row is keyed to exact Place ID and sourceRefs.fields includes dishes."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "焼き鳥",
+          "nameZhCandidate": null,
+          "evidenceClass": "retained_source_menu_item",
+          "recommendationSemantics": "",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13044561/",
+          "checkedAt": "2026-09-05",
+          "sourceScope": "branch",
+          "evidenceText": "焼き鳥",
+          "confidence": "high",
+          "notes": "Concrete retained menu item; no strict recommendation semantics."
+        },
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "串焼き",
+          "nameZhCandidate": null,
+          "evidenceClass": "retained_source_menu_item",
+          "recommendationSemantics": "",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13044561/",
+          "checkedAt": "2026-09-05",
+          "sourceScope": "branch",
+          "evidenceText": "串焼き",
+          "confidence": "high",
+          "notes": "Concrete retained menu item; no strict recommendation semantics."
+        }
+      ],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131003/13044561/"
+      ],
+      "blocker": null,
+      "notes": "F-only. Review prose was not used.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S2.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJB_WeKhqMGGAR9DCL2lv0LEE",
+      "restaurantName": "エチオピア カリーキッチン 御茶ノ水ソラシティ店",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": [
+          {
+            "provider": "Tabelog",
+            "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13154753/",
+            "checkedAt": "2026-09-05",
+            "evidenceType": "exact_place_id_menu_source",
+            "note": "Retained exact branch sourceRef includes dishes."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "カリー",
+          "nameZhCandidate": null,
+          "evidenceClass": "retained_source_menu_item",
+          "recommendationSemantics": "",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13154753/",
+          "checkedAt": "2026-09-05",
+          "sourceScope": "branch",
+          "evidenceText": "カリー",
+          "confidence": "high",
+          "notes": "Concrete menu item; no recommendation semantics."
+        }
+      ],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131002/13154753/"
+      ],
+      "blocker": null,
+      "notes": "F-only.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S2.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJD0ZKkQSMGGARmP9uEaruIAo",
+      "restaurantName": "みますや",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": [
+          {
+            "provider": "Tabelog",
+            "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13000643/",
+            "checkedAt": "2026-09-05",
+            "evidenceType": "exact_place_id_menu_source",
+            "note": "Retained exact sourceRef includes dishes."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "さくら刺身",
+          "nameZhCandidate": null,
+          "evidenceClass": "retained_source_menu_item",
+          "recommendationSemantics": "",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13000643/",
+          "checkedAt": "2026-09-05",
+          "sourceScope": "branch",
+          "evidenceText": "さくら刺身",
+          "confidence": "high",
+          "notes": "Concrete menu item; no recommendation semantics."
+        },
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "肉豆腐",
+          "nameZhCandidate": null,
+          "evidenceClass": "retained_source_menu_item",
+          "recommendationSemantics": "",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13000643/",
+          "checkedAt": "2026-09-05",
+          "sourceScope": "branch",
+          "evidenceText": "肉豆腐",
+          "confidence": "high",
+          "notes": "Concrete menu item; no recommendation semantics."
+        }
+      ],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131002/13000643/"
+      ],
+      "blocker": null,
+      "notes": "F-only.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S2.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJeSgEJxqMGGAR2zkERvefTW4",
+      "restaurantName": "サブロッソ",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": [
+          {
+            "provider": "Tabelog",
+            "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13057066/",
+            "checkedAt": "2026-09-05",
+            "evidenceType": "exact_place_id_menu_source",
+            "note": "Retained exact sourceRef includes dishes."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "刺身盛り合わせ",
+          "nameZhCandidate": null,
+          "evidenceClass": "retained_source_menu_item",
+          "recommendationSemantics": "",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13057066/",
+          "checkedAt": "2026-09-05",
+          "sourceScope": "branch",
+          "evidenceText": "刺身盛り合わせ",
+          "confidence": "high",
+          "notes": "Concrete retained menu item."
+        },
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "牛もつ煮込み",
+          "nameZhCandidate": null,
+          "evidenceClass": "retained_source_menu_item",
+          "recommendationSemantics": "",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13057066/",
+          "checkedAt": "2026-09-05",
+          "sourceScope": "branch",
+          "evidenceText": "牛もつ煮込み",
+          "confidence": "high",
+          "notes": "Concrete retained menu item."
+        },
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "三色丼",
+          "nameZhCandidate": null,
+          "evidenceClass": "retained_source_menu_item",
+          "recommendationSemantics": "",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13057066/",
+          "checkedAt": "2026-09-05",
+          "sourceScope": "branch",
+          "evidenceText": "三色丼",
+          "confidence": "high",
+          "notes": "Concrete retained menu item."
+        }
+      ],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131002/13057066/"
+      ],
+      "blocker": null,
+      "notes": "F-only; no strict recommendation semantics.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S2.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJK-a1ABSMGGARCKSw0bG0MbM",
+      "restaurantName": "炒飯屋 一",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": [
+          {
+            "provider": "Tabelog",
+            "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13181599/",
+            "checkedAt": "2026-09-05",
+            "evidenceType": "exact_place_id_menu_source",
+            "note": "source_enrichment_near1 exact Place ID row; sourceRefs.fields explicitly includes dishes."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "元祖エビ炒飯",
+          "nameZhCandidate": null,
+          "evidenceClass": "retained_source_menu_item",
+          "recommendationSemantics": "",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13181599/",
+          "checkedAt": "2026-09-05",
+          "sourceScope": "branch",
+          "evidenceText": "元祖エビ炒飯",
+          "confidence": "high",
+          "notes": "Source-backed menu item; 元祖 in the dish name alone is not treated as recommendation semantics."
+        }
+      ],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131003/13181599/"
+      ],
+      "blocker": null,
+      "notes": "F-only.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S2.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJPwqvuBOMGGARlZrEgZIL-pM",
+      "restaurantName": "おかん",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": [
+          {
+            "provider": "Tabelog",
+            "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13021354/",
+            "checkedAt": "2026-09-05",
+            "evidenceType": "exact_place_id_menu_source",
+            "note": "source_enrichment_outer4 exact Place ID row; sourceRefs.fields includes dishes."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "きりたんぽ",
+          "nameZhCandidate": null,
+          "evidenceClass": "retained_source_menu_item",
+          "recommendationSemantics": "",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13021354/",
+          "checkedAt": "2026-09-05",
+          "sourceScope": "branch",
+          "evidenceText": "きりたんぽ",
+          "confidence": "high",
+          "notes": "Concrete retained menu item; no recommendation semantics."
+        }
+      ],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131003/13021354/"
+      ],
+      "blocker": null,
+      "notes": "F-only.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S2.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJpZBYkxCMGGARrdO6BQ1yGPQ",
+      "restaurantName": "サラファン",
+      "status": "blocked",
+      "identity": {
+        "state": "conflict",
+        "sourceAliases": [
+          "サラファン",
+          "カレー屋 ばんび"
+        ],
+        "evidence": [
+          {
+            "provider": "Hot Pepper retained binding review",
+            "sourceUrl": "https://www.hotpepper.jp/strJ003872214/?vos=nhppalsa000016",
+            "checkedAt": "2026-09-06",
+            "evidenceType": "explicit_rejected_binding",
+            "note": "data/hotpepper_manual_rich_bindings.json explicitly marks this pair reviewedRejected: productionName サラファン vs hotpepperName カレー屋 ばんび, reason 'Different restaurant.' Binding is medium confidence / autoEligible=false."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://www.hotpepper.jp/strJ003872214/?vos=nhppalsa000016",
+        "data/hotpepper_manual_rich_bindings.json",
+        "data/google_inventory_detail_evidence.json"
+      ],
+      "blocker": "retained_provider_binding_explicitly_rejected_different_restaurant",
+      "notes": "Current aggregate contains an F-like カレー item under this Place ID, but it is not safe to accept because the provider binding was explicitly rejected.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S2.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJUdOuFReNGGARLaWPEDMUWMc",
+      "restaurantName": "串揚げ Bistro 双",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": [
+          {
+            "provider": "Hot Pepper retained binding",
+            "sourceUrl": "https://www.hotpepper.jp/strJ001269562/?vos=nhppalsa000016",
+            "checkedAt": "2026-09-06",
+            "evidenceType": "high_confidence_bound_provider",
+            "note": "hotpepper_bindings: high confidence, autoEligible=true, 2.4m; retained promotional text is keyed to exact Place ID."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "串揚げ",
+          "nameZhCandidate": null,
+          "evidenceClass": "provider_promotional_dish_text",
+          "recommendationSemantics": "",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001269562/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-06",
+          "sourceScope": "branch",
+          "evidenceText": "絶品の串揚げをご堪能いただけます！",
+          "confidence": "high",
+          "notes": "Promotional praise '絶品' is not treated as an explicit recommendation/popularity/signature marker; item remains F."
+        }
+      ],
+      "attemptedSources": [
+        "https://www.hotpepper.jp/strJ001269562/?vos=nhppalsa000016"
+      ],
+      "blocker": null,
+      "notes": "F-only.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S2.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJ09gzXQCNGGARpg5Im30Zno8",
+      "restaurantName": "旬菜酒房 さ蔵 御茶ノ水",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": [
+          {
+            "provider": "Hot Pepper retained binding",
+            "sourceUrl": "https://www.hotpepper.jp/strJ004445490/food/",
+            "checkedAt": "2026-09-09",
+            "evidenceType": "high_confidence_bound_menu",
+            "note": "Retained binding is high confidence/autoEligible; exact price-backed food page evidence stored in repository."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "豚チゲうどん",
+          "nameZhCandidate": null,
+          "evidenceClass": "hotpepper_menu_text",
+          "recommendationSemantics": "",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ004445490/food/",
+          "checkedAt": "2026-09-09",
+          "sourceScope": "branch",
+          "evidenceText": "豚チゲうどん 当店自家製のチゲスープとモチモチのうどん。半熟玉子を絡めてまろやかになります 858円（税込）",
+          "confidence": "high",
+          "notes": "Use full source-native menu label rather than broad matcher token うどん."
+        },
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "お刺身二点盛り",
+          "nameZhCandidate": null,
+          "evidenceClass": "hotpepper_menu_text",
+          "recommendationSemantics": "",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ004445490/food/",
+          "checkedAt": "2026-09-09",
+          "sourceScope": "branch",
+          "evidenceText": "お刺身二点盛り 少しだけお刺身が欲しい時には丁度良い量です 1,078円（税込）",
+          "confidence": "high",
+          "notes": "Concrete priced menu item."
+        },
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "へしこピザ",
+          "nameZhCandidate": null,
+          "evidenceClass": "hotpepper_menu_text",
+          "recommendationSemantics": "",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ004445490/food/",
+          "checkedAt": "2026-09-09",
+          "sourceScope": "branch",
+          "evidenceText": "へしこピザ トマトソースがベースのピザはへしこがまるでアンチョビのような味わい 770円（税込）",
+          "confidence": "high",
+          "notes": "Concrete priced menu item."
+        },
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "まぐろホホ肉唐揚げ",
+          "nameZhCandidate": null,
+          "evidenceClass": "hotpepper_menu_text",
+          "recommendationSemantics": "",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ004445490/food/",
+          "checkedAt": "2026-09-09",
+          "sourceScope": "branch",
+          "evidenceText": "まぐろホホ肉唐揚げ 一匹の鮪から少量しか取れない希少なホホ肉をさくっと唐揚げにしました。おろしポン酢でさっぱりと。 825円（税込）",
+          "confidence": "high",
+          "notes": "Concrete priced menu item."
+        },
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "出汁巻き玉子",
+          "nameZhCandidate": null,
+          "evidenceClass": "hotpepper_menu_text",
+          "recommendationSemantics": "",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ004445490/food/",
+          "checkedAt": "2026-09-09",
+          "sourceScope": "branch",
+          "evidenceText": "出汁巻き玉子 もちろん一本一本手作りで巻いてます！出汁の効いた玉子と柚子の効いた大根おろしでさっぱりと召し上がってください 693円（税込）",
+          "confidence": "high",
+          "notes": "Concrete priced menu item."
+        },
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "穴子白焼き",
+          "nameZhCandidate": null,
+          "evidenceClass": "hotpepper_menu_text",
+          "recommendationSemantics": "",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ004445490/food/",
+          "checkedAt": "2026-09-09",
+          "sourceScope": "branch",
+          "evidenceText": "穴子白焼き でんすけ（大きい）穴子！脂がのってます！！山葵醤油で召し上がってください 935円（税込）",
+          "confidence": "high",
+          "notes": "Concrete priced menu item."
+        }
+      ],
+      "attemptedSources": [
+        "https://www.hotpepper.jp/strJ004445490/food/"
+      ],
+      "blocker": null,
+      "notes": "Six F items. Existing automated evidence used broad matcher names; proposal preserves full source-native menu labels.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S2.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJly4un7SNGGARgKDrJ-aa9uA",
+      "restaurantName": "Restaurant Mari",
+      "status": "candidate",
+      "identity": {
+        "state": "uncertain",
+        "sourceAliases": [],
+        "evidence": [
+          {
+            "provider": "Hot Pepper retained binding",
+            "sourceUrl": "https://www.hotpepper.jp/strJ001263192/?vos=nhppalsa000016",
+            "checkedAt": "2026-09-06",
+            "evidenceType": "unapproved_medium_binding",
+            "note": "hotpepper_bindings records confidence=medium, autoEligible=false, currentProduction=false, distance 23.4m; no matching manual approval exists."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://www.hotpepper.jp/strJ001263192/?vos=nhppalsa000016",
+        "data/hotpepper_bindings.json",
+        "data/hotpepper_manual_rich_bindings.json"
+      ],
+      "blocker": null,
+      "notes": "Candidate only due identity-binding uncertainty.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S2.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJNR_f5hmMGGAR-H-jNHF1c9U",
+      "restaurantName": "楽蔵 RAKUZO 御茶ノ水駅前店",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": [
+          {
+            "provider": "Hot Pepper retained binding",
+            "sourceUrl": "https://www.hotpepper.jp/strJ001027779/food/",
+            "checkedAt": "2026-09-09",
+            "evidenceType": "high_confidence_bound_menu",
+            "note": "Binding high confidence/autoEligible=true, 1.2m; price-backed exact menu text retained."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "すき焼き出汁巻サンド",
+          "nameZhCandidate": null,
+          "evidenceClass": "hotpepper_menu_text",
+          "recommendationSemantics": "",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001027779/food/",
+          "checkedAt": "2026-09-09",
+          "sourceScope": "branch",
+          "evidenceText": "すき焼き出汁巻サンド 979円（税込）",
+          "confidence": "high",
+          "notes": "One concrete menu item; do not duplicate broad matcher token すき焼き as a separate dish."
+        },
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "本日のお造り",
+          "nameZhCandidate": null,
+          "evidenceClass": "hotpepper_menu_text",
+          "recommendationSemantics": "",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001027779/food/",
+          "checkedAt": "2026-09-09",
+          "sourceScope": "branch",
+          "evidenceText": "本日のお造り 979円（税込）",
+          "confidence": "high",
+          "notes": "Concrete priced menu item."
+        },
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "チーズの天ぷら",
+          "nameZhCandidate": null,
+          "evidenceClass": "hotpepper_menu_text",
+          "recommendationSemantics": "",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001027779/food/",
+          "checkedAt": "2026-09-09",
+          "sourceScope": "branch",
+          "evidenceText": "チーズの天ぷら 605円（税込）",
+          "confidence": "high",
+          "notes": "Concrete priced menu item."
+        },
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "お好み焼きコロッケ",
+          "nameZhCandidate": null,
+          "evidenceClass": "hotpepper_menu_text",
+          "recommendationSemantics": "",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001027779/food/",
+          "checkedAt": "2026-09-09",
+          "sourceScope": "branch",
+          "evidenceText": "お好み焼きコロッケ 715円（税込）",
+          "confidence": "high",
+          "notes": "Concrete priced menu item."
+        },
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "ベーコンチーズのピザポテサラ",
+          "nameZhCandidate": null,
+          "evidenceClass": "hotpepper_menu_text",
+          "recommendationSemantics": "",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001027779/food/",
+          "checkedAt": "2026-09-09",
+          "sourceScope": "branch",
+          "evidenceText": "ベーコンチーズのピザポテサラ 649円（税込）",
+          "confidence": "high",
+          "notes": "Concrete priced menu item."
+        },
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "焼き鳥",
+          "nameZhCandidate": null,
+          "evidenceClass": "provider_promotional_dish_text",
+          "recommendationSemantics": "",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001027779/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-06",
+          "sourceScope": "branch",
+          "evidenceText": "御茶ノ水 居酒屋 焼き鳥 鍋 個室 和食 宴会",
+          "confidence": "high",
+          "notes": "Concrete provider promotional dish term without recommendation semantics."
+        }
+      ],
+      "attemptedSources": [
+        "https://www.hotpepper.jp/strJ001027779/food/",
+        "https://www.hotpepper.jp/strJ001027779/?vos=nhppalsa000016"
+      ],
+      "blocker": null,
+      "notes": "F-only. Full source-native labels preserved; broad-token duplicate removed.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S2.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJPbkK69CNGGARY1Eo9uhUyoA",
+      "restaurantName": "Orga.",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": [
+          {
+            "provider": "Hot Pepper retained binding",
+            "sourceUrl": "https://www.hotpepper.jp/strJ003624539/food/",
+            "checkedAt": "2026-09-09",
+            "evidenceType": "high_confidence_bound_menu",
+            "note": "Binding high confidence/autoEligible=true; exact price-backed food page evidence retained."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "【ランチ】Ｆｕｓｉｏｎ！サラダカレー",
+          "nameZhCandidate": null,
+          "evidenceClass": "hotpepper_menu_text",
+          "recommendationSemantics": "",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ003624539/food/",
+          "checkedAt": "2026-09-09",
+          "sourceScope": "branch",
+          "evidenceText": "【ランチ】Ｆｕｓｉｏｎ！サラダカレー 玄米山の麓にはカレーの海とサラダの森。両方混ぜるとまさに Fusion！",
+          "confidence": "high",
+          "notes": "Full source-native menu label preserved."
+        },
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "【ディナー】本日のパスタ",
+          "nameZhCandidate": null,
+          "evidenceClass": "hotpepper_menu_text",
+          "recommendationSemantics": "",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ003624539/food/",
+          "checkedAt": "2026-09-09",
+          "sourceScope": "branch",
+          "evidenceText": "【ディナー】本日のパスタ 内容はお問合せ下さい。 1,300円～(税込)",
+          "confidence": "high",
+          "notes": "Concrete menu item."
+        },
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "【ディナー】無農薬玄米のクリームリゾット",
+          "nameZhCandidate": null,
+          "evidenceClass": "hotpepper_menu_text",
+          "recommendationSemantics": "",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ003624539/food/",
+          "checkedAt": "2026-09-09",
+          "sourceScope": "branch",
+          "evidenceText": "【ディナー】無農薬玄米のクリームリゾット 無農薬玄米と有機豆乳のクリームリゾット 1,300円（税込）",
+          "confidence": "high",
+          "notes": "Concrete menu item."
+        }
+      ],
+      "attemptedSources": [
+        "https://www.hotpepper.jp/strJ003624539/food/"
+      ],
+      "blocker": null,
+      "notes": "F-only.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S2.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJR_fRIQCNGGARq2KPNRAr7QA",
+      "restaurantName": "やきとん　まるわ　水道橋店",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": [
+          {
+            "provider": "Hot Pepper retained binding",
+            "sourceUrl": "https://www.hotpepper.jp/strJ003784721/?vos=nhppalsa000016",
+            "checkedAt": "2026-09-06",
+            "evidenceType": "high_confidence_bound_provider",
+            "note": "Binding high confidence/autoEligible=true; retained promotional text keyed to exact Place ID."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "やきとん",
+          "nameZhCandidate": null,
+          "evidenceClass": "provider_promotional_dish_text",
+          "recommendationSemantics": "",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ003784721/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-06",
+          "sourceScope": "branch",
+          "evidenceText": "水道橋 立ち飲み やきとん",
+          "confidence": "high",
+          "notes": "Concrete dish term; no recommendation marker."
+        }
+      ],
+      "attemptedSources": [
+        "https://www.hotpepper.jp/strJ003784721/?vos=nhppalsa000016"
+      ],
+      "blocker": null,
+      "notes": "F-only.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S2.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJXYK4EEGMGGARUFNXeUzrLDg",
+      "restaurantName": "カルーザル",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": [
+          {
+            "provider": "Hot Pepper retained binding",
+            "sourceUrl": "https://www.hotpepper.jp/strJ000034078/food/",
+            "checkedAt": "2026-09-09",
+            "evidenceType": "high_confidence_bound_menu",
+            "note": "Binding high confidence/autoEligible=true; exact price-backed food page retained."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "チーズ盛合せ",
+          "nameZhCandidate": null,
+          "evidenceClass": "hotpepper_menu_text",
+          "recommendationSemantics": "",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ000034078/food/",
+          "checkedAt": "2026-09-09",
+          "sourceScope": "branch",
+          "evidenceText": "チーズ盛合せ 2,600円",
+          "confidence": "high",
+          "notes": "Concrete priced menu item."
+        },
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "ショコラ盛合せ",
+          "nameZhCandidate": null,
+          "evidenceClass": "hotpepper_menu_text",
+          "recommendationSemantics": "",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ000034078/food/",
+          "checkedAt": "2026-09-09",
+          "sourceScope": "branch",
+          "evidenceText": "ショコラ盛合せ 1,600円",
+          "confidence": "high",
+          "notes": "Concrete priced menu item."
+        },
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "ドライフルーツ",
+          "nameZhCandidate": null,
+          "evidenceClass": "hotpepper_menu_text",
+          "recommendationSemantics": "",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ000034078/food/",
+          "checkedAt": "2026-09-09",
+          "sourceScope": "branch",
+          "evidenceText": "ドライフルーツ 1,800円",
+          "confidence": "high",
+          "notes": "Concrete priced menu item."
+        },
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "レーズンバター",
+          "nameZhCandidate": null,
+          "evidenceClass": "hotpepper_menu_text",
+          "recommendationSemantics": "",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ000034078/food/",
+          "checkedAt": "2026-09-09",
+          "sourceScope": "branch",
+          "evidenceText": "レーズンバター 1,000円",
+          "confidence": "high",
+          "notes": "Concrete priced menu item."
+        }
+      ],
+      "attemptedSources": [
+        "https://www.hotpepper.jp/strJ000034078/food/"
+      ],
+      "blocker": null,
+      "notes": "F-only.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S2.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    },
+    {
+      "googlePlaceId": "ChIJZ-8zfhWMGGARcN9JA0VOrTE",
+      "restaurantName": "ワインと炭火焼きイタリアン GAZZO 水道橋",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": [
+          {
+            "provider": "Hot Pepper retained binding",
+            "sourceUrl": "https://www.hotpepper.jp/strJ000716272/food/",
+            "checkedAt": "2026-09-09",
+            "evidenceType": "high_confidence_bound_menu",
+            "note": "Binding high confidence/autoEligible=true; exact price-backed food page retained."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "あなたの言いなりパスタ",
+          "nameZhCandidate": null,
+          "evidenceClass": "hotpepper_menu_text",
+          "recommendationSemantics": "",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ000716272/food/",
+          "checkedAt": "2026-09-09",
+          "sourceScope": "branch",
+          "evidenceText": "あなたの言いなりパスタ 読んで字のごとくお好みをお申し付けください！可能な限り当店のシェフが腕を振るいます。あなただけの一皿をご用意いたします！",
+          "confidence": "high",
+          "notes": "Concrete menu item; customization language is not recommendation semantics."
+        },
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "本日のジェラート",
+          "nameZhCandidate": null,
+          "evidenceClass": "hotpepper_menu_text",
+          "recommendationSemantics": "",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ000716272/food/",
+          "checkedAt": "2026-09-09",
+          "sourceScope": "branch",
+          "evidenceText": "本日のジェラート 650円（税込）",
+          "confidence": "high",
+          "notes": "Concrete priced menu item."
+        },
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "あなたの言いなりリゾット",
+          "nameZhCandidate": null,
+          "evidenceClass": "hotpepper_menu_text",
+          "recommendationSemantics": "",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ000716272/food/",
+          "checkedAt": "2026-09-09",
+          "sourceScope": "branch",
+          "evidenceText": "あなたの言いなりリゾット 読んで字のごとくお好みをお申し付けください！可能な限り当店のシェフが腕を振るいます。あなただけの一皿をご用意いたします！",
+          "confidence": "high",
+          "notes": "Concrete menu item."
+        },
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "燻製オリーブ",
+          "nameZhCandidate": null,
+          "evidenceClass": "hotpepper_menu_text",
+          "recommendationSemantics": "",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ000716272/food/",
+          "checkedAt": "2026-09-09",
+          "sourceScope": "branch",
+          "evidenceText": "燻製オリーブ ちょいとツマミたい貴方に。 690円（税込）",
+          "confidence": "high",
+          "notes": "Concrete priced menu item."
+        },
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "ボロネーゼポテトサラダ",
+          "nameZhCandidate": null,
+          "evidenceClass": "hotpepper_menu_text",
+          "recommendationSemantics": "",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ000716272/food/",
+          "checkedAt": "2026-09-09",
+          "sourceScope": "branch",
+          "evidenceText": "ボロネーゼポテトサラダ 定番ポテトサラダに自家製ボロネーゼをたっぷりと。 800円（税込）",
+          "confidence": "high",
+          "notes": "Concrete priced menu item."
+        },
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "本日のチーズケーキ",
+          "nameZhCandidate": null,
+          "evidenceClass": "hotpepper_menu_text",
+          "recommendationSemantics": "",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ000716272/food/",
+          "checkedAt": "2026-09-09",
+          "sourceScope": "branch",
+          "evidenceText": "本日のチーズケーキ 650円（税込）",
+          "confidence": "high",
+          "notes": "Concrete priced menu item."
+        }
+      ],
+      "attemptedSources": [
+        "https://www.hotpepper.jp/strJ000716272/food/"
+      ],
+      "blocker": null,
+      "notes": "F-only; full source-native names retained instead of broad dish-family tokens.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S2.json"
+      ],
+      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+    }
+  ],
+  "policyAttestation": {
+    "paidGoogleDataApiCalls": 0,
+    "canonicalMasterEditedDirectly": false,
+    "proximityOnlyIdentityBindingUsed": false,
+    "recommendationWithoutExplicitSemanticsAdded": false,
+    "accessRestrictionBypassUsed": false
+  }
+}

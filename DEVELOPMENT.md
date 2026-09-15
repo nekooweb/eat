@@ -179,3 +179,14 @@ python3 scripts/reload_data.py --outdir _audit/data-reload --database _local/eat
 身份长尾和菜品缺口仍需新证据。SQLite shadow → 唯一公开数据源的切换需要单独比较准入、字段来源和浏览器行为，不能把统一入口描述成已经完成该切换。
 
 详细过程见 [重置日志](logs/2026-09-08-data-loading-reset.md) 与 [2026-09-09 identity-name 修复日志](logs/2026-09-09-tool-identity-name-contract.md)，实际流程见 [DATA_PIPELINE](DATA_PIPELINE.md)。旧日期型日志为历史检查点，不作为当前统计来源。
+
+
+## 2026-09-15：菜品数据最终统一整合
+
+892 条 dish-work 已全部形成 terminal decision；Official/Retained 537 行与 Discovery/F-source 355 行均完成最终覆盖。S0–S7 的独立 E2E 结果先按共同 PR #67 基线提取 canonical delta，再与 Official/Retained 的 fail-closed 中央复核结果做单调 union。
+
+最终维护管线验证通过：review digest approval → evidence union → maintained merge → specificity correction → evidence audit → public rebuild → integration audit → disposable SQLite full rebuild/validators → logical replay。全程付费 Google Data API 调用为 0。
+
+最终公开 runtime：R 619 家、F 707 家、任一展示菜 774 家、recommendation gap 803 家；相对原始基线 R +24、F +32、展示 +34、推荐缺口 -24。canonical evidence item 为 R 1036、F 2722。第二次 replay 新增 R/F evidence 均为 0，所有 count delta 均为 0。
+
+详细结果与中央降级、translation-pending 数量、各 shard delta 见 [`data/final_dish_integration_metrics.json`](data/final_dish_integration_metrics.json) 与 [`logs/2026-09-15-final-dish-integration.md`](logs/2026-09-15-final-dish-integration.md)。在 final integration PR 合入前，`main` 不视为已发布这些结果。

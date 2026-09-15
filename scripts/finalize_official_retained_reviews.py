@@ -202,7 +202,11 @@ def sanitize_full_record(record: dict, terminal: str, source_ref: str) -> dict:
         rec["notes"] = "Central semantic pass retained a non-accepted terminal outcome."
     rec.setdefault("attemptedSources", [])
     rec.setdefault("blocker", None)
-    rec["sourceProposalRefs"] = sorted(set((rec.get("sourceProposalRefs") or []) + [source_ref]), key=str)
+    refs = list(rec.get("sourceProposalRefs") or [])
+    existing_paths = {r if isinstance(r, str) else r.get("path") for r in refs if isinstance(r, (str, dict))}
+    if source_ref not in existing_paths:
+        refs.append(source_ref)
+    rec["sourceProposalRefs"] = refs
     rec["reviewReasoning"] = "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
     return rec
 

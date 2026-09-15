@@ -1,0 +1,289 @@
+{
+  "schemaVersion": 1,
+  "proposalOnly": true,
+  "marker": "DISH-F-SOURCE",
+  "shard": "S3",
+  "agentRunId": "e2e-dish-s3-dish-f-source-20260914",
+  "sourceQueue": "data/dish_batch_plan.json",
+  "sourceQueueCommit": "5179badcdb58ba176cf2d9cf834a02e24c86e736",
+  "generatedAt": "2026-09-14T23:00:00+09:00",
+  "summary": {
+    "assignedRows": 9,
+    "reviewedRows": 9,
+    "acceptedEvidenceRows": 4,
+    "candidateRows": 3,
+    "noEvidenceRows": 2,
+    "blockedRows": 0,
+    "skippedAlreadyCompleteRows": 0
+  },
+  "records": [
+    {
+      "googlePlaceId": "ChIJbTtuHuiNGGARBrcnzLyb6kg",
+      "restaurantName": "喫茶トお酒 襤褸",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "喫茶トお酒 襤褸"
+        ],
+        "evidence": [
+          {
+            "provider": "official_web",
+            "sourceUrl": "https://gallerykogure.com/cafe-lounge-boro-2024-2/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Repository reviewed official runtime source binds this exact frozen Place ID to 喫茶トお酒 襤褸 and retains the official food menu URL."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "ミートソーススパゲティ",
+          "nameZhCandidate": "肉酱意大利面",
+          "evidenceClass": "source_menu_text",
+          "recommendationSemantics": "",
+          "provider": "official_web",
+          "sourceUrl": "https://gallerykogure.com/cafe-lounge-boro-food/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "ミートソーススパゲティ",
+          "confidence": "high",
+          "notes": "Official exact-branch food page supplies a concrete ordinary dish; F only."
+        }
+      ],
+      "attemptedSources": [
+        "https://gallerykogure.com/cafe-lounge-boro-2024-2/",
+        "https://gallerykogure.com/cafe-lounge-boro-food/"
+      ],
+      "blocker": null,
+      "notes": "Official exact-branch food page supplies a concrete ordinary dish; F only.",
+      "reviewReasoning": "Independent second pass confirmed current assignment membership, frozen identity, exact source scope, source-native dish, R/F semantics, freshness and provenance."
+    },
+    {
+      "googlePlaceId": "ChIJkYyE7gSMGGARNuyvrhRFIiw",
+      "restaurantName": "イタリア風食彩 幸三郎 花乃碗",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "イタリア風食彩 幸三郎 花乃碗"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "Current free-source discovery/review did not produce a reproducible exact-branch current menu item that survived identity, freshness and provenance checks. Search-engine snippets/customer-review prose/nearby or brand-only evidence were not promoted.",
+      "reviewReasoning": "Second pass found no acceptable exact-branch current dish evidence under the project contract."
+    },
+    {
+      "googlePlaceId": "ChIJ04KNRjSNGGARslQbhxXD9As",
+      "restaurantName": "かんだば~",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "かんだば~"
+        ],
+        "evidence": [
+          {
+            "provider": "hotpepper",
+            "sourceUrl": "https://www.hotpepper.jp/strJ003559076/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Repository Hot Pepper binding maps frozen Place ID ChIJ04KNRjSNGGARslQbhxXD9As to J003559076 with high confidence/autoEligible; reviewed current provider page retained as exact branch evidence."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "手羽先",
+          "nameZhCandidate": "鸡翅",
+          "evidenceClass": "source_menu_text",
+          "recommendationSemantics": "",
+          "provider": "hotpepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ003559076/food/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "手羽先",
+          "confidence": "high",
+          "notes": "Exact bound Hot Pepper food page supplies a concrete ordinary menu item; F only."
+        }
+      ],
+      "attemptedSources": [
+        "https://www.hotpepper.jp/strJ003559076/",
+        "https://www.hotpepper.jp/strJ003559076/food/"
+      ],
+      "blocker": null,
+      "notes": "Exact bound Hot Pepper food page supplies a concrete ordinary menu item; F only.",
+      "reviewReasoning": "Independent second pass confirmed current assignment membership, frozen identity, exact source scope, source-native dish, R/F semantics, freshness and provenance."
+    },
+    {
+      "googlePlaceId": "ChIJ5dKHYBmNGGARsuwGkulQ8-Q",
+      "restaurantName": "鳥一番",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "鳥一番"
+        ],
+        "evidence": [
+          {
+            "provider": "hotpepper",
+            "sourceUrl": "https://www.hotpepper.jp/strJ003916931/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Repository Hot Pepper binding maps this frozen Place ID to J003916931 with high confidence/autoEligible; provider branch page was reviewed before accepting menu evidence."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "鶏のから揚げ",
+          "nameZhCandidate": "炸鸡块",
+          "evidenceClass": "source_menu_text",
+          "recommendationSemantics": "",
+          "provider": "hotpepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ003916931/food/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "鶏のから揚げ",
+          "confidence": "high",
+          "notes": "Concrete branch-bound menu item from the retained provider; F only."
+        }
+      ],
+      "attemptedSources": [
+        "https://www.hotpepper.jp/strJ003916931/",
+        "https://www.hotpepper.jp/strJ003916931/food/"
+      ],
+      "blocker": null,
+      "notes": "Concrete branch-bound menu item from the retained provider; F only.",
+      "reviewReasoning": "Independent second pass confirmed current assignment membership, frozen identity, exact source scope, source-native dish, R/F semantics, freshness and provenance."
+    },
+    {
+      "googlePlaceId": "ChIJ8-ZxaRCMGGARChoRjY3b720",
+      "restaurantName": "丸亀製麺",
+      "status": "candidate",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "丸亀製麺"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "Current brand menu exists, but branch-specific availability at the frozen 丸亀製麺 identity was not proven strongly enough for this review.",
+      "reviewReasoning": "Second pass rejected canonical acceptance because identity/freshness/branch scope was not sufficiently closed."
+    },
+    {
+      "googlePlaceId": "ChIJAwoukBWMGGARTHmG6FhUQQY",
+      "restaurantName": "新潟カツ丼 タレカツ 本店",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "新潟カツ丼 タレカツ 本店"
+        ],
+        "evidence": [
+          {
+            "provider": "official_web",
+            "sourceUrl": "https://www.tarekatsu.jp/map.html",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Repository Hot Pepper binding maps this frozen Place ID to J001292453 with high confidence; official Tarakatsu store page identifies the 本店 and official menu family was cross-checked before acceptance."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "カツ丼",
+          "nameZhCandidate": "炸猪排盖饭",
+          "evidenceClass": "source_menu_text",
+          "recommendationSemantics": "",
+          "provider": "official_web",
+          "sourceUrl": "https://www.tarekatsu.jp/menu.html",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "カツ丼",
+          "confidence": "high",
+          "notes": "Concrete current standard item on the exact brand/store menu family; accepted as F only."
+        }
+      ],
+      "attemptedSources": [
+        "https://www.tarekatsu.jp/map.html",
+        "https://www.tarekatsu.jp/menu.html"
+      ],
+      "blocker": null,
+      "notes": "Concrete current standard item on the exact brand/store menu family; accepted as F only.",
+      "reviewReasoning": "Independent second pass confirmed current assignment membership, frozen identity, exact source scope, source-native dish, R/F semantics, freshness and provenance."
+    },
+    {
+      "googlePlaceId": "ChIJh0dxyhGNGGARZk9BsIhLQkE",
+      "restaurantName": "edge",
+      "status": "candidate",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "edge"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "The catalog name edge is insufficiently distinctive; current source evidence could not be tied to this frozen branch without ambiguity.",
+      "reviewReasoning": "Second pass rejected canonical acceptance because identity/freshness/branch scope was not sufficiently closed."
+    },
+    {
+      "googlePlaceId": "ChIJJZS1WhuMGGARg97yhh0fUU8",
+      "restaurantName": "あがらっし",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "あがらっし"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "Current free-source discovery/review did not produce a reproducible exact-branch current menu item that survived identity, freshness and provenance checks. Search-engine snippets/customer-review prose/nearby or brand-only evidence were not promoted.",
+      "reviewReasoning": "Second pass found no acceptable exact-branch current dish evidence under the project contract."
+    },
+    {
+      "googlePlaceId": "ChIJu78sNRSMGGAR3ajbXKR3f08",
+      "restaurantName": "edge",
+      "status": "candidate",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "edge"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "The second catalog row also has the generic name edge; current source evidence could not be tied to this frozen branch without ambiguity.",
+      "reviewReasoning": "Second pass rejected canonical acceptance because identity/freshness/branch scope was not sufficiently closed."
+    }
+  ],
+  "policyAttestation": {
+    "paidGoogleDataApiCalls": 0,
+    "canonicalMasterEditedDirectly": false,
+    "proximityOnlyIdentityBindingUsed": false,
+    "recommendationWithoutExplicitSemanticsAdded": false,
+    "accessRestrictionBypassUsed": false
+  }
+}
