@@ -1,0 +1,947 @@
+{
+  "schemaVersion": 1,
+  "proposalOnly": true,
+  "marker": "DISH-R-DISCOVERY",
+  "shard": "S2",
+  "agentRunId": "e2e-dish-s2-dish-r-discovery-research-20260914",
+  "sourceQueue": "data/dish_batch_plan.json",
+  "sourceQueueCommit": "666a3aac429c03410552270625834512e0a25eda",
+  "generatedAt": "2026-09-14T21:03:00+09:00",
+  "summary": {
+    "assignedRows": 41,
+    "reviewedRows": 41,
+    "acceptedEvidenceRows": 10,
+    "candidateRows": 6,
+    "noEvidenceRows": 25,
+    "blockedRows": 0,
+    "skippedAlreadyCompleteRows": 0
+  },
+  "records": [
+    {
+      "googlePlaceId": "ChIJ2edswDuMGGAREjmUSuQI_6E",
+      "restaurantName": "搾り屋 吉ゑ門",
+      "status": "candidate",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "搾り屋 吉ゑ門"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "A plausible source or identity lead exists, but exact current branch-bound menu evidence was not strong enough for acceptance."
+    },
+    {
+      "googlePlaceId": "ChIJAcDVRxmMGGARB2DTt-Iqp6s",
+      "restaurantName": "Bar 桜",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "Bar 桜"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "Free web discovery did not produce reproducible current branch-bound concrete dish evidence strong enough for R/F; no customer-review prose was used."
+    },
+    {
+      "googlePlaceId": "ChIJAQAMfyKMGGARY6BdWr8lUR0",
+      "restaurantName": "ホンカトリー",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "ホンカトリー"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "Free web discovery did not produce reproducible current branch-bound concrete dish evidence strong enough for R/F; no customer-review prose was used."
+    },
+    {
+      "googlePlaceId": "ChIJAQBEjBiMGGARYUv2a_TphXI",
+      "restaurantName": "日乃屋本店",
+      "status": "candidate",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "日乃屋本店"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "A plausible source or identity lead exists, but exact current branch-bound menu evidence was not strong enough for acceptance."
+    },
+    {
+      "googlePlaceId": "ChIJBXu_LgSMGGARXn0ZfwtG-kk",
+      "restaurantName": "笠置そば",
+      "status": "candidate",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "笠置そば"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "A plausible source or identity lead exists, but exact current branch-bound menu evidence was not strong enough for acceptance."
+    },
+    {
+      "googlePlaceId": "ChIJezJbYeaNGGARDfInD9fBX3o",
+      "restaurantName": "MOTTO",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "MOTTO"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "Free web discovery did not produce reproducible current branch-bound concrete dish evidence strong enough for R/F; no customer-review prose was used."
+    },
+    {
+      "googlePlaceId": "ChIJf2As_AOMGGARMcNwXs4rCdI",
+      "restaurantName": "新月",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "新月"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "Free web discovery did not produce reproducible current branch-bound concrete dish evidence strong enough for R/F; no customer-review prose was used."
+    },
+    {
+      "googlePlaceId": "ChIJhXD3-AaMGGARcRQ90hRePdE",
+      "restaurantName": "喜多方ラーメン 坂内 大手町店",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "喜多方ラーメン 坂内 大手町店"
+        ],
+        "evidence": [
+          {
+            "provider": "official_web",
+            "sourceUrl": "https://ban-nai.com/shop/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Research-pass identity/source match; requires independent freshness/scope review."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "喜多方ラーメン",
+          "nameZhCandidate": null,
+          "evidenceClass": "source_menu_text",
+          "recommendationSemantics": null,
+          "provider": "official_web",
+          "sourceUrl": "https://ban-nai.com/shop/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "喜多方ラーメン",
+          "confidence": "medium",
+          "notes": "Tentative research-pass F; independent self-review required."
+        }
+      ],
+      "attemptedSources": [
+        "https://ban-nai.com/shop/"
+      ],
+      "blocker": null,
+      "notes": "Tentative accepted research finding pending independent self-review."
+    },
+    {
+      "googlePlaceId": "ChIJkSjJMtWNGGARBJEfaEl17hI",
+      "restaurantName": "アキバ絶対領域 A.D.1912",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "アキバ絶対領域 A.D.1912"
+        ],
+        "evidence": [
+          {
+            "provider": "official_web",
+            "sourceUrl": "https://akibazettai.com/shop/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Official shop page names A.D.1912 and gives the exact branch address 東京都千代田区外神田3-1-15 箸勝ビル2F and phone 03-6876-4178."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "recommendedDishes",
+          "classification": "R",
+          "nameOriginal": "デミグラスオムライス（A.D.1912）",
+          "nameZhCandidate": null,
+          "evidenceClass": "official_menu_item",
+          "recommendationSemantics": "人気",
+          "provider": "official_web",
+          "sourceUrl": "https://akibazettai.com/system/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "人気メニュー紹介：デミグラスオムライス（A.D.1912）",
+          "confidence": "high",
+          "notes": "Official current menu places the exact A.D.1912-labelled dish under 人気メニュー紹介."
+        }
+      ],
+      "attemptedSources": [
+        "https://akibazettai.com/shop/",
+        "https://akibazettai.com/system/"
+      ],
+      "blocker": null,
+      "notes": "Research pass found exact branch-bound source evidence."
+    },
+    {
+      "googlePlaceId": "ChIJLSgaVwGMGGARxX2c6r_1V8I",
+      "restaurantName": "味彩",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "味彩"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "Free web discovery did not produce reproducible current branch-bound concrete dish evidence strong enough for R/F; no customer-review prose was used."
+    },
+    {
+      "googlePlaceId": "ChIJlZ2-PQOMGGAR8PIOOozwzG8",
+      "restaurantName": "高山珈琲",
+      "status": "candidate",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "高山珈琲"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "A plausible source or identity lead exists, but exact current branch-bound menu evidence was not strong enough for acceptance."
+    },
+    {
+      "googlePlaceId": "ChIJNUM68hiMGGARFSUebjxtZJc",
+      "restaurantName": "香港屋台",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "香港屋台"
+        ],
+        "evidence": [
+          {
+            "provider": "Tabelog",
+            "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13169833/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Exact Tabelog branch page for 香港屋台; restaurant information is used, not customer-review prose."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "recommendedDishes",
+          "classification": "R",
+          "nameOriginal": "自家製羽つき焼き餃子",
+          "nameZhCandidate": null,
+          "evidenceClass": "source_recommendation_text",
+          "recommendationSemantics": "必食",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13169833/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "自家製羽つき餃子は必食。自家製羽つき焼き餃子",
+          "confidence": "high",
+          "notes": "Exact branch restaurant information explicitly marks the house winged pan-fried dumplings as 必食."
+        }
+      ],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131002/13169833/"
+      ],
+      "blocker": null,
+      "notes": "Research pass found exact branch-bound source evidence."
+    },
+    {
+      "googlePlaceId": "ChIJr_AmLxmMGGARsJ6hMCyVNI4",
+      "restaurantName": "Cafe IMASA",
+      "status": "candidate",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "Cafe IMASA"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "A plausible source or identity lead exists, but exact current branch-bound menu evidence was not strong enough for acceptance."
+    },
+    {
+      "googlePlaceId": "ChIJRzuTUwGMGGARH3cj1AlyjEc",
+      "restaurantName": "いきしぐさ",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "いきしぐさ"
+        ],
+        "evidence": [
+          {
+            "provider": "official_web",
+            "sourceUrl": "https://page.line.me/033pzmoj",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Official LINE account identifies 炭火焼 蕎麦 いきしぐさ and the Uchikanda branch address."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "recommendedDishes",
+          "classification": "R",
+          "nameOriginal": "カレーかけそば",
+          "nameZhCandidate": null,
+          "evidenceClass": "source_recommendation_text",
+          "recommendationSemantics": "一番人気",
+          "provider": "official_web",
+          "sourceUrl": "https://page.line.me/033pzmoj",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "当店のカレーそばの中で、断然の一番人気は『カレーかけそば』",
+          "confidence": "high",
+          "notes": "Official account directly identifies the concrete dish as the clear number-one curry soba."
+        }
+      ],
+      "attemptedSources": [
+        "https://page.line.me/033pzmoj"
+      ],
+      "blocker": null,
+      "notes": "Research pass found exact branch-bound source evidence."
+    },
+    {
+      "googlePlaceId": "ChIJue2Wnx6MGGARtsk7v0lFNZc",
+      "restaurantName": "Sevens",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "Sevens"
+        ],
+        "evidence": [
+          {
+            "provider": "official_web",
+            "sourceUrl": "https://sevens.owst.jp/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Research-pass identity/source match; requires independent freshness/scope review."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "フライドポテト",
+          "nameZhCandidate": null,
+          "evidenceClass": "source_menu_text",
+          "recommendationSemantics": null,
+          "provider": "official_web",
+          "sourceUrl": "https://tabelog.com/tokyo/A1311/A131101/13212100/dtlmenu/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "フライドポテト",
+          "confidence": "medium",
+          "notes": "Tentative research-pass F; independent self-review required."
+        }
+      ],
+      "attemptedSources": [
+        "https://sevens.owst.jp/",
+        "https://tabelog.com/tokyo/A1311/A131101/13212100/dtlmenu/"
+      ],
+      "blocker": null,
+      "notes": "Tentative accepted research finding pending independent self-review."
+    },
+    {
+      "googlePlaceId": "ChIJVTolURyMGGARmV5611ctEqE",
+      "restaurantName": "Grand Pirates Cafe & Bar",
+      "status": "candidate",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "Grand Pirates Cafe & Bar"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "A plausible source or identity lead exists, but exact current branch-bound menu evidence was not strong enough for acceptance."
+    },
+    {
+      "googlePlaceId": "ChIJwRnSIQSMGGARhf6J07NnEsM",
+      "restaurantName": "鮨 後富久",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "鮨 後富久"
+        ],
+        "evidence": [
+          {
+            "provider": "Tabelog",
+            "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13046811/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Exact Tabelog restaurant page for 鮨 後富久; only restaurant-managed descriptive/menu fields are used."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "recommendedDishes",
+          "classification": "R",
+          "nameOriginal": "漬けマグロ",
+          "nameZhCandidate": null,
+          "evidenceClass": "source_recommendation_text",
+          "recommendationSemantics": "自慢",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13046811/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "日本近海で獲れた本マグロは必食。自慢の漬けマグロ",
+          "confidence": "high",
+          "notes": "Exact branch page explicitly calls 漬けマグロ its 自慢."
+        }
+      ],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131002/13046811/"
+      ],
+      "blocker": null,
+      "notes": "Research pass found exact branch-bound source evidence."
+    },
+    {
+      "googlePlaceId": "ChIJWRy00n6NGGARp4YXT63okSo",
+      "restaurantName": "すずの木ベーカリー",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "すずの木ベーカリー"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "Free web discovery did not produce reproducible current branch-bound concrete dish evidence strong enough for R/F; no customer-review prose was used."
+    },
+    {
+      "googlePlaceId": "ChIJ4UZQZ0GMGGARXy2zQSnYys8",
+      "restaurantName": "ルパン",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "ルパン"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "Free web discovery did not produce reproducible current branch-bound concrete dish evidence strong enough for R/F; no customer-review prose was used."
+    },
+    {
+      "googlePlaceId": "ChIJ4ZF9mQOMGGARrVhDtfVj3iQ",
+      "restaurantName": "鳥千",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "鳥千"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "Free web discovery did not produce reproducible current branch-bound concrete dish evidence strong enough for R/F; no customer-review prose was used."
+    },
+    {
+      "googlePlaceId": "ChIJ583sfkCMGGARG7RhTliH1eE",
+      "restaurantName": "Tomarigi",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "Tomarigi"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "Free web discovery did not produce reproducible current branch-bound concrete dish evidence strong enough for R/F; no customer-review prose was used."
+    },
+    {
+      "googlePlaceId": "ChIJ6QjiQ-WNGGAR7wpaUwDsTFc",
+      "restaurantName": "三日酔",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "三日酔"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "Free web discovery did not produce reproducible current branch-bound concrete dish evidence strong enough for R/F; no customer-review prose was used."
+    },
+    {
+      "googlePlaceId": "ChIJ83tL8gSMGGARUWSF3-wI7WU",
+      "restaurantName": "うお幸",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "うお幸"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "Free web discovery did not produce reproducible current branch-bound concrete dish evidence strong enough for R/F; no customer-review prose was used."
+    },
+    {
+      "googlePlaceId": "ChIJ9_YVEQaMGGARzGYM6625bVI",
+      "restaurantName": "永楽",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "永楽"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "Free web discovery did not produce reproducible current branch-bound concrete dish evidence strong enough for R/F; no customer-review prose was used."
+    },
+    {
+      "googlePlaceId": "ChIJb4EjHQSMGGAROEMMNBy38mM",
+      "restaurantName": "Bosco",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "Bosco"
+        ],
+        "evidence": [
+          {
+            "provider": "official_web",
+            "sourceUrl": "https://nikubar-bosco.com/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Official BOSCO page gives the exact 神田/内神田 restaurant context and current offering."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "recommendedDishes",
+          "classification": "R",
+          "nameOriginal": "ワイルドヒレBBQ",
+          "nameZhCandidate": null,
+          "evidenceClass": "source_recommendation_text",
+          "recommendationSemantics": "一押し",
+          "provider": "official_web",
+          "sourceUrl": "https://nikubar-bosco.com/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "当店一押しのワイルドヒレBBQ",
+          "confidence": "high",
+          "notes": "Official page directly applies 一押し to the concrete dish; course-level wording is not being propagated."
+        }
+      ],
+      "attemptedSources": [
+        "https://nikubar-bosco.com/"
+      ],
+      "blocker": null,
+      "notes": "Research pass found exact branch-bound source evidence."
+    },
+    {
+      "googlePlaceId": "ChIJb7C6KwCNGGARQkp6PMDoTxs",
+      "restaurantName": "大衆酒場 なかまや。",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "大衆酒場 なかまや。"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "Free web discovery did not produce reproducible current branch-bound concrete dish evidence strong enough for R/F; no customer-review prose was used."
+    },
+    {
+      "googlePlaceId": "ChIJBW6ldkGMGGARGo6aOvKdmeY",
+      "restaurantName": "はま家",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "はま家"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "Free web discovery did not produce reproducible current branch-bound concrete dish evidence strong enough for R/F; no customer-review prose was used."
+    },
+    {
+      "googlePlaceId": "ChIJE29okxqMGGARkZ5ggjVW3sY",
+      "restaurantName": "面",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "面"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "Free web discovery did not produce reproducible current branch-bound concrete dish evidence strong enough for R/F; no customer-review prose was used."
+    },
+    {
+      "googlePlaceId": "ChIJfX4IJxqMGGARrEIxDdiVxUo",
+      "restaurantName": "オレゴンマジック",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "オレゴンマジック"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "Free web discovery did not produce reproducible current branch-bound concrete dish evidence strong enough for R/F; no customer-review prose was used."
+    },
+    {
+      "googlePlaceId": "ChIJfX5uMkCMGGAROFbazgU-WCA",
+      "restaurantName": "スケープボーイ",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "スケープボーイ"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "Free web discovery did not produce reproducible current branch-bound concrete dish evidence strong enough for R/F; no customer-review prose was used."
+    },
+    {
+      "googlePlaceId": "ChIJIyzHDdGNGGAR-3A2rqPVF6o",
+      "restaurantName": "Love U Daisy",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "Love U Daisy"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "Free web discovery did not produce reproducible current branch-bound concrete dish evidence strong enough for R/F; no customer-review prose was used."
+    },
+    {
+      "googlePlaceId": "ChIJIZnBfQGMGGARQK7IspVamnE",
+      "restaurantName": "The Bar of Legend",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "The Bar of Legend"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "Free web discovery did not produce reproducible current branch-bound concrete dish evidence strong enough for R/F; no customer-review prose was used."
+    },
+    {
+      "googlePlaceId": "ChIJp8dsAhGMGGARlvTDe2cyOEc",
+      "restaurantName": "サロンド冨山房",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "サロンド冨山房"
+        ],
+        "evidence": [
+          {
+            "provider": "official_web",
+            "sourceUrl": "https://sites.google.com/view/fuzambo-folio/menu",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Publisher-maintained Folio menu names サロンド 冨山房 Folio and gives exact address 神田神保町1-3 冨山房ビルB1 and phone 03-3291-5153."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "Folio特製ビーフカレー",
+          "nameZhCandidate": null,
+          "evidenceClass": "official_menu_item",
+          "recommendationSemantics": null,
+          "provider": "official_web",
+          "sourceUrl": "https://sites.google.com/view/fuzambo-folio/menu",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "Folio特製ビーフカレー 12:00～18:00 単品で￥900",
+          "confidence": "high",
+          "notes": "Current branch menu gives a concrete ordinary menu item; 特製 alone is not promoted to strict R."
+        }
+      ],
+      "attemptedSources": [
+        "https://sites.google.com/view/fuzambo-folio/menu"
+      ],
+      "blocker": null,
+      "notes": "Research pass found exact branch-bound source evidence."
+    },
+    {
+      "googlePlaceId": "ChIJq6oH5DiMGGARFHd_dIJ44Dc",
+      "restaurantName": "名代白木そば",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "名代白木そば"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "Free web discovery did not produce reproducible current branch-bound concrete dish evidence strong enough for R/F; no customer-review prose was used."
+    },
+    {
+      "googlePlaceId": "ChIJqSiOxDCNGGARWOU0to8PZ8k",
+      "restaurantName": "ここのみ",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "ここのみ"
+        ],
+        "evidence": [
+          {
+            "provider": "official_web",
+            "sourceUrl": "https://www.coconomi.jp/menu.html",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Official ここのみ menu is branch-specific and identifies the Uchikanda restaurant."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "recommendedDishes",
+          "classification": "R",
+          "nameOriginal": "和牛の自家製ローストビーフ",
+          "nameZhCandidate": null,
+          "evidenceClass": "source_recommendation_text",
+          "recommendationSemantics": "おすすめ",
+          "provider": "official_web",
+          "sourceUrl": "https://www.coconomi.jp/menu.html",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "数ある品書きの中でも特におすすめしたいのが、和牛の自家製ローストビーフ",
+          "confidence": "high",
+          "notes": "Official menu directly says this concrete dish is one it especially recommends."
+        }
+      ],
+      "attemptedSources": [
+        "https://www.coconomi.jp/menu.html"
+      ],
+      "blocker": null,
+      "notes": "Research pass found exact branch-bound source evidence."
+    },
+    {
+      "googlePlaceId": "ChIJRR-vJj2MGGARuCCYQlS1mWM",
+      "restaurantName": "油そば 君",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "油そば 君"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "Free web discovery did not produce reproducible current branch-bound concrete dish evidence strong enough for R/F; no customer-review prose was used."
+    },
+    {
+      "googlePlaceId": "ChIJsSFoXwCNGGARqlfQzh_6P5g",
+      "restaurantName": "Brozers'",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "Brozers'"
+        ],
+        "evidence": [
+          {
+            "provider": "official_web",
+            "sourceUrl": "https://brozers.co.jp/restaurant/ochanomizu.html",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Research-pass identity/source match; requires independent freshness/scope review."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "ハンバーガー",
+          "nameZhCandidate": null,
+          "evidenceClass": "source_menu_text",
+          "recommendationSemantics": null,
+          "provider": "official_web",
+          "sourceUrl": "https://brozers.co.jp/restaurant/menu/nihonbashi/hamburger.html",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "ハンバーガー",
+          "confidence": "medium",
+          "notes": "Tentative research-pass F; independent self-review required."
+        }
+      ],
+      "attemptedSources": [
+        "https://brozers.co.jp/restaurant/ochanomizu.html",
+        "https://brozers.co.jp/restaurant/menu/nihonbashi/hamburger.html"
+      ],
+      "blocker": null,
+      "notes": "Tentative accepted research finding pending independent self-review."
+    },
+    {
+      "googlePlaceId": "ChIJt9FeqBGMGGARv_aPnF0lKUU",
+      "restaurantName": "Candy Bouquet",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "Candy Bouquet"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "Free web discovery did not produce reproducible current branch-bound concrete dish evidence strong enough for R/F; no customer-review prose was used."
+    },
+    {
+      "googlePlaceId": "ChIJtbma6hCMGGARy03OnFcb8_g",
+      "restaurantName": "ラテン地区",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "ラテン地区"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "Free web discovery did not produce reproducible current branch-bound concrete dish evidence strong enough for R/F; no customer-review prose was used."
+    },
+    {
+      "googlePlaceId": "ChIJWbBS6j-MGGARkL-jk98-EP0",
+      "restaurantName": "蕎美季創六常庵",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "蕎美季創六常庵"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "Free web discovery did not produce reproducible current branch-bound concrete dish evidence strong enough for R/F; no customer-review prose was used."
+    },
+    {
+      "googlePlaceId": "ChIJWQinUGCNGGAR_nR3RYk9LHk",
+      "restaurantName": "BAR BLITZ",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "BAR BLITZ"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "Free web discovery did not produce reproducible current branch-bound concrete dish evidence strong enough for R/F; no customer-review prose was used."
+    }
+  ],
+  "policyAttestation": {
+    "paidGoogleDataApiCalls": 0,
+    "canonicalMasterEditedDirectly": false,
+    "proximityOnlyIdentityBindingUsed": false,
+    "recommendationWithoutExplicitSemanticsAdded": false,
+    "accessRestrictionBypassUsed": false
+  }
+}

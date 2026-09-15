@@ -1,6 +1,6 @@
 {
   "schemaVersion": 4,
-  "checkedAt": "2026-09-10",
+  "checkedAt": "2026-09-14",
   "policy": {
     "googleIdentityKey": "frozen Place ID only",
     "paidGoogleDataApiCalls": 0,
@@ -32,7 +32,7 @@
     "ordinaryMenuDishBecomesFeaturedOnly": true,
     "shardIndex": 0,
     "shardCount": 1,
-    "source": "already-bound independent official/source websites only",
+    "source": "digest-approved full-template agent reviews",
     "eligibleBindings": [
       "strict_auto",
       "manual_exact"
@@ -155,54 +155,77 @@
     "publicRuntimeCountPolicy": "dynamic; validate runtime stats and public+unpublished catalog reconciliation instead of a fixed named-row count",
     "evidenceStorageItemLimit": null,
     "presentationItemLimitAppliedHere": false,
-    "menuLinkDomainPolicy": "follow only the already-bound hostname, its normalized root/parent, or a child of that root; sibling and unrelated domains are rejected"
+    "menuLinkDomainPolicy": "follow only the already-bound hostname, its normalized root/parent, or a child of that root; sibling and unrelated domains are rejected",
+    "fullSourceEvidenceRetained": true
   },
   "summary": {
-    "catalogTotal": 2804,
-    "publicRuntimeTotal": 1422,
-    "queueEligibleIds": 294,
-    "targets": 266,
-    "uniqueOrigins": 242,
-    "sitemapFilesFetched": 507,
-    "menuUrlsDiscovered": 64,
-    "menuPagesFetched": 54,
-    "errorTargets": 3,
-    "evidenceRestaurants": 18,
-    "recommendationRestaurants": 2,
-    "featuredRestaurants": 16,
-    "recommendationItems": 4,
-    "featuredItems": 62,
+    "assignedRows": 49,
+    "reviewedRows": 49,
+    "byMarker": {
+      "DISH-R-OFFICIAL": {
+        "assignedRows": 0,
+        "reviewedRows": 0
+      },
+      "DISH-R-RETAINED": {
+        "assignedRows": 0,
+        "reviewedRows": 0
+      },
+      "DISH-R-DISCOVERY": {
+        "assignedRows": 41,
+        "reviewedRows": 41
+      },
+      "DISH-F-SOURCE": {
+        "assignedRows": 8,
+        "reviewedRows": 8
+      }
+    },
+    "statusCounts": {
+      "accepted_evidence": 13,
+      "candidate": 11,
+      "no_evidence": 25,
+      "blocked": 0,
+      "skipped_already_complete": 0
+    },
+    "acceptedRItems": 6,
+    "acceptedFItems": 7,
+    "acceptedRRestaurants": 6,
+    "acceptedRDistinctDishes": 6,
+    "acceptedFDistinctDishes": 7,
+    "acceptedFOnlyRestaurants": 7,
+    "emittedRItems": 6,
+    "emittedFItems": 7,
+    "translationPendingItems": 0,
+    "currentAssignmentRows": 49,
+    "currentReviewedRows": 49,
+    "completedAssignmentsRemovedByRebuild": 0,
     "previousEvidence": {
-      "recommendationRestaurants": 567,
-      "featuredRestaurants": 666,
-      "evidenceRestaurants": 732,
-      "recommendationItems": 1000,
-      "featuredItems": 2662
+      "recommendationRestaurants": 573,
+      "featuredRestaurants": 673,
+      "evidenceRestaurants": 739,
+      "recommendationItems": 1006,
+      "featuredItems": 2670
     },
     "freshCrawlEvidence": {
-      "recommendationRestaurants": 2,
-      "featuredRestaurants": 16,
-      "evidenceRestaurants": 18,
-      "recommendationItems": 4,
-      "featuredItems": 62
+      "recommendationRestaurants": 6,
+      "featuredRestaurants": 7,
+      "evidenceRestaurants": 13,
+      "recommendationItems": 6,
+      "featuredItems": 7
     },
     "mergedEvidence": {
-      "recommendationRestaurants": 567,
-      "featuredRestaurants": 666,
-      "evidenceRestaurants": 732,
-      "recommendationItems": 1000,
-      "featuredItems": 2666
+      "recommendationRestaurants": 573,
+      "featuredRestaurants": 673,
+      "evidenceRestaurants": 739,
+      "recommendationItems": 1006,
+      "featuredItems": 2670
     },
     "specificityCorrection": {
-      "correctedRestaurants": 5,
-      "correctedItems": 5,
-      "duplicateItemsRemoved": 3,
-      "ruleCounts": {
-        "meat-sushi-over-sushi": 1,
-        "yakisoba-over-soba": 4
-      },
-      "recommendationItemsAfterCorrection": 1000,
-      "featuredItemsAfterCorrection": 2663
+      "correctedRestaurants": 0,
+      "correctedItems": 0,
+      "duplicateItemsRemoved": 0,
+      "ruleCounts": {},
+      "recommendationItemsAfterCorrection": 1006,
+      "featuredItemsAfterCorrection": 2670
     }
   },
   "rows": [
@@ -10631,6 +10654,61 @@
       ]
     },
     {
+      "googlePlaceId": "ChIJb4EjHQSMGGAROEMMNBy38mM",
+      "name": "Bosco",
+      "recommendedDishes": [
+        {
+          "nameZh": "WILD菲力BBQ",
+          "nameJa": "ワイルドヒレBBQ",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://nikubar-bosco.com/",
+          "checkedAt": "2026-09-14",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "central-reviewed:R:reviewed-exact-source-native-translation",
+          "evidenceSnippet": "当店一押しのワイルドヒレBBQ",
+          "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-DISCOVERY/S2.json",
+              "marker": "DISH-R-DISCOVERY",
+              "shard": "S2",
+              "sourceQueueCommit": "666a3aac429c03410552270625834512e0a25eda",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [
+                  "Bosco"
+                ],
+                "evidence": [
+                  {
+                    "provider": "official_web",
+                    "sourceUrl": "https://nikubar-bosco.com/",
+                    "checkedAt": "2026-09-14",
+                    "evidenceType": "branch_page",
+                    "note": "Official BOSCO page gives the exact 神田/内神田 restaurant context and current offering."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "recommendedDishes",
+                "classification": "R",
+                "nameOriginal": "ワイルドヒレBBQ",
+                "nameZhCandidate": null,
+                "evidenceClass": "source_recommendation_text",
+                "recommendationSemantics": "一押し",
+                "provider": "official_web",
+                "sourceUrl": "https://nikubar-bosco.com/",
+                "checkedAt": "2026-09-14",
+                "sourceScope": "branch",
+                "evidenceText": "当店一押しのワイルドヒレBBQ",
+                "confidence": "high",
+                "notes": "Official page directly applies 一押し to the concrete dish; course-level wording is not being propagated."
+              }
+            }
+          ]
+        }
+      ],
+      "featuredDishes": []
+    },
+    {
       "googlePlaceId": "ChIJB6IA90OMGGARE9FHAyakvH8",
       "name": "酒ぐら 鳥酎 飯田橋",
       "recommendedDishes": [
@@ -11123,7 +11201,56 @@
           "evidenceSnippet": "エスプレッソマシンで抽出。 本格エスプレッソをベースとした各種ミルクメニューもご用意しております。 その他各種紅茶メニュー、抹茶メニュー、果肉の入ったフルーツ系ソーダメニューも取り"
         }
       ],
-      "featuredDishes": []
+      "featuredDishes": [
+        {
+          "nameZh": "红豆黄油司康夹心",
+          "nameJa": "スコーンサンドあんバター",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://plus1coffee.hp.peraichi.com/",
+          "checkedAt": "2026-09-14",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "central-reviewed:F:reviewed-exact-source-native-translation",
+          "evidenceSnippet": "スコーンサンドあんバター 甘さおさえめのスコーンサンド",
+          "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-F-SOURCE/S2.json",
+              "marker": "DISH-F-SOURCE",
+              "shard": "S2",
+              "sourceQueueCommit": "666a3aac429c03410552270625834512e0a25eda",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [
+                  "Plus1 coffee"
+                ],
+                "evidence": [
+                  {
+                    "provider": "official_web",
+                    "sourceUrl": "https://plus1coffee.hp.peraichi.com/",
+                    "checkedAt": "2026-09-14",
+                    "evidenceType": "branch_page",
+                    "note": "Current official Plus1 coffee page gives phone 03-3868-0979 and exact 本郷2-19-10 address."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "スコーンサンドあんバター",
+                "nameZhCandidate": null,
+                "evidenceClass": "official_menu_item",
+                "recommendationSemantics": null,
+                "provider": "official_web",
+                "sourceUrl": "https://plus1coffee.hp.peraichi.com/",
+                "checkedAt": "2026-09-14",
+                "sourceScope": "branch",
+                "evidenceText": "スコーンサンドあんバター 甘さおさえめのスコーンサンド",
+                "confidence": "high",
+                "notes": "Concrete current food item; no strict recommendation semantics."
+              }
+            }
+          ]
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJbTOaERGMGGAR0Me4b7PxZ7o",
@@ -11297,7 +11424,56 @@
           "evidenceSnippet": "る日本において新しい食文化の創造と価値の提供を使命としてきました。 インド、タイ、中国といったアジア各国の料理をご提供しております。 mandara 創業37年 20種類以上のスパ"
         }
       ],
-      "featuredDishes": []
+      "featuredDishes": [
+        {
+          "nameZh": "冬阴功汤",
+          "nameJa": "トムヤムクン",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13319539/dtlmenu/",
+          "checkedAt": "2026-09-14",
+          "evidenceClass": "tabelog_menu_text",
+          "evidenceRule": "central-reviewed:F:reviewed-exact-source-native-translation",
+          "evidenceSnippet": "Soup トムヤムクン 1,650円（2,3名様分）",
+          "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-F-SOURCE/S2.json",
+              "marker": "DISH-F-SOURCE",
+              "shard": "S2",
+              "sourceQueueCommit": "666a3aac429c03410552270625834512e0a25eda",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [
+                  "メナムのほとり"
+                ],
+                "evidence": [
+                  {
+                    "provider": "Tabelog",
+                    "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13319539/",
+                    "checkedAt": "2026-09-14",
+                    "evidenceType": "branch_page",
+                    "note": "Current exact branch page for relocated メナムのほとり 神保町本店; branch identity is explicit."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "トムヤムクン",
+                "nameZhCandidate": null,
+                "evidenceClass": "tabelog_menu_text",
+                "recommendationSemantics": null,
+                "provider": "Tabelog",
+                "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13319539/dtlmenu/",
+                "checkedAt": "2026-09-14",
+                "sourceScope": "branch",
+                "evidenceText": "Soup トムヤムクン 1,650円（2,3名様分）",
+                "confidence": "high",
+                "notes": "Current menu item on the exact branch page; this occurrence has no direct recommendation wording."
+              }
+            }
+          ]
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJBwhgUwKMGGARjoO2N1BAAdk",
@@ -12717,7 +12893,56 @@
           "evidenceSnippet": "あたり 人気の定番ブレンドコーヒー2種類のセット 【送料無料】コーヒーバッグコンプリートセット 【送料無料】コーヒーバッグコンプリートセット"
         }
       ],
-      "featuredDishes": []
+      "featuredDishes": [
+        {
+          "nameZh": "金枪鱼牛油果三明治",
+          "nameJa": "ツナアボカドサンドイッチ",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://cdn.shopify.com/s/files/1/0297/5193/5024/files/25.10_449104fc-cf2c-43d4-97be-11ea946656d4.pdf?v=1761025103",
+          "checkedAt": "2026-09-14",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "central-reviewed:F:reviewed-exact-source-native-translation",
+          "evidenceSnippet": "TUNA & AVOCADO SANDWICH ツナアボカドサンドイッチ",
+          "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-F-SOURCE/S2.json",
+              "marker": "DISH-F-SOURCE",
+              "shard": "S2",
+              "sourceQueueCommit": "666a3aac429c03410552270625834512e0a25eda",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [
+                  "REC COFFEE 水道橋店"
+                ],
+                "evidence": [
+                  {
+                    "provider": "official_web",
+                    "sourceUrl": "https://rec-coffee.com/pages/coffee-shop-suidobashi",
+                    "checkedAt": "2026-09-14",
+                    "evidenceType": "branch_page",
+                    "note": "Current official branch page states 水道橋店, address 神田三崎町3-10-1 and phone 03-6910-0977, and directly links the branch menu PDF."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "ツナアボカドサンドイッチ",
+                "nameZhCandidate": null,
+                "evidenceClass": "official_menu_item",
+                "recommendationSemantics": null,
+                "provider": "official_web",
+                "sourceUrl": "https://cdn.shopify.com/s/files/1/0297/5193/5024/files/25.10_449104fc-cf2c-43d4-97be-11ea946656d4.pdf?v=1761025103",
+                "checkedAt": "2026-09-14",
+                "sourceScope": "branch",
+                "evidenceText": "TUNA & AVOCADO SANDWICH ツナアボカドサンドイッチ",
+                "confidence": "high",
+                "notes": "Current PDF linked directly from the exact 水道橋店 page; ordinary menu item, F only."
+              }
+            }
+          ]
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJd49TtwSMGGARlKP5sGO5e6g",
@@ -19541,7 +19766,56 @@
           "evidenceSnippet": "コテージパイ"
         }
       ],
-      "featuredDishes": []
+      "featuredDishes": [
+        {
+          "nameZh": "鲭鱼＆青葱",
+          "nameJa": "SABA＆青ネギ",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ004445138/",
+          "checkedAt": "2026-09-14",
+          "evidenceClass": "hotpepper_menu_text",
+          "evidenceRule": "central-reviewed:F:reviewed-exact-source-native-translation",
+          "evidenceSnippet": "SABA＆青ネギ 500円（税込）",
+          "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-F-SOURCE/S2.json",
+              "marker": "DISH-F-SOURCE",
+              "shard": "S2",
+              "sourceQueueCommit": "666a3aac429c03410552270625834512e0a25eda",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [
+                  "タチエイト"
+                ],
+                "evidence": [
+                  {
+                    "provider": "Hot Pepper",
+                    "sourceUrl": "https://www.hotpepper.jp/strJ004445138/",
+                    "checkedAt": "2026-09-14",
+                    "evidenceType": "branch_page",
+                    "note": "Exact current Hot Pepper branch page names タチエイト and address 神田小川町1-10-1 AUSPICE 1F."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "SABA＆青ネギ",
+                "nameZhCandidate": null,
+                "evidenceClass": "hotpepper_menu_text",
+                "recommendationSemantics": null,
+                "provider": "Hot Pepper",
+                "sourceUrl": "https://www.hotpepper.jp/strJ004445138/",
+                "checkedAt": "2026-09-14",
+                "sourceScope": "branch",
+                "evidenceText": "SABA＆青ネギ 500円（税込）",
+                "confidence": "high",
+                "notes": "Concrete branch menu item, updated 2025-09-25; no strict recommendation semantics."
+              }
+            }
+          ]
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJI8w3quWNGGARwA5PTpq8BUw",
@@ -20719,6 +20993,21 @@
           "evidenceSnippet": "アディロンダックバーガー"
         },
         {
+          "nameZh": "炒面",
+          "nameJa": "そば",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://adirondackcafejp.wordpress.com/food/",
+          "checkedAt": "2026-09-10",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "specificity:yakisoba-over-soba:menu-page-text:蕎麦|そば|soba",
+          "evidenceSnippet": "焼きそば Fried Noodle （税込み１４３０）",
+          "specificityCorrection": {
+            "rule": "yakisoba-over-soba",
+            "previousNameZh": "荞麦面",
+            "sourceNativeCompositeRequired": true
+          }
+        },
+        {
           "nameZh": "炒饭",
           "nameJa": "チャーハン",
           "provider": "sourceWebsite",
@@ -20737,21 +21026,6 @@
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:ステーキ|steak",
           "evidenceSnippet": "マグロステーキ丼"
-        },
-        {
-          "nameZh": "炒面",
-          "nameJa": "そば",
-          "provider": "sourceWebsite",
-          "sourceUrl": "https://adirondackcafejp.wordpress.com/food/",
-          "checkedAt": "2026-09-10",
-          "evidenceClass": "source_menu_text",
-          "evidenceRule": "specificity:yakisoba-over-soba:menu-page-text:蕎麦|そば|soba",
-          "evidenceSnippet": "焼きそば Fried Noodle （税込み１４３０）",
-          "specificityCorrection": {
-            "rule": "yakisoba-over-soba",
-            "previousNameZh": "荞麦面",
-            "sourceNativeCompositeRequired": true
-          }
         }
       ]
     },
@@ -22833,6 +23107,61 @@
           "evidenceSnippet": "餃子"
         }
       ]
+    },
+    {
+      "googlePlaceId": "ChIJkSjJMtWNGGARBJEfaEl17hI",
+      "name": "アキバ絶対領域 A.D.1912",
+      "recommendedDishes": [
+        {
+          "nameZh": "多蜜酱蛋包饭（A.D.1912）",
+          "nameJa": "デミグラスオムライス（A.D.1912）",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://akibazettai.com/system/",
+          "checkedAt": "2026-09-14",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "central-reviewed:R:reviewed-exact-source-native-translation",
+          "evidenceSnippet": "人気メニュー紹介：デミグラスオムライス（A.D.1912）",
+          "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-DISCOVERY/S2.json",
+              "marker": "DISH-R-DISCOVERY",
+              "shard": "S2",
+              "sourceQueueCommit": "666a3aac429c03410552270625834512e0a25eda",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [
+                  "アキバ絶対領域 A.D.1912"
+                ],
+                "evidence": [
+                  {
+                    "provider": "official_web",
+                    "sourceUrl": "https://akibazettai.com/shop/",
+                    "checkedAt": "2026-09-14",
+                    "evidenceType": "branch_page",
+                    "note": "Official shop page names A.D.1912 and gives the exact branch address 東京都千代田区外神田3-1-15 箸勝ビル2F and phone 03-6876-4178."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "recommendedDishes",
+                "classification": "R",
+                "nameOriginal": "デミグラスオムライス（A.D.1912）",
+                "nameZhCandidate": null,
+                "evidenceClass": "official_menu_item",
+                "recommendationSemantics": "人気",
+                "provider": "official_web",
+                "sourceUrl": "https://akibazettai.com/system/",
+                "checkedAt": "2026-09-14",
+                "sourceScope": "branch",
+                "evidenceText": "人気メニュー紹介：デミグラスオムライス（A.D.1912）",
+                "confidence": "high",
+                "notes": "Official current menu places the exact A.D.1912-labelled dish under 人気メニュー紹介."
+              }
+            }
+          ]
+        }
+      ],
+      "featuredDishes": []
     },
     {
       "googlePlaceId": "ChIJkTiUCwCNGGARu7-jRWGwQd4",
@@ -26464,6 +26793,61 @@
       ]
     },
     {
+      "googlePlaceId": "ChIJNUM68hiMGGARFSUebjxtZJc",
+      "name": "香港屋台",
+      "recommendedDishes": [
+        {
+          "nameZh": "自制冰花煎饺",
+          "nameJa": "自家製羽つき焼き餃子",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13169833/",
+          "checkedAt": "2026-09-14",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "central-reviewed:R:reviewed-exact-source-native-translation",
+          "evidenceSnippet": "自家製羽つき餃子は必食。自家製羽つき焼き餃子",
+          "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-DISCOVERY/S2.json",
+              "marker": "DISH-R-DISCOVERY",
+              "shard": "S2",
+              "sourceQueueCommit": "666a3aac429c03410552270625834512e0a25eda",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [
+                  "香港屋台"
+                ],
+                "evidence": [
+                  {
+                    "provider": "Tabelog",
+                    "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13169833/",
+                    "checkedAt": "2026-09-14",
+                    "evidenceType": "branch_page",
+                    "note": "Exact Tabelog branch page for 香港屋台; restaurant information is used, not customer-review prose."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "recommendedDishes",
+                "classification": "R",
+                "nameOriginal": "自家製羽つき焼き餃子",
+                "nameZhCandidate": null,
+                "evidenceClass": "source_recommendation_text",
+                "recommendationSemantics": "必食",
+                "provider": "Tabelog",
+                "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13169833/",
+                "checkedAt": "2026-09-14",
+                "sourceScope": "branch",
+                "evidenceText": "自家製羽つき餃子は必食。自家製羽つき焼き餃子",
+                "confidence": "high",
+                "notes": "Exact branch restaurant information explicitly marks the house winged pan-fried dumplings as 必食."
+              }
+            }
+          ]
+        }
+      ],
+      "featuredDishes": []
+    },
+    {
       "googlePlaceId": "ChIJNwlWn_GNGGARTuUhu_-lydM",
       "name": "鮪のシマハラプラス",
       "recommendedDishes": [
@@ -27716,7 +28100,56 @@
           "evidenceSnippet": "私たちは現在、社員13名とアルバイトの方数名で、インド料理店2店を運営しています。 今まで、“インド各地の名物カレーの店『グルガオン』”、“タンドール料理『カイバル』”、“南インド"
         }
       ],
-      "featuredDishes": []
+      "featuredDishes": [
+        {
+          "nameZh": "帕尼普里（2个）",
+          "nameJa": "パニプーリ（２PC）",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://gondtokyo.com/",
+          "checkedAt": "2026-09-14",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "central-reviewed:F:reviewed-exact-source-native-translation",
+          "evidenceSnippet": "Street Food & Starter パニプーリ（２PC） ¥360",
+          "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-F-SOURCE/S2.json",
+              "marker": "DISH-F-SOURCE",
+              "shard": "S2",
+              "sourceQueueCommit": "666a3aac429c03410552270625834512e0a25eda",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [
+                  "Indian Street Food & Bar GOND"
+                ],
+                "evidence": [
+                  {
+                    "provider": "official_web",
+                    "sourceUrl": "https://gondtokyo.com/",
+                    "checkedAt": "2026-09-14",
+                    "evidenceType": "branch_page",
+                    "note": "Official GOND site gives exact address 神田駿河台3-5-15 荒井ビル1F and phone 03-3259-2800."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "パニプーリ（２PC）",
+                "nameZhCandidate": null,
+                "evidenceClass": "official_menu_item",
+                "recommendationSemantics": null,
+                "provider": "official_web",
+                "sourceUrl": "https://gondtokyo.com/",
+                "checkedAt": "2026-09-14",
+                "sourceScope": "branch",
+                "evidenceText": "Street Food & Starter パニプーリ（２PC） ¥360",
+                "confidence": "high",
+                "notes": "Concrete ordinary menu item outside the separate Recommended Menu section, therefore F."
+              }
+            }
+          ]
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJoUFJeh-NGGARIM5p9UCgrAw",
@@ -28816,6 +29249,61 @@
       ]
     },
     {
+      "googlePlaceId": "ChIJp8dsAhGMGGARlvTDe2cyOEc",
+      "name": "サロンド冨山房",
+      "recommendedDishes": [],
+      "featuredDishes": [
+        {
+          "nameZh": "Folio特制牛肉咖喱",
+          "nameJa": "Folio特製ビーフカレー",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://sites.google.com/view/fuzambo-folio/menu",
+          "checkedAt": "2026-09-14",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "central-reviewed:F:reviewed-exact-source-native-translation",
+          "evidenceSnippet": "Folio特製ビーフカレー 12:00～18:00 単品で￥900",
+          "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-DISCOVERY/S2.json",
+              "marker": "DISH-R-DISCOVERY",
+              "shard": "S2",
+              "sourceQueueCommit": "666a3aac429c03410552270625834512e0a25eda",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [
+                  "サロンド冨山房"
+                ],
+                "evidence": [
+                  {
+                    "provider": "official_web",
+                    "sourceUrl": "https://sites.google.com/view/fuzambo-folio/menu",
+                    "checkedAt": "2026-09-14",
+                    "evidenceType": "branch_page",
+                    "note": "Publisher-maintained Folio menu names サロンド 冨山房 Folio and gives exact address 神田神保町1-3 冨山房ビルB1 and phone 03-3291-5153."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "Folio特製ビーフカレー",
+                "nameZhCandidate": null,
+                "evidenceClass": "official_menu_item",
+                "recommendationSemantics": null,
+                "provider": "official_web",
+                "sourceUrl": "https://sites.google.com/view/fuzambo-folio/menu",
+                "checkedAt": "2026-09-14",
+                "sourceScope": "branch",
+                "evidenceText": "Folio特製ビーフカレー 12:00～18:00 単品で￥900",
+                "confidence": "high",
+                "notes": "Current branch menu gives a concrete ordinary menu item; 特製 alone is not promoted to strict R."
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
       "googlePlaceId": "ChIJPbkK69CNGGARY1Eo9uhUyoA",
       "name": "Orga.",
       "recommendedDishes": [],
@@ -28991,7 +29479,56 @@
           "evidenceSnippet": "います。炭火の香りに包まれて、至福の一串を堪能しませんか。ぜひ一度お立ち寄りください！ 新登場！飲み放題付食べ放題コース！ 〈2時間食べ飲み放題！！〉平日限定のお得な食べ飲み放題コ"
         }
       ],
-      "featuredDishes": []
+      "featuredDishes": [
+        {
+          "nameZh": "烧鸟轩沙拉",
+          "nameJa": "焼き鳥軒サラダ",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://r.gnavi.co.jp/947t5ggz0000/menu6/",
+          "checkedAt": "2026-09-14",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "central-reviewed:F:reviewed-exact-source-native-translation",
+          "evidenceSnippet": "焼き鳥軒サラダ 新鮮野菜をたっぷり使用した特製サラダ",
+          "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-F-SOURCE/S2.json",
+              "marker": "DISH-F-SOURCE",
+              "shard": "S2",
+              "sourceQueueCommit": "666a3aac429c03410552270625834512e0a25eda",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [
+                  "焼き鳥 軒 Ken"
+                ],
+                "evidence": [
+                  {
+                    "provider": "sourceWebsite",
+                    "sourceUrl": "https://r.gnavi.co.jp/947t5ggz0000/",
+                    "checkedAt": "2026-09-14",
+                    "evidenceType": "branch_page",
+                    "note": "Stable branch provider page names 神田炭火居酒屋 焼鳥 軒 －KEN－ and is the exact restaurant source used for current menu evidence."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "焼き鳥軒サラダ",
+                "nameZhCandidate": null,
+                "evidenceClass": "source_menu_text",
+                "recommendationSemantics": null,
+                "provider": "sourceWebsite",
+                "sourceUrl": "https://r.gnavi.co.jp/947t5ggz0000/menu6/",
+                "checkedAt": "2026-09-14",
+                "sourceScope": "branch",
+                "evidenceText": "焼き鳥軒サラダ 新鮮野菜をたっぷり使用した特製サラダ",
+                "confidence": "high",
+                "notes": "Concrete current branch course/menu component. 特製 is not strict recommendation semantics; course recommendation is not propagated."
+              }
+            }
+          ]
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJpTVwIc2NGGARUO8yWk55igw",
@@ -30734,6 +31271,61 @@
       ]
     },
     {
+      "googlePlaceId": "ChIJqSiOxDCNGGARWOU0to8PZ8k",
+      "name": "ここのみ",
+      "recommendedDishes": [
+        {
+          "nameZh": "和牛自制烤牛肉",
+          "nameJa": "和牛の自家製ローストビーフ",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.coconomi.jp/menu.html",
+          "checkedAt": "2026-09-14",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "central-reviewed:R:reviewed-exact-source-native-translation",
+          "evidenceSnippet": "数ある品書きの中でも特におすすめしたいのが、和牛の自家製ローストビーフ",
+          "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-DISCOVERY/S2.json",
+              "marker": "DISH-R-DISCOVERY",
+              "shard": "S2",
+              "sourceQueueCommit": "666a3aac429c03410552270625834512e0a25eda",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [
+                  "ここのみ"
+                ],
+                "evidence": [
+                  {
+                    "provider": "official_web",
+                    "sourceUrl": "https://www.coconomi.jp/menu.html",
+                    "checkedAt": "2026-09-14",
+                    "evidenceType": "branch_page",
+                    "note": "Official ここのみ menu is branch-specific and identifies the Uchikanda restaurant."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "recommendedDishes",
+                "classification": "R",
+                "nameOriginal": "和牛の自家製ローストビーフ",
+                "nameZhCandidate": null,
+                "evidenceClass": "source_recommendation_text",
+                "recommendationSemantics": "おすすめ",
+                "provider": "official_web",
+                "sourceUrl": "https://www.coconomi.jp/menu.html",
+                "checkedAt": "2026-09-14",
+                "sourceScope": "branch",
+                "evidenceText": "数ある品書きの中でも特におすすめしたいのが、和牛の自家製ローストビーフ",
+                "confidence": "high",
+                "notes": "Official menu directly says this concrete dish is one it especially recommends."
+              }
+            }
+          ]
+        }
+      ],
+      "featuredDishes": []
+    },
+    {
       "googlePlaceId": "ChIJQXG-SgOMGGARUM-2-MxSm4o",
       "name": "テスタドゥーラ",
       "recommendedDishes": [
@@ -32209,6 +32801,61 @@
           "evidenceSnippet": "豊富な創作餃子を堪能できるバル"
         }
       ]
+    },
+    {
+      "googlePlaceId": "ChIJRzuTUwGMGGARH3cj1AlyjEc",
+      "name": "いきしぐさ",
+      "recommendedDishes": [
+        {
+          "nameZh": "咖喱浇汁荞麦面",
+          "nameJa": "カレーかけそば",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://page.line.me/033pzmoj",
+          "checkedAt": "2026-09-14",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "central-reviewed:R:reviewed-exact-source-native-translation",
+          "evidenceSnippet": "当店のカレーそばの中で、断然の一番人気は『カレーかけそば』",
+          "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-DISCOVERY/S2.json",
+              "marker": "DISH-R-DISCOVERY",
+              "shard": "S2",
+              "sourceQueueCommit": "666a3aac429c03410552270625834512e0a25eda",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [
+                  "いきしぐさ"
+                ],
+                "evidence": [
+                  {
+                    "provider": "official_web",
+                    "sourceUrl": "https://page.line.me/033pzmoj",
+                    "checkedAt": "2026-09-14",
+                    "evidenceType": "branch_page",
+                    "note": "Official LINE account identifies 炭火焼 蕎麦 いきしぐさ and the Uchikanda branch address."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "recommendedDishes",
+                "classification": "R",
+                "nameOriginal": "カレーかけそば",
+                "nameZhCandidate": null,
+                "evidenceClass": "source_recommendation_text",
+                "recommendationSemantics": "一番人気",
+                "provider": "official_web",
+                "sourceUrl": "https://page.line.me/033pzmoj",
+                "checkedAt": "2026-09-14",
+                "sourceScope": "branch",
+                "evidenceText": "当店のカレーそばの中で、断然の一番人気は『カレーかけそば』",
+                "confidence": "high",
+                "notes": "Official account directly identifies the concrete dish as the clear number-one curry soba."
+              }
+            }
+          ]
+        }
+      ],
+      "featuredDishes": []
     },
     {
       "googlePlaceId": "ChIJs_zQkhCMGGARCN3rJxb_w80",
@@ -38319,6 +38966,61 @@
           "evidenceSnippet": "東京ドーム近く♪シュラスコx肉寿司♪"
         }
       ]
+    },
+    {
+      "googlePlaceId": "ChIJwRnSIQSMGGARhf6J07NnEsM",
+      "name": "鮨 後富久",
+      "recommendedDishes": [
+        {
+          "nameZh": "酱渍金枪鱼",
+          "nameJa": "漬けマグロ",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13046811/",
+          "checkedAt": "2026-09-14",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "central-reviewed:R:reviewed-exact-source-native-translation",
+          "evidenceSnippet": "日本近海で獲れた本マグロは必食。自慢の漬けマグロ",
+          "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-DISCOVERY/S2.json",
+              "marker": "DISH-R-DISCOVERY",
+              "shard": "S2",
+              "sourceQueueCommit": "666a3aac429c03410552270625834512e0a25eda",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [
+                  "鮨 後富久"
+                ],
+                "evidence": [
+                  {
+                    "provider": "Tabelog",
+                    "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13046811/",
+                    "checkedAt": "2026-09-14",
+                    "evidenceType": "branch_page",
+                    "note": "Exact Tabelog restaurant page for 鮨 後富久; only restaurant-managed descriptive/menu fields are used."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "recommendedDishes",
+                "classification": "R",
+                "nameOriginal": "漬けマグロ",
+                "nameZhCandidate": null,
+                "evidenceClass": "source_recommendation_text",
+                "recommendationSemantics": "自慢",
+                "provider": "Tabelog",
+                "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13046811/",
+                "checkedAt": "2026-09-14",
+                "sourceScope": "branch",
+                "evidenceText": "日本近海で獲れた本マグロは必食。自慢の漬けマグロ",
+                "confidence": "high",
+                "notes": "Exact branch page explicitly calls 漬けマグロ its 自慢."
+              }
+            }
+          ]
+        }
+      ],
+      "featuredDishes": []
     },
     {
       "googlePlaceId": "ChIJWRzhKRSMGGARpUk7Cq0MKnI",
