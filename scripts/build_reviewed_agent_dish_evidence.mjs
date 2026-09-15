@@ -10,7 +10,9 @@ import { DISH_RULES, RECOMMENDATION_MARKER, normalizePlainText } from './recomme
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 export const LANES = Object.freeze({
   'DISH-R-OFFICIAL': 'official_crawl',
-  'DISH-R-RETAINED': 'retained_source_mining'
+  'DISH-R-RETAINED': 'retained_source_mining',
+  'DISH-R-DISCOVERY': 'independent_source_discovery',
+  'DISH-F-SOURCE': 'official_or_retained_featured'
 });
 const STATUS_FIELDS = Object.freeze({
   accepted_evidence: 'acceptedEvidenceRows', candidate: 'candidateRows', no_evidence: 'noEvidenceRows',
@@ -64,7 +66,7 @@ export function auditReviewCoverage(assignments, documents, { sourceQueueCommit 
   const expectedQueueCommit = sourceQueueCommit || documents[0]?.document.sourceQueueCommit;
   const expected = new Map();
   for (const row of assignments) {
-    if (!Object.values(LANES).includes(row.lane)) throw new Error('Assignment outside Official/Retained scope');
+    if (!Object.values(LANES).includes(row.lane)) throw new Error('Assignment outside supported dish review scope');
     if (expected.has(row.googlePlaceId)) throw new Error('Duplicate assignment Place ID');
     expected.set(row.googlePlaceId, row);
   }
@@ -214,6 +216,13 @@ export function buildReviewedEvidence({ documents, assignments, catalogNames, tr
   };
 }
 
+function assignmentCompletionSatisfied(original, current) {
+  if (!current) return false;
+  if (current.nextAction === 'dish_complete') return true;
+  if (original.lane === LANES['DISH-F-SOURCE']) return Number(current.featuredDishesKnown || 0) > 0;
+  return Number(current.recommendedDishesKnown || 0) > 0;
+}
+
 function main() {
   const [manifestPath, outputPath, pendingPath, auditPath] = process.argv.slice(2);
   if (!manifestPath || !outputPath || !pendingPath || !auditPath) throw new Error(
@@ -239,7 +248,7 @@ function main() {
   const assignments = manifest.assignmentSnapshot.rows;
   if (!/^[0-9a-f]{40}$/.test(manifest.assignmentSnapshot.sourceQueueCommit || '')) throw new Error('Explicit assignment queue commit provenance required');
   const expected = new Map(assignments.map(row => [row.googlePlaceId, row]));
-  const currentRows = currentPlan.rows.filter(row => Object.values(LANES).includes(row.lane));
+  const currentRows = currentPlan.rows.filter(row => expected.has(row.googlePlaceId));
   for (const row of currentRows) {
     const original = expected.get(row.googlePlaceId);
     if (!original || original.lane !== row.lane || original.shard !== row.shard) {
@@ -250,7 +259,7 @@ function main() {
   const currentIds = new Set(currentRows.map(row => row.googlePlaceId));
   for (const original of assignments) if (!currentIds.has(original.googlePlaceId)) {
     const current = queueById.get(original.googlePlaceId);
-    if (!current || !(current.recommendedDishesKnown > 0 || current.nextAction === 'dish_complete')) {
+    if (!assignmentCompletionSatisfied(original, current)) {
       throw new Error(`Assignment disappeared without canonical completion: ${original.googlePlaceId}`);
     }
   }
