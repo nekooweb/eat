@@ -186,7 +186,8 @@ export function buildReviewedEvidence({ documents, assignments, catalogNames, tr
         continue;
       }
       const evidenceClass = dish.classification === 'R' ? 'source_recommendation_text' :
-        provider === 'Tabelog' ? 'tabelog_menu_text' : provider === 'Hot Pepper' ? 'hotpepper_menu_text' : 'source_menu_text';
+        provider === 'Tabelog' ? 'tabelog_menu_text' : provider === 'Hot Pepper' ? 'hotpepper_menu_text' :
+        provider === 'sourceWebsite' ? 'source_menu_text' : 'retained_source_menu_item';
       const item = { nameZh: translated.nameZh, nameJa: native, provider, sourceUrl: dish.sourceUrl,
         checkedAt: date, evidenceClass, evidenceRule: `central-reviewed:${dish.classification}:${translated.rule}`,
         evidenceSnippet: text.slice(0, 90), reviewedSourceEvidence: [provenance] };
