@@ -26,12 +26,13 @@ jobs:
           p=Path('scripts/finalize_official_retained_reviews.py')
           s=p.read_text()
           old='    rec["sourceProposalRefs"] = sorted(set((rec.get("sourceProposalRefs") or []) + [source_ref]), key=str)\n'
-          new='''    refs = list(rec.get("sourceProposalRefs") or [])
-    existing_paths = {r if isinstance(r, str) else r.get("path") for r in refs if isinstance(r, (str, dict))}
-    if source_ref not in existing_paths:
-        refs.append(source_ref)
-    rec["sourceProposalRefs"] = refs
-'''
+          new=(
+              '    refs = list(rec.get("sourceProposalRefs") or [])\n'
+              '    existing_paths = {r if isinstance(r, str) else r.get("path") for r in refs if isinstance(r, (str, dict))}\n'
+              '    if source_ref not in existing_paths:\n'
+              '        refs.append(source_ref)\n'
+              '    rec["sourceProposalRefs"] = refs\n'
+          )
           if old not in s:
               raise SystemExit('sourceProposalRefs patch anchor missing')
           p.write_text(s.replace(old,new,1))
