@@ -1,6 +1,6 @@
 {
   "schemaVersion": 4,
-  "checkedAt": "2026-09-10",
+  "checkedAt": "2026-09-15",
   "policy": {
     "googleIdentityKey": "frozen Place ID only",
     "paidGoogleDataApiCalls": 0,
@@ -32,7 +32,7 @@
     "ordinaryMenuDishBecomesFeaturedOnly": true,
     "shardIndex": 0,
     "shardCount": 1,
-    "source": "already-bound independent official/source websites only",
+    "source": "digest-approved full-template agent reviews",
     "eligibleBindings": [
       "strict_auto",
       "manual_exact"
@@ -155,54 +155,77 @@
     "publicRuntimeCountPolicy": "dynamic; validate runtime stats and public+unpublished catalog reconciliation instead of a fixed named-row count",
     "evidenceStorageItemLimit": null,
     "presentationItemLimitAppliedHere": false,
-    "menuLinkDomainPolicy": "follow only the already-bound hostname, its normalized root/parent, or a child of that root; sibling and unrelated domains are rejected"
+    "menuLinkDomainPolicy": "follow only the already-bound hostname, its normalized root/parent, or a child of that root; sibling and unrelated domains are rejected",
+    "fullSourceEvidenceRetained": true
   },
   "summary": {
-    "catalogTotal": 2804,
-    "publicRuntimeTotal": 1422,
-    "queueEligibleIds": 294,
-    "targets": 266,
-    "uniqueOrigins": 242,
-    "sitemapFilesFetched": 507,
-    "menuUrlsDiscovered": 64,
-    "menuPagesFetched": 54,
-    "errorTargets": 3,
-    "evidenceRestaurants": 18,
-    "recommendationRestaurants": 2,
-    "featuredRestaurants": 16,
-    "recommendationItems": 4,
-    "featuredItems": 62,
+    "assignedRows": 52,
+    "reviewedRows": 52,
+    "byMarker": {
+      "DISH-R-OFFICIAL": {
+        "assignedRows": 0,
+        "reviewedRows": 0
+      },
+      "DISH-R-RETAINED": {
+        "assignedRows": 0,
+        "reviewedRows": 0
+      },
+      "DISH-R-DISCOVERY": {
+        "assignedRows": 39,
+        "reviewedRows": 39
+      },
+      "DISH-F-SOURCE": {
+        "assignedRows": 13,
+        "reviewedRows": 13
+      }
+    },
+    "statusCounts": {
+      "accepted_evidence": 10,
+      "candidate": 18,
+      "no_evidence": 21,
+      "blocked": 3,
+      "skipped_already_complete": 0
+    },
+    "acceptedRItems": 9,
+    "acceptedFItems": 7,
+    "acceptedRRestaurants": 5,
+    "acceptedRDistinctDishes": 9,
+    "acceptedFDistinctDishes": 7,
+    "acceptedFOnlyRestaurants": 5,
+    "emittedRItems": 6,
+    "emittedFItems": 7,
+    "translationPendingItems": 3,
+    "currentAssignmentRows": 52,
+    "currentReviewedRows": 52,
+    "completedAssignmentsRemovedByRebuild": 0,
     "previousEvidence": {
       "recommendationRestaurants": 567,
       "featuredRestaurants": 666,
       "evidenceRestaurants": 732,
       "recommendationItems": 1000,
-      "featuredItems": 2662
+      "featuredItems": 2663
     },
     "freshCrawlEvidence": {
-      "recommendationRestaurants": 2,
-      "featuredRestaurants": 16,
-      "evidenceRestaurants": 18,
-      "recommendationItems": 4,
-      "featuredItems": 62
+      "recommendationRestaurants": 3,
+      "featuredRestaurants": 5,
+      "evidenceRestaurants": 8,
+      "recommendationItems": 6,
+      "featuredItems": 7
     },
     "mergedEvidence": {
-      "recommendationRestaurants": 567,
-      "featuredRestaurants": 666,
-      "evidenceRestaurants": 732,
-      "recommendationItems": 1000,
-      "featuredItems": 2666
+      "recommendationRestaurants": 570,
+      "featuredRestaurants": 671,
+      "evidenceRestaurants": 736,
+      "recommendationItems": 1006,
+      "featuredItems": 2670
     },
     "specificityCorrection": {
-      "correctedRestaurants": 5,
-      "correctedItems": 5,
-      "duplicateItemsRemoved": 3,
-      "ruleCounts": {
-        "meat-sushi-over-sushi": 1,
-        "yakisoba-over-soba": 4
-      },
-      "recommendationItemsAfterCorrection": 1000,
-      "featuredItemsAfterCorrection": 2663
+      "correctedRestaurants": 0,
+      "correctedItems": 0,
+      "duplicateItemsRemoved": 0,
+      "ruleCounts": {},
+      "recommendationItemsAfterCorrection": 1006,
+      "featuredItemsAfterCorrection": 2670
     }
   },
   "rows": [
@@ -992,7 +1015,57 @@
           "evidenceSnippet": "熟練シェフが作るビリヤニが自慢"
         }
       ],
-      "featuredDishes": []
+      "featuredDishes": [
+        {
+          "nameZh": "坦都里烤鸡（2块）",
+          "nameJa": "タンドリーチキン（２P）",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131004/13310186/dtlmenu/",
+          "checkedAt": "2026-09-15",
+          "evidenceClass": "tabelog_menu_text",
+          "evidenceRule": "central-reviewed:F:reviewed-exact-source-native-translation",
+          "evidenceSnippet": "タンドリーチキン（２P） 620円",
+          "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-F-SOURCE/S1.json",
+              "marker": "DISH-F-SOURCE",
+              "shard": "S1",
+              "sourceQueueCommit": "5179badcdb58ba176cf2d9cf834a02e24c86e736",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [
+                  "スパイスの 味 SWAD スワッド"
+                ],
+                "evidence": [
+                  {
+                    "provider": "Tabelog",
+                    "sourceUrl": "https://www.hotpepper.jp/strJ004492261/",
+                    "checkedAt": "2026-09-15",
+                    "evidenceType": "branch_page",
+                    "note": "Current Hot Pepper page verifies the exact 本郷2-18-9 branch and active Sep 2026 reservation calendar; Tabelog menu is exact branch."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "classification": "F",
+                "targetField": "featuredDishes",
+                "nameOriginal": "タンドリーチキン（２P）",
+                "nameZhCandidate": null,
+                "evidenceClass": "tabelog_menu_text",
+                "recommendationSemantics": "",
+                "provider": "Tabelog",
+                "sourceOrigin": "Tabelog",
+                "sourceUrl": "https://tabelog.com/tokyo/A1310/A131004/13310186/dtlmenu/",
+                "checkedAt": "2026-09-15",
+                "sourceScope": "branch",
+                "evidenceText": "タンドリーチキン（２P） 620円",
+                "confidence": "medium",
+                "notes": "Exact-branch ordinary menu item. Menu updated 2025-09-16; branch remains current in 2026 and item is not seasonal."
+              }
+            }
+          ]
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJ-8rouoCNGGAR2cmXC3P6yck",
@@ -13984,6 +14057,209 @@
       ]
     },
     {
+      "googlePlaceId": "ChIJdUP0Q7ONGGARq_z0J6o6Fqc",
+      "name": "DUMBO Doughnuts & Coffee",
+      "recommendedDishes": [
+        {
+          "nameZh": "杏仁焦糖",
+          "nameJa": "アーモンドキャラメル",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.tokyo-dome.co.jp/shops/g-dumbodc.html",
+          "checkedAt": "2026-09-15",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "central-reviewed:R:reviewed-exact-source-native-translation",
+          "evidenceSnippet": "おすすめメニュー / アーモンドキャラメル",
+          "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-DISCOVERY/S1.json",
+              "marker": "DISH-R-DISCOVERY",
+              "shard": "S1",
+              "sourceQueueCommit": "5179badcdb58ba176cf2d9cf834a02e24c86e736",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [
+                  "DUMBO Doughnuts and Coffee TOKYO DOME CITY STORE"
+                ],
+                "evidence": [
+                  {
+                    "provider": "Tokyo Dome City official",
+                    "sourceUrl": "https://www.tokyo-dome.co.jp/shops/g-dumbodc.html",
+                    "checkedAt": "2026-09-15",
+                    "evidenceType": "branch_page",
+                    "note": "Official page identifies DUMBO Doughnuts and Coffee TOKYO DOME CITY STORE, Hi!EVERYVALLEY 2F, phone 03-6240-0687; repository Overture binding has the same phone."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "classification": "R",
+                "targetField": "recommendedDishes",
+                "nameOriginal": "アーモンドキャラメル",
+                "nameZhCandidate": null,
+                "evidenceClass": "source_recommended_dish_text",
+                "recommendationSemantics": "おすすめメニュー / アーモンドキャラメル",
+                "provider": "sourceWebsite",
+                "sourceOrigin": "Tokyo Dome City official",
+                "sourceUrl": "https://www.tokyo-dome.co.jp/shops/g-dumbodc.html",
+                "checkedAt": "2026-09-15",
+                "sourceScope": "branch",
+                "evidenceText": "おすすめメニュー / アーモンドキャラメル",
+                "confidence": "high",
+                "notes": "Exact official branch page lists this item under おすすめメニュー."
+              }
+            }
+          ]
+        },
+        {
+          "nameZh": "棉花糖巧克力",
+          "nameJa": "マシュマロチョコレート",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.tokyo-dome.co.jp/shops/g-dumbodc.html",
+          "checkedAt": "2026-09-15",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "central-reviewed:R:reviewed-exact-source-native-translation",
+          "evidenceSnippet": "おすすめメニュー / マシュマロチョコレート",
+          "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-DISCOVERY/S1.json",
+              "marker": "DISH-R-DISCOVERY",
+              "shard": "S1",
+              "sourceQueueCommit": "5179badcdb58ba176cf2d9cf834a02e24c86e736",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [
+                  "DUMBO Doughnuts and Coffee TOKYO DOME CITY STORE"
+                ],
+                "evidence": [
+                  {
+                    "provider": "Tokyo Dome City official",
+                    "sourceUrl": "https://www.tokyo-dome.co.jp/shops/g-dumbodc.html",
+                    "checkedAt": "2026-09-15",
+                    "evidenceType": "branch_page",
+                    "note": "Official page identifies DUMBO Doughnuts and Coffee TOKYO DOME CITY STORE, Hi!EVERYVALLEY 2F, phone 03-6240-0687; repository Overture binding has the same phone."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "classification": "R",
+                "targetField": "recommendedDishes",
+                "nameOriginal": "マシュマロチョコレート",
+                "nameZhCandidate": null,
+                "evidenceClass": "source_recommended_dish_text",
+                "recommendationSemantics": "おすすめメニュー / マシュマロチョコレート",
+                "provider": "sourceWebsite",
+                "sourceOrigin": "Tokyo Dome City official",
+                "sourceUrl": "https://www.tokyo-dome.co.jp/shops/g-dumbodc.html",
+                "checkedAt": "2026-09-15",
+                "sourceScope": "branch",
+                "evidenceText": "おすすめメニュー / マシュマロチョコレート",
+                "confidence": "high",
+                "notes": "Exact official branch page lists this item under おすすめメニュー."
+              }
+            }
+          ]
+        },
+        {
+          "nameZh": "芝士蛋糕",
+          "nameJa": "チーズケーキ",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.tokyo-dome.co.jp/shops/g-dumbodc.html",
+          "checkedAt": "2026-09-15",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "central-reviewed:R:exact:チーズケーキ|cheesecake",
+          "evidenceSnippet": "おすすめメニュー / チーズケーキ",
+          "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-DISCOVERY/S1.json",
+              "marker": "DISH-R-DISCOVERY",
+              "shard": "S1",
+              "sourceQueueCommit": "5179badcdb58ba176cf2d9cf834a02e24c86e736",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [
+                  "DUMBO Doughnuts and Coffee TOKYO DOME CITY STORE"
+                ],
+                "evidence": [
+                  {
+                    "provider": "Tokyo Dome City official",
+                    "sourceUrl": "https://www.tokyo-dome.co.jp/shops/g-dumbodc.html",
+                    "checkedAt": "2026-09-15",
+                    "evidenceType": "branch_page",
+                    "note": "Official page identifies DUMBO Doughnuts and Coffee TOKYO DOME CITY STORE, Hi!EVERYVALLEY 2F, phone 03-6240-0687; repository Overture binding has the same phone."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "classification": "R",
+                "targetField": "recommendedDishes",
+                "nameOriginal": "チーズケーキ",
+                "nameZhCandidate": null,
+                "evidenceClass": "source_recommended_dish_text",
+                "recommendationSemantics": "おすすめメニュー / チーズケーキ",
+                "provider": "sourceWebsite",
+                "sourceOrigin": "Tokyo Dome City official",
+                "sourceUrl": "https://www.tokyo-dome.co.jp/shops/g-dumbodc.html",
+                "checkedAt": "2026-09-15",
+                "sourceScope": "branch",
+                "evidenceText": "おすすめメニュー / チーズケーキ",
+                "confidence": "high",
+                "notes": "Exact official branch page lists this item under おすすめメニュー."
+              }
+            }
+          ]
+        },
+        {
+          "nameZh": "覆盆子",
+          "nameJa": "フランボワーズ",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.tokyo-dome.co.jp/shops/g-dumbodc.html",
+          "checkedAt": "2026-09-15",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "central-reviewed:R:reviewed-exact-source-native-translation",
+          "evidenceSnippet": "おすすめメニュー / フランボワーズ",
+          "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-DISCOVERY/S1.json",
+              "marker": "DISH-R-DISCOVERY",
+              "shard": "S1",
+              "sourceQueueCommit": "5179badcdb58ba176cf2d9cf834a02e24c86e736",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [
+                  "DUMBO Doughnuts and Coffee TOKYO DOME CITY STORE"
+                ],
+                "evidence": [
+                  {
+                    "provider": "Tokyo Dome City official",
+                    "sourceUrl": "https://www.tokyo-dome.co.jp/shops/g-dumbodc.html",
+                    "checkedAt": "2026-09-15",
+                    "evidenceType": "branch_page",
+                    "note": "Official page identifies DUMBO Doughnuts and Coffee TOKYO DOME CITY STORE, Hi!EVERYVALLEY 2F, phone 03-6240-0687; repository Overture binding has the same phone."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "classification": "R",
+                "targetField": "recommendedDishes",
+                "nameOriginal": "フランボワーズ",
+                "nameZhCandidate": null,
+                "evidenceClass": "source_recommended_dish_text",
+                "recommendationSemantics": "おすすめメニュー / フランボワーズ",
+                "provider": "sourceWebsite",
+                "sourceOrigin": "Tokyo Dome City official",
+                "sourceUrl": "https://www.tokyo-dome.co.jp/shops/g-dumbodc.html",
+                "checkedAt": "2026-09-15",
+                "sourceScope": "branch",
+                "evidenceText": "おすすめメニュー / フランボワーズ",
+                "confidence": "high",
+                "notes": "Exact official branch page lists this item under おすすめメニュー."
+              }
+            }
+          ]
+        }
+      ],
+      "featuredDishes": []
+    },
+    {
       "googlePlaceId": "ChIJDVdSfmmMGGARn19s9XYBdOY",
       "name": "ドトールコーヒーショップ",
       "recommendedDishes": [
@@ -16795,7 +17071,57 @@
           "evidenceSnippet": "も完全個室で案内可能です。 ネット予約特典 楽天/マイル/amazon/ﾎﾟｲﾝﾄ貯まる 予約する その他のコースを見る メニュー おすすめ 桜刻みユッケ 1080円（税込） 仙台"
         }
       ],
-      "featuredDishes": []
+      "featuredDishes": [
+        {
+          "nameZh": "炸嫩鸡块",
+          "nameJa": "若鶏の唐揚げ",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ003829728/food/",
+          "checkedAt": "2026-09-15",
+          "evidenceClass": "hotpepper_menu_text",
+          "evidenceRule": "central-reviewed:F:reviewed-exact-source-native-translation",
+          "evidenceSnippet": "若鶏の唐揚げ 748円（税込）",
+          "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-F-SOURCE/S1.json",
+              "marker": "DISH-F-SOURCE",
+              "shard": "S1",
+              "sourceQueueCommit": "5179badcdb58ba176cf2d9cf834a02e24c86e736",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [
+                  "晴れ舞亭 水道橋駅前店"
+                ],
+                "evidence": [
+                  {
+                    "provider": "Hot Pepper",
+                    "sourceUrl": "https://www.hotpepper.jp/strJ003829728/",
+                    "checkedAt": "2026-09-15",
+                    "evidenceType": "branch_page",
+                    "note": "Current Hot Pepper branch page identifies 晴れ舞亭 水道橋駅前店 at 神田三崎町2-19-4."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "classification": "F",
+                "targetField": "featuredDishes",
+                "nameOriginal": "若鶏の唐揚げ",
+                "nameZhCandidate": null,
+                "evidenceClass": "hotpepper_menu_text",
+                "recommendationSemantics": "",
+                "provider": "Hot Pepper",
+                "sourceOrigin": "Hot Pepper",
+                "sourceUrl": "https://www.hotpepper.jp/strJ003829728/food/",
+                "checkedAt": "2026-09-15",
+                "sourceScope": "branch",
+                "evidenceText": "若鶏の唐揚げ 748円（税込）",
+                "confidence": "high",
+                "notes": "Current exact-branch ordinary menu item; no recommendation semantics attached."
+              }
+            }
+          ]
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJFzuCSRuMGGAR_YI1oNrtOBk",
@@ -18582,7 +18908,57 @@
           "evidenceSnippet": "その魂の込められた極上で独特な味わいは創業当初から今日まで、カレー激戦区の神田界隈・首都圏はもとより、 日本各地の百貨店のテナントやイベント出店において人気を博しています。 お知ら"
         }
       ],
-      "featuredDishes": []
+      "featuredDishes": [
+        {
+          "nameZh": "牛肉咖喱",
+          "nameJa": "ビーフカリー",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.ethiopia-curry.com/%E3%81%8A%E8%96%A6%E3%82%81%E3%83%A1%E3%83%8B%E3%83%A5%E3%83%BC",
+          "checkedAt": "2026-09-15",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "central-reviewed:F:reviewed-exact-source-native-translation",
+          "evidenceSnippet": "ビーフカリー 肉の旨みとルーの相性が絶妙",
+          "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-F-SOURCE/S1.json",
+              "marker": "DISH-F-SOURCE",
+              "shard": "S1",
+              "sourceQueueCommit": "5179badcdb58ba176cf2d9cf834a02e24c86e736",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [
+                  "カリーライス専門店エチオピア 本店"
+                ],
+                "evidence": [
+                  {
+                    "provider": "sourceWebsite",
+                    "sourceUrl": "https://www.ethiopia-curry.com/",
+                    "checkedAt": "2026-09-15",
+                    "evidenceType": "branch_page",
+                    "note": "Current official site explicitly identifies the 本店 and its representative menu."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "classification": "F",
+                "targetField": "featuredDishes",
+                "nameOriginal": "ビーフカリー",
+                "nameZhCandidate": null,
+                "evidenceClass": "source_menu_text",
+                "recommendationSemantics": "",
+                "provider": "sourceWebsite",
+                "sourceOrigin": "sourceWebsite",
+                "sourceUrl": "https://www.ethiopia-curry.com/%E3%81%8A%E8%96%A6%E3%82%81%E3%83%A1%E3%83%8B%E3%83%A5%E3%83%BC",
+                "checkedAt": "2026-09-15",
+                "sourceScope": "branch",
+                "evidenceText": "ビーフカリー 肉の旨みとルーの相性が絶妙",
+                "confidence": "high",
+                "notes": "Concrete current item on the official 本店 representative-menu page; item itself has no strict recommendation marker."
+              }
+            }
+          ]
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJHRDZbgGMGGAR1KSEWVZFgDw",
@@ -20719,6 +21095,21 @@
           "evidenceSnippet": "アディロンダックバーガー"
         },
         {
+          "nameZh": "炒面",
+          "nameJa": "そば",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://adirondackcafejp.wordpress.com/food/",
+          "checkedAt": "2026-09-10",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "specificity:yakisoba-over-soba:menu-page-text:蕎麦|そば|soba",
+          "evidenceSnippet": "焼きそば Fried Noodle （税込み１４３０）",
+          "specificityCorrection": {
+            "rule": "yakisoba-over-soba",
+            "previousNameZh": "荞麦面",
+            "sourceNativeCompositeRequired": true
+          }
+        },
+        {
           "nameZh": "炒饭",
           "nameJa": "チャーハン",
           "provider": "sourceWebsite",
@@ -20737,21 +21128,6 @@
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:ステーキ|steak",
           "evidenceSnippet": "マグロステーキ丼"
-        },
-        {
-          "nameZh": "炒面",
-          "nameJa": "そば",
-          "provider": "sourceWebsite",
-          "sourceUrl": "https://adirondackcafejp.wordpress.com/food/",
-          "checkedAt": "2026-09-10",
-          "evidenceClass": "source_menu_text",
-          "evidenceRule": "specificity:yakisoba-over-soba:menu-page-text:蕎麦|そば|soba",
-          "evidenceSnippet": "焼きそば Fried Noodle （税込み１４３０）",
-          "specificityCorrection": {
-            "rule": "yakisoba-over-soba",
-            "previousNameZh": "荞麦面",
-            "sourceNativeCompositeRequired": true
-          }
         }
       ]
     },
@@ -23739,6 +24115,160 @@
       ]
     },
     {
+      "googlePlaceId": "ChIJlbohVy2NGGARYM9c0wZX34I",
+      "name": "ヴェルテュ",
+      "recommendedDishes": [],
+      "featuredDishes": [
+        {
+          "nameZh": "A4和牛牛肉塔可",
+          "nameJa": "A4和牛ビーフタコス",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.fourseasons.com/jp/otemachi/dining/menus/virtu-bar-menu/",
+          "checkedAt": "2026-09-15",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "central-reviewed:F:reviewed-exact-source-native-translation",
+          "evidenceSnippet": "A4和牛ビーフタコス",
+          "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-DISCOVERY/S1.json",
+              "marker": "DISH-R-DISCOVERY",
+              "shard": "S1",
+              "sourceQueueCommit": "5179badcdb58ba176cf2d9cf834a02e24c86e736",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [
+                  "VIRTÙ Bar Menu | Four Seasons Hotel Tokyo at Otemachi"
+                ],
+                "evidence": [
+                  {
+                    "provider": "Four Seasons official",
+                    "sourceUrl": "https://www.fourseasons.com/jp/otemachi/dining/menus/virtu-bar-menu/",
+                    "checkedAt": "2026-09-15",
+                    "evidenceType": "branch_page",
+                    "note": "Four Seasons Otemachi identifies VIRTÙ as its bar on the 39th floor; the menu is under that exact official venue path."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "classification": "F",
+                "targetField": "featuredDishes",
+                "nameOriginal": "A4和牛ビーフタコス",
+                "nameZhCandidate": null,
+                "evidenceClass": "source_menu_text",
+                "recommendationSemantics": "",
+                "provider": "sourceWebsite",
+                "sourceOrigin": "Four Seasons official",
+                "sourceUrl": "https://www.fourseasons.com/jp/otemachi/dining/menus/virtu-bar-menu/",
+                "checkedAt": "2026-09-15",
+                "sourceScope": "branch",
+                "evidenceText": "A4和牛ビーフタコス",
+                "confidence": "high",
+                "notes": "Concrete item on the current official VIRTÙ bar menu; no explicit recommendation marker adjacent to the item."
+              }
+            }
+          ]
+        },
+        {
+          "nameZh": "VIRTÙ炸鸡",
+          "nameJa": "ヴェルテュフライドチキン",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.fourseasons.com/jp/otemachi/dining/menus/virtu-bar-menu/",
+          "checkedAt": "2026-09-15",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "central-reviewed:F:reviewed-exact-source-native-translation",
+          "evidenceSnippet": "ヴェルテュフライドチキン",
+          "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-DISCOVERY/S1.json",
+              "marker": "DISH-R-DISCOVERY",
+              "shard": "S1",
+              "sourceQueueCommit": "5179badcdb58ba176cf2d9cf834a02e24c86e736",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [
+                  "VIRTÙ Bar Menu | Four Seasons Hotel Tokyo at Otemachi"
+                ],
+                "evidence": [
+                  {
+                    "provider": "Four Seasons official",
+                    "sourceUrl": "https://www.fourseasons.com/jp/otemachi/dining/menus/virtu-bar-menu/",
+                    "checkedAt": "2026-09-15",
+                    "evidenceType": "branch_page",
+                    "note": "Four Seasons Otemachi identifies VIRTÙ as its bar on the 39th floor; the menu is under that exact official venue path."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "classification": "F",
+                "targetField": "featuredDishes",
+                "nameOriginal": "ヴェルテュフライドチキン",
+                "nameZhCandidate": null,
+                "evidenceClass": "source_menu_text",
+                "recommendationSemantics": "",
+                "provider": "sourceWebsite",
+                "sourceOrigin": "Four Seasons official",
+                "sourceUrl": "https://www.fourseasons.com/jp/otemachi/dining/menus/virtu-bar-menu/",
+                "checkedAt": "2026-09-15",
+                "sourceScope": "branch",
+                "evidenceText": "ヴェルテュフライドチキン",
+                "confidence": "high",
+                "notes": "Concrete item on the current official VIRTÙ bar menu; no explicit recommendation marker adjacent to the item."
+              }
+            }
+          ]
+        },
+        {
+          "nameZh": "龙虾大阪烧",
+          "nameJa": "ロブスターお好み焼き",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.fourseasons.com/jp/otemachi/dining/menus/virtu-bar-menu/",
+          "checkedAt": "2026-09-15",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "central-reviewed:F:reviewed-exact-source-native-translation",
+          "evidenceSnippet": "ロブスターお好み焼き",
+          "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-DISCOVERY/S1.json",
+              "marker": "DISH-R-DISCOVERY",
+              "shard": "S1",
+              "sourceQueueCommit": "5179badcdb58ba176cf2d9cf834a02e24c86e736",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [
+                  "VIRTÙ Bar Menu | Four Seasons Hotel Tokyo at Otemachi"
+                ],
+                "evidence": [
+                  {
+                    "provider": "Four Seasons official",
+                    "sourceUrl": "https://www.fourseasons.com/jp/otemachi/dining/menus/virtu-bar-menu/",
+                    "checkedAt": "2026-09-15",
+                    "evidenceType": "branch_page",
+                    "note": "Four Seasons Otemachi identifies VIRTÙ as its bar on the 39th floor; the menu is under that exact official venue path."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "classification": "F",
+                "targetField": "featuredDishes",
+                "nameOriginal": "ロブスターお好み焼き",
+                "nameZhCandidate": null,
+                "evidenceClass": "source_menu_text",
+                "recommendationSemantics": "",
+                "provider": "sourceWebsite",
+                "sourceOrigin": "Four Seasons official",
+                "sourceUrl": "https://www.fourseasons.com/jp/otemachi/dining/menus/virtu-bar-menu/",
+                "checkedAt": "2026-09-15",
+                "sourceScope": "branch",
+                "evidenceText": "ロブスターお好み焼き",
+                "confidence": "high",
+                "notes": "Concrete item on the current official VIRTÙ bar menu; no explicit recommendation marker adjacent to the item."
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
       "googlePlaceId": "ChIJlc_IeLSNGGAR1NcYzh4ZOD0",
       "name": "ホランイ",
       "recommendedDishes": [
@@ -25174,6 +25704,62 @@
           "evidenceSnippet": "スパイスカレー 1,480円（税込） 「料理」の先頭へ戻る サラダ"
         }
       ]
+    },
+    {
+      "googlePlaceId": "ChIJmSK7DUKNGGARNPmQPsqixl0",
+      "name": "サル ド ルポ",
+      "recommendedDishes": [
+        {
+          "nameZh": "前菜拼盘",
+          "nameJa": "オードブル盛りあわせ",
+          "provider": "Reviewed independent",
+          "sourceUrl": "https://www.enjoytokyo.jp/spot/l_20011596/",
+          "checkedAt": "2026-09-15",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "central-reviewed:R:reviewed-exact-source-native-translation",
+          "evidenceSnippet": "オードブル盛りあわせが当店一番人気",
+          "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-DISCOVERY/S1.json",
+              "marker": "DISH-R-DISCOVERY",
+              "shard": "S1",
+              "sourceQueueCommit": "5179badcdb58ba176cf2d9cf834a02e24c86e736",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [
+                  "サル ド ルポ"
+                ],
+                "evidence": [
+                  {
+                    "provider": "Let's Enjoy Tokyo independent venue guide",
+                    "sourceUrl": "https://www.enjoytokyo.jp/spot/l_20011596/",
+                    "checkedAt": "2026-09-15",
+                    "evidenceType": "branch_page",
+                    "note": "Source gives 神田駿河台3-3 and telephone 03-3295-3674 for サル ド ルポ."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "classification": "R",
+                "targetField": "recommendedDishes",
+                "nameOriginal": "オードブル盛りあわせ",
+                "nameZhCandidate": null,
+                "evidenceClass": "source_recommended_dish_text",
+                "recommendationSemantics": "オードブル盛りあわせが当店一番人気",
+                "provider": "Reviewed independent",
+                "sourceOrigin": "Let's Enjoy Tokyo independent venue guide",
+                "sourceUrl": "https://www.enjoytokyo.jp/spot/l_20011596/",
+                "checkedAt": "2026-09-15",
+                "sourceScope": "branch",
+                "evidenceText": "オードブル盛りあわせが当店一番人気",
+                "confidence": "high",
+                "notes": "Independent venue page attributes explicit 一番人気 semantics to this concrete dish."
+              }
+            }
+          ]
+        }
+      ],
+      "featuredDishes": []
     },
     {
       "googlePlaceId": "ChIJMUgGtgOMGGARJVsJhovKiEg",
@@ -35474,6 +36060,62 @@
       ]
     },
     {
+      "googlePlaceId": "ChIJu6ATgOqNGGAR8ZQQGhCPJog",
+      "name": "ニイハオ 水道橋店",
+      "recommendedDishes": [
+        {
+          "nameZh": "元祖冰花煎饺",
+          "nameJa": "元祖羽付き餃子",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://ggr0300.gorp.jp/",
+          "checkedAt": "2026-09-15",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "central-reviewed:R:reviewed-exact-source-native-translation",
+          "evidenceSnippet": "手作り！蒲田名物の元祖羽付き餃子",
+          "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-DISCOVERY/S1.json",
+              "marker": "DISH-R-DISCOVERY",
+              "shard": "S1",
+              "sourceQueueCommit": "5179badcdb58ba176cf2d9cf834a02e24c86e736",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [
+                  "ニイハオ 水道橋店"
+                ],
+                "evidence": [
+                  {
+                    "provider": "official_gorp_owner_page",
+                    "sourceUrl": "https://ggr0300.gorp.jp/",
+                    "checkedAt": "2026-09-15",
+                    "evidenceType": "branch_page",
+                    "note": "Owner page identifies ニイハオ 水道橋店 at 東京都千代田区神田三崎町2-20-8 2F and phone 050-5488-1916."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "classification": "R",
+                "targetField": "recommendedDishes",
+                "nameOriginal": "元祖羽付き餃子",
+                "nameZhCandidate": null,
+                "evidenceClass": "source_specialty_popular_dish_text",
+                "recommendationSemantics": "手作り！蒲田名物の元祖羽付き餃子",
+                "provider": "sourceWebsite",
+                "sourceOrigin": "official_gorp_owner_page",
+                "sourceUrl": "https://ggr0300.gorp.jp/",
+                "checkedAt": "2026-09-15",
+                "sourceScope": "branch",
+                "evidenceText": "手作り！蒲田名物の元祖羽付き餃子",
+                "confidence": "high",
+                "notes": "Exact branch owner page explicitly labels the concrete dish as a specialty."
+              }
+            }
+          ]
+        }
+      ],
+      "featuredDishes": []
+    },
+    {
       "googlePlaceId": "ChIJu74mGKaNGGARw71nxXlAefc",
       "name": "魚将 水道橋店",
       "recommendedDishes": [
@@ -41428,7 +42070,57 @@
           "evidenceSnippet": "明神丸名物のわら焼き鰹たたきや、高知産の食材を使用した土佐料理などお楽しみいただけます。"
         }
       ],
-      "featuredDishes": []
+      "featuredDishes": [
+        {
+          "nameZh": "现做土豆沙拉",
+          "nameJa": "出来立てポテトサラダ",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://shop.myojinmaru.jp/shop/takebashi/",
+          "checkedAt": "2026-09-15",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "central-reviewed:F:reviewed-exact-source-native-translation",
+          "evidenceSnippet": "出来立てポテトサラダ",
+          "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-F-SOURCE/S1.json",
+              "marker": "DISH-F-SOURCE",
+              "shard": "S1",
+              "sourceQueueCommit": "5179badcdb58ba176cf2d9cf834a02e24c86e736",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [
+                  "明神丸"
+                ],
+                "evidence": [
+                  {
+                    "provider": "sourceWebsite",
+                    "sourceUrl": "https://shop.myojinmaru.jp/shop/takebashi/",
+                    "checkedAt": "2026-09-15",
+                    "evidenceType": "branch_page",
+                    "note": "Current official 竹橋パレスサイドビル店 page gives exact branch address and phone."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "classification": "F",
+                "targetField": "featuredDishes",
+                "nameOriginal": "出来立てポテトサラダ",
+                "nameZhCandidate": null,
+                "evidenceClass": "source_menu_text",
+                "recommendationSemantics": "",
+                "provider": "sourceWebsite",
+                "sourceOrigin": "sourceWebsite",
+                "sourceUrl": "https://shop.myojinmaru.jp/shop/takebashi/",
+                "checkedAt": "2026-09-15",
+                "sourceScope": "branch",
+                "evidenceText": "出来立てポテトサラダ",
+                "confidence": "high",
+                "notes": "Ordinary concrete item on the current exact-branch official menu; not promoted to R."
+              }
+            }
+          ]
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJz9-m7D-MGGARwexAhrGf2V4",
