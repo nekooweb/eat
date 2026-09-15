@@ -138,10 +138,22 @@ jobs:
               raise SystemExit('Replay changed logical dish evidence or reviewed provenance')
           print(json.dumps({'status':'pass','logicalEvidenceItems':len(first[1]),'reviewSnapshots':len(first[2])}))
           PY
-          sha256sum data/google_inventory_runtime.js data/dish_batch_plan.json data/google_inventory_detail_queue.json > _audit/s1-runtime-first.sha
+          cp data/google_inventory_runtime.js _audit/s1-runtime-first.js
+          cp data/google_inventory_detail_queue.json _audit/s1-queue-first.json
+          cp data/dish_batch_plan.json _audit/s1-plan-first.json
           python3 scripts/reload_data.py --public-only --outdir _audit/s1-reload-replay
-          sha256sum data/google_inventory_runtime.js data/dish_batch_plan.json data/google_inventory_detail_queue.json > _audit/s1-runtime-second.sha
-          cmp _audit/s1-runtime-first.sha _audit/s1-runtime-second.sha
+          cmp _audit/s1-runtime-first.js data/google_inventory_runtime.js
+          cmp _audit/s1-queue-first.json data/google_inventory_detail_queue.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          a=json.loads(Path('_audit/s1-plan-first.json').read_text())
+          b=json.loads(Path('data/dish_batch_plan.json').read_text())
+          a.pop('generatedAt',None); b.pop('generatedAt',None)
+          if a != b:
+              raise SystemExit('Replay changed logical dish batch plan')
+          print(json.dumps({'status':'pass','planRows':len(a.get('rows',[])),'ignoredMetadata':['generatedAt']}))
+          PY
 
       - name: Final validation and log
         run: |
