@@ -1,6 +1,6 @@
 {
   "schemaVersion": 4,
-  "checkedAt": "2026-09-10",
+  "checkedAt": "2026-09-15",
   "policy": {
     "googleIdentityKey": "frozen Place ID only",
     "paidGoogleDataApiCalls": 0,
@@ -32,7 +32,7 @@
     "ordinaryMenuDishBecomesFeaturedOnly": true,
     "shardIndex": 0,
     "shardCount": 1,
-    "source": "already-bound independent official/source websites only",
+    "source": "digest-approved full-template agent reviews",
     "eligibleBindings": [
       "strict_auto",
       "manual_exact"
@@ -155,54 +155,77 @@
     "publicRuntimeCountPolicy": "dynamic; validate runtime stats and public+unpublished catalog reconciliation instead of a fixed named-row count",
     "evidenceStorageItemLimit": null,
     "presentationItemLimitAppliedHere": false,
-    "menuLinkDomainPolicy": "follow only the already-bound hostname, its normalized root/parent, or a child of that root; sibling and unrelated domains are rejected"
+    "menuLinkDomainPolicy": "follow only the already-bound hostname, its normalized root/parent, or a child of that root; sibling and unrelated domains are rejected",
+    "fullSourceEvidenceRetained": true
   },
   "summary": {
-    "catalogTotal": 2804,
-    "publicRuntimeTotal": 1422,
-    "queueEligibleIds": 294,
-    "targets": 266,
-    "uniqueOrigins": 242,
-    "sitemapFilesFetched": 507,
-    "menuUrlsDiscovered": 64,
-    "menuPagesFetched": 54,
-    "errorTargets": 3,
-    "evidenceRestaurants": 18,
-    "recommendationRestaurants": 2,
-    "featuredRestaurants": 16,
-    "recommendationItems": 4,
-    "featuredItems": 62,
+    "assignedRows": 46,
+    "reviewedRows": 46,
+    "byMarker": {
+      "DISH-R-OFFICIAL": {
+        "assignedRows": 0,
+        "reviewedRows": 0
+      },
+      "DISH-R-RETAINED": {
+        "assignedRows": 0,
+        "reviewedRows": 0
+      },
+      "DISH-R-DISCOVERY": {
+        "assignedRows": 41,
+        "reviewedRows": 41
+      },
+      "DISH-F-SOURCE": {
+        "assignedRows": 5,
+        "reviewedRows": 5
+      }
+    },
+    "statusCounts": {
+      "accepted_evidence": 4,
+      "candidate": 3,
+      "no_evidence": 39,
+      "blocked": 0,
+      "skipped_already_complete": 0
+    },
+    "acceptedRItems": 2,
+    "acceptedFItems": 2,
+    "acceptedRRestaurants": 2,
+    "acceptedRDistinctDishes": 2,
+    "acceptedFDistinctDishes": 2,
+    "acceptedFOnlyRestaurants": 2,
+    "emittedRItems": 2,
+    "emittedFItems": 2,
+    "translationPendingItems": 0,
+    "currentAssignmentRows": 46,
+    "currentReviewedRows": 46,
+    "completedAssignmentsRemovedByRebuild": 0,
     "previousEvidence": {
-      "recommendationRestaurants": 567,
-      "featuredRestaurants": 666,
-      "evidenceRestaurants": 732,
-      "recommendationItems": 1000,
-      "featuredItems": 2662
+      "recommendationRestaurants": 569,
+      "featuredRestaurants": 668,
+      "evidenceRestaurants": 734,
+      "recommendationItems": 1002,
+      "featuredItems": 2665
     },
     "freshCrawlEvidence": {
       "recommendationRestaurants": 2,
-      "featuredRestaurants": 16,
-      "evidenceRestaurants": 18,
-      "recommendationItems": 4,
-      "featuredItems": 62
+      "featuredRestaurants": 2,
+      "evidenceRestaurants": 4,
+      "recommendationItems": 2,
+      "featuredItems": 2
     },
     "mergedEvidence": {
-      "recommendationRestaurants": 567,
-      "featuredRestaurants": 666,
-      "evidenceRestaurants": 732,
-      "recommendationItems": 1000,
-      "featuredItems": 2666
+      "recommendationRestaurants": 569,
+      "featuredRestaurants": 668,
+      "evidenceRestaurants": 734,
+      "recommendationItems": 1002,
+      "featuredItems": 2665
     },
     "specificityCorrection": {
-      "correctedRestaurants": 5,
-      "correctedItems": 5,
-      "duplicateItemsRemoved": 3,
-      "ruleCounts": {
-        "meat-sushi-over-sushi": 1,
-        "yakisoba-over-soba": 4
-      },
-      "recommendationItemsAfterCorrection": 1000,
-      "featuredItemsAfterCorrection": 2663
+      "correctedRestaurants": 0,
+      "correctedItems": 0,
+      "duplicateItemsRemoved": 0,
+      "ruleCounts": {},
+      "recommendationItemsAfterCorrection": 1002,
+      "featuredItemsAfterCorrection": 2665
     }
   },
   "rows": [
@@ -18197,6 +18220,61 @@
       ]
     },
     {
+      "googlePlaceId": "ChIJH5tGyRqMGGARzTgDrmz5f00",
+      "name": "十三や",
+      "recommendedDishes": [
+        {
+          "nameZh": "牛菲力盖饭",
+          "nameJa": "牛ヒレ丼",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ000682177/food/",
+          "checkedAt": "2026-09-15",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "central-reviewed:R:reviewed-exact-source-native-translation",
+          "evidenceSnippet": "名物『牛ヒレ丼』 名物「牛ヒレ丼」が人気の焼き鳥屋",
+          "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-DISCOVERY/S0.json",
+              "marker": "DISH-R-DISCOVERY",
+              "shard": "S0",
+              "sourceQueueCommit": "e41ff3435bb4bcf5a6574df95424512280ec86d4",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [
+                  "十三や"
+                ],
+                "evidence": [
+                  {
+                    "provider": "Hot Pepper",
+                    "sourceUrl": "https://www.hotpepper.jp/strJ000682177/food/",
+                    "checkedAt": "2026-09-15",
+                    "evidenceType": "exact_branch_page",
+                    "note": "Exact branch name and branch-level location/store context match the frozen catalog identity; no proximity-only binding was used."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "recommendedDishes",
+                "classification": "R",
+                "nameOriginal": "牛ヒレ丼",
+                "nameZhCandidate": null,
+                "evidenceClass": "source_recommendation_text",
+                "recommendationSemantics": "名物・人気",
+                "provider": "Hot Pepper",
+                "sourceUrl": "https://www.hotpepper.jp/strJ000682177/food/",
+                "checkedAt": "2026-09-15",
+                "sourceScope": "branch",
+                "evidenceText": "名物『牛ヒレ丼』 名物「牛ヒレ丼」が人気の焼き鳥屋",
+                "confidence": "high",
+                "notes": "Source-native dish text retained from the exact branch page."
+              }
+            }
+          ]
+        }
+      ],
+      "featuredDishes": []
+    },
+    {
       "googlePlaceId": "ChIJH84YJWuMGGARGPDq55n8LhE",
       "name": "日高屋",
       "recommendedDishes": [
@@ -20719,6 +20797,21 @@
           "evidenceSnippet": "アディロンダックバーガー"
         },
         {
+          "nameZh": "炒面",
+          "nameJa": "そば",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://adirondackcafejp.wordpress.com/food/",
+          "checkedAt": "2026-09-10",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "specificity:yakisoba-over-soba:menu-page-text:蕎麦|そば|soba",
+          "evidenceSnippet": "焼きそば Fried Noodle （税込み１４３０）",
+          "specificityCorrection": {
+            "rule": "yakisoba-over-soba",
+            "previousNameZh": "荞麦面",
+            "sourceNativeCompositeRequired": true
+          }
+        },
+        {
           "nameZh": "炒饭",
           "nameJa": "チャーハン",
           "provider": "sourceWebsite",
@@ -20737,21 +20830,6 @@
           "evidenceClass": "source_menu_text",
           "evidenceRule": "menu-page-text:ステーキ|steak",
           "evidenceSnippet": "マグロステーキ丼"
-        },
-        {
-          "nameZh": "炒面",
-          "nameJa": "そば",
-          "provider": "sourceWebsite",
-          "sourceUrl": "https://adirondackcafejp.wordpress.com/food/",
-          "checkedAt": "2026-09-10",
-          "evidenceClass": "source_menu_text",
-          "evidenceRule": "specificity:yakisoba-over-soba:menu-page-text:蕎麦|そば|soba",
-          "evidenceSnippet": "焼きそば Fried Noodle （税込み１４３０）",
-          "specificityCorrection": {
-            "rule": "yakisoba-over-soba",
-            "previousNameZh": "荞麦面",
-            "sourceNativeCompositeRequired": true
-          }
         }
       ]
     },
@@ -37773,6 +37851,61 @@
       ]
     },
     {
+      "googlePlaceId": "ChIJvX7UpZ-NGGAR9FDxYMfEu9Q",
+      "name": "欲張りバルCANTINA",
+      "recommendedDishes": [
+        {
+          "nameZh": "豪华前菜拼盘",
+          "nameJa": "欲張り前菜の盛り合わせ",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://yokubaribarucantina.owst.jp/",
+          "checkedAt": "2026-09-15",
+          "evidenceClass": "source_recommendation_text",
+          "evidenceRule": "central-reviewed:R:reviewed-exact-source-native-translation",
+          "evidenceSnippet": "人気料理ランキング〖１位〗欲張り前菜の盛り合わせ CANTINAの一番人気のお料理！",
+          "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-DISCOVERY/S0.json",
+              "marker": "DISH-R-DISCOVERY",
+              "shard": "S0",
+              "sourceQueueCommit": "e41ff3435bb4bcf5a6574df95424512280ec86d4",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [
+                  "欲張りバルCANTINA"
+                ],
+                "evidence": [
+                  {
+                    "provider": "official_web",
+                    "sourceUrl": "https://yokubaribarucantina.owst.jp/",
+                    "checkedAt": "2026-09-15",
+                    "evidenceType": "exact_branch_page",
+                    "note": "Exact branch name and branch-level location/store context match the frozen catalog identity; no proximity-only binding was used."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "recommendedDishes",
+                "classification": "R",
+                "nameOriginal": "欲張り前菜の盛り合わせ",
+                "nameZhCandidate": null,
+                "evidenceClass": "source_recommendation_text",
+                "recommendationSemantics": "人気料理ランキング1位・一番人気",
+                "provider": "official_web",
+                "sourceUrl": "https://yokubaribarucantina.owst.jp/",
+                "checkedAt": "2026-09-15",
+                "sourceScope": "branch",
+                "evidenceText": "人気料理ランキング〖１位〗欲張り前菜の盛り合わせ CANTINAの一番人気のお料理！",
+                "confidence": "high",
+                "notes": "Source-native dish text retained from the exact branch page."
+              }
+            }
+          ]
+        }
+      ],
+      "featuredDishes": []
+    },
+    {
       "googlePlaceId": "ChIJvyDKWN7hGGARrFkY0C5a9Kw",
       "name": "和食日和 おさけと 神保町",
       "recommendedDishes": [
@@ -39815,7 +39948,56 @@
           "evidenceSnippet": "刺身5点盛り(1人前)"
         }
       ],
-      "featuredDishes": []
+      "featuredDishes": [
+        {
+          "nameZh": "青辣椒味噌烤饭团",
+          "nameJa": "青唐辛子味噌焼きおにぎり",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://sakana-iidabashi.com/menu/",
+          "checkedAt": "2026-09-15",
+          "evidenceClass": "source_menu_text",
+          "evidenceRule": "central-reviewed:F:reviewed-exact-source-native-translation",
+          "evidenceSnippet": "ご飯物 青唐辛子味噌焼きおにぎり",
+          "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-F-SOURCE/S0.json",
+              "marker": "DISH-F-SOURCE",
+              "shard": "S0",
+              "sourceQueueCommit": "e41ff3435bb4bcf5a6574df95424512280ec86d4",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [
+                  "魚の旨い店 飯田橋本店"
+                ],
+                "evidence": [
+                  {
+                    "provider": "official_web",
+                    "sourceUrl": "https://sakana-iidabashi.com/menu/",
+                    "checkedAt": "2026-09-15",
+                    "evidenceType": "exact_branch_page",
+                    "note": "Exact branch name and branch-level location/store context match the frozen catalog identity; no proximity-only binding was used."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "青唐辛子味噌焼きおにぎり",
+                "nameZhCandidate": null,
+                "evidenceClass": "source_menu_text",
+                "recommendationSemantics": "",
+                "provider": "official_web",
+                "sourceUrl": "https://sakana-iidabashi.com/menu/",
+                "checkedAt": "2026-09-15",
+                "sourceScope": "branch",
+                "evidenceText": "ご飯物 青唐辛子味噌焼きおにぎり",
+                "confidence": "high",
+                "notes": "Source-native dish text retained from the exact branch page."
+              }
+            }
+          ]
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJXXGXqcuNGGARXRD8vJL-nu4",
@@ -39930,7 +40112,56 @@
           "evidenceSnippet": "当店No1の人気商品】F1サフォーク"
         }
       ],
-      "featuredDishes": []
+      "featuredDishes": [
+        {
+          "nameZh": "成吉思汗烤羊肉套餐",
+          "nameJa": "ヂンギスカンセット",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ000024027/food/",
+          "checkedAt": "2026-09-15",
+          "evidenceClass": "hotpepper_menu_text",
+          "evidenceRule": "central-reviewed:F:reviewed-exact-source-native-translation",
+          "evidenceSnippet": "神田 ジンギスカン ヂンギス王 料理 ■ヂンギスカンセット 生ラムと長ネギ、玉ねぎのセットです。",
+          "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-F-SOURCE/S0.json",
+              "marker": "DISH-F-SOURCE",
+              "shard": "S0",
+              "sourceQueueCommit": "e41ff3435bb4bcf5a6574df95424512280ec86d4",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [
+                  "神田 ジンギスカン ヂンギス王"
+                ],
+                "evidence": [
+                  {
+                    "provider": "Hot Pepper",
+                    "sourceUrl": "https://www.hotpepper.jp/strJ000024027/food/",
+                    "checkedAt": "2026-09-15",
+                    "evidenceType": "exact_branch_page",
+                    "note": "Exact branch name and branch-level location/store context match the frozen catalog identity; no proximity-only binding was used."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "ヂンギスカンセット",
+                "nameZhCandidate": null,
+                "evidenceClass": "source_menu_text",
+                "recommendationSemantics": "",
+                "provider": "Hot Pepper",
+                "sourceUrl": "https://www.hotpepper.jp/strJ000024027/food/",
+                "checkedAt": "2026-09-15",
+                "sourceScope": "branch",
+                "evidenceText": "神田 ジンギスカン ヂンギス王 料理 ■ヂンギスカンセット 生ラムと長ネギ、玉ねぎのセットです。",
+                "confidence": "high",
+                "notes": "Source-native dish text retained from the exact branch page."
+              }
+            }
+          ]
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJXy2A7WSNGGARSpt_OZLqh9Y",
