@@ -2,6 +2,10 @@
 
 [网页](https://nekooweb.github.io/eat/)在 TOKYO 地区1的餐饮目录中随机给出三家选择。页面地图使用 Leaflet / OpenStreetMap，Google Place ID 仅保留普通地图跳转用途。
 
+## 页面规划
+
+[餐厅分类与筛选方案](CUISINE_FILTER_PLAN.md)记录菜系、主营食物、店铺类型的拆分、同义词与关键词边界、排除逻辑及轻量验收。当前仅更新方案文档，尚未修改线上筛选；后台数据处理独立继续。
+
 ## 当前数据载入
 
 已修复数量写死、任务 schema 不匹配、失败任务遗漏和危险重置。统一入口：
