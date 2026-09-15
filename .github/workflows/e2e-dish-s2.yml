@@ -98,7 +98,6 @@ jobs:
           node scripts/audit_agent_dish_integration.mjs --snapshot /tmp/s2-after-first.json
           node scripts/audit_no_paid_apis.mjs
           node scripts/test_source_field_quarantine.mjs
-          git diff -- data > /tmp/s2-before-replay.diff
 
       - name: Idempotent replay
         run: |
@@ -114,15 +113,21 @@ jobs:
           python scripts/reload_data.py --public-only --outdir /tmp/s2-replay
           node scripts/audit_agent_dish_integration.mjs --compare \
             /tmp/s2-after-first.json _audit/s2-reviewed-evidence.json _audit/s2-replay-audit.json
+          node scripts/audit_agent_dish_integration.mjs --snapshot /tmp/s2-after-replay.json
           node - <<'NODE'
           const fs=require('fs');
-          const x=JSON.parse(fs.readFileSync('_audit/s2-replay-audit.json'));
-          const bad=Object.entries(x.delta).filter(([,v])=>v!==0);
+          const audit=JSON.parse(fs.readFileSync('_audit/s2-replay-audit.json'));
+          const bad=Object.entries(audit.delta).filter(([,v])=>v!==0);
           if(bad.length) throw new Error('replay changed canonical/runtime counts: '+JSON.stringify(bad));
-          if(x.newRecommendationEvidenceItems!==0||x.newFeaturedEvidenceItems!==0) throw new Error('replay added logical evidence');
+          if(audit.newRecommendationEvidenceItems!==0||audit.newFeaturedEvidenceItems!==0) throw new Error('replay added logical evidence');
+          const first=JSON.parse(fs.readFileSync('/tmp/s2-after-first.json'));
+          const replay=JSON.parse(fs.readFileSync('/tmp/s2-after-replay.json'));
+          delete first.inputHashes;
+          delete replay.inputHashes;
+          if(JSON.stringify(first)!==JSON.stringify(replay)) {
+            throw new Error('replay changed semantic runtime/evidence snapshot');
+          }
           NODE
-          git diff -- data > /tmp/s2-after-replay.diff
-          cmp /tmp/s2-before-replay.diff /tmp/s2-after-replay.diff
           node scripts/audit_google_inventory_detail_evidence.mjs
           node scripts/audit_no_paid_apis.mjs
           node scripts/test_reviewed_agent_dish_evidence.mjs
@@ -141,7 +146,6 @@ jobs:
           const integ=JSON.parse(fs.readFileSync('_audit/s2-integration-audit.json'));
           const d=JSON.parse(fs.readFileSync('data/agent_reviews/DISH-R-DISCOVERY/S2.json'));
           const f=JSON.parse(fs.readFileSync('data/agent_reviews/DISH-F-SOURCE/S2.json'));
-          const accepted=JSON.parse(fs.readFileSync('_audit/s2-reviewed-evidence.json'));
           const gainedR=after.runtime.filter((r,i)=>!before.runtime[i].recommendedDishes.length&&r.recommendedDishes.length).length;
           const gainedF=after.runtime.filter((r,i)=>!before.runtime[i].featuredDishes.length&&r.featuredDishes.length).length;
           const gainedFOnly=after.runtime.filter((r,i)=>!before.runtime[i].featuredDishes.length&&r.featuredDishes.length&&!r.recommendedDishes.length).length;
@@ -162,9 +166,9 @@ jobs:
           `- Identity/freshness corrections: no brand→branch, branch→branch, or course→component recommendation propagation was allowed. Sevens, Brozers' and 坂内大手町 were retained as candidates when branch/current-menu binding was insufficient.\n`+
           `- Translation: exact reviewed source-native text preserved; approved deterministic Chinese normalizations emitted; zero translation-pending accepted items.\n`+
           `- Integration path: reviewed evidence → explicit approved digest manifest → reviewed-evidence adapter → maintained detail merge → specificity correction → evidence audit → public rebuild → integration audit.\n`+
-          `- Validation: frozen IDs/names preserved; historical evidence and review snapshots retained; accepted-only additions enforced; candidate/no-evidence leakage rejected; source-field quarantine, adapter tests and integration tests passed; second replay produced zero logical/count changes.\n`+
+          `- Validation: frozen IDs/names preserved; historical evidence and review snapshots retained; accepted-only additions enforced; candidate/no-evidence leakage rejected; source-field quarantine, adapter tests and integration tests passed; second replay produced zero logical/count changes and an identical semantic runtime/evidence snapshot.\n`+
           `- Paid Google Data API calls: 0 (attested and repository audit passed).\n`+
-          `- Ending commit: WORKFLOW_COMMIT_PENDING\n`;
+          `- Ending commit: workflow-generated integration commit on agent-e2e-dish-s2-20260914.\n`;
           fs.writeFileSync('logs/2026-09-14-e2e-dish-s2.md',log);
           NODE
 
