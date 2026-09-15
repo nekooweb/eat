@@ -1,6 +1,6 @@
 # Eat Page Requirements
 
-Updated: 2026-09-06
+Updated: 2026-09-15 (classification/filter planning references only; runtime unchanged)
 
 ## 1. Product goal
 
@@ -133,6 +133,12 @@ Current optional filters:
 
 Neutral states mean no extra restriction.
 
+### Planned classification refinement (not implemented)
+
+[Classification and filtering plan](CUISINE_FILTER_PLAN.md) defines separate cuisine-style, primary-food and venue-type facets; stable alias mappings; same-facet parent/child exclusion; conservative keyword candidates; unknown/composite handling; and stale-result feedback. It is a future implementation/acceptance specification, not a claim that the current single-cuisine filter has been replaced. No data collection, database reset or runtime changes are part of this documentation update.
+
+The budget and distance rules below remain unchanged. Classification does not provide allergen guarantees or enable open-now filtering. Coarse filter parents and multiple tags must not silently alter diversity grouping or duplicate a restaurant's sampling weight.
+
 ### Budget
 
 Current bands:
@@ -244,5 +250,5 @@ Not blockers for the current Area1 release:
 - SHIZUOKA;
 - open-now/holiday exclusion;
 - local recommendation history/device behavior;
-- deeper cuisine-family taxonomy;
+- implementation of the documented [classification/filter refinement](CUISINE_FILTER_PLAN.md), including deeper same-facet taxonomy;
 - further interaction refinements after the current data acquisition pass.
