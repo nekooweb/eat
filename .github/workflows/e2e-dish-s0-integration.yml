@@ -1,0 +1,78 @@
+name: E2E Dish S0 Integration
+
+on:
+  push:
+    branches:
+      - agent-e2e-dish-s0-20260914
+
+permissions:
+  contents: write
+
+jobs:
+  integrate:
+    if: ${{ !contains(github.event.head_commit.message, '[e2e-generated]') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build reviewed S0 evidence
+        run: |
+          set -euo pipefail
+          mkdir -p _audit/e2e-dish-s0 _local
+          node scripts/audit_agent_dish_integration.mjs --snapshot _audit/e2e-dish-s0/before.json
+          node scripts/build_reviewed_agent_dish_evidence.mjs \
+            data/agent_reviews/e2e-dish-s0-20260914.json \
+            _audit/e2e-dish-s0/accepted.json \
+            _audit/e2e-dish-s0/pending.json \
+            _audit/e2e-dish-s0/adapter-audit.json
+      - name: Maintained canonical integration and public rebuild
+        run: |
+          set -euo pipefail
+          node scripts/merge_google_inventory_detail_evidence.mjs \
+            data/google_inventory_detail_evidence.json \
+            _audit/e2e-dish-s0/accepted.json \
+            data/google_inventory_detail_evidence.json
+          node scripts/correct_dish_specificity_evidence.mjs \
+            data/google_inventory_detail_evidence.json \
+            data/google_inventory_detail_evidence.json
+          node scripts/audit_google_inventory_detail_evidence.mjs
+          python3 scripts/reload_data.py --public-only --outdir _audit/e2e-dish-s0/reload-public
+          node scripts/audit_agent_dish_integration.mjs --compare \
+            _audit/e2e-dish-s0/before.json \
+            _audit/e2e-dish-s0/accepted.json \
+            _audit/e2e-dish-s0/integration-audit.json
+      - name: Full disposable rebuild and validation
+        run: |
+          set -euo pipefail
+          python3 scripts/reload_data.py --outdir _audit/e2e-dish-s0/reload-full --database _local/e2e-dish-s0.sqlite --reset
+          node scripts/test_reviewed_agent_dish_evidence.mjs
+          node scripts/test_agent_dish_integration.mjs
+          node scripts/audit_no_paid_apis.mjs
+      - name: Replay merge and verify tracked idempotence
+        run: |
+          set -euo pipefail
+          git diff -- data > _audit/e2e-dish-s0/first.diff
+          node scripts/merge_google_inventory_detail_evidence.mjs data/google_inventory_detail_evidence.json _audit/e2e-dish-s0/accepted.json data/google_inventory_detail_evidence.json
+          node scripts/correct_dish_specificity_evidence.mjs data/google_inventory_detail_evidence.json data/google_inventory_detail_evidence.json
+          python3 scripts/reload_data.py --public-only --outdir _audit/e2e-dish-s0/reload-replay
+          git diff -- data > _audit/e2e-dish-s0/replay.diff
+          cmp _audit/e2e-dish-s0/first.diff _audit/e2e-dish-s0/replay.diff
+      - name: Commit maintained generated data
+        run: |
+          set -euo pipefail
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add -u data
+          if git diff --cached --quiet; then
+            echo 'No tracked data changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Integrate reviewed S0 dish evidence [e2e-generated]'
+          git push origin HEAD:agent-e2e-dish-s0-20260914
