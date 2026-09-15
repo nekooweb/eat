@@ -1,0 +1,414 @@
+{
+  "schemaVersion": 1,
+  "proposalOnly": true,
+  "marker": "DISH-F-SOURCE",
+  "shard": "S1",
+  "sourceQueue": "data/dish_batch_plan.json",
+  "sourceQueueCommit": "5179badcdb58ba176cf2d9cf834a02e24c86e736",
+  "generatedAt": "2026-09-15T14:30:00+09:00",
+  "summary": {
+    "assignedRows": 13,
+    "reviewedRows": 13,
+    "acceptedEvidenceRows": 4,
+    "candidateRows": 8,
+    "noEvidenceRows": 1,
+    "blockedRows": 0,
+    "skippedAlreadyCompleteRows": 0
+  },
+  "policyAttestation": {
+    "paidGoogleDataApiCalls": 0,
+    "canonicalMasterEditedDirectly": false,
+    "proximityOnlyIdentityBindingUsed": false,
+    "recommendationWithoutExplicitSemanticsAdded": false,
+    "accessRestrictionBypassUsed": false
+  },
+  "agentRunId": "chatgpt-e2e-dish-s1-f-source-review-20260915",
+  "records": [
+    {
+      "googlePlaceId": "ChIJhR9ZkxCMGGAROLEM3x_VSFk",
+      "restaurantName": "カリーライス専門店エチオピア 本店",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "カリーライス専門店エチオピア 本店"
+        ],
+        "evidence": [
+          {
+            "provider": "sourceWebsite",
+            "sourceUrl": "https://www.ethiopia-curry.com/",
+            "checkedAt": "2026-09-15",
+            "evidenceType": "branch_page",
+            "note": "Current official site explicitly identifies the 本店 and its representative menu."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "classification": "F",
+          "targetField": "featuredDishes",
+          "nameOriginal": "ビーフカリー",
+          "nameZhCandidate": null,
+          "evidenceClass": "source_menu_text",
+          "recommendationSemantics": "",
+          "provider": "sourceWebsite",
+          "sourceOrigin": "sourceWebsite",
+          "sourceUrl": "https://www.ethiopia-curry.com/%E3%81%8A%E8%96%A6%E3%82%81%E3%83%A1%E3%83%8B%E3%83%A5%E3%83%BC",
+          "checkedAt": "2026-09-15",
+          "sourceScope": "branch",
+          "evidenceText": "ビーフカリー 肉の旨みとルーの相性が絶妙",
+          "confidence": "high",
+          "notes": "Concrete current item on the official 本店 representative-menu page; item itself has no strict recommendation marker."
+        }
+      ],
+      "attemptedSources": [
+        "https://www.ethiopia-curry.com/%E3%81%8A%E8%96%A6%E3%82%81%E3%83%A1%E3%83%8B%E3%83%A5%E3%83%BC"
+      ],
+      "blocker": null,
+      "notes": "Concrete current item on the official 本店 representative-menu page; item itself has no strict recommendation marker.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-F-SOURCE/S1.json"
+      ],
+      "reviewReasoning": "Second-pass F-source review on 2026-09-15. Current exact-branch menu evidence survived identity/freshness review."
+    },
+    {
+      "googlePlaceId": "ChIJz8qC-w2MGGARG3sp7CYG-ko",
+      "restaurantName": "明神丸",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "明神丸"
+        ],
+        "evidence": [
+          {
+            "provider": "sourceWebsite",
+            "sourceUrl": "https://shop.myojinmaru.jp/shop/takebashi/",
+            "checkedAt": "2026-09-15",
+            "evidenceType": "branch_page",
+            "note": "Current official 竹橋パレスサイドビル店 page gives exact branch address and phone."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "classification": "F",
+          "targetField": "featuredDishes",
+          "nameOriginal": "出来立てポテトサラダ",
+          "nameZhCandidate": null,
+          "evidenceClass": "source_menu_text",
+          "recommendationSemantics": "",
+          "provider": "sourceWebsite",
+          "sourceOrigin": "sourceWebsite",
+          "sourceUrl": "https://shop.myojinmaru.jp/shop/takebashi/",
+          "checkedAt": "2026-09-15",
+          "sourceScope": "branch",
+          "evidenceText": "出来立てポテトサラダ",
+          "confidence": "high",
+          "notes": "Ordinary concrete item on the current exact-branch official menu; not promoted to R."
+        }
+      ],
+      "attemptedSources": [
+        "https://shop.myojinmaru.jp/shop/takebashi/"
+      ],
+      "blocker": null,
+      "notes": "Ordinary concrete item on the current exact-branch official menu; not promoted to R.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-F-SOURCE/S1.json"
+      ],
+      "reviewReasoning": "Second-pass F-source review on 2026-09-15. Current exact-branch menu evidence survived identity/freshness review."
+    },
+    {
+      "googlePlaceId": "ChIJ-7xgblmNGGAR69S4d1hx7lY",
+      "restaurantName": "スパイスの 味 SWAD スワッド",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "スパイスの 味 SWAD スワッド"
+        ],
+        "evidence": [
+          {
+            "provider": "Tabelog",
+            "sourceUrl": "https://www.hotpepper.jp/strJ004492261/",
+            "checkedAt": "2026-09-15",
+            "evidenceType": "branch_page",
+            "note": "Current Hot Pepper page verifies the exact 本郷2-18-9 branch and active Sep 2026 reservation calendar; Tabelog menu is exact branch."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "classification": "F",
+          "targetField": "featuredDishes",
+          "nameOriginal": "タンドリーチキン（２P）",
+          "nameZhCandidate": null,
+          "evidenceClass": "tabelog_menu_text",
+          "recommendationSemantics": "",
+          "provider": "Tabelog",
+          "sourceOrigin": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131004/13310186/dtlmenu/",
+          "checkedAt": "2026-09-15",
+          "sourceScope": "branch",
+          "evidenceText": "タンドリーチキン（２P） 620円",
+          "confidence": "medium",
+          "notes": "Exact-branch ordinary menu item. Menu updated 2025-09-16; branch remains current in 2026 and item is not seasonal."
+        }
+      ],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131004/13310186/dtlmenu/"
+      ],
+      "blocker": null,
+      "notes": "Exact-branch ordinary menu item. Menu updated 2025-09-16; branch remains current in 2026 and item is not seasonal.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-F-SOURCE/S1.json"
+      ],
+      "reviewReasoning": "Second-pass F-source review on 2026-09-15. Current exact-branch menu evidence survived identity/freshness review."
+    },
+    {
+      "googlePlaceId": "ChIJ08lD_gOMGGAR8oYpyY0SS6w",
+      "restaurantName": "福はら",
+      "status": "candidate",
+      "identity": {
+        "state": "reviewed_candidate",
+        "sourceAliases": [
+          "福はら"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://fukuhara-0303.gorp.jp/"
+      ],
+      "blocker": null,
+      "notes": "Exact branch is current, but the concrete 地鶏ちゃんこ鍋 evidence is explicitly a winter-season item; September current availability is not established.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-F-SOURCE/S1.json"
+      ],
+      "reviewReasoning": "Second-pass F-source review on 2026-09-15. Exact branch is current, but the concrete 地鶏ちゃんこ鍋 evidence is explicitly a winter-season item; September current availability is not established."
+    },
+    {
+      "googlePlaceId": "ChIJ10v48ByMGGAR8bOCzz_L2Bo",
+      "restaurantName": "鶏王けいすけ",
+      "status": "candidate",
+      "identity": {
+        "state": "reviewed_candidate",
+        "sourceAliases": [
+          "鶏王けいすけ"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://www.grandcuisine.jp/keisuke/"
+      ],
+      "blocker": null,
+      "notes": "Current exact branch can be verified, but no current ordinary branch-specific item was reproducibly exposed by the permitted official source; user/review and delivery menus were not used.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-F-SOURCE/S1.json"
+      ],
+      "reviewReasoning": "Second-pass F-source review on 2026-09-15. Current exact branch can be verified, but no current ordinary branch-specific item was reproducibly exposed by the permitted official source; user/review and delivery menus were not used."
+    },
+    {
+      "googlePlaceId": "ChIJ3wcsHh2MGGAR-BCRlpETRq0",
+      "restaurantName": "麺屋武蔵 巌虎",
+      "status": "candidate",
+      "identity": {
+        "state": "reviewed_candidate",
+        "sourceAliases": [
+          "麺屋武蔵 巌虎"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://menya634.co.jp/"
+      ],
+      "blocker": null,
+      "notes": "Current official exact-branch text exposes 自慢のチャーシューベーコン, which is strict recommendation/specialty semantics already in R territory; no ordinary F item was safely established.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-F-SOURCE/S1.json"
+      ],
+      "reviewReasoning": "Second-pass F-source review on 2026-09-15. Current official exact-branch text exposes 自慢のチャーシューベーコン, which is strict recommendation/specialty semantics already in R territory; no ordinary F item was safely established."
+    },
+    {
+      "googlePlaceId": "ChIJ4y_vMRCMGGARaKV_ayhOMzE",
+      "restaurantName": "メナムのほとり 神保町テラススクエア店",
+      "status": "candidate",
+      "identity": {
+        "state": "reviewed_candidate",
+        "sourceAliases": [
+          "メナムのほとり 神保町テラススクエア店"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://maenam.westindia-group.com/"
+      ],
+      "blocker": null,
+      "notes": "Official site verifies the exact branch, but concrete dish imagery/text is not safely scoped to this branch rather than the brand; no brand-to-branch propagation.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-F-SOURCE/S1.json"
+      ],
+      "reviewReasoning": "Second-pass F-source review on 2026-09-15. Official site verifies the exact branch, but concrete dish imagery/text is not safely scoped to this branch rather than the brand; no brand-to-branch propagation."
+    },
+    {
+      "googlePlaceId": "ChIJ7wAjrBuMGGARHOWStkoMVCI",
+      "restaurantName": "NEW YORKER'S Cafe 駿河台4丁目店",
+      "status": "candidate",
+      "identity": {
+        "state": "reviewed_candidate",
+        "sourceAliases": [
+          "NEW YORKER'S Cafe 駿河台4丁目店"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://prtimes.jp/main/html/rd/p/000000114.000019914.html"
+      ],
+      "blocker": null,
+      "notes": "Owner release verifies the exact renewed branch, but FOOD labels are broad categories (ホットドッグ/パスタ等), not sufficiently concrete source-native dish items for F.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-F-SOURCE/S1.json"
+      ],
+      "reviewReasoning": "Second-pass F-source review on 2026-09-15. Owner release verifies the exact renewed branch, but FOOD labels are broad categories (ホットドッグ/パスタ等), not sufficiently concrete source-native dish items for F."
+    },
+    {
+      "googlePlaceId": "ChIJfYV20zqNGGARrB2wp5fqEPo",
+      "restaurantName": "晴れ舞亭 水道橋駅前店",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "晴れ舞亭 水道橋駅前店"
+        ],
+        "evidence": [
+          {
+            "provider": "Hot Pepper",
+            "sourceUrl": "https://www.hotpepper.jp/strJ003829728/",
+            "checkedAt": "2026-09-15",
+            "evidenceType": "branch_page",
+            "note": "Current Hot Pepper branch page identifies 晴れ舞亭 水道橋駅前店 at 神田三崎町2-19-4."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "classification": "F",
+          "targetField": "featuredDishes",
+          "nameOriginal": "若鶏の唐揚げ",
+          "nameZhCandidate": null,
+          "evidenceClass": "hotpepper_menu_text",
+          "recommendationSemantics": "",
+          "provider": "Hot Pepper",
+          "sourceOrigin": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ003829728/food/",
+          "checkedAt": "2026-09-15",
+          "sourceScope": "branch",
+          "evidenceText": "若鶏の唐揚げ 748円（税込）",
+          "confidence": "high",
+          "notes": "Current exact-branch ordinary menu item; no recommendation semantics attached."
+        }
+      ],
+      "attemptedSources": [
+        "https://www.hotpepper.jp/strJ003829728/food/"
+      ],
+      "blocker": null,
+      "notes": "Current exact-branch ordinary menu item; no recommendation semantics attached.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-F-SOURCE/S1.json"
+      ],
+      "reviewReasoning": "Second-pass F-source review on 2026-09-15. Current exact-branch menu evidence survived identity/freshness review."
+    },
+    {
+      "googlePlaceId": "ChIJg6v0lgSMGGARN5H6XTCZGOQ",
+      "restaurantName": "有峰 小川町",
+      "status": "candidate",
+      "identity": {
+        "state": "reviewed_candidate",
+        "sourceAliases": [
+          "有峰 小川町"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://www.hotpepper.jp/strJ000682123/"
+      ],
+      "blocker": null,
+      "notes": "Exact branch is still listed, but detailed retained menu evidence is old and current item-level availability was not established.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-F-SOURCE/S1.json"
+      ],
+      "reviewReasoning": "Second-pass F-source review on 2026-09-15. Exact branch is still listed, but detailed retained menu evidence is old and current item-level availability was not established."
+    },
+    {
+      "googlePlaceId": "ChIJjzzyfnWNGGARWwEbQBk4YVA",
+      "restaurantName": "アスラ",
+      "status": "candidate",
+      "identity": {
+        "state": "reviewed_candidate",
+        "sourceAliases": [
+          "アスラ"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://www.hotpepper.jp/strJ003941247/food/"
+      ],
+      "blocker": null,
+      "notes": "Branch is current, but item page states 2024-11-26 update; current item-level freshness in Sep 2026 is insufficient for integration. Seasonal items were not treated as current.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-F-SOURCE/S1.json"
+      ],
+      "reviewReasoning": "Second-pass F-source review on 2026-09-15. Branch is current, but item page states 2024-11-26 update; current item-level freshness in Sep 2026 is insufficient for integration. Seasonal items were not treated as current."
+    },
+    {
+      "googlePlaceId": "ChIJRbn_gXyNGGARdfFDUzphAIY",
+      "restaurantName": "AMATERRACE",
+      "status": "candidate",
+      "identity": {
+        "state": "reviewed_candidate",
+        "sourceAliases": [
+          "AMATERRACE"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://www.keikidokoro.jp/"
+      ],
+      "blocker": null,
+      "notes": "Current sources show AMATERRACE has been renamed/reorganized as 慶希処みおや with multiple branches. Successor/branch continuity for the frozen Place ID requires identity review; no dish propagation.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-F-SOURCE/S1.json"
+      ],
+      "reviewReasoning": "Second-pass F-source review on 2026-09-15. Current sources show AMATERRACE has been renamed/reorganized as 慶希処みおや with multiple branches. Successor/branch continuity for the frozen Place ID requires identity review; no dish propagation."
+    },
+    {
+      "googlePlaceId": "ChIJZychXwCNGGARKqLV99CEQik",
+      "restaurantName": "京風親子丼 木曜日",
+      "status": "no_evidence",
+      "identity": {
+        "state": "reviewed_candidate",
+        "sourceAliases": [
+          "京風親子丼 木曜日"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131002/13268258/dtlmenu/"
+      ],
+      "blocker": null,
+      "notes": "The only itemized menu located is explicitly user-maintained/historical on Tabelog; customer/user-entered menu truth is not accepted as current evidence.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-F-SOURCE/S1.json"
+      ],
+      "reviewReasoning": "Second-pass F-source review on 2026-09-15. The only itemized menu located is explicitly user-maintained/historical on Tabelog; customer/user-entered menu truth is not accepted as current evidence."
+    }
+  ]
+}

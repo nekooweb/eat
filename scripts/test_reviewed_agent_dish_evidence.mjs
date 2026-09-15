@@ -117,4 +117,24 @@ const secondSourceDoc = changed(d => d.records[0].dishProposals.push({ ...d.reco
 const secondSource = buildReviewedEvidence(options(secondSourceDoc));
 assert.equal(secondSource.coverage.acceptedRItems, 2, 'Two sources are two evidence items');
 assert.equal(secondSource.coverage.acceptedRDistinctDishes, 1, 'Multiple sources must not inflate the logical dish count');
-console.log(JSON.stringify({ status: 'pass', checks: 'coverage, fail-closed identity/policy/semantics, R/F/C separation, exact translation, full provenance, deduplication' }));
+// Discovery and F-source lane regression: both lanes must pass the same fail-closed gate.
+const laneFixture = (lane, marker, classification, provider) => {
+  const a = { googlePlaceId: 'lane-' + marker, name: 'Lane frozen name', lane, shard: 1 };
+  const d = structuredClone(document);
+  d.marker = marker; d.shard = 'S1';
+  d.records[0].googlePlaceId = a.googlePlaceId; d.records[0].restaurantName = a.name;
+  d.records[0].dishProposals[0].classification = classification;
+  d.records[0].dishProposals[0].targetField = classification === 'R' ? 'recommendedDishes' : 'featuredDishes';
+  d.records[0].dishProposals[0].provider = provider;
+  d.records[0].dishProposals[0].nameOriginal = 'ビーフカレー';
+  d.records[0].dishProposals[0].evidenceText = classification === 'R' ? '名物 ビーフカレー' : 'ビーフカレー';
+  d.records[0].dishProposals[0].recommendationSemantics = classification === 'R' ? '名物' : '';
+  return buildReviewedEvidence({ documents: [{ path: 'data/agent_reviews/' + marker + '/S1.json', document: d }], assignments: [a],
+    catalogNames: new Map([[a.googlePlaceId, a.name]]), checkedAt: date, sourceQueueCommit: 'a'.repeat(40),
+    translations: { 'ビーフカレー': { nameZh: '牛肉咖喱', rationale: 'Literal test translation.' } } });
+};
+const discoveryLane = laneFixture('independent_source_discovery', 'DISH-R-DISCOVERY', 'R', 'Reviewed independent');
+assert.equal(discoveryLane.evidence.rows[0].recommendedDishes[0].provider, 'Reviewed independent');
+const featuredLane = laneFixture('official_or_retained_featured', 'DISH-F-SOURCE', 'F', 'official_web');
+assert.equal(featuredLane.evidence.rows[0].featuredDishes.length, 1);
+console.log(JSON.stringify({ status: 'pass', checks: 'coverage, fail-closed identity/policy/semantics, R/F/C separation, exact translation, full provenance, deduplication, Discovery and F-source lane regression' }));

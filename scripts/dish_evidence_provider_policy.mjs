@@ -6,6 +6,7 @@ export const ALLOWED_DISH_EVIDENCE_PROVIDERS = Object.freeze([
   'sourceWebsite',
   'Tabelog',
   'official',
+  'Reviewed independent',
   'Visit Chiyoda',
   'Tokyo Ramen of the Year'
 ]);
