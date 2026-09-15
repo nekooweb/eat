@@ -3,15 +3,15 @@
   "proposalOnly": true,
   "marker": "DISH-R-DISCOVERY",
   "shard": "S2",
-  "agentRunId": "e2e-dish-s2-dish-r-discovery-research-20260914",
+  "agentRunId": "e2e-dish-s2-dish-r-discovery-review-20260914",
   "sourceQueue": "data/dish_batch_plan.json",
   "sourceQueueCommit": "666a3aac429c03410552270625834512e0a25eda",
   "generatedAt": "2026-09-14T21:03:00+09:00",
   "summary": {
     "assignedRows": 41,
     "reviewedRows": 41,
-    "acceptedEvidenceRows": 10,
-    "candidateRows": 6,
+    "acceptedEvidenceRows": 7,
+    "candidateRows": 9,
     "noEvidenceRows": 25,
     "blockedRows": 0,
     "skippedAlreadyCompleteRows": 0
@@ -31,7 +31,15 @@
       "dishProposals": [],
       "attemptedSources": [],
       "blocker": null,
-      "notes": "A plausible source or identity lead exists, but exact current branch-bound menu evidence was not strong enough for acceptance."
+      "notes": "A plausible source or identity lead exists, but exact current branch-bound menu evidence was not strong enough for acceptance.",
+      "reviewReasoning": "Independent second pass found no stronger exact current branch-bound evidence; terminal state retained.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-R-DISCOVERY/S2.json",
+          "recordIndex": 0,
+          "sourceStatus": "candidate"
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJAcDVRxmMGGARB2DTt-Iqp6s",
@@ -47,7 +55,15 @@
       "dishProposals": [],
       "attemptedSources": [],
       "blocker": null,
-      "notes": "Free web discovery did not produce reproducible current branch-bound concrete dish evidence strong enough for R/F; no customer-review prose was used."
+      "notes": "Free web discovery did not produce reproducible current branch-bound concrete dish evidence strong enough for R/F; no customer-review prose was used.",
+      "reviewReasoning": "Independent second pass found no stronger exact current branch-bound evidence; terminal state retained.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-R-DISCOVERY/S2.json",
+          "recordIndex": 1,
+          "sourceStatus": "no_evidence"
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJAQAMfyKMGGARY6BdWr8lUR0",
@@ -63,7 +79,15 @@
       "dishProposals": [],
       "attemptedSources": [],
       "blocker": null,
-      "notes": "Free web discovery did not produce reproducible current branch-bound concrete dish evidence strong enough for R/F; no customer-review prose was used."
+      "notes": "Free web discovery did not produce reproducible current branch-bound concrete dish evidence strong enough for R/F; no customer-review prose was used.",
+      "reviewReasoning": "Independent second pass found no stronger exact current branch-bound evidence; terminal state retained.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-R-DISCOVERY/S2.json",
+          "recordIndex": 2,
+          "sourceStatus": "no_evidence"
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJAQBEjBiMGGARYUv2a_TphXI",
@@ -79,7 +103,15 @@
       "dishProposals": [],
       "attemptedSources": [],
       "blocker": null,
-      "notes": "A plausible source or identity lead exists, but exact current branch-bound menu evidence was not strong enough for acceptance."
+      "notes": "A plausible source or identity lead exists, but exact current branch-bound menu evidence was not strong enough for acceptance.",
+      "reviewReasoning": "Independent second pass found no stronger exact current branch-bound evidence; terminal state retained.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-R-DISCOVERY/S2.json",
+          "recordIndex": 3,
+          "sourceStatus": "candidate"
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJBXu_LgSMGGARXn0ZfwtG-kk",
@@ -95,7 +127,15 @@
       "dishProposals": [],
       "attemptedSources": [],
       "blocker": null,
-      "notes": "A plausible source or identity lead exists, but exact current branch-bound menu evidence was not strong enough for acceptance."
+      "notes": "A plausible source or identity lead exists, but exact current branch-bound menu evidence was not strong enough for acceptance.",
+      "reviewReasoning": "Independent second pass found no stronger exact current branch-bound evidence; terminal state retained.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-R-DISCOVERY/S2.json",
+          "recordIndex": 4,
+          "sourceStatus": "candidate"
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJezJbYeaNGGARDfInD9fBX3o",
@@ -111,7 +151,15 @@
       "dishProposals": [],
       "attemptedSources": [],
       "blocker": null,
-      "notes": "Free web discovery did not produce reproducible current branch-bound concrete dish evidence strong enough for R/F; no customer-review prose was used."
+      "notes": "Free web discovery did not produce reproducible current branch-bound concrete dish evidence strong enough for R/F; no customer-review prose was used.",
+      "reviewReasoning": "Independent second pass found no stronger exact current branch-bound evidence; terminal state retained.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-R-DISCOVERY/S2.json",
+          "recordIndex": 5,
+          "sourceStatus": "no_evidence"
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJf2As_AOMGGARMcNwXs4rCdI",
@@ -127,49 +175,41 @@
       "dishProposals": [],
       "attemptedSources": [],
       "blocker": null,
-      "notes": "Free web discovery did not produce reproducible current branch-bound concrete dish evidence strong enough for R/F; no customer-review prose was used."
+      "notes": "Free web discovery did not produce reproducible current branch-bound concrete dish evidence strong enough for R/F; no customer-review prose was used.",
+      "reviewReasoning": "Independent second pass found no stronger exact current branch-bound evidence; terminal state retained.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-R-DISCOVERY/S2.json",
+          "recordIndex": 6,
+          "sourceStatus": "no_evidence"
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJhXD3-AaMGGARcRQ90hRePdE",
       "restaurantName": "喜多方ラーメン 坂内 大手町店",
-      "status": "accepted_evidence",
+      "status": "candidate",
       "identity": {
-        "state": "verified",
+        "state": "unverified",
         "sourceAliases": [
           "喜多方ラーメン 坂内 大手町店"
         ],
-        "evidence": [
-          {
-            "provider": "official_web",
-            "sourceUrl": "https://ban-nai.com/shop/",
-            "checkedAt": "2026-09-14",
-            "evidenceType": "branch_page",
-            "note": "Research-pass identity/source match; requires independent freshness/scope review."
-          }
-        ]
+        "evidence": []
       },
-      "dishProposals": [
-        {
-          "targetField": "featuredDishes",
-          "classification": "F",
-          "nameOriginal": "喜多方ラーメン",
-          "nameZhCandidate": null,
-          "evidenceClass": "source_menu_text",
-          "recommendationSemantics": null,
-          "provider": "official_web",
-          "sourceUrl": "https://ban-nai.com/shop/",
-          "checkedAt": "2026-09-14",
-          "sourceScope": "branch",
-          "evidenceText": "喜多方ラーメン",
-          "confidence": "medium",
-          "notes": "Tentative research-pass F; independent self-review required."
-        }
-      ],
+      "dishProposals": [],
       "attemptedSources": [
         "https://ban-nai.com/shop/"
       ],
       "blocker": null,
-      "notes": "Tentative accepted research finding pending independent self-review."
+      "notes": "Official store directory proves the exact 大手町店 identity, but the inspected branch entry does not itself bind a concrete current menu item; brand-menu propagation was rejected.",
+      "reviewReasoning": "Independent second pass rejected research-pass acceptance because branch/freshness scope was not strong enough.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-R-DISCOVERY/S2.json",
+          "recordIndex": 7,
+          "sourceStatus": "accepted_evidence"
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJkSjJMtWNGGARBJEfaEl17hI",
@@ -212,7 +252,15 @@
         "https://akibazettai.com/system/"
       ],
       "blocker": null,
-      "notes": "Research pass found exact branch-bound source evidence."
+      "notes": "Research pass found exact branch-bound source evidence.",
+      "reviewReasoning": "Second-pass review reconfirmed current assignment membership, exact branch identity, source-native concrete dish, R/F semantics, freshness and provenance.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-R-DISCOVERY/S2.json",
+          "recordIndex": 8,
+          "sourceStatus": "accepted_evidence"
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJLSgaVwGMGGARxX2c6r_1V8I",
@@ -228,7 +276,15 @@
       "dishProposals": [],
       "attemptedSources": [],
       "blocker": null,
-      "notes": "Free web discovery did not produce reproducible current branch-bound concrete dish evidence strong enough for R/F; no customer-review prose was used."
+      "notes": "Free web discovery did not produce reproducible current branch-bound concrete dish evidence strong enough for R/F; no customer-review prose was used.",
+      "reviewReasoning": "Independent second pass found no stronger exact current branch-bound evidence; terminal state retained.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-R-DISCOVERY/S2.json",
+          "recordIndex": 9,
+          "sourceStatus": "no_evidence"
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJlZ2-PQOMGGAR8PIOOozwzG8",
@@ -244,7 +300,15 @@
       "dishProposals": [],
       "attemptedSources": [],
       "blocker": null,
-      "notes": "A plausible source or identity lead exists, but exact current branch-bound menu evidence was not strong enough for acceptance."
+      "notes": "A plausible source or identity lead exists, but exact current branch-bound menu evidence was not strong enough for acceptance.",
+      "reviewReasoning": "Independent second pass found no stronger exact current branch-bound evidence; terminal state retained.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-R-DISCOVERY/S2.json",
+          "recordIndex": 10,
+          "sourceStatus": "candidate"
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJNUM68hiMGGARFSUebjxtZJc",
@@ -286,7 +350,15 @@
         "https://tabelog.com/tokyo/A1310/A131002/13169833/"
       ],
       "blocker": null,
-      "notes": "Research pass found exact branch-bound source evidence."
+      "notes": "Research pass found exact branch-bound source evidence.",
+      "reviewReasoning": "Second-pass review reconfirmed current assignment membership, exact branch identity, source-native concrete dish, R/F semantics, freshness and provenance.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-R-DISCOVERY/S2.json",
+          "recordIndex": 11,
+          "sourceStatus": "accepted_evidence"
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJr_AmLxmMGGARsJ6hMCyVNI4",
@@ -302,7 +374,15 @@
       "dishProposals": [],
       "attemptedSources": [],
       "blocker": null,
-      "notes": "A plausible source or identity lead exists, but exact current branch-bound menu evidence was not strong enough for acceptance."
+      "notes": "A plausible source or identity lead exists, but exact current branch-bound menu evidence was not strong enough for acceptance.",
+      "reviewReasoning": "Independent second pass found no stronger exact current branch-bound evidence; terminal state retained.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-R-DISCOVERY/S2.json",
+          "recordIndex": 12,
+          "sourceStatus": "candidate"
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJRzuTUwGMGGARH3cj1AlyjEc",
@@ -344,50 +424,41 @@
         "https://page.line.me/033pzmoj"
       ],
       "blocker": null,
-      "notes": "Research pass found exact branch-bound source evidence."
+      "notes": "Research pass found exact branch-bound source evidence.",
+      "reviewReasoning": "Second-pass review reconfirmed current assignment membership, exact branch identity, source-native concrete dish, R/F semantics, freshness and provenance.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-R-DISCOVERY/S2.json",
+          "recordIndex": 13,
+          "sourceStatus": "accepted_evidence"
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJue2Wnx6MGGARtsk7v0lFNZc",
       "restaurantName": "Sevens",
-      "status": "accepted_evidence",
+      "status": "candidate",
       "identity": {
-        "state": "verified",
+        "state": "unverified",
         "sourceAliases": [
           "Sevens"
         ],
-        "evidence": [
-          {
-            "provider": "official_web",
-            "sourceUrl": "https://sevens.owst.jp/",
-            "checkedAt": "2026-09-14",
-            "evidenceType": "branch_page",
-            "note": "Research-pass identity/source match; requires independent freshness/scope review."
-          }
-        ]
+        "evidence": []
       },
-      "dishProposals": [
-        {
-          "targetField": "featuredDishes",
-          "classification": "F",
-          "nameOriginal": "フライドポテト",
-          "nameZhCandidate": null,
-          "evidenceClass": "source_menu_text",
-          "recommendationSemantics": null,
-          "provider": "official_web",
-          "sourceUrl": "https://tabelog.com/tokyo/A1311/A131101/13212100/dtlmenu/",
-          "checkedAt": "2026-09-14",
-          "sourceScope": "branch",
-          "evidenceText": "フライドポテト",
-          "confidence": "medium",
-          "notes": "Tentative research-pass F; independent self-review required."
-        }
-      ],
+      "dishProposals": [],
       "attemptedSources": [
-        "https://sevens.owst.jp/",
-        "https://tabelog.com/tokyo/A1311/A131101/13212100/dtlmenu/"
+        "https://sevens.owst.jp/"
       ],
       "blocker": null,
-      "notes": "Tentative accepted research finding pending independent self-review."
+      "notes": "Exact branch identity is independently supported, but the discoverable concrete food-menu material is stale/insufficiently current; freshness gate rejected integration.",
+      "reviewReasoning": "Independent second pass rejected research-pass acceptance because branch/freshness scope was not strong enough.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-R-DISCOVERY/S2.json",
+          "recordIndex": 14,
+          "sourceStatus": "accepted_evidence"
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJVTolURyMGGARmV5611ctEqE",
@@ -403,7 +474,15 @@
       "dishProposals": [],
       "attemptedSources": [],
       "blocker": null,
-      "notes": "A plausible source or identity lead exists, but exact current branch-bound menu evidence was not strong enough for acceptance."
+      "notes": "A plausible source or identity lead exists, but exact current branch-bound menu evidence was not strong enough for acceptance.",
+      "reviewReasoning": "Independent second pass found no stronger exact current branch-bound evidence; terminal state retained.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-R-DISCOVERY/S2.json",
+          "recordIndex": 15,
+          "sourceStatus": "candidate"
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJwRnSIQSMGGARhf6J07NnEsM",
@@ -445,7 +524,15 @@
         "https://tabelog.com/tokyo/A1310/A131002/13046811/"
       ],
       "blocker": null,
-      "notes": "Research pass found exact branch-bound source evidence."
+      "notes": "Research pass found exact branch-bound source evidence.",
+      "reviewReasoning": "Second-pass review reconfirmed current assignment membership, exact branch identity, source-native concrete dish, R/F semantics, freshness and provenance.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-R-DISCOVERY/S2.json",
+          "recordIndex": 16,
+          "sourceStatus": "accepted_evidence"
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJWRy00n6NGGARp4YXT63okSo",
@@ -461,7 +548,15 @@
       "dishProposals": [],
       "attemptedSources": [],
       "blocker": null,
-      "notes": "Free web discovery did not produce reproducible current branch-bound concrete dish evidence strong enough for R/F; no customer-review prose was used."
+      "notes": "Free web discovery did not produce reproducible current branch-bound concrete dish evidence strong enough for R/F; no customer-review prose was used.",
+      "reviewReasoning": "Independent second pass found no stronger exact current branch-bound evidence; terminal state retained.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-R-DISCOVERY/S2.json",
+          "recordIndex": 17,
+          "sourceStatus": "no_evidence"
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJ4UZQZ0GMGGARXy2zQSnYys8",
@@ -477,7 +572,15 @@
       "dishProposals": [],
       "attemptedSources": [],
       "blocker": null,
-      "notes": "Free web discovery did not produce reproducible current branch-bound concrete dish evidence strong enough for R/F; no customer-review prose was used."
+      "notes": "Free web discovery did not produce reproducible current branch-bound concrete dish evidence strong enough for R/F; no customer-review prose was used.",
+      "reviewReasoning": "Independent second pass found no stronger exact current branch-bound evidence; terminal state retained.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-R-DISCOVERY/S2.json",
+          "recordIndex": 18,
+          "sourceStatus": "no_evidence"
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJ4ZF9mQOMGGARrVhDtfVj3iQ",
@@ -493,7 +596,15 @@
       "dishProposals": [],
       "attemptedSources": [],
       "blocker": null,
-      "notes": "Free web discovery did not produce reproducible current branch-bound concrete dish evidence strong enough for R/F; no customer-review prose was used."
+      "notes": "Free web discovery did not produce reproducible current branch-bound concrete dish evidence strong enough for R/F; no customer-review prose was used.",
+      "reviewReasoning": "Independent second pass found no stronger exact current branch-bound evidence; terminal state retained.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-R-DISCOVERY/S2.json",
+          "recordIndex": 19,
+          "sourceStatus": "no_evidence"
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJ583sfkCMGGARG7RhTliH1eE",
@@ -509,7 +620,15 @@
       "dishProposals": [],
       "attemptedSources": [],
       "blocker": null,
-      "notes": "Free web discovery did not produce reproducible current branch-bound concrete dish evidence strong enough for R/F; no customer-review prose was used."
+      "notes": "Free web discovery did not produce reproducible current branch-bound concrete dish evidence strong enough for R/F; no customer-review prose was used.",
+      "reviewReasoning": "Independent second pass found no stronger exact current branch-bound evidence; terminal state retained.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-R-DISCOVERY/S2.json",
+          "recordIndex": 20,
+          "sourceStatus": "no_evidence"
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJ6QjiQ-WNGGAR7wpaUwDsTFc",
@@ -525,7 +644,15 @@
       "dishProposals": [],
       "attemptedSources": [],
       "blocker": null,
-      "notes": "Free web discovery did not produce reproducible current branch-bound concrete dish evidence strong enough for R/F; no customer-review prose was used."
+      "notes": "Free web discovery did not produce reproducible current branch-bound concrete dish evidence strong enough for R/F; no customer-review prose was used.",
+      "reviewReasoning": "Independent second pass found no stronger exact current branch-bound evidence; terminal state retained.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-R-DISCOVERY/S2.json",
+          "recordIndex": 21,
+          "sourceStatus": "no_evidence"
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJ83tL8gSMGGARUWSF3-wI7WU",
@@ -541,7 +668,15 @@
       "dishProposals": [],
       "attemptedSources": [],
       "blocker": null,
-      "notes": "Free web discovery did not produce reproducible current branch-bound concrete dish evidence strong enough for R/F; no customer-review prose was used."
+      "notes": "Free web discovery did not produce reproducible current branch-bound concrete dish evidence strong enough for R/F; no customer-review prose was used.",
+      "reviewReasoning": "Independent second pass found no stronger exact current branch-bound evidence; terminal state retained.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-R-DISCOVERY/S2.json",
+          "recordIndex": 22,
+          "sourceStatus": "no_evidence"
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJ9_YVEQaMGGARzGYM6625bVI",
@@ -557,7 +692,15 @@
       "dishProposals": [],
       "attemptedSources": [],
       "blocker": null,
-      "notes": "Free web discovery did not produce reproducible current branch-bound concrete dish evidence strong enough for R/F; no customer-review prose was used."
+      "notes": "Free web discovery did not produce reproducible current branch-bound concrete dish evidence strong enough for R/F; no customer-review prose was used.",
+      "reviewReasoning": "Independent second pass found no stronger exact current branch-bound evidence; terminal state retained.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-R-DISCOVERY/S2.json",
+          "recordIndex": 23,
+          "sourceStatus": "no_evidence"
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJb4EjHQSMGGAROEMMNBy38mM",
@@ -599,7 +742,15 @@
         "https://nikubar-bosco.com/"
       ],
       "blocker": null,
-      "notes": "Research pass found exact branch-bound source evidence."
+      "notes": "Research pass found exact branch-bound source evidence.",
+      "reviewReasoning": "Second-pass review reconfirmed current assignment membership, exact branch identity, source-native concrete dish, R/F semantics, freshness and provenance.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-R-DISCOVERY/S2.json",
+          "recordIndex": 24,
+          "sourceStatus": "accepted_evidence"
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJb7C6KwCNGGARQkp6PMDoTxs",
@@ -615,7 +766,15 @@
       "dishProposals": [],
       "attemptedSources": [],
       "blocker": null,
-      "notes": "Free web discovery did not produce reproducible current branch-bound concrete dish evidence strong enough for R/F; no customer-review prose was used."
+      "notes": "Free web discovery did not produce reproducible current branch-bound concrete dish evidence strong enough for R/F; no customer-review prose was used.",
+      "reviewReasoning": "Independent second pass found no stronger exact current branch-bound evidence; terminal state retained.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-R-DISCOVERY/S2.json",
+          "recordIndex": 25,
+          "sourceStatus": "no_evidence"
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJBW6ldkGMGGARGo6aOvKdmeY",
@@ -631,7 +790,15 @@
       "dishProposals": [],
       "attemptedSources": [],
       "blocker": null,
-      "notes": "Free web discovery did not produce reproducible current branch-bound concrete dish evidence strong enough for R/F; no customer-review prose was used."
+      "notes": "Free web discovery did not produce reproducible current branch-bound concrete dish evidence strong enough for R/F; no customer-review prose was used.",
+      "reviewReasoning": "Independent second pass found no stronger exact current branch-bound evidence; terminal state retained.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-R-DISCOVERY/S2.json",
+          "recordIndex": 26,
+          "sourceStatus": "no_evidence"
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJE29okxqMGGARkZ5ggjVW3sY",
@@ -647,7 +814,15 @@
       "dishProposals": [],
       "attemptedSources": [],
       "blocker": null,
-      "notes": "Free web discovery did not produce reproducible current branch-bound concrete dish evidence strong enough for R/F; no customer-review prose was used."
+      "notes": "Free web discovery did not produce reproducible current branch-bound concrete dish evidence strong enough for R/F; no customer-review prose was used.",
+      "reviewReasoning": "Independent second pass found no stronger exact current branch-bound evidence; terminal state retained.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-R-DISCOVERY/S2.json",
+          "recordIndex": 27,
+          "sourceStatus": "no_evidence"
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJfX4IJxqMGGARrEIxDdiVxUo",
@@ -663,7 +838,15 @@
       "dishProposals": [],
       "attemptedSources": [],
       "blocker": null,
-      "notes": "Free web discovery did not produce reproducible current branch-bound concrete dish evidence strong enough for R/F; no customer-review prose was used."
+      "notes": "Free web discovery did not produce reproducible current branch-bound concrete dish evidence strong enough for R/F; no customer-review prose was used.",
+      "reviewReasoning": "Independent second pass found no stronger exact current branch-bound evidence; terminal state retained.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-R-DISCOVERY/S2.json",
+          "recordIndex": 28,
+          "sourceStatus": "no_evidence"
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJfX5uMkCMGGAROFbazgU-WCA",
@@ -679,7 +862,15 @@
       "dishProposals": [],
       "attemptedSources": [],
       "blocker": null,
-      "notes": "Free web discovery did not produce reproducible current branch-bound concrete dish evidence strong enough for R/F; no customer-review prose was used."
+      "notes": "Free web discovery did not produce reproducible current branch-bound concrete dish evidence strong enough for R/F; no customer-review prose was used.",
+      "reviewReasoning": "Independent second pass found no stronger exact current branch-bound evidence; terminal state retained.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-R-DISCOVERY/S2.json",
+          "recordIndex": 29,
+          "sourceStatus": "no_evidence"
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJIyzHDdGNGGAR-3A2rqPVF6o",
@@ -695,7 +886,15 @@
       "dishProposals": [],
       "attemptedSources": [],
       "blocker": null,
-      "notes": "Free web discovery did not produce reproducible current branch-bound concrete dish evidence strong enough for R/F; no customer-review prose was used."
+      "notes": "Free web discovery did not produce reproducible current branch-bound concrete dish evidence strong enough for R/F; no customer-review prose was used.",
+      "reviewReasoning": "Independent second pass found no stronger exact current branch-bound evidence; terminal state retained.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-R-DISCOVERY/S2.json",
+          "recordIndex": 30,
+          "sourceStatus": "no_evidence"
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJIZnBfQGMGGARQK7IspVamnE",
@@ -711,7 +910,15 @@
       "dishProposals": [],
       "attemptedSources": [],
       "blocker": null,
-      "notes": "Free web discovery did not produce reproducible current branch-bound concrete dish evidence strong enough for R/F; no customer-review prose was used."
+      "notes": "Free web discovery did not produce reproducible current branch-bound concrete dish evidence strong enough for R/F; no customer-review prose was used.",
+      "reviewReasoning": "Independent second pass found no stronger exact current branch-bound evidence; terminal state retained.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-R-DISCOVERY/S2.json",
+          "recordIndex": 31,
+          "sourceStatus": "no_evidence"
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJp8dsAhGMGGARlvTDe2cyOEc",
@@ -753,7 +960,15 @@
         "https://sites.google.com/view/fuzambo-folio/menu"
       ],
       "blocker": null,
-      "notes": "Research pass found exact branch-bound source evidence."
+      "notes": "Research pass found exact branch-bound source evidence.",
+      "reviewReasoning": "Second-pass review reconfirmed current assignment membership, exact branch identity, source-native concrete dish, R/F semantics, freshness and provenance.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-R-DISCOVERY/S2.json",
+          "recordIndex": 32,
+          "sourceStatus": "accepted_evidence"
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJq6oH5DiMGGARFHd_dIJ44Dc",
@@ -769,7 +984,15 @@
       "dishProposals": [],
       "attemptedSources": [],
       "blocker": null,
-      "notes": "Free web discovery did not produce reproducible current branch-bound concrete dish evidence strong enough for R/F; no customer-review prose was used."
+      "notes": "Free web discovery did not produce reproducible current branch-bound concrete dish evidence strong enough for R/F; no customer-review prose was used.",
+      "reviewReasoning": "Independent second pass found no stronger exact current branch-bound evidence; terminal state retained.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-R-DISCOVERY/S2.json",
+          "recordIndex": 33,
+          "sourceStatus": "no_evidence"
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJqSiOxDCNGGARWOU0to8PZ8k",
@@ -811,7 +1034,15 @@
         "https://www.coconomi.jp/menu.html"
       ],
       "blocker": null,
-      "notes": "Research pass found exact branch-bound source evidence."
+      "notes": "Research pass found exact branch-bound source evidence.",
+      "reviewReasoning": "Second-pass review reconfirmed current assignment membership, exact branch identity, source-native concrete dish, R/F semantics, freshness and provenance.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-R-DISCOVERY/S2.json",
+          "recordIndex": 34,
+          "sourceStatus": "accepted_evidence"
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJRR-vJj2MGGARuCCYQlS1mWM",
@@ -827,50 +1058,41 @@
       "dishProposals": [],
       "attemptedSources": [],
       "blocker": null,
-      "notes": "Free web discovery did not produce reproducible current branch-bound concrete dish evidence strong enough for R/F; no customer-review prose was used."
+      "notes": "Free web discovery did not produce reproducible current branch-bound concrete dish evidence strong enough for R/F; no customer-review prose was used.",
+      "reviewReasoning": "Independent second pass found no stronger exact current branch-bound evidence; terminal state retained.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-R-DISCOVERY/S2.json",
+          "recordIndex": 35,
+          "sourceStatus": "no_evidence"
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJsSFoXwCNGGARqlfQzh_6P5g",
       "restaurantName": "Brozers'",
-      "status": "accepted_evidence",
+      "status": "candidate",
       "identity": {
-        "state": "verified",
+        "state": "unverified",
         "sourceAliases": [
           "Brozers'"
         ],
-        "evidence": [
-          {
-            "provider": "official_web",
-            "sourceUrl": "https://brozers.co.jp/restaurant/ochanomizu.html",
-            "checkedAt": "2026-09-14",
-            "evidenceType": "branch_page",
-            "note": "Research-pass identity/source match; requires independent freshness/scope review."
-          }
-        ]
+        "evidence": []
       },
-      "dishProposals": [
-        {
-          "targetField": "featuredDishes",
-          "classification": "F",
-          "nameOriginal": "ハンバーガー",
-          "nameZhCandidate": null,
-          "evidenceClass": "source_menu_text",
-          "recommendationSemantics": null,
-          "provider": "official_web",
-          "sourceUrl": "https://brozers.co.jp/restaurant/menu/nihonbashi/hamburger.html",
-          "checkedAt": "2026-09-14",
-          "sourceScope": "branch",
-          "evidenceText": "ハンバーガー",
-          "confidence": "medium",
-          "notes": "Tentative research-pass F; independent self-review required."
-        }
-      ],
+      "dishProposals": [],
       "attemptedSources": [
-        "https://brozers.co.jp/restaurant/ochanomizu.html",
-        "https://brozers.co.jp/restaurant/menu/nihonbashi/hamburger.html"
+        "https://brozers.co.jp/restaurant/ochanomizu.html"
       ],
       "blocker": null,
-      "notes": "Tentative accepted research finding pending independent self-review."
+      "notes": "Official 御茶の水店 page proves exact identity and links a GRAND MENU, but concrete item pages use another branch path; cross-branch menu propagation was not assumed.",
+      "reviewReasoning": "Independent second pass rejected research-pass acceptance because branch/freshness scope was not strong enough.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-R-DISCOVERY/S2.json",
+          "recordIndex": 36,
+          "sourceStatus": "accepted_evidence"
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJt9FeqBGMGGARv_aPnF0lKUU",
@@ -886,7 +1108,15 @@
       "dishProposals": [],
       "attemptedSources": [],
       "blocker": null,
-      "notes": "Free web discovery did not produce reproducible current branch-bound concrete dish evidence strong enough for R/F; no customer-review prose was used."
+      "notes": "Free web discovery did not produce reproducible current branch-bound concrete dish evidence strong enough for R/F; no customer-review prose was used.",
+      "reviewReasoning": "Independent second pass found no stronger exact current branch-bound evidence; terminal state retained.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-R-DISCOVERY/S2.json",
+          "recordIndex": 37,
+          "sourceStatus": "no_evidence"
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJtbma6hCMGGARy03OnFcb8_g",
@@ -902,7 +1132,15 @@
       "dishProposals": [],
       "attemptedSources": [],
       "blocker": null,
-      "notes": "Free web discovery did not produce reproducible current branch-bound concrete dish evidence strong enough for R/F; no customer-review prose was used."
+      "notes": "Free web discovery did not produce reproducible current branch-bound concrete dish evidence strong enough for R/F; no customer-review prose was used.",
+      "reviewReasoning": "Independent second pass found no stronger exact current branch-bound evidence; terminal state retained.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-R-DISCOVERY/S2.json",
+          "recordIndex": 38,
+          "sourceStatus": "no_evidence"
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJWbBS6j-MGGARkL-jk98-EP0",
@@ -918,7 +1156,15 @@
       "dishProposals": [],
       "attemptedSources": [],
       "blocker": null,
-      "notes": "Free web discovery did not produce reproducible current branch-bound concrete dish evidence strong enough for R/F; no customer-review prose was used."
+      "notes": "Free web discovery did not produce reproducible current branch-bound concrete dish evidence strong enough for R/F; no customer-review prose was used.",
+      "reviewReasoning": "Independent second pass found no stronger exact current branch-bound evidence; terminal state retained.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-R-DISCOVERY/S2.json",
+          "recordIndex": 39,
+          "sourceStatus": "no_evidence"
+        }
+      ]
     },
     {
       "googlePlaceId": "ChIJWQinUGCNGGAR_nR3RYk9LHk",
@@ -934,7 +1180,15 @@
       "dishProposals": [],
       "attemptedSources": [],
       "blocker": null,
-      "notes": "Free web discovery did not produce reproducible current branch-bound concrete dish evidence strong enough for R/F; no customer-review prose was used."
+      "notes": "Free web discovery did not produce reproducible current branch-bound concrete dish evidence strong enough for R/F; no customer-review prose was used.",
+      "reviewReasoning": "Independent second pass found no stronger exact current branch-bound evidence; terminal state retained.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-R-DISCOVERY/S2.json",
+          "recordIndex": 40,
+          "sourceStatus": "no_evidence"
+        }
+      ]
     }
   ],
   "policyAttestation": {
