@@ -113,6 +113,8 @@ def full_record_from_old(record: dict, terminal: str, source_ref: str) -> dict:
         provider = norm_provider(ev.get("provider") or "", url, ev.get("sourceOrigin") or "")
         if cls not in {"R", "F"} or not native or not text or not branch_exact or not valid_url(url) or not provider:
             continue
+        if re.sub(r"\s+", "", native) not in re.sub(r"\s+", "", text):
+            continue
         if BAD_SOURCE.search(" ".join(str(ev.get(k, "")) for k in ["sourceOrigin", "sourceKind", "notes"])):
             continue
         semantics = text if cls == "R" else None
