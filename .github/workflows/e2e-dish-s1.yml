@@ -36,7 +36,12 @@ jobs:
           new="const EQUIVALENT_SEMANTICS = /定番|ご好評|自信作|自信の一品|一番の売り商品|一押し|お勧め|お薦め|おススメ|一番のおすすめ|必ず.{0,16}オーダー|オーダーしたい逸品/i;"
           if old not in s and new not in s:
               raise SystemExit('recommendation-equivalent contract line not found')
-          p.write_text(s.replace(old,new))
+          s=s.replace(old,new)
+          old_scope="  const currentRows = currentPlan.rows.filter(row => Object.values(LANES).includes(row.lane));"
+          new_scope="  const approvedScope = new Set(assignments.map(row => `${row.lane}|${row.shard}`));\n  const currentRows = currentPlan.rows.filter(row => approvedScope.has(`${row.lane}|${row.shard}`));"
+          if old_scope not in s and new_scope not in s:
+              raise SystemExit('current assignment scope line not found')
+          p.write_text(s.replace(old_scope,new_scope))
           PY
 
       - name: Regression before integration
