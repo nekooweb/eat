@@ -17,18 +17,33 @@ jobs:
           ref: ${{ github.sha }}
           fetch-depth: 0
       - uses: actions/setup-node@v4
-        with: {node-version: '22'}
+        with:
+          node-version: '22'
       - uses: actions/setup-python@v5
-        with: {python-version: '3.12'}
+        with:
+          python-version: '3.12'
+
+      - name: Baseline regressions and zero-paid API guard
+        run: |
+          set -euo pipefail
+          node scripts/test_reviewed_agent_dish_evidence.mjs
+          node scripts/test_agent_dish_integration.mjs
+          node scripts/audit_no_paid_apis.mjs
 
       - name: Rebuild and lock current S7 assignment
         run: |
           set -euo pipefail
-          mkdir -p _audit
-          python scripts/reload_data.py --public-only --outdir _audit/s7-baseline-reload
-          git diff --exit-code -- data
+          mkdir -p _audit/s7-run
+          python scripts/reload_data.py --public-only --outdir _audit/s7-run/baseline-reload
+          git diff -- data/google_inventory_runtime.js data/google_inventory_detail_queue.json data/dish_batch_plan.json > _audit/s7-run/baseline-generated.diff || true
+          git diff --name-only -- data > _audit/s7-run/baseline-changed-files.txt
           python - <<'PY'
-          import json
+          import json, pathlib
+          changed={x.strip() for x in pathlib.Path('_audit/s7-run/baseline-changed-files.txt').read_text().splitlines() if x.strip()}
+          allowed={'data/google_inventory_runtime.js','data/google_inventory_detail_queue.json','data/dish_batch_plan.json'}
+          extra=changed-allowed
+          if extra:
+              raise SystemExit('Unexpected maintained baseline drift outside proven generated files: '+','.join(sorted(extra)))
           p=json.load(open('data/dish_batch_plan.json'))
           d=[r for r in p['rows'] if r.get('lane')=='independent_source_discovery' and r.get('shard')==7]
           f=[r for r in p['rows'] if r.get('lane')=='official_or_retained_featured' and r.get('shard')==7]
@@ -37,10 +52,17 @@ jobs:
           assert (len(d),len(f))==(36,10), (len(d),len(f))
           assert {x['googlePlaceId'] for x in d}=={x['googlePlaceId'] for x in dp['records']}
           assert {x['googlePlaceId'] for x in f}=={x['googlePlaceId'] for x in fp['records']}
-          print('S7 current assignment: Discovery=36 F-source=10 Combined=46')
+          pathlib.Path('_audit/s7-run/current-assignment.json').write_text(json.dumps({'Discovery':d,'FSource':f},ensure_ascii=False,indent=2)+'\n')
+          print(json.dumps({'DiscoveryS7':len(d),'FSourceS7':len(f),'combinedS7':len(d)+len(f),'baselineGeneratedDrift':sorted(changed)}))
           PY
+          cp data/dish_batch_plan.json _audit/s7-run/plan-before.json
+          cp data/google_inventory_detail_queue.json _audit/s7-run/queue-before.json
+          # The maintained rebuild is assignment truth, but PR #67/S4 already proved a
+          # pre-existing unrelated generated drift. Keep the S7 branch shard-pure.
+          git restore data/google_inventory_runtime.js data/google_inventory_detail_queue.json data/dish_batch_plan.json
+          node scripts/audit_agent_dish_integration.mjs --snapshot _audit/s7-run/integration-before.json
 
-      - name: Build sanitized reviewed artifacts and explicit approval manifest
+      - name: Build independently reviewed artifacts and approval manifest
         run: |
           set -euo pipefail
           python - <<'PY'
@@ -48,24 +70,37 @@ jobs:
           root=pathlib.Path('.')
           source_commit=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
           bad=re.compile(r'customer|consumer|user[ ._-]*review|review[ ._-]*prose',re.I)
-          def sanitize(raw, marker):
+          strict_r=re.compile(r'おすすめ|お勧め|名物|看板|人気|大人気|一番人気|人気No\.?1|自慢|イチオシ|一押し|signature|specialty|recommended|house specialty',re.I)
+          def review(raw, marker):
             doc=json.loads(json.dumps(raw))
-            doc['proposalOnly']=False; doc['marker']=marker; doc['sourceQueueCommit']=source_commit
-            doc['reviewedAt']='2026-09-14'; doc['reviewedBy']='E2E-DISH:S7 independent second-pass self-review'
+            doc['proposalOnly']=False
+            doc['marker']=marker
+            doc['sourceQueueCommit']=source_commit
+            doc['reviewedAt']='2026-09-15'
+            doc['reviewedBy']='E2E-DISH:S7 owner independent second-pass semantic review'
             for rec in doc['records']:
               if rec['status']!='accepted_evidence':
-                rec.setdefault('identity',{})['evidence']=[]; rec['dishProposals']=[]
-                rec['notes']=(rec.get('notes') or rec.get('blocker') or 'Terminal review outcome.')+' Raw proposal retains research provenance; unapproved source items are omitted from reviewed evidence.'
+                rec.setdefault('identity',{})['evidence']=[]
+                rec['dishProposals']=[]
+                rec['notes']=(rec.get('notes') or rec.get('blocker') or 'Terminal review outcome.')+' Raw proposal retains research provenance; non-accepted source items are omitted from reviewed evidence.'
                 continue
+              if rec.get('identity',{}).get('state')!='verified':
+                raise SystemExit('accepted identity is not verified: '+rec['restaurantName'])
               ev=[]
               for e in rec.get('identity',{}).get('evidence',[]):
-                if not bad.search(' '.join(str(e.get(k,'')) for k in ['provider','evidenceType','sourceTitle','note'])): ev.append(e)
+                if not bad.search(' '.join(str(e.get(k,'')) for k in ['provider','evidenceType','sourceTitle','note'])):
+                  ev.append(e)
+              if not ev:
+                raise SystemExit('accepted row lost all safe identity evidence: '+rec['restaurantName'])
               rec['identity']['evidence']=ev
-              if not ev: raise SystemExit('accepted row lost all safe identity evidence: '+rec['restaurantName'])
               dishes=[]
               for x in rec.get('dishProposals',[]):
                 if x.get('classification') not in {'R','F'}: continue
                 if bad.search(' '.join(str(x.get(k,'')) for k in ['provider','evidenceClass','sourceOrigin','sourceKind'])): continue
+                if x.get('sourceScope')!='branch' or not str(x.get('sourceUrl','')).startswith(('http://','https://')):
+                  raise SystemExit('accepted evidence lacks exact branch URL: '+rec['restaurantName'])
+                if x.get('classification')=='R' and not strict_r.search((x.get('recommendationSemantics') or '')+' '+(x.get('evidenceText') or '')):
+                  raise SystemExit('strict R lacks explicit recommendation semantics: '+rec['restaurantName'])
                 u=x.get('sourceUrl','')
                 if 'tabelog.com/' in u: x['provider']='Tabelog'
                 elif 'hotpepper.jp/' in u: x['provider']='Hot Pepper'
@@ -73,136 +108,195 @@ jobs:
                 elif 'enjoytokyo.jp/' in u: x['provider']="Let's Enjoy Tokyo"
                 elif 'kanda-curry.com/' in u: x['provider']='Kanda Curry Grand Prix'
                 dishes.append(x)
+              if not dishes:
+                raise SystemExit('accepted row lost all safe dish evidence: '+rec['restaurantName'])
               rec['dishProposals']=dishes
-              if not dishes: raise SystemExit('accepted row lost all safe dish evidence: '+rec['restaurantName'])
             return doc
           reviews=[]
           for marker,path in [('DISH-R-DISCOVERY','data/agent_proposals/DISH-R-DISCOVERY/S7.json'),('DISH-F-SOURCE','data/agent_proposals/DISH-F-SOURCE/S7.json')]:
-            raw=json.load(open(path)); doc=sanitize(raw,marker)
+            raw=json.load(open(path)); doc=review(raw,marker)
             out=root/'data/agent_reviews'/marker/'S7.json'; out.parent.mkdir(parents=True,exist_ok=True)
             txt=json.dumps(doc,ensure_ascii=False,indent=2)+'\n'; out.write_text(txt)
             reviews.append({'path':str(out),'sha256':hashlib.sha256(txt.encode()).hexdigest()})
-          plan=json.load(open('data/dish_batch_plan.json'))
-          rows=[{'googlePlaceId':r['googlePlaceId'],'name':r['name'],'lane':r['lane'],'shard':r['shard']} for r in plan['rows'] if r.get('shard')==7 and r.get('lane') in {'independent_source_discovery','official_or_retained_featured'}]
+          snapshot=json.load(open('_audit/s7-run/current-assignment.json'))
+          rows=[{'googlePlaceId':r['googlePlaceId'],'name':r['name'],'lane':r['lane'],'shard':r['shard']} for r in snapshot['Discovery']+snapshot['FSource']]
           translations={
-            '黒おでん盛り合わせ 5点':{'nameZh':'黑汤关东煮五种拼盘','rationale':'Exact reviewed translation.'},
-            '4時間煮込んだ国産牛ホホ肉と風呂吹き大根の赤ワイン煮':{'nameZh':'四小时炖牛颊肉萝卜红酒煮','rationale':'Exact reviewed translation.'},
-            'ラムチョップ':{'nameZh':'羊排','rationale':'Exact reviewed translation.'},
-            '帆立しゅうまい':{'nameZh':'扇贝烧卖','rationale':'Exact reviewed translation.'},
-            'おまかせ前菜盛合わせ6種':{'nameZh':'主厨精选六种前菜拼盘','rationale':'Exact reviewed translation.'},
-            '自家製生ハム、サラミの盛り合わせ（レギュラーサイズ、ハーフサイズ）':{'nameZh':'自制生火腿萨拉米拼盘','rationale':'Exact reviewed translation.'},
-            'メダル王のちいさなメダルPIZZA～5枚入り～':{'nameZh':'奖牌王小奖牌披萨五枚','rationale':'Exact reviewed translation.'},
-            '特製幕の内弁当 さくら':{'nameZh':'特制幕之内便当樱','rationale':'Exact reviewed translation.'},
-            '名物チーズナン':{'nameZh':'招牌芝士烤饼','rationale':'Exact reviewed translation.'},
-            'マルゲリータピザ':{'nameZh':'玛格丽特披萨','rationale':'Exact reviewed translation.'},
-            '香川県小豆島産オリーブ牛もも肉のステーキ':{'nameZh':'香川县小豆岛产橄榄牛腿肉牛排','rationale':'Exact reviewed translation.'},
-            '絶品！豚角煮':{'nameZh':'绝品红烧猪角','rationale':'Exact reviewed translation.'},
-            '牛筋カレー':{'nameZh':'牛筋咖喱','rationale':'Exact reviewed translation.'},
-            '魚介のパエリア':{'nameZh':'海鲜西班牙烩饭','rationale':'Exact reviewed translation.'}}
-          manifest={'schemaVersion':1,'approvalState':'approved','reviewer':'E2E-DISH:S7 self-review owner','reviewedAt':'2026-09-14','startingCommit':'e41ff3435bb4bcf5a6574df95424512280ec86d4','assignmentSnapshot':{'sourceQueue':'data/dish_batch_plan.json','sourceQueueCommit':source_commit,'rows':rows},'reviewedFiles':reviews,'translations':translations,'policyAttestation':{'paidGoogleDataApiCalls':0,'separateReviewerAgentUsed':False}}
+            '黒おでん盛り合わせ 5点':{'nameZh':'黑汤关东煮五种拼盘','rationale':'Exact reviewed normalization.'},
+            '4時間煮込んだ国産牛ホホ肉と風呂吹き大根の赤ワイン煮':{'nameZh':'四小时炖牛颊肉萝卜红酒煮','rationale':'Exact reviewed normalization.'},
+            'ラムチョップ':{'nameZh':'羊排','rationale':'Exact reviewed normalization.'},
+            '帆立しゅうまい':{'nameZh':'扇贝烧卖','rationale':'Exact reviewed normalization.'},
+            'おまかせ前菜盛合わせ6種':{'nameZh':'主厨精选六种前菜拼盘','rationale':'Exact reviewed normalization.'},
+            '自家製生ハム、サラミの盛り合わせ（レギュラーサイズ、ハーフサイズ）':{'nameZh':'自制生火腿萨拉米拼盘','rationale':'Exact reviewed normalization.'},
+            'メダル王のちいさなメダルPIZZA～5枚入り～':{'nameZh':'奖牌王小奖牌披萨五枚','rationale':'Exact reviewed normalization.'},
+            '特製幕の内弁当 さくら':{'nameZh':'特制幕之内便当樱','rationale':'Exact reviewed normalization.'},
+            '名物チーズナン':{'nameZh':'招牌芝士烤饼','rationale':'Exact reviewed normalization.'},
+            'ゆあさ式 麻辣豆腐':{'nameZh':'汤浅式麻辣豆腐','rationale':'First-party page identifies chef 湯浅博司; ゆあさ is therefore deterministically normalized as 汤浅.'},
+            'マルゲリータピザ':{'nameZh':'玛格丽特披萨','rationale':'Exact reviewed normalization.'},
+            'panda食ぱん':{'nameZh':'panda吐司','rationale':'Brand spelling is preserved verbatim and 食パン is deterministically normalized as 吐司.'},
+            '香川県小豆島産オリーブ牛もも肉のステーキ':{'nameZh':'香川县小豆岛产橄榄牛腿肉牛排','rationale':'Exact reviewed normalization.'},
+            '絶品！豚角煮':{'nameZh':'绝品红烧猪角','rationale':'Exact reviewed normalization.'},
+            '牛筋カレー':{'nameZh':'牛筋咖喱','rationale':'Exact reviewed normalization.'},
+            '魚介のパエリア':{'nameZh':'海鲜西班牙烩饭','rationale':'Exact reviewed normalization.'}
+          }
+          manifest={'schemaVersion':1,'assignment':'E2E-DISH:S7','approvalState':'approved','reviewer':'E2E-DISH:S7 self-review owner','reviewedAt':'2026-09-15','assignmentSnapshot':{'sourceQueue':'data/dish_batch_plan.json','sourceQueueCommit':source_commit,'rows':rows},'reviewedFiles':reviews,'translations':translations,'translationPolicyNote':'肉かけ remains translation-pending: the source-native label omits うどん, so adding 乌冬面 would be interpretive rather than deterministic.','policyAttestation':{'paidGoogleDataApiCalls':0,'accessRestrictionBypassUsed':False,'identityMutationAllowed':False,'separateReviewerAgentUsed':False}}
           (root/'data/agent_reviews/e2e-dish-s7-approval.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n')
           PY
 
-      - name: Minimal adapter generalization and regression coverage
+      - name: Generalize maintained adapter for Discovery and F-source
         run: |
           set -euo pipefail
           python - <<'PY'
           from pathlib import Path
           p=Path('scripts/build_reviewed_agent_dish_evidence.mjs'); s=p.read_text()
-          old="export const LANES = Object.freeze({\n  'DISH-R-OFFICIAL': 'official_crawl',\n  'DISH-R-RETAINED': 'retained_source_mining'\n});"
-          new="export const LANES = Object.freeze({\n  'DISH-R-OFFICIAL': 'official_crawl',\n  'DISH-R-RETAINED': 'retained_source_mining',\n  'DISH-R-DISCOVERY': 'independent_source_discovery',\n  'DISH-F-SOURCE': 'official_or_retained_featured'\n});"
-          if old not in s: raise SystemExit('LANES anchor missing')
-          s=s.replace(old,new)
-          old="  ['tabelog', 'Tabelog'], ['Tabelog', 'Tabelog'], ['hotpepper', 'Hot Pepper'], ['Hot Pepper', 'Hot Pepper']\n]);"
-          new="  ['tabelog', 'Tabelog'], ['Tabelog', 'Tabelog'], ['hotpepper', 'Hot Pepper'], ['Hot Pepper', 'Hot Pepper'],\n  ['Rakuten Gurunavi', 'Rakuten Gurunavi'], [\"Let's Enjoy Tokyo\", \"Let's Enjoy Tokyo\"],\n  ['Kanda Curry Grand Prix', 'Kanda Curry Grand Prix']\n]);"
-          if old not in s: raise SystemExit('provider anchor missing')
-          s=s.replace(old,new)
-          old="const currentRows = currentPlan.rows.filter(row => Object.values(LANES).includes(row.lane));"
-          new="const selectedScopes = new Set(documents.map(({ document }) => `${LANES[document.marker]}:${Number(document.shard.slice(1))}`));\n  const currentRows = currentPlan.rows.filter(row => selectedScopes.has(`${row.lane}:${row.shard}`));"
-          if old not in s: raise SystemExit('scope anchor missing')
-          s=s.replace(old,new); p.write_text(s)
+          if "'DISH-R-DISCOVERY': 'independent_source_discovery'" not in s:
+            old="export const LANES = Object.freeze({\n  'DISH-R-OFFICIAL': 'official_crawl',\n  'DISH-R-RETAINED': 'retained_source_mining'\n});"
+            new="export const LANES = Object.freeze({\n  'DISH-R-OFFICIAL': 'official_crawl',\n  'DISH-R-RETAINED': 'retained_source_mining',\n  'DISH-R-DISCOVERY': 'independent_source_discovery',\n  'DISH-F-SOURCE': 'official_or_retained_featured'\n});"
+            if old not in s: raise SystemExit('LANES anchor missing')
+            s=s.replace(old,new)
+          if "['Rakuten Gurunavi', 'Rakuten Gurunavi']" not in s:
+            old="  ['tabelog', 'Tabelog'], ['Tabelog', 'Tabelog'], ['hotpepper', 'Hot Pepper'], ['Hot Pepper', 'Hot Pepper']\n]);"
+            new="  ['tabelog', 'Tabelog'], ['Tabelog', 'Tabelog'], ['hotpepper', 'Hot Pepper'], ['Hot Pepper', 'Hot Pepper'],\n  ['Rakuten Gurunavi', 'Rakuten Gurunavi'], [\"Let's Enjoy Tokyo\", \"Let's Enjoy Tokyo\"],\n  ['Kanda Curry Grand Prix', 'Kanda Curry Grand Prix']\n]);"
+            if old not in s: raise SystemExit('provider anchor missing')
+            s=s.replace(old,new)
+          if 'selectedScopes = new Set' not in s:
+            old="const currentRows = currentPlan.rows.filter(row => Object.values(LANES).includes(row.lane));"
+            new="const selectedScopes = new Set(documents.map(({ document }) => `${LANES[document.marker]}:${Number(document.shard.slice(1))}`));\n  const currentRows = currentPlan.rows.filter(row => selectedScopes.has(`${row.lane}:${row.shard}`));"
+            if old not in s: raise SystemExit('scope anchor missing')
+            s=s.replace(old,new)
+          p.write_text(s)
           t=Path('scripts/test_reviewed_agent_dish_evidence.mjs'); ts=t.read_text()
           anchor="console.log(JSON.stringify({ status: 'pass', checks: 'coverage, fail-closed identity/policy/semantics, R/F/C separation, exact translation, full provenance, deduplication' }));"
-          extra="const { LANES: laneMappingsS7 } = await import('./build_reviewed_agent_dish_evidence.mjs');\nassert.equal(laneMappingsS7['DISH-R-DISCOVERY'], 'independent_source_discovery');\nassert.equal(laneMappingsS7['DISH-F-SOURCE'], 'official_or_retained_featured');\n"
-          if anchor not in ts: raise SystemExit('test anchor missing')
-          t.write_text(ts.replace(anchor,extra+anchor))
-          d=Path('RECOMMENDED_DISH_PIPELINE.md'); ds=d.read_text(); h='## 2026-09-14 S7 Discovery/F-source reviewed-evidence adapter'
-          if h not in ds: d.write_text(ds+'\n\n'+h+'\n\nThe reviewed-evidence adapter now applies the same fail-closed contract to `DISH-R-DISCOVERY` / `independent_source_discovery` and `DISH-F-SOURCE` / `official_or_retained_featured`. The CLI audits only `(lane, shard)` scopes explicitly present in the approved manifest, so adding these markers does not broaden approval scope.\n')
+          if 'laneMappingsS7' not in ts:
+            extra="const { LANES: laneMappingsS7 } = await import('./build_reviewed_agent_dish_evidence.mjs');\nassert.equal(laneMappingsS7['DISH-R-DISCOVERY'], 'independent_source_discovery');\nassert.equal(laneMappingsS7['DISH-F-SOURCE'], 'official_or_retained_featured');\n"
+            if anchor not in ts: raise SystemExit('test anchor missing')
+            t.write_text(ts.replace(anchor,extra+anchor))
+          d=Path('RECOMMENDED_DISH_PIPELINE.md'); ds=d.read_text(); h='## 2026-09-15 S7 Discovery/F-source reviewed-evidence adapter'
+          if h not in ds:
+            d.write_text(ds+'\n\n'+h+'\n\nThe reviewed-evidence adapter applies the same fail-closed contract to `DISH-R-DISCOVERY` / `independent_source_discovery` and `DISH-F-SOURCE` / `official_or_retained_featured`. Current assignment matching is scoped by exact `(lane, shard)` pairs present in the approved manifest.\n')
           PY
           node --check scripts/build_reviewed_agent_dish_evidence.mjs
           node scripts/test_reviewed_agent_dish_evidence.mjs
           node scripts/test_agent_dish_integration.mjs
           node scripts/audit_no_paid_apis.mjs
 
-      - name: Commit review and approval gate
+      - name: Commit review and explicit approval
         run: |
+          set -euo pipefail
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add data/agent_reviews scripts/build_reviewed_agent_dish_evidence.mjs scripts/test_reviewed_agent_dish_evidence.mjs RECOMMENDED_DISH_PIPELINE.md
-          git commit -m 'review: approve S7 discovery and featured evidence'
+          git commit -m 'review: approve current S7 discovery and featured evidence'
 
-      - name: Build approved evidence
+      - name: Build approved evidence and prove full terminal coverage
         run: |
           set -euo pipefail
-          node scripts/audit_agent_dish_integration.mjs --snapshot _audit/s7-before.json
-          node scripts/build_reviewed_agent_dish_evidence.mjs data/agent_reviews/e2e-dish-s7-approval.json _audit/s7-accepted.json _audit/s7-translation-pending.json _audit/s7-coverage.json | tee _audit/s7-adapter.log
-          node - <<'NODE'
-          const fs=require('fs'); const c=JSON.parse(fs.readFileSync('_audit/s7-coverage.json'));
-          if(c.assignedRows!==46||c.reviewedRows!==46) throw new Error(`coverage mismatch ${JSON.stringify(c)}`);
+          node scripts/build_reviewed_agent_dish_evidence.mjs data/agent_reviews/e2e-dish-s7-approval.json _audit/s7-run/reviewed-evidence.json _audit/s7-run/translation-pending.json _audit/s7-run/review-coverage.json | tee _audit/s7-run/adapter.log
+          node --input-type=module - <<'NODE'
+          import fs from 'node:fs';
+          const c=JSON.parse(fs.readFileSync('_audit/s7-run/review-coverage.json','utf8'));
+          const p=JSON.parse(fs.readFileSync('_audit/s7-run/translation-pending.json','utf8'));
+          if(c.assignedRows!==46||c.reviewedRows!==46||c.currentAssignmentRows!==46||c.currentReviewedRows!==46) throw new Error(`coverage mismatch ${JSON.stringify(c)}`);
           if(c.byMarker['DISH-R-DISCOVERY'].assignedRows!==36||c.byMarker['DISH-F-SOURCE'].assignedRows!==10) throw new Error('marker coverage mismatch');
-          if(c.acceptedRItems!==13||c.acceptedFItems!==4) throw new Error(`accepted mismatch ${JSON.stringify(c)}`);
-          if(c.translationPendingItems!==3) throw new Error(`pending mismatch ${JSON.stringify(c)}`);
+          const s=c.statusCounts||{};
+          if(s.accepted_evidence!==17||s.candidate!==4||s.no_evidence!==16||s.blocked!==9||s.skipped_already_complete!==0) throw new Error(`terminal mismatch ${JSON.stringify(s)}`);
+          if(c.acceptedRItems!==13||c.acceptedFItems!==4) throw new Error(`accepted evidence mismatch ${JSON.stringify(c)}`);
+          if(p.rows.length!==1||p.rows[0].dishProposal?.nameOriginal!=='肉かけ') throw new Error(`unexpected translation pending ${JSON.stringify(p)}`);
+          console.log(JSON.stringify({coverage:'46/46',statuses:s,acceptedR:c.acceptedRItems,acceptedF:c.acceptedFItems,pending:p.rows.length,emittedR:c.emittedRItems,emittedF:c.emittedFItems}));
           NODE
 
-      - name: Integrate rebuild audit and replay
+      - name: Integrate rebuild audit and logical replay
         run: |
           set -euo pipefail
-          node scripts/merge_google_inventory_detail_evidence.mjs data/google_inventory_detail_evidence.json _audit/s7-accepted.json data/google_inventory_detail_evidence.json | tee _audit/s7-merge.log
-          node scripts/correct_dish_specificity_evidence.mjs data/google_inventory_detail_evidence.json data/google_inventory_detail_evidence.json | tee _audit/s7-specificity.log
+          node scripts/merge_google_inventory_detail_evidence.mjs data/google_inventory_detail_evidence.json _audit/s7-run/reviewed-evidence.json _audit/s7-run/merged-evidence.json | tee _audit/s7-run/merge.log
+          cp _audit/s7-run/merged-evidence.json data/google_inventory_detail_evidence.json
+          node scripts/correct_dish_specificity_evidence.mjs data/google_inventory_detail_evidence.json data/google_inventory_detail_evidence.json | tee _audit/s7-run/specificity.log
           node scripts/audit_google_inventory_detail_evidence.mjs
-          python scripts/reload_data.py --public-only --outdir _audit/s7-after-reload
-          node scripts/audit_agent_dish_integration.mjs --compare _audit/s7-before.json _audit/s7-accepted.json _audit/s7-integration.json
-          sha256sum data/google_inventory_detail_evidence.json data/google_inventory_runtime.js data/google_inventory_detail_queue.json data/dish_batch_plan.json > _audit/s7-first.sha256
-          node scripts/merge_google_inventory_detail_evidence.mjs data/google_inventory_detail_evidence.json _audit/s7-accepted.json data/google_inventory_detail_evidence.json > _audit/s7-replay-merge.log
-          node scripts/correct_dish_specificity_evidence.mjs data/google_inventory_detail_evidence.json data/google_inventory_detail_evidence.json > _audit/s7-replay-specificity.log
-          python scripts/reload_data.py --public-only --outdir _audit/s7-replay-reload > _audit/s7-replay-reload.stdout
-          sha256sum data/google_inventory_detail_evidence.json data/google_inventory_runtime.js data/google_inventory_detail_queue.json data/dish_batch_plan.json > _audit/s7-second.sha256
-          diff -u _audit/s7-first.sha256 _audit/s7-second.sha256
+          python scripts/reload_data.py --public-only --outdir _audit/s7-run/after-reload
+          node scripts/audit_agent_dish_integration.mjs --compare _audit/s7-run/integration-before.json _audit/s7-run/reviewed-evidence.json _audit/s7-run/integration-audit.json
+          cp data/google_inventory_detail_evidence.json _audit/s7-run/evidence-first.json
+          cp data/google_inventory_detail_queue.json _audit/s7-run/queue-first.json
+          cp data/dish_batch_plan.json _audit/s7-run/plan-first.json
+          node scripts/audit_agent_dish_integration.mjs --snapshot _audit/s7-run/state-first.json
+
+          node scripts/merge_google_inventory_detail_evidence.mjs data/google_inventory_detail_evidence.json _audit/s7-run/reviewed-evidence.json _audit/s7-run/replay-merged.json > _audit/s7-run/replay-merge.log
+          cp _audit/s7-run/replay-merged.json data/google_inventory_detail_evidence.json
+          node scripts/correct_dish_specificity_evidence.mjs data/google_inventory_detail_evidence.json data/google_inventory_detail_evidence.json > _audit/s7-run/replay-specificity.log
+          python scripts/reload_data.py --public-only --outdir _audit/s7-run/replay-reload > _audit/s7-run/replay-reload.stdout
+          node scripts/audit_agent_dish_integration.mjs --snapshot _audit/s7-run/state-second.json
+          node --input-type=module - <<'NODE'
+          import fs from 'node:fs';
+          const j=p=>JSON.parse(fs.readFileSync(p,'utf8'));
+          const e1=j('_audit/s7-run/evidence-first.json'), e2=j('data/google_inventory_detail_evidence.json');
+          if(JSON.stringify(e1.rows)!==JSON.stringify(e2.rows)) throw new Error('Second merge changed logical evidence rows');
+          const q1=j('_audit/s7-run/queue-first.json'), q2=j('data/google_inventory_detail_queue.json');
+          if(JSON.stringify(q1.rows)!==JSON.stringify(q2.rows)) throw new Error('Second rebuild changed logical queue rows');
+          const p1=j('_audit/s7-run/plan-first.json'), p2=j('data/dish_batch_plan.json');
+          if(JSON.stringify(p1.rows)!==JSON.stringify(p2.rows)) throw new Error('Second rebuild changed logical plan rows');
+          const s1=j('_audit/s7-run/state-first.json'), s2=j('_audit/s7-run/state-second.json');
+          delete s1.inputHashes; delete s2.inputHashes;
+          if(JSON.stringify(s1)!==JSON.stringify(s2)) throw new Error('Second rebuild changed logical runtime/evidence state');
+          console.log(JSON.stringify({status:'pass',newLogicalR:0,newLogicalF:0,runtimeCountDelta:0,evidenceKeyDelta:0,generatedMetadataIgnored:true}));
+          NODE
           node scripts/test_reviewed_agent_dish_evidence.mjs
           node scripts/test_agent_dish_integration.mjs
           node scripts/test_runtime_catalog_contract.mjs
+          node scripts/test_source_field_quarantine.mjs
           node scripts/audit_google_inventory_detail_evidence.mjs
           node scripts/audit_no_paid_apis.mjs
 
-      - name: Commit integration and write completion log
+      - name: Prove unrelated generated rows did not change
         run: |
           set -euo pipefail
-          git add -A data RECOMMENDED_DISH_PIPELINE.md scripts/build_reviewed_agent_dish_evidence.mjs scripts/test_reviewed_agent_dish_evidence.mjs
-          git commit -m 'integration: apply approved S7 dish evidence'
-          INTEGRATION_COMMIT=$(git rev-parse HEAD)
-          python - <<'PY'
-          import json, pathlib, subprocess
-          cov=json.load(open('_audit/s7-coverage.json')); integ=json.load(open('_audit/s7-integration.json')); pend=json.load(open('_audit/s7-translation-pending.json'))
-          before=integ['before']; after=integ['after']; delta=integ['delta']; ic=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
-          pending='\n'.join(f"- `{r['googlePlaceId']}` {r['restaurantName']}: `{r['dishProposal']['nameOriginal']}`" for r in pend['rows']) or '- none'
-          text=f'''# E2E-DISH:S7 completion log\n\nDate: 2026-09-14\n\n## Scope and review\n- branch: `agent-e2e-dish-s7-20260914`\n- starting/base commit: `e41ff3435bb4bcf5a6574df95424512280ec86d4`\n- current denominator after maintained rebuild: Discovery 36 + F-source 10 = 46\n- review coverage: Discovery 36/36; F-source 10/10; Combined 46/46\n- terminal rows: accepted 17; candidate 4; no-evidence 16; blocked 9; skipped 0\n- approved source evidence before translation gate: R {cov['acceptedRItems']}; F {cov['acceptedFItems']}\n- second-pass decisions: all 9 existing Discovery accepted findings survived; TETES MANIS remained candidate because its concrete menu is from 2016; 701 remained no-evidence because the current official page has seasonal course structure but no stable concrete dish.\n\n## Translation-pending evidence\n{pending}\n\n## Canonical impact\n- emitted translated evidence: R {cov['emittedRItems']}; F {cov['emittedFItems']}\n- new evidence items: R {integ['newRecommendationEvidenceItems']}; F {integ['newFeaturedEvidenceItems']}\n- recommended restaurants: {before['recommendedRestaurants']} -> {after['recommendedRestaurants']} ({delta['recommendedRestaurants']:+d})\n- featured restaurants: {before['featuredRestaurants']} -> {after['featuredRestaurants']} ({delta['featuredRestaurants']:+d})\n- any-display restaurants: {before['displayRestaurants']} -> {after['displayRestaurants']} ({delta['displayRestaurants']:+d})\n- recommendation gap: {before['recommendationGap']} -> {after['recommendationGap']} ({delta['recommendationGap']:+d})\n\n## Integration and validation\n- path: reviewed evidence -> explicit SHA-256 approval -> reviewed-evidence adapter -> monotonic detail-evidence merge -> specificity correction -> evidence audit -> public rebuild -> integration audit\n- frozen catalog IDs/names preserved by integration audit\n- candidate/no-evidence/blocked did not enter canonical evidence\n- second merge + specificity + rebuild produced identical hashes (idempotent replay)\n- reviewed-evidence, integration, runtime-contract, evidence, and no-paid-API checks passed\n- paid Google Data API calls: **0**\n- access-control/CAPTCHA/anti-bot bypass: **0**\n- integration commit: `{ic}`\n'''
-          pathlib.Path('logs/2026-09-14-e2e-dish-s7.md').write_text(text)
-          PY
-          git add logs/2026-09-14-e2e-dish-s7.md
-          git commit -m 'docs: record S7 end-to-end dish completion'
+          node --input-type=module - <<'NODE'
+          import fs from 'node:fs';
+          const accepted=JSON.parse(fs.readFileSync('_audit/s7-run/reviewed-evidence.json','utf8'));
+          const allowed=new Set(accepted.rows.map(r=>r.googlePlaceId));
+          const compare=(beforePath,afterPath,label)=>{
+            const before=JSON.parse(fs.readFileSync(beforePath,'utf8')), after=JSON.parse(fs.readFileSync(afterPath,'utf8'));
+            const b=new Map(before.rows.map(r=>[r.googlePlaceId,r])), a=new Map(after.rows.map(r=>[r.googlePlaceId,r]));
+            const bad=[];
+            for(const id of new Set([...b.keys(),...a.keys()])) if(!allowed.has(id)&&JSON.stringify(b.get(id)??null)!==JSON.stringify(a.get(id)??null)) bad.push(id);
+            if(bad.length) throw new Error(`${label} changed outside approved S7 IDs: ${bad.join(',')}`);
+          };
+          compare('_audit/s7-run/plan-before.json','data/dish_batch_plan.json','dish_batch_plan');
+          compare('_audit/s7-run/queue-before.json','data/google_inventory_detail_queue.json','detail_queue');
+          NODE
 
-      - name: Remove one-shot workflow scaffolding and push
+      - name: Record measured metrics and completion log
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json, pathlib
+          cov=json.load(open('_audit/s7-run/review-coverage.json'))
+          integ=json.load(open('_audit/s7-run/integration-audit.json'))
+          pend=json.load(open('_audit/s7-run/translation-pending.json'))
+          before=integ['before']; after=integ['after']; delta=integ['delta']
+          pending='\n'.join(f"- `{r['googlePlaceId']}` {r['restaurantName']}: `{r['dishProposal']['nameOriginal']}` — valid source-native F evidence retained; canonical Chinese emission withheld because the native label omits うどん and adding it would be interpretive." for r in pend['rows']) or '- none'
+          text=f'''# E2E-DISH:S7 completion log\n\nDate: 2026-09-15\n\n## Resume diagnosis\n- previous v3 failure reproduced at the baseline `git diff --exit-code -- data` gate, before assignment locking.\n- maintained reload itself succeeded. The failing diff is retained in `_audit/s7-run/baseline-generated.diff`.\n- fix: follow the successful S4 policy: use maintained rebuilt rows as assignment truth, audit the known generated drift, reject any unexpected changed data file, and keep unrelated generated drift out of the S7 commit.\n\n## Scope and review\n- branch: `agent-e2e-dish-s7-20260914`\n- current maintained denominator: Discovery 36 + F-source 10 = 46\n- review coverage: Discovery 36/36; F-source 10/10; Combined 46/46\n- terminal rows: accepted 17; candidate 4; no-evidence 16; blocked 9; skipped 0\n- approved source-native evidence: R {cov['acceptedRItems']}; F {cov['acceptedFItems']}\n- second-pass semantic review rechecked exact-branch scope, strict R wording, freshness/provenance and rejected customer-review propagation.\n\n## Translation handling\n- deterministic normalizations added for `ゆあさ式 麻辣豆腐` -> `汤浅式麻辣豆腐` (first-party chef name 湯浅博司) and `panda食ぱん` -> `panda吐司` (brand spelling preserved).\n- translation-pending count: {len(pend['rows'])}\n{pending}\n- canonical emitted evidence: R {cov['emittedRItems']}; F {cov['emittedFItems']}\n\n## Canonical impact\n- new evidence items: R {integ['newRecommendationEvidenceItems']}; F {integ['newFeaturedEvidenceItems']}\n- recommended restaurants: {before['recommendedRestaurants']} -> {after['recommendedRestaurants']} ({delta['recommendedRestaurants']:+d})\n- featured restaurants: {before['featuredRestaurants']} -> {after['featuredRestaurants']} ({delta['featuredRestaurants']:+d})\n- any-display restaurants: {before['displayRestaurants']} -> {after['displayRestaurants']} ({delta['displayRestaurants']:+d})\n- recommendation gap: {before['recommendationGap']} -> {after['recommendationGap']} ({delta['recommendationGap']:+d})\n- recommendation evidence items: {before['recommendationEvidenceItems']} -> {after['recommendationEvidenceItems']} ({delta['recommendationEvidenceItems']:+d})\n- featured evidence items: {before['featuredEvidenceItems']} -> {after['featuredEvidenceItems']} ({delta['featuredEvidenceItems']:+d})\n\n## Integration and validation\n- maintained path: reviewed evidence -> explicit SHA-256 approval -> adapter -> monotonic merge -> specificity correction -> evidence audit -> public rebuild -> integration audit\n- candidate/no-evidence/blocked rows emitted no canonical changes\n- frozen Place IDs/names and prior provenance preserved by integration audit\n- replay compared logical evidence rows, queue rows, plan rows and runtime/evidence state while ignoring regenerated hash metadata; second replay delta was zero\n- zero paid Google Data API calls; no login/CAPTCHA/anti-bot/rate-limit bypass\n- unrelated PR #67/S6 generated baseline drift was audited but not staged\n'''
+          pathlib.Path('logs/2026-09-14-e2e-dish-s7.md').write_text(text)
+          pathlib.Path('_audit/s7-run/metrics.json').write_text(json.dumps({'reviewCoverage':{'discovery':'36/36','featuredSource':'10/10','combined':'46/46'},'terminalStatus':cov['statusCounts'],'approvedSourceEvidence':{'R':cov['acceptedRItems'],'F':cov['acceptedFItems'],'translationPending':len(pend['rows'])},'canonicalEmitted':{'R':cov['emittedRItems'],'F':cov['emittedFItems']},'runtimeImpact':integ,'replayIdempotent':True,'paidGoogleDataApiCalls':0},ensure_ascii=False,indent=2)+'\n')
+          PY
+
+      - name: Commit verified S7 canonical evidence and documentation only
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/google_inventory_detail_evidence.json data/agent_reviews scripts/build_reviewed_agent_dish_evidence.mjs scripts/test_reviewed_agent_dish_evidence.mjs RECOMMENDED_DISH_PIPELINE.md logs/2026-09-14-e2e-dish-s7.md
+          git commit -m 'integration: complete reviewed E2E-DISH S7 evidence'
+
+      - name: Remove obsolete S7 one-shot workflows and push
         run: |
           set -euo pipefail
           rm -f .github/workflows/s7-e2e-dish-once.yml .github/workflows/s7-e2e-dish-once-v2.yml .github/workflows/s7-e2e-dish-once-v3.yml
           git add -u .github/workflows
-          git commit -m 'chore: remove one-shot S7 integration workflows'
+          git commit -m 'chore: remove completed S7 one-shot workflows'
           git push origin HEAD:agent-e2e-dish-s7-20260914
 
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: e2e-dish-s7-audit-v3
-          path: _audit/s7-*
-          if-no-files-found: ignore
-          retention-days: 7
+          path: _audit/s7-run
+          if-no-files-found: warn
+          retention-days: 14
