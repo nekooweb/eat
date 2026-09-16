@@ -1,0 +1,36 @@
+name: Final reviewed dish integration v3
+
+on:
+  push:
+    branches:
+      - final-dish-integration-20260915
+    paths:
+      - '.github/workflows/final-dish-integration-v3.yml'
+      - 'scripts/finalize_official_retained_reviews_v2.py'
+      - 'data/agent_proposals/DISH-R-OFFICIAL/S0-20260914-1903.json'
+      - 'data/agent_proposals/DISH-R-OFFICIAL/S6-20260914.json'
+      - 'data/agent_proposals/DISH-R-RETAINED/S0-main-20260914.json'
+      - 'data/agent_proposals/DISH-R-RETAINED/S6-main-20260914.json'
+
+permissions:
+  contents: write
+
+jobs:
+  integrate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Switch runner to v2 central reviewer
+        run: |
+          sed -i 's#python scripts/finalize_official_retained_reviews.py#python scripts/finalize_official_retained_reviews_v2.py#' scripts/run_final_dish_integration.sh
+          grep -n 'finalize_official_retained_reviews_v2.py' scripts/run_final_dish_integration.sh
+      - name: Run complete final integration
+        run: bash scripts/run_final_dish_integration.sh
