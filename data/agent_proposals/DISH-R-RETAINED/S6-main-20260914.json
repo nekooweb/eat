@@ -1,0 +1,493 @@
+{
+  "schemaVersion": 1,
+  "assignmentMarker": "DISH-R-RETAINED:S6",
+  "lane": "retained_source_mining",
+  "shard": 6,
+  "checkedAt": "2026-09-14T18:39:00+09:00",
+  "sourcePlan": {
+    "path": "data/dish_batch_plan.json",
+    "sha": "0cc8a87325499f3e6d575681c53e65fc9b5b8ea6",
+    "generatedAt": "2026-09-10T06:43:53.606Z"
+  },
+  "contractNote": "data/agent_library/README.md, data/agent_library/manifest.json, and data/agent_library/proposal-template.json are absent from current main (404). This proposal therefore preserves the requested evidence/provenance fields in a conservative compatible structure and does not modify canonical runtime or SQLite data.",
+  "policy": {
+    "paidGoogleDataApiCalls": 0,
+    "broadWebCrawlPerformed": false,
+    "repositoryEvidenceMiningOnly": true,
+    "canonicalIdentityMutation": false,
+    "runtimeMutation": false,
+    "sqliteMutation": false,
+    "reviewTextAcceptedAsMenuEvidence": false,
+    "recommendationRequiresExplicitSemantics": true,
+    "ordinaryMenuItemsRemainF": true
+  },
+  "summary": {
+    "assigned": 31,
+    "rFound": 0,
+    "fFound": 5,
+    "candidates": 0,
+    "noEvidence": 21,
+    "blocked": 5,
+    "skipped": 0
+  },
+  "rows": [
+    {
+      "googlePlaceId": "ChIJ0W7HkgOMGGARSdJEu-NnDB4",
+      "name": "八ツ手屋",
+      "provider": "Tabelog",
+      "sourceUrl": null,
+      "checkedAt": "2026-09-06",
+      "classification": "no_evidence",
+      "evidenceClass": "retained_provider_fact_no_dish_field",
+      "dishes": [],
+      "identityEvidence": "Exact Place-ID retained Tabelog source fact names 八ツ手屋 and preserves address/budget/closure/cuisine/hours/name fields.",
+      "notes": "Repository source fact has no dishes field. Cuisine/name were not used to infer any dish."
+    },
+    {
+      "googlePlaceId": "ChIJ2XRaORGMGGARr46tS5SgYE0",
+      "name": "タコベル 神保町店",
+      "provider": "Tabelog",
+      "sourceUrl": null,
+      "checkedAt": "2026-09-05",
+      "classification": "no_evidence",
+      "evidenceClass": "retained_provider_fact_no_dish_field",
+      "dishes": [],
+      "identityEvidence": "Exact Place-ID retained Tabelog source fact names タコベル 神保町店.",
+      "notes": "Retained fields include budget/cuisine/hours/name but no dish evidence."
+    },
+    {
+      "googlePlaceId": "ChIJ40toFcqNGGARg-HT_n1RPRk",
+      "name": "厨 神保町本店",
+      "provider": "Tabelog",
+      "sourceUrl": null,
+      "checkedAt": "2026-09-05",
+      "classification": "no_evidence",
+      "evidenceClass": "retained_provider_fact_no_dish_field",
+      "dishes": [],
+      "identityEvidence": "Exact Place-ID retained Tabelog source fact names 厨 神保町本店.",
+      "notes": "Retained fields contain no dishes field."
+    },
+    {
+      "googlePlaceId": "ChIJ4ePngBmMGGARu5LUFztq7tI",
+      "name": "喫茶 穂高",
+      "provider": "Tabelog",
+      "sourceUrl": null,
+      "checkedAt": "2026-09-05",
+      "classification": "no_evidence",
+      "evidenceClass": "retained_provider_fact_no_dish_field",
+      "dishes": [],
+      "identityEvidence": "Exact Place-ID retained Tabelog source fact names 喫茶 穂高 and preserves the exact address.",
+      "notes": "No retained dish field."
+    },
+    {
+      "googlePlaceId": "ChIJAQCf4hCMGGARuudoP7m6-Nw",
+      "name": "兵六",
+      "provider": "Tabelog",
+      "sourceUrl": null,
+      "checkedAt": "2026-09-05",
+      "classification": "no_evidence",
+      "evidenceClass": "retained_provider_fact_no_dish_field",
+      "dishes": [],
+      "identityEvidence": "Exact Place-ID retained Tabelog source fact names 兵六 and preserves exact address/hours metadata.",
+      "notes": "The retained source-enrichment row also carries an empty dishes array; no dish was inferred."
+    },
+    {
+      "googlePlaceId": "ChIJfx9Z3BOMGGARF9DCcdAljCg",
+      "name": "ひげ勘",
+      "provider": "Tabelog",
+      "sourceUrl": null,
+      "checkedAt": "2026-09-05",
+      "classification": "no_evidence",
+      "evidenceClass": "retained_provider_fact_no_dish_field",
+      "dishes": [],
+      "identityEvidence": "Exact Place-ID retained Tabelog source fact names ひげ勘.",
+      "notes": "No retained dish field."
+    },
+    {
+      "googlePlaceId": "ChIJObdaJhSMGGARBxqfRHHcNEA",
+      "name": "麺屋33",
+      "provider": "Tabelog",
+      "sourceUrl": null,
+      "checkedAt": "2026-09-05",
+      "classification": "no_evidence",
+      "evidenceClass": "retained_provider_fact_no_dish_field",
+      "dishes": [],
+      "identityEvidence": "Exact Place-ID retained Tabelog source fact names 麺屋33.",
+      "notes": "Cuisine/tags mention ramen and tsukemen but are not dish evidence."
+    },
+    {
+      "googlePlaceId": "ChIJP857rBGMGGARhVAFsAnb2S8",
+      "name": "おむすびさが",
+      "provider": "Tabelog",
+      "sourceUrl": null,
+      "checkedAt": "2026-09-05",
+      "classification": "no_evidence",
+      "evidenceClass": "retained_provider_fact_no_dish_field",
+      "dishes": [],
+      "identityEvidence": "Exact Place-ID retained Tabelog source fact names おむすびさが.",
+      "notes": "The tag おにぎり is cuisine/category context, not a concrete retained dish field."
+    },
+    {
+      "googlePlaceId": "ChIJq1Gv1cKNGGARTwACmZuHycs",
+      "name": "Ono Grill Tokyo",
+      "provider": "Tabelog",
+      "sourceUrl": null,
+      "checkedAt": "2026-09-05",
+      "classification": "no_evidence",
+      "evidenceClass": "retained_provider_fact_no_dish_field",
+      "dishes": [],
+      "identityEvidence": "Exact Place-ID retained Tabelog source fact names Ono Grill Tokyo.",
+      "notes": "No retained dish field."
+    },
+    {
+      "googlePlaceId": "ChIJQ1Jpnz-MGGARvnvU23zc1GE",
+      "name": "餃子専門店 藤井屋",
+      "provider": "Tabelog",
+      "sourceUrl": null,
+      "checkedAt": "2026-09-05",
+      "classification": "no_evidence",
+      "evidenceClass": "retained_provider_fact_no_dish_field",
+      "dishes": [],
+      "identityEvidence": "Exact Place-ID Tabelog source fact retains the source-native restaurant name 餃子専門店 藤井屋.",
+      "notes": "The restaurant name contains 餃子 but dish inference from the name is forbidden."
+    },
+    {
+      "googlePlaceId": "ChIJRbhw1xaMGGARbI2KQGUJuIc",
+      "name": "直白",
+      "provider": "Tabelog",
+      "sourceUrl": null,
+      "checkedAt": "2026-09-05",
+      "classification": "no_evidence",
+      "evidenceClass": "retained_provider_fact_no_dish_field",
+      "dishes": [],
+      "identityEvidence": "Exact Place-ID retained Tabelog source fact names 直白.",
+      "notes": "No retained dish field."
+    },
+    {
+      "googlePlaceId": "ChIJV4pHSp2NGGAR2iMXFA3cf5U",
+      "name": "オトナリ珈琲",
+      "provider": "Tabelog",
+      "sourceUrl": null,
+      "checkedAt": "2026-09-05",
+      "classification": "no_evidence",
+      "evidenceClass": "retained_provider_fact_no_dish_field",
+      "dishes": [],
+      "identityEvidence": "Exact Place-ID retained Tabelog source fact names オトナリ珈琲.",
+      "notes": "No retained dish field."
+    },
+    {
+      "googlePlaceId": "ChIJV7G3CiGNGGAR8zS986tcWoE",
+      "name": "Coffee ITO",
+      "provider": "Tabelog",
+      "sourceUrl": null,
+      "checkedAt": "2026-09-05",
+      "classification": "no_evidence",
+      "evidenceClass": "retained_provider_fact_no_dish_field",
+      "dishes": [],
+      "identityEvidence": "Exact Place-ID retained Tabelog source fact names Coffee ITO.",
+      "notes": "No retained dish field."
+    },
+    {
+      "googlePlaceId": "ChIJVVWVuBOMGGARR14mDlWkiS4",
+      "name": "未来食堂",
+      "provider": "Tabelog",
+      "sourceUrl": null,
+      "checkedAt": "2026-09-05",
+      "classification": "no_evidence",
+      "evidenceClass": "retained_provider_fact_no_dish_field",
+      "dishes": [],
+      "identityEvidence": "Exact Place-ID retained Tabelog source fact names 未来食堂.",
+      "notes": "Retained budget/closure/cuisine/hours/name fields contain no dish item."
+    },
+    {
+      "googlePlaceId": "ChIJ4ymkbRGMGGARIv2mv2Uyrhw",
+      "name": "中華料理 餃子の店 三幸園 白山通り店",
+      "provider": "Tabelog",
+      "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13006530/",
+      "checkedAt": "2026-09-05",
+      "classification": "F",
+      "evidenceClass": "retained_source_menu_item",
+      "dishes": [
+        {
+          "nameNative": "餃子",
+          "classification": "F",
+          "evidenceClass": "retained_source_menu_item",
+          "evidenceTextNative": "餃子",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13006530/"
+        },
+        {
+          "nameNative": "チャーハン",
+          "classification": "F",
+          "evidenceClass": "retained_source_menu_item",
+          "evidenceTextNative": "チャーハン",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13006530/"
+        }
+      ],
+      "identityEvidence": "Exact Place-ID retained source row names 中華料理 餃子の店 三幸園 白山通り店; its sourceRef explicitly claims the dishes field.",
+      "notes": "No strict recommendation semantics are retained for these items, so both remain F."
+    },
+    {
+      "googlePlaceId": "ChIJ9TsbQzyMGGARGNkQ4gvzxy8",
+      "name": "Bar de Piratas",
+      "provider": "Overture Maps",
+      "sourceUrl": null,
+      "checkedAt": "2026-09-06",
+      "classification": "no_evidence",
+      "evidenceClass": "identity_only_retained_provider_record",
+      "dishes": [],
+      "identityEvidence": "Reviewed retained Overture binding exists for this exact Place ID.",
+      "notes": "The inspected retained record is identity/contact evidence only and contains no usable dish evidence."
+    },
+    {
+      "googlePlaceId": "ChIJa7aZ2JWNGGARWbupeqzYFo0",
+      "name": "鮪のシマハラ 神保町店",
+      "provider": "Hot Pepper",
+      "sourceUrl": "https://www.hotpepper.jp/strJ004536449/",
+      "checkedAt": "2026-09-06",
+      "classification": "no_evidence",
+      "evidenceClass": "bound_provider_record_no_retained_dish_text",
+      "dishes": [],
+      "identityEvidence": "Repository has a high-confidence exact Place-ID Hot Pepper binding J004536449.",
+      "notes": "No retained dish-bearing field or allowed promotional dish text was found in the inspected repository artifacts."
+    },
+    {
+      "googlePlaceId": "ChIJe-72fACNGGARqtnxQaA1-dg",
+      "name": "LYFE 酒と飯と",
+      "provider": "Hot Pepper",
+      "sourceUrl": "https://www.hotpepper.jp/strJ003806900/",
+      "checkedAt": "2026-09-06",
+      "classification": "no_evidence",
+      "evidenceClass": "bound_provider_record_no_retained_dish_text",
+      "dishes": [],
+      "identityEvidence": "Exact Place-ID retained source-enrichment row binds Hot Pepper J003806900.",
+      "notes": "The retained sourceRef claims name/address/cuisine/budget/hours but not dishes; retained dishes array is empty."
+    },
+    {
+      "googlePlaceId": "ChIJeygNc1ONGGARICZdtFQrgac",
+      "name": "ル クープシュー",
+      "provider": "Hot Pepper",
+      "sourceUrl": "https://www.hotpepper.jp/strJ003498021/",
+      "checkedAt": "2026-09-06",
+      "classification": "no_evidence",
+      "evidenceClass": "bound_provider_record_no_retained_dish_text",
+      "dishes": [],
+      "identityEvidence": "Repository has an exact high-confidence Hot Pepper branch binding J003498021 for this Place ID.",
+      "notes": "No allowed retained dish text was recovered."
+    },
+    {
+      "googlePlaceId": "ChIJkxrSpkGMGGAR4N-X_BBhPLo",
+      "name": "増田屋",
+      "provider": "Overture Maps",
+      "sourceUrl": null,
+      "checkedAt": "2026-09-06",
+      "classification": "no_evidence",
+      "evidenceClass": "identity_only_retained_provider_record",
+      "dishes": [],
+      "identityEvidence": "Reviewed retained Overture binding exists for this exact Place ID.",
+      "notes": "No retained dish-bearing artifact was found."
+    },
+    {
+      "googlePlaceId": "ChIJs_zQkhCMGGARCN3rJxb_w80",
+      "name": "MAJI CURRY 神田神保町店",
+      "provider": "Hot Pepper",
+      "providerId": "J003340019",
+      "sourceUrl": "https://www.hotpepper.jp/strJ003340019/",
+      "checkedAt": "2026-09-06",
+      "classification": "blocked",
+      "evidenceClass": "retained_dish_coverage_provenance_unresolved",
+      "dishes": [],
+      "identityEvidence": "High-confidence exact Place-ID Hot Pepper binding J003340019; source_facts also names MAJI CURRY 神田神保町店 for this Place ID.",
+      "notes": "Current dish batch plan reports featuredDishesKnown=1, but inspected source_facts/Hot Pepper retained records expose no concrete dish name. The large merged inventory-detail evidence artifact could not be safely expanded through the repository connector, so no dish name is guessed or promoted."
+    },
+    {
+      "googlePlaceId": "ChIJUZY03hSNGGARemHZVeq6gI4",
+      "name": "麻婆礼賛",
+      "provider": "Overture Maps",
+      "sourceUrl": null,
+      "checkedAt": "2026-09-06",
+      "classification": "no_evidence",
+      "evidenceClass": "identity_only_retained_provider_record",
+      "dishes": [],
+      "identityEvidence": "Reviewed retained Overture binding exists for this exact Place ID.",
+      "notes": "Restaurant name/cuisine were not used to infer a dish; no retained dish-bearing evidence was found."
+    },
+    {
+      "googlePlaceId": "ChIJYa2gh-qNGGAREFXbnV-9Hqc",
+      "name": "味処ちくりん",
+      "provider": "Hot Pepper",
+      "sourceUrl": "https://www.hotpepper.jp/strJ003450409/",
+      "checkedAt": "2026-09-06",
+      "classification": "no_evidence",
+      "evidenceClass": "bound_provider_record_no_retained_dish_text",
+      "dishes": [],
+      "identityEvidence": "Repository retains a high-confidence exact Place-ID Hot Pepper binding J003450409.",
+      "notes": "No retained allowed dish text was found."
+    },
+    {
+      "googlePlaceId": "ChIJA3cvTRuMGGAR_HiDac9G6Do",
+      "name": "ひろしま酒蔵 歓粋亭",
+      "provider": "Tabelog",
+      "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13112878/",
+      "checkedAt": "2026-09-05",
+      "classification": "F",
+      "evidenceClass": "retained_source_menu_item",
+      "dishes": [
+        {
+          "nameNative": "カキフライ",
+          "classification": "F",
+          "evidenceClass": "retained_source_menu_item",
+          "evidenceTextNative": "カキフライ",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13112878/"
+        },
+        {
+          "nameNative": "小いわし天婦羅",
+          "classification": "F",
+          "evidenceClass": "retained_source_menu_item",
+          "evidenceTextNative": "小いわし天婦羅",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13112878/"
+        },
+        {
+          "nameNative": "穴子白焼き",
+          "classification": "F",
+          "evidenceClass": "retained_source_menu_item",
+          "evidenceTextNative": "穴子白焼き",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13112878/"
+        }
+      ],
+      "identityEvidence": "Exact Place-ID Tabelog source fact names ひろしま酒蔵 歓粋亭 and retains all three dishes.",
+      "notes": "No explicit recommendation semantics are retained, so all three remain F."
+    },
+    {
+      "googlePlaceId": "ChIJe1GlRU6NGGARIvyAuXYJamg",
+      "name": "花臨蘭州牛肉麺",
+      "provider": "Tabelog",
+      "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13287589/",
+      "checkedAt": "2026-09-05",
+      "classification": "F",
+      "evidenceClass": "retained_source_menu_item",
+      "dishes": [
+        {
+          "nameNative": "蘭州牛肉麺",
+          "classification": "F",
+          "evidenceClass": "retained_source_menu_item",
+          "evidenceTextNative": "蘭州牛肉麺",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13287589/"
+        }
+      ],
+      "identityEvidence": "Exact Place-ID Tabelog source fact names 花臨蘭州牛肉麺 and retains dishes:[蘭州牛肉麺].",
+      "notes": "Batch plan reports featuredDishesKnown=2, while the directly inspectable provider fact exposes one source-native item. The missing second item was not reconstructed or guessed."
+    },
+    {
+      "googlePlaceId": "ChIJI8w3quWNGGARwA5PTpq8BUw",
+      "name": "馬さん餃子酒場 神保町店",
+      "provider": "Tabelog",
+      "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13212433/",
+      "checkedAt": "2026-09-05",
+      "classification": "F",
+      "evidenceClass": "retained_source_menu_item",
+      "dishes": [
+        {
+          "nameNative": "黒豚餃子",
+          "classification": "F",
+          "evidenceClass": "retained_source_menu_item",
+          "evidenceTextNative": "黒豚餃子",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13212433/"
+        }
+      ],
+      "identityEvidence": "Exact Place-ID Tabelog source fact names 馬さん餃子酒場 神保町店 and retains dishes:[黒豚餃子].",
+      "notes": "Batch plan reports featuredDishesKnown=2, but only one concrete retained source-native item is directly recoverable from the inspected source fact; no second item was inferred."
+    },
+    {
+      "googlePlaceId": "ChIJZ7Pq3gSMGGARqzSYizyRXm0",
+      "name": "串焼 庭 本格ハルビン",
+      "provider": "Tabelog",
+      "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13201390/",
+      "checkedAt": "2026-09-05",
+      "classification": "F",
+      "evidenceClass": "retained_source_menu_item",
+      "dishes": [
+        {
+          "nameNative": "串焼き",
+          "classification": "F",
+          "evidenceClass": "retained_source_menu_item",
+          "evidenceTextNative": "串焼き",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13201390/"
+        }
+      ],
+      "identityEvidence": "Exact Place-ID Tabelog source fact names 串焼 庭 本格ハルビン and retains dishes:[串焼き].",
+      "notes": "No recommendation semantics retained; stays F."
+    },
+    {
+      "googlePlaceId": "ChIJ7RluBw-MGGARe143_ONJFiQ",
+      "name": "ダイニングバー リラ",
+      "provider": "Hot Pepper",
+      "providerId": "J000004631",
+      "sourceUrl": "https://www.hotpepper.jp/strJ000004631/",
+      "checkedAt": "2026-09-06",
+      "classification": "blocked",
+      "evidenceClass": "retained_dish_coverage_provenance_unresolved",
+      "dishes": [],
+      "identityEvidence": "High-confidence exact Place-ID Hot Pepper binding J000004631.",
+      "notes": "Batch plan reports featuredDishesKnown=1, but no concrete dish-bearing retained field was recoverable from the inspected provider facts/source enrichment. No name is guessed."
+    },
+    {
+      "googlePlaceId": "ChIJg7pjnimNGGARnAc7WGx24Lw",
+      "name": "bistro Ubu ビストロ ウブ",
+      "provider": "Hot Pepper",
+      "providerId": "J004492257",
+      "sourceUrl": "https://www.hotpepper.jp/strJ004492257/",
+      "checkedAt": "2026-09-06",
+      "classification": "blocked",
+      "evidenceClass": "retained_dish_coverage_provenance_unresolved",
+      "dishes": [],
+      "identityEvidence": "High-confidence exact Place-ID Hot Pepper binding J004492257.",
+      "notes": "Batch plan reports featuredDishesKnown=4, but the inspectable retained Hot Pepper/provider facts contain no concrete dish field. The underlying dish provenance is not safely recoverable in this pass."
+    },
+    {
+      "googlePlaceId": "ChIJKc2jO0-NGGAR959S-C8pZ3E",
+      "name": "小料理 よしこ",
+      "provider": "Hot Pepper",
+      "providerId": "J001293825",
+      "sourceUrl": "https://www.hotpepper.jp/strJ001293825/",
+      "checkedAt": "2026-09-06",
+      "classification": "blocked",
+      "evidenceClass": "retained_dish_coverage_provenance_unresolved",
+      "dishes": [],
+      "identityEvidence": "High-confidence exact Place-ID Hot Pepper binding J001293825.",
+      "notes": "Batch plan reports featuredDishesKnown=1, but no concrete source-native dish name is recoverable from the inspected retained artifacts."
+    },
+    {
+      "googlePlaceId": "ChIJWb9pC2GNGGAR3R0_6jEknP4",
+      "name": "とんかつ九六喜",
+      "provider": "Hot Pepper",
+      "providerId": "J004492353",
+      "sourceUrl": "https://www.hotpepper.jp/strJ004492353/",
+      "checkedAt": "2026-09-06",
+      "classification": "blocked",
+      "evidenceClass": "retained_dish_coverage_provenance_unresolved",
+      "dishes": [],
+      "identityEvidence": "High-confidence exact Place-ID Hot Pepper binding J004492353.",
+      "notes": "Batch plan reports featuredDishesKnown=1, but no concrete dish-bearing retained field is visible in the inspected provider facts. The restaurant name was not used to infer とんかつ as a dish."
+    }
+  ],
+  "retainedProvidersInspected": [
+    "Tabelog retained source_enrichment/source_facts",
+    "Hot Pepper exact branch bindings",
+    "Hot Pepper retained rich metadata/source_enrichment",
+    "Overture Maps reviewed native-contact bindings",
+    "data/featured_dishes.js",
+    "data/recommended_dishes.js",
+    "data/source_facts.js",
+    "data/source_enrichment*.js",
+    "scripts/build_retained_dish_evidence.mjs",
+    "scripts/build_retained_hotpepper_promotional_dish_evidence.mjs"
+  ],
+  "possibleSystematicExtractionGaps": [
+    "The requested data/agent_library README, manifest, and proposal-template files are absent from current main, so the exact proposal schema could not be loaded.",
+    "data/google_inventory_detail_evidence.json is a roughly 1.9 MB merged evidence artifact. Its full content could not be safely expanded through the connected repository response path in this pass; five assigned rows therefore remain blocked where the batch plan says F coverage exists but no concrete dish provenance is visible in source_facts/source_enrichment.",
+    "The Hot Pepper promotional miner writes retained_hotpepper_promotional_dish_evidence.json to a work directory, but no committed data/retained_hotpepper_promotional_dish_evidence.json artifact exists on current main. Exact Hot Pepper branch bindings therefore do not by themselves prove dish text.",
+    "For 花臨蘭州牛肉麺 and 馬さん餃子酒場 神保町店, the batch plan reports two featured dishes while the directly inspectable provider source fact retains only one concrete dish. The unrecovered extra item is deliberately omitted.",
+    "data/featured_dishes.js explicitly mixes source-backed recommended-or-representative menu facts and does not imply recommendation semantics for every item; no featured item was promoted to R without separate recommendation wording.",
+    "Overture Maps contact records were used only for exact identity/provenance checks and never as dish evidence."
+  ]
+}

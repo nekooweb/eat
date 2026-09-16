@@ -1,0 +1,354 @@
+{
+  "schemaVersion": 1,
+  "assignmentMarker": "DISH-R-OFFICIAL:S6",
+  "lane": "official_crawl",
+  "shard": 6,
+  "checkedAt": "2026-09-14T18:39:00+09:00",
+  "sourcePlan": {
+    "path": "data/dish_batch_plan.json",
+    "sha": "0cc8a87325499f3e6d575681c53e65fc9b5b8ea6",
+    "generatedAt": "2026-09-10T06:43:53.606Z"
+  },
+  "contractNote": "data/agent_library/README.md, manifest.json, and proposal-template.json were not present on current main (404). This proposal therefore preserves the requested evidence fields in a conservative compatible structure and does not modify canonical data.",
+  "policy": {
+    "paidGoogleDataApiCalls": 0,
+    "canonicalIdentityMutation": false,
+    "productionRuntimeMutation": false,
+    "recommendationRequiresExplicitSemantics": true,
+    "ordinaryMenuItemsRemainF": true,
+    "identityByProximityOnly": false
+  },
+  "summary": {
+    "assignedRows": 21,
+    "completedR": 2,
+    "completedFOnly": 3,
+    "candidate": 5,
+    "noEvidence": 7,
+    "blocked": 4,
+    "skippedAlreadyCompleted": 0
+  },
+  "rows": [
+    {
+      "googlePlaceId": "ChIJD4tLmA-MGGARqHJvbMa-yNs",
+      "name": "鹿屋アスリート食堂",
+      "provider": "official_web",
+      "sourceUrl": "https://asushoku.com/shoplist/kanda/menu.php",
+      "checkedAt": "2026-09-14",
+      "classification": "no_evidence",
+      "evidenceClass": "official_menu_checked_no_recommendation_semantics",
+      "dishes": [],
+      "identityEvidence": "Repository reviewed official binding maps this Place ID to 鹿屋アスリート食堂 / asushoku.com and its Kanda menu URL.",
+      "notes": "Concrete menu evidence already exists in the current plan as F, but no source-local explicit recommendation/signature/popular semantics was verified in this pass."
+    },
+    {
+      "googlePlaceId": "ChIJIeDGY_6NGGARWCyGYme_2bA",
+      "name": "グランサイファーキッチン",
+      "provider": "official_web",
+      "sourceUrl": "https://paselabo.pasela.co.jp/grandcypher-kitchen/",
+      "checkedAt": "2026-09-14",
+      "classification": "no_evidence",
+      "evidenceClass": "official_menu_checked_no_recommendation_semantics",
+      "dishes": [],
+      "identityEvidence": "Official page identifies グランサイファーキッチン and exposes the current menu; repository has a reviewed official binding for the exact Place ID.",
+      "notes": "Current concrete menu items and seasonal items were visible, but limited/seasonal semantics alone were not treated as recommendation semantics."
+    },
+    {
+      "googlePlaceId": "ChIJ9TDnyQ-MGGARG-nByNz8I0E",
+      "name": "酒菜家かずいち",
+      "provider": "rakuten_gnavi_official_page",
+      "sourceUrl": "https://r.gnavi.co.jp/gb32300/menu7/",
+      "checkedAt": "2026-09-14",
+      "classification": "R",
+      "evidenceClass": "source_recommended_dish_text",
+      "dishes": [
+        {
+          "nameNative": "お刺身盛り合わせ",
+          "classification": "R",
+          "evidenceClass": "source_recommended_dish_text",
+          "evidenceTextNative": "ある日のおすすめ / おすすめ / お刺身盛り合わせ",
+          "sourceUrl": "https://r.gnavi.co.jp/gb32300/menu7/"
+        }
+      ],
+      "identityEvidence": "Repository reviewed official page is https://gb32300.gorp.jp/ for this Place ID; that exact official page links the same gb32300 Rakuten Gurunavi menu family and identifies 神田錦町酒菜家 かずいち.",
+      "notes": "Only the dish directly adjacent to an explicit おすすめ marker was promoted to R; neighboring dishes were not inferred to share that marker."
+    },
+    {
+      "googlePlaceId": "ChIJNd98ZACNGGAR4F8EqlaT9k8",
+      "name": "Walkabout Coffee",
+      "provider": "official_web",
+      "sourceUrl": "https://www.thewalkabout.jp/",
+      "checkedAt": "2026-09-14",
+      "classification": "no_evidence",
+      "evidenceClass": "official_source_checked_no_valid_dish_recommendation",
+      "dishes": [],
+      "identityEvidence": "Official page gives Walkabout Coffee, 神田錦町2-5-16 and phone 03-6285-0007; repository reviewed binding maps this Place ID to the same domain.",
+      "notes": "The accessible official page describes the coffee-shop concept but did not expose a concrete dish with explicit recommendation semantics."
+    },
+    {
+      "googlePlaceId": "ChIJX2VqZfSNGGAR2huqczaqDu4",
+      "name": "多次元秘密基地",
+      "provider": "official_web",
+      "sourceUrl": "https://akiba-tazigen.com/",
+      "checkedAt": "2026-09-14",
+      "classification": "no_evidence",
+      "evidenceClass": "official_source_checked_no_valid_dish_recommendation",
+      "dishes": [],
+      "identityEvidence": "Repository reviewed official binding maps this exact Place ID to 多次元秘密基地 / akiba-tazigen.com.",
+      "notes": "No concrete food dish carrying explicit recommendation/signature/popular semantics was verified on the official source."
+    },
+    {
+      "googlePlaceId": "ChIJZ6B6S2uMGGAR1FZFUTrzDm8",
+      "name": "ネバーランド カフェ",
+      "provider": "official_gurunavi_page",
+      "sourceUrl": "https://neverlandcafe.gorp.jp/",
+      "checkedAt": "2026-09-14",
+      "classification": "C",
+      "evidenceClass": "recommendation_slots_without_concrete_dish_names",
+      "dishes": [],
+      "identityEvidence": "Official page names ネバーランド カフェ, gives 九段南1-4-3 and phone 03-3264-4672; repository has the same reviewed official URL for this Place ID.",
+      "notes": "The official page has an おすすめ section with おすすめメニュー No.1/No.2/No.3, but the accessible source does not bind those recommendation slots to concrete dish names. Concrete items such as ハンバーグ・テリヤキチキン・ポークジンジャー were not promoted to R."
+    },
+    {
+      "googlePlaceId": "ChIJVwXD9E6NGGARkHzeYVBeacw",
+      "name": "タリーズコーヒー 住友不動産秋葉原ファーストビル・テラス店",
+      "provider": "official_store_locator",
+      "sourceUrl": "https://shop.tullys.co.jp/detail/1003115?utm_source=google&utm_medium=gbp&utm_campaign=map",
+      "checkedAt": "2026-09-14",
+      "classification": "no_evidence",
+      "evidenceClass": "exact_branch_official_page_no_branch_bound_recommendation",
+      "dishes": [],
+      "identityEvidence": "Repository reviewed official binding points this Place ID to the exact Tully's branch locator page.",
+      "notes": "No branch-bound concrete dish with explicit recommendation semantics was established; chain-wide product knowledge was not projected onto this branch."
+    },
+    {
+      "googlePlaceId": "ChIJW4ph90OMGGARdlhIHYAGMRw",
+      "name": "カフェ・ド・クリエ",
+      "provider": "official_chain_web",
+      "sourceUrl": "https://c-united.co.jp/crie/new_menu/",
+      "checkedAt": "2026-09-14",
+      "classification": "C",
+      "evidenceClass": "chain_recommendation_branch_availability_unverified",
+      "dishes": [
+        {
+          "nameNative": "トリュフ香るパストラミビーフとフレッシュ野菜サンド",
+          "classification": "C",
+          "evidenceClass": "chain_recommendation_branch_availability_unverified",
+          "evidenceTextNative": "季節のおすすめ",
+          "sourceUrl": "https://c-united.co.jp/crie/new_menu/"
+        }
+      ],
+      "identityEvidence": "Repository exact-branch official locator is https://c-united.co.jp/store/detail/001209/ for this Place ID.",
+      "notes": "Official chain page marks the item as a seasonal recommendation, but also states that some stores may not carry products; exact branch availability was not verified, so it remains C."
+    },
+    {
+      "googlePlaceId": "ChIJ2-RzBT-MGGARQRlhPs95JJs",
+      "name": "おっこん",
+      "provider": "official_web",
+      "sourceUrl": "https://okkon.yokochou.com/",
+      "checkedAt": "2026-09-14",
+      "classification": "no_evidence",
+      "evidenceClass": "official_source_checked_no_explicit_recommendation",
+      "dishes": [],
+      "identityEvidence": "Repository reviewed Overture binding for this Place ID points to okkon.yokochou.com; the page identifies 本格広島お好み焼き『おっこん』.",
+      "notes": "The official source states hand-cooked original okonomiyaki, but this is not a concrete named recommended dish and was not promoted."
+    },
+    {
+      "googlePlaceId": "ChIJ51IcBBWMGGARbOYE-W7z7Lg",
+      "name": "JB's BAR",
+      "provider": "official_hotpepper_owned_page",
+      "sourceUrl": "https://jinbocho-jbsbar.owst.jp/",
+      "checkedAt": "2026-09-14",
+      "classification": "F",
+      "evidenceClass": "source_menu_text",
+      "dishes": [
+        {"nameNative": "ポテト", "classification": "F", "evidenceClass": "source_menu_text", "evidenceTextNative": "定番のポテトや唐揚げ、バッファローウイング", "sourceUrl": "https://jinbocho-jbsbar.owst.jp/"},
+        {"nameNative": "唐揚げ", "classification": "F", "evidenceClass": "source_menu_text", "evidenceTextNative": "定番のポテトや唐揚げ、バッファローウイング", "sourceUrl": "https://jinbocho-jbsbar.owst.jp/"},
+        {"nameNative": "バッファローウイング", "classification": "F", "evidenceClass": "source_menu_text", "evidenceTextNative": "定番のポテトや唐揚げ、バッファローウイング", "sourceUrl": "https://jinbocho-jbsbar.owst.jp/"}
+      ],
+      "identityEvidence": "Official page gives JB's BAR, 西神田2-4-3 and 03-3239-3885; repository reviewed contact binding for this Place ID has the same phone.",
+      "notes": "The page's おすすめ料理 area recommends a generic/variable 期間限定カクテル and an appetizer category, not these individual dishes. Concrete dishes therefore remain F."
+    },
+    {
+      "googlePlaceId": "ChIJ53NJO5-NGGAR_IlB-9Tnz70",
+      "name": "屋台DELi x TAKEBASHI",
+      "provider": "reviewed_contact_binding_plus_public_web",
+      "sourceUrl": "https://www.yataideli.com/",
+      "checkedAt": "2026-09-14",
+      "classification": "blocked",
+      "evidenceClass": "branch_identity_not_safely_resolved",
+      "dishes": [],
+      "identityEvidence": "Repository reviewed contact binding carries the corporate phone 03-5414-5085, which is shared across multiple 屋台DELi locations; public sources using the same phone resolve multiple branches.",
+      "notes": "Could not safely establish a TAKEBASHI-specific official page from the reviewed source family. Shared corporate phone and chain name are insufficient branch identity evidence."
+    },
+    {
+      "googlePlaceId": "ChIJ6yIkdqmNGGARnQbZMLDoNX8",
+      "name": "東依（とうい） / 都市の茶室",
+      "provider": "official_web",
+      "sourceUrl": "https://www.toui.tokyo/kissa/",
+      "checkedAt": "2026-09-14",
+      "classification": "F",
+      "evidenceClass": "source_menu_text",
+      "dishes": [
+        {"nameNative": "お抹茶 彩雲", "classification": "F", "evidenceClass": "source_menu_text", "evidenceTextNative": "メニュー / お抹茶 彩雲", "sourceUrl": "https://www.toui.tokyo/kissa/"},
+        {"nameNative": "wagashi asobi くるみとイチジクのドライフルーツ羊羹", "classification": "F", "evidenceClass": "source_menu_text", "evidenceTextNative": "メニュー / wagashi asobi / くるみとイチジクのドライフルーツ羊羹", "sourceUrl": "https://www.toui.tokyo/kissa/"}
+      ],
+      "identityEvidence": "Official page identifies 東依（とうい）, 外神田2丁目1-10, matching the exact catalog entity.",
+      "notes": "The page says seat reservations are recommended; that recommendation is about reservation behavior, not dishes. Menu items remain F."
+    },
+    {
+      "googlePlaceId": "ChIJ73iZqQeMGGAR1UPN4hA0-bA",
+      "name": "Minatoya",
+      "provider": "official_source_unresolved",
+      "sourceUrl": null,
+      "checkedAt": "2026-09-14",
+      "classification": "blocked",
+      "evidenceClass": "exact_identity_could_not_be_established",
+      "dishes": [],
+      "identityEvidence": "The generic name Minatoya produced ambiguous public matches and no safely verified exact-branch official page tied to this Place ID in the reviewed official runtime source file.",
+      "notes": "No dish inference was made from the name, cuisine, nearby shops, or better-known MINATOYA brands."
+    },
+    {
+      "googlePlaceId": "ChIJge_Vi4qNGGARUSVRmK8P39M",
+      "name": "Hub Tokyo Dome City LaQua",
+      "provider": "owner_provided_nonofficial_listing_candidate",
+      "sourceUrl": "https://map.yahoo.co.jp/v3/place/51QK-aOWryw/menu",
+      "checkedAt": "2026-09-14",
+      "classification": "C",
+      "evidenceClass": "exact_branch_owner_menu_nonofficial_domain",
+      "dishes": [
+        {"nameNative": "THE FISH ＆ CHIPS", "classification": "C", "evidenceClass": "exact_branch_owner_menu_nonofficial_domain", "evidenceTextNative": "オーナー提供のメニュー / おすすめ", "sourceUrl": "https://map.yahoo.co.jp/v3/place/51QK-aOWryw/menu"},
+        {"nameNative": "ROAST BEEF", "classification": "C", "evidenceClass": "exact_branch_owner_menu_nonofficial_domain", "evidenceTextNative": "オーナー提供のメニュー / おすすめ", "sourceUrl": "https://map.yahoo.co.jp/v3/place/51QK-aOWryw/menu"}
+      ],
+      "identityEvidence": "Exact branch page is HUB 東京ドームシティ ラクーア店; current official branch source family identifies the same location, while recommendation text was found only on an owner-provided Yahoo menu.",
+      "notes": "Not promoted to R because strict official-domain recommendation evidence was not verified in this pass. The same catalog branch name also appears under a second assigned Place ID."
+    },
+    {
+      "googlePlaceId": "ChIJKQd-go2NGGAR3P4QE_MC5ow",
+      "name": "グリルやまだ 大手町店",
+      "provider": "official_facility_directory",
+      "sourceUrl": "https://stage.otemachi-one.com/shopandrestaurant/s_000242.html",
+      "checkedAt": "2026-09-14",
+      "classification": "F",
+      "evidenceClass": "source_menu_text",
+      "dishes": [
+        {"nameNative": "マグロの中トロ刺し", "classification": "F", "evidenceClass": "source_menu_text", "evidenceTextNative": "『マグロの中トロ刺し』を始め、色々なおつまみ", "sourceUrl": "https://stage.otemachi-one.com/shopandrestaurant/s_000242.html"}
+      ],
+      "identityEvidence": "OTEMACHI ONE facility page gives グリルやまだ, OTEMACHI ONE AVENUE B1F and phone 03-6810-0161, matching the exact branch.",
+      "notes": "The facility page describes actual menu offerings but does not call this concrete dish recommended/popular/signature. Kept F."
+    },
+    {
+      "googlePlaceId": "ChIJM2-wmAaMGGARo_zjI90Qlb4",
+      "name": "焼肉 ぴゅあ 神田店",
+      "provider": "exact_branch_owner_menu_candidate",
+      "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13011633/dtlmenu/",
+      "checkedAt": "2026-09-14",
+      "classification": "C",
+      "evidenceClass": "recommendation_on_owner_updated_third_party_page",
+      "dishes": [
+        {"nameNative": "〖豪華〗黒毛和牛食べつくしぴゅあの七種盛り", "classification": "C", "evidenceClass": "recommendation_on_owner_updated_third_party_page", "evidenceTextNative": "おすすめ", "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13011633/dtlmenu/"},
+        {"nameNative": "黒毛和牛 モモの塊焼き", "classification": "C", "evidenceClass": "recommendation_on_owner_updated_third_party_page", "evidenceTextNative": "おすすめ", "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13011633/dtlmenu/"}
+      ],
+      "identityEvidence": "Exact official reservation page https://booking.ebica.jp/webrsv/search/e014120402/37311 identifies 焼肉レストランぴゅあ 神田店, 内神田1-7-8, phone 03-3294-4129; the candidate menu page is the same exact branch.",
+      "notes": "Specific recommendations are strong leads, but were not promoted to R because the recommendation text was not verified on the official-domain/official-booking source itself."
+    },
+    {
+      "googlePlaceId": "ChIJmU96Ev-NGGARnL6IKFECaKM",
+      "name": "Cafe Cruise",
+      "provider": "official_facility_web",
+      "sourceUrl": "https://www.jsf.or.jp/exhibit/restaurant/",
+      "checkedAt": "2026-09-14",
+      "classification": "no_evidence",
+      "evidenceClass": "exact_official_facility_page_no_concrete_recommended_dish",
+      "dishes": [],
+      "identityEvidence": "Science Museum official page identifies basement カフェクルーズ; public exact-branch listing gives 北の丸公園2-1 科学技術館 B1F.",
+      "notes": "Official facility page only states that simple meals and drinks are available; no concrete recommended dish was exposed."
+    },
+    {
+      "googlePlaceId": "ChIJN_idkH-NGGARJHR6WDhPbnM",
+      "name": "すぽっとらいと 秋葉原 コンカフェ",
+      "provider": "official_web",
+      "sourceUrl": "https://spotlight-akiba.com/",
+      "checkedAt": "2026-09-14",
+      "classification": "blocked",
+      "evidenceClass": "official_source_access_blocked",
+      "dishes": [],
+      "identityEvidence": "Independent listing identifies the official HP as spotlight-akiba.com and matches the exact name/address/phone, but the official page returned HTTP 403 to the accessible fetch path.",
+      "notes": "No access restriction bypass was attempted."
+    },
+    {
+      "googlePlaceId": "ChIJqVA2DTiMGGAROKkt-YJgYfk",
+      "name": "Hub Tokyo Dome City LaQua",
+      "provider": "owner_provided_nonofficial_listing_candidate",
+      "sourceUrl": "https://map.yahoo.co.jp/v3/place/51QK-aOWryw/menu",
+      "checkedAt": "2026-09-14",
+      "classification": "C",
+      "evidenceClass": "exact_branch_owner_menu_nonofficial_domain",
+      "dishes": [
+        {"nameNative": "THE FISH ＆ CHIPS", "classification": "C", "evidenceClass": "exact_branch_owner_menu_nonofficial_domain", "evidenceTextNative": "オーナー提供のメニュー / おすすめ", "sourceUrl": "https://map.yahoo.co.jp/v3/place/51QK-aOWryw/menu"},
+        {"nameNative": "ROAST BEEF", "classification": "C", "evidenceClass": "exact_branch_owner_menu_nonofficial_domain", "evidenceTextNative": "オーナー提供のメニュー / おすすめ", "sourceUrl": "https://map.yahoo.co.jp/v3/place/51QK-aOWryw/menu"}
+      ],
+      "identityEvidence": "Exact branch page is HUB 東京ドームシティ ラクーア店; recommendation text is owner-provided on Yahoo, not verified on the official domain.",
+      "notes": "Kept separately because the assignment contains two distinct Place IDs with the same catalog branch name. No canonical identity change is proposed."
+    },
+    {
+      "googlePlaceId": "ChIJtcBGVwaMGGARS0tqKOmzCfE",
+      "name": "Bonne quela",
+      "provider": "official_facility_directory",
+      "sourceUrl": "https://www.otemachi-financialcity.jp/shop/bonne-quela/",
+      "checkedAt": "2026-09-14",
+      "classification": "R",
+      "evidenceClass": "source_recommended_dish_text",
+      "dishes": [
+        {"nameNative": "ブイヤベース", "classification": "R", "evidenceClass": "source_recommended_dish_text", "evidenceTextNative": "おすすめメニュー / ボンクラスペシャリテ", "sourceUrl": "https://www.otemachi-financialcity.jp/shop/bonne-quela/"},
+        {"nameNative": "マグレ鴨胸肉のロティカシスソース", "classification": "R", "evidenceClass": "source_recommended_dish_text", "evidenceTextNative": "おすすめメニュー", "sourceUrl": "https://www.otemachi-financialcity.jp/shop/bonne-quela/"}
+      ],
+      "identityEvidence": "Facility official directory names Bonne quela and gives phone 03-6225-2730; repository reviewed contact source for this Place ID points to the restaurant's Tumblr and the same phone, establishing the exact branch.",
+      "notes": "ブイヤベース is especially strong: the source explicitly marks it as both recommended menu and the restaurant specialty."
+    },
+    {
+      "googlePlaceId": "ChIJFQ415jyMGGAROEvV2vfbg_g",
+      "name": "Tail's Ale House",
+      "provider": "official_web",
+      "sourceUrl": "http://www.tails1998.com/",
+      "checkedAt": "2026-09-14",
+      "classification": "blocked",
+      "evidenceClass": "official_source_timeout",
+      "dishes": [],
+      "identityEvidence": "Exact-branch public listing identifies Tail's ALE HOUSE 本郷店, phone 03-5684-8008 and website tails1998.com; current plan has six existing F items for the assigned Place ID.",
+      "notes": "Official source timed out in the accessible fetch path. No retry designed to bypass access limits was attempted, and third-party menu knowledge was not promoted."
+    }
+  ],
+  "sourceUrlsReviewed": [
+    "https://asushoku.com/",
+    "https://asushoku.com/shoplist/kanda/menu.php",
+    "https://paselabo.pasela.co.jp/grandcypher-kitchen/",
+    "https://gb32300.gorp.jp/",
+    "https://r.gnavi.co.jp/gb32300/menu7/",
+    "https://www.thewalkabout.jp/",
+    "https://akiba-tazigen.com/",
+    "https://neverlandcafe.gorp.jp/",
+    "https://shop.tullys.co.jp/detail/1003115?utm_source=google&utm_medium=gbp&utm_campaign=map",
+    "https://c-united.co.jp/store/detail/001209/",
+    "https://c-united.co.jp/crie/new_menu/",
+    "https://okkon.yokochou.com/",
+    "https://jinbocho-jbsbar.owst.jp/",
+    "https://www.yataideli.com/",
+    "https://www.toui.tokyo/kissa/",
+    "https://www.pub-hub.com/index.php/shop/detail/40",
+    "https://map.yahoo.co.jp/v3/place/51QK-aOWryw/menu",
+    "https://stage.otemachi-one.com/shopandrestaurant/s_000242.html",
+    "https://booking.ebica.jp/webrsv/search/e014120402/37311",
+    "https://tabelog.com/tokyo/A1310/A131002/13011633/dtlmenu/",
+    "https://www.jsf.or.jp/exhibit/restaurant/",
+    "https://spotlight-akiba.com/",
+    "https://www.otemachi-financialcity.jp/shop/bonne-quela/",
+    "http://www.tails1998.com/"
+  ],
+  "systematicIssues": [
+    "The requested data/agent_library README, manifest, and proposal-template are absent from current main, so the exact template contract could not be loaded.",
+    "Reviewed official source bindings are fragmented: some assigned Place IDs are present in data/reviewed_official_runtime_sources.json, while others are only recoverable through reviewed contact overlays or exact public official/facility pages.",
+    "Two assigned rows have different Google Place IDs but the same catalog name HUB Tokyo Dome City LaQua. Evidence is kept per Place ID and no canonical identity change is proposed.",
+    "Chain-wide recommended products cannot safely become branch-level R when the source itself warns of store-specific availability or the exact branch availability is otherwise unverified.",
+    "Owner-provided or owner-updated third-party recommendation text was retained as C rather than promoted to R when equivalent recommendation semantics were not verified on the official-domain source."
+  ]
+}
