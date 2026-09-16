@@ -1,58 +1,16 @@
-name: Final reviewed dish integration v3
+name: Final reviewed dish integration v3 (archived)
 
 on:
-  push:
-    branches:
-      - final-dish-integration-20260915
-    paths:
-      - '.github/workflows/final-dish-integration-v3.yml'
-      - 'scripts/finalize_official_retained_reviews_v2.py'
-      - 'data/agent_proposals/DISH-R-OFFICIAL/S0-20260914-1903.json'
-      - 'data/agent_proposals/DISH-R-OFFICIAL/S6-20260914.json'
-      - 'data/agent_proposals/DISH-R-RETAINED/S0-main-20260914.json'
-      - 'data/agent_proposals/DISH-R-RETAINED/S6-main-20260914.json'
+  workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
-  integrate:
+  archived:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-      - name: Patch mixed historical attemptedSources safely
+      - name: Archived validation record
         run: |
-          python - <<'PY'
-          from pathlib import Path
-          p = Path('scripts/finalize_official_retained_reviews_v2.py')
-          s = p.read_text()
-          old1 = '                    reviewed["attemptedSources"] = sorted({x for r in reviewed_inputs for x in (r.get("attemptedSources") or []) if x})\n'
-          new1 = '''                    attempted, attempted_seen = [], set()\n                    for input_rec in reviewed_inputs:\n                        for x in input_rec.get("attemptedSources") or []:\n                            if not x:\n                                continue\n                            key = json.dumps(x, ensure_ascii=False, sort_keys=True) if isinstance(x, (dict, list)) else str(x)\n                            if key not in attempted_seen:\n                                attempted_seen.add(key)\n                                attempted.append(copy.deepcopy(x))\n                    reviewed["attemptedSources"] = attempted\n'''
-          if old1 not in s:
-              raise SystemExit('nonaccepted attemptedSources patch anchor missing')
-          s = s.replace(old1, new1, 1)
-          old2 = '        attempted.update(x for x in rec.get("attemptedSources", []) or [] if x)\n'
-          new2 = '''        for x in rec.get("attemptedSources", []) or []:\n            if not x:\n                continue\n            key = json.dumps(x, ensure_ascii=False, sort_keys=True) if isinstance(x, (dict, list)) else str(x)\n            attempted[key] = copy.deepcopy(x)\n'''
-          if old2 not in s:
-              raise SystemExit('accepted attemptedSources patch anchor missing')
-          s = s.replace('    attempted = set()\n', '    attempted = {}\n', 1)
-          s = s.replace(old2, new2, 1)
-          s = s.replace('    base["attemptedSources"] = sorted(attempted)\n', '    base["attemptedSources"] = list(attempted.values())\n', 1)
-          p.write_text(s)
-          PY
-          python -m py_compile scripts/finalize_official_retained_reviews_v2.py
-      - name: Switch runner to v2 central reviewer
-        run: |
-          sed -i 's#python scripts/finalize_official_retained_reviews.py#python scripts/finalize_official_retained_reviews_v2.py#' scripts/run_final_dish_integration.sh
-          sed -i '/scripts\/finalize_official_retained_reviews.py \\/a\  scripts/finalize_official_retained_reviews_v2.py \\' scripts/run_final_dish_integration.sh
-          grep -n 'finalize_official_retained_reviews_v2.py' scripts/run_final_dish_integration.sh
-      - name: Run complete final integration
-        run: bash scripts/run_final_dish_integration.sh
+          echo "Final v3 production-candidate validation completed successfully in run 35100292469."
+          echo "This workflow is retained only as an audit marker and does not mutate repository data."
