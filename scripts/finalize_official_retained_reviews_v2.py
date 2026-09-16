@@ -351,7 +351,7 @@ def merge_accepted(records: list[dict], source_refs: list[str]) -> dict:
     seen_identity = set()
     dishes = []
     seen_dishes = set()
-    attempted = set()
+    attempted = {}
     refs = []
     seen_refs = set()
     for rec in records:
@@ -363,7 +363,11 @@ def merge_accepted(records: list[dict], source_refs: list[str]) -> dict:
             key = (d.get("classification"), d.get("nameOriginal"), d.get("provider"), d.get("sourceUrl"), d.get("evidenceText"))
             if key not in seen_dishes:
                 seen_dishes.add(key); dishes.append(copy.deepcopy(d))
-        attempted.update(x for x in rec.get("attemptedSources", []) or [] if x)
+        for x in rec.get("attemptedSources", []) or []:
+            if not x:
+                continue
+            key = json.dumps(x, ensure_ascii=False, sort_keys=True) if isinstance(x, (dict, list)) else str(x)
+            attempted[key] = copy.deepcopy(x)
         for r in rec.get("sourceProposalRefs", []) or []:
             k = r if isinstance(r, str) else json.dumps(r, ensure_ascii=False, sort_keys=True)
             if k not in seen_refs:
@@ -376,7 +380,7 @@ def merge_accepted(records: list[dict], source_refs: list[str]) -> dict:
     base["identity"].setdefault("sourceAliases", [])
     base["identity"]["evidence"] = identity_evidence
     base["dishProposals"] = dishes
-    base["attemptedSources"] = sorted(attempted)
+    base["attemptedSources"] = list(attempted.values())
     base["sourceProposalRefs"] = refs
     base["reviewReasoning"] = "Final v2 consensus: all unrepresented independent reviewed inputs accepted; safe evidence unioned fail-closed."
     return base
@@ -456,7 +460,16 @@ def main():
                     for _, ref in extras:
                         if ref not in existing:
                             reviewed["sourceProposalRefs"].append(ref); existing.add(ref)
-                    reviewed["attemptedSources"] = sorted({x for r in reviewed_inputs for x in (r.get("attemptedSources") or []) if x})
+                    attempted, attempted_seen = [], set()
+                    for input_rec in reviewed_inputs:
+                        for x in input_rec.get("attemptedSources") or []:
+                            if not x:
+                                continue
+                            key = json.dumps(x, ensure_ascii=False, sort_keys=True) if isinstance(x, (dict, list)) else str(x)
+                            if key not in attempted_seen:
+                                attempted_seen.add(key)
+                                attempted.append(copy.deepcopy(x))
+                    reviewed["attemptedSources"] = attempted
                     reviewed["reviewReasoning"] = "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
                 reviewed["restaurantName"] = row["name"]
                 reviewed["googlePlaceId"] = row["googlePlaceId"]

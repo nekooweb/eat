@@ -26,26 +26,26 @@
       }
     },
     "statusCounts": {
-      "accepted_evidence": 83,
-      "candidate": 59,
-      "no_evidence": 329,
-      "blocked": 66,
+      "accepted_evidence": 69,
+      "candidate": 105,
+      "no_evidence": 303,
+      "blocked": 60,
       "skipped_already_complete": 0
     },
-    "acceptedRItems": 54,
-    "acceptedFItems": 137,
-    "acceptedRRestaurants": 22,
-    "acceptedRDistinctDishes": 54,
-    "acceptedFDistinctDishes": 137,
-    "acceptedFOnlyRestaurants": 61,
+    "acceptedRItems": 16,
+    "acceptedFItems": 127,
+    "acceptedRRestaurants": 13,
+    "acceptedRDistinctDishes": 16,
+    "acceptedFDistinctDishes": 127,
+    "acceptedFOnlyRestaurants": 56,
     "emittedRItems": 0,
-    "emittedFItems": 71,
-    "translationPendingItems": 120,
+    "emittedFItems": 69,
+    "translationPendingItems": 74,
     "currentAssignmentRows": 537,
     "currentReviewedRows": 537,
     "completedAssignmentsRemovedByRebuild": 0
   },
-  "officialRetainedTranslationPending": 120,
+  "officialRetainedTranslationPending": 74,
   "unionAudit": {
     "status": "pass",
     "commonBaseEvidenceItems": 3663,
@@ -97,9 +97,9 @@
     },
     "officialRetained": {
       "R": 0,
-      "F": 71
+      "F": 69
     },
-    "totalApprovedEvidenceItems": 140,
+    "totalApprovedEvidenceItems": 138,
     "crossShardDuplicateKeys": 0,
     "officialShardOverlapKeys": 0,
     "paidGoogleDataApiCalls": 0
@@ -109,12 +109,12 @@
     "before": {
       "catalogTotal": 2804,
       "publicRestaurants": 1422,
-      "recommendedRestaurants": 601,
-      "featuredRestaurants": 678,
-      "displayRestaurants": 747,
-      "recommendationGap": 821,
-      "recommendationEvidenceItems": 1011,
-      "featuredEvidenceItems": 2666
+      "recommendedRestaurants": 619,
+      "featuredRestaurants": 707,
+      "displayRestaurants": 774,
+      "recommendationGap": 803,
+      "recommendationEvidenceItems": 1036,
+      "featuredEvidenceItems": 2722
     },
     "after": {
       "catalogTotal": 2804,
@@ -124,24 +124,24 @@
       "displayRestaurants": 774,
       "recommendationGap": 803,
       "recommendationEvidenceItems": 1036,
-      "featuredEvidenceItems": 2722
+      "featuredEvidenceItems": 2724
     },
     "delta": {
       "catalogTotal": 0,
       "publicRestaurants": 0,
-      "recommendedRestaurants": 18,
-      "featuredRestaurants": 29,
-      "displayRestaurants": 27,
-      "recommendationGap": -18,
-      "recommendationEvidenceItems": 25,
-      "featuredEvidenceItems": 56
+      "recommendedRestaurants": 0,
+      "featuredRestaurants": 0,
+      "displayRestaurants": 0,
+      "recommendationGap": 0,
+      "recommendationEvidenceItems": 0,
+      "featuredEvidenceItems": 2
     },
     "frozenIdentitySetPreserved": true,
     "publicIdentityNamesPreserved": true,
     "allOldEvidenceKeysRetained": true,
-    "oldEvidenceItems": 3677,
-    "newRecommendationEvidenceItems": 25,
-    "newFeaturedEvidenceItems": 56,
+    "oldEvidenceItems": 3758,
+    "newRecommendationEvidenceItems": 0,
+    "newFeaturedEvidenceItems": 2,
     "allReviewProvenanceSnapshotsRetained": true,
     "allAdditionsApproved": true,
     "paidGoogleDataApiCalls": 0
@@ -156,7 +156,7 @@
       "displayRestaurants": 774,
       "recommendationGap": 803,
       "recommendationEvidenceItems": 1036,
-      "featuredEvidenceItems": 2722
+      "featuredEvidenceItems": 2724
     },
     "after": {
       "catalogTotal": 2804,
@@ -166,7 +166,7 @@
       "displayRestaurants": 774,
       "recommendationGap": 803,
       "recommendationEvidenceItems": 1036,
-      "featuredEvidenceItems": 2722
+      "featuredEvidenceItems": 2724
     },
     "delta": {
       "catalogTotal": 0,
@@ -181,7 +181,7 @@
     "frozenIdentitySetPreserved": true,
     "publicIdentityNamesPreserved": true,
     "allOldEvidenceKeysRetained": true,
-    "oldEvidenceItems": 3758,
+    "oldEvidenceItems": 3760,
     "newRecommendationEvidenceItems": 0,
     "newFeaturedEvidenceItems": 0,
     "allReviewProvenanceSnapshotsRetained": true,
@@ -204,7 +204,7 @@
     "displayRestaurants": 774,
     "recommendationGap": 803,
     "recommendationEvidenceItems": 1036,
-    "featuredEvidenceItems": 2722
+    "featuredEvidenceItems": 2724
   },
   "finalDeltaFromProductionBaseline": {
     "recommendedRestaurants": 24,
@@ -212,7 +212,7 @@
     "displayRestaurants": 34,
     "recommendationGap": -24,
     "recommendationEvidenceItems": 36,
-    "featuredEvidenceItems": 59
+    "featuredEvidenceItems": 61
   },
   "officialRetainedFinalReview": {
     "assignments": 537,
@@ -221,127 +221,117 @@
       "retained_source_mining": 318
     },
     "terminalStatusCounts": {
-      "accepted_evidence": 83,
-      "candidate": 59,
-      "no_evidence": 329,
-      "blocked": 66
+      "accepted_evidence": 69,
+      "candidate": 105,
+      "no_evidence": 303,
+      "blocked": 60
     },
     "centralDowngrades": [
       {
-        "googlePlaceId": "ChIJBZZPagCNGGARCU7ycOpVCJY",
-        "name": "restaurant Kiro;",
-        "marker": "DISH-R-OFFICIAL",
-        "shard": 1,
-        "reason": "structural accept failed final exact-branch/source/semantic gate"
-      },
-      {
-        "googlePlaceId": "ChIJl4L3VEKMGGARE_n5R1r39lY",
-        "name": "Sombreuil",
-        "marker": "DISH-R-OFFICIAL",
-        "shard": 1,
-        "reason": "structural accept failed final exact-branch/source/semantic gate"
-      },
-      {
-        "googlePlaceId": "ChIJZQZwfxWMGGARoD8aXy_2l3Q",
-        "name": "カフェ・ベローチェ",
-        "marker": "DISH-R-OFFICIAL",
-        "shard": 2,
-        "reason": "structural accept failed final exact-branch/source/semantic gate"
-      },
-      {
-        "googlePlaceId": "ChIJyb94PwOMGGARtDDndNvDe9Y",
-        "name": "カフェ・ベローチェ",
-        "marker": "DISH-R-OFFICIAL",
-        "shard": 2,
-        "reason": "structural accept failed final exact-branch/source/semantic gate"
-      },
-      {
-        "googlePlaceId": "ChIJ1YYWBweMGGARIY5pvEdxPto",
-        "name": "Brussels",
-        "marker": "DISH-R-OFFICIAL",
-        "shard": 2,
-        "reason": "structural accept failed final exact-branch/source/semantic gate"
-      },
-      {
-        "googlePlaceId": "ChIJa8C-Cj-MGGARcz8KabQrSu0",
-        "name": "ワイン処　Ｏａｓｉ",
-        "marker": "DISH-R-OFFICIAL",
-        "shard": 2,
-        "reason": "structural accept failed final exact-branch/source/semantic gate"
-      },
-      {
-        "googlePlaceId": "ChIJze_wuziMGGAR6MRiJbQ-LV4",
-        "name": "BAR 2000",
-        "marker": "DISH-R-OFFICIAL",
-        "shard": 2,
-        "reason": "structural accept failed final exact-branch/source/semantic gate"
-      },
-      {
-        "googlePlaceId": "ChIJHSuxoNqNGGARSz9EYrZT3Ss",
-        "name": "レストラン ケイダンレン",
+        "googlePlaceId": "ChIJ_88bxkGMGGARU7PM3wGBTK4",
+        "name": "かわな",
         "marker": "DISH-R-OFFICIAL",
         "shard": 3,
-        "reason": "structural accept failed final exact-branch/source/semantic gate"
+        "reason": "new unrepresented independent proposal disagreed with prior accepted final review"
       },
       {
-        "googlePlaceId": "ChIJDxOJyBWMGGARZjSlfNDAnZs",
-        "name": "Miyabi Cafe",
+        "googlePlaceId": "ChIJ51IcBBWMGGARbOYE-W7z7Lg",
+        "name": "JB's BAR",
         "marker": "DISH-R-OFFICIAL",
-        "shard": 7,
-        "reason": "structural accept failed final exact-branch/source/semantic gate"
+        "shard": 6,
+        "reason": "new unrepresented independent proposal disagreed with prior accepted final review"
       },
       {
-        "googlePlaceId": "ChIJ2VjLuz-MGGARGC3YKL-wO0Q",
-        "name": "焼肉ホルモンがく 水道橋本店",
+        "googlePlaceId": "ChIJBfClgBCMGGAR2sN5CvGoDrU",
+        "name": "ジャズ オリンパス！",
         "marker": "DISH-R-RETAINED",
-        "shard": 4,
-        "reason": "structural accept failed final exact-branch/source/semantic gate"
+        "shard": 0,
+        "reason": "new unrepresented independent proposal disagreed with prior accepted final review"
       },
       {
-        "googlePlaceId": "ChIJITsXUxaMGGAREtKypQBMSXI",
-        "name": "ライスカレー まんてん",
+        "googlePlaceId": "ChIJbS0GS2uMGGARE_vV-2kWt08",
+        "name": "寿司政",
         "marker": "DISH-R-RETAINED",
-        "shard": 4,
-        "reason": "structural accept failed final exact-branch/source/semantic gate"
+        "shard": 0,
+        "reason": "new unrepresented independent proposal disagreed with prior accepted final review"
       },
       {
-        "googlePlaceId": "ChIJhxn3rgiNGGARsGxcKSDDzQg",
-        "name": "欲張りバル CANTINA",
+        "googlePlaceId": "ChIJqzUQMNeNGGARKaFqd4nH7c4",
+        "name": "肉盛ホルモン",
         "marker": "DISH-R-RETAINED",
-        "shard": 4,
-        "reason": "structural accept failed final exact-branch/source/semantic gate"
+        "shard": 0,
+        "reason": "new unrepresented independent proposal disagreed with prior accepted final review"
       },
       {
-        "googlePlaceId": "ChIJcUWI9h2NGGARkiQ5jdqPero",
-        "name": "焼肉あきら",
+        "googlePlaceId": "ChIJjxCnlD-MGGARerygZLVT-m4",
+        "name": "とりちゅう 水道橋店",
         "marker": "DISH-R-RETAINED",
-        "shard": 4,
-        "reason": "structural accept failed final exact-branch/source/semantic gate"
+        "shard": 0,
+        "reason": "new unrepresented independent proposal disagreed with prior accepted final review"
       },
       {
-        "googlePlaceId": "ChIJd76VJWuMGGAR-N8oBqjI0mM",
-        "name": "浅草姉妹 Garden企画",
+        "googlePlaceId": "ChIJkX3sF0GMGGARR-L4Og4cNBU",
+        "name": "日本料理 平川 ホテルメトロポリタン エドモント",
         "marker": "DISH-R-RETAINED",
-        "shard": 4,
-        "reason": "structural accept failed final exact-branch/source/semantic gate"
+        "shard": 0,
+        "reason": "new unrepresented independent proposal disagreed with prior accepted final review"
       },
       {
-        "googlePlaceId": "ChIJdx_I5hiMGGARN5YdV3PI46M",
-        "name": "アイキッチン",
+        "googlePlaceId": "ChIJRxygEQCNGGARapvEL04ggA4",
+        "name": "中華風創作ダイニングGokuh",
         "marker": "DISH-R-RETAINED",
-        "shard": 4,
-        "reason": "structural accept failed final exact-branch/source/semantic gate"
+        "shard": 0,
+        "reason": "new unrepresented independent proposal disagreed with prior accepted final review"
       },
       {
-        "googlePlaceId": "ChIJwx-ibW2NGGAR-GYw9WEkDkw",
-        "name": "中華厨房 一歩",
+        "googlePlaceId": "ChIJvX_t7eONGGARXncKVb9I85E",
+        "name": "Gracia",
         "marker": "DISH-R-RETAINED",
-        "shard": 4,
-        "reason": "structural accept failed final exact-branch/source/semantic gate"
+        "shard": 0,
+        "reason": "new unrepresented independent proposal disagreed with prior accepted final review"
+      },
+      {
+        "googlePlaceId": "ChIJ_5AELhqMGGARmyQyTWPFbJg",
+        "name": "大衆IZAKAYAエイト 御茶ノ水店",
+        "marker": "DISH-R-RETAINED",
+        "shard": 0,
+        "reason": "new unrepresented independent proposal disagreed with prior accepted final review"
+      },
+      {
+        "googlePlaceId": "ChIJ24WeeD-MGGARwdUwZC9A19E",
+        "name": "大衆IZAKAYAエイト 水道橋店",
+        "marker": "DISH-R-RETAINED",
+        "shard": 0,
+        "reason": "new unrepresented independent proposal disagreed with prior accepted final review"
+      },
+      {
+        "googlePlaceId": "ChIJ5xbNmR6NGGARxdGxYV8ulBo",
+        "name": "誉 ほまれ 水道橋駅前店",
+        "marker": "DISH-R-RETAINED",
+        "shard": 0,
+        "reason": "new unrepresented independent proposal disagreed with prior accepted final review"
+      },
+      {
+        "googlePlaceId": "ChIJN0bDyw-MGGARk68z6gE_YsE",
+        "name": "にしき家",
+        "marker": "DISH-R-RETAINED",
+        "shard": 1,
+        "reason": "new unrepresented independent proposal disagreed with prior accepted final review"
+      },
+      {
+        "googlePlaceId": "ChIJg7pjnimNGGARnAc7WGx24Lw",
+        "name": "bistro Ubu ビストロ ウブ",
+        "marker": "DISH-R-RETAINED",
+        "shard": 6,
+        "reason": "new unrepresented independent proposal disagreed with prior accepted final review"
       }
     ],
     "deterministicTranslations": 0,
-    "reviewedFiles": 16
+    "reviewedFiles": 16,
+    "incrementalInputStats": {
+      "baseline_rows": 537,
+      "extra_proposal_records": 155
+    }
   },
   "paidGoogleDataApiCalls": 0
 }

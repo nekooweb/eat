@@ -1,14 +1,14 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "proposalOnly": false,
   "marker": "DISH-R-OFFICIAL",
   "shard": "S4",
-  "agentRunId": "FINAL-DISH-R-OFFICIAL:S4:20260915",
+  "agentRunId": "FINAL-V2-DISH-R-OFFICIAL:S4:20260915",
   "sourceQueue": "data/dish_batch_plan.json",
-  "sourceQueueCommit": "97f07e274e07854952da45fe264ab43ddea7d986",
-  "generatedAt": "2026-09-15T22:00:00+09:00",
+  "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+  "generatedAt": "2026-09-15T23:00:00+09:00",
   "reviewedAt": "2026-09-15",
-  "reviewedBy": "final-dish-integration central fail-closed review",
+  "reviewedBy": "final-dish-integration v2 incremental fail-closed review",
   "summary": {
     "assignedRows": 32,
     "reviewedRows": 32,
@@ -59,9 +59,10 @@
       },
       "notes": "",
       "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json"
+        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S4.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
     },
     {
       "googlePlaceId": "ChIJcduc-w2MGGARu6xCERyohvY",
@@ -87,9 +88,10 @@
       "blocker": null,
       "notes": "Central semantic pass retained a non-accepted terminal outcome.",
       "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json"
+        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S4.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
     },
     {
       "googlePlaceId": "ChIJcf2INWuMGGARteCaKYtQc1E",
@@ -115,9 +117,10 @@
       "blocker": null,
       "notes": "Central semantic pass retained a non-accepted terminal outcome.",
       "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json"
+        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S4.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
     },
     {
       "googlePlaceId": "ChIJf3qh_BOMGGARX-8IW1kbae4",
@@ -159,9 +162,10 @@
       "blocker": null,
       "notes": "",
       "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json"
+        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S4.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus: all unrepresented independent reviewed inputs accepted; safe evidence unioned fail-closed."
     },
     {
       "googlePlaceId": "ChIJIQy99i2NGGAR4Udb7j8D-pg",
@@ -187,9 +191,10 @@
       "blocker": null,
       "notes": "Central semantic pass retained a non-accepted terminal outcome.",
       "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json"
+        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S4.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
     },
     {
       "googlePlaceId": "ChIJ0_vaEhGMGGAR8zPLZw2iAas",
@@ -231,53 +236,10 @@
       "blocker": null,
       "notes": "",
       "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json"
+        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S4.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
-    },
-    {
-      "googlePlaceId": "ChIJ____7xmMGGAR7CPTAtdKCGY",
-      "restaurantName": "レキシズルバー",
-      "status": "accepted_evidence",
-      "identity": {
-        "state": "verified",
-        "sourceAliases": [
-          "レキシズルバー"
-        ],
-        "evidence": [
-          {
-            "provider": "official",
-            "sourceUrl": "https://www.rekisizzle.com/about_bar.php",
-            "checkedAt": "2026-09-14",
-            "evidenceType": "branch_page",
-            "note": "exact branch/source identity"
-          }
-        ]
-      },
-      "dishProposals": [
-        {
-          "targetField": "featuredDishes",
-          "classification": "F",
-          "nameOriginal": "キーマカレー",
-          "nameZhCandidate": null,
-          "evidenceClass": "source_menu_text",
-          "recommendationSemantics": "",
-          "provider": "official_web",
-          "sourceUrl": "https://www.rekisizzle.com/about_bar.php",
-          "checkedAt": "2026-09-14",
-          "sourceScope": "branch",
-          "evidenceText": "フードはキーマカレーや日替わりの肴や乾きものなど",
-          "confidence": "high",
-          "notes": ""
-        }
-      ],
-      "attemptedSources": [],
-      "blocker": null,
-      "notes": "",
-      "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json"
-      ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus: all unrepresented independent reviewed inputs accepted; safe evidence unioned fail-closed."
     },
     {
       "googlePlaceId": "ChIJ19DRGwCNGGARSzxyJzr4DA8",
@@ -296,9 +258,10 @@
       },
       "notes": "",
       "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json"
+        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S4.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
     },
     {
       "googlePlaceId": "ChIJ4zvjCBGMGGARdy17CYTooAY",
@@ -317,9 +280,10 @@
       },
       "notes": "",
       "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json"
+        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S4.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
     },
     {
       "googlePlaceId": "ChIJ7498GwCNGGARftKEPuSMetY",
@@ -352,9 +316,10 @@
       "blocker": null,
       "notes": "Central semantic pass retained a non-accepted terminal outcome.",
       "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json"
+        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S4.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
     },
     {
       "googlePlaceId": "ChIJa17dKRSMGGARFzEaGcCEI2c",
@@ -387,9 +352,10 @@
       "blocker": null,
       "notes": "Central semantic pass retained a non-accepted terminal outcome.",
       "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json"
+        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S4.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
     },
     {
       "googlePlaceId": "ChIJB8DnBUqNGGARruVGsQV6YXU",
@@ -408,9 +374,10 @@
       },
       "notes": "",
       "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json"
+        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S4.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
     },
     {
       "googlePlaceId": "ChIJBaT2SQCNGGAR4ZzBT_sJ884",
@@ -438,9 +405,10 @@
       },
       "notes": "",
       "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json"
+        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S4.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
     },
     {
       "googlePlaceId": "ChIJbXx_jUOMGGARfuhXOLEymhw",
@@ -473,9 +441,10 @@
       "blocker": null,
       "notes": "Central semantic pass retained a non-accepted terminal outcome.",
       "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json"
+        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S4.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
     },
     {
       "googlePlaceId": "ChIJcduc-w2MGGARhklCQJgRB7g",
@@ -508,9 +477,10 @@
       "blocker": null,
       "notes": "Central semantic pass retained a non-accepted terminal outcome.",
       "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json"
+        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S4.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
     },
     {
       "googlePlaceId": "ChIJDZ6p10OMGGARcMcgBtx2btM",
@@ -529,9 +499,10 @@
       },
       "notes": "",
       "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json"
+        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S4.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
     },
     {
       "googlePlaceId": "ChIJGVRApwmNGGAR_KPo9VG0ioQ",
@@ -570,9 +541,10 @@
       "blocker": null,
       "notes": "Central semantic pass retained a non-accepted terminal outcome.",
       "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json"
+        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S4.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
     },
     {
       "googlePlaceId": "ChIJK1ruKxqMGGARm4L7gV0A67E",
@@ -598,9 +570,10 @@
       "blocker": null,
       "notes": "Central semantic pass retained a non-accepted terminal outcome.",
       "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json"
+        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S4.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
     },
     {
       "googlePlaceId": "ChIJK2sBQwOMGGARbf-B0GQabeY",
@@ -657,9 +630,10 @@
       "blocker": null,
       "notes": "",
       "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json"
+        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S4.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus: all unrepresented independent reviewed inputs accepted; safe evidence unioned fail-closed."
     },
     {
       "googlePlaceId": "ChIJm3c0QBWMGGARTOQZXD59tIs",
@@ -692,9 +666,10 @@
       "blocker": null,
       "notes": "Central semantic pass retained a non-accepted terminal outcome.",
       "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json"
+        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S4.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
     },
     {
       "googlePlaceId": "ChIJoyWfw7CNGGARybNRT83dfoU",
@@ -713,9 +688,10 @@
       },
       "notes": "",
       "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json"
+        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S4.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
     },
     {
       "googlePlaceId": "ChIJSwFOIhSMGGARCThJS2Gz3r8",
@@ -742,9 +718,10 @@
       "blocker": null,
       "notes": "Central semantic pass retained a non-accepted terminal outcome.",
       "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json"
+        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S4.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
     },
     {
       "googlePlaceId": "ChIJT0lK9DSNGGARIoc0dYDKbYU",
@@ -777,9 +754,10 @@
       "blocker": null,
       "notes": "Central semantic pass retained a non-accepted terminal outcome.",
       "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json"
+        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S4.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
     },
     {
       "googlePlaceId": "ChIJu42VMQWMGGARLAOhVUJsOmU",
@@ -798,9 +776,10 @@
       },
       "notes": "",
       "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json"
+        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S4.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
     },
     {
       "googlePlaceId": "ChIJVVVBYkGMGGARlVxD3qwkHKI",
@@ -839,9 +818,10 @@
       "blocker": null,
       "notes": "Central semantic pass retained a non-accepted terminal outcome.",
       "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json"
+        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S4.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
     },
     {
       "googlePlaceId": "ChIJw5s7iUaNGGARHJfkHc2Vb6c",
@@ -874,9 +854,10 @@
       "blocker": null,
       "notes": "Central semantic pass retained a non-accepted terminal outcome.",
       "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json"
+        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S4.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
     },
     {
       "googlePlaceId": "ChIJw9hYKgCNGGARlAd2hLdCZAA",
@@ -918,9 +899,10 @@
       "blocker": null,
       "notes": "",
       "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json"
+        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S4.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus: all unrepresented independent reviewed inputs accepted; safe evidence unioned fail-closed."
     },
     {
       "googlePlaceId": "ChIJAe9OMzWNGGARJmv6abBeXzE",
@@ -959,9 +941,10 @@
       "blocker": null,
       "notes": "Central semantic pass retained a non-accepted terminal outcome.",
       "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json"
+        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S4.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
     },
     {
       "googlePlaceId": "ChIJI1W-PkKMGGARSpB6s8XZQKU",
@@ -1003,9 +986,55 @@
       "blocker": null,
       "notes": "",
       "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json"
+        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S4.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus: all unrepresented independent reviewed inputs accepted; safe evidence unioned fail-closed."
+    },
+    {
+      "googlePlaceId": "ChIJ____7xmMGGAR7CPTAtdKCGY",
+      "restaurantName": "レキシズルバー",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "レキシズルバー"
+        ],
+        "evidence": [
+          {
+            "provider": "official",
+            "sourceUrl": "https://www.rekisizzle.com/about_bar.php",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "exact branch/source identity"
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "キーマカレー",
+          "nameZhCandidate": null,
+          "evidenceClass": "source_menu_text",
+          "recommendationSemantics": "",
+          "provider": "official_web",
+          "sourceUrl": "https://www.rekisizzle.com/about_bar.php",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "フードはキーマカレーや日替わりの肴や乾きものなど",
+          "confidence": "high",
+          "notes": ""
+        }
+      ],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S4.json"
+      ],
+      "reviewReasoning": "Final v2 consensus: all unrepresented independent reviewed inputs accepted; safe evidence unioned fail-closed."
     },
     {
       "googlePlaceId": "ChIJVTolURyMGGARM7UFohexOMQ",
@@ -1038,9 +1067,10 @@
       "blocker": null,
       "notes": "Central semantic pass retained a non-accepted terminal outcome.",
       "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json"
+        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S4.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
     },
     {
       "googlePlaceId": "ChIJvwu5WJeNGGARy4zgM9UMhg0",
@@ -1082,9 +1112,10 @@
       "blocker": null,
       "notes": "",
       "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json"
+        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S4.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus: all unrepresented independent reviewed inputs accepted; safe evidence unioned fail-closed."
     },
     {
       "googlePlaceId": "ChIJW8xzJS6NGGARm3yQ-Ds1PDY",
@@ -1126,9 +1157,10 @@
       "blocker": null,
       "notes": "",
       "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json"
+        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S4.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus: all unrepresented independent reviewed inputs accepted; safe evidence unioned fail-closed."
     }
   ],
   "policyAttestation": {
@@ -1136,6 +1168,7 @@
     "canonicalMasterEditedDirectly": false,
     "proximityOnlyIdentityBindingUsed": false,
     "recommendationWithoutExplicitSemanticsAdded": false,
-    "accessRestrictionBypassUsed": false
+    "accessRestrictionBypassUsed": false,
+    "unrepresentedIndependentInputsRequireConsensus": true
   }
 }

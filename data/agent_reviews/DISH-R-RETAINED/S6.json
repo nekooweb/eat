@@ -1,20 +1,20 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "proposalOnly": false,
   "marker": "DISH-R-RETAINED",
   "shard": "S6",
-  "agentRunId": "FINAL-DISH-R-RETAINED:S6:20260915",
+  "agentRunId": "FINAL-V2-DISH-R-RETAINED:S6:20260915",
   "sourceQueue": "data/dish_batch_plan.json",
-  "sourceQueueCommit": "97f07e274e07854952da45fe264ab43ddea7d986",
-  "generatedAt": "2026-09-15T22:00:00+09:00",
+  "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+  "generatedAt": "2026-09-15T23:00:00+09:00",
   "reviewedAt": "2026-09-15",
-  "reviewedBy": "final-dish-integration central fail-closed review",
+  "reviewedBy": "final-dish-integration v2 incremental fail-closed review",
   "summary": {
     "assignedRows": 31,
     "reviewedRows": 31,
-    "acceptedEvidenceRows": 6,
-    "candidateRows": 0,
-    "noEvidenceRows": 25,
+    "acceptedEvidenceRows": 5,
+    "candidateRows": 5,
+    "noEvidenceRows": 21,
     "blockedRows": 0,
     "skippedAlreadyCompleteRows": 0
   },
@@ -51,9 +51,11 @@
       "blocker": null,
       "notes": "Repository-retained source facts/provenance, Hot Pepper bindings/rich metadata, and detail evidence were inspected; no provenance-backed concrete branch menu item was recovered.",
       "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-RETAINED/S6.json"
+        "data/agent_proposals/DISH-R-RETAINED/S6.json",
+        "data/agent_reviews/DISH-R-RETAINED/S6.json",
+        "data/agent_proposals/DISH-R-RETAINED/S6-main-20260914.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
     },
     {
       "googlePlaceId": "ChIJ2XRaORGMGGARr46tS5SgYE0",
@@ -87,9 +89,11 @@
       "blocker": null,
       "notes": "Repository-retained source facts/provenance, Hot Pepper bindings/rich metadata, and detail evidence were inspected; no provenance-backed concrete branch menu item was recovered.",
       "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-RETAINED/S6.json"
+        "data/agent_proposals/DISH-R-RETAINED/S6.json",
+        "data/agent_reviews/DISH-R-RETAINED/S6.json",
+        "data/agent_proposals/DISH-R-RETAINED/S6-main-20260914.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
     },
     {
       "googlePlaceId": "ChIJ40toFcqNGGARg-HT_n1RPRk",
@@ -123,9 +127,11 @@
       "blocker": null,
       "notes": "Repository-retained source facts/provenance, Hot Pepper bindings/rich metadata, and detail evidence were inspected; no provenance-backed concrete branch menu item was recovered.",
       "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-RETAINED/S6.json"
+        "data/agent_proposals/DISH-R-RETAINED/S6.json",
+        "data/agent_reviews/DISH-R-RETAINED/S6.json",
+        "data/agent_proposals/DISH-R-RETAINED/S6-main-20260914.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
     },
     {
       "googlePlaceId": "ChIJ4ePngBmMGGARu5LUFztq7tI",
@@ -159,9 +165,11 @@
       "blocker": null,
       "notes": "Repository-retained source facts/provenance, Hot Pepper bindings/rich metadata, and detail evidence were inspected; no provenance-backed concrete branch menu item was recovered.",
       "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-RETAINED/S6.json"
+        "data/agent_proposals/DISH-R-RETAINED/S6.json",
+        "data/agent_reviews/DISH-R-RETAINED/S6.json",
+        "data/agent_proposals/DISH-R-RETAINED/S6-main-20260914.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
     },
     {
       "googlePlaceId": "ChIJAQCf4hCMGGARuudoP7m6-Nw",
@@ -195,9 +203,11 @@
       "blocker": null,
       "notes": "Repository-retained source facts/provenance, Hot Pepper bindings/rich metadata, and detail evidence were inspected; no provenance-backed concrete branch menu item was recovered.",
       "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-RETAINED/S6.json"
+        "data/agent_proposals/DISH-R-RETAINED/S6.json",
+        "data/agent_reviews/DISH-R-RETAINED/S6.json",
+        "data/agent_proposals/DISH-R-RETAINED/S6-main-20260914.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
     },
     {
       "googlePlaceId": "ChIJfx9Z3BOMGGARF9DCcdAljCg",
@@ -231,9 +241,11 @@
       "blocker": null,
       "notes": "Repository-retained source facts/provenance, Hot Pepper bindings/rich metadata, and detail evidence were inspected; no provenance-backed concrete branch menu item was recovered.",
       "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-RETAINED/S6.json"
+        "data/agent_proposals/DISH-R-RETAINED/S6.json",
+        "data/agent_reviews/DISH-R-RETAINED/S6.json",
+        "data/agent_proposals/DISH-R-RETAINED/S6-main-20260914.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
     },
     {
       "googlePlaceId": "ChIJObdaJhSMGGARBxqfRHHcNEA",
@@ -267,9 +279,11 @@
       "blocker": null,
       "notes": "Repository-retained source facts/provenance, Hot Pepper bindings/rich metadata, and detail evidence were inspected; no provenance-backed concrete branch menu item was recovered.",
       "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-RETAINED/S6.json"
+        "data/agent_proposals/DISH-R-RETAINED/S6.json",
+        "data/agent_reviews/DISH-R-RETAINED/S6.json",
+        "data/agent_proposals/DISH-R-RETAINED/S6-main-20260914.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
     },
     {
       "googlePlaceId": "ChIJP857rBGMGGARhVAFsAnb2S8",
@@ -303,9 +317,11 @@
       "blocker": null,
       "notes": "Repository-retained source facts/provenance, Hot Pepper bindings/rich metadata, and detail evidence were inspected; no provenance-backed concrete branch menu item was recovered.",
       "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-RETAINED/S6.json"
+        "data/agent_proposals/DISH-R-RETAINED/S6.json",
+        "data/agent_reviews/DISH-R-RETAINED/S6.json",
+        "data/agent_proposals/DISH-R-RETAINED/S6-main-20260914.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
     },
     {
       "googlePlaceId": "ChIJq1Gv1cKNGGARTwACmZuHycs",
@@ -339,9 +355,11 @@
       "blocker": null,
       "notes": "Repository-retained source facts/provenance, Hot Pepper bindings/rich metadata, and detail evidence were inspected; no provenance-backed concrete branch menu item was recovered.",
       "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-RETAINED/S6.json"
+        "data/agent_proposals/DISH-R-RETAINED/S6.json",
+        "data/agent_reviews/DISH-R-RETAINED/S6.json",
+        "data/agent_proposals/DISH-R-RETAINED/S6-main-20260914.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
     },
     {
       "googlePlaceId": "ChIJQ1Jpnz-MGGARvnvU23zc1GE",
@@ -375,9 +393,11 @@
       "blocker": null,
       "notes": "Repository-retained source facts/provenance, Hot Pepper bindings/rich metadata, and detail evidence were inspected; no provenance-backed concrete branch menu item was recovered.",
       "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-RETAINED/S6.json"
+        "data/agent_proposals/DISH-R-RETAINED/S6.json",
+        "data/agent_reviews/DISH-R-RETAINED/S6.json",
+        "data/agent_proposals/DISH-R-RETAINED/S6-main-20260914.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
     },
     {
       "googlePlaceId": "ChIJRbhw1xaMGGARbI2KQGUJuIc",
@@ -411,9 +431,11 @@
       "blocker": null,
       "notes": "Repository-retained source facts/provenance, Hot Pepper bindings/rich metadata, and detail evidence were inspected; no provenance-backed concrete branch menu item was recovered.",
       "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-RETAINED/S6.json"
+        "data/agent_proposals/DISH-R-RETAINED/S6.json",
+        "data/agent_reviews/DISH-R-RETAINED/S6.json",
+        "data/agent_proposals/DISH-R-RETAINED/S6-main-20260914.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
     },
     {
       "googlePlaceId": "ChIJV4pHSp2NGGAR2iMXFA3cf5U",
@@ -447,9 +469,11 @@
       "blocker": null,
       "notes": "Repository-retained source facts/provenance, Hot Pepper bindings/rich metadata, and detail evidence were inspected; no provenance-backed concrete branch menu item was recovered.",
       "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-RETAINED/S6.json"
+        "data/agent_proposals/DISH-R-RETAINED/S6.json",
+        "data/agent_reviews/DISH-R-RETAINED/S6.json",
+        "data/agent_proposals/DISH-R-RETAINED/S6-main-20260914.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
     },
     {
       "googlePlaceId": "ChIJV7G3CiGNGGAR8zS986tcWoE",
@@ -483,9 +507,11 @@
       "blocker": null,
       "notes": "Repository-retained source facts/provenance, Hot Pepper bindings/rich metadata, and detail evidence were inspected; no provenance-backed concrete branch menu item was recovered.",
       "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-RETAINED/S6.json"
+        "data/agent_proposals/DISH-R-RETAINED/S6.json",
+        "data/agent_reviews/DISH-R-RETAINED/S6.json",
+        "data/agent_proposals/DISH-R-RETAINED/S6-main-20260914.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
     },
     {
       "googlePlaceId": "ChIJVVWVuBOMGGARR14mDlWkiS4",
@@ -519,9 +545,11 @@
       "blocker": null,
       "notes": "Repository-retained source facts/provenance, Hot Pepper bindings/rich metadata, and detail evidence were inspected; no provenance-backed concrete branch menu item was recovered.",
       "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-RETAINED/S6.json"
+        "data/agent_proposals/DISH-R-RETAINED/S6.json",
+        "data/agent_reviews/DISH-R-RETAINED/S6.json",
+        "data/agent_proposals/DISH-R-RETAINED/S6-main-20260914.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
     },
     {
       "googlePlaceId": "ChIJ4ymkbRGMGGARIv2mv2Uyrhw",
@@ -549,6 +577,13 @@
             "evidenceType": "exact_place_id_retained_menu_source",
             "note": "Repository-retained source row is keyed to this frozen Google Place ID; source fields: budget, closure, cuisine, dishes, hours, hyakumeiten, name. Source-native name: 中華料理 餃子の店 三幸園 白山通り店. Retained Hot Pepper catalog address: 東京都千代田区神田神保町１丁目13番地4. Retained provenance does not expose an independent branch phone, so phone was not asserted.",
             "sourceNativeRestaurantName": "中華料理 餃子の店 三幸園 白山通り店"
+          },
+          {
+            "provider": "Tabelog",
+            "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13006530/",
+            "checkedAt": "2026-09-05",
+            "evidenceType": "exact_branch_identity_from_rows_proposal",
+            "note": "Exact Place-ID retained source row names 中華料理 餃子の店 三幸園 白山通り店; its sourceRef explicitly claims the dishes field."
           }
         ]
       },
@@ -596,14 +631,17 @@
           "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13006530/",
           "checkedAt": "2026-09-05",
           "result": "Retained dishes field/source item inspected."
-        }
+        },
+        "https://tabelog.com/tokyo/A1310/A131003/13006530/"
       ],
       "blocker": null,
       "notes": "Repository-retained source facts/provenance or exact itemized Hot Pepper evidence supplied concrete F items; no recommendation semantics were inferred.",
       "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-RETAINED/S6.json"
+        "data/agent_proposals/DISH-R-RETAINED/S6.json",
+        "data/agent_reviews/DISH-R-RETAINED/S6.json",
+        "data/agent_proposals/DISH-R-RETAINED/S6-main-20260914.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus: all unrepresented independent reviewed inputs accepted; safe evidence unioned fail-closed."
     },
     {
       "googlePlaceId": "ChIJ9TsbQzyMGGARGNkQ4gvzxy8",
@@ -623,9 +661,11 @@
       "blocker": null,
       "notes": "Repository-retained source facts/provenance, Hot Pepper bindings/rich metadata, and detail evidence were inspected; no provenance-backed concrete branch menu item was recovered.",
       "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-RETAINED/S6.json"
+        "data/agent_proposals/DISH-R-RETAINED/S6.json",
+        "data/agent_reviews/DISH-R-RETAINED/S6.json",
+        "data/agent_proposals/DISH-R-RETAINED/S6-main-20260914.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
     },
     {
       "googlePlaceId": "ChIJa7aZ2JWNGGARWbupeqzYFo0",
@@ -640,14 +680,17 @@
       "attemptedSources": [
         "data/source_facts.js",
         "data/source_provenance.js",
-        "data/google_inventory_detail_evidence.json"
+        "data/google_inventory_detail_evidence.json",
+        "https://www.hotpepper.jp/strJ004536449/"
       ],
       "blocker": null,
       "notes": "Repository-retained source facts/provenance, Hot Pepper bindings/rich metadata, and detail evidence were inspected; no provenance-backed concrete branch menu item was recovered.",
       "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-RETAINED/S6.json"
+        "data/agent_proposals/DISH-R-RETAINED/S6.json",
+        "data/agent_reviews/DISH-R-RETAINED/S6.json",
+        "data/agent_proposals/DISH-R-RETAINED/S6-main-20260914.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
     },
     {
       "googlePlaceId": "ChIJe-72fACNGGARqtnxQaA1-dg",
@@ -664,14 +707,17 @@
       "attemptedSources": [
         "data/source_facts.js",
         "data/source_provenance.js",
-        "data/google_inventory_detail_evidence.json"
+        "data/google_inventory_detail_evidence.json",
+        "https://www.hotpepper.jp/strJ003806900/"
       ],
       "blocker": null,
       "notes": "Repository-retained source facts/provenance, Hot Pepper bindings/rich metadata, and detail evidence were inspected; no provenance-backed concrete branch menu item was recovered.",
       "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-RETAINED/S6.json"
+        "data/agent_proposals/DISH-R-RETAINED/S6.json",
+        "data/agent_reviews/DISH-R-RETAINED/S6.json",
+        "data/agent_proposals/DISH-R-RETAINED/S6-main-20260914.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
     },
     {
       "googlePlaceId": "ChIJeygNc1ONGGARICZdtFQrgac",
@@ -686,14 +732,17 @@
       "attemptedSources": [
         "data/source_facts.js",
         "data/source_provenance.js",
-        "data/google_inventory_detail_evidence.json"
+        "data/google_inventory_detail_evidence.json",
+        "https://www.hotpepper.jp/strJ003498021/"
       ],
       "blocker": null,
       "notes": "Repository-retained source facts/provenance, Hot Pepper bindings/rich metadata, and detail evidence were inspected; no provenance-backed concrete branch menu item was recovered.",
       "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-RETAINED/S6.json"
+        "data/agent_proposals/DISH-R-RETAINED/S6.json",
+        "data/agent_reviews/DISH-R-RETAINED/S6.json",
+        "data/agent_proposals/DISH-R-RETAINED/S6-main-20260914.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
     },
     {
       "googlePlaceId": "ChIJkxrSpkGMGGAR4N-X_BBhPLo",
@@ -713,14 +762,16 @@
       "blocker": null,
       "notes": "Repository-retained source facts/provenance, Hot Pepper bindings/rich metadata, and detail evidence were inspected; no provenance-backed concrete branch menu item was recovered.",
       "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-RETAINED/S6.json"
+        "data/agent_proposals/DISH-R-RETAINED/S6.json",
+        "data/agent_reviews/DISH-R-RETAINED/S6.json",
+        "data/agent_proposals/DISH-R-RETAINED/S6-main-20260914.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
     },
     {
       "googlePlaceId": "ChIJs_zQkhCMGGARCN3rJxb_w80",
       "restaurantName": "MAJI CURRY 神田神保町店",
-      "status": "no_evidence",
+      "status": "candidate",
       "identity": {
         "state": "verified",
         "sourceAliases": [
@@ -758,14 +809,17 @@
           "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13219557/",
           "checkedAt": "2026-09-05",
           "result": "Retained source/provider binding inspected; no accepted dish field."
-        }
+        },
+        "https://www.hotpepper.jp/strJ003340019/"
       ],
       "blocker": null,
       "notes": "Repository-retained source facts/provenance, Hot Pepper bindings/rich metadata, and detail evidence were inspected; no provenance-backed concrete branch menu item was recovered.",
       "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-RETAINED/S6.json"
+        "data/agent_proposals/DISH-R-RETAINED/S6.json",
+        "data/agent_reviews/DISH-R-RETAINED/S6.json",
+        "data/agent_proposals/DISH-R-RETAINED/S6-main-20260914.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
     },
     {
       "googlePlaceId": "ChIJUZY03hSNGGARemHZVeq6gI4",
@@ -785,9 +839,11 @@
       "blocker": null,
       "notes": "Repository-retained source facts/provenance, Hot Pepper bindings/rich metadata, and detail evidence were inspected; no provenance-backed concrete branch menu item was recovered.",
       "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-RETAINED/S6.json"
+        "data/agent_proposals/DISH-R-RETAINED/S6.json",
+        "data/agent_reviews/DISH-R-RETAINED/S6.json",
+        "data/agent_proposals/DISH-R-RETAINED/S6-main-20260914.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
     },
     {
       "googlePlaceId": "ChIJYa2gh-qNGGAREFXbnV-9Hqc",
@@ -802,14 +858,17 @@
       "attemptedSources": [
         "data/source_facts.js",
         "data/source_provenance.js",
-        "data/google_inventory_detail_evidence.json"
+        "data/google_inventory_detail_evidence.json",
+        "https://www.hotpepper.jp/strJ003450409/"
       ],
       "blocker": null,
       "notes": "Repository-retained source facts/provenance, Hot Pepper bindings/rich metadata, and detail evidence were inspected; no provenance-backed concrete branch menu item was recovered.",
       "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-RETAINED/S6.json"
+        "data/agent_proposals/DISH-R-RETAINED/S6.json",
+        "data/agent_reviews/DISH-R-RETAINED/S6.json",
+        "data/agent_proposals/DISH-R-RETAINED/S6-main-20260914.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
     },
     {
       "googlePlaceId": "ChIJA3cvTRuMGGAR_HiDac9G6Do",
@@ -828,6 +887,13 @@
             "evidenceType": "exact_place_id_retained_menu_source",
             "note": "Repository-retained source row is keyed to this frozen Google Place ID; source fields: address, budget, closure, cuisine, dishes, hours, name. Source-native name: ひろしま酒蔵 歓粋亭. Retained provenance does not expose an independent branch phone, so phone was not asserted.",
             "sourceNativeRestaurantName": "ひろしま酒蔵 歓粋亭"
+          },
+          {
+            "provider": "Tabelog",
+            "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13112878/",
+            "checkedAt": "2026-09-05",
+            "evidenceType": "exact_branch_identity_from_rows_proposal",
+            "note": "Exact Place-ID Tabelog source fact names ひろしま酒蔵 歓粋亭 and retains all three dishes."
           }
         ]
       },
@@ -884,14 +950,17 @@
           "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13112878/",
           "checkedAt": "2026-09-05",
           "result": "Retained dishes field/source item inspected."
-        }
+        },
+        "https://tabelog.com/tokyo/A1310/A131002/13112878/"
       ],
       "blocker": null,
       "notes": "Repository-retained source facts/provenance or exact itemized Hot Pepper evidence supplied concrete F items; no recommendation semantics were inferred.",
       "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-RETAINED/S6.json"
+        "data/agent_proposals/DISH-R-RETAINED/S6.json",
+        "data/agent_reviews/DISH-R-RETAINED/S6.json",
+        "data/agent_proposals/DISH-R-RETAINED/S6-main-20260914.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus: all unrepresented independent reviewed inputs accepted; safe evidence unioned fail-closed."
     },
     {
       "googlePlaceId": "ChIJe1GlRU6NGGARIvyAuXYJamg",
@@ -910,6 +979,13 @@
             "evidenceType": "exact_place_id_retained_menu_source",
             "note": "Repository-retained source row is keyed to this frozen Google Place ID; source fields: address, budget, closure, cuisine, dishes, hours, name. Source-native name: 花臨蘭州牛肉麺. Retained provenance does not expose an independent branch phone, so phone was not asserted.",
             "sourceNativeRestaurantName": "花臨蘭州牛肉麺"
+          },
+          {
+            "provider": "Tabelog",
+            "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13287589/",
+            "checkedAt": "2026-09-05",
+            "evidenceType": "exact_branch_identity_from_rows_proposal",
+            "note": "Exact Place-ID Tabelog source fact names 花臨蘭州牛肉麺 and retains dishes:[蘭州牛肉麺]."
           }
         ]
       },
@@ -936,14 +1012,17 @@
           "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13287589/",
           "checkedAt": "2026-09-05",
           "result": "Retained dishes field/source item inspected."
-        }
+        },
+        "https://tabelog.com/tokyo/A1310/A131003/13287589/"
       ],
       "blocker": null,
       "notes": "Repository-retained source facts/provenance or exact itemized Hot Pepper evidence supplied concrete F items; no recommendation semantics were inferred.",
       "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-RETAINED/S6.json"
+        "data/agent_proposals/DISH-R-RETAINED/S6.json",
+        "data/agent_reviews/DISH-R-RETAINED/S6.json",
+        "data/agent_proposals/DISH-R-RETAINED/S6-main-20260914.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus: all unrepresented independent reviewed inputs accepted; safe evidence unioned fail-closed."
     },
     {
       "googlePlaceId": "ChIJI8w3quWNGGARwA5PTpq8BUw",
@@ -962,6 +1041,13 @@
             "evidenceType": "exact_place_id_retained_menu_source",
             "note": "Repository-retained source row is keyed to this frozen Google Place ID; source fields: address, budget, closure, cuisine, dishes, hours, name. Source-native name: 馬さん餃子酒場 神保町店. Retained provenance does not expose an independent branch phone, so phone was not asserted.",
             "sourceNativeRestaurantName": "馬さん餃子酒場 神保町店"
+          },
+          {
+            "provider": "Tabelog",
+            "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13212433/",
+            "checkedAt": "2026-09-05",
+            "evidenceType": "exact_branch_identity_from_rows_proposal",
+            "note": "Exact Place-ID Tabelog source fact names 馬さん餃子酒場 神保町店 and retains dishes:[黒豚餃子]."
           }
         ]
       },
@@ -988,14 +1074,17 @@
           "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13212433/",
           "checkedAt": "2026-09-05",
           "result": "Retained dishes field/source item inspected."
-        }
+        },
+        "https://tabelog.com/tokyo/A1310/A131003/13212433/"
       ],
       "blocker": null,
       "notes": "Repository-retained source facts/provenance or exact itemized Hot Pepper evidence supplied concrete F items; no recommendation semantics were inferred.",
       "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-RETAINED/S6.json"
+        "data/agent_proposals/DISH-R-RETAINED/S6.json",
+        "data/agent_reviews/DISH-R-RETAINED/S6.json",
+        "data/agent_proposals/DISH-R-RETAINED/S6-main-20260914.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus: all unrepresented independent reviewed inputs accepted; safe evidence unioned fail-closed."
     },
     {
       "googlePlaceId": "ChIJZ7Pq3gSMGGARqzSYizyRXm0",
@@ -1014,6 +1103,13 @@
             "evidenceType": "exact_place_id_retained_menu_source",
             "note": "Repository-retained source row is keyed to this frozen Google Place ID; source fields: address, budget, cuisine, dishes, hours, name. Source-native name: 串焼 庭 本格ハルビン. Retained provenance does not expose an independent branch phone, so phone was not asserted.",
             "sourceNativeRestaurantName": "串焼 庭 本格ハルビン"
+          },
+          {
+            "provider": "Tabelog",
+            "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13201390/",
+            "checkedAt": "2026-09-05",
+            "evidenceType": "exact_branch_identity_from_rows_proposal",
+            "note": "Exact Place-ID Tabelog source fact names 串焼 庭 本格ハルビン and retains dishes:[串焼き]."
           }
         ]
       },
@@ -1040,19 +1136,22 @@
           "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13201390/",
           "checkedAt": "2026-09-05",
           "result": "Retained dishes field/source item inspected."
-        }
+        },
+        "https://tabelog.com/tokyo/A1310/A131002/13201390/"
       ],
       "blocker": null,
       "notes": "Repository-retained source facts/provenance or exact itemized Hot Pepper evidence supplied concrete F items; no recommendation semantics were inferred.",
       "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-RETAINED/S6.json"
+        "data/agent_proposals/DISH-R-RETAINED/S6.json",
+        "data/agent_reviews/DISH-R-RETAINED/S6.json",
+        "data/agent_proposals/DISH-R-RETAINED/S6-main-20260914.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus: all unrepresented independent reviewed inputs accepted; safe evidence unioned fail-closed."
     },
     {
       "googlePlaceId": "ChIJ7RluBw-MGGARe143_ONJFiQ",
       "restaurantName": "ダイニングバー リラ",
-      "status": "no_evidence",
+      "status": "candidate",
       "identity": {
         "state": "verified",
         "sourceAliases": [],
@@ -1062,19 +1161,22 @@
       "attemptedSources": [
         "data/source_facts.js",
         "data/source_provenance.js",
-        "data/google_inventory_detail_evidence.json"
+        "data/google_inventory_detail_evidence.json",
+        "https://www.hotpepper.jp/strJ000004631/"
       ],
       "blocker": null,
       "notes": "Repository-retained source facts/provenance, Hot Pepper bindings/rich metadata, and detail evidence were inspected; no provenance-backed concrete branch menu item was recovered.",
       "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-RETAINED/S6.json"
+        "data/agent_proposals/DISH-R-RETAINED/S6.json",
+        "data/agent_reviews/DISH-R-RETAINED/S6.json",
+        "data/agent_proposals/DISH-R-RETAINED/S6-main-20260914.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
     },
     {
       "googlePlaceId": "ChIJg7pjnimNGGARnAc7WGx24Lw",
       "restaurantName": "bistro Ubu ビストロ ウブ",
-      "status": "accepted_evidence",
+      "status": "candidate",
       "identity": {
         "state": "verified",
         "sourceAliases": [],
@@ -1088,87 +1190,29 @@
           }
         ]
       },
-      "dishProposals": [
-        {
-          "targetField": "featuredDishes",
-          "classification": "F",
-          "nameOriginal": "プリン",
-          "nameZhCandidate": null,
-          "evidenceClass": "hotpepper_menu_text",
-          "recommendationSemantics": "",
-          "provider": "Hot Pepper",
-          "sourceUrl": "https://www.hotpepper.jp/strJ004492257/food/",
-          "checkedAt": "2026-09-09",
-          "sourceScope": "branch",
-          "evidenceText": "自家製プリン 680円（税込） 「料理」の先頭へ戻る ※更新日が2021/3/31以前の情報は、当時の価格及び税率に基づく情報となります。価格につきましては直接店舗へお問い合わせく",
-          "confidence": "high",
-          "notes": "Concrete itemized retained Hot Pepper /food/ evidence; the source-native family label is preserved and no recommendation semantics were inferred."
-        },
-        {
-          "targetField": "featuredDishes",
-          "classification": "F",
-          "nameOriginal": "パスタ",
-          "nameZhCandidate": null,
-          "evidenceClass": "hotpepper_menu_text",
-          "recommendationSemantics": "",
-          "provider": "Hot Pepper",
-          "sourceUrl": "https://www.hotpepper.jp/strJ004492257/food/",
-          "checkedAt": "2026-09-09",
-          "sourceScope": "branch",
-          "evidenceText": "ポルチーニのキノコのクリームパスタ キノコの旨みを凝縮した、コク深いクリームソースのパスタ 1,680円（税込）",
-          "confidence": "high",
-          "notes": "Concrete itemized retained Hot Pepper /food/ evidence; the source-native family label is preserved and no recommendation semantics were inferred."
-        },
-        {
-          "targetField": "featuredDishes",
-          "classification": "F",
-          "nameOriginal": "チーズケーキ",
-          "nameZhCandidate": null,
-          "evidenceClass": "hotpepper_menu_text",
-          "recommendationSemantics": "",
-          "provider": "Hot Pepper",
-          "sourceUrl": "https://www.hotpepper.jp/strJ004492257/food/",
-          "checkedAt": "2026-09-09",
-          "sourceScope": "branch",
-          "evidenceText": "バスクチーズケーキ 880円（税込）",
-          "confidence": "high",
-          "notes": "Concrete itemized retained Hot Pepper /food/ evidence; the source-native family label is preserved and no recommendation semantics were inferred."
-        },
-        {
-          "targetField": "featuredDishes",
-          "classification": "F",
-          "nameOriginal": "ケーキ",
-          "nameZhCandidate": null,
-          "evidenceClass": "hotpepper_menu_text",
-          "recommendationSemantics": "",
-          "provider": "Hot Pepper",
-          "sourceUrl": "https://www.hotpepper.jp/strJ004492257/food/",
-          "checkedAt": "2026-09-09",
-          "sourceScope": "branch",
-          "evidenceText": "バスクチーズケーキ 880円（税込）",
-          "confidence": "high",
-          "notes": "Concrete itemized retained Hot Pepper /food/ evidence; the source-native family label is preserved and no recommendation semantics were inferred."
-        }
-      ],
+      "dishProposals": [],
       "attemptedSources": [
         {
           "provider": "Hot Pepper",
           "sourceUrl": "https://www.hotpepper.jp/strJ004492257/food/",
           "checkedAt": "2026-09-09",
           "result": "Retained itemized /food/ evidence inspected."
-        }
+        },
+        "https://www.hotpepper.jp/strJ004492257/"
       ],
       "blocker": null,
       "notes": "Repository-retained source facts/provenance or exact itemized Hot Pepper evidence supplied concrete F items; no recommendation semantics were inferred.",
       "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-RETAINED/S6.json"
+        "data/agent_proposals/DISH-R-RETAINED/S6.json",
+        "data/agent_reviews/DISH-R-RETAINED/S6.json",
+        "data/agent_proposals/DISH-R-RETAINED/S6-main-20260914.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
     },
     {
       "googlePlaceId": "ChIJKc2jO0-NGGAR959S-C8pZ3E",
       "restaurantName": "小料理 よしこ",
-      "status": "no_evidence",
+      "status": "candidate",
       "identity": {
         "state": "verified",
         "sourceAliases": [],
@@ -1178,19 +1222,22 @@
       "attemptedSources": [
         "data/source_facts.js",
         "data/source_provenance.js",
-        "data/google_inventory_detail_evidence.json"
+        "data/google_inventory_detail_evidence.json",
+        "https://www.hotpepper.jp/strJ001293825/"
       ],
       "blocker": null,
       "notes": "Repository-retained source facts/provenance, Hot Pepper bindings/rich metadata, and detail evidence were inspected; no provenance-backed concrete branch menu item was recovered.",
       "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-RETAINED/S6.json"
+        "data/agent_proposals/DISH-R-RETAINED/S6.json",
+        "data/agent_reviews/DISH-R-RETAINED/S6.json",
+        "data/agent_proposals/DISH-R-RETAINED/S6-main-20260914.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
     },
     {
       "googlePlaceId": "ChIJWb9pC2GNGGAR3R0_6jEknP4",
       "restaurantName": "とんかつ九六喜",
-      "status": "no_evidence",
+      "status": "candidate",
       "identity": {
         "state": "verified",
         "sourceAliases": [],
@@ -1200,14 +1247,17 @@
       "attemptedSources": [
         "data/source_facts.js",
         "data/source_provenance.js",
-        "data/google_inventory_detail_evidence.json"
+        "data/google_inventory_detail_evidence.json",
+        "https://www.hotpepper.jp/strJ004492353/"
       ],
       "blocker": null,
       "notes": "Repository-retained source facts/provenance, Hot Pepper bindings/rich metadata, and detail evidence were inspected; no provenance-backed concrete branch menu item was recovered.",
       "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-RETAINED/S6.json"
+        "data/agent_proposals/DISH-R-RETAINED/S6.json",
+        "data/agent_reviews/DISH-R-RETAINED/S6.json",
+        "data/agent_proposals/DISH-R-RETAINED/S6-main-20260914.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
     }
   ],
   "policyAttestation": {
@@ -1215,6 +1265,7 @@
     "canonicalMasterEditedDirectly": false,
     "proximityOnlyIdentityBindingUsed": false,
     "recommendationWithoutExplicitSemanticsAdded": false,
-    "accessRestrictionBypassUsed": false
+    "accessRestrictionBypassUsed": false,
+    "unrepresentedIndependentInputsRequireConsensus": true
   }
 }

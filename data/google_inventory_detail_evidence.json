@@ -162,28 +162,28 @@
     "shardRecommendationEvidenceItems": 36,
     "shardFeaturedEvidenceItems": 33,
     "officialRetainedRecommendationEvidenceItems": 0,
-    "officialRetainedFeaturedEvidenceItems": 71,
-    "totalApprovedEvidenceItems": 140,
+    "officialRetainedFeaturedEvidenceItems": 69,
+    "totalApprovedEvidenceItems": 138,
     "previousEvidence": {
       "recommendationRestaurants": 591,
       "featuredRestaurants": 698,
       "evidenceRestaurants": 766,
       "recommendationItems": 1036,
-      "featuredItems": 2722
+      "featuredItems": 2724
     },
     "freshCrawlEvidence": {
       "recommendationRestaurants": 33,
-      "featuredRestaurants": 63,
-      "evidenceRestaurants": 96,
+      "featuredRestaurants": 64,
+      "evidenceRestaurants": 97,
       "recommendationItems": 36,
-      "featuredItems": 104
+      "featuredItems": 102
     },
     "mergedEvidence": {
       "recommendationRestaurants": 591,
       "featuredRestaurants": 698,
       "evidenceRestaurants": 766,
       "recommendationItems": 1036,
-      "featuredItems": 2722
+      "featuredItems": 2724
     },
     "specificityCorrection": {
       "correctedRestaurants": 0,
@@ -191,7 +191,7 @@
       "duplicateItemsRemoved": 0,
       "ruleCounts": {},
       "recommendationItemsAfterCorrection": 1036,
-      "featuredItemsAfterCorrection": 2722
+      "featuredItemsAfterCorrection": 2724
     }
   },
   "rows": [
@@ -210,6 +210,42 @@
           "evidenceRule": "central-reviewed:F:exact:キーマ(?:カレー)?|keema curry",
           "evidenceSnippet": "フードはキーマカレーや日替わりの肴や乾きものなど",
           "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-OFFICIAL/S4.json",
+              "marker": "DISH-R-OFFICIAL",
+              "shard": "S4",
+              "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [
+                  "レキシズルバー"
+                ],
+                "evidence": [
+                  {
+                    "provider": "official",
+                    "sourceUrl": "https://www.rekisizzle.com/about_bar.php",
+                    "checkedAt": "2026-09-14",
+                    "evidenceType": "branch_page",
+                    "note": "exact branch/source identity"
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "キーマカレー",
+                "nameZhCandidate": null,
+                "evidenceClass": "source_menu_text",
+                "recommendationSemantics": "",
+                "provider": "official_web",
+                "sourceUrl": "https://www.rekisizzle.com/about_bar.php",
+                "checkedAt": "2026-09-14",
+                "sourceScope": "branch",
+                "evidenceText": "フードはキーマカレーや日替わりの肴や乾きものなど",
+                "confidence": "high",
+                "notes": ""
+              }
+            },
             {
               "proposalPath": "data/agent_reviews/DISH-R-OFFICIAL/S4.json",
               "marker": "DISH-R-OFFICIAL",
@@ -1037,6 +1073,43 @@
               "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S5.json",
               "marker": "DISH-R-RETAINED",
               "shard": "S5",
+              "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [
+                  "つけめん金龍"
+                ],
+                "evidence": [
+                  {
+                    "provider": "Tabelog",
+                    "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13259807/",
+                    "checkedAt": "2026-09-05",
+                    "evidenceType": "exact_place_id_retained_menu_source",
+                    "note": "Repository-retained source row is keyed to this frozen Google Place ID; source fields: address, budget, closure, cuisine, dishes, hours, name. Source-native name: つけめん金龍. Retained provenance does not expose an independent branch phone, so phone was not asserted.",
+                    "sourceNativeRestaurantName": "つけめん金龍"
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "つけめん",
+                "nameZhCandidate": null,
+                "evidenceClass": "retained_source_menu_item",
+                "recommendationSemantics": "",
+                "provider": "Tabelog",
+                "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13259807/",
+                "checkedAt": "2026-09-05",
+                "sourceScope": "branch",
+                "evidenceText": "つけめん",
+                "confidence": "high",
+                "notes": "Concrete source-native retained menu field; no recommendation semantics were assumed."
+              }
+            },
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S5.json",
+              "marker": "DISH-R-RETAINED",
+              "shard": "S5",
               "sourceQueueCommit": "97f07e274e07854952da45fe264ab43ddea7d986",
               "identity": {
                 "state": "verified",
@@ -1093,6 +1166,40 @@
               "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S5.json",
               "marker": "DISH-R-RETAINED",
               "shard": "S5",
+              "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [],
+                "evidence": [
+                  {
+                    "provider": "Hot Pepper",
+                    "sourceUrl": "https://www.hotpepper.jp/strJ001232926/food/",
+                    "checkedAt": "2026-09-09",
+                    "evidenceType": "exact_itemized_retained_menu_source",
+                    "note": "Repository-retained itemized Hot Pepper /food/ source is keyed to this frozen Google Place ID; concrete native menu text was inspected. Frozen catalog name: 暁 本郷. Retained Hot Pepper catalog address: 東京都文京区本郷２-30-9. Retained provenance does not expose an independent branch phone, so phone was not asserted."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "から揚げ",
+                "nameZhCandidate": null,
+                "evidenceClass": "hotpepper_menu_text",
+                "recommendationSemantics": "",
+                "provider": "Hot Pepper",
+                "sourceUrl": "https://www.hotpepper.jp/strJ001232926/food/",
+                "checkedAt": "2026-09-09",
+                "sourceScope": "branch",
+                "evidenceText": "鶏のから揚げ 968円（税込）",
+                "confidence": "high",
+                "notes": "Concrete itemized retained Hot Pepper /food/ evidence; the source-native family label is preserved and no recommendation semantics were inferred."
+              }
+            },
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S5.json",
+              "marker": "DISH-R-RETAINED",
+              "shard": "S5",
               "sourceQueueCommit": "97f07e274e07854952da45fe264ab43ddea7d986",
               "identity": {
                 "state": "verified",
@@ -1135,6 +1242,40 @@
           "evidenceRule": "hotpepper-price-backed-h4:だし巻き(?:玉子|卵)|出汁巻き(?:玉子|卵)",
           "evidenceSnippet": "だし巻き玉子 1,078円（税込）",
           "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S5.json",
+              "marker": "DISH-R-RETAINED",
+              "shard": "S5",
+              "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [],
+                "evidence": [
+                  {
+                    "provider": "Hot Pepper",
+                    "sourceUrl": "https://www.hotpepper.jp/strJ001232926/food/",
+                    "checkedAt": "2026-09-09",
+                    "evidenceType": "exact_itemized_retained_menu_source",
+                    "note": "Repository-retained itemized Hot Pepper /food/ source is keyed to this frozen Google Place ID; concrete native menu text was inspected. Frozen catalog name: 暁 本郷. Retained Hot Pepper catalog address: 東京都文京区本郷２-30-9. Retained provenance does not expose an independent branch phone, so phone was not asserted."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "だし巻き玉子",
+                "nameZhCandidate": null,
+                "evidenceClass": "hotpepper_menu_text",
+                "recommendationSemantics": "",
+                "provider": "Hot Pepper",
+                "sourceUrl": "https://www.hotpepper.jp/strJ001232926/food/",
+                "checkedAt": "2026-09-09",
+                "sourceScope": "branch",
+                "evidenceText": "だし巻き玉子 1,078円（税込）",
+                "confidence": "high",
+                "notes": "Concrete itemized retained Hot Pepper /food/ evidence; the source-native family label is preserved and no recommendation semantics were inferred."
+              }
+            },
             {
               "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S5.json",
               "marker": "DISH-R-RETAINED",
@@ -2321,6 +2462,40 @@
               "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S2.json",
               "marker": "DISH-R-RETAINED",
               "shard": "S2",
+              "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [],
+                "evidence": [
+                  {
+                    "provider": "Hot Pepper retained binding",
+                    "sourceUrl": "https://www.hotpepper.jp/strJ004445490/food/",
+                    "checkedAt": "2026-09-09",
+                    "evidenceType": "high_confidence_bound_menu",
+                    "note": "Retained binding is high confidence/autoEligible; exact price-backed food page evidence stored in repository."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "出汁巻き玉子",
+                "nameZhCandidate": null,
+                "evidenceClass": "hotpepper_menu_text",
+                "recommendationSemantics": "",
+                "provider": "Hot Pepper",
+                "sourceUrl": "https://www.hotpepper.jp/strJ004445490/food/",
+                "checkedAt": "2026-09-09",
+                "sourceScope": "branch",
+                "evidenceText": "出汁巻き玉子 もちろん一本一本手作りで巻いてます！出汁の効いた玉子と柚子の効いた大根おろしでさっぱりと召し上がってください 693円（税込）",
+                "confidence": "high",
+                "notes": "Concrete priced menu item."
+              }
+            },
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S2.json",
+              "marker": "DISH-R-RETAINED",
+              "shard": "S2",
               "sourceQueueCommit": "97f07e274e07854952da45fe264ab43ddea7d986",
               "identity": {
                 "state": "verified",
@@ -2549,6 +2724,42 @@
               "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S2.json",
               "marker": "DISH-R-RETAINED",
               "shard": "S2",
+              "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [
+                  "Re時屋"
+                ],
+                "evidence": [
+                  {
+                    "provider": "Tabelog",
+                    "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13044561/",
+                    "checkedAt": "2026-09-05",
+                    "evidenceType": "exact_place_id_menu_source",
+                    "note": "Retained source row is keyed to exact Place ID and sourceRefs.fields includes dishes."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "串焼き",
+                "nameZhCandidate": null,
+                "evidenceClass": "retained_source_menu_item",
+                "recommendationSemantics": "",
+                "provider": "Tabelog",
+                "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13044561/",
+                "checkedAt": "2026-09-05",
+                "sourceScope": "branch",
+                "evidenceText": "串焼き",
+                "confidence": "high",
+                "notes": "Concrete retained menu item; no strict recommendation semantics."
+              }
+            },
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S2.json",
+              "marker": "DISH-R-RETAINED",
+              "shard": "S2",
               "sourceQueueCommit": "97f07e274e07854952da45fe264ab43ddea7d986",
               "identity": {
                 "state": "verified",
@@ -2603,6 +2814,42 @@
           "evidenceRule": "central-reviewed:F:exact:焼き?鳥|やきとり|yakitori",
           "evidenceSnippet": "焼き鳥",
           "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S2.json",
+              "marker": "DISH-R-RETAINED",
+              "shard": "S2",
+              "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [
+                  "Re時屋"
+                ],
+                "evidence": [
+                  {
+                    "provider": "Tabelog",
+                    "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13044561/",
+                    "checkedAt": "2026-09-05",
+                    "evidenceType": "exact_place_id_menu_source",
+                    "note": "Retained source row is keyed to exact Place ID and sourceRefs.fields includes dishes."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "焼き鳥",
+                "nameZhCandidate": null,
+                "evidenceClass": "retained_source_menu_item",
+                "recommendationSemantics": "",
+                "provider": "Tabelog",
+                "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13044561/",
+                "checkedAt": "2026-09-05",
+                "sourceScope": "branch",
+                "evidenceText": "焼き鳥",
+                "confidence": "high",
+                "notes": "Concrete retained menu item; no strict recommendation semantics."
+              }
+            },
             {
               "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S2.json",
               "marker": "DISH-R-RETAINED",
@@ -4664,6 +4911,51 @@
               "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S7.json",
               "marker": "DISH-R-RETAINED",
               "shard": "S7",
+              "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [
+                  "塩生姜らー麺専門店 MANNISH 淡路町本店"
+                ],
+                "evidence": [
+                  {
+                    "provider": "Tabelog",
+                    "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13231004/",
+                    "checkedAt": "2026-09-06",
+                    "evidenceType": "retained_provider_binding",
+                    "note": "Repository-retained source row is keyed to this frozen Google Place ID; source fields: address, budget, closure, cuisine, hours, name. Source-native name: 塩生姜らー麺専門店 MANNISH 淡路町本店. Retained provenance does not expose an independent branch phone, so phone was not asserted.",
+                    "sourceNativeRestaurantName": "塩生姜らー麺専門店 MANNISH 淡路町本店"
+                  },
+                  {
+                    "provider": "sourceWebsite",
+                    "sourceUrl": "https://tokyoramenoftheyear.com/ja/shop/shop-00300",
+                    "checkedAt": "2026-09-06",
+                    "evidenceType": "exact_place_id_retained_menu_source",
+                    "note": "Repository-retained source row is keyed to this frozen Google Place ID; source fields: dishes. Frozen catalog name: 塩生姜らー麺専門店 MANNISH 淡路町本店. Retained provenance does not expose an independent branch address, so address was not asserted. Retained provenance does not expose an independent branch phone, so phone was not asserted."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "塩生姜らー麺",
+                "nameZhCandidate": null,
+                "evidenceClass": "retained_source_menu_item",
+                "recommendationSemantics": "",
+                "provider": "sourceWebsite",
+                "sourceUrl": "https://tokyoramenoftheyear.com/ja/shop/shop-00300",
+                "checkedAt": "2026-09-06",
+                "sourceScope": "branch",
+                "evidenceText": "塩生姜らー麺",
+                "confidence": "high",
+                "notes": "Concrete source-native retained menu field; no recommendation semantics were assumed.",
+                "sourceProviderNative": "sourceWebsite"
+              }
+            },
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S7.json",
+              "marker": "DISH-R-RETAINED",
+              "shard": "S7",
               "sourceQueueCommit": "97f07e274e07854952da45fe264ab43ddea7d986",
               "identity": {
                 "state": "verified",
@@ -5862,6 +6154,59 @@
               "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S6.json",
               "marker": "DISH-R-RETAINED",
               "shard": "S6",
+              "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [
+                  "餃子の店三幸園",
+                  "中華料理 餃子の店 三幸園 白山通り店"
+                ],
+                "evidence": [
+                  {
+                    "provider": "Hot Pepper",
+                    "sourceUrl": "https://www.hotpepper.jp/strJ003562014/?vos=nhppalsa000016",
+                    "checkedAt": "2026-09-06",
+                    "evidenceType": "retained_provider_binding",
+                    "note": "Repository-retained source row is keyed to this frozen Google Place ID; source fields: address, closure, cuisine, dinnerBudget, hours. Source-native name: 餃子の店三幸園. Retained Hot Pepper catalog address: 東京都千代田区神田神保町１丁目13番地4. Retained provenance does not expose an independent branch phone, so phone was not asserted.",
+                    "sourceNativeRestaurantName": "餃子の店三幸園"
+                  },
+                  {
+                    "provider": "Tabelog",
+                    "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13006530/",
+                    "checkedAt": "2026-09-05",
+                    "evidenceType": "exact_place_id_retained_menu_source",
+                    "note": "Repository-retained source row is keyed to this frozen Google Place ID; source fields: budget, closure, cuisine, dishes, hours, hyakumeiten, name. Source-native name: 中華料理 餃子の店 三幸園 白山通り店. Retained Hot Pepper catalog address: 東京都千代田区神田神保町１丁目13番地4. Retained provenance does not expose an independent branch phone, so phone was not asserted.",
+                    "sourceNativeRestaurantName": "中華料理 餃子の店 三幸園 白山通り店"
+                  },
+                  {
+                    "provider": "Tabelog",
+                    "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13006530/",
+                    "checkedAt": "2026-09-05",
+                    "evidenceType": "exact_branch_identity_from_rows_proposal",
+                    "note": "Exact Place-ID retained source row names 中華料理 餃子の店 三幸園 白山通り店; its sourceRef explicitly claims the dishes field."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "チャーハン",
+                "nameZhCandidate": null,
+                "evidenceClass": "retained_source_menu_item",
+                "recommendationSemantics": "",
+                "provider": "Tabelog",
+                "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13006530/",
+                "checkedAt": "2026-09-05",
+                "sourceScope": "branch",
+                "evidenceText": "チャーハン",
+                "confidence": "high",
+                "notes": "Concrete source-native retained menu field; no recommendation semantics were assumed."
+              }
+            },
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S6.json",
+              "marker": "DISH-R-RETAINED",
+              "shard": "S6",
               "sourceQueueCommit": "97f07e274e07854952da45fe264ab43ddea7d986",
               "identity": {
                 "state": "verified",
@@ -5926,6 +6271,59 @@
           "evidenceRule": "central-reviewed:F:exact:餃子|饺子|gyoza",
           "evidenceSnippet": "餃子",
           "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S6.json",
+              "marker": "DISH-R-RETAINED",
+              "shard": "S6",
+              "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [
+                  "餃子の店三幸園",
+                  "中華料理 餃子の店 三幸園 白山通り店"
+                ],
+                "evidence": [
+                  {
+                    "provider": "Hot Pepper",
+                    "sourceUrl": "https://www.hotpepper.jp/strJ003562014/?vos=nhppalsa000016",
+                    "checkedAt": "2026-09-06",
+                    "evidenceType": "retained_provider_binding",
+                    "note": "Repository-retained source row is keyed to this frozen Google Place ID; source fields: address, closure, cuisine, dinnerBudget, hours. Source-native name: 餃子の店三幸園. Retained Hot Pepper catalog address: 東京都千代田区神田神保町１丁目13番地4. Retained provenance does not expose an independent branch phone, so phone was not asserted.",
+                    "sourceNativeRestaurantName": "餃子の店三幸園"
+                  },
+                  {
+                    "provider": "Tabelog",
+                    "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13006530/",
+                    "checkedAt": "2026-09-05",
+                    "evidenceType": "exact_place_id_retained_menu_source",
+                    "note": "Repository-retained source row is keyed to this frozen Google Place ID; source fields: budget, closure, cuisine, dishes, hours, hyakumeiten, name. Source-native name: 中華料理 餃子の店 三幸園 白山通り店. Retained Hot Pepper catalog address: 東京都千代田区神田神保町１丁目13番地4. Retained provenance does not expose an independent branch phone, so phone was not asserted.",
+                    "sourceNativeRestaurantName": "中華料理 餃子の店 三幸園 白山通り店"
+                  },
+                  {
+                    "provider": "Tabelog",
+                    "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13006530/",
+                    "checkedAt": "2026-09-05",
+                    "evidenceType": "exact_branch_identity_from_rows_proposal",
+                    "note": "Exact Place-ID retained source row names 中華料理 餃子の店 三幸園 白山通り店; its sourceRef explicitly claims the dishes field."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "餃子",
+                "nameZhCandidate": null,
+                "evidenceClass": "retained_source_menu_item",
+                "recommendationSemantics": "",
+                "provider": "Tabelog",
+                "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13006530/",
+                "checkedAt": "2026-09-05",
+                "sourceScope": "branch",
+                "evidenceText": "餃子",
+                "confidence": "high",
+                "notes": "Concrete source-native retained menu field; no recommendation semantics were assumed."
+              }
+            },
             {
               "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S6.json",
               "marker": "DISH-R-RETAINED",
@@ -8419,6 +8817,43 @@
               "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S7.json",
               "marker": "DISH-R-RETAINED",
               "shard": "S7",
+              "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [
+                  "やきとん三吉 水道橋店"
+                ],
+                "evidence": [
+                  {
+                    "provider": "Tabelog",
+                    "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13240031/",
+                    "checkedAt": "2026-09-05",
+                    "evidenceType": "exact_place_id_retained_menu_source",
+                    "note": "Repository-retained source row is keyed to this frozen Google Place ID; source fields: address, budget, closure, cuisine, dishes, hours, name. Source-native name: やきとん三吉 水道橋店. Retained provenance does not expose an independent branch phone, so phone was not asserted.",
+                    "sourceNativeRestaurantName": "やきとん三吉 水道橋店"
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "やきとり",
+                "nameZhCandidate": null,
+                "evidenceClass": "retained_source_menu_item",
+                "recommendationSemantics": "",
+                "provider": "Tabelog",
+                "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13240031/",
+                "checkedAt": "2026-09-05",
+                "sourceScope": "branch",
+                "evidenceText": "やきとり",
+                "confidence": "high",
+                "notes": "Concrete source-native retained menu field; no recommendation semantics were assumed."
+              }
+            },
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S7.json",
+              "marker": "DISH-R-RETAINED",
+              "shard": "S7",
               "sourceQueueCommit": "97f07e274e07854952da45fe264ab43ddea7d986",
               "identity": {
                 "state": "verified",
@@ -8474,6 +8909,43 @@
           "evidenceRule": "central-reviewed:F:exact:バカ盛りポテトフライ",
           "evidenceSnippet": "バカ盛りポテトフライ",
           "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S7.json",
+              "marker": "DISH-R-RETAINED",
+              "shard": "S7",
+              "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [
+                  "やきとん三吉 水道橋店"
+                ],
+                "evidence": [
+                  {
+                    "provider": "Tabelog",
+                    "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13240031/",
+                    "checkedAt": "2026-09-05",
+                    "evidenceType": "exact_place_id_retained_menu_source",
+                    "note": "Repository-retained source row is keyed to this frozen Google Place ID; source fields: address, budget, closure, cuisine, dishes, hours, name. Source-native name: やきとん三吉 水道橋店. Retained provenance does not expose an independent branch phone, so phone was not asserted.",
+                    "sourceNativeRestaurantName": "やきとん三吉 水道橋店"
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "バカ盛りポテトフライ",
+                "nameZhCandidate": null,
+                "evidenceClass": "retained_source_menu_item",
+                "recommendationSemantics": "",
+                "provider": "Tabelog",
+                "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13240031/",
+                "checkedAt": "2026-09-05",
+                "sourceScope": "branch",
+                "evidenceText": "バカ盛りポテトフライ",
+                "confidence": "high",
+                "notes": "Concrete source-native retained menu field; no recommendation semantics were assumed."
+              }
+            },
             {
               "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S7.json",
               "marker": "DISH-R-RETAINED",
@@ -9097,6 +9569,40 @@
               "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S7.json",
               "marker": "DISH-R-RETAINED",
               "shard": "S7",
+              "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [],
+                "evidence": [
+                  {
+                    "provider": "Hot Pepper",
+                    "sourceUrl": "https://www.hotpepper.jp/strJ003784641/food/",
+                    "checkedAt": "2026-09-09",
+                    "evidenceType": "exact_itemized_retained_menu_source",
+                    "note": "Repository-retained itemized Hot Pepper /food/ source is keyed to this frozen Google Place ID; concrete native menu text was inspected. Frozen catalog name: ハワイアンダイニング Diamond Head. Retained Hot Pepper catalog address: 東京都千代田区神田小川町１-６-７ 竹田ビル. Retained provenance does not expose an independent branch phone, so phone was not asserted."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "パスタ",
+                "nameZhCandidate": null,
+                "evidenceClass": "hotpepper_menu_text",
+                "recommendationSemantics": "",
+                "provider": "Hot Pepper",
+                "sourceUrl": "https://www.hotpepper.jp/strJ003784641/food/",
+                "checkedAt": "2026-09-09",
+                "sourceScope": "branch",
+                "evidenceText": "カリカリパスタ 360円（税込）",
+                "confidence": "high",
+                "notes": "Concrete itemized retained Hot Pepper /food/ evidence; the source-native family label is preserved and no recommendation semantics were inferred."
+              }
+            },
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S7.json",
+              "marker": "DISH-R-RETAINED",
+              "shard": "S7",
               "sourceQueueCommit": "97f07e274e07854952da45fe264ab43ddea7d986",
               "identity": {
                 "state": "verified",
@@ -9139,6 +9645,40 @@
           "evidenceRule": "hotpepper-price-backed-h4:リゾット|risotto",
           "evidenceSnippet": "チーズリゾット 1,100円（税込）",
           "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S7.json",
+              "marker": "DISH-R-RETAINED",
+              "shard": "S7",
+              "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [],
+                "evidence": [
+                  {
+                    "provider": "Hot Pepper",
+                    "sourceUrl": "https://www.hotpepper.jp/strJ003784641/food/",
+                    "checkedAt": "2026-09-09",
+                    "evidenceType": "exact_itemized_retained_menu_source",
+                    "note": "Repository-retained itemized Hot Pepper /food/ source is keyed to this frozen Google Place ID; concrete native menu text was inspected. Frozen catalog name: ハワイアンダイニング Diamond Head. Retained Hot Pepper catalog address: 東京都千代田区神田小川町１-６-７ 竹田ビル. Retained provenance does not expose an independent branch phone, so phone was not asserted."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "リゾット",
+                "nameZhCandidate": null,
+                "evidenceClass": "hotpepper_menu_text",
+                "recommendationSemantics": "",
+                "provider": "Hot Pepper",
+                "sourceUrl": "https://www.hotpepper.jp/strJ003784641/food/",
+                "checkedAt": "2026-09-09",
+                "sourceScope": "branch",
+                "evidenceText": "チーズリゾット 1,100円（税込）",
+                "confidence": "high",
+                "notes": "Concrete itemized retained Hot Pepper /food/ evidence; the source-native family label is preserved and no recommendation semantics were inferred."
+              }
+            },
             {
               "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S7.json",
               "marker": "DISH-R-RETAINED",
@@ -9189,6 +9729,40 @@
               "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S7.json",
               "marker": "DISH-R-RETAINED",
               "shard": "S7",
+              "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [],
+                "evidence": [
+                  {
+                    "provider": "Hot Pepper",
+                    "sourceUrl": "https://www.hotpepper.jp/strJ003784641/food/",
+                    "checkedAt": "2026-09-09",
+                    "evidenceType": "exact_itemized_retained_menu_source",
+                    "note": "Repository-retained itemized Hot Pepper /food/ source is keyed to this frozen Google Place ID; concrete native menu text was inspected. Frozen catalog name: ハワイアンダイニング Diamond Head. Retained Hot Pepper catalog address: 東京都千代田区神田小川町１-６-７ 竹田ビル. Retained provenance does not expose an independent branch phone, so phone was not asserted."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "パンケーキ",
+                "nameZhCandidate": null,
+                "evidenceClass": "hotpepper_menu_text",
+                "recommendationSemantics": "",
+                "provider": "Hot Pepper",
+                "sourceUrl": "https://www.hotpepper.jp/strJ003784641/food/",
+                "checkedAt": "2026-09-09",
+                "sourceScope": "branch",
+                "evidenceText": "カルボナーラパンケーキ 1,600円（税込） 「料理」の先頭へ戻る デザート <di",
+                "confidence": "high",
+                "notes": "Concrete itemized retained Hot Pepper /food/ evidence; the source-native family label is preserved and no recommendation semantics were inferred."
+              }
+            },
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S7.json",
+              "marker": "DISH-R-RETAINED",
+              "shard": "S7",
               "sourceQueueCommit": "97f07e274e07854952da45fe264ab43ddea7d986",
               "identity": {
                 "state": "verified",
@@ -9235,6 +9809,40 @@
               "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S7.json",
               "marker": "DISH-R-RETAINED",
               "shard": "S7",
+              "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [],
+                "evidence": [
+                  {
+                    "provider": "Hot Pepper",
+                    "sourceUrl": "https://www.hotpepper.jp/strJ003784641/food/",
+                    "checkedAt": "2026-09-09",
+                    "evidenceType": "exact_itemized_retained_menu_source",
+                    "note": "Repository-retained itemized Hot Pepper /food/ source is keyed to this frozen Google Place ID; concrete native menu text was inspected. Frozen catalog name: ハワイアンダイニング Diamond Head. Retained Hot Pepper catalog address: 東京都千代田区神田小川町１-６-７ 竹田ビル. Retained provenance does not expose an independent branch phone, so phone was not asserted."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "バーガー",
+                "nameZhCandidate": null,
+                "evidenceClass": "hotpepper_menu_text",
+                "recommendationSemantics": "",
+                "provider": "Hot Pepper",
+                "sourceUrl": "https://www.hotpepper.jp/strJ003784641/food/",
+                "checkedAt": "2026-09-09",
+                "sourceScope": "branch",
+                "evidenceText": "DHバーガー 1,100円（税込）",
+                "confidence": "high",
+                "notes": "Concrete itemized retained Hot Pepper /food/ evidence; the source-native family label is preserved and no recommendation semantics were inferred."
+              }
+            },
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S7.json",
+              "marker": "DISH-R-RETAINED",
+              "shard": "S7",
               "sourceQueueCommit": "97f07e274e07854952da45fe264ab43ddea7d986",
               "identity": {
                 "state": "verified",
@@ -9277,6 +9885,40 @@
           "evidenceRule": "hotpepper-price-backed-h4:ステーキ|steak",
           "evidenceSnippet": "Dai amond Head ステーキ 3,200円（税込）",
           "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S7.json",
+              "marker": "DISH-R-RETAINED",
+              "shard": "S7",
+              "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [],
+                "evidence": [
+                  {
+                    "provider": "Hot Pepper",
+                    "sourceUrl": "https://www.hotpepper.jp/strJ003784641/food/",
+                    "checkedAt": "2026-09-09",
+                    "evidenceType": "exact_itemized_retained_menu_source",
+                    "note": "Repository-retained itemized Hot Pepper /food/ source is keyed to this frozen Google Place ID; concrete native menu text was inspected. Frozen catalog name: ハワイアンダイニング Diamond Head. Retained Hot Pepper catalog address: 東京都千代田区神田小川町１-６-７ 竹田ビル. Retained provenance does not expose an independent branch phone, so phone was not asserted."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "ステーキ",
+                "nameZhCandidate": null,
+                "evidenceClass": "hotpepper_menu_text",
+                "recommendationSemantics": "",
+                "provider": "Hot Pepper",
+                "sourceUrl": "https://www.hotpepper.jp/strJ003784641/food/",
+                "checkedAt": "2026-09-09",
+                "sourceScope": "branch",
+                "evidenceText": "Dai amond Head ステーキ 3,200円（税込）",
+                "confidence": "high",
+                "notes": "Concrete itemized retained Hot Pepper /food/ evidence; the source-native family label is preserved and no recommendation semantics were inferred."
+              }
+            },
             {
               "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S7.json",
               "marker": "DISH-R-RETAINED",
@@ -9362,6 +10004,40 @@
               "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S5.json",
               "marker": "DISH-R-RETAINED",
               "shard": "S5",
+              "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [],
+                "evidence": [
+                  {
+                    "provider": "Hot Pepper",
+                    "sourceUrl": "https://www.hotpepper.jp/strJ004090169/food/",
+                    "checkedAt": "2026-09-09",
+                    "evidenceType": "exact_itemized_retained_menu_source",
+                    "note": "Repository-retained itemized Hot Pepper /food/ source is keyed to this frozen Google Place ID; concrete native menu text was inspected. Frozen catalog name: BODHISENA ボーディセナ 神田店. Retained Hot Pepper catalog address: 東京都千代田区内神田１-11-2     楠本第19ビル1F. Retained provenance does not expose an independent branch phone, so phone was not asserted."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "ミールス",
+                "nameZhCandidate": null,
+                "evidenceClass": "hotpepper_menu_text",
+                "recommendationSemantics": "",
+                "provider": "Hot Pepper",
+                "sourceUrl": "https://www.hotpepper.jp/strJ004090169/food/",
+                "checkedAt": "2026-09-09",
+                "sourceScope": "branch",
+                "evidenceText": "ボーディセナミールス 南インドを代表するお料理。ワンプレートで様々なスパイス料理を楽しめます。 2,300円（税込） <img src=\"https://imgfp.hotp.jp",
+                "confidence": "high",
+                "notes": "Concrete itemized retained Hot Pepper /food/ evidence; the source-native family label is preserved and no recommendation semantics were inferred."
+              }
+            },
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S5.json",
+              "marker": "DISH-R-RETAINED",
+              "shard": "S5",
               "sourceQueueCommit": "97f07e274e07854952da45fe264ab43ddea7d986",
               "identity": {
                 "state": "verified",
@@ -9408,6 +10084,40 @@
               "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S5.json",
               "marker": "DISH-R-RETAINED",
               "shard": "S5",
+              "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [],
+                "evidence": [
+                  {
+                    "provider": "Hot Pepper",
+                    "sourceUrl": "https://www.hotpepper.jp/strJ004090169/food/",
+                    "checkedAt": "2026-09-09",
+                    "evidenceType": "exact_itemized_retained_menu_source",
+                    "note": "Repository-retained itemized Hot Pepper /food/ source is keyed to this frozen Google Place ID; concrete native menu text was inspected. Frozen catalog name: BODHISENA ボーディセナ 神田店. Retained Hot Pepper catalog address: 東京都千代田区内神田１-11-2     楠本第19ビル1F. Retained provenance does not expose an independent branch phone, so phone was not asserted."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "ドーサ",
+                "nameZhCandidate": null,
+                "evidenceClass": "hotpepper_menu_text",
+                "recommendationSemantics": "",
+                "provider": "Hot Pepper",
+                "sourceUrl": "https://www.hotpepper.jp/strJ004090169/food/",
+                "checkedAt": "2026-09-09",
+                "sourceScope": "branch",
+                "evidenceText": "プレーンドーサ ハーフ 生地だけのシンプルなドーサ ■フル…1300円(税込) 800円（税込）",
+                "confidence": "high",
+                "notes": "Concrete itemized retained Hot Pepper /food/ evidence; the source-native family label is preserved and no recommendation semantics were inferred."
+              }
+            },
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S5.json",
+              "marker": "DISH-R-RETAINED",
+              "shard": "S5",
               "sourceQueueCommit": "97f07e274e07854952da45fe264ab43ddea7d986",
               "identity": {
                 "state": "verified",
@@ -9450,6 +10160,40 @@
           "evidenceRule": "hotpepper-price-backed-h4:カレー|カリー|咖喱|curry",
           "evidenceSnippet": "小海老と茄子のカレー 1,500円（税込） 「料理」の先頭へ戻る chicken 「料理」の先頭へ戻る lamb・mutton",
           "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S5.json",
+              "marker": "DISH-R-RETAINED",
+              "shard": "S5",
+              "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [],
+                "evidence": [
+                  {
+                    "provider": "Hot Pepper",
+                    "sourceUrl": "https://www.hotpepper.jp/strJ004090169/food/",
+                    "checkedAt": "2026-09-09",
+                    "evidenceType": "exact_itemized_retained_menu_source",
+                    "note": "Repository-retained itemized Hot Pepper /food/ source is keyed to this frozen Google Place ID; concrete native menu text was inspected. Frozen catalog name: BODHISENA ボーディセナ 神田店. Retained Hot Pepper catalog address: 東京都千代田区内神田１-11-2     楠本第19ビル1F. Retained provenance does not expose an independent branch phone, so phone was not asserted."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "カレー",
+                "nameZhCandidate": null,
+                "evidenceClass": "hotpepper_menu_text",
+                "recommendationSemantics": "",
+                "provider": "Hot Pepper",
+                "sourceUrl": "https://www.hotpepper.jp/strJ004090169/food/",
+                "checkedAt": "2026-09-09",
+                "sourceScope": "branch",
+                "evidenceText": "小海老と茄子のカレー 1,500円（税込） 「料理」の先頭へ戻る chicken 「料理」の先頭へ戻る lamb・mutton",
+                "confidence": "high",
+                "notes": "Concrete itemized retained Hot Pepper /food/ evidence; the source-native family label is preserved and no recommendation semantics were inferred."
+              }
+            },
             {
               "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S5.json",
               "marker": "DISH-R-RETAINED",
@@ -9976,6 +10720,50 @@
               "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S6.json",
               "marker": "DISH-R-RETAINED",
               "shard": "S6",
+              "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [
+                  "ひろしま酒蔵 歓粋亭"
+                ],
+                "evidence": [
+                  {
+                    "provider": "Tabelog",
+                    "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13112878/",
+                    "checkedAt": "2026-09-05",
+                    "evidenceType": "exact_place_id_retained_menu_source",
+                    "note": "Repository-retained source row is keyed to this frozen Google Place ID; source fields: address, budget, closure, cuisine, dishes, hours, name. Source-native name: ひろしま酒蔵 歓粋亭. Retained provenance does not expose an independent branch phone, so phone was not asserted.",
+                    "sourceNativeRestaurantName": "ひろしま酒蔵 歓粋亭"
+                  },
+                  {
+                    "provider": "Tabelog",
+                    "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13112878/",
+                    "checkedAt": "2026-09-05",
+                    "evidenceType": "exact_branch_identity_from_rows_proposal",
+                    "note": "Exact Place-ID Tabelog source fact names ひろしま酒蔵 歓粋亭 and retains all three dishes."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "小いわし天婦羅",
+                "nameZhCandidate": null,
+                "evidenceClass": "retained_source_menu_item",
+                "recommendationSemantics": "",
+                "provider": "Tabelog",
+                "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13112878/",
+                "checkedAt": "2026-09-05",
+                "sourceScope": "branch",
+                "evidenceText": "小いわし天婦羅",
+                "confidence": "high",
+                "notes": "Concrete source-native retained menu field; no recommendation semantics were assumed."
+              }
+            },
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S6.json",
+              "marker": "DISH-R-RETAINED",
+              "shard": "S6",
               "sourceQueueCommit": "97f07e274e07854952da45fe264ab43ddea7d986",
               "identity": {
                 "state": "verified",
@@ -10041,6 +10829,50 @@
           "evidenceRule": "central-reviewed:F:exact:牡蠣フライ|カキフライ",
           "evidenceSnippet": "カキフライ",
           "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S6.json",
+              "marker": "DISH-R-RETAINED",
+              "shard": "S6",
+              "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [
+                  "ひろしま酒蔵 歓粋亭"
+                ],
+                "evidence": [
+                  {
+                    "provider": "Tabelog",
+                    "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13112878/",
+                    "checkedAt": "2026-09-05",
+                    "evidenceType": "exact_place_id_retained_menu_source",
+                    "note": "Repository-retained source row is keyed to this frozen Google Place ID; source fields: address, budget, closure, cuisine, dishes, hours, name. Source-native name: ひろしま酒蔵 歓粋亭. Retained provenance does not expose an independent branch phone, so phone was not asserted.",
+                    "sourceNativeRestaurantName": "ひろしま酒蔵 歓粋亭"
+                  },
+                  {
+                    "provider": "Tabelog",
+                    "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13112878/",
+                    "checkedAt": "2026-09-05",
+                    "evidenceType": "exact_branch_identity_from_rows_proposal",
+                    "note": "Exact Place-ID Tabelog source fact names ひろしま酒蔵 歓粋亭 and retains all three dishes."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "カキフライ",
+                "nameZhCandidate": null,
+                "evidenceClass": "retained_source_menu_item",
+                "recommendationSemantics": "",
+                "provider": "Tabelog",
+                "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13112878/",
+                "checkedAt": "2026-09-05",
+                "sourceScope": "branch",
+                "evidenceText": "カキフライ",
+                "confidence": "high",
+                "notes": "Concrete source-native retained menu field; no recommendation semantics were assumed."
+              }
+            },
             {
               "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S6.json",
               "marker": "DISH-R-RETAINED",
@@ -12000,6 +12832,40 @@
               "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S2.json",
               "marker": "DISH-R-RETAINED",
               "shard": "S2",
+              "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [],
+                "evidence": [
+                  {
+                    "provider": "Tabelog",
+                    "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13154753/",
+                    "checkedAt": "2026-09-05",
+                    "evidenceType": "exact_place_id_menu_source",
+                    "note": "Retained exact branch sourceRef includes dishes."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "カリー",
+                "nameZhCandidate": null,
+                "evidenceClass": "retained_source_menu_item",
+                "recommendationSemantics": "",
+                "provider": "Tabelog",
+                "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13154753/",
+                "checkedAt": "2026-09-05",
+                "sourceScope": "branch",
+                "evidenceText": "カリー",
+                "confidence": "high",
+                "notes": "Concrete menu item; no recommendation semantics."
+              }
+            },
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S2.json",
+              "marker": "DISH-R-RETAINED",
+              "shard": "S2",
               "sourceQueueCommit": "97f07e274e07854952da45fe264ab43ddea7d986",
               "identity": {
                 "state": "verified",
@@ -13566,6 +14432,40 @@
               "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S3.json",
               "marker": "DISH-R-RETAINED",
               "shard": "S3",
+              "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [],
+                "evidence": [
+                  {
+                    "provider": "Hot Pepper",
+                    "sourceUrl": "https://www.hotpepper.jp/strJ004591623/food/",
+                    "checkedAt": "2026-09-09",
+                    "evidenceType": "exact_itemized_retained_menu_source",
+                    "note": "Repository-retained itemized Hot Pepper /food/ source is keyed to this frozen Google Place ID; concrete native menu text was inspected. Frozen catalog name: ことこと 水道橋駅前店. Retained Hot Pepper catalog address: 東京都千代田区神田三崎町２-20-10勝又ビル5F. Retained provenance does not expose an independent branch phone, so phone was not asserted."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "おでん",
+                "nameZhCandidate": null,
+                "evidenceClass": "hotpepper_menu_text",
+                "recommendationSemantics": "",
+                "provider": "Hot Pepper",
+                "sourceUrl": "https://www.hotpepper.jp/strJ004591623/food/",
+                "checkedAt": "2026-09-09",
+                "sourceScope": "branch",
+                "evidenceText": "おでん５種盛り 825円（税込）",
+                "confidence": "high",
+                "notes": "Concrete itemized retained Hot Pepper /food/ evidence; the source-native family label is preserved and no recommendation semantics were inferred."
+              }
+            },
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S3.json",
+              "marker": "DISH-R-RETAINED",
+              "shard": "S3",
               "sourceQueueCommit": "97f07e274e07854952da45fe264ab43ddea7d986",
               "identity": {
                 "state": "verified",
@@ -13608,6 +14508,40 @@
           "evidenceRule": "hotpepper-price-backed-h4:刺身|お造り|sashimi",
           "evidenceSnippet": "刺身盛り合わせ５点盛り 2人前2280円3人前3420円4人前4560円 2,280円（税込）",
           "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S3.json",
+              "marker": "DISH-R-RETAINED",
+              "shard": "S3",
+              "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [],
+                "evidence": [
+                  {
+                    "provider": "Hot Pepper",
+                    "sourceUrl": "https://www.hotpepper.jp/strJ004591623/food/",
+                    "checkedAt": "2026-09-09",
+                    "evidenceType": "exact_itemized_retained_menu_source",
+                    "note": "Repository-retained itemized Hot Pepper /food/ source is keyed to this frozen Google Place ID; concrete native menu text was inspected. Frozen catalog name: ことこと 水道橋駅前店. Retained Hot Pepper catalog address: 東京都千代田区神田三崎町２-20-10勝又ビル5F. Retained provenance does not expose an independent branch phone, so phone was not asserted."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "刺身",
+                "nameZhCandidate": null,
+                "evidenceClass": "hotpepper_menu_text",
+                "recommendationSemantics": "",
+                "provider": "Hot Pepper",
+                "sourceUrl": "https://www.hotpepper.jp/strJ004591623/food/",
+                "checkedAt": "2026-09-09",
+                "sourceScope": "branch",
+                "evidenceText": "刺身盛り合わせ５点盛り 2人前2280円3人前3420円4人前4560円 2,280円（税込）",
+                "confidence": "high",
+                "notes": "Concrete itemized retained Hot Pepper /food/ evidence; the source-native family label is preserved and no recommendation semantics were inferred."
+              }
+            },
             {
               "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S3.json",
               "marker": "DISH-R-RETAINED",
@@ -13658,6 +14592,40 @@
               "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S3.json",
               "marker": "DISH-R-RETAINED",
               "shard": "S3",
+              "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [],
+                "evidence": [
+                  {
+                    "provider": "Hot Pepper",
+                    "sourceUrl": "https://www.hotpepper.jp/strJ004591623/food/",
+                    "checkedAt": "2026-09-09",
+                    "evidenceType": "exact_itemized_retained_menu_source",
+                    "note": "Repository-retained itemized Hot Pepper /food/ source is keyed to this frozen Google Place ID; concrete native menu text was inspected. Frozen catalog name: ことこと 水道橋駅前店. Retained Hot Pepper catalog address: 東京都千代田区神田三崎町２-20-10勝又ビル5F. Retained provenance does not expose an independent branch phone, so phone was not asserted."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "天ぷら",
+                "nameZhCandidate": null,
+                "evidenceClass": "hotpepper_menu_text",
+                "recommendationSemantics": "",
+                "provider": "Hot Pepper",
+                "sourceUrl": "https://www.hotpepper.jp/strJ004591623/food/",
+                "checkedAt": "2026-09-09",
+                "sourceScope": "branch",
+                "evidenceText": "牡蠣の天ぷら 1,080円（税込）",
+                "confidence": "high",
+                "notes": "Concrete itemized retained Hot Pepper /food/ evidence; the source-native family label is preserved and no recommendation semantics were inferred."
+              }
+            },
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S3.json",
+              "marker": "DISH-R-RETAINED",
+              "shard": "S3",
               "sourceQueueCommit": "97f07e274e07854952da45fe264ab43ddea7d986",
               "identity": {
                 "state": "verified",
@@ -13700,6 +14668,40 @@
           "evidenceRule": "hotpepper-price-backed-h4:すき焼き|すきやき|sukiyaki",
           "evidenceSnippet": "牛すき焼き土鍋 2,750円（税込） 「料理」の先頭へ戻る 甘味",
           "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S3.json",
+              "marker": "DISH-R-RETAINED",
+              "shard": "S3",
+              "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [],
+                "evidence": [
+                  {
+                    "provider": "Hot Pepper",
+                    "sourceUrl": "https://www.hotpepper.jp/strJ004591623/food/",
+                    "checkedAt": "2026-09-09",
+                    "evidenceType": "exact_itemized_retained_menu_source",
+                    "note": "Repository-retained itemized Hot Pepper /food/ source is keyed to this frozen Google Place ID; concrete native menu text was inspected. Frozen catalog name: ことこと 水道橋駅前店. Retained Hot Pepper catalog address: 東京都千代田区神田三崎町２-20-10勝又ビル5F. Retained provenance does not expose an independent branch phone, so phone was not asserted."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "すき焼き",
+                "nameZhCandidate": null,
+                "evidenceClass": "hotpepper_menu_text",
+                "recommendationSemantics": "",
+                "provider": "Hot Pepper",
+                "sourceUrl": "https://www.hotpepper.jp/strJ004591623/food/",
+                "checkedAt": "2026-09-09",
+                "sourceScope": "branch",
+                "evidenceText": "牛すき焼き土鍋 2,750円（税込） 「料理」の先頭へ戻る 甘味",
+                "confidence": "high",
+                "notes": "Concrete itemized retained Hot Pepper /food/ evidence; the source-native family label is preserved and no recommendation semantics were inferred."
+              }
+            },
             {
               "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S3.json",
               "marker": "DISH-R-RETAINED",
@@ -13750,6 +14752,40 @@
               "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S3.json",
               "marker": "DISH-R-RETAINED",
               "shard": "S3",
+              "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [],
+                "evidence": [
+                  {
+                    "provider": "Hot Pepper",
+                    "sourceUrl": "https://www.hotpepper.jp/strJ004591623/food/",
+                    "checkedAt": "2026-09-09",
+                    "evidenceType": "exact_itemized_retained_menu_source",
+                    "note": "Repository-retained itemized Hot Pepper /food/ source is keyed to this frozen Google Place ID; concrete native menu text was inspected. Frozen catalog name: ことこと 水道橋駅前店. Retained Hot Pepper catalog address: 東京都千代田区神田三崎町２-20-10勝又ビル5F. Retained provenance does not expose an independent branch phone, so phone was not asserted."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "唐揚げ",
+                "nameZhCandidate": null,
+                "evidenceClass": "hotpepper_menu_text",
+                "recommendationSemantics": "",
+                "provider": "Hot Pepper",
+                "sourceUrl": "https://www.hotpepper.jp/strJ004591623/food/",
+                "checkedAt": "2026-09-09",
+                "sourceScope": "branch",
+                "evidenceText": "鰹節で包んだ出汁唐揚げ 935円（税込）",
+                "confidence": "high",
+                "notes": "Concrete itemized retained Hot Pepper /food/ evidence; the source-native family label is preserved and no recommendation semantics were inferred."
+              }
+            },
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S3.json",
+              "marker": "DISH-R-RETAINED",
+              "shard": "S3",
               "sourceQueueCommit": "97f07e274e07854952da45fe264ab43ddea7d986",
               "identity": {
                 "state": "verified",
@@ -13792,6 +14828,40 @@
           "evidenceRule": "hotpepper-price-backed-h4:だし巻き(?:玉子|卵)|出汁巻き(?:玉子|卵)",
           "evidenceSnippet": "ことことのだし巻き卵 935円（税込）",
           "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S3.json",
+              "marker": "DISH-R-RETAINED",
+              "shard": "S3",
+              "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [],
+                "evidence": [
+                  {
+                    "provider": "Hot Pepper",
+                    "sourceUrl": "https://www.hotpepper.jp/strJ004591623/food/",
+                    "checkedAt": "2026-09-09",
+                    "evidenceType": "exact_itemized_retained_menu_source",
+                    "note": "Repository-retained itemized Hot Pepper /food/ source is keyed to this frozen Google Place ID; concrete native menu text was inspected. Frozen catalog name: ことこと 水道橋駅前店. Retained Hot Pepper catalog address: 東京都千代田区神田三崎町２-20-10勝又ビル5F. Retained provenance does not expose an independent branch phone, so phone was not asserted."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "だし巻き卵",
+                "nameZhCandidate": null,
+                "evidenceClass": "hotpepper_menu_text",
+                "recommendationSemantics": "",
+                "provider": "Hot Pepper",
+                "sourceUrl": "https://www.hotpepper.jp/strJ004591623/food/",
+                "checkedAt": "2026-09-09",
+                "sourceScope": "branch",
+                "evidenceText": "ことことのだし巻き卵 935円（税込）",
+                "confidence": "high",
+                "notes": "Concrete itemized retained Hot Pepper /food/ evidence; the source-native family label is preserved and no recommendation semantics were inferred."
+              }
+            },
             {
               "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S3.json",
               "marker": "DISH-R-RETAINED",
@@ -14621,6 +15691,43 @@
               "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S7.json",
               "marker": "DISH-R-RETAINED",
               "shard": "S7",
+              "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [
+                  "純中国伝統料理四川料理 芊品香"
+                ],
+                "evidence": [
+                  {
+                    "provider": "Tabelog",
+                    "sourceUrl": "https://tabelog.com/tokyo/A1309/A130906/13189568/",
+                    "checkedAt": "2026-09-05",
+                    "evidenceType": "exact_place_id_retained_menu_source",
+                    "note": "Repository-retained source row is keyed to this frozen Google Place ID; source fields: address, budget, cuisine, dishes, name. Source-native name: 純中国伝統料理四川料理 芊品香. Retained provenance does not expose an independent branch phone, so phone was not asserted.",
+                    "sourceNativeRestaurantName": "純中国伝統料理四川料理 芊品香"
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "刀削麺",
+                "nameZhCandidate": null,
+                "evidenceClass": "retained_source_menu_item",
+                "recommendationSemantics": "",
+                "provider": "Tabelog",
+                "sourceUrl": "https://tabelog.com/tokyo/A1309/A130906/13189568/",
+                "checkedAt": "2026-09-05",
+                "sourceScope": "branch",
+                "evidenceText": "刀削麺",
+                "confidence": "high",
+                "notes": "Concrete source-native retained menu field; no recommendation semantics were assumed."
+              }
+            },
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S7.json",
+              "marker": "DISH-R-RETAINED",
+              "shard": "S7",
               "sourceQueueCommit": "97f07e274e07854952da45fe264ab43ddea7d986",
               "identity": {
                 "state": "verified",
@@ -14775,6 +15882,40 @@
           "evidenceRule": "central-reviewed:F:exact:(?:YEBISU BAR[^\\s]*)?肉豆富|肉豆腐",
           "evidenceSnippet": "肉豆腐",
           "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S2.json",
+              "marker": "DISH-R-RETAINED",
+              "shard": "S2",
+              "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [],
+                "evidence": [
+                  {
+                    "provider": "Tabelog",
+                    "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13000643/",
+                    "checkedAt": "2026-09-05",
+                    "evidenceType": "exact_place_id_menu_source",
+                    "note": "Retained exact sourceRef includes dishes."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "肉豆腐",
+                "nameZhCandidate": null,
+                "evidenceClass": "retained_source_menu_item",
+                "recommendationSemantics": "",
+                "provider": "Tabelog",
+                "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13000643/",
+                "checkedAt": "2026-09-05",
+                "sourceScope": "branch",
+                "evidenceText": "肉豆腐",
+                "confidence": "high",
+                "notes": "Concrete menu item; no recommendation semantics."
+              }
+            },
             {
               "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S2.json",
               "marker": "DISH-R-RETAINED",
@@ -16556,6 +17697,43 @@
               "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S3.json",
               "marker": "DISH-R-RETAINED",
               "shard": "S3",
+              "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [
+                  "和食屋 こう太"
+                ],
+                "evidence": [
+                  {
+                    "provider": "Tabelog",
+                    "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13286363/",
+                    "checkedAt": "2026-09-05",
+                    "evidenceType": "exact_place_id_retained_menu_source",
+                    "note": "Repository-retained source row is keyed to this frozen Google Place ID; source fields: address, budget, closure, cuisine, dishes, hours, name. Source-native name: 和食屋 こう太. Retained provenance does not expose an independent branch phone, so phone was not asserted.",
+                    "sourceNativeRestaurantName": "和食屋 こう太"
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "のどぐろ塩焼き",
+                "nameZhCandidate": null,
+                "evidenceClass": "retained_source_menu_item",
+                "recommendationSemantics": "",
+                "provider": "Tabelog",
+                "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13286363/",
+                "checkedAt": "2026-09-05",
+                "sourceScope": "branch",
+                "evidenceText": "のどぐろ塩焼き",
+                "confidence": "high",
+                "notes": "Concrete source-native retained menu field; no recommendation semantics were assumed."
+              }
+            },
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S3.json",
+              "marker": "DISH-R-RETAINED",
+              "shard": "S3",
               "sourceQueueCommit": "97f07e274e07854952da45fe264ab43ddea7d986",
               "identity": {
                 "state": "verified",
@@ -17929,6 +19107,40 @@
           "evidenceRule": "central-reviewed:F:exact:牛もつ煮込み",
           "evidenceSnippet": "牛もつ煮込み",
           "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S2.json",
+              "marker": "DISH-R-RETAINED",
+              "shard": "S2",
+              "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [],
+                "evidence": [
+                  {
+                    "provider": "Tabelog",
+                    "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13057066/",
+                    "checkedAt": "2026-09-05",
+                    "evidenceType": "exact_place_id_menu_source",
+                    "note": "Retained exact sourceRef includes dishes."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "牛もつ煮込み",
+                "nameZhCandidate": null,
+                "evidenceClass": "retained_source_menu_item",
+                "recommendationSemantics": "",
+                "provider": "Tabelog",
+                "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13057066/",
+                "checkedAt": "2026-09-05",
+                "sourceScope": "branch",
+                "evidenceText": "牛もつ煮込み",
+                "confidence": "high",
+                "notes": "Concrete retained menu item."
+              }
+            },
             {
               "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S2.json",
               "marker": "DISH-R-RETAINED",
@@ -21449,6 +22661,49 @@
               "proposalPath": "data/agent_reviews/DISH-R-OFFICIAL/S3.json",
               "marker": "DISH-R-OFFICIAL",
               "shard": "S3",
+              "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [
+                  "中華そば 勝本"
+                ],
+                "evidence": [
+                  {
+                    "provider": "official",
+                    "sourceUrl": "https://katsumoto-japan.com/ja/chukasoba_katsumoto.html",
+                    "checkedAt": "2026-09-14",
+                    "evidenceType": "branch_page",
+                    "note": "Official page identifies 中華そば勝本 at 神田三崎町2-15-5."
+                  },
+                  {
+                    "provider": "official",
+                    "sourceUrl": "https://katsumoto-japan.com/ja/chukasoba_katsumoto.html",
+                    "checkedAt": "2026-09-14",
+                    "evidenceType": "branch_page",
+                    "note": "Official page identifies 中華そば勝本 at 神田三崎町2-15-5 and provides the branch menu."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "中華そば",
+                "nameZhCandidate": null,
+                "evidenceClass": "source_menu_text",
+                "recommendationSemantics": "",
+                "provider": "official_web",
+                "sourceUrl": "https://katsumoto-japan.com/ja/chukasoba_katsumoto.html",
+                "checkedAt": "2026-09-14",
+                "sourceScope": "branch",
+                "evidenceText": "中華そば",
+                "confidence": "high",
+                "notes": "Concrete official menu item; no item-level recommendation semantics."
+              }
+            },
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-OFFICIAL/S3.json",
+              "marker": "DISH-R-OFFICIAL",
+              "shard": "S3",
               "sourceQueueCommit": "97f07e274e07854952da45fe264ab43ddea7d986",
               "identity": {
                 "state": "verified",
@@ -23023,6 +24278,43 @@
               "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S7.json",
               "marker": "DISH-R-RETAINED",
               "shard": "S7",
+              "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [
+                  "ボーイズカレー"
+                ],
+                "evidence": [
+                  {
+                    "provider": "Tabelog",
+                    "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13042687/",
+                    "checkedAt": "2026-09-05",
+                    "evidenceType": "exact_place_id_retained_menu_source",
+                    "note": "Repository-retained source row is keyed to this frozen Google Place ID; source fields: budget, closure, cuisine, dishes, hours, name. Source-native name: ボーイズカレー. Retained provenance does not expose an independent branch address, so address was not asserted. Retained provenance does not expose an independent branch phone, so phone was not asserted.",
+                    "sourceNativeRestaurantName": "ボーイズカレー"
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "カレー付き生姜焼き",
+                "nameZhCandidate": null,
+                "evidenceClass": "retained_source_menu_item",
+                "recommendationSemantics": "",
+                "provider": "Tabelog",
+                "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13042687/",
+                "checkedAt": "2026-09-05",
+                "sourceScope": "branch",
+                "evidenceText": "カレー付き生姜焼き",
+                "confidence": "high",
+                "notes": "Concrete source-native retained menu field; no recommendation semantics were assumed."
+              }
+            },
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S7.json",
+              "marker": "DISH-R-RETAINED",
+              "shard": "S7",
               "sourceQueueCommit": "97f07e274e07854952da45fe264ab43ddea7d986",
               "identity": {
                 "state": "verified",
@@ -23445,6 +24737,40 @@
               "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S7.json",
               "marker": "DISH-R-RETAINED",
               "shard": "S7",
+              "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [],
+                "evidence": [
+                  {
+                    "provider": "Hot Pepper",
+                    "sourceUrl": "https://www.hotpepper.jp/strJ001277594/food/",
+                    "checkedAt": "2026-09-09",
+                    "evidenceType": "exact_itemized_retained_menu_source",
+                    "note": "Repository-retained itemized Hot Pepper /food/ source is keyed to this frozen Google Place ID; concrete native menu text was inspected. Frozen catalog name: Darts Bar A's 水道橋店. Retained Hot Pepper catalog address: 東京都千代田区神田三崎町２-22-18 新水道橋ビル４F. Retained provenance does not expose an independent branch phone, so phone was not asserted."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "カルボナーラ",
+                "nameZhCandidate": null,
+                "evidenceClass": "hotpepper_menu_text",
+                "recommendationSemantics": "",
+                "provider": "Hot Pepper",
+                "sourceUrl": "https://www.hotpepper.jp/strJ001277594/food/",
+                "checkedAt": "2026-09-09",
+                "sourceScope": "branch",
+                "evidenceText": "パスタ（カルボナーラ、カニトマトクリーム、ジェノベーゼ） 1,320円（税込）",
+                "confidence": "high",
+                "notes": "Concrete itemized retained Hot Pepper /food/ evidence; the source-native family label is preserved and no recommendation semantics were inferred."
+              }
+            },
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S7.json",
+              "marker": "DISH-R-RETAINED",
+              "shard": "S7",
               "sourceQueueCommit": "97f07e274e07854952da45fe264ab43ddea7d986",
               "identity": {
                 "state": "verified",
@@ -23487,6 +24813,40 @@
           "evidenceRule": "hotpepper-price-backed-h4:パスタ|スパゲッティ|pasta|spaghetti",
           "evidenceSnippet": "カリカリパスタ 840円（税込） 「料理」の先頭へ戻る SIDE DISH <img src=\"https://imgfp.hotp.jp/IMGH/30/92/P04709309",
           "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S7.json",
+              "marker": "DISH-R-RETAINED",
+              "shard": "S7",
+              "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [],
+                "evidence": [
+                  {
+                    "provider": "Hot Pepper",
+                    "sourceUrl": "https://www.hotpepper.jp/strJ001277594/food/",
+                    "checkedAt": "2026-09-09",
+                    "evidenceType": "exact_itemized_retained_menu_source",
+                    "note": "Repository-retained itemized Hot Pepper /food/ source is keyed to this frozen Google Place ID; concrete native menu text was inspected. Frozen catalog name: Darts Bar A's 水道橋店. Retained Hot Pepper catalog address: 東京都千代田区神田三崎町２-22-18 新水道橋ビル４F. Retained provenance does not expose an independent branch phone, so phone was not asserted."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "パスタ",
+                "nameZhCandidate": null,
+                "evidenceClass": "hotpepper_menu_text",
+                "recommendationSemantics": "",
+                "provider": "Hot Pepper",
+                "sourceUrl": "https://www.hotpepper.jp/strJ001277594/food/",
+                "checkedAt": "2026-09-09",
+                "sourceScope": "branch",
+                "evidenceText": "カリカリパスタ 840円（税込） 「料理」の先頭へ戻る SIDE DISH <img src=\"https://imgfp.hotp.jp/IMGH/30/92/P04709309",
+                "confidence": "high",
+                "notes": "Concrete itemized retained Hot Pepper /food/ evidence; the source-native family label is preserved and no recommendation semantics were inferred."
+              }
+            },
             {
               "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S7.json",
               "marker": "DISH-R-RETAINED",
@@ -23537,6 +24897,40 @@
               "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S7.json",
               "marker": "DISH-R-RETAINED",
               "shard": "S7",
+              "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [],
+                "evidence": [
+                  {
+                    "provider": "Hot Pepper",
+                    "sourceUrl": "https://www.hotpepper.jp/strJ001277594/food/",
+                    "checkedAt": "2026-09-09",
+                    "evidenceType": "exact_itemized_retained_menu_source",
+                    "note": "Repository-retained itemized Hot Pepper /food/ source is keyed to this frozen Google Place ID; concrete native menu text was inspected. Frozen catalog name: Darts Bar A's 水道橋店. Retained Hot Pepper catalog address: 東京都千代田区神田三崎町２-22-18 新水道橋ビル４F. Retained provenance does not expose an independent branch phone, so phone was not asserted."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "ピザ",
+                "nameZhCandidate": null,
+                "evidenceClass": "hotpepper_menu_text",
+                "recommendationSemantics": "",
+                "provider": "Hot Pepper",
+                "sourceUrl": "https://www.hotpepper.jp/strJ001277594/food/",
+                "checkedAt": "2026-09-09",
+                "sourceScope": "branch",
+                "evidenceText": "ピザ( ジェノベーゼ、明太子) 1,320円（税込） 「料理」の先頭へ戻る ※更新日が2021/3/31以前の情報は、当時の価格及び税率に基づく情報となります。価格につきましては直",
+                "confidence": "high",
+                "notes": "Concrete itemized retained Hot Pepper /food/ evidence; the source-native family label is preserved and no recommendation semantics were inferred."
+              }
+            },
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S7.json",
+              "marker": "DISH-R-RETAINED",
+              "shard": "S7",
               "sourceQueueCommit": "97f07e274e07854952da45fe264ab43ddea7d986",
               "identity": {
                 "state": "verified",
@@ -23583,6 +24977,40 @@
               "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S7.json",
               "marker": "DISH-R-RETAINED",
               "shard": "S7",
+              "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [],
+                "evidence": [
+                  {
+                    "provider": "Hot Pepper",
+                    "sourceUrl": "https://www.hotpepper.jp/strJ001277594/food/",
+                    "checkedAt": "2026-09-09",
+                    "evidenceType": "exact_itemized_retained_menu_source",
+                    "note": "Repository-retained itemized Hot Pepper /food/ source is keyed to this frozen Google Place ID; concrete native menu text was inspected. Frozen catalog name: Darts Bar A's 水道橋店. Retained Hot Pepper catalog address: 東京都千代田区神田三崎町２-22-18 新水道橋ビル４F. Retained provenance does not expose an independent branch phone, so phone was not asserted."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "唐揚げ",
+                "nameZhCandidate": null,
+                "evidenceClass": "hotpepper_menu_text",
+                "recommendationSemantics": "",
+                "provider": "Hot Pepper",
+                "sourceUrl": "https://www.hotpepper.jp/strJ001277594/food/",
+                "checkedAt": "2026-09-09",
+                "sourceScope": "branch",
+                "evidenceText": "唐揚げ5個 960円（税込）",
+                "confidence": "high",
+                "notes": "Concrete itemized retained Hot Pepper /food/ evidence; the source-native family label is preserved and no recommendation semantics were inferred."
+              }
+            },
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S7.json",
+              "marker": "DISH-R-RETAINED",
+              "shard": "S7",
               "sourceQueueCommit": "97f07e274e07854952da45fe264ab43ddea7d986",
               "identity": {
                 "state": "verified",
@@ -23625,6 +25053,40 @@
           "evidenceRule": "hotpepper-price-backed-h4:たこ焼き?|takoyaki",
           "evidenceSnippet": "たこ焼き6個 960円（税込）",
           "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S7.json",
+              "marker": "DISH-R-RETAINED",
+              "shard": "S7",
+              "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [],
+                "evidence": [
+                  {
+                    "provider": "Hot Pepper",
+                    "sourceUrl": "https://www.hotpepper.jp/strJ001277594/food/",
+                    "checkedAt": "2026-09-09",
+                    "evidenceType": "exact_itemized_retained_menu_source",
+                    "note": "Repository-retained itemized Hot Pepper /food/ source is keyed to this frozen Google Place ID; concrete native menu text was inspected. Frozen catalog name: Darts Bar A's 水道橋店. Retained Hot Pepper catalog address: 東京都千代田区神田三崎町２-22-18 新水道橋ビル４F. Retained provenance does not expose an independent branch phone, so phone was not asserted."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "たこ焼き",
+                "nameZhCandidate": null,
+                "evidenceClass": "hotpepper_menu_text",
+                "recommendationSemantics": "",
+                "provider": "Hot Pepper",
+                "sourceUrl": "https://www.hotpepper.jp/strJ001277594/food/",
+                "checkedAt": "2026-09-09",
+                "sourceScope": "branch",
+                "evidenceText": "たこ焼き6個 960円（税込）",
+                "confidence": "high",
+                "notes": "Concrete itemized retained Hot Pepper /food/ evidence; the source-native family label is preserved and no recommendation semantics were inferred."
+              }
+            },
             {
               "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S7.json",
               "marker": "DISH-R-RETAINED",
@@ -27948,6 +29410,40 @@
               "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S7.json",
               "marker": "DISH-R-RETAINED",
               "shard": "S7",
+              "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [],
+                "evidence": [
+                  {
+                    "provider": "Hot Pepper",
+                    "sourceUrl": "https://www.hotpepper.jp/strJ001209837/food/",
+                    "checkedAt": "2026-09-09",
+                    "evidenceType": "exact_itemized_retained_menu_source",
+                    "note": "Repository-retained itemized Hot Pepper /food/ source is keyed to this frozen Google Place ID; concrete native menu text was inspected. Frozen catalog name: 神保町 薬酒bar志膳. Retained Hot Pepper catalog address: 東京都千代田区神田神保町１-20-5. Retained provenance does not expose an independent branch phone, so phone was not asserted."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "カレー",
+                "nameZhCandidate": null,
+                "evidenceClass": "hotpepper_menu_text",
+                "recommendationSemantics": "",
+                "provider": "Hot Pepper",
+                "sourceUrl": "https://www.hotpepper.jp/strJ001209837/food/",
+                "checkedAt": "2026-09-09",
+                "sourceScope": "branch",
+                "evidenceText": "チキンチーズカレー バケット付き 1000円 「料理」の先頭へ戻る ※更新日が2021/3/31以前の情報は、当時の価格及び税率に基づく情報となります。価格につきましては直接店舗へ",
+                "confidence": "high",
+                "notes": "Concrete itemized retained Hot Pepper /food/ evidence; the source-native family label is preserved and no recommendation semantics were inferred."
+              }
+            },
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S7.json",
+              "marker": "DISH-R-RETAINED",
+              "shard": "S7",
               "sourceQueueCommit": "97f07e274e07854952da45fe264ab43ddea7d986",
               "identity": {
                 "state": "verified",
@@ -27990,6 +29486,40 @@
           "evidenceRule": "hotpepper-price-backed-h4:ピザ|ピッツァ|pizza",
           "evidenceSnippet": "じゃがピザ チーズ ＋100円 700円",
           "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S7.json",
+              "marker": "DISH-R-RETAINED",
+              "shard": "S7",
+              "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [],
+                "evidence": [
+                  {
+                    "provider": "Hot Pepper",
+                    "sourceUrl": "https://www.hotpepper.jp/strJ001209837/food/",
+                    "checkedAt": "2026-09-09",
+                    "evidenceType": "exact_itemized_retained_menu_source",
+                    "note": "Repository-retained itemized Hot Pepper /food/ source is keyed to this frozen Google Place ID; concrete native menu text was inspected. Frozen catalog name: 神保町 薬酒bar志膳. Retained Hot Pepper catalog address: 東京都千代田区神田神保町１-20-5. Retained provenance does not expose an independent branch phone, so phone was not asserted."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "ピザ",
+                "nameZhCandidate": null,
+                "evidenceClass": "hotpepper_menu_text",
+                "recommendationSemantics": "",
+                "provider": "Hot Pepper",
+                "sourceUrl": "https://www.hotpepper.jp/strJ001209837/food/",
+                "checkedAt": "2026-09-09",
+                "sourceScope": "branch",
+                "evidenceText": "じゃがピザ チーズ ＋100円 700円",
+                "confidence": "high",
+                "notes": "Concrete itemized retained Hot Pepper /food/ evidence; the source-native family label is preserved and no recommendation semantics were inferred."
+              }
+            },
             {
               "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S7.json",
               "marker": "DISH-R-RETAINED",
@@ -30620,6 +32150,40 @@
               "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S2.json",
               "marker": "DISH-R-RETAINED",
               "shard": "S2",
+              "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [],
+                "evidence": [
+                  {
+                    "provider": "Hot Pepper retained binding",
+                    "sourceUrl": "https://www.hotpepper.jp/strJ001027779/food/",
+                    "checkedAt": "2026-09-09",
+                    "evidenceType": "high_confidence_bound_menu",
+                    "note": "Binding high confidence/autoEligible=true, 1.2m; price-backed exact menu text retained."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "焼き鳥",
+                "nameZhCandidate": null,
+                "evidenceClass": "provider_promotional_dish_text",
+                "recommendationSemantics": "",
+                "provider": "Hot Pepper",
+                "sourceUrl": "https://www.hotpepper.jp/strJ001027779/?vos=nhppalsa000016",
+                "checkedAt": "2026-09-06",
+                "sourceScope": "branch",
+                "evidenceText": "御茶ノ水 居酒屋 焼き鳥 鍋 個室 和食 宴会",
+                "confidence": "high",
+                "notes": "Concrete provider promotional dish term without recommendation semantics."
+              }
+            },
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S2.json",
+              "marker": "DISH-R-RETAINED",
+              "shard": "S2",
               "sourceQueueCommit": "97f07e274e07854952da45fe264ab43ddea7d986",
               "identity": {
                 "state": "verified",
@@ -33224,6 +34788,50 @@
               "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S7.json",
               "marker": "DISH-R-RETAINED",
               "shard": "S7",
+              "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [
+                  "炭の魂"
+                ],
+                "evidence": [
+                  {
+                    "provider": "Hot Pepper",
+                    "sourceUrl": "https://www.hotpepper.jp/strJ001043637/?vos=nhppalsa000016",
+                    "checkedAt": "2026-09-06",
+                    "evidenceType": "retained_provider_binding",
+                    "note": "Repository-retained source row is keyed to this frozen Google Place ID; source fields: address, closure, dinnerBudget, hours. Source-native name: 炭の魂. Retained Hot Pepper catalog address: 東京都千代田区外神田３-1-3. Retained provenance does not expose an independent branch phone, so phone was not asserted.",
+                    "sourceNativeRestaurantName": "炭の魂"
+                  },
+                  {
+                    "provider": "Hot Pepper",
+                    "sourceUrl": "https://www.hotpepper.jp/strJ001043637/food/",
+                    "checkedAt": "2026-09-09",
+                    "evidenceType": "exact_itemized_retained_menu_source",
+                    "note": "Repository-retained itemized Hot Pepper /food/ source is keyed to this frozen Google Place ID; concrete native menu text was inspected. Frozen catalog name: 炭の魂. Retained Hot Pepper catalog address: 東京都千代田区外神田３-1-3. Retained provenance does not expose an independent branch phone, so phone was not asserted."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "唐揚げ",
+                "nameZhCandidate": null,
+                "evidenceClass": "hotpepper_menu_text",
+                "recommendationSemantics": "",
+                "provider": "Hot Pepper",
+                "sourceUrl": "https://www.hotpepper.jp/strJ001043637/food/",
+                "checkedAt": "2026-09-09",
+                "sourceScope": "branch",
+                "evidenceText": "タコ唐揚げ 658円 (税込)",
+                "confidence": "high",
+                "notes": "Concrete itemized retained Hot Pepper /food/ evidence; the source-native family label is preserved and no recommendation semantics were inferred."
+              }
+            },
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S7.json",
+              "marker": "DISH-R-RETAINED",
+              "shard": "S7",
               "sourceQueueCommit": "97f07e274e07854952da45fe264ab43ddea7d986",
               "identity": {
                 "state": "verified",
@@ -33276,6 +34884,50 @@
           "evidenceRule": "hotpepper-price-backed-h4:油淋鶏|油淋鸡",
           "evidenceSnippet": "油淋鶏 858円 (税込)",
           "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S7.json",
+              "marker": "DISH-R-RETAINED",
+              "shard": "S7",
+              "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [
+                  "炭の魂"
+                ],
+                "evidence": [
+                  {
+                    "provider": "Hot Pepper",
+                    "sourceUrl": "https://www.hotpepper.jp/strJ001043637/?vos=nhppalsa000016",
+                    "checkedAt": "2026-09-06",
+                    "evidenceType": "retained_provider_binding",
+                    "note": "Repository-retained source row is keyed to this frozen Google Place ID; source fields: address, closure, dinnerBudget, hours. Source-native name: 炭の魂. Retained Hot Pepper catalog address: 東京都千代田区外神田３-1-3. Retained provenance does not expose an independent branch phone, so phone was not asserted.",
+                    "sourceNativeRestaurantName": "炭の魂"
+                  },
+                  {
+                    "provider": "Hot Pepper",
+                    "sourceUrl": "https://www.hotpepper.jp/strJ001043637/food/",
+                    "checkedAt": "2026-09-09",
+                    "evidenceType": "exact_itemized_retained_menu_source",
+                    "note": "Repository-retained itemized Hot Pepper /food/ source is keyed to this frozen Google Place ID; concrete native menu text was inspected. Frozen catalog name: 炭の魂. Retained Hot Pepper catalog address: 東京都千代田区外神田３-1-3. Retained provenance does not expose an independent branch phone, so phone was not asserted."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "油淋鶏",
+                "nameZhCandidate": null,
+                "evidenceClass": "hotpepper_menu_text",
+                "recommendationSemantics": "",
+                "provider": "Hot Pepper",
+                "sourceUrl": "https://www.hotpepper.jp/strJ001043637/food/",
+                "checkedAt": "2026-09-09",
+                "sourceScope": "branch",
+                "evidenceText": "油淋鶏 858円 (税込)",
+                "confidence": "high",
+                "notes": "Concrete itemized retained Hot Pepper /food/ evidence; the source-native family label is preserved and no recommendation semantics were inferred."
+              }
+            },
             {
               "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S7.json",
               "marker": "DISH-R-RETAINED",
@@ -33346,6 +34998,50 @@
               "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S7.json",
               "marker": "DISH-R-RETAINED",
               "shard": "S7",
+              "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [
+                  "炭の魂"
+                ],
+                "evidence": [
+                  {
+                    "provider": "Hot Pepper",
+                    "sourceUrl": "https://www.hotpepper.jp/strJ001043637/?vos=nhppalsa000016",
+                    "checkedAt": "2026-09-06",
+                    "evidenceType": "retained_provider_binding",
+                    "note": "Repository-retained source row is keyed to this frozen Google Place ID; source fields: address, closure, dinnerBudget, hours. Source-native name: 炭の魂. Retained Hot Pepper catalog address: 東京都千代田区外神田３-1-3. Retained provenance does not expose an independent branch phone, so phone was not asserted.",
+                    "sourceNativeRestaurantName": "炭の魂"
+                  },
+                  {
+                    "provider": "Hot Pepper",
+                    "sourceUrl": "https://www.hotpepper.jp/strJ001043637/food/",
+                    "checkedAt": "2026-09-09",
+                    "evidenceType": "exact_itemized_retained_menu_source",
+                    "note": "Repository-retained itemized Hot Pepper /food/ source is keyed to this frozen Google Place ID; concrete native menu text was inspected. Frozen catalog name: 炭の魂. Retained Hot Pepper catalog address: 東京都千代田区外神田３-1-3. Retained provenance does not expose an independent branch phone, so phone was not asserted."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "牛もつ煮込み",
+                "nameZhCandidate": null,
+                "evidenceClass": "hotpepper_menu_text",
+                "recommendationSemantics": "",
+                "provider": "Hot Pepper",
+                "sourceUrl": "https://www.hotpepper.jp/strJ001043637/food/",
+                "checkedAt": "2026-09-09",
+                "sourceScope": "branch",
+                "evidenceText": "牛もつ煮込み 698円 (税込)",
+                "confidence": "high",
+                "notes": "Concrete itemized retained Hot Pepper /food/ evidence; the source-native family label is preserved and no recommendation semantics were inferred."
+              }
+            },
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S7.json",
+              "marker": "DISH-R-RETAINED",
+              "shard": "S7",
               "sourceQueueCommit": "97f07e274e07854952da45fe264ab43ddea7d986",
               "identity": {
                 "state": "verified",
@@ -33398,6 +35094,50 @@
           "evidenceRule": "hotpepper-price-backed-h4:牡蠣フライ|カキフライ",
           "evidenceSnippet": "カキフライ 858円 (税込) 「料理」の先頭へ戻る ◆逸品売れ筋！！◆",
           "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S7.json",
+              "marker": "DISH-R-RETAINED",
+              "shard": "S7",
+              "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [
+                  "炭の魂"
+                ],
+                "evidence": [
+                  {
+                    "provider": "Hot Pepper",
+                    "sourceUrl": "https://www.hotpepper.jp/strJ001043637/?vos=nhppalsa000016",
+                    "checkedAt": "2026-09-06",
+                    "evidenceType": "retained_provider_binding",
+                    "note": "Repository-retained source row is keyed to this frozen Google Place ID; source fields: address, closure, dinnerBudget, hours. Source-native name: 炭の魂. Retained Hot Pepper catalog address: 東京都千代田区外神田３-1-3. Retained provenance does not expose an independent branch phone, so phone was not asserted.",
+                    "sourceNativeRestaurantName": "炭の魂"
+                  },
+                  {
+                    "provider": "Hot Pepper",
+                    "sourceUrl": "https://www.hotpepper.jp/strJ001043637/food/",
+                    "checkedAt": "2026-09-09",
+                    "evidenceType": "exact_itemized_retained_menu_source",
+                    "note": "Repository-retained itemized Hot Pepper /food/ source is keyed to this frozen Google Place ID; concrete native menu text was inspected. Frozen catalog name: 炭の魂. Retained Hot Pepper catalog address: 東京都千代田区外神田３-1-3. Retained provenance does not expose an independent branch phone, so phone was not asserted."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "カキフライ",
+                "nameZhCandidate": null,
+                "evidenceClass": "hotpepper_menu_text",
+                "recommendationSemantics": "",
+                "provider": "Hot Pepper",
+                "sourceUrl": "https://www.hotpepper.jp/strJ001043637/food/",
+                "checkedAt": "2026-09-09",
+                "sourceScope": "branch",
+                "evidenceText": "カキフライ 858円 (税込) 「料理」の先頭へ戻る ◆逸品売れ筋！！◆",
+                "confidence": "high",
+                "notes": "Concrete itemized retained Hot Pepper /food/ evidence; the source-native family label is preserved and no recommendation semantics were inferred."
+              }
+            },
             {
               "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S7.json",
               "marker": "DISH-R-RETAINED",
@@ -33934,6 +35674,40 @@
           "evidenceRule": "central-reviewed:F:exact:きりたんぽ",
           "evidenceSnippet": "きりたんぽ",
           "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S2.json",
+              "marker": "DISH-R-RETAINED",
+              "shard": "S2",
+              "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [],
+                "evidence": [
+                  {
+                    "provider": "Tabelog",
+                    "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13021354/",
+                    "checkedAt": "2026-09-05",
+                    "evidenceType": "exact_place_id_menu_source",
+                    "note": "source_enrichment_outer4 exact Place ID row; sourceRefs.fields includes dishes."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "きりたんぽ",
+                "nameZhCandidate": null,
+                "evidenceClass": "retained_source_menu_item",
+                "recommendationSemantics": "",
+                "provider": "Tabelog",
+                "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13021354/",
+                "checkedAt": "2026-09-05",
+                "sourceScope": "branch",
+                "evidenceText": "きりたんぽ",
+                "confidence": "high",
+                "notes": "Concrete retained menu item; no recommendation semantics."
+              }
+            },
             {
               "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S2.json",
               "marker": "DISH-R-RETAINED",
@@ -35287,6 +37061,43 @@
               "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S5.json",
               "marker": "DISH-R-RETAINED",
               "shard": "S5",
+              "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [
+                  "上海飯店"
+                ],
+                "evidence": [
+                  {
+                    "provider": "Tabelog",
+                    "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13073568/",
+                    "checkedAt": "2026-09-05",
+                    "evidenceType": "exact_place_id_retained_menu_source",
+                    "note": "Repository-retained source row is keyed to this frozen Google Place ID; source fields: address, budget, cuisine, dishes, hours, name. Source-native name: 上海飯店. Retained provenance does not expose an independent branch phone, so phone was not asserted.",
+                    "sourceNativeRestaurantName": "上海飯店"
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "ロース丼",
+                "nameZhCandidate": null,
+                "evidenceClass": "retained_source_menu_item",
+                "recommendationSemantics": "",
+                "provider": "Tabelog",
+                "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13073568/",
+                "checkedAt": "2026-09-05",
+                "sourceScope": "branch",
+                "evidenceText": "ロース丼",
+                "confidence": "high",
+                "notes": "Concrete source-native retained menu field; no recommendation semantics were assumed."
+              }
+            },
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S5.json",
+              "marker": "DISH-R-RETAINED",
+              "shard": "S5",
               "sourceQueueCommit": "97f07e274e07854952da45fe264ab43ddea7d986",
               "identity": {
                 "state": "verified",
@@ -35975,6 +37786,40 @@
               "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S2.json",
               "marker": "DISH-R-RETAINED",
               "shard": "S2",
+              "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [],
+                "evidence": [
+                  {
+                    "provider": "Hot Pepper retained binding",
+                    "sourceUrl": "https://www.hotpepper.jp/strJ003784721/?vos=nhppalsa000016",
+                    "checkedAt": "2026-09-06",
+                    "evidenceType": "high_confidence_bound_provider",
+                    "note": "Binding high confidence/autoEligible=true; retained promotional text keyed to exact Place ID."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "やきとん",
+                "nameZhCandidate": null,
+                "evidenceClass": "provider_promotional_dish_text",
+                "recommendationSemantics": "",
+                "provider": "Hot Pepper",
+                "sourceUrl": "https://www.hotpepper.jp/strJ003784721/?vos=nhppalsa000016",
+                "checkedAt": "2026-09-06",
+                "sourceScope": "branch",
+                "evidenceText": "水道橋 立ち飲み やきとん",
+                "confidence": "high",
+                "notes": "Concrete dish term; no recommendation marker."
+              }
+            },
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S2.json",
+              "marker": "DISH-R-RETAINED",
+              "shard": "S2",
               "sourceQueueCommit": "97f07e274e07854952da45fe264ab43ddea7d986",
               "identity": {
                 "state": "verified",
@@ -36091,6 +37936,59 @@
           "evidenceClass": "retained_source_menu_item",
           "evidenceRule": "retained:dishes:天丼|tendon\\b",
           "evidenceSnippet": "天丼"
+        },
+        {
+          "nameZh": "天妇罗盖饭",
+          "nameJa": "天丼",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13022740/",
+          "checkedAt": "2026-09-05",
+          "evidenceClass": "tabelog_menu_text",
+          "evidenceRule": "central-reviewed:F:exact:天丼|tendon\\b",
+          "evidenceSnippet": "天丼",
+          "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S0.json",
+              "marker": "DISH-R-RETAINED",
+              "shard": "S0",
+              "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [],
+                "evidence": [
+                  {
+                    "provider": "tabelog",
+                    "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13022740/dtlmenu/lunch/",
+                    "checkedAt": "2026-09-14",
+                    "evidenceType": "exact_retained_branch_binding",
+                    "note": "Exact frozen Place-ID retained-source binding from the worker proposal."
+                  },
+                  {
+                    "provider": "Tabelog",
+                    "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13022740/",
+                    "checkedAt": "2026-09-05",
+                    "evidenceType": "exact_branch_identity_from_rows_proposal",
+                    "note": "Exact Place-ID retained Tabelog source row names はちまき and its sourceRef explicitly claims dishes:['天丼','穴子海老天丼']."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "天丼",
+                "nameZhCandidate": null,
+                "evidenceClass": "retained_source_menu_item",
+                "recommendationSemantics": null,
+                "provider": "Tabelog",
+                "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13022740/",
+                "checkedAt": "2026-09-05",
+                "sourceScope": "branch",
+                "evidenceText": "天丼",
+                "confidence": "medium",
+                "notes": "No strict recommendation semantics is retained. Batch plan reports featuredDishesKnown=3, while two source-native items are directly recoverable; the missing third item was not reconstructed."
+              }
+            }
+          ]
         },
         {
           "nameZh": "星鳗料理",
@@ -41000,6 +42898,40 @@
               "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S2.json",
               "marker": "DISH-R-RETAINED",
               "shard": "S2",
+              "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [],
+                "evidence": [
+                  {
+                    "provider": "Hot Pepper retained binding",
+                    "sourceUrl": "https://www.hotpepper.jp/strJ001269562/?vos=nhppalsa000016",
+                    "checkedAt": "2026-09-06",
+                    "evidenceType": "high_confidence_bound_provider",
+                    "note": "hotpepper_bindings: high confidence, autoEligible=true, 2.4m; retained promotional text is keyed to exact Place ID."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "串揚げ",
+                "nameZhCandidate": null,
+                "evidenceClass": "provider_promotional_dish_text",
+                "recommendationSemantics": "",
+                "provider": "Hot Pepper",
+                "sourceUrl": "https://www.hotpepper.jp/strJ001269562/?vos=nhppalsa000016",
+                "checkedAt": "2026-09-06",
+                "sourceScope": "branch",
+                "evidenceText": "絶品の串揚げをご堪能いただけます！",
+                "confidence": "high",
+                "notes": "Promotional praise '絶品' is not treated as an explicit recommendation/popularity/signature marker; item remains F."
+              }
+            },
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S2.json",
+              "marker": "DISH-R-RETAINED",
+              "shard": "S2",
               "sourceQueueCommit": "97f07e274e07854952da45fe264ab43ddea7d986",
               "identity": {
                 "state": "verified",
@@ -41058,6 +42990,59 @@
           "evidenceClass": "retained_source_menu_item",
           "evidenceRule": "retained:dishes:焼き餃子|焼餃子",
           "evidenceSnippet": "焼き餃子"
+        },
+        {
+          "nameZh": "煎饺",
+          "nameJa": "焼き餃子",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13255328/",
+          "checkedAt": "2026-09-05",
+          "evidenceClass": "tabelog_menu_text",
+          "evidenceRule": "central-reviewed:F:exact:焼き餃子|焼餃子",
+          "evidenceSnippet": "焼き餃子",
+          "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S0.json",
+              "marker": "DISH-R-RETAINED",
+              "shard": "S0",
+              "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [],
+                "evidence": [
+                  {
+                    "provider": "tabelog",
+                    "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13255328/dtlmenu/",
+                    "checkedAt": "2026-09-14",
+                    "evidenceType": "exact_retained_branch_binding",
+                    "note": "Exact frozen Place-ID retained-source binding from the worker proposal."
+                  },
+                  {
+                    "provider": "Tabelog",
+                    "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13255328/",
+                    "checkedAt": "2026-09-05",
+                    "evidenceType": "exact_branch_identity_from_rows_proposal",
+                    "note": "Exact Place-ID retained Tabelog source row names 座135 神保町店, preserves its exact address, and its sourceRef explicitly claims dishes."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "焼き餃子",
+                "nameZhCandidate": null,
+                "evidenceClass": "retained_source_menu_item",
+                "recommendationSemantics": null,
+                "provider": "Tabelog",
+                "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13255328/",
+                "checkedAt": "2026-09-05",
+                "sourceScope": "branch",
+                "evidenceText": "焼き餃子",
+                "confidence": "medium",
+                "notes": "焼き餃子 is a concrete menu item but has no retained recommendation/signature/popular semantics, so it remains F."
+              }
+            }
+          ]
         }
       ]
     },
@@ -42388,6 +44373,40 @@
               "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S5.json",
               "marker": "DISH-R-RETAINED",
               "shard": "S5",
+              "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [],
+                "evidence": [
+                  {
+                    "provider": "Hot Pepper",
+                    "sourceUrl": "https://www.hotpepper.jp/strJ003498027/food/",
+                    "checkedAt": "2026-09-09",
+                    "evidenceType": "exact_itemized_retained_menu_source",
+                    "note": "Repository-retained itemized Hot Pepper /food/ source is keyed to this frozen Google Place ID; concrete native menu text was inspected. Frozen catalog name: 華龍飯店 神田店. Retained Hot Pepper catalog address: 東京都千代田区神田司町２-7. Retained provenance does not expose an independent branch phone, so phone was not asserted."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "よだれ鶏",
+                "nameZhCandidate": null,
+                "evidenceClass": "hotpepper_menu_text",
+                "recommendationSemantics": "",
+                "provider": "Hot Pepper",
+                "sourceUrl": "https://www.hotpepper.jp/strJ003498027/food/",
+                "checkedAt": "2026-09-09",
+                "sourceScope": "branch",
+                "evidenceText": "よだれ鶏 418円（税込）",
+                "confidence": "high",
+                "notes": "Concrete itemized retained Hot Pepper /food/ evidence; the source-native family label is preserved and no recommendation semantics were inferred."
+              }
+            },
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S5.json",
+              "marker": "DISH-R-RETAINED",
+              "shard": "S5",
               "sourceQueueCommit": "97f07e274e07854952da45fe264ab43ddea7d986",
               "identity": {
                 "state": "verified",
@@ -42430,6 +44449,40 @@
           "evidenceRule": "hotpepper-price-backed-h4:エビチリ|海老チリ",
           "evidenceSnippet": "海老チリソース 935円（税込）",
           "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S5.json",
+              "marker": "DISH-R-RETAINED",
+              "shard": "S5",
+              "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [],
+                "evidence": [
+                  {
+                    "provider": "Hot Pepper",
+                    "sourceUrl": "https://www.hotpepper.jp/strJ003498027/food/",
+                    "checkedAt": "2026-09-09",
+                    "evidenceType": "exact_itemized_retained_menu_source",
+                    "note": "Repository-retained itemized Hot Pepper /food/ source is keyed to this frozen Google Place ID; concrete native menu text was inspected. Frozen catalog name: 華龍飯店 神田店. Retained Hot Pepper catalog address: 東京都千代田区神田司町２-7. Retained provenance does not expose an independent branch phone, so phone was not asserted."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "海老チリ",
+                "nameZhCandidate": null,
+                "evidenceClass": "hotpepper_menu_text",
+                "recommendationSemantics": "",
+                "provider": "Hot Pepper",
+                "sourceUrl": "https://www.hotpepper.jp/strJ003498027/food/",
+                "checkedAt": "2026-09-09",
+                "sourceScope": "branch",
+                "evidenceText": "海老チリソース 935円（税込）",
+                "confidence": "high",
+                "notes": "Concrete itemized retained Hot Pepper /food/ evidence; the source-native family label is preserved and no recommendation semantics were inferred."
+              }
+            },
             {
               "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S5.json",
               "marker": "DISH-R-RETAINED",
@@ -42480,6 +44533,40 @@
               "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S5.json",
               "marker": "DISH-R-RETAINED",
               "shard": "S5",
+              "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [],
+                "evidence": [
+                  {
+                    "provider": "Hot Pepper",
+                    "sourceUrl": "https://www.hotpepper.jp/strJ003498027/food/",
+                    "checkedAt": "2026-09-09",
+                    "evidenceType": "exact_itemized_retained_menu_source",
+                    "note": "Repository-retained itemized Hot Pepper /food/ source is keyed to this frozen Google Place ID; concrete native menu text was inspected. Frozen catalog name: 華龍飯店 神田店. Retained Hot Pepper catalog address: 東京都千代田区神田司町２-7. Retained provenance does not expose an independent branch phone, so phone was not asserted."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "担々麺",
+                "nameZhCandidate": null,
+                "evidenceClass": "hotpepper_menu_text",
+                "recommendationSemantics": "",
+                "provider": "Hot Pepper",
+                "sourceUrl": "https://www.hotpepper.jp/strJ003498027/food/",
+                "checkedAt": "2026-09-09",
+                "sourceScope": "branch",
+                "evidenceText": "黒ゴマ担々麺 935円（税込）",
+                "confidence": "high",
+                "notes": "Concrete itemized retained Hot Pepper /food/ evidence; the source-native family label is preserved and no recommendation semantics were inferred."
+              }
+            },
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S5.json",
+              "marker": "DISH-R-RETAINED",
+              "shard": "S5",
               "sourceQueueCommit": "97f07e274e07854952da45fe264ab43ddea7d986",
               "identity": {
                 "state": "verified",
@@ -42522,6 +44609,40 @@
           "evidenceRule": "hotpepper-price-backed-h4:唐揚げ|から揚げ|からあげ|karaage",
           "evidenceSnippet": "レバー唐揚げ 418円（税込）",
           "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S5.json",
+              "marker": "DISH-R-RETAINED",
+              "shard": "S5",
+              "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [],
+                "evidence": [
+                  {
+                    "provider": "Hot Pepper",
+                    "sourceUrl": "https://www.hotpepper.jp/strJ003498027/food/",
+                    "checkedAt": "2026-09-09",
+                    "evidenceType": "exact_itemized_retained_menu_source",
+                    "note": "Repository-retained itemized Hot Pepper /food/ source is keyed to this frozen Google Place ID; concrete native menu text was inspected. Frozen catalog name: 華龍飯店 神田店. Retained Hot Pepper catalog address: 東京都千代田区神田司町２-7. Retained provenance does not expose an independent branch phone, so phone was not asserted."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "唐揚げ",
+                "nameZhCandidate": null,
+                "evidenceClass": "hotpepper_menu_text",
+                "recommendationSemantics": "",
+                "provider": "Hot Pepper",
+                "sourceUrl": "https://www.hotpepper.jp/strJ003498027/food/",
+                "checkedAt": "2026-09-09",
+                "sourceScope": "branch",
+                "evidenceText": "レバー唐揚げ 418円（税込）",
+                "confidence": "high",
+                "notes": "Concrete itemized retained Hot Pepper /food/ evidence; the source-native family label is preserved and no recommendation semantics were inferred."
+              }
+            },
             {
               "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S5.json",
               "marker": "DISH-R-RETAINED",
@@ -42572,6 +44693,40 @@
               "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S5.json",
               "marker": "DISH-R-RETAINED",
               "shard": "S5",
+              "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [],
+                "evidence": [
+                  {
+                    "provider": "Hot Pepper",
+                    "sourceUrl": "https://www.hotpepper.jp/strJ003498027/food/",
+                    "checkedAt": "2026-09-09",
+                    "evidenceType": "exact_itemized_retained_menu_source",
+                    "note": "Repository-retained itemized Hot Pepper /food/ source is keyed to this frozen Google Place ID; concrete native menu text was inspected. Frozen catalog name: 華龍飯店 神田店. Retained Hot Pepper catalog address: 東京都千代田区神田司町２-7. Retained provenance does not expose an independent branch phone, so phone was not asserted."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "日替わりランチ",
+                "nameZhCandidate": null,
+                "evidenceClass": "hotpepper_menu_text",
+                "recommendationSemantics": "",
+                "provider": "Hot Pepper",
+                "sourceUrl": "https://www.hotpepper.jp/strJ003498027/food/",
+                "checkedAt": "2026-09-09",
+                "sourceScope": "branch",
+                "evidenceText": "日替わりランチ&冷やし中華 サラダ、ザーサイ、スープおかわり自由！ 850円から",
+                "confidence": "high",
+                "notes": "Concrete itemized retained Hot Pepper /food/ evidence; the source-native family label is preserved and no recommendation semantics were inferred."
+              }
+            },
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S5.json",
+              "marker": "DISH-R-RETAINED",
+              "shard": "S5",
               "sourceQueueCommit": "97f07e274e07854952da45fe264ab43ddea7d986",
               "identity": {
                 "state": "verified",
@@ -42614,6 +44769,40 @@
           "evidenceRule": "hotpepper-price-backed-h4:油淋鶏|油淋鸡",
           "evidenceSnippet": "油淋鶏 880円（税込）",
           "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S5.json",
+              "marker": "DISH-R-RETAINED",
+              "shard": "S5",
+              "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [],
+                "evidence": [
+                  {
+                    "provider": "Hot Pepper",
+                    "sourceUrl": "https://www.hotpepper.jp/strJ003498027/food/",
+                    "checkedAt": "2026-09-09",
+                    "evidenceType": "exact_itemized_retained_menu_source",
+                    "note": "Repository-retained itemized Hot Pepper /food/ source is keyed to this frozen Google Place ID; concrete native menu text was inspected. Frozen catalog name: 華龍飯店 神田店. Retained Hot Pepper catalog address: 東京都千代田区神田司町２-7. Retained provenance does not expose an independent branch phone, so phone was not asserted."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "油淋鶏",
+                "nameZhCandidate": null,
+                "evidenceClass": "hotpepper_menu_text",
+                "recommendationSemantics": "",
+                "provider": "Hot Pepper",
+                "sourceUrl": "https://www.hotpepper.jp/strJ003498027/food/",
+                "checkedAt": "2026-09-09",
+                "sourceScope": "branch",
+                "evidenceText": "油淋鶏 880円（税込）",
+                "confidence": "high",
+                "notes": "Concrete itemized retained Hot Pepper /food/ evidence; the source-native family label is preserved and no recommendation semantics were inferred."
+              }
+            },
             {
               "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S5.json",
               "marker": "DISH-R-RETAINED",
@@ -42786,6 +44975,40 @@
               "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S5.json",
               "marker": "DISH-R-RETAINED",
               "shard": "S5",
+              "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [],
+                "evidence": [
+                  {
+                    "provider": "Hot Pepper",
+                    "sourceUrl": "https://www.hotpepper.jp/strJ000678062/food/",
+                    "checkedAt": "2026-09-09",
+                    "evidenceType": "exact_itemized_retained_menu_source",
+                    "note": "Repository-retained itemized Hot Pepper /food/ source is keyed to this frozen Google Place ID; concrete native menu text was inspected. Frozen catalog name: 大衆酒場 酔仙. Retained Hot Pepper catalog address: 東京都千代田区神田神保町２-2-34 三信ビル. Retained provenance does not expose an independent branch phone, so phone was not asserted."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "刺身",
+                "nameZhCandidate": null,
+                "evidenceClass": "hotpepper_menu_text",
+                "recommendationSemantics": "",
+                "provider": "Hot Pepper",
+                "sourceUrl": "https://www.hotpepper.jp/strJ000678062/food/",
+                "checkedAt": "2026-09-09",
+                "sourceScope": "branch",
+                "evidenceText": "北海道たこの刺身 580円（税込）",
+                "confidence": "high",
+                "notes": "Concrete itemized retained Hot Pepper /food/ evidence; the source-native family label is preserved and no recommendation semantics were inferred."
+              }
+            },
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S5.json",
+              "marker": "DISH-R-RETAINED",
+              "shard": "S5",
               "sourceQueueCommit": "97f07e274e07854952da45fe264ab43ddea7d986",
               "identity": {
                 "state": "verified",
@@ -42828,6 +45051,40 @@
           "evidenceRule": "hotpepper-price-backed-h4:お好み焼き?|okonomiyaki",
           "evidenceSnippet": "お好み焼き 600円（税込）",
           "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S5.json",
+              "marker": "DISH-R-RETAINED",
+              "shard": "S5",
+              "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [],
+                "evidence": [
+                  {
+                    "provider": "Hot Pepper",
+                    "sourceUrl": "https://www.hotpepper.jp/strJ000678062/food/",
+                    "checkedAt": "2026-09-09",
+                    "evidenceType": "exact_itemized_retained_menu_source",
+                    "note": "Repository-retained itemized Hot Pepper /food/ source is keyed to this frozen Google Place ID; concrete native menu text was inspected. Frozen catalog name: 大衆酒場 酔仙. Retained Hot Pepper catalog address: 東京都千代田区神田神保町２-2-34 三信ビル. Retained provenance does not expose an independent branch phone, so phone was not asserted."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "お好み焼き",
+                "nameZhCandidate": null,
+                "evidenceClass": "hotpepper_menu_text",
+                "recommendationSemantics": "",
+                "provider": "Hot Pepper",
+                "sourceUrl": "https://www.hotpepper.jp/strJ000678062/food/",
+                "checkedAt": "2026-09-09",
+                "sourceScope": "branch",
+                "evidenceText": "お好み焼き 600円（税込）",
+                "confidence": "high",
+                "notes": "Concrete itemized retained Hot Pepper /food/ evidence; the source-native family label is preserved and no recommendation semantics were inferred."
+              }
+            },
             {
               "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S5.json",
               "marker": "DISH-R-RETAINED",
@@ -42878,6 +45135,40 @@
               "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S5.json",
               "marker": "DISH-R-RETAINED",
               "shard": "S5",
+              "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [],
+                "evidence": [
+                  {
+                    "provider": "Hot Pepper",
+                    "sourceUrl": "https://www.hotpepper.jp/strJ000678062/food/",
+                    "checkedAt": "2026-09-09",
+                    "evidenceType": "exact_itemized_retained_menu_source",
+                    "note": "Repository-retained itemized Hot Pepper /food/ source is keyed to this frozen Google Place ID; concrete native menu text was inspected. Frozen catalog name: 大衆酒場 酔仙. Retained Hot Pepper catalog address: 東京都千代田区神田神保町２-2-34 三信ビル. Retained provenance does not expose an independent branch phone, so phone was not asserted."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "唐揚げ",
+                "nameZhCandidate": null,
+                "evidenceClass": "hotpepper_menu_text",
+                "recommendationSemantics": "",
+                "provider": "Hot Pepper",
+                "sourceUrl": "https://www.hotpepper.jp/strJ000678062/food/",
+                "checkedAt": "2026-09-09",
+                "sourceScope": "branch",
+                "evidenceText": "タコの唐揚げ 580円（税込）",
+                "confidence": "high",
+                "notes": "Concrete itemized retained Hot Pepper /food/ evidence; the source-native family label is preserved and no recommendation semantics were inferred."
+              }
+            },
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S5.json",
+              "marker": "DISH-R-RETAINED",
+              "shard": "S5",
               "sourceQueueCommit": "97f07e274e07854952da45fe264ab43ddea7d986",
               "identity": {
                 "state": "verified",
@@ -42920,6 +45211,40 @@
           "evidenceRule": "hotpepper-price-backed-h4:水餃子|水饺",
           "evidenceSnippet": "水餃子 550円（税込）",
           "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S5.json",
+              "marker": "DISH-R-RETAINED",
+              "shard": "S5",
+              "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [],
+                "evidence": [
+                  {
+                    "provider": "Hot Pepper",
+                    "sourceUrl": "https://www.hotpepper.jp/strJ000678062/food/",
+                    "checkedAt": "2026-09-09",
+                    "evidenceType": "exact_itemized_retained_menu_source",
+                    "note": "Repository-retained itemized Hot Pepper /food/ source is keyed to this frozen Google Place ID; concrete native menu text was inspected. Frozen catalog name: 大衆酒場 酔仙. Retained Hot Pepper catalog address: 東京都千代田区神田神保町２-2-34 三信ビル. Retained provenance does not expose an independent branch phone, so phone was not asserted."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "水餃子",
+                "nameZhCandidate": null,
+                "evidenceClass": "hotpepper_menu_text",
+                "recommendationSemantics": "",
+                "provider": "Hot Pepper",
+                "sourceUrl": "https://www.hotpepper.jp/strJ000678062/food/",
+                "checkedAt": "2026-09-09",
+                "sourceScope": "branch",
+                "evidenceText": "水餃子 550円（税込）",
+                "confidence": "high",
+                "notes": "Concrete itemized retained Hot Pepper /food/ evidence; the source-native family label is preserved and no recommendation semantics were inferred."
+              }
+            },
             {
               "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S5.json",
               "marker": "DISH-R-RETAINED",
@@ -42970,6 +45295,40 @@
               "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S5.json",
               "marker": "DISH-R-RETAINED",
               "shard": "S5",
+              "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [],
+                "evidence": [
+                  {
+                    "provider": "Hot Pepper",
+                    "sourceUrl": "https://www.hotpepper.jp/strJ000678062/food/",
+                    "checkedAt": "2026-09-09",
+                    "evidenceType": "exact_itemized_retained_menu_source",
+                    "note": "Repository-retained itemized Hot Pepper /food/ source is keyed to this frozen Google Place ID; concrete native menu text was inspected. Frozen catalog name: 大衆酒場 酔仙. Retained Hot Pepper catalog address: 東京都千代田区神田神保町２-2-34 三信ビル. Retained provenance does not expose an independent branch phone, so phone was not asserted."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "チャーハン",
+                "nameZhCandidate": null,
+                "evidenceClass": "hotpepper_menu_text",
+                "recommendationSemantics": "",
+                "provider": "Hot Pepper",
+                "sourceUrl": "https://www.hotpepper.jp/strJ000678062/food/",
+                "checkedAt": "2026-09-09",
+                "sourceScope": "branch",
+                "evidenceText": "チャーハン 700円（税込）",
+                "confidence": "high",
+                "notes": "Concrete itemized retained Hot Pepper /food/ evidence; the source-native family label is preserved and no recommendation semantics were inferred."
+              }
+            },
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S5.json",
+              "marker": "DISH-R-RETAINED",
+              "shard": "S5",
               "sourceQueueCommit": "97f07e274e07854952da45fe264ab43ddea7d986",
               "identity": {
                 "state": "verified",
@@ -43012,6 +45371,40 @@
           "evidenceRule": "hotpepper-price-backed-h4:串焼き",
           "evidenceSnippet": "かしら串焼き ご注文は２本からでお願いします。 130円（税込）",
           "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S5.json",
+              "marker": "DISH-R-RETAINED",
+              "shard": "S5",
+              "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [],
+                "evidence": [
+                  {
+                    "provider": "Hot Pepper",
+                    "sourceUrl": "https://www.hotpepper.jp/strJ000678062/food/",
+                    "checkedAt": "2026-09-09",
+                    "evidenceType": "exact_itemized_retained_menu_source",
+                    "note": "Repository-retained itemized Hot Pepper /food/ source is keyed to this frozen Google Place ID; concrete native menu text was inspected. Frozen catalog name: 大衆酒場 酔仙. Retained Hot Pepper catalog address: 東京都千代田区神田神保町２-2-34 三信ビル. Retained provenance does not expose an independent branch phone, so phone was not asserted."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "串焼き",
+                "nameZhCandidate": null,
+                "evidenceClass": "hotpepper_menu_text",
+                "recommendationSemantics": "",
+                "provider": "Hot Pepper",
+                "sourceUrl": "https://www.hotpepper.jp/strJ000678062/food/",
+                "checkedAt": "2026-09-09",
+                "sourceScope": "branch",
+                "evidenceText": "かしら串焼き ご注文は２本からでお願いします。 130円（税込）",
+                "confidence": "high",
+                "notes": "Concrete itemized retained Hot Pepper /food/ evidence; the source-native family label is preserved and no recommendation semantics were inferred."
+              }
+            },
             {
               "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S5.json",
               "marker": "DISH-R-RETAINED",
@@ -43825,6 +46218,42 @@
           "evidenceRule": "central-reviewed:F:exact:オムライス|omelette rice|omurice",
           "evidenceSnippet": "FOOD：オムライス",
           "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-OFFICIAL/S4.json",
+              "marker": "DISH-R-OFFICIAL",
+              "shard": "S4",
+              "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [
+                  "私立輝羅星学院アイドル部"
+                ],
+                "evidence": [
+                  {
+                    "provider": "official",
+                    "sourceUrl": "https://kiraboshi.wixsite.com/kiraboshigakuin/menu",
+                    "checkedAt": "2026-09-14",
+                    "evidenceType": "branch_page",
+                    "note": "exact branch/source identity"
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "オムライス",
+                "nameZhCandidate": null,
+                "evidenceClass": "source_menu_text",
+                "recommendationSemantics": "",
+                "provider": "official_web",
+                "sourceUrl": "https://kiraboshi.wixsite.com/kiraboshigakuin/menu",
+                "checkedAt": "2026-09-14",
+                "sourceScope": "branch",
+                "evidenceText": "FOOD：オムライス",
+                "confidence": "high",
+                "notes": ""
+              }
+            },
             {
               "proposalPath": "data/agent_reviews/DISH-R-OFFICIAL/S4.json",
               "marker": "DISH-R-OFFICIAL",
@@ -44816,6 +47245,43 @@
               "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S7.json",
               "marker": "DISH-R-RETAINED",
               "shard": "S7",
+              "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [
+                  "おでん やきとり 伊勢路 水道橋店"
+                ],
+                "evidence": [
+                  {
+                    "provider": "Tabelog",
+                    "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13260927/",
+                    "checkedAt": "2026-09-05",
+                    "evidenceType": "exact_place_id_retained_menu_source",
+                    "note": "Repository-retained source row is keyed to this frozen Google Place ID; source fields: address, budget, cuisine, dishes, name. Source-native name: おでん やきとり 伊勢路 水道橋店. Retained provenance does not expose an independent branch phone, so phone was not asserted.",
+                    "sourceNativeRestaurantName": "おでん やきとり 伊勢路 水道橋店"
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "おでん",
+                "nameZhCandidate": null,
+                "evidenceClass": "retained_source_menu_item",
+                "recommendationSemantics": "",
+                "provider": "Tabelog",
+                "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13260927/",
+                "checkedAt": "2026-09-05",
+                "sourceScope": "branch",
+                "evidenceText": "おでん",
+                "confidence": "high",
+                "notes": "Concrete source-native retained menu field; no recommendation semantics were assumed."
+              }
+            },
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S7.json",
+              "marker": "DISH-R-RETAINED",
+              "shard": "S7",
               "sourceQueueCommit": "97f07e274e07854952da45fe264ab43ddea7d986",
               "identity": {
                 "state": "verified",
@@ -44871,6 +47337,43 @@
           "evidenceRule": "central-reviewed:F:exact:焼き?鳥|やきとり|yakitori",
           "evidenceSnippet": "やきとり",
           "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S7.json",
+              "marker": "DISH-R-RETAINED",
+              "shard": "S7",
+              "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [
+                  "おでん やきとり 伊勢路 水道橋店"
+                ],
+                "evidence": [
+                  {
+                    "provider": "Tabelog",
+                    "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13260927/",
+                    "checkedAt": "2026-09-05",
+                    "evidenceType": "exact_place_id_retained_menu_source",
+                    "note": "Repository-retained source row is keyed to this frozen Google Place ID; source fields: address, budget, cuisine, dishes, name. Source-native name: おでん やきとり 伊勢路 水道橋店. Retained provenance does not expose an independent branch phone, so phone was not asserted.",
+                    "sourceNativeRestaurantName": "おでん やきとり 伊勢路 水道橋店"
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "やきとり",
+                "nameZhCandidate": null,
+                "evidenceClass": "retained_source_menu_item",
+                "recommendationSemantics": "",
+                "provider": "Tabelog",
+                "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13260927/",
+                "checkedAt": "2026-09-05",
+                "sourceScope": "branch",
+                "evidenceText": "やきとり",
+                "confidence": "high",
+                "notes": "Concrete source-native retained menu field; no recommendation semantics were assumed."
+              }
+            },
             {
               "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S7.json",
               "marker": "DISH-R-RETAINED",
@@ -47869,6 +50372,50 @@
           "evidenceRule": "central-reviewed:F:exact:串焼き",
           "evidenceSnippet": "串焼き",
           "reviewedSourceEvidence": [
+            {
+              "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S6.json",
+              "marker": "DISH-R-RETAINED",
+              "shard": "S6",
+              "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+              "identity": {
+                "state": "verified",
+                "sourceAliases": [
+                  "串焼 庭 本格ハルビン"
+                ],
+                "evidence": [
+                  {
+                    "provider": "Tabelog",
+                    "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13201390/",
+                    "checkedAt": "2026-09-05",
+                    "evidenceType": "exact_place_id_retained_menu_source",
+                    "note": "Repository-retained source row is keyed to this frozen Google Place ID; source fields: address, budget, cuisine, dishes, hours, name. Source-native name: 串焼 庭 本格ハルビン. Retained provenance does not expose an independent branch phone, so phone was not asserted.",
+                    "sourceNativeRestaurantName": "串焼 庭 本格ハルビン"
+                  },
+                  {
+                    "provider": "Tabelog",
+                    "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13201390/",
+                    "checkedAt": "2026-09-05",
+                    "evidenceType": "exact_branch_identity_from_rows_proposal",
+                    "note": "Exact Place-ID Tabelog source fact names 串焼 庭 本格ハルビン and retains dishes:[串焼き]."
+                  }
+                ]
+              },
+              "dishProposal": {
+                "targetField": "featuredDishes",
+                "classification": "F",
+                "nameOriginal": "串焼き",
+                "nameZhCandidate": null,
+                "evidenceClass": "retained_source_menu_item",
+                "recommendationSemantics": "",
+                "provider": "Tabelog",
+                "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13201390/",
+                "checkedAt": "2026-09-05",
+                "sourceScope": "branch",
+                "evidenceText": "串焼き",
+                "confidence": "high",
+                "notes": "Concrete source-native retained menu field; no recommendation semantics were assumed."
+              }
+            },
             {
               "proposalPath": "data/agent_reviews/DISH-R-RETAINED/S6.json",
               "marker": "DISH-R-RETAINED",

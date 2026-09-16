@@ -1,19 +1,19 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "proposalOnly": false,
   "marker": "DISH-R-OFFICIAL",
   "shard": "S3",
-  "agentRunId": "FINAL-DISH-R-OFFICIAL:S3:20260915",
+  "agentRunId": "FINAL-V2-DISH-R-OFFICIAL:S3:20260915",
   "sourceQueue": "data/dish_batch_plan.json",
-  "sourceQueueCommit": "97f07e274e07854952da45fe264ab43ddea7d986",
-  "generatedAt": "2026-09-15T22:00:00+09:00",
+  "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+  "generatedAt": "2026-09-15T23:00:00+09:00",
   "reviewedAt": "2026-09-15",
-  "reviewedBy": "final-dish-integration central fail-closed review",
+  "reviewedBy": "final-dish-integration v2 incremental fail-closed review",
   "summary": {
     "assignedRows": 21,
     "reviewedRows": 21,
-    "acceptedEvidenceRows": 4,
-    "candidateRows": 12,
+    "acceptedEvidenceRows": 3,
+    "candidateRows": 13,
     "noEvidenceRows": 3,
     "blockedRows": 2,
     "skippedAlreadyCompleteRows": 0
@@ -45,14 +45,28 @@
           "sourceUrl": "https://slwboat.com/",
           "checkedAt": "2026-09-14",
           "result": "Exact shop page checked; menu is image-based and no concrete dish name with explicit recommendation semantics was exposed in accessible text."
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "https://slwboat.com/",
+          "checkedAt": "2026-09-14",
+          "result": "Official page and menu section checked; no concrete dish was paired with explicit recommendation/signature/popularity semantics."
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "https://slwboat.com/#menu",
+          "checkedAt": "2026-09-14",
+          "result": "Menu content is primarily image-based; no reproducible source-native strict R evidence was established."
         }
       ],
       "blocker": null,
       "notes": "No cuisine/name inference.",
       "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-OFFICIAL/S3-20260914T1822JST.json"
+        "data/agent_proposals/DISH-R-OFFICIAL/S3-20260914T1822JST.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S3.json",
+        "data/agent_proposals/DISH-R-OFFICIAL/S3.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
     },
     {
       "googlePlaceId": "ChIJ6QXNGBuMGGARoa9gDeTHnEs",
@@ -86,14 +100,28 @@
           "sourceUrl": "https://c-united.co.jp/veloce/",
           "checkedAt": "2026-09-14",
           "result": "Current brand menu exposes four items under 季節のオススメ."
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "https://c-united.co.jp/store/detail/000258/",
+          "checkedAt": "2026-09-14",
+          "result": "Exact branch verified."
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "https://c-united.co.jp/veloce/",
+          "checkedAt": "2026-09-14",
+          "result": "Current brand menu has explicit 季節のオススメ, but exact-branch applicability is not proven."
         }
       ],
       "blocker": null,
       "notes": "Held at C because strict branch availability is not established.",
       "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-OFFICIAL/S3-20260914T1822JST.json"
+        "data/agent_proposals/DISH-R-OFFICIAL/S3-20260914T1822JST.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S3.json",
+        "data/agent_proposals/DISH-R-OFFICIAL/S3.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
     },
     {
       "googlePlaceId": "ChIJge8QphmMGGARCt0jMR1hgao",
@@ -127,14 +155,881 @@
           "sourceUrl": "https://www.isct.ac.jp/ja/news/awfqldid9g2v",
           "checkedAt": "2026-09-14",
           "result": "Science Tokyo page confirms MD Bakery location and generic product categories, but no strict named recommendation."
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "https://www.isct.ac.jp/ja/news/awfqldid9g2v",
+          "checkedAt": "2026-09-14",
+          "result": "Exact venue and concrete food items found; no strict recommendation language."
         }
       ],
       "blocker": null,
       "notes": "No promotion to R from generic hamburger/bakery wording.",
       "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-OFFICIAL/S3-20260914T1822JST.json"
+        "data/agent_proposals/DISH-R-OFFICIAL/S3-20260914T1822JST.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S3.json",
+        "data/agent_proposals/DISH-R-OFFICIAL/S3.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJp52jo0OMGGAR6L7VsZ1y3MY",
+      "restaurantName": "ルノアール",
+      "status": "candidate",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "喫茶室ルノアール 飯田橋西口店"
+        ],
+        "evidence": [
+          {
+            "provider": "official",
+            "sourceUrl": "https://www.ginza-renoir.co.jp/shopsearch/shops/tokyo/chiyoda-ku/iidabashi-nishiguchi.html",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Exact official branch page: 飯田橋西口店, 富士見2-2-6, 03-5226-6345."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        {
+          "provider": "official",
+          "sourceUrl": "https://www.ginza-renoir.co.jp/myspace/booking/shops/view/29",
+          "checkedAt": "2026-09-14",
+          "result": "Retained reviewed official booking URL checked."
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "https://www.ginza-renoir.co.jp/shopsearch/shops/tokyo/chiyoda-ku/iidabashi-nishiguchi.html",
+          "checkedAt": "2026-09-14",
+          "result": "Current exact branch page checked."
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "https://www.ginza-renoir.co.jp/mybooth/MB077.html",
+          "checkedAt": "2026-09-14",
+          "result": "Exact branch page exposes ordinary drink names only."
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "https://www.ginza-renoir.co.jp/myspace/booking/shops/view/29",
+          "checkedAt": "2026-09-14",
+          "result": "Exact branch identity verified; no strict dish recommendation evidence on branch page."
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "https://www.ginza-renoir.co.jp/renoir/menu/",
+          "checkedAt": "2026-09-14",
+          "result": "Brand menu checked; menu varies by store and no safely branch-bound strict recommendation was established."
+        }
+      ],
+      "blocker": null,
+      "notes": "No chain-level historical recommendation was reused.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S3-20260914T1822JST.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S3.json",
+        "data/agent_proposals/DISH-R-OFFICIAL/S3.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJPZPNgpiNGGARgF1jBcT9ocQ",
+      "restaurantName": "Melty Charm",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "Melty Charm"
+        ],
+        "evidence": [
+          {
+            "provider": "official",
+            "sourceUrl": "https://dotsweet.jp/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Retained official site identifies Melty Charm."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        {
+          "provider": "official",
+          "sourceUrl": "https://dotsweet.jp/",
+          "checkedAt": "2026-09-14",
+          "result": "Official page checked; no usable concrete dish plus strict recommendation text was exposed in accessible text."
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "https://dotsweet.jp/",
+          "checkedAt": "2026-09-14",
+          "result": "Official site accessible but no concrete dish with strict recommendation semantics found."
+        }
+      ],
+      "blocker": null,
+      "notes": "Did not infer items from imagery.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S3-20260914T1822JST.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S3.json",
+        "data/agent_proposals/DISH-R-OFFICIAL/S3.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJXx3AlhqMGGARpPWLfvZyAoA",
+      "restaurantName": "飛騨居酒屋 蔵助",
+      "status": "candidate",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "飛騨居酒屋 蔵助"
+        ],
+        "evidence": [
+          {
+            "provider": "official",
+            "sourceUrl": "https://www.kurasuke.jp/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Official page gives 神田駿河台3-5-15 / 03-3296-3551."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        {
+          "provider": "official",
+          "sourceUrl": "https://www.kurasuke.jp/",
+          "checkedAt": "2026-09-14",
+          "result": "Official branch homepage checked."
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "https://www.kurasuke.jp/lunch.html",
+          "checkedAt": "2026-09-14",
+          "result": "Official lunch page checked; accessible text did not expose concrete named dishes."
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "https://www.kurasuke.jp/drink.html",
+          "checkedAt": "2026-09-14",
+          "result": "Official drink page checked; drink claims were not used as food-dish recommendations."
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "https://www.kurasuke.jp/",
+          "checkedAt": "2026-09-14",
+          "result": "Retained legacy official URL was not usable."
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "https://hida-kurasuke.com/",
+          "checkedAt": "2026-09-14",
+          "result": "Current official identity verified."
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "https://hida-kurasuke.com/menu/",
+          "checkedAt": "2026-09-14",
+          "result": "Multiple item-level popularity/recommendation statements found."
+        }
+      ],
+      "blocker": null,
+      "notes": "No third-party review wording was used.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S3-20260914T1822JST.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S3.json",
+        "data/agent_proposals/DISH-R-OFFICIAL/S3.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJEQJq8xCMGGAR2BT_MqkTt-A",
+      "restaurantName": "カリー＆ワイン ビストロべっぴん舎 お茶の水店",
+      "status": "candidate",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "ビストロべっぴん舎 お茶の水本店"
+        ],
+        "evidence": [
+          {
+            "provider": "official",
+            "sourceUrl": "https://www.beppinsya.com/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Official page identifies お茶の水本店 at 神田小川町3-10-1."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        {
+          "provider": "official",
+          "sourceUrl": "https://www.beppinsya.com/",
+          "checkedAt": "2026-09-14",
+          "result": "Exact branch official page checked; strict R evidence found."
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "https://www.beppinsya.com/",
+          "checkedAt": "2026-09-14",
+          "result": "Exact branch and specialty concept verified."
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "https://www.beppinsya.com/%E3%83%A1%E3%83%8B%E3%83%A5%E3%83%BC/",
+          "checkedAt": "2026-09-14",
+          "result": "Current concrete variants verified, but no item-level recommendation semantics found."
+        }
+      ],
+      "blocker": null,
+      "notes": "Central semantic pass retained a non-accepted terminal outcome.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S3-20260914T1822JST.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S3.json",
+        "data/agent_proposals/DISH-R-OFFICIAL/S3.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJMcHsGRGMGGAR6N5SJOHGdls",
+      "restaurantName": "神田伯剌西爾",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "神田伯剌西爾",
+          "神田ぶらじる"
+        ],
+        "evidence": [
+          {
+            "provider": "official",
+            "sourceUrl": "https://k-brazil.jp/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Official site identifies the 神保町 shop."
+          },
+          {
+            "provider": "official",
+            "sourceUrl": "https://k-brazil.jp/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Official site is the same 神保町 cafe."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "recommendedDishes",
+          "classification": "R",
+          "nameOriginal": "神田ぶれんど",
+          "nameZhCandidate": null,
+          "evidenceClass": "provider_promotional_dish_text",
+          "recommendationSemantics": "自信の一品",
+          "provider": "official_web",
+          "sourceUrl": "https://k-brazil.jp/%E5%BA%97%E5%86%85%E3%83%A1%E3%83%8B%E3%83%A5%E3%83%BC/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "神田ぶれんど・・・濃く苦く甘い 自信の一品",
+          "confidence": "high",
+          "notes": "Explicit source endorsement attached to the concrete drink."
+        }
+      ],
+      "attemptedSources": [
+        {
+          "provider": "official",
+          "sourceUrl": "https://k-brazil.jp/",
+          "checkedAt": "2026-09-14",
+          "result": "Official identity page checked."
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "https://k-brazil.jp/%E5%BA%97%E5%86%85%E3%83%A1%E3%83%8B%E3%83%A5%E3%83%BC/",
+          "checkedAt": "2026-09-14",
+          "result": "Official menu checked; strict R evidence found."
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "https://k-brazil.jp/",
+          "checkedAt": "2026-09-14",
+          "result": "Restaurant identity verified."
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "https://k-brazil.jp/%E5%BA%97%E5%86%85%E3%83%A1%E3%83%8B%E3%83%A5%E3%83%BC/",
+          "checkedAt": "2026-09-14",
+          "result": "Strict item-level house recommendation found."
+        }
+      ],
+      "blocker": null,
+      "notes": "",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S3-20260914T1822JST.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S3.json",
+        "data/agent_proposals/DISH-R-OFFICIAL/S3.json"
+      ],
+      "reviewReasoning": "Final v2 consensus: all unrepresented independent reviewed inputs accepted; safe evidence unioned fail-closed."
+    },
+    {
+      "googlePlaceId": "ChIJTy1GTG-NGGAR4WUtZrMr1mE",
+      "restaurantName": "ゼッテリア",
+      "status": "candidate",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "ゼッテリア お茶の水駅前店"
+        ],
+        "evidence": [
+          {
+            "provider": "official",
+            "sourceUrl": "https://www.zetteria.jp/shop/shop1022.html",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Official branch page identifies お茶の水駅前店."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        {
+          "provider": "official",
+          "sourceUrl": "https://www.zetteria.jp/shop/shop1022.html",
+          "checkedAt": "2026-09-14",
+          "result": "Exact branch identity verified."
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "https://www.zetteria.jp/menu/burger020028.html",
+          "checkedAt": "2026-09-14",
+          "result": "Official page explicitly calls 絶品バーガー the brand's 看板商品."
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "https://www.zetteria.jp/shop/shop1022.html",
+          "checkedAt": "2026-09-14",
+          "result": "Exact branch verified."
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "https://www.zetteria.jp/menu/burger020028.html",
+          "checkedAt": "2026-09-14",
+          "result": "Official brand source explicitly calls 絶品バーガー the flagship product; branch applicability unresolved."
+        }
+      ],
+      "blocker": null,
+      "notes": "Central semantic pass retained a non-accepted terminal outcome.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S3-20260914T1822JST.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S3.json",
+        "data/agent_proposals/DISH-R-OFFICIAL/S3.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJ_88bxkGMGGARU7PM3wGBTK4",
+      "restaurantName": "かわな",
+      "status": "candidate",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "かわな",
+          "穴子屋"
+        ],
+        "evidence": [
+          {
+            "provider": "official",
+            "sourceUrl": "https://www.kawana4.com/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Official seasonal-site family identifies かわな; current 穴子屋 page is for the same restaurant."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        {
+          "provider": "official",
+          "sourceUrl": "https://www.kawana4.com/",
+          "checkedAt": "2026-09-14",
+          "result": "Exact restaurant/seasonal concept identity checked."
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "https://www.kawana4.com/cgi-bin/kawana4/siteup.cgi?category=1&page=1",
+          "checkedAt": "2026-09-14",
+          "result": "Current 穴子屋 menu checked; strict R evidence found for 穴子トースト."
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "https://www.kawana4.com/",
+          "checkedAt": "2026-09-14",
+          "result": "Exact restaurant and current seasonal concept verified."
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "https://www.kawana4.com/cgi-bin/kawana4/siteup.cgi?category=1&page=1",
+          "checkedAt": "2026-09-14",
+          "result": "Strict signature item found."
+        }
+      ],
+      "blocker": null,
+      "notes": "Generic 当日お勧め一品 wording was not used because it names no dish.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S3-20260914T1822JST.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S3.json",
+        "data/agent_proposals/DISH-R-OFFICIAL/S3.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJAQC7-haMGGARgemAl85yVGM",
+      "restaurantName": "ony's bar",
+      "status": "blocked",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "オニーズバー",
+          "Onys Bar"
+        ],
+        "evidence": [
+          {
+            "provider": "Overture Maps",
+            "sourceUrl": "http://onys.jp/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "retained_official_contact_url",
+            "note": "Retained reviewed source URL is bound with phone 03-3518-9156 for this Place ID."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        {
+          "provider": "Overture Maps / official URL",
+          "sourceUrl": "http://onys.jp/",
+          "checkedAt": "2026-09-14",
+          "result": "Retained official URL could not be accessed/recovered as a usable current restaurant page; no bypass attempted."
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "http://onys.jp/",
+          "checkedAt": "2026-09-14",
+          "result": "Source inaccessible for reproducible dish inspection."
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "https://onys.jp/",
+          "checkedAt": "2026-09-14",
+          "result": "Source inaccessible; no bypass attempted."
+        }
+      ],
+      "blocker": {
+        "type": "source_inaccessible",
+        "sourceUrl": "http://onys.jp/",
+        "note": "No safe current official page content available for strict dish evidence."
+      },
+      "notes": "Third-party menu/reviews were not substituted.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S3-20260914T1822JST.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S3.json",
+        "data/agent_proposals/DISH-R-OFFICIAL/S3.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJHSuxoNqNGGARSz9EYrZT3Ss",
+      "restaurantName": "レストラン ケイダンレン",
+      "status": "candidate",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "レストラン ケイダンレン"
+        ],
+        "evidence": [
+          {
+            "provider": "official",
+            "sourceUrl": "https://www.keidanren-kaikan.jp/syokuji.html",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Official Keidanren Kaikan dining page names レストラン ケイダンレン (3階), 03-6741-0243."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        {
+          "provider": "official",
+          "sourceUrl": "https://www.keidanren-kaikan.jp/syokuji.html",
+          "checkedAt": "2026-09-14",
+          "result": "Exact restaurant menu page checked; strict R evidence found."
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "https://www.keidanren-kaikan.jp/syokuji.html#restaurant",
+          "checkedAt": "2026-09-14",
+          "result": "Exact restaurant section and strict specialty dish found."
+        }
+      ],
+      "blocker": null,
+      "notes": "Other sample/weekly dishes were not promoted to R.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S3-20260914T1822JST.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S3.json",
+        "data/agent_proposals/DISH-R-OFFICIAL/S3.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJVbznbAWMGGARJOxTzfe2hSA",
+      "restaurantName": "Tantanmen Lashowhan",
+      "status": "candidate",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "辣椒漢 神田本店",
+          "Lashowhan Kanda Main Store"
+        ],
+        "evidence": [
+          {
+            "provider": "Overture Maps",
+            "sourceUrl": "http://www.tantanmen.shop",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "retained_official_contact_url",
+            "note": "Retained reviewed source URL is bound with phone 070-2181-0168 for this Place ID."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        {
+          "provider": "Overture Maps / official URL",
+          "sourceUrl": "http://www.tantanmen.shop",
+          "checkedAt": "2026-09-14",
+          "result": "Retained official site was not usable as a current accessible source."
+        },
+        {
+          "provider": "official owner blog",
+          "sourceUrl": "https://lashowhan.exblog.jp/",
+          "checkedAt": "2026-09-14",
+          "result": "Historical owner-site material indicates the Kanda main store closed; historical menu was not reused as current evidence."
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "http://www.tantanmen.shop",
+          "checkedAt": "2026-09-14",
+          "result": "Retained legacy domain was not usable."
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "https://tantanmen.online/html/company.html",
+          "checkedAt": "2026-09-14",
+          "result": "Exact operator/神田本店 identity established."
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "https://tantanmen.online/",
+          "checkedAt": "2026-09-14",
+          "result": "Official homepage RECOMMEND section directly names 正宗担々麺."
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "https://tantanmen.online/shopdetail/000000000001/",
+          "checkedAt": "2026-09-14",
+          "result": "Concrete product/dish identity confirmed."
+        }
+      ],
+      "blocker": {
+        "type": "source_inaccessible_or_closed",
+        "sourceUrl": "http://www.tantanmen.shop",
+        "note": "Current official source is unusable and branch appears closed; no historical dish promotion."
+      },
+      "notes": "Catalog identity was left untouched.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S3-20260914T1822JST.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S3.json",
+        "data/agent_proposals/DISH-R-OFFICIAL/S3.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJVVVVFSKMGGAR4B8aDnlRBdM",
+      "restaurantName": "東京洋食バル・TOMOSHIBI",
+      "status": "blocked",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "東京洋食バル・TOMOSHIBI"
+        ],
+        "evidence": [
+          {
+            "provider": "Overture Maps",
+            "sourceUrl": "http://www.tomoshibi.biz",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "retained_official_contact_url",
+            "note": "Retained source URL is bound to this Place ID with phone 03-3836-1257."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        {
+          "provider": "Overture Maps / official URL",
+          "sourceUrl": "http://www.tomoshibi.biz",
+          "checkedAt": "2026-09-14",
+          "result": "Retained restaurant domain was checked; current domain content is unrelated to the restaurant."
+        },
+        {
+          "provider": "current domain",
+          "sourceUrl": "https://tomoshibi.biz/",
+          "checkedAt": "2026-09-14",
+          "result": "Domain is now used by an unrelated AI/sales business, so it is not valid dish evidence."
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "http://www.tomoshibi.biz",
+          "checkedAt": "2026-09-14",
+          "result": "Current domain identity does not match the restaurant."
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "https://tomoshibi.biz/",
+          "checkedAt": "2026-09-14",
+          "result": "Domain is currently used by unrelated 株式会社燈 business content; treated as stale/reused source, not restaurant evidence."
+        }
+      ],
+      "blocker": {
+        "type": "source_domain_repurposed",
+        "sourceUrl": "https://tomoshibi.biz/",
+        "note": "Current domain no longer establishes restaurant identity."
+      },
+      "notes": "No dish inference from stale historical domain association.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S3-20260914T1822JST.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S3.json",
+        "data/agent_proposals/DISH-R-OFFICIAL/S3.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJ5aGwSBuMGGARULgI61LmWyI",
+      "restaurantName": "京おばんざい はんなり",
+      "status": "candidate",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "京おばんざい はんなり"
+        ],
+        "evidence": [
+          {
+            "provider": "official",
+            "sourceUrl": "https://www.han-nari.net/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Official page gives 神田淡路町1-9 / 03-3254-6085."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        {
+          "provider": "official",
+          "sourceUrl": "https://www.han-nari.net/",
+          "checkedAt": "2026-09-14",
+          "result": "Exact branch official page checked; accessible text describes seasonal おばんざい but does not pair a concrete food name with strict recommendation semantics."
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "https://www.han-nari.net/",
+          "checkedAt": "2026-09-14",
+          "result": "Exact branch and concrete food text found; no explicit recommendation/signature/popularity semantics."
+        }
+      ],
+      "blocker": null,
+      "notes": "Image/PDF menus were not used without branch-level textual recommendation evidence.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S3-20260914T1822JST.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S3.json",
+        "data/agent_proposals/DISH-R-OFFICIAL/S3.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJ67ggdxeMGGAR5uSOMBBDfHU",
+      "restaurantName": "スターバックス",
+      "status": "candidate",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "スターバックス コーヒー お茶の水村田ビル店"
+        ],
+        "evidence": [
+          {
+            "provider": "official",
+            "sourceUrl": "https://store.starbucks.co.jp/detail-2/?utm_source=GMB&utm_medium=organic&utm_campaign=store&utm_content=2",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Retained reviewed official URL for お茶の水村田ビル店."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        {
+          "provider": "official",
+          "sourceUrl": "https://store.starbucks.co.jp/detail-2/?utm_source=GMB&utm_medium=organic&utm_campaign=store&utm_content=2",
+          "checkedAt": "2026-09-14",
+          "result": "Exact Starbucks branch source verified."
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "https://stories.starbucks.co.jp/press/2026/pr-2026-0828/",
+          "checkedAt": "2026-09-14",
+          "result": "Current official product page contains explicit recommendation semantics; held at C for branch availability."
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "https://store.starbucks.co.jp/detail-2/",
+          "checkedAt": "2026-09-14",
+          "result": "Exact branch verified."
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "https://stories.starbucks.co.jp/press/2026/pr-2026-0826/",
+          "checkedAt": "2026-09-14",
+          "result": "Current nationwide campaign checked; explicit branch inclusion not established."
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "https://menu.starbucks.co.jp/4524785644830",
+          "checkedAt": "2026-09-14",
+          "result": "Concrete product confirmed; product page currently reports temporary stock-out."
+        }
+      ],
+      "blocker": null,
+      "notes": "No assumption that a brand product is stocked at every branch.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S3-20260914T1822JST.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S3.json",
+        "data/agent_proposals/DISH-R-OFFICIAL/S3.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJeyhzHCqNGGAR0xIHxa7pEM0",
+      "restaurantName": "神保町 Stylish Bar o",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "神保町 Stylish Bar o",
+          "神保町オー"
+        ],
+        "evidence": [
+          {
+            "provider": "official",
+            "sourceUrl": "https://r.goope.jp/jinbocho/about",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Official site gives 神田神保町1-19-1 KTビル3F / 03-5244-5869."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        {
+          "provider": "official",
+          "sourceUrl": "https://r.goope.jp/jinbocho/",
+          "checkedAt": "2026-09-14",
+          "result": "Official branch homepage checked."
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "https://r.goope.jp/jinbocho/menu",
+          "checkedAt": "2026-09-14",
+          "result": "Menu page exposes plans and generic beverages, not a concrete food dish with strict recommendation semantics."
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "https://r.goope.jp/jinbocho/about",
+          "checkedAt": "2026-09-14",
+          "result": "Exact branch identity verified; no concrete recommended dish on page."
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "https://r.goope.jp/jinbocho/menu",
+          "checkedAt": "2026-09-14",
+          "result": "Menu endpoint could not be reproducibly inspected from available access; no bypass attempted."
+        }
+      ],
+      "blocker": null,
+      "notes": "Plan names were not treated as dishes.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S3-20260914T1822JST.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S3.json",
+        "data/agent_proposals/DISH-R-OFFICIAL/S3.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJf9IQHWuMGGAR3tH7Sw31YX0",
+      "restaurantName": "スターバックス",
+      "status": "candidate",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "スターバックス コーヒー 北の丸スクエア店"
+        ],
+        "evidence": [
+          {
+            "provider": "official",
+            "sourceUrl": "https://store.starbucks.co.jp/detail-657/?utm_source=GMB&utm_medium=organic&utm_campaign=store&utm_content=657",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Retained reviewed official URL for 北の丸スクエア店."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        {
+          "provider": "official",
+          "sourceUrl": "https://store.starbucks.co.jp/detail-657/?utm_source=GMB&utm_medium=organic&utm_campaign=store&utm_content=657",
+          "checkedAt": "2026-09-14",
+          "result": "Exact Starbucks branch source verified."
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "https://stories.starbucks.co.jp/press/2026/pr-2026-0828/",
+          "checkedAt": "2026-09-14",
+          "result": "Current official product page contains explicit recommendation semantics; held at C for branch availability."
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "https://store.starbucks.co.jp/detail-657/",
+          "checkedAt": "2026-09-14",
+          "result": "Exact branch verified."
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "https://stories.starbucks.co.jp/press/2026/pr-2026-0826/",
+          "checkedAt": "2026-09-14",
+          "result": "Current nationwide campaign checked; exact branch inclusion not established."
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "https://menu.starbucks.co.jp/4524785644830",
+          "checkedAt": "2026-09-14",
+          "result": "Concrete product confirmed; temporary stock-out noted."
+        }
+      ],
+      "blocker": null,
+      "notes": "No assumption that a brand product is stocked at every branch.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S3-20260914T1822JST.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S3.json",
+        "data/agent_proposals/DISH-R-OFFICIAL/S3.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
     },
     {
       "googlePlaceId": "ChIJhae4jz-MGGARVDKWzSuUHUk",
@@ -152,6 +1047,13 @@
             "checkedAt": "2026-09-14",
             "evidenceType": "branch_page",
             "note": "Official page identifies 中華そば勝本 at 神田三崎町2-15-5."
+          },
+          {
+            "provider": "official",
+            "sourceUrl": "https://katsumoto-japan.com/ja/chukasoba_katsumoto.html",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Official page identifies 中華そば勝本 at 神田三崎町2-15-5 and provides the branch menu."
           }
         ]
       },
@@ -200,6 +1102,51 @@
           "evidenceText": "中華そば",
           "confidence": "high",
           "notes": "Concrete official menu item; no item-level recommendation semantics."
+        },
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "特製中華そば",
+          "nameZhCandidate": null,
+          "evidenceClass": "official_menu_item",
+          "recommendationSemantics": "",
+          "provider": "official_web",
+          "sourceUrl": "https://katsumoto-japan.com/ja/chukasoba_katsumoto.html",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "お品書き／特製中華そば",
+          "confidence": "high",
+          "notes": "Concrete menu item; F only."
+        },
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "味玉中華そば",
+          "nameZhCandidate": null,
+          "evidenceClass": "official_menu_item",
+          "recommendationSemantics": "",
+          "provider": "official_web",
+          "sourceUrl": "https://katsumoto-japan.com/ja/chukasoba_katsumoto.html",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "お品書き／味玉中華そば",
+          "confidence": "high",
+          "notes": "Concrete menu item; F only."
+        },
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "中華そば",
+          "nameZhCandidate": null,
+          "evidenceClass": "official_menu_item",
+          "recommendationSemantics": "",
+          "provider": "official_web",
+          "sourceUrl": "https://katsumoto-japan.com/ja/chukasoba_katsumoto.html",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "お品書き／中華そば",
+          "confidence": "high",
+          "notes": "The page calls the soup 名物, but that semantic attaches to a soup component rather than a specific orderable dish; no R inflation."
         }
       ],
       "attemptedSources": [
@@ -208,660 +1155,22 @@
           "sourceUrl": "https://katsumoto-japan.com/ja/chukasoba_katsumoto.html",
           "checkedAt": "2026-09-14",
           "result": "Exact branch/menu page checked. The page calls the soup 名物, but not any concrete dish by that semantic."
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "https://katsumoto-japan.com/ja/chukasoba_katsumoto.html",
+          "checkedAt": "2026-09-14",
+          "result": "Exact branch menu verified; 名物 wording applies to the soup component, so concrete dishes remain F."
         }
       ],
       "blocker": null,
       "notes": "名物スープ is a component-level claim; it was not used to promote a dish to R.",
       "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-OFFICIAL/S3-20260914T1822JST.json"
+        "data/agent_proposals/DISH-R-OFFICIAL/S3-20260914T1822JST.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S3.json",
+        "data/agent_proposals/DISH-R-OFFICIAL/S3.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
-    },
-    {
-      "googlePlaceId": "ChIJp52jo0OMGGAR6L7VsZ1y3MY",
-      "restaurantName": "ルノアール",
-      "status": "candidate",
-      "identity": {
-        "state": "verified",
-        "sourceAliases": [
-          "喫茶室ルノアール 飯田橋西口店"
-        ],
-        "evidence": [
-          {
-            "provider": "official",
-            "sourceUrl": "https://www.ginza-renoir.co.jp/shopsearch/shops/tokyo/chiyoda-ku/iidabashi-nishiguchi.html",
-            "checkedAt": "2026-09-14",
-            "evidenceType": "branch_page",
-            "note": "Exact official branch page: 飯田橋西口店, 富士見2-2-6, 03-5226-6345."
-          }
-        ]
-      },
-      "dishProposals": [],
-      "attemptedSources": [
-        {
-          "provider": "official",
-          "sourceUrl": "https://www.ginza-renoir.co.jp/myspace/booking/shops/view/29",
-          "checkedAt": "2026-09-14",
-          "result": "Retained reviewed official booking URL checked."
-        },
-        {
-          "provider": "official",
-          "sourceUrl": "https://www.ginza-renoir.co.jp/shopsearch/shops/tokyo/chiyoda-ku/iidabashi-nishiguchi.html",
-          "checkedAt": "2026-09-14",
-          "result": "Current exact branch page checked."
-        },
-        {
-          "provider": "official",
-          "sourceUrl": "https://www.ginza-renoir.co.jp/mybooth/MB077.html",
-          "checkedAt": "2026-09-14",
-          "result": "Exact branch page exposes ordinary drink names only."
-        }
-      ],
-      "blocker": null,
-      "notes": "No chain-level historical recommendation was reused.",
-      "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-OFFICIAL/S3-20260914T1822JST.json"
-      ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
-    },
-    {
-      "googlePlaceId": "ChIJPZPNgpiNGGARgF1jBcT9ocQ",
-      "restaurantName": "Melty Charm",
-      "status": "no_evidence",
-      "identity": {
-        "state": "verified",
-        "sourceAliases": [
-          "Melty Charm"
-        ],
-        "evidence": [
-          {
-            "provider": "official",
-            "sourceUrl": "https://dotsweet.jp/",
-            "checkedAt": "2026-09-14",
-            "evidenceType": "branch_page",
-            "note": "Retained official site identifies Melty Charm."
-          }
-        ]
-      },
-      "dishProposals": [],
-      "attemptedSources": [
-        {
-          "provider": "official",
-          "sourceUrl": "https://dotsweet.jp/",
-          "checkedAt": "2026-09-14",
-          "result": "Official page checked; no usable concrete dish plus strict recommendation text was exposed in accessible text."
-        }
-      ],
-      "blocker": null,
-      "notes": "Did not infer items from imagery.",
-      "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-OFFICIAL/S3-20260914T1822JST.json"
-      ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
-    },
-    {
-      "googlePlaceId": "ChIJXx3AlhqMGGARpPWLfvZyAoA",
-      "restaurantName": "飛騨居酒屋 蔵助",
-      "status": "candidate",
-      "identity": {
-        "state": "verified",
-        "sourceAliases": [
-          "飛騨居酒屋 蔵助"
-        ],
-        "evidence": [
-          {
-            "provider": "official",
-            "sourceUrl": "https://www.kurasuke.jp/",
-            "checkedAt": "2026-09-14",
-            "evidenceType": "branch_page",
-            "note": "Official page gives 神田駿河台3-5-15 / 03-3296-3551."
-          }
-        ]
-      },
-      "dishProposals": [],
-      "attemptedSources": [
-        {
-          "provider": "official",
-          "sourceUrl": "https://www.kurasuke.jp/",
-          "checkedAt": "2026-09-14",
-          "result": "Official branch homepage checked."
-        },
-        {
-          "provider": "official",
-          "sourceUrl": "https://www.kurasuke.jp/lunch.html",
-          "checkedAt": "2026-09-14",
-          "result": "Official lunch page checked; accessible text did not expose concrete named dishes."
-        },
-        {
-          "provider": "official",
-          "sourceUrl": "https://www.kurasuke.jp/drink.html",
-          "checkedAt": "2026-09-14",
-          "result": "Official drink page checked; drink claims were not used as food-dish recommendations."
-        }
-      ],
-      "blocker": null,
-      "notes": "No third-party review wording was used.",
-      "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-OFFICIAL/S3-20260914T1822JST.json"
-      ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
-    },
-    {
-      "googlePlaceId": "ChIJEQJq8xCMGGAR2BT_MqkTt-A",
-      "restaurantName": "カリー＆ワイン ビストロべっぴん舎 お茶の水店",
-      "status": "candidate",
-      "identity": {
-        "state": "verified",
-        "sourceAliases": [
-          "ビストロべっぴん舎 お茶の水本店"
-        ],
-        "evidence": [
-          {
-            "provider": "official",
-            "sourceUrl": "https://www.beppinsya.com/",
-            "checkedAt": "2026-09-14",
-            "evidenceType": "branch_page",
-            "note": "Official page identifies お茶の水本店 at 神田小川町3-10-1."
-          }
-        ]
-      },
-      "dishProposals": [],
-      "attemptedSources": [
-        {
-          "provider": "official",
-          "sourceUrl": "https://www.beppinsya.com/",
-          "checkedAt": "2026-09-14",
-          "result": "Exact branch official page checked; strict R evidence found."
-        }
-      ],
-      "blocker": null,
-      "notes": "Central semantic pass retained a non-accepted terminal outcome.",
-      "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-OFFICIAL/S3-20260914T1822JST.json"
-      ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
-    },
-    {
-      "googlePlaceId": "ChIJMcHsGRGMGGAR6N5SJOHGdls",
-      "restaurantName": "神田伯剌西爾",
-      "status": "accepted_evidence",
-      "identity": {
-        "state": "verified",
-        "sourceAliases": [
-          "神田伯剌西爾",
-          "神田ぶらじる"
-        ],
-        "evidence": [
-          {
-            "provider": "official",
-            "sourceUrl": "https://k-brazil.jp/",
-            "checkedAt": "2026-09-14",
-            "evidenceType": "branch_page",
-            "note": "Official site identifies the 神保町 shop."
-          }
-        ]
-      },
-      "dishProposals": [
-        {
-          "targetField": "recommendedDishes",
-          "classification": "R",
-          "nameOriginal": "神田ぶれんど",
-          "nameZhCandidate": null,
-          "evidenceClass": "provider_promotional_dish_text",
-          "recommendationSemantics": "自信の一品",
-          "provider": "official_web",
-          "sourceUrl": "https://k-brazil.jp/%E5%BA%97%E5%86%85%E3%83%A1%E3%83%8B%E3%83%A5%E3%83%BC/",
-          "checkedAt": "2026-09-14",
-          "sourceScope": "branch",
-          "evidenceText": "神田ぶれんど・・・濃く苦く甘い 自信の一品",
-          "confidence": "high",
-          "notes": "Explicit source endorsement attached to the concrete drink."
-        }
-      ],
-      "attemptedSources": [
-        {
-          "provider": "official",
-          "sourceUrl": "https://k-brazil.jp/",
-          "checkedAt": "2026-09-14",
-          "result": "Official identity page checked."
-        },
-        {
-          "provider": "official",
-          "sourceUrl": "https://k-brazil.jp/%E5%BA%97%E5%86%85%E3%83%A1%E3%83%8B%E3%83%A5%E3%83%BC/",
-          "checkedAt": "2026-09-14",
-          "result": "Official menu checked; strict R evidence found."
-        }
-      ],
-      "blocker": null,
-      "notes": "",
-      "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-OFFICIAL/S3-20260914T1822JST.json"
-      ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
-    },
-    {
-      "googlePlaceId": "ChIJTy1GTG-NGGAR4WUtZrMr1mE",
-      "restaurantName": "ゼッテリア",
-      "status": "candidate",
-      "identity": {
-        "state": "verified",
-        "sourceAliases": [
-          "ゼッテリア お茶の水駅前店"
-        ],
-        "evidence": [
-          {
-            "provider": "official",
-            "sourceUrl": "https://www.zetteria.jp/shop/shop1022.html",
-            "checkedAt": "2026-09-14",
-            "evidenceType": "branch_page",
-            "note": "Official branch page identifies お茶の水駅前店."
-          }
-        ]
-      },
-      "dishProposals": [],
-      "attemptedSources": [
-        {
-          "provider": "official",
-          "sourceUrl": "https://www.zetteria.jp/shop/shop1022.html",
-          "checkedAt": "2026-09-14",
-          "result": "Exact branch identity verified."
-        },
-        {
-          "provider": "official",
-          "sourceUrl": "https://www.zetteria.jp/menu/burger020028.html",
-          "checkedAt": "2026-09-14",
-          "result": "Official page explicitly calls 絶品バーガー the brand's 看板商品."
-        }
-      ],
-      "blocker": null,
-      "notes": "Central semantic pass retained a non-accepted terminal outcome.",
-      "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-OFFICIAL/S3-20260914T1822JST.json"
-      ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
-    },
-    {
-      "googlePlaceId": "ChIJ_88bxkGMGGARU7PM3wGBTK4",
-      "restaurantName": "かわな",
-      "status": "accepted_evidence",
-      "identity": {
-        "state": "verified",
-        "sourceAliases": [
-          "かわな",
-          "穴子屋"
-        ],
-        "evidence": [
-          {
-            "provider": "official",
-            "sourceUrl": "https://www.kawana4.com/",
-            "checkedAt": "2026-09-14",
-            "evidenceType": "branch_page",
-            "note": "Official seasonal-site family identifies かわな; current 穴子屋 page is for the same restaurant."
-          }
-        ]
-      },
-      "dishProposals": [
-        {
-          "targetField": "featuredDishes",
-          "classification": "F",
-          "nameOriginal": "穴子重 『特上』",
-          "nameZhCandidate": null,
-          "evidenceClass": "source_menu_text",
-          "recommendationSemantics": "",
-          "provider": "official_web",
-          "sourceUrl": "https://www.kawana4.com/cgi-bin/kawana4/siteup.cgi?category=1&page=1",
-          "checkedAt": "2026-09-14",
-          "sourceScope": "branch",
-          "evidenceText": "穴子重 『特上』",
-          "confidence": "high",
-          "notes": "Concrete official menu item; no recommendation semantics."
-        }
-      ],
-      "attemptedSources": [
-        {
-          "provider": "official",
-          "sourceUrl": "https://www.kawana4.com/",
-          "checkedAt": "2026-09-14",
-          "result": "Exact restaurant/seasonal concept identity checked."
-        },
-        {
-          "provider": "official",
-          "sourceUrl": "https://www.kawana4.com/cgi-bin/kawana4/siteup.cgi?category=1&page=1",
-          "checkedAt": "2026-09-14",
-          "result": "Current 穴子屋 menu checked; strict R evidence found for 穴子トースト."
-        }
-      ],
-      "blocker": null,
-      "notes": "Generic 当日お勧め一品 wording was not used because it names no dish.",
-      "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-OFFICIAL/S3-20260914T1822JST.json"
-      ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
-    },
-    {
-      "googlePlaceId": "ChIJAQC7-haMGGARgemAl85yVGM",
-      "restaurantName": "ony's bar",
-      "status": "blocked",
-      "identity": {
-        "state": "verified",
-        "sourceAliases": [
-          "オニーズバー",
-          "Onys Bar"
-        ],
-        "evidence": [
-          {
-            "provider": "Overture Maps",
-            "sourceUrl": "http://onys.jp/",
-            "checkedAt": "2026-09-14",
-            "evidenceType": "retained_official_contact_url",
-            "note": "Retained reviewed source URL is bound with phone 03-3518-9156 for this Place ID."
-          }
-        ]
-      },
-      "dishProposals": [],
-      "attemptedSources": [
-        {
-          "provider": "Overture Maps / official URL",
-          "sourceUrl": "http://onys.jp/",
-          "checkedAt": "2026-09-14",
-          "result": "Retained official URL could not be accessed/recovered as a usable current restaurant page; no bypass attempted."
-        }
-      ],
-      "blocker": {
-        "type": "source_inaccessible",
-        "sourceUrl": "http://onys.jp/",
-        "note": "No safe current official page content available for strict dish evidence."
-      },
-      "notes": "Third-party menu/reviews were not substituted.",
-      "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-OFFICIAL/S3-20260914T1822JST.json"
-      ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
-    },
-    {
-      "googlePlaceId": "ChIJHSuxoNqNGGARSz9EYrZT3Ss",
-      "restaurantName": "レストラン ケイダンレン",
-      "status": "candidate",
-      "identity": {
-        "state": "verified",
-        "sourceAliases": [
-          "レストラン ケイダンレン"
-        ],
-        "evidence": [
-          {
-            "provider": "official",
-            "sourceUrl": "https://www.keidanren-kaikan.jp/syokuji.html",
-            "checkedAt": "2026-09-14",
-            "evidenceType": "branch_page",
-            "note": "Official Keidanren Kaikan dining page names レストラン ケイダンレン (3階), 03-6741-0243."
-          }
-        ]
-      },
-      "dishProposals": [],
-      "attemptedSources": [
-        {
-          "provider": "official",
-          "sourceUrl": "https://www.keidanren-kaikan.jp/syokuji.html",
-          "checkedAt": "2026-09-14",
-          "result": "Exact restaurant menu page checked; strict R evidence found."
-        }
-      ],
-      "blocker": null,
-      "notes": "Other sample/weekly dishes were not promoted to R.",
-      "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-OFFICIAL/S3-20260914T1822JST.json"
-      ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
-    },
-    {
-      "googlePlaceId": "ChIJVbznbAWMGGARJOxTzfe2hSA",
-      "restaurantName": "Tantanmen Lashowhan",
-      "status": "candidate",
-      "identity": {
-        "state": "verified",
-        "sourceAliases": [
-          "辣椒漢 神田本店",
-          "Lashowhan Kanda Main Store"
-        ],
-        "evidence": [
-          {
-            "provider": "Overture Maps",
-            "sourceUrl": "http://www.tantanmen.shop",
-            "checkedAt": "2026-09-14",
-            "evidenceType": "retained_official_contact_url",
-            "note": "Retained reviewed source URL is bound with phone 070-2181-0168 for this Place ID."
-          }
-        ]
-      },
-      "dishProposals": [],
-      "attemptedSources": [
-        {
-          "provider": "Overture Maps / official URL",
-          "sourceUrl": "http://www.tantanmen.shop",
-          "checkedAt": "2026-09-14",
-          "result": "Retained official site was not usable as a current accessible source."
-        },
-        {
-          "provider": "official owner blog",
-          "sourceUrl": "https://lashowhan.exblog.jp/",
-          "checkedAt": "2026-09-14",
-          "result": "Historical owner-site material indicates the Kanda main store closed; historical menu was not reused as current evidence."
-        }
-      ],
-      "blocker": {
-        "type": "source_inaccessible_or_closed",
-        "sourceUrl": "http://www.tantanmen.shop",
-        "note": "Current official source is unusable and branch appears closed; no historical dish promotion."
-      },
-      "notes": "Catalog identity was left untouched.",
-      "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-OFFICIAL/S3-20260914T1822JST.json"
-      ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
-    },
-    {
-      "googlePlaceId": "ChIJVVVVFSKMGGAR4B8aDnlRBdM",
-      "restaurantName": "東京洋食バル・TOMOSHIBI",
-      "status": "blocked",
-      "identity": {
-        "state": "verified",
-        "sourceAliases": [
-          "東京洋食バル・TOMOSHIBI"
-        ],
-        "evidence": [
-          {
-            "provider": "Overture Maps",
-            "sourceUrl": "http://www.tomoshibi.biz",
-            "checkedAt": "2026-09-14",
-            "evidenceType": "retained_official_contact_url",
-            "note": "Retained source URL is bound to this Place ID with phone 03-3836-1257."
-          }
-        ]
-      },
-      "dishProposals": [],
-      "attemptedSources": [
-        {
-          "provider": "Overture Maps / official URL",
-          "sourceUrl": "http://www.tomoshibi.biz",
-          "checkedAt": "2026-09-14",
-          "result": "Retained restaurant domain was checked; current domain content is unrelated to the restaurant."
-        },
-        {
-          "provider": "current domain",
-          "sourceUrl": "https://tomoshibi.biz/",
-          "checkedAt": "2026-09-14",
-          "result": "Domain is now used by an unrelated AI/sales business, so it is not valid dish evidence."
-        }
-      ],
-      "blocker": {
-        "type": "source_domain_repurposed",
-        "sourceUrl": "https://tomoshibi.biz/",
-        "note": "Current domain no longer establishes restaurant identity."
-      },
-      "notes": "No dish inference from stale historical domain association.",
-      "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-OFFICIAL/S3-20260914T1822JST.json"
-      ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
-    },
-    {
-      "googlePlaceId": "ChIJ5aGwSBuMGGARULgI61LmWyI",
-      "restaurantName": "京おばんざい はんなり",
-      "status": "candidate",
-      "identity": {
-        "state": "verified",
-        "sourceAliases": [
-          "京おばんざい はんなり"
-        ],
-        "evidence": [
-          {
-            "provider": "official",
-            "sourceUrl": "https://www.han-nari.net/",
-            "checkedAt": "2026-09-14",
-            "evidenceType": "branch_page",
-            "note": "Official page gives 神田淡路町1-9 / 03-3254-6085."
-          }
-        ]
-      },
-      "dishProposals": [],
-      "attemptedSources": [
-        {
-          "provider": "official",
-          "sourceUrl": "https://www.han-nari.net/",
-          "checkedAt": "2026-09-14",
-          "result": "Exact branch official page checked; accessible text describes seasonal おばんざい but does not pair a concrete food name with strict recommendation semantics."
-        }
-      ],
-      "blocker": null,
-      "notes": "Image/PDF menus were not used without branch-level textual recommendation evidence.",
-      "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-OFFICIAL/S3-20260914T1822JST.json"
-      ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
-    },
-    {
-      "googlePlaceId": "ChIJ67ggdxeMGGAR5uSOMBBDfHU",
-      "restaurantName": "スターバックス",
-      "status": "candidate",
-      "identity": {
-        "state": "verified",
-        "sourceAliases": [
-          "スターバックス コーヒー お茶の水村田ビル店"
-        ],
-        "evidence": [
-          {
-            "provider": "official",
-            "sourceUrl": "https://store.starbucks.co.jp/detail-2/?utm_source=GMB&utm_medium=organic&utm_campaign=store&utm_content=2",
-            "checkedAt": "2026-09-14",
-            "evidenceType": "branch_page",
-            "note": "Retained reviewed official URL for お茶の水村田ビル店."
-          }
-        ]
-      },
-      "dishProposals": [],
-      "attemptedSources": [
-        {
-          "provider": "official",
-          "sourceUrl": "https://store.starbucks.co.jp/detail-2/?utm_source=GMB&utm_medium=organic&utm_campaign=store&utm_content=2",
-          "checkedAt": "2026-09-14",
-          "result": "Exact Starbucks branch source verified."
-        },
-        {
-          "provider": "official",
-          "sourceUrl": "https://stories.starbucks.co.jp/press/2026/pr-2026-0828/",
-          "checkedAt": "2026-09-14",
-          "result": "Current official product page contains explicit recommendation semantics; held at C for branch availability."
-        }
-      ],
-      "blocker": null,
-      "notes": "No assumption that a brand product is stocked at every branch.",
-      "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-OFFICIAL/S3-20260914T1822JST.json"
-      ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
-    },
-    {
-      "googlePlaceId": "ChIJeyhzHCqNGGAR0xIHxa7pEM0",
-      "restaurantName": "神保町 Stylish Bar o",
-      "status": "no_evidence",
-      "identity": {
-        "state": "verified",
-        "sourceAliases": [
-          "神保町 Stylish Bar o",
-          "神保町オー"
-        ],
-        "evidence": [
-          {
-            "provider": "official",
-            "sourceUrl": "https://r.goope.jp/jinbocho/about",
-            "checkedAt": "2026-09-14",
-            "evidenceType": "branch_page",
-            "note": "Official site gives 神田神保町1-19-1 KTビル3F / 03-5244-5869."
-          }
-        ]
-      },
-      "dishProposals": [],
-      "attemptedSources": [
-        {
-          "provider": "official",
-          "sourceUrl": "https://r.goope.jp/jinbocho/",
-          "checkedAt": "2026-09-14",
-          "result": "Official branch homepage checked."
-        },
-        {
-          "provider": "official",
-          "sourceUrl": "https://r.goope.jp/jinbocho/menu",
-          "checkedAt": "2026-09-14",
-          "result": "Menu page exposes plans and generic beverages, not a concrete food dish with strict recommendation semantics."
-        }
-      ],
-      "blocker": null,
-      "notes": "Plan names were not treated as dishes.",
-      "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-OFFICIAL/S3-20260914T1822JST.json"
-      ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
-    },
-    {
-      "googlePlaceId": "ChIJf9IQHWuMGGAR3tH7Sw31YX0",
-      "restaurantName": "スターバックス",
-      "status": "candidate",
-      "identity": {
-        "state": "verified",
-        "sourceAliases": [
-          "スターバックス コーヒー 北の丸スクエア店"
-        ],
-        "evidence": [
-          {
-            "provider": "official",
-            "sourceUrl": "https://store.starbucks.co.jp/detail-657/?utm_source=GMB&utm_medium=organic&utm_campaign=store&utm_content=657",
-            "checkedAt": "2026-09-14",
-            "evidenceType": "branch_page",
-            "note": "Retained reviewed official URL for 北の丸スクエア店."
-          }
-        ]
-      },
-      "dishProposals": [],
-      "attemptedSources": [
-        {
-          "provider": "official",
-          "sourceUrl": "https://store.starbucks.co.jp/detail-657/?utm_source=GMB&utm_medium=organic&utm_campaign=store&utm_content=657",
-          "checkedAt": "2026-09-14",
-          "result": "Exact Starbucks branch source verified."
-        },
-        {
-          "provider": "official",
-          "sourceUrl": "https://stories.starbucks.co.jp/press/2026/pr-2026-0828/",
-          "checkedAt": "2026-09-14",
-          "result": "Current official product page contains explicit recommendation semantics; held at C for branch availability."
-        }
-      ],
-      "blocker": null,
-      "notes": "No assumption that a brand product is stocked at every branch.",
-      "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-OFFICIAL/S3-20260914T1822JST.json"
-      ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus: all unrepresented independent reviewed inputs accepted; safe evidence unioned fail-closed."
     },
     {
       "googlePlaceId": "ChIJrQJoMmuMGGARJ8q86MIn6_I",
@@ -895,14 +1204,34 @@
           "sourceUrl": "https://stories.starbucks.co.jp/press/2026/pr-2026-0828/",
           "checkedAt": "2026-09-14",
           "result": "Current official product page contains explicit recommendation semantics; held at C for branch availability."
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "https://store.starbucks.co.jp/detail-111/",
+          "checkedAt": "2026-09-14",
+          "result": "Exact branch verified."
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "https://stories.starbucks.co.jp/press/2026/pr-2026-0826/",
+          "checkedAt": "2026-09-14",
+          "result": "Current nationwide campaign checked; exact branch inclusion not established."
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "https://menu.starbucks.co.jp/4524785644830",
+          "checkedAt": "2026-09-14",
+          "result": "Concrete product confirmed; temporary stock-out noted."
         }
       ],
       "blocker": null,
       "notes": "No assumption that a brand product is stocked at every branch.",
       "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-OFFICIAL/S3-20260914T1822JST.json"
+        "data/agent_proposals/DISH-R-OFFICIAL/S3-20260914T1822JST.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S3.json",
+        "data/agent_proposals/DISH-R-OFFICIAL/S3.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
     },
     {
       "googlePlaceId": "ChIJfQfeJgOMGGARWQWfZEgZoYg",
@@ -920,6 +1249,13 @@
             "checkedAt": "2026-09-14",
             "evidenceType": "branch_page",
             "note": "Official store page lists 神田店 at 神田須田町1-5 / 03-5296-5555."
+          },
+          {
+            "provider": "official",
+            "sourceUrl": "https://www.chikuryuan-okano.com/info.html",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Official store guide identifies 神田店 at 神田須田町1-5, TEL 03-5296-5555."
           }
         ]
       },
@@ -938,6 +1274,21 @@
           "evidenceText": "店舗限定の商品：カリーどら焼き",
           "confidence": "high",
           "notes": "Concrete branch-limited product, but branch-exclusive is not by itself recommendation/popularity/signature semantics."
+        },
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "カリーどら焼き",
+          "nameZhCandidate": null,
+          "evidenceClass": "official_branch_limited_menu_item",
+          "recommendationSemantics": "",
+          "provider": "official_web",
+          "sourceUrl": "https://www.chikuryuan-okano.com/info.html",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "神田店／店舗限定の商品／カリーどら焼き",
+          "confidence": "high",
+          "notes": "Concrete branch-limited product, but no recommendation/signature/popularity semantics; F only."
         }
       ],
       "attemptedSources": [
@@ -946,14 +1297,22 @@
           "sourceUrl": "https://www.chikuryuan-okano.com/info.html",
           "checkedAt": "2026-09-14",
           "result": "Exact branch page checked; branch-limited item found without recommendation semantics."
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "https://www.chikuryuan-okano.com/info.html",
+          "checkedAt": "2026-09-14",
+          "result": "Exact 神田店 and branch-limited concrete item verified; no strict recommendation wording."
         }
       ],
       "blocker": null,
       "notes": "Kept as F; 店舗限定 was not treated as R.",
       "sourceProposalRefs": [
-        "data/agent_proposals/DISH-R-OFFICIAL/S3-20260914T1822JST.json"
+        "data/agent_proposals/DISH-R-OFFICIAL/S3-20260914T1822JST.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S3.json",
+        "data/agent_proposals/DISH-R-OFFICIAL/S3.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus: all unrepresented independent reviewed inputs accepted; safe evidence unioned fail-closed."
     }
   ],
   "policyAttestation": {
@@ -961,6 +1320,7 @@
     "canonicalMasterEditedDirectly": false,
     "proximityOnlyIdentityBindingUsed": false,
     "recommendationWithoutExplicitSemanticsAdded": false,
-    "accessRestrictionBypassUsed": false
+    "accessRestrictionBypassUsed": false,
+    "unrepresentedIndependentInputsRequireConsensus": true
   }
 }

@@ -1,21 +1,21 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "proposalOnly": false,
   "marker": "DISH-R-OFFICIAL",
   "shard": "S6",
-  "agentRunId": "FINAL-DISH-R-OFFICIAL:S6:20260915",
+  "agentRunId": "FINAL-V2-DISH-R-OFFICIAL:S6:20260915",
   "sourceQueue": "data/dish_batch_plan.json",
-  "sourceQueueCommit": "97f07e274e07854952da45fe264ab43ddea7d986",
-  "generatedAt": "2026-09-15T22:00:00+09:00",
+  "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+  "generatedAt": "2026-09-15T23:00:00+09:00",
   "reviewedAt": "2026-09-15",
-  "reviewedBy": "final-dish-integration central fail-closed review",
+  "reviewedBy": "final-dish-integration v2 incremental fail-closed review",
   "summary": {
     "assignedRows": 20,
     "reviewedRows": 20,
-    "acceptedEvidenceRows": 1,
-    "candidateRows": 1,
-    "noEvidenceRows": 12,
-    "blockedRows": 6,
+    "acceptedEvidenceRows": 0,
+    "candidateRows": 15,
+    "noEvidenceRows": 5,
+    "blockedRows": 0,
     "skippedAlreadyCompleteRows": 0
   },
   "records": [
@@ -57,9 +57,10 @@
           "recordIndex": 0,
           "sourceStatus": "no_evidence"
         },
-        "data/agent_reviews/DISH-R-OFFICIAL/S6.json"
+        "data/agent_reviews/DISH-R-OFFICIAL/S6.json",
+        "data/agent_proposals/DISH-R-OFFICIAL/S6-20260914.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
     },
     {
       "googlePlaceId": "ChIJIeDGY_6NGGARWCyGYme_2bA",
@@ -87,7 +88,8 @@
         "https://www.pasela.co.jp/shoplist/grandcypher-kitchen/news/%e3%80%90%e7%ac%ac65%e5%9b%9e%e3%80%91%e3%82%b0%e3%83%a9%e3%82%b5%e3%82%a4%e3%82%ad%e3%83%83%e3%83%81%e3%83%b3%e9%80%9a%e4%bf%a1%ef%bd%9e%e7%ac%ac20%e5%ad%a3%e7%af%80%e9%99%90%e5%ae%9a%e3%83%a1/",
         "https://www.pasela.co.jp/shoplist/grandcypher-kitchen/news/%e3%80%90%e7%ac%ac56%e5%9b%9e%e3%80%91%e3%82%b0%e3%83%a9%e3%82%b5%e3%82%a4%e3%82%ad%e3%83%83%e3%83%81%e3%83%b3%e9%80%9a%e4%bf%a1%ef%bd%9e%e7%ac%ac17%e5%bc%be%e5%ad%a3%e7%af%80%e9%99%90%e5%ae%9a-2-2-4/",
         "https://www.pasela.co.jp/shoplist/grandcypher-kitchen/news/%e3%80%90%e7%ac%ac56%e5%9b%9e%e3%80%91%e3%82%b0%e3%83%a9%e3%82%b5%e3%82%a4%e3%82%ad%e3%83%83%e3%83%81%e3%83%b3%e9%80%9a%e4%bf%a1%ef%bd%9e%e7%ac%ac17%e5%bc%be%e5%ad%a3%e7%af%80%e9%99%90%e5%ae%9a-2-2-3/",
-        "https://www.pasela.co.jp/shoplist/grandcypher-kitchen/menu/"
+        "https://www.pasela.co.jp/shoplist/grandcypher-kitchen/menu/",
+        "https://paselabo.pasela.co.jp/grandcypher-kitchen/"
       ],
       "blocker": null,
       "notes": "Reviewed exact official source family; no concrete current branch dish was paired with explicit recommendation/signature/popular/specialty semantics. No dish proposal made.",
@@ -97,9 +99,10 @@
           "recordIndex": 1,
           "sourceStatus": "no_evidence"
         },
-        "data/agent_reviews/DISH-R-OFFICIAL/S6.json"
+        "data/agent_reviews/DISH-R-OFFICIAL/S6.json",
+        "data/agent_proposals/DISH-R-OFFICIAL/S6-20260914.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
     },
     {
       "googlePlaceId": "ChIJ9TDnyQ-MGGARG-nByNz8I0E",
@@ -123,7 +126,8 @@
       "dishProposals": [],
       "attemptedSources": [
         "https://gb32300.gorp.jp/",
-        "https://r.gnavi.co.jp/0001098182/menu3"
+        "https://r.gnavi.co.jp/0001098182/menu3",
+        "https://r.gnavi.co.jp/gb32300/menu7/"
       ],
       "blocker": null,
       "notes": "Exact official Gorp page and linked menu expose explicit recommendation/course language, but the phrase is not a concrete fixed dish and component items cannot inherit course recommendation semantics; candidate retained.",
@@ -133,14 +137,15 @@
           "recordIndex": 2,
           "sourceStatus": "candidate"
         },
-        "data/agent_reviews/DISH-R-OFFICIAL/S6.json"
+        "data/agent_reviews/DISH-R-OFFICIAL/S6.json",
+        "data/agent_proposals/DISH-R-OFFICIAL/S6-20260914.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
     },
     {
       "googlePlaceId": "ChIJNd98ZACNGGAR4F8EqlaT9k8",
       "restaurantName": "Walkabout Coffee",
-      "status": "blocked",
+      "status": "candidate",
       "identity": {
         "state": "verified",
         "sourceAliases": [
@@ -171,14 +176,15 @@
           "recordIndex": 3,
           "sourceStatus": "blocked"
         },
-        "data/agent_reviews/DISH-R-OFFICIAL/S6.json"
+        "data/agent_reviews/DISH-R-OFFICIAL/S6.json",
+        "data/agent_proposals/DISH-R-OFFICIAL/S6-20260914.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
     },
     {
       "googlePlaceId": "ChIJX2VqZfSNGGAR2huqczaqDu4",
       "restaurantName": "多次元秘密基地",
-      "status": "blocked",
+      "status": "candidate",
       "identity": {
         "state": "verified",
         "sourceAliases": [
@@ -209,14 +215,15 @@
           "recordIndex": 4,
           "sourceStatus": "blocked"
         },
-        "data/agent_reviews/DISH-R-OFFICIAL/S6.json"
+        "data/agent_reviews/DISH-R-OFFICIAL/S6.json",
+        "data/agent_proposals/DISH-R-OFFICIAL/S6-20260914.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
     },
     {
       "googlePlaceId": "ChIJZ6B6S2uMGGAR1FZFUTrzDm8",
       "restaurantName": "ネバーランド カフェ",
-      "status": "no_evidence",
+      "status": "candidate",
       "identity": {
         "state": "verified",
         "sourceAliases": [
@@ -245,9 +252,10 @@
           "recordIndex": 5,
           "sourceStatus": "no_evidence"
         },
-        "data/agent_reviews/DISH-R-OFFICIAL/S6.json"
+        "data/agent_reviews/DISH-R-OFFICIAL/S6.json",
+        "data/agent_proposals/DISH-R-OFFICIAL/S6-20260914.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
     },
     {
       "googlePlaceId": "ChIJVwXD9E6NGGARkHzeYVBeacw",
@@ -280,14 +288,15 @@
           "recordIndex": 6,
           "sourceStatus": "no_evidence"
         },
-        "data/agent_reviews/DISH-R-OFFICIAL/S6.json"
+        "data/agent_reviews/DISH-R-OFFICIAL/S6.json",
+        "data/agent_proposals/DISH-R-OFFICIAL/S6-20260914.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
     },
     {
       "googlePlaceId": "ChIJW4ph90OMGGARdlhIHYAGMRw",
       "restaurantName": "カフェ・ド・クリエ",
-      "status": "no_evidence",
+      "status": "candidate",
       "identity": {
         "state": "verified",
         "sourceAliases": [
@@ -305,7 +314,8 @@
       },
       "dishProposals": [],
       "attemptedSources": [
-        "https://c-united.co.jp/store/detail/001209/"
+        "https://c-united.co.jp/store/detail/001209/",
+        "https://c-united.co.jp/crie/new_menu/"
       ],
       "blocker": null,
       "notes": "Reviewed exact official source family; no concrete current branch dish was paired with explicit recommendation/signature/popular/specialty semantics. No dish proposal made.",
@@ -315,9 +325,10 @@
           "recordIndex": 7,
           "sourceStatus": "no_evidence"
         },
-        "data/agent_reviews/DISH-R-OFFICIAL/S6.json"
+        "data/agent_reviews/DISH-R-OFFICIAL/S6.json",
+        "data/agent_proposals/DISH-R-OFFICIAL/S6-20260914.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
     },
     {
       "googlePlaceId": "ChIJ2-RzBT-MGGARQRlhPs95JJs",
@@ -340,7 +351,8 @@
       },
       "dishProposals": [],
       "attemptedSources": [
-        "http://okkon.yokochou.com"
+        "http://okkon.yokochou.com",
+        "https://okkon.yokochou.com/"
       ],
       "blocker": null,
       "notes": "Reviewed exact official source family; no concrete current branch dish was paired with explicit recommendation/signature/popular/specialty semantics. No dish proposal made.",
@@ -350,14 +362,15 @@
           "recordIndex": 8,
           "sourceStatus": "no_evidence"
         },
-        "data/agent_reviews/DISH-R-OFFICIAL/S6.json"
+        "data/agent_reviews/DISH-R-OFFICIAL/S6.json",
+        "data/agent_proposals/DISH-R-OFFICIAL/S6-20260914.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
     },
     {
       "googlePlaceId": "ChIJ51IcBBWMGGARbOYE-W7z7Lg",
       "restaurantName": "JB's BAR",
-      "status": "accepted_evidence",
+      "status": "candidate",
       "identity": {
         "state": "verified",
         "sourceAliases": [
@@ -373,25 +386,10 @@
           }
         ]
       },
-      "dishProposals": [
-        {
-          "targetField": "featuredDishes",
-          "classification": "F",
-          "nameOriginal": "JB'sカレー",
-          "nameZhCandidate": null,
-          "evidenceClass": "official_menu_item",
-          "recommendationSemantics": null,
-          "provider": "official_web",
-          "sourceUrl": "http://jbsbar.yamanoya.work/",
-          "checkedAt": "2026-09-14",
-          "sourceScope": "branch",
-          "evidenceText": "フード JB'sカレーが復活しました。パーティーフード Fish & Chips 唐揚げ JB's気まぐれパスタ 生ハムとチーズのセット",
-          "confidence": "high",
-          "notes": "Concrete current branch dish quoted from the exact official page; no explicit recommendation semantics asserted, therefore F only."
-        }
-      ],
+      "dishProposals": [],
       "attemptedSources": [
-        "http://jbsbar.yamanoya.work/"
+        "http://jbsbar.yamanoya.work/",
+        "https://jinbocho-jbsbar.owst.jp/"
       ],
       "blocker": null,
       "notes": "Strict current branch-level F evidence accepted from the reviewed official page; no explicit recommendation semantics was asserted.",
@@ -401,14 +399,15 @@
           "recordIndex": 9,
           "sourceStatus": "accepted_evidence"
         },
-        "data/agent_reviews/DISH-R-OFFICIAL/S6.json"
+        "data/agent_reviews/DISH-R-OFFICIAL/S6.json",
+        "data/agent_proposals/DISH-R-OFFICIAL/S6-20260914.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
     },
     {
       "googlePlaceId": "ChIJ53NJO5-NGGAR_IlB-9Tnz70",
       "restaurantName": "屋台DELi x TAKEBASHI",
-      "status": "no_evidence",
+      "status": "candidate",
       "identity": {
         "state": "verified",
         "sourceAliases": [
@@ -426,7 +425,8 @@
       },
       "dishProposals": [],
       "attemptedSources": [
-        "https://www.mai-b.co.jp/shop/b1/post-21.html"
+        "https://www.mai-b.co.jp/shop/b1/post-21.html",
+        "https://www.yataideli.com/"
       ],
       "blocker": null,
       "notes": "Reviewed exact official source family; no concrete current branch dish was paired with explicit recommendation/signature/popular/specialty semantics. No dish proposal made.",
@@ -436,14 +436,15 @@
           "recordIndex": 10,
           "sourceStatus": "no_evidence"
         },
-        "data/agent_reviews/DISH-R-OFFICIAL/S6.json"
+        "data/agent_reviews/DISH-R-OFFICIAL/S6.json",
+        "data/agent_proposals/DISH-R-OFFICIAL/S6-20260914.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
     },
     {
       "googlePlaceId": "ChIJ6yIkdqmNGGARnQbZMLDoNX8",
       "restaurantName": "東依（とうい） / 都市の茶室",
-      "status": "blocked",
+      "status": "candidate",
       "identity": {
         "state": "verified",
         "sourceAliases": [
@@ -461,7 +462,8 @@
       },
       "dishProposals": [],
       "attemptedSources": [
-        "https://www.toui.tokyo/"
+        "https://www.toui.tokyo/",
+        "https://www.toui.tokyo/kissa/"
       ],
       "blocker": {
         "type": "official_source_access_restricted",
@@ -474,14 +476,15 @@
           "recordIndex": 11,
           "sourceStatus": "blocked"
         },
-        "data/agent_reviews/DISH-R-OFFICIAL/S6.json"
+        "data/agent_reviews/DISH-R-OFFICIAL/S6.json",
+        "data/agent_proposals/DISH-R-OFFICIAL/S6-20260914.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
     },
     {
       "googlePlaceId": "ChIJge_Vi4qNGGARUSVRmK8P39M",
       "restaurantName": "Hub Tokyo Dome City LaQua",
-      "status": "no_evidence",
+      "status": "candidate",
       "identity": {
         "state": "verified",
         "sourceAliases": [
@@ -499,7 +502,8 @@
       },
       "dishProposals": [],
       "attemptedSources": [
-        "https://www.pub-hub.com/index.php/shop/detail/40"
+        "https://www.pub-hub.com/index.php/shop/detail/40",
+        "https://map.yahoo.co.jp/v3/place/51QK-aOWryw/menu"
       ],
       "blocker": null,
       "notes": "Reviewed exact official source family; no concrete current branch dish was paired with explicit recommendation/signature/popular/specialty semantics. No dish proposal made.",
@@ -509,14 +513,15 @@
           "recordIndex": 12,
           "sourceStatus": "no_evidence"
         },
-        "data/agent_reviews/DISH-R-OFFICIAL/S6.json"
+        "data/agent_reviews/DISH-R-OFFICIAL/S6.json",
+        "data/agent_proposals/DISH-R-OFFICIAL/S6-20260914.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
     },
     {
       "googlePlaceId": "ChIJKQd-go2NGGAR3P4QE_MC5ow",
       "restaurantName": "グリルやまだ 大手町店",
-      "status": "blocked",
+      "status": "candidate",
       "identity": {
         "state": "verified",
         "sourceAliases": [
@@ -534,7 +539,8 @@
       },
       "dishProposals": [],
       "attemptedSources": [
-        "http://grillyamada-otemachi.com/"
+        "http://grillyamada-otemachi.com/",
+        "https://stage.otemachi-one.com/shopandrestaurant/s_000242.html"
       ],
       "blocker": {
         "type": "dns_resolution_failed",
@@ -547,14 +553,15 @@
           "recordIndex": 13,
           "sourceStatus": "blocked"
         },
-        "data/agent_reviews/DISH-R-OFFICIAL/S6.json"
+        "data/agent_reviews/DISH-R-OFFICIAL/S6.json",
+        "data/agent_proposals/DISH-R-OFFICIAL/S6-20260914.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
     },
     {
       "googlePlaceId": "ChIJM2-wmAaMGGARo_zjI90Qlb4",
       "restaurantName": "焼肉 ぴゅあ 神田店",
-      "status": "blocked",
+      "status": "candidate",
       "identity": {
         "state": "verified",
         "sourceAliases": [
@@ -572,7 +579,8 @@
       },
       "dishProposals": [],
       "attemptedSources": [
-        "https://pure-kanda.com"
+        "https://pure-kanda.com",
+        "https://tabelog.com/tokyo/A1310/A131002/13011633/dtlmenu/"
       ],
       "blocker": {
         "type": "official_source_empty",
@@ -585,9 +593,10 @@
           "recordIndex": 14,
           "sourceStatus": "blocked"
         },
-        "data/agent_reviews/DISH-R-OFFICIAL/S6.json"
+        "data/agent_reviews/DISH-R-OFFICIAL/S6.json",
+        "data/agent_proposals/DISH-R-OFFICIAL/S6-20260914.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
     },
     {
       "googlePlaceId": "ChIJmU96Ev-NGGARnL6IKFECaKM",
@@ -610,7 +619,8 @@
       },
       "dishProposals": [],
       "attemptedSources": [
-        "https://www.jsf.or.jp/exhibit/restaurant"
+        "https://www.jsf.or.jp/exhibit/restaurant",
+        "https://www.jsf.or.jp/exhibit/restaurant/"
       ],
       "blocker": null,
       "notes": "Reviewed exact official source family; no concrete current branch dish was paired with explicit recommendation/signature/popular/specialty semantics. No dish proposal made.",
@@ -620,14 +630,15 @@
           "recordIndex": 15,
           "sourceStatus": "no_evidence"
         },
-        "data/agent_reviews/DISH-R-OFFICIAL/S6.json"
+        "data/agent_reviews/DISH-R-OFFICIAL/S6.json",
+        "data/agent_proposals/DISH-R-OFFICIAL/S6-20260914.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
     },
     {
       "googlePlaceId": "ChIJN_idkH-NGGARJHR6WDhPbnM",
       "restaurantName": "すぽっとらいと 秋葉原 コンカフェ",
-      "status": "no_evidence",
+      "status": "candidate",
       "identity": {
         "state": "verified",
         "sourceAliases": [
@@ -655,14 +666,15 @@
           "recordIndex": 16,
           "sourceStatus": "no_evidence"
         },
-        "data/agent_reviews/DISH-R-OFFICIAL/S6.json"
+        "data/agent_reviews/DISH-R-OFFICIAL/S6.json",
+        "data/agent_proposals/DISH-R-OFFICIAL/S6-20260914.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
     },
     {
       "googlePlaceId": "ChIJqVA2DTiMGGAROKkt-YJgYfk",
       "restaurantName": "Hub Tokyo Dome City LaQua",
-      "status": "no_evidence",
+      "status": "candidate",
       "identity": {
         "state": "verified",
         "sourceAliases": [
@@ -680,7 +692,8 @@
       },
       "dishProposals": [],
       "attemptedSources": [
-        "https://www.pub-hub.com/index.php/shop/detail/40"
+        "https://www.pub-hub.com/index.php/shop/detail/40",
+        "https://map.yahoo.co.jp/v3/place/51QK-aOWryw/menu"
       ],
       "blocker": null,
       "notes": "Reviewed exact official source family; no concrete current branch dish was paired with explicit recommendation/signature/popular/specialty semantics. No dish proposal made.",
@@ -690,14 +703,15 @@
           "recordIndex": 17,
           "sourceStatus": "no_evidence"
         },
-        "data/agent_reviews/DISH-R-OFFICIAL/S6.json"
+        "data/agent_reviews/DISH-R-OFFICIAL/S6.json",
+        "data/agent_proposals/DISH-R-OFFICIAL/S6-20260914.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
     },
     {
       "googlePlaceId": "ChIJtcBGVwaMGGARS0tqKOmzCfE",
       "restaurantName": "Bonne quela",
-      "status": "blocked",
+      "status": "candidate",
       "identity": {
         "state": "verified",
         "sourceAliases": [
@@ -715,7 +729,8 @@
       },
       "dishProposals": [],
       "attemptedSources": [
-        "http://bonnequela.tumblr.com/bonnequela"
+        "http://bonnequela.tumblr.com/bonnequela",
+        "https://www.otemachi-financialcity.jp/shop/bonne-quela/"
       ],
       "blocker": {
         "type": "official_source_not_found",
@@ -728,14 +743,15 @@
           "recordIndex": 18,
           "sourceStatus": "blocked"
         },
-        "data/agent_reviews/DISH-R-OFFICIAL/S6.json"
+        "data/agent_reviews/DISH-R-OFFICIAL/S6.json",
+        "data/agent_proposals/DISH-R-OFFICIAL/S6-20260914.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
     },
     {
       "googlePlaceId": "ChIJFQ415jyMGGAROEvV2vfbg_g",
       "restaurantName": "Tail's Ale House",
-      "status": "no_evidence",
+      "status": "candidate",
       "identity": {
         "state": "verified",
         "sourceAliases": [
@@ -763,9 +779,10 @@
           "recordIndex": 19,
           "sourceStatus": "no_evidence"
         },
-        "data/agent_reviews/DISH-R-OFFICIAL/S6.json"
+        "data/agent_reviews/DISH-R-OFFICIAL/S6.json",
+        "data/agent_proposals/DISH-R-OFFICIAL/S6-20260914.json"
       ],
-      "reviewReasoning": "Final fail-closed central semantic pass; exact branch, source URL, R/F semantics and policy gates re-applied offline."
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
     }
   ],
   "policyAttestation": {
@@ -773,6 +790,7 @@
     "canonicalMasterEditedDirectly": false,
     "proximityOnlyIdentityBindingUsed": false,
     "recommendationWithoutExplicitSemanticsAdded": false,
-    "accessRestrictionBypassUsed": false
+    "accessRestrictionBypassUsed": false,
+    "unrepresentedIndependentInputsRequireConsensus": true
   }
 }

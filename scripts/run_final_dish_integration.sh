@@ -88,7 +88,7 @@ node scripts/test_agent_dish_integration.mjs
 node scripts/audit_no_paid_apis.mjs
 
 # Final fail-closed central review and digest approval for Official/Retained.
-python scripts/finalize_official_retained_reviews.py | tee _audit/final/official-retained-finalizer.log
+python scripts/finalize_official_retained_reviews_v2.py | tee _audit/final/official-retained-finalizer.log
 node scripts/build_reviewed_agent_dish_evidence.mjs \
   data/agent_reviews/official-retained-completion.json \
   _audit/final/official-retained-evidence.json \
@@ -205,6 +205,7 @@ git add \
   logs/2026-09-15-final-dish-integration.md \
   scripts/build_reviewed_agent_dish_evidence.mjs \
   scripts/finalize_official_retained_reviews.py \
+  scripts/finalize_official_retained_reviews_v2.py \
   scripts/build_final_dish_union.py \
   scripts/run_final_dish_integration.sh
 

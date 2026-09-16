@@ -146,3 +146,8 @@ These are **structural draft results**, not final semantic acceptance or canonic
 ## 2026-09-15 finalization handoff
 
 PR #67's structural 537/537 checkpoint was finalized on `final-dish-integration-20260915` with a new fail-closed full review materialization. Structural accepts that failed final source/branch/semantic gates were downgraded rather than force-approved. The approved review manifest now uses immutable SHA-256 reviewed files; unsafe Chinese normalization remains translation-pending. The final adapter emitted 0 R and 71 F canonical evidence items from Official/Retained, and the global union/rebuild/replay/SQLite validation passed. See `logs/2026-09-15-final-dish-integration.md` for the production-integration record.
+
+
+## 2026-09-15 finalization handoff
+
+PR #67's structural 537/537 checkpoint was finalized on `final-dish-integration-20260915` with a new fail-closed full review materialization. Structural accepts that failed final source/branch/semantic gates were downgraded rather than force-approved. The approved review manifest now uses immutable SHA-256 reviewed files; unsafe Chinese normalization remains translation-pending. The final adapter emitted 0 R and 69 F canonical evidence items from Official/Retained, and the global union/rebuild/replay/SQLite validation passed. See `logs/2026-09-15-final-dish-integration.md` for the production-integration record.
