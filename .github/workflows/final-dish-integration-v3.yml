@@ -28,9 +28,23 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Patch mixed historical attemptedSources safely
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('scripts/finalize_official_retained_reviews_v2.py')
+          s = p.read_text()
+          old = '                    reviewed["attemptedSources"] = sorted({x for r in reviewed_inputs for x in (r.get("attemptedSources") or []) if x})\n'
+          new = '''                    attempted, attempted_seen = [], set()\n                    for input_rec in reviewed_inputs:\n                        for x in input_rec.get("attemptedSources") or []:\n                            if not x:\n                                continue\n                            key = json.dumps(x, ensure_ascii=False, sort_keys=True) if isinstance(x, (dict, list)) else str(x)\n                            if key not in attempted_seen:\n                                attempted_seen.add(key)\n                                attempted.append(copy.deepcopy(x))\n                    reviewed["attemptedSources"] = attempted\n'''
+          if old not in s:
+              raise SystemExit('attemptedSources patch anchor missing')
+          p.write_text(s.replace(old, new, 1))
+          PY
+          python -m py_compile scripts/finalize_official_retained_reviews_v2.py
       - name: Switch runner to v2 central reviewer
         run: |
           sed -i 's#python scripts/finalize_official_retained_reviews.py#python scripts/finalize_official_retained_reviews_v2.py#' scripts/run_final_dish_integration.sh
+          sed -i '/scripts\/finalize_official_retained_reviews.py \\/a\  scripts/finalize_official_retained_reviews_v2.py \\' scripts/run_final_dish_integration.sh
           grep -n 'finalize_official_retained_reviews_v2.py' scripts/run_final_dish_integration.sh
       - name: Run complete final integration
         run: bash scripts/run_final_dish_integration.sh
