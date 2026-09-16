@@ -34,11 +34,19 @@ jobs:
           from pathlib import Path
           p = Path('scripts/finalize_official_retained_reviews_v2.py')
           s = p.read_text()
-          old = '                    reviewed["attemptedSources"] = sorted({x for r in reviewed_inputs for x in (r.get("attemptedSources") or []) if x})\n'
-          new = '''                    attempted, attempted_seen = [], set()\n                    for input_rec in reviewed_inputs:\n                        for x in input_rec.get("attemptedSources") or []:\n                            if not x:\n                                continue\n                            key = json.dumps(x, ensure_ascii=False, sort_keys=True) if isinstance(x, (dict, list)) else str(x)\n                            if key not in attempted_seen:\n                                attempted_seen.add(key)\n                                attempted.append(copy.deepcopy(x))\n                    reviewed["attemptedSources"] = attempted\n'''
-          if old not in s:
-              raise SystemExit('attemptedSources patch anchor missing')
-          p.write_text(s.replace(old, new, 1))
+          old1 = '                    reviewed["attemptedSources"] = sorted({x for r in reviewed_inputs for x in (r.get("attemptedSources") or []) if x})\n'
+          new1 = '''                    attempted, attempted_seen = [], set()\n                    for input_rec in reviewed_inputs:\n                        for x in input_rec.get("attemptedSources") or []:\n                            if not x:\n                                continue\n                            key = json.dumps(x, ensure_ascii=False, sort_keys=True) if isinstance(x, (dict, list)) else str(x)\n                            if key not in attempted_seen:\n                                attempted_seen.add(key)\n                                attempted.append(copy.deepcopy(x))\n                    reviewed["attemptedSources"] = attempted\n'''
+          if old1 not in s:
+              raise SystemExit('nonaccepted attemptedSources patch anchor missing')
+          s = s.replace(old1, new1, 1)
+          old2 = '        attempted.update(x for x in rec.get("attemptedSources", []) or [] if x)\n'
+          new2 = '''        for x in rec.get("attemptedSources", []) or []:\n            if not x:\n                continue\n            key = json.dumps(x, ensure_ascii=False, sort_keys=True) if isinstance(x, (dict, list)) else str(x)\n            attempted[key] = copy.deepcopy(x)\n'''
+          if old2 not in s:
+              raise SystemExit('accepted attemptedSources patch anchor missing')
+          s = s.replace('    attempted = set()\n', '    attempted = {}\n', 1)
+          s = s.replace(old2, new2, 1)
+          s = s.replace('    base["attemptedSources"] = sorted(attempted)\n', '    base["attemptedSources"] = list(attempted.values())\n', 1)
+          p.write_text(s)
           PY
           python -m py_compile scripts/finalize_official_retained_reviews_v2.py
       - name: Switch runner to v2 central reviewer
