@@ -1,0 +1,33 @@
+.filter-group + .filter-group {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid #eee7c7;
+}
+
+.filter-group-title {
+  margin: 0 0 8px;
+  color: var(--muted);
+  font-size: .82rem;
+  font-weight: 900;
+  letter-spacing: .04em;
+}
+
+.filter-clear {
+  margin-top: 12px;
+  border: 0;
+  background: transparent;
+  color: #3459a7;
+  font: inherit;
+  font-size: .84rem;
+  font-weight: 800;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.filter-clear[hidden] { display: none; }
+.filter-clear:focus-visible { outline: 3px solid #2f5fd0; outline-offset: 3px; }
+
+@media (max-width: 560px) {
+  .filter-group .chip { padding: 8px 12px; }
+}
