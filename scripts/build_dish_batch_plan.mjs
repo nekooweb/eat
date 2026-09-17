@@ -119,10 +119,11 @@ const payload = {
     ordinaryMenuDishBecomesFeaturedOnly: true,
     reviewCooldown: {
       purpose: 'recent terminal reviews are not immediately reassigned when the runtime field is still empty',
+      acceptedEvidenceDays: DEFAULT_COOLDOWN_DAYS.accepted_evidence,
       candidateDays: DEFAULT_COOLDOWN_DAYS.candidate,
       noEvidenceDays: DEFAULT_COOLDOWN_DAYS.no_evidence,
       blockedDays: DEFAULT_COOLDOWN_DAYS.blocked,
-      acceptedEvidenceDeferred: false,
+      acceptedEvidenceDeferred: true,
       sourceChangeInvalidation: 'not yet automatic; rerun may be forced by changing review date/status or after retryAfter'
     }
   },
