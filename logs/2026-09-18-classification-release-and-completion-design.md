@@ -6,8 +6,8 @@
 
 目标分两部分：
 
-1. 记录 2026-09-17 已经完成并生产发布的基础修复与三维分类；
-2. 开始设计下一阶段 evidence-first 数据补全逻辑，避免重新回到“字段为空就全量扫描”的模式。
+1. 记录 2026-09-17 已完成并生产发布的基础修复与三维分类；
+2. 建立下一阶段 evidence-first 数据补全逻辑，避免重新回到“字段为空就全量扫描”的模式。
 
 ## 已完成并进入 `main`
 
@@ -28,7 +28,7 @@ PR #80 已合并，merge commit：
 - 新增 `test_v1_quality_fixes.mjs` 与 `test_dish_review_cooldown.mjs` 并进入 PR gate；
 - 将 PR #77 的分类设计迁移为当前主线文档 `CUISINE_FILTER_PLAN.md`。
 
-当前 cooldown 仍只按日期判断；source-change invalidation 尚未实现，已转入本轮补全设计。
+当前 cooldown 仍只按日期判断；source-change invalidation 尚未实现，已转入下一阶段设计。
 
 ### PR #81：三维分类第一阶段
 
@@ -48,7 +48,7 @@ PR #81 已合并，merge commit：
 - 公开页面从单一菜系排除切换为三维分组排除；
 - 排除父类会命中已登记后代，排除子类不会误伤 sibling；
 - unknown 分类店铺仍可进入候选池；
-- 分类、预算或距离变化后，旧随机结果立即标记失效并要求重新生成；
+- 分类、预算或距离变化后，旧随机结果立即失效并要求重新生成；
 - 卡片与比较表使用同一 normalized classification result；
 - Pages 将分类 JS/CSS 作为正式必需资产并进行 cache-busting。
 
@@ -75,51 +75,160 @@ PR #81 最终 head 的 PR Review、Pages preview build、no-paid-data-API policy
 
 因此三维分类第一阶段现在属于已生产发布状态，不再使用“待部署”描述。
 
-## 关于旧 dish batch snapshot
+## PR #82：report-only completion planner
 
-仓库中 committed `data/dish_batch_plan.json` 的 `generatedAt` 仍是 2026-09-16，summary 仍显示 870 条旧 dish work。该文件早于 PR #80 cooldown 逻辑，属于历史 snapshot，不能再作为当前 active work 数量来源。
+下一阶段第一片实现放在 PR #82。它不采集网络、不改 canonical，只在维护式 `--public-only` rebuild 后读取同一 checkout 的：
 
-当前 planner 会在维护式 rebuild 时重新读取 terminal review/cooldown；后续文档和报告应以同一 checkout 上重新生成的 plan 为准，禁止拿旧 committed snapshot 描述当前重新扫描量。
+- `data/google_inventory_runtime.js`；
+- `classification.js`；
+- `data/source_facts.js`；
+- `data/source_provenance.js`；
+- `data/google_inventory_detail_queue.json`。
 
-## 本轮新增：补全逻辑设计
+新增：
 
-新增 [`DATA_COMPLETION_PLAN.md`](../DATA_COMPLETION_PLAN.md)。核心方向：
+- `DATA_COMPLETION_PLAN.md`；
+- `scripts/build_completion_plan.mjs`；
+- `scripts/test_completion_plan.mjs`；
+- 本日志及 `DEVELOPMENT.md` 当前状态更新。
 
-1. 已保存证据优先，先恢复 retained/source-fact 中的 hours/budget/classification 信息；
-2. 分类先按“未映射 source token”聚合审核，一个 taxonomy mapping 可覆盖多家店；
-3. 店名关键词只产生 entity `candidate`，不能直接进入公开 accepted 分类；
-4. entity accepted classification 使用 Place-ID keyed evidence/overlay，不覆写原始 `cuisine/tags`；
-5. hours 必须继续通过 normalization + validation；
-6. budget 必须有明确 lunch/dinner 语义并通过 price-range validator；
-7. terminal review 增加 source fingerprint，只有来源实质变化或 cooldown 到期才重新激活；
-8. 第一实现阶段只生成 gap inventory / completion plan，不网络采集、不写 canonical。
+planner 明确区分：
+
+```text
+retained evidence review
+  -> already-bound source review
+  -> new-source discovery
+```
+
+并为任务生成稳定 SHA-256 `sourceFingerprint`，为下一步 source-change cooldown invalidation 做输入基础。
+
+## 同一 checkout 的真实维护式结果
+
+以下数字来自 PR #82 最新维护式 rebuild + blocking regression，不使用仓库中旧的 committed snapshot。
+
+### Dish queue
+
+旧 committed `data/dish_batch_plan.json` 仍是 2026-09-16、cooldown 上线前的历史 snapshot，不能代表当前 active work。
+
+当前 maintained plan：
+
+- raw dish work：870；
+- active dish work：**23**；
+- recently-reviewed deferred：**847**。
+
+847 条 deferred 按 terminal status：
+
+| Status | Rows |
+| --- | ---: |
+| `no_evidence` | 509 |
+| `candidate` | 171 |
+| `accepted_evidence` | 93 |
+| `blocked` | 74 |
+
+当前 23 条 active 全部属于 `official_or_retained_featured` lane。S0–S7 分布为 2 / 3 / 6 / 1 / 0 / 2 / 3 / 6。
+
+这证明 cooldown 已经把“刚完成审查但 runtime 仍有 gap”的重复扫描从 870 条压到 23 条，而不是把旧 870 snapshot 当成当前工作量。
+
+### 分类补全 inventory
+
+公开 runtime 仍为 1,422，其中：
+
+- accepted exact classification：1,198；
+- unknown：224；
+- unmapped non-generic taxonomy token：113。
+
+224 个 unknown 的下一步被 report-only planner 分为：
+
+| 下一步 | Rows | 含义 |
+| --- | ---: | --- |
+| taxonomy token first | 63 | 先审 source token；一次映射可能覆盖多店 |
+| review bound source | 102 | 已有绑定来源，先复查该来源而不是另找新来源 |
+| name candidate first | 59 | 没有可先处理 token/绑定来源；仅允许生成 candidate |
+
+当前 retained source facts 中没有可直接形成 exact entity classification overlay 的额外行，因此 retained exact entity recovery = 0。这个结果支持“taxonomy first”而不是 224 家逐店搜索。
+
+当前高收益 unmapped token 示例：
+
+- `印度菜`：影响 25 家，其中 22 家当前 unknown；
+- `面包・烘焙`：19 / 16；
+- `創作料理`：7 / 6；
+- `食堂`：8 / 2；
+- `披萨`：5 / 2；
+- `天妇罗`：4 / 2；
+- `印度咖喱`：3 / 2；
+- `ビリヤニ`、`越南菜`、`各国料理`、`西班牙菜`、`美式`：各有 2 个当前 unknown。
+
+这只是待审 token inventory，不表示这些词已经自动映射。
+
+### 营业时间补全 inventory
+
+生产公开字段契约不是旧 `openingHours`，而是 `hoursRuntimePolicy = single-field-zh-v2` 下的 `hoursReference`。
+
+当前 public materializer：
+
+| Hours outcome | Rows |
+| --- | ---: |
+| normalized / `hoursReference` 已知 | **640** |
+| hidden unparseable | 119 |
+| hidden conflict | 14 |
+| hidden semantic | 1 |
+| no schedule source | 648 |
+| **合计** | **1,422** |
+
+因此不能看到 `openingHoursRaw` 就再次自动“恢复”：public materializer 已经消费过 retained raw。没有得到 `hoursReference` 的 retained raw 行必须进入 review。
+
+当前 782 个公开 hours gap 被 planner 分为：
+
+| 下一步 | Rows |
+| --- | ---: |
+| retained review | **55** |
+| already-bound source review | **462** |
+| new-source discovery | **265** |
+
+也就是说真正需要找新 hours 来源的不是 782 家，而是 265 家。
+
+### Budget 补全 inventory
+
+当前：
+
+- lunch 已知 172，缺 1,250；
+- dinner 已知 621，缺 801。
+
+planner 没有发现能从当前 `source_facts` 直接无审查恢复的新 lunch/dinner range；缺口按“先已有绑定来源、最后新来源”分层：
+
+| Field | bound-source review | new-source discovery |
+| --- | ---: | ---: |
+| lunch | **974** | **276** |
+| dinner | **525** | **276** |
+
+这里的 bound-source 只表示当前 Place ID 已经绑定至少一个来源，未宣称该来源一定包含目标字段；它的意义是避免在复查现有来源前就去寻找第二套来源。
+
+## 补全逻辑的当前结论
+
+1. **分类先 token、后 entity**：113 个 unmapped token 是第一层；59 家才需要进入 name-keyword candidate 起点，而且 candidate 不能直接公开。
+2. **hours 使用 `hoursReference` 契约**：640 家已完成；retained raw 但 public materializer 未接受的行进入 review，不重复自动解析覆盖。
+3. **预算优先已有绑定来源**：当前没有新的 retained exact range 可直接恢复；974/525 条先复查已绑定来源，真正新-source discovery 各 276。
+4. **网络工作必须分两类**：`networkRequired` 不等于 `newSourceDiscoveryRequired`；重新查看已绑定 source 和寻找新 source 必须分开统计。
+5. **source fingerprint 下一步实现**：当前 planner 已生成任务级 fingerprint；下一 PR 才把 fingerprint 写入 terminal review 并接入 cooldown invalidation。
+6. **旧 review 兼容**：历史 review 没 fingerprint 时继续走 date cooldown，不能因升级一次性重新激活 847 条 deferred work。
 
 ## 下一实施顺序
 
-### A. Report-only gap inventory
+### A. Source fingerprint / cooldown invalidation
 
-新增统一 planner，统计：
+新 terminal review 保存 `fingerprintVersion` + `sourceFingerprint`。只有当前任务相关输入发生实质变化时，才能在 cooldown 到期前重新激活；URL 顺序、UI label 和 unrelated 字段变化不得触发。
 
-- unmapped non-generic classification tokens；
-- 当前完全 unknown classification rows；
-- missing hours 但 retained source facts 已有 raw hours 的 rows；
-- missing lunch/dinner budget 但已有 retained candidate 的 rows；
-- 真正需要新 discovery 的 rows；
-- terminal review active / deferred / stale-by-source-change。
+### B. Taxonomy token central review
 
-先看真实分布，再决定 worker 数量和 shard，不先创建大规模网络任务。
+先审高收益 source token。能确定为稳定单一概念的才加 alias / concept；复合、模糊、上下文依赖 token 保持 unresolved 或转 entity review。
 
-### B. Source fingerprint
+### C. Entity classification overlay
 
-给新 review 增加 `fingerprintVersion` + `sourceFingerprint`。旧 review 没 fingerprint 时继续按 date cooldown，避免升级瞬间把全部历史任务重新激活。
+对通过已绑定来源核实的实体分类，使用 frozen Place-ID keyed accepted overlay；不覆写原始 `cuisine/tags`。店名关键词只产生 candidate。
 
-### C. 分类第二阶段
+### D. Hours / budget proposals
 
-先做 taxonomy token review；只有 token 无法全局映射时才进入 entity review。Entity evidence 通过中央复核后进入 classification overlay；candidate 不进入公开 runtime。
-
-### D. Hours / budget
-
-先从 retained source facts 和已有 additive candidate 恢复；最后才对仍缺失且确实重要的行启动 independent discovery。
+按 retained review → bound-source review → new-source discovery 顺序执行。worker/proposal 不直接写 canonical；继续 central review、validator、rebuild、replay。
 
 ## 约束继续保持
 
