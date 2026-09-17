@@ -10,6 +10,7 @@ export const MARKER_TO_LANE = Object.freeze({
 });
 
 export const DEFAULT_COOLDOWN_DAYS = Object.freeze({
+  accepted_evidence: 30,
   candidate: 30,
   no_evidence: 60,
   blocked: 30
