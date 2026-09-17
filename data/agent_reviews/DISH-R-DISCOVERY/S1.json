@@ -1,0 +1,1275 @@
+{
+  "schemaVersion": 1,
+  "proposalOnly": true,
+  "marker": "DISH-R-DISCOVERY",
+  "shard": "S1",
+  "sourceQueue": "data/dish_batch_plan.json",
+  "sourceQueueCommit": "5179badcdb58ba176cf2d9cf834a02e24c86e736",
+  "generatedAt": "2026-09-15T14:30:00+09:00",
+  "summary": {
+    "assignedRows": 39,
+    "reviewedRows": 39,
+    "acceptedEvidenceRows": 6,
+    "candidateRows": 10,
+    "noEvidenceRows": 20,
+    "blockedRows": 3,
+    "skippedAlreadyCompleteRows": 0
+  },
+  "policyAttestation": {
+    "paidGoogleDataApiCalls": 0,
+    "canonicalMasterEditedDirectly": false,
+    "proximityOnlyIdentityBindingUsed": false,
+    "recommendationWithoutExplicitSemanticsAdded": false,
+    "accessRestrictionBypassUsed": false
+  },
+  "agentRunId": "chatgpt-e2e-dish-s1-discovery-review-20260915",
+  "records": [
+    {
+      "googlePlaceId": "ChIJa4QHExiMGGARAZaUfwKzmss",
+      "restaurantName": "MediCafe",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "MediCafe 湯島1-5-34 メニュー",
+        "MediCafe お茶の水医学会館 menu",
+        "03-5684-4588 MEDICAFE"
+      ],
+      "blocker": null,
+      "notes": "Search results were dominated by excluded Tabelog/Yahoo-style listings or identity-only references without usable menu evidence.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-DISCOVERY/S1.json"
+      ],
+      "reviewReasoning": "Independent second-pass review on 2026-09-15. Search results were dominated by excluded Tabelog/Yahoo-style listings or identity-only references without usable menu evidence."
+    },
+    {
+      "googlePlaceId": "ChIJF-kS1ByMGGARlzPjWQNuBWs",
+      "restaurantName": "Hitachino Brewing Lab",
+      "status": "candidate",
+      "identity": {
+        "state": "reviewed_candidate",
+        "sourceAliases": [
+          "Hitachino Brewing Lab"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [
+        {
+          "classification": "C",
+          "targetField": null,
+          "nameOriginal": "常陸さばのサンドセット",
+          "nameZhCandidate": null,
+          "evidenceClass": "stale_independent_recommendation_candidate",
+          "recommendationSemantics": "",
+          "provider": "Craft Beer Tokyo editorial",
+          "sourceOrigin": "Craft Beer Tokyo editorial",
+          "sourceUrl": "https://craftbeer-tokyo.info/23/a/hitachino-brewing-lab/",
+          "checkedAt": "2026-09-15",
+          "sourceScope": "branch",
+          "evidenceText": "常陸さばのサンドセットをおすすめする編集記事",
+          "confidence": "medium",
+          "notes": "Independent editorial identifies the Hitachino Brewing Lab branch and recommends this concrete set, but the article is not sufficiently current to establish present menu availability. Kept C because the recommendation is source-native but current availability was not established."
+        }
+      ],
+      "attemptedSources": [
+        "Hitachino Brewing Lab menu 万世橋",
+        "Hitachino Brewing Lab おすすめ フード",
+        "site:kiuchibrewery.co.jp Hitachino Brewing Lab",
+        "https://craftbeer-tokyo.info/23/a/hitachino-brewing-lab/"
+      ],
+      "blocker": null,
+      "notes": "Kept C because the recommendation is source-native but current availability was not established.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-DISCOVERY/S1.json"
+      ],
+      "reviewReasoning": "Independent second-pass review on 2026-09-15. Kept C because the recommendation is source-native but current availability was not established."
+    },
+    {
+      "googlePlaceId": "ChIJg4bPQAGMGGAR9FTVISBu8sE",
+      "restaurantName": "お食事処 あい津",
+      "status": "blocked",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "site:kanda-aizu.com あい津 旬のおすすめ",
+        "https://www.kanda-aizu.com/season.html",
+        "https://www.kanda-aizu.com/alacarte.html",
+        "https://www.kanda-aizu.com/lunch.html",
+        "https://www.kanda-aizu.com/"
+      ],
+      "blocker": "exact_official_menu_subpages_technically_uninspectable",
+      "notes": "The official root links 旬のおすすめ, 一品料理, and お昼の定食, but those menu subpages could not be reproducibly inspected in this pass.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-DISCOVERY/S1.json"
+      ],
+      "reviewReasoning": "Independent second-pass review on 2026-09-15. The official root links 旬のおすすめ, 一品料理, and お昼の定食, but those menu subpages could not be reproducibly inspected in this pass."
+    },
+    {
+      "googlePlaceId": "ChIJK3MqvAOMGGARMcQcSnbnTq8",
+      "restaurantName": "宿場",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "宿場 神田 メニュー gorp",
+        "宿場 神田 おすすめ 料理",
+        "site:g777100.gorp.jp 宿場 メニュー",
+        "https://g777100.gorp.jp/"
+      ],
+      "blocker": null,
+      "notes": "Detailed menu links resolve into excluded r.gnavi/gnavi family, so they were not used.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-DISCOVERY/S1.json"
+      ],
+      "reviewReasoning": "Independent second-pass review on 2026-09-15. Detailed menu links resolve into excluded r.gnavi/gnavi family, so they were not used."
+    },
+    {
+      "googlePlaceId": "ChIJlbohVy2NGGARYM9c0wZX34I",
+      "restaurantName": "ヴェルテュ",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "VIRTÙ Bar Menu | Four Seasons Hotel Tokyo at Otemachi"
+        ],
+        "evidence": [
+          {
+            "provider": "Four Seasons official",
+            "sourceUrl": "https://www.fourseasons.com/jp/otemachi/dining/menus/virtu-bar-menu/",
+            "checkedAt": "2026-09-15",
+            "evidenceType": "branch_page",
+            "note": "Four Seasons Otemachi identifies VIRTÙ as its bar on the 39th floor; the menu is under that exact official venue path."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "classification": "F",
+          "targetField": "featuredDishes",
+          "nameOriginal": "A4和牛ビーフタコス",
+          "nameZhCandidate": null,
+          "evidenceClass": "source_menu_text",
+          "recommendationSemantics": "",
+          "provider": "sourceWebsite",
+          "sourceOrigin": "Four Seasons official",
+          "sourceUrl": "https://www.fourseasons.com/jp/otemachi/dining/menus/virtu-bar-menu/",
+          "checkedAt": "2026-09-15",
+          "sourceScope": "branch",
+          "evidenceText": "A4和牛ビーフタコス",
+          "confidence": "high",
+          "notes": "Concrete item on the current official VIRTÙ bar menu; no explicit recommendation marker adjacent to the item."
+        },
+        {
+          "classification": "F",
+          "targetField": "featuredDishes",
+          "nameOriginal": "ロブスターお好み焼き",
+          "nameZhCandidate": null,
+          "evidenceClass": "source_menu_text",
+          "recommendationSemantics": "",
+          "provider": "sourceWebsite",
+          "sourceOrigin": "Four Seasons official",
+          "sourceUrl": "https://www.fourseasons.com/jp/otemachi/dining/menus/virtu-bar-menu/",
+          "checkedAt": "2026-09-15",
+          "sourceScope": "branch",
+          "evidenceText": "ロブスターお好み焼き",
+          "confidence": "high",
+          "notes": "Concrete item on the current official VIRTÙ bar menu; no explicit recommendation marker adjacent to the item."
+        },
+        {
+          "classification": "F",
+          "targetField": "featuredDishes",
+          "nameOriginal": "ヴェルテュフライドチキン",
+          "nameZhCandidate": null,
+          "evidenceClass": "source_menu_text",
+          "recommendationSemantics": "",
+          "provider": "sourceWebsite",
+          "sourceOrigin": "Four Seasons official",
+          "sourceUrl": "https://www.fourseasons.com/jp/otemachi/dining/menus/virtu-bar-menu/",
+          "checkedAt": "2026-09-15",
+          "sourceScope": "branch",
+          "evidenceText": "ヴェルテュフライドチキン",
+          "confidence": "high",
+          "notes": "Concrete item on the current official VIRTÙ bar menu; no explicit recommendation marker adjacent to the item."
+        }
+      ],
+      "attemptedSources": [
+        "VIRTU Otemachi menu Four Seasons",
+        "ヴェルテュ 大手町 メニュー",
+        "https://www.fourseasons.com/jp/otemachi/dining/menus/virtu-bar-menu/"
+      ],
+      "blocker": null,
+      "notes": "Accepted as exact official branch menu. Ordinary concrete dishes remain F.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-DISCOVERY/S1.json"
+      ],
+      "reviewReasoning": "Independent second-pass review on 2026-09-15. Accepted as exact official branch menu. Ordinary concrete dishes remain F."
+    },
+    {
+      "googlePlaceId": "ChIJlZV_LwqNGGARYv0gSCBaRi4",
+      "restaurantName": "BAR ANAMI",
+      "status": "candidate",
+      "identity": {
+        "state": "reviewed_candidate",
+        "sourceAliases": [
+          "BAR ANAMI"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "BAR ANAMI 神田司町 2-7-6 menu",
+        "BAR ANAMI おすすめ パスタ ピザ",
+        "03 BAR ANAMI 神田司町",
+        "https://ec.tsuku2.jp/shop/0000081474/0002"
+      ],
+      "blocker": null,
+      "notes": "Allowed merchant page recommends pasta/pizza generically but does not bind that semantics to a concrete source-native dish label.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-DISCOVERY/S1.json"
+      ],
+      "reviewReasoning": "Independent second-pass review on 2026-09-15. Allowed merchant page recommends pasta/pizza generically but does not bind that semantics to a concrete source-native dish label."
+    },
+    {
+      "googlePlaceId": "ChIJNdsOljyMGGARjVaV5sSrCqI",
+      "restaurantName": "ととや",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "ととや 千代田区 神田 メニュー",
+        "ととや 神田 電話 料理",
+        "ととや 千代田 おすすめ"
+      ],
+      "blocker": null,
+      "notes": "Results included unrelated same-name venues such as 山田食堂ととや; rejected.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-DISCOVERY/S1.json"
+      ],
+      "reviewReasoning": "Independent second-pass review on 2026-09-15. Results included unrelated same-name venues such as 山田食堂ととや; rejected."
+    },
+    {
+      "googlePlaceId": "ChIJQ1Jpnz-MGGARF9AezhiYpEU",
+      "restaurantName": "ぽっぽっ堂",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "ぽっぽっ堂 ラーメン 神田 メニュー",
+        "ぽっぽっ堂 千代田区",
+        "ぽっぽっ堂 おすすめ"
+      ],
+      "blocker": null,
+      "notes": "Searches produced weak/aggregator traces without acceptable branch-bound menu provenance.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-DISCOVERY/S1.json"
+      ],
+      "reviewReasoning": "Independent second-pass review on 2026-09-15. Searches produced weak/aggregator traces without acceptable branch-bound menu provenance."
+    },
+    {
+      "googlePlaceId": "ChIJQcg0h_yNGGARCKxPnK7-G_Q",
+      "restaurantName": "万世かつサンド",
+      "status": "blocked",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "万世かつサンド 神田須田町 2-21",
+        "万世かつサンド 秋葉原本店 名物",
+        "万かつサンド 現在 店舗",
+        "https://www.gdm.or.jp/crew/2019/1106/326274"
+      ],
+      "blocker": "historical_location_identity_currentness_unresolved",
+      "notes": "Legacy location changes/closure make old menu semantics unsuitable as current branch truth.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-DISCOVERY/S1.json"
+      ],
+      "reviewReasoning": "Independent second-pass review on 2026-09-15. Legacy location changes/closure make old menu semantics unsuitable as current branch truth."
+    },
+    {
+      "googlePlaceId": "ChIJsRMycUGMGGARBaJQWCNAef8",
+      "restaurantName": "龍門酒家",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "龍門酒家 千代田区 メニュー",
+        "龍門酒家 神田 料理",
+        "龍門酒家 東京 おすすめ"
+      ],
+      "blocker": null,
+      "notes": "Name-only matches and aggregator pages were rejected.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-DISCOVERY/S1.json"
+      ],
+      "reviewReasoning": "Independent second-pass review on 2026-09-15. Name-only matches and aggregator pages were rejected."
+    },
+    {
+      "googlePlaceId": "ChIJtZ-j77GNGGARFWePKILzQP4",
+      "restaurantName": "カリー屋ジンコック",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "カリー屋ジンコック 公式 メニュー",
+        "ジンコック 神田 おすすめ カレー",
+        "カリー屋ジンコック メニュー 神田"
+      ],
+      "blocker": null,
+      "notes": "Customer review prose was not used as menu truth.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-DISCOVERY/S1.json"
+      ],
+      "reviewReasoning": "Independent second-pass review on 2026-09-15. Customer review prose was not used as menu truth."
+    },
+    {
+      "googlePlaceId": "ChIJU9NtWQOMGGARIOyGVUhXqxs",
+      "restaurantName": "Kitchen Ishigaki",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "Kitchen Ishigaki 神田 menu",
+        "Kitchen Ishigaki 千代田区 料理",
+        "Kitchen Ishigaki おすすめ"
+      ],
+      "blocker": null,
+      "notes": "Concrete menu hits were limited to excluded aggregators/reviews.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-DISCOVERY/S1.json"
+      ],
+      "reviewReasoning": "Independent second-pass review on 2026-09-15. Concrete menu hits were limited to excluded aggregators/reviews."
+    },
+    {
+      "googlePlaceId": "ChIJuU9J5R6NGGAR68tCV4qq_fk",
+      "restaurantName": "無極担々麺",
+      "status": "candidate",
+      "identity": {
+        "state": "reviewed_candidate",
+        "sourceAliases": [
+          "無極担々麺 listing"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [
+        {
+          "classification": "C",
+          "targetField": null,
+          "nameOriginal": "汁なし担々麺",
+          "nameZhCandidate": null,
+          "evidenceClass": "source_menu_text",
+          "recommendationSemantics": "",
+          "provider": "文京区社会福祉協議会 public-interest PDF/page",
+          "sourceOrigin": "文京区社会福祉協議会 public-interest PDF/page",
+          "sourceUrl": "https://www.bunsyakyo.or.jp/download_file/view/2135/302",
+          "checkedAt": "2026-09-15",
+          "sourceScope": "branch",
+          "evidenceText": "担々麺は黒、白、汁なし担々麺など…",
+          "confidence": "medium",
+          "notes": "The branch listing proves 汁なし担々麺 as a concrete menu item; no explicit recommendation/specialty marker was attached to the dish. Downgraded on second pass: the public-interest source used by the proposal could not be reproducibly re-read as current in this pass, so 汁なし担々麺 is retained only as candidate evidence."
+        }
+      ],
+      "attemptedSources": [
+        "無極担々麺 湯島 2-11-7",
+        "無極担々麺 メニュー",
+        "03-3811-1089 担々麺",
+        "https://www.bunsyakyo.or.jp/download_file/view/2135/302"
+      ],
+      "blocker": null,
+      "notes": "Downgraded on second pass: the public-interest source used by the proposal could not be reproducibly re-read as current in this pass, so 汁なし担々麺 is retained only as candidate evidence.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-DISCOVERY/S1.json"
+      ],
+      "reviewReasoning": "Independent second-pass review on 2026-09-15. Downgraded on second pass: the public-interest source used by the proposal could not be reproducibly re-read as current in this pass, so 汁なし担々麺 is retained only as candidate evidence."
+    },
+    {
+      "googlePlaceId": "ChIJxQWvSQGMGGARSaEHfWmu2rU",
+      "restaurantName": "浅野屋本店",
+      "status": "candidate",
+      "identity": {
+        "state": "reviewed_candidate",
+        "sourceAliases": [
+          "浅野屋本店 | VISIT CHIYODA"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [
+        {
+          "classification": "C",
+          "targetField": null,
+          "nameOriginal": "鴨南ばん",
+          "nameZhCandidate": null,
+          "evidenceClass": "source_recommended_dish_text",
+          "recommendationSemantics": "",
+          "provider": "Visit Chiyoda official tourism",
+          "sourceOrigin": "Visit Chiyoda official tourism",
+          "sourceUrl": "https://visit-chiyoda.tokyo/app/spot/detail/751",
+          "checkedAt": "2026-09-15",
+          "sourceScope": "branch",
+          "evidenceText": "おすすめの『鴨南ばん』",
+          "confidence": "medium",
+          "notes": "Official Chiyoda tourism page explicitly recommends this concrete dish for 浅野屋本店. Downgraded on second pass: Visit Chiyoda explicitly limits 鴨南ばん to mid-November through end-March; it is not current on 2026-09-15."
+        }
+      ],
+      "attemptedSources": [
+        "浅野屋本店 内神田 鴨南ばん",
+        "浅野屋本店 千代田 おすすめ",
+        "https://visit-chiyoda.tokyo/app/spot/detail/751"
+      ],
+      "blocker": null,
+      "notes": "Downgraded on second pass: Visit Chiyoda explicitly limits 鴨南ばん to mid-November through end-March; it is not current on 2026-09-15.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-DISCOVERY/S1.json"
+      ],
+      "reviewReasoning": "Independent second-pass review on 2026-09-15. Downgraded on second pass: Visit Chiyoda explicitly limits 鴨南ばん to mid-November through end-March; it is not current on 2026-09-15."
+    },
+    {
+      "googlePlaceId": "ChIJY5FgPTWNGGARv0BQVJaGjYQ",
+      "restaurantName": "魚伸",
+      "status": "blocked",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "魚伸 神田 公式",
+        "魚伸 神田 メニュー",
+        "site:sushiyauoshin.com 神田 2023",
+        "https://www.sushiyauoshin.com/"
+      ],
+      "blocker": "branch_closed_moved_stale_menu_not_reusable",
+      "notes": "Old Kanda menu evidence was intentionally not rebound to the Yokohama business.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-DISCOVERY/S1.json"
+      ],
+      "reviewReasoning": "Independent second-pass review on 2026-09-15. Old Kanda menu evidence was intentionally not rebound to the Yokohama business."
+    },
+    {
+      "googlePlaceId": "ChIJ__IhrgOMGGARosRgZJPH0AQ",
+      "restaurantName": "田園",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "田園 神田 千代田 メニュー",
+        "田園 千代田区 バー 料理",
+        "田園 神田 電話"
+      ],
+      "blocker": null,
+      "notes": "Excluded/name-ambiguous results were not used.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-DISCOVERY/S1.json"
+      ],
+      "reviewReasoning": "Independent second-pass review on 2026-09-15. Excluded/name-ambiguous results were not used."
+    },
+    {
+      "googlePlaceId": "ChIJ00fY_wOMGGARzFZEPWJOA_o",
+      "restaurantName": "木花別邸 つぼみ",
+      "status": "candidate",
+      "identity": {
+        "state": "reviewed_candidate",
+        "sourceAliases": [
+          "木花別邸 つぼみ"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "木花別邸 つぼみ 公式 メニュー",
+        "site:kono-hana.com つぼみ 雫コース",
+        "https://www.kono-hana.com/locations/tsubomi/"
+      ],
+      "blocker": null,
+      "notes": "Official source exposes course labels such as 雫（しずく）コース/おまかせ but no concrete source-native dish item suitable for F/R.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-DISCOVERY/S1.json"
+      ],
+      "reviewReasoning": "Independent second-pass review on 2026-09-15. Official source exposes course labels such as 雫（しずく）コース/おまかせ but no concrete source-native dish item suitable for F/R."
+    },
+    {
+      "googlePlaceId": "ChIJ0SCpDE6NGGARNuuIUMu54DI",
+      "restaurantName": "ANIKU produced by 新井屋",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "ANIKU produced by 新井屋"
+        ],
+        "evidence": [
+          {
+            "provider": "OMAKASE JE independent reservation",
+            "sourceUrl": "https://omakaseje.com/ja/restaurants/fk331251",
+            "checkedAt": "2026-09-15",
+            "evidenceType": "branch_page",
+            "note": "Source identifies ANIKU produced by 新井屋 at 東京都千代田区神田三崎町2-16-10."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "classification": "R",
+          "targetField": "recommendedDishes",
+          "nameOriginal": "タワーカルビ",
+          "nameZhCandidate": null,
+          "evidenceClass": "source_recommended_dish_text",
+          "recommendationSemantics": "『タワーカルビ』や『ネギタン』は必ずオーダーしたい逸品",
+          "provider": "Reviewed independent",
+          "sourceOrigin": "OMAKASE JE independent reservation",
+          "sourceUrl": "https://omakaseje.com/ja/restaurants/fk331251",
+          "checkedAt": "2026-09-15",
+          "sourceScope": "branch",
+          "evidenceText": "『タワーカルビ』や『ネギタン』は必ずオーダーしたい逸品",
+          "confidence": "high",
+          "notes": "Independent branch page explicitly says these named dishes are must-order specialties."
+        },
+        {
+          "classification": "R",
+          "targetField": "recommendedDishes",
+          "nameOriginal": "ネギタン",
+          "nameZhCandidate": null,
+          "evidenceClass": "source_recommended_dish_text",
+          "recommendationSemantics": "『タワーカルビ』や『ネギタン』は必ずオーダーしたい逸品",
+          "provider": "Reviewed independent",
+          "sourceOrigin": "OMAKASE JE independent reservation",
+          "sourceUrl": "https://omakaseje.com/ja/restaurants/fk331251",
+          "checkedAt": "2026-09-15",
+          "sourceScope": "branch",
+          "evidenceText": "『タワーカルビ』や『ネギタン』は必ずオーダーしたい逸品",
+          "confidence": "high",
+          "notes": "Independent branch page explicitly says these named dishes are must-order specialties."
+        }
+      ],
+      "attemptedSources": [
+        "ANIKU produced by 新井屋 メニュー",
+        "ANIKU 新井屋 水道橋 タワーカルビ ネギタン",
+        "https://omakaseje.com/ja/restaurants/fk331251"
+      ],
+      "blocker": null,
+      "notes": "Strict R from explicit 必ずオーダーしたい逸品 semantics.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-DISCOVERY/S1.json"
+      ],
+      "reviewReasoning": "Independent second-pass review on 2026-09-15. Strict R from explicit 必ずオーダーしたい逸品 semantics."
+    },
+    {
+      "googlePlaceId": "ChIJ37FZ_uqNGGARpT-BPIXUtLU",
+      "restaurantName": "バーエデン神田",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "バーエデン神田 メニュー",
+        "BAR EDEN 神田 フード",
+        "バーエデン 神田 おすすめ"
+      ],
+      "blocker": null,
+      "notes": "Social/review traces were not accepted.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-DISCOVERY/S1.json"
+      ],
+      "reviewReasoning": "Independent second-pass review on 2026-09-15. Social/review traces were not accepted."
+    },
+    {
+      "googlePlaceId": "ChIJ3SzgwRCMGGARiBD-bRL4eEY",
+      "restaurantName": "Ogawamachi Kinzushi",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "小川町 金寿司 メニュー",
+        "Ogawamachi Kinzushi menu",
+        "金寿司 小川町 千代田"
+      ],
+      "blocker": null,
+      "notes": "Retty/review-style hits were excluded.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-DISCOVERY/S1.json"
+      ],
+      "reviewReasoning": "Independent second-pass review on 2026-09-15. Retty/review-style hits were excluded."
+    },
+    {
+      "googlePlaceId": "ChIJ8Us3h1uNGGAR03cs-sE9cec",
+      "restaurantName": "スパイスカレー さんとよん",
+      "status": "candidate",
+      "identity": {
+        "state": "reviewed_candidate",
+        "sourceAliases": [
+          "スパイスカレー さんとよん press release"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [
+        {
+          "classification": "C",
+          "targetField": null,
+          "nameOriginal": "スパイス呑みセット",
+          "nameZhCandidate": null,
+          "evidenceClass": "source_recommended_dish_text",
+          "recommendationSemantics": "",
+          "provider": "Kyodo News PR Wire owner press release",
+          "sourceOrigin": "Kyodo News PR Wire owner press release",
+          "sourceUrl": "https://kyodonewsprwire.jp/release/202502274811",
+          "checkedAt": "2026-09-15",
+          "sourceScope": "branch",
+          "evidenceText": "一押しメニュー『スパイス呑みセット』",
+          "confidence": "medium",
+          "notes": "Owner press release explicitly labels this concrete bar-time set as the pushed/recommended menu item. Downgraded on second pass: explicit 一押し evidence is reproducible only in the 2025-02-28 launch release; current 2026 availability of スパイス呑みセット was not independently established."
+        }
+      ],
+      "attemptedSources": [
+        "スパイスカレー さんとよん 富士見2-4-7",
+        "さんとよん 一押しメニュー",
+        "https://kyodonewsprwire.jp/release/202502274811"
+      ],
+      "blocker": null,
+      "notes": "Downgraded on second pass: explicit 一押し evidence is reproducible only in the 2025-02-28 launch release; current 2026 availability of スパイス呑みセット was not independently established.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-DISCOVERY/S1.json"
+      ],
+      "reviewReasoning": "Independent second-pass review on 2026-09-15. Downgraded on second pass: explicit 一押し evidence is reproducible only in the 2025-02-28 launch release; current 2026 availability of スパイス呑みセット was not independently established."
+    },
+    {
+      "googlePlaceId": "ChIJ9zUsyD6MGGARVKVocMwPAGw",
+      "restaurantName": "居酒屋・角源",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "居酒屋 角源 千代田 メニュー",
+        "角源 神田 居酒屋 おすすめ",
+        "角源 千代田区 電話"
+      ],
+      "blocker": null,
+      "notes": "Name-only and aggregator results were rejected.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-DISCOVERY/S1.json"
+      ],
+      "reviewReasoning": "Independent second-pass review on 2026-09-15. Name-only and aggregator results were rejected."
+    },
+    {
+      "googlePlaceId": "ChIJdT5TFY6NGGARnWomViv5R1M",
+      "restaurantName": "Mama's Kitchen",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "Mama's Kitchen 千代田区 東京",
+        "Mama's Kitchen 神田 menu",
+        "ママズキッチン 千代田 メニュー"
+      ],
+      "blocker": null,
+      "notes": "Did not infer identity from cuisine or proximity.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-DISCOVERY/S1.json"
+      ],
+      "reviewReasoning": "Independent second-pass review on 2026-09-15. Did not infer identity from cuisine or proximity."
+    },
+    {
+      "googlePlaceId": "ChIJdUP0Q7ONGGARq_z0J6o6Fqc",
+      "restaurantName": "DUMBO Doughnuts & Coffee",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "DUMBO Doughnuts and Coffee TOKYO DOME CITY STORE"
+        ],
+        "evidence": [
+          {
+            "provider": "Tokyo Dome City official",
+            "sourceUrl": "https://www.tokyo-dome.co.jp/shops/g-dumbodc.html",
+            "checkedAt": "2026-09-15",
+            "evidenceType": "branch_page",
+            "note": "Official page identifies DUMBO Doughnuts and Coffee TOKYO DOME CITY STORE, Hi!EVERYVALLEY 2F, phone 03-6240-0687; repository Overture binding has the same phone."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "classification": "R",
+          "targetField": "recommendedDishes",
+          "nameOriginal": "フランボワーズ",
+          "nameZhCandidate": null,
+          "evidenceClass": "source_recommended_dish_text",
+          "recommendationSemantics": "おすすめメニュー / フランボワーズ",
+          "provider": "sourceWebsite",
+          "sourceOrigin": "Tokyo Dome City official",
+          "sourceUrl": "https://www.tokyo-dome.co.jp/shops/g-dumbodc.html",
+          "checkedAt": "2026-09-15",
+          "sourceScope": "branch",
+          "evidenceText": "おすすめメニュー / フランボワーズ",
+          "confidence": "high",
+          "notes": "Exact official branch page lists this item under おすすめメニュー."
+        },
+        {
+          "classification": "R",
+          "targetField": "recommendedDishes",
+          "nameOriginal": "マシュマロチョコレート",
+          "nameZhCandidate": null,
+          "evidenceClass": "source_recommended_dish_text",
+          "recommendationSemantics": "おすすめメニュー / マシュマロチョコレート",
+          "provider": "sourceWebsite",
+          "sourceOrigin": "Tokyo Dome City official",
+          "sourceUrl": "https://www.tokyo-dome.co.jp/shops/g-dumbodc.html",
+          "checkedAt": "2026-09-15",
+          "sourceScope": "branch",
+          "evidenceText": "おすすめメニュー / マシュマロチョコレート",
+          "confidence": "high",
+          "notes": "Exact official branch page lists this item under おすすめメニュー."
+        },
+        {
+          "classification": "R",
+          "targetField": "recommendedDishes",
+          "nameOriginal": "チーズケーキ",
+          "nameZhCandidate": null,
+          "evidenceClass": "source_recommended_dish_text",
+          "recommendationSemantics": "おすすめメニュー / チーズケーキ",
+          "provider": "sourceWebsite",
+          "sourceOrigin": "Tokyo Dome City official",
+          "sourceUrl": "https://www.tokyo-dome.co.jp/shops/g-dumbodc.html",
+          "checkedAt": "2026-09-15",
+          "sourceScope": "branch",
+          "evidenceText": "おすすめメニュー / チーズケーキ",
+          "confidence": "high",
+          "notes": "Exact official branch page lists this item under おすすめメニュー."
+        },
+        {
+          "classification": "R",
+          "targetField": "recommendedDishes",
+          "nameOriginal": "アーモンドキャラメル",
+          "nameZhCandidate": null,
+          "evidenceClass": "source_recommended_dish_text",
+          "recommendationSemantics": "おすすめメニュー / アーモンドキャラメル",
+          "provider": "sourceWebsite",
+          "sourceOrigin": "Tokyo Dome City official",
+          "sourceUrl": "https://www.tokyo-dome.co.jp/shops/g-dumbodc.html",
+          "checkedAt": "2026-09-15",
+          "sourceScope": "branch",
+          "evidenceText": "おすすめメニュー / アーモンドキャラメル",
+          "confidence": "high",
+          "notes": "Exact official branch page lists this item under おすすめメニュー."
+        }
+      ],
+      "attemptedSources": [
+        "DUMBO Doughnuts Coffee Tokyo Dome City official",
+        "site:tokyo-dome.co.jp DUMBO おすすめメニュー",
+        "https://www.tokyo-dome.co.jp/shops/g-dumbodc.html"
+      ],
+      "blocker": null,
+      "notes": "Exact branch official source with explicit おすすめメニュー.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-DISCOVERY/S1.json"
+      ],
+      "reviewReasoning": "Independent second-pass review on 2026-09-15. Exact branch official source with explicit おすすめメニュー."
+    },
+    {
+      "googlePlaceId": "ChIJga_hZxCMGGARoYeuGBZUxcA",
+      "restaurantName": "Oichi",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "Oichi 神田 イタリアン menu",
+        "Oichi 千代田区 メニュー",
+        "Oichi 神田 おすすめ"
+      ],
+      "blocker": null,
+      "notes": "Available hits were mainly Tabelog/social and were excluded.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-DISCOVERY/S1.json"
+      ],
+      "reviewReasoning": "Independent second-pass review on 2026-09-15. Available hits were mainly Tabelog/social and were excluded."
+    },
+    {
+      "googlePlaceId": "ChIJL85mABSMGGARWcdLbV4zZqo",
+      "restaurantName": "ワインバーt（ティー）",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "ワインバーt ティー 神田 メニュー",
+        "ワインバー t 千代田 料理",
+        "wine bar t 神田 おすすめ"
+      ],
+      "blocker": null,
+      "notes": "Ekiten/PayPay/Yahoo-style listings were not accepted as dish evidence.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-DISCOVERY/S1.json"
+      ],
+      "reviewReasoning": "Independent second-pass review on 2026-09-15. Ekiten/PayPay/Yahoo-style listings were not accepted as dish evidence."
+    },
+    {
+      "googlePlaceId": "ChIJMfoKATiNGGARMjVmoqqmTh4",
+      "restaurantName": "浅草姉妹",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "浅草姉妹 03-6663-8333 メニュー",
+        "浅草姉妹 神田 料理",
+        "浅草姉妹 おすすめ"
+      ],
+      "blocker": null,
+      "notes": "HotPepper/Tabelog menu pages were not used.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-DISCOVERY/S1.json"
+      ],
+      "reviewReasoning": "Independent second-pass review on 2026-09-15. HotPepper/Tabelog menu pages were not used."
+    },
+    {
+      "googlePlaceId": "ChIJmSK7DUKNGGARNPmQPsqixl0",
+      "restaurantName": "サル ド ルポ",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "サル ド ルポ"
+        ],
+        "evidence": [
+          {
+            "provider": "Let's Enjoy Tokyo independent venue guide",
+            "sourceUrl": "https://www.enjoytokyo.jp/spot/l_20011596/",
+            "checkedAt": "2026-09-15",
+            "evidenceType": "branch_page",
+            "note": "Source gives 神田駿河台3-3 and telephone 03-3295-3674 for サル ド ルポ."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "classification": "R",
+          "targetField": "recommendedDishes",
+          "nameOriginal": "オードブル盛りあわせ",
+          "nameZhCandidate": null,
+          "evidenceClass": "source_recommended_dish_text",
+          "recommendationSemantics": "オードブル盛りあわせが当店一番人気",
+          "provider": "Reviewed independent",
+          "sourceOrigin": "Let's Enjoy Tokyo independent venue guide",
+          "sourceUrl": "https://www.enjoytokyo.jp/spot/l_20011596/",
+          "checkedAt": "2026-09-15",
+          "sourceScope": "branch",
+          "evidenceText": "オードブル盛りあわせが当店一番人気",
+          "confidence": "high",
+          "notes": "Independent venue page attributes explicit 一番人気 semantics to this concrete dish."
+        }
+      ],
+      "attemptedSources": [
+        "サル ド ルポ 神田駿河台 3-3",
+        "サル ド ルポ 一番人気",
+        "https://www.enjoytokyo.jp/spot/l_20011596/"
+      ],
+      "blocker": null,
+      "notes": "Strict R from explicit 当店一番人気 semantics.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-DISCOVERY/S1.json"
+      ],
+      "reviewReasoning": "Independent second-pass review on 2026-09-15. Strict R from explicit 当店一番人気 semantics."
+    },
+    {
+      "googlePlaceId": "ChIJOw7MX5CNGGAR0cfMBX1791s",
+      "restaurantName": "seto",
+      "status": "candidate",
+      "identity": {
+        "state": "reviewed_candidate",
+        "sourceAliases": [
+          "seto"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "seto 九段南 2-1-32 メニュー",
+        "seto 03-6686-6395",
+        "TableCheck seto 九段南",
+        "https://www.tablecheck.com/ja/seto"
+      ],
+      "blocker": null,
+      "notes": "Current reservation source proves exact branch and course availability but exposes no concrete dish labels, so C only.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-DISCOVERY/S1.json"
+      ],
+      "reviewReasoning": "Independent second-pass review on 2026-09-15. Current reservation source proves exact branch and course availability but exposes no concrete dish labels, so C only."
+    },
+    {
+      "googlePlaceId": "ChIJp5DhBQ2NGGARIzyIvtbL5o0",
+      "restaurantName": "Grand Pyramid",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "コシャリ | Grand Pyramid"
+        ],
+        "evidence": [
+          {
+            "provider": "Grand Pyramid official",
+            "sourceUrl": "https://grandpyramid.jp/blog/koshari/",
+            "checkedAt": "2026-09-15",
+            "evidenceType": "branch_page",
+            "note": "Official Grand Pyramid site/menu identifies the restaurant at 飯田橋3-10-9 アイガーデンテラス3F, phone 03-6261-9390; repository Overture binding has +81362619390."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "classification": "R",
+          "targetField": "recommendedDishes",
+          "nameOriginal": "コシャリ",
+          "nameZhCandidate": null,
+          "evidenceClass": "source_recommended_dish_text",
+          "recommendationSemantics": "人気 / おすすめ",
+          "provider": "sourceWebsite",
+          "sourceOrigin": "Grand Pyramid official",
+          "sourceUrl": "https://grandpyramid.jp/blog/koshari/",
+          "checkedAt": "2026-09-15",
+          "sourceScope": "branch",
+          "evidenceText": "GRAND PYRAMIDでは、コシャリはヴィーガン対応メニューとしても人気があり、ハラル認証の食材のみを使用しています。エジプト料理を初めて食べる方はもちろん、肉を使わない満足感のある料理を探している方にもおすすめです。",
+          "confidence": "high",
+          "notes": "Official restaurant article identifies コシャリ as popular and recommends it for guests seeking a satisfying meat-free dish."
+        }
+      ],
+      "attemptedSources": [
+        "Grand Pyramid 飯田橋 コシャリ",
+        "site:grandpyramid.jp コシャリ おすすめ",
+        "https://grandpyramid.jp/blog/koshari/"
+      ],
+      "blocker": null,
+      "notes": "Strict R from current official source-local popular/recommendation semantics.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-DISCOVERY/S1.json"
+      ],
+      "reviewReasoning": "Independent second-pass review on 2026-09-15. Strict R from current official source-local popular/recommendation semantics."
+    },
+    {
+      "googlePlaceId": "ChIJq6oOWQOMGGARvoR9juaWq5g",
+      "restaurantName": "満月廬",
+      "status": "candidate",
+      "identity": {
+        "state": "reviewed_candidate",
+        "sourceAliases": [
+          "満月廬 神田・御茶ノ水"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [
+        {
+          "classification": "C",
+          "targetField": null,
+          "nameOriginal": "小籠包",
+          "nameZhCandidate": null,
+          "evidenceClass": "source_specialty_dish_text",
+          "recommendationSemantics": "",
+          "provider": "TakeMe independent menu/reservation",
+          "sourceOrigin": "TakeMe independent menu/reservation",
+          "sourceUrl": "https://www.takeme.com/ja/region-tokyo-420000/restaurant-reservation/yamucha-tenshin2-kanda-ochanomizu-a0061369-yoyaku",
+          "checkedAt": "2026-09-15",
+          "sourceScope": "branch",
+          "evidenceText": "「名物」小籠包",
+          "confidence": "medium",
+          "notes": "Stable independent menu page explicitly marks the concrete item as 名物. Downgraded on second pass: exact branch identity remains supported, but the TakeMe recommendation text could not be reproduced at equivalent strength; other-branch 名物 wording was not propagated."
+        }
+      ],
+      "attemptedSources": [
+        "満月廬 神田須田町 1-2-3 メニュー",
+        "満月廬 03-3258-9239 小籠包",
+        "満月廬 名物 小籠包",
+        "https://www.takeme.com/ja/region-tokyo-420000/restaurant-reservation/yamucha-tenshin2-kanda-ochanomizu-a0061369-yoyaku"
+      ],
+      "blocker": null,
+      "notes": "Downgraded on second pass: exact branch identity remains supported, but the TakeMe recommendation text could not be reproduced at equivalent strength; other-branch 名物 wording was not propagated.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-DISCOVERY/S1.json"
+      ],
+      "reviewReasoning": "Independent second-pass review on 2026-09-15. Downgraded on second pass: exact branch identity remains supported, but the TakeMe recommendation text could not be reproduced at equivalent strength; other-branch 名物 wording was not propagated."
+    },
+    {
+      "googlePlaceId": "ChIJR4gpfJaNGGAR5CgronelIVo",
+      "restaurantName": "餃子世界東京",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "餃子世界東京 メニュー",
+        "餃子世界 東京 神田",
+        "餃子世界東京 おすすめ"
+      ],
+      "blocker": null,
+      "notes": "Social/Tabelog-style results were excluded.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-DISCOVERY/S1.json"
+      ],
+      "reviewReasoning": "Independent second-pass review on 2026-09-15. Social/Tabelog-style results were excluded."
+    },
+    {
+      "googlePlaceId": "ChIJu6ATgOqNGGAR8ZQQGhCPJog",
+      "restaurantName": "ニイハオ 水道橋店",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "ニイハオ 水道橋店"
+        ],
+        "evidence": [
+          {
+            "provider": "official_gorp_owner_page",
+            "sourceUrl": "https://ggr0300.gorp.jp/",
+            "checkedAt": "2026-09-15",
+            "evidenceType": "branch_page",
+            "note": "Owner page identifies ニイハオ 水道橋店 at 東京都千代田区神田三崎町2-20-8 2F and phone 050-5488-1916."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "classification": "R",
+          "targetField": "recommendedDishes",
+          "nameOriginal": "元祖羽付き餃子",
+          "nameZhCandidate": null,
+          "evidenceClass": "source_specialty_popular_dish_text",
+          "recommendationSemantics": "手作り！蒲田名物の元祖羽付き餃子",
+          "provider": "sourceWebsite",
+          "sourceOrigin": "official_gorp_owner_page",
+          "sourceUrl": "https://ggr0300.gorp.jp/",
+          "checkedAt": "2026-09-15",
+          "sourceScope": "branch",
+          "evidenceText": "手作り！蒲田名物の元祖羽付き餃子",
+          "confidence": "high",
+          "notes": "Exact branch owner page explicitly labels the concrete dish as a specialty."
+        }
+      ],
+      "attemptedSources": [
+        "ニイハオ 水道橋店 公式 gorp",
+        "ggr0300 羽付き餃子",
+        "https://ggr0300.gorp.jp/"
+      ],
+      "blocker": null,
+      "notes": "Used the gorp.jp owner page itself; did not rely on linked excluded r.gnavi pages.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-DISCOVERY/S1.json"
+      ],
+      "reviewReasoning": "Independent second-pass review on 2026-09-15. Used the gorp.jp owner page itself; did not rely on linked excluded r.gnavi pages."
+    },
+    {
+      "googlePlaceId": "ChIJw-TYkAWMGGAR1bYxsAEDOkI",
+      "restaurantName": "Yaoyu",
+      "status": "candidate",
+      "identity": {
+        "state": "reviewed_candidate",
+        "sourceAliases": [
+          "Yaoyu"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "Yaoyu 神田錦町 1-17-5",
+        "Yaoyu 03-5577-6783 menu",
+        "TableCheck Yaoyu",
+        "https://www.tablecheck.com/ja/yaoyu"
+      ],
+      "blocker": null,
+      "notes": "Reservation source gives exact venue/course structure but no concrete dish labels. Reviewer-prose examples from other sources were not used as menu truth.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-DISCOVERY/S1.json"
+      ],
+      "reviewReasoning": "Independent second-pass review on 2026-09-15. Reservation source gives exact venue/course structure but no concrete dish labels. Reviewer-prose examples from other sources were not used as menu truth."
+    },
+    {
+      "googlePlaceId": "ChIJwU7V2xCMGGARvGs8qvfl7j8",
+      "restaurantName": "Quirinale",
+      "status": "candidate",
+      "identity": {
+        "state": "reviewed_candidate",
+        "sourceAliases": [
+          "Quirinale"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [
+        {
+          "classification": "C",
+          "targetField": null,
+          "nameOriginal": "フレッシュポルチーニ茸とモッツァレラチーズのオーブン焼き",
+          "nameZhCandidate": null,
+          "evidenceClass": "stale_official_seasonal_recommendation_candidate",
+          "recommendationSemantics": "",
+          "provider": "official_web",
+          "sourceOrigin": "official_web",
+          "sourceUrl": "https://quirinale619.amebaownd.com/",
+          "checkedAt": "2026-09-15",
+          "sourceScope": "branch",
+          "evidenceText": "おすすめの季節料理として掲載",
+          "confidence": "medium",
+          "notes": "Official venue site contains an older seasonal recommendation, but current availability cannot be established in 2026. Recommendation semantics are real but stale; retained as C rather than current R/F."
+        }
+      ],
+      "attemptedSources": [
+        "Quirinale 神田小川町 3-16",
+        "site:quirinale619.amebaownd.com おすすめ ポルチーニ",
+        "https://quirinale619.amebaownd.com/"
+      ],
+      "blocker": null,
+      "notes": "Recommendation semantics are real but stale; retained as C rather than current R/F.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-DISCOVERY/S1.json"
+      ],
+      "reviewReasoning": "Independent second-pass review on 2026-09-15. Recommendation semantics are real but stale; retained as C rather than current R/F."
+    },
+    {
+      "googlePlaceId": "ChIJwVRExxWMGGARLIooVloKH3w",
+      "restaurantName": "豚や 西神田店",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "豚や 西神田店 03-6256-8480 メニュー",
+        "豚や 西神田 おすすめ",
+        "豚や 西神田 料理"
+      ],
+      "blocker": null,
+      "notes": "Tabelog/Yahoo-style menu results were not used.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-DISCOVERY/S1.json"
+      ],
+      "reviewReasoning": "Independent second-pass review on 2026-09-15. Tabelog/Yahoo-style menu results were not used."
+    },
+    {
+      "googlePlaceId": "ChIJXTPXpkSNGGARtQ_R2nGnnOk",
+      "restaurantName": "牡舌亭",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "牡舌亭 神田 メニュー",
+        "牡舌亭 千代田 おすすめ",
+        "牡舌亭 牛タン 住所"
+      ],
+      "blocker": null,
+      "notes": "Concrete menu traces were limited to excluded Tabelog/Rakuten Gurunavi families.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-DISCOVERY/S1.json"
+      ],
+      "reviewReasoning": "Independent second-pass review on 2026-09-15. Concrete menu traces were limited to excluded Tabelog/Rakuten Gurunavi families."
+    },
+    {
+      "googlePlaceId": "ChIJjX2UEKaNGGARqhp9myAPFiw",
+      "restaurantName": "RESTAURANT MOROCCO TOKYO",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "repository exact Place ID search",
+        "https://visit-chiyoda.tokyo/app/spot/detail/789"
+      ],
+      "blocker": null,
+      "notes": "Current queue still contains this R-gap row. Existing Visit Chiyoda F evidence (タジン鍋/クスクス) does not make the current recommendation assignment complete; no strict R evidence found.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-DISCOVERY/S1.json"
+      ],
+      "reviewReasoning": "Independent second-pass review on 2026-09-15. Current queue still contains this R-gap row. Existing Visit Chiyoda F evidence (タジン鍋/クスクス) does not make the current recommendation assignment complete; no strict R evidence found."
+    },
+    {
+      "googlePlaceId": "ChIJT9HCuRyMGGARqIt735A6L1k",
+      "restaurantName": "東京豆花工房",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "repository exact Place ID search",
+        "http://tokyomamehana.com/"
+      ],
+      "blocker": null,
+      "notes": "Current queue still contains this R-gap row. Existing source/F evidence does not make the recommendation assignment complete; no strict R evidence found.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-DISCOVERY/S1.json"
+      ],
+      "reviewReasoning": "Independent second-pass review on 2026-09-15. Current queue still contains this R-gap row. Existing source/F evidence does not make the recommendation assignment complete; no strict R evidence found."
+    }
+  ]
+}

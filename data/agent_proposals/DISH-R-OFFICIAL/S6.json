@@ -1,0 +1,596 @@
+{
+  "schemaVersion": 1,
+  "proposalOnly": true,
+  "marker": "DISH-R-OFFICIAL",
+  "shard": "S6",
+  "sourceQueue": "data/dish_batch_plan.json",
+  "sourceQueueCommit": "5179badcdb58ba176cf2d9cf834a02e24c86e736",
+  "generatedAt": "2026-09-14T22:30:00+09:00",
+  "summary": {
+    "assignedRows": 20,
+    "reviewedRows": 20,
+    "acceptedEvidenceRows": 1,
+    "candidateRows": 1,
+    "noEvidenceRows": 12,
+    "blockedRows": 6,
+    "skippedAlreadyCompleteRows": 0
+  },
+  "policyAttestation": {
+    "paidGoogleDataApiCalls": 0,
+    "canonicalMasterEditedDirectly": false,
+    "proximityOnlyIdentityBindingUsed": false,
+    "recommendationWithoutExplicitSemanticsAdded": false,
+    "accessRestrictionBypassUsed": false
+  },
+  "agentRunId": "official-missing-S6-proposal-20260914",
+  "records": [
+    {
+      "googlePlaceId": "ChIJD4tLmA-MGGARqHJvbMa-yNs",
+      "restaurantName": "鹿屋アスリート食堂",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "鹿屋アスリート食堂"
+        ],
+        "evidence": [
+          {
+            "provider": "official_web",
+            "sourceUrl": "https://asushoku.com/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Catalog identity name: 鹿屋アスリート食堂; source-native name: 鹿屋アスリート食堂; canonical address: not stated on the current runtime source record; canonical phone: not stated on the current runtime source record; exact reviewed source URL retained for audit; dish acceptance remains no_evidence."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://asushoku.com/",
+        "https://asushoku.com/shoplist/kanda/menu.php",
+        "https://asushoku.com/menu/",
+        "https://asushoku.com/shoplist/shinagawa/menu.php",
+        "https://asushoku.com/shoplist/ryogoku/menu.php",
+        "https://asushoku.com/shoplist/marunouchi/menu.php",
+        "https://asushoku.com/shoplist/kagoshima/menu.php",
+        "https://asushoku.com/shoplist/morinomiya/menu.php"
+      ],
+      "blocker": null,
+      "notes": "Reviewed exact official source family; no concrete current branch dish was paired with explicit recommendation/signature/popular/specialty semantics. No dish proposal made."
+    },
+    {
+      "googlePlaceId": "ChIJIeDGY_6NGGARWCyGYme_2bA",
+      "restaurantName": "グランサイファーキッチン",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "グランサイファーキッチン"
+        ],
+        "evidence": [
+          {
+            "provider": "official_web",
+            "sourceUrl": "https://www.pasela.co.jp/paselabo_shop/grandcypher-kitchen/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Catalog identity name: グランサイファーキッチン; source-native name: グランサイファーキッチン; canonical address: 東京都 千代田区 外神田一丁目 10; canonical phone: +81-120-192-759; exact reviewed source URL retained for audit; dish acceptance remains no_evidence."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://www.pasela.co.jp/paselabo_shop/grandcypher-kitchen/",
+        "https://www.pasela.co.jp/paselabo_shop/grandcypher-kitchen/#menu",
+        "https://www.pasela.co.jp/shoplist/grandcypher-kitchen/news/%e3%80%90%e7%ac%ac65%e5%9b%9e%e3%80%91%e3%82%b0%e3%83%a9%e3%82%b5%e3%82%a4%e3%82%ad%e3%83%83%e3%83%81%e3%83%b3%e9%80%9a%e4%bf%a1%ef%bd%9e%e7%ac%ac20%e5%ad%a3%e7%af%80%e9%99%90%e5%ae%9a%e3%83%a1/",
+        "https://www.pasela.co.jp/shoplist/grandcypher-kitchen/news/%e3%80%90%e7%ac%ac56%e5%9b%9e%e3%80%91%e3%82%b0%e3%83%a9%e3%82%b5%e3%82%a4%e3%82%ad%e3%83%83%e3%83%81%e3%83%b3%e9%80%9a%e4%bf%a1%ef%bd%9e%e7%ac%ac17%e5%bc%be%e5%ad%a3%e7%af%80%e9%99%90%e5%ae%9a-2-2-4/",
+        "https://www.pasela.co.jp/shoplist/grandcypher-kitchen/news/%e3%80%90%e7%ac%ac56%e5%9b%9e%e3%80%91%e3%82%b0%e3%83%a9%e3%82%b5%e3%82%a4%e3%82%ad%e3%83%83%e3%83%81%e3%83%b3%e9%80%9a%e4%bf%a1%ef%bd%9e%e7%ac%ac17%e5%bc%be%e5%ad%a3%e7%af%80%e9%99%90%e5%ae%9a-2-2-3/",
+        "https://www.pasela.co.jp/shoplist/grandcypher-kitchen/menu/"
+      ],
+      "blocker": null,
+      "notes": "Reviewed exact official source family; no concrete current branch dish was paired with explicit recommendation/signature/popular/specialty semantics. No dish proposal made."
+    },
+    {
+      "googlePlaceId": "ChIJ9TDnyQ-MGGARG-nByNz8I0E",
+      "restaurantName": "酒菜家かずいち",
+      "status": "candidate",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "酒菜家かずいち"
+        ],
+        "evidence": [
+          {
+            "provider": "official_web",
+            "sourceUrl": "https://gb32300.gorp.jp/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Catalog identity name: 酒菜家かずいち; source-native name: 酒菜家かずいち; canonical address: 東京都千代田区神田錦町3-17 寺村ビル 1F; canonical phone: 03-3296-7177; exact reviewed source URL retained for audit; dish acceptance remains candidate."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://gb32300.gorp.jp/",
+        "https://r.gnavi.co.jp/0001098182/menu3"
+      ],
+      "blocker": null,
+      "notes": "Exact official Gorp page and linked menu expose explicit recommendation/course language, but the phrase is not a concrete fixed dish and component items cannot inherit course recommendation semantics; candidate retained."
+    },
+    {
+      "googlePlaceId": "ChIJNd98ZACNGGAR4F8EqlaT9k8",
+      "restaurantName": "Walkabout Coffee",
+      "status": "blocked",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "Walkabout Coffee"
+        ],
+        "evidence": [
+          {
+            "provider": "official_web",
+            "sourceUrl": "https://www.thewalkabout.jp/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Catalog identity name: Walkabout Coffee; source-native name: Walkabout Coffee; canonical address: 〒101-0054 東京都千代田区神田錦町2丁目5−16 名古路ビル新館 1F; canonical phone: 03-6285-0007; exact reviewed source URL retained for audit; dish acceptance remains blocked."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://www.thewalkabout.jp/"
+      ],
+      "blocker": {
+        "type": "official_source_access_restricted",
+        "detail": "The reviewed official Walkabout site returned HTTP 403; no restriction bypass attempted."
+      },
+      "notes": "The reviewed official Walkabout site returned HTTP 403; no restriction bypass attempted. No bypass, paid search, or cross-branch inference used."
+    },
+    {
+      "googlePlaceId": "ChIJX2VqZfSNGGAR2huqczaqDu4",
+      "restaurantName": "多次元秘密基地",
+      "status": "blocked",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "多次元秘密基地"
+        ],
+        "evidence": [
+          {
+            "provider": "official_web",
+            "sourceUrl": "https://akiba-tazigen.com/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Catalog identity name: 多次元秘密基地; source-native name: 多次元秘密基地; canonical address: not stated on the current runtime source record; canonical phone: not stated on the current runtime source record; exact reviewed source URL retained for audit; dish acceptance remains blocked."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://akiba-tazigen.com/"
+      ],
+      "blocker": {
+        "type": "official_source_empty",
+        "detail": "The reviewed official site returned only a very short response without usable current branch/menu content."
+      },
+      "notes": "The reviewed official site returned only a very short response without usable current branch/menu content. No bypass, paid search, or cross-branch inference used."
+    },
+    {
+      "googlePlaceId": "ChIJZ6B6S2uMGGAR1FZFUTrzDm8",
+      "restaurantName": "ネバーランド カフェ",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "ネバーランド カフェ"
+        ],
+        "evidence": [
+          {
+            "provider": "official_web",
+            "sourceUrl": "https://neverlandcafe.gorp.jp/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Catalog identity name: ネバーランド カフェ; source-native name: ネバーランド カフェ; canonical address: 東京都千代田区九段南1-4-3; canonical phone: 03-3264-4672; exact reviewed source URL retained for audit; dish acceptance remains no_evidence."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://neverlandcafe.gorp.jp/",
+        "https://neverlandcafe.gorp.jp/#"
+      ],
+      "blocker": null,
+      "notes": "Reviewed exact official source family; no concrete current branch dish was paired with explicit recommendation/signature/popular/specialty semantics. No dish proposal made."
+    },
+    {
+      "googlePlaceId": "ChIJVwXD9E6NGGARkHzeYVBeacw",
+      "restaurantName": "タリーズコーヒー 住友不動産秋葉原ファーストビル・テラス店",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "タリーズコーヒー 住友不動産秋葉原ファーストビル・テラス店"
+        ],
+        "evidence": [
+          {
+            "provider": "official_web",
+            "sourceUrl": "https://shop.tullys.co.jp/detail/1003115?utm_source=google&utm_medium=gbp&utm_campaign=map",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Catalog identity name: タリーズコーヒー 住友不動産秋葉原ファーストビル・テラス店; source-native name: タリーズコーヒー 住友不動産秋葉原ファーストビル・テラス店; canonical address: １丁目９−１; canonical phone: 03-5209-2008; exact reviewed source URL retained for audit; dish acceptance remains no_evidence."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://shop.tullys.co.jp/detail/1003115?utm_source=google&utm_medium=gbp&utm_campaign=map"
+      ],
+      "blocker": null,
+      "notes": "Reviewed exact official source family; no concrete current branch dish was paired with explicit recommendation/signature/popular/specialty semantics. No dish proposal made."
+    },
+    {
+      "googlePlaceId": "ChIJW4ph90OMGGARdlhIHYAGMRw",
+      "restaurantName": "カフェ・ド・クリエ",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "カフェ・ド・クリエ"
+        ],
+        "evidence": [
+          {
+            "provider": "official_web",
+            "sourceUrl": "https://c-united.co.jp/store/detail/001209/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Catalog identity name: カフェ・ド・クリエ; source-native name: カフェ・ド・クリエ; canonical address: 〒102-0072 東京都千代田区飯田橋4-7-1 RF-2 ロックビレイビル1F; canonical phone: 03-3234-8201; exact reviewed source URL retained for audit; dish acceptance remains no_evidence."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://c-united.co.jp/store/detail/001209/"
+      ],
+      "blocker": null,
+      "notes": "Reviewed exact official source family; no concrete current branch dish was paired with explicit recommendation/signature/popular/specialty semantics. No dish proposal made."
+    },
+    {
+      "googlePlaceId": "ChIJ2-RzBT-MGGARQRlhPs95JJs",
+      "restaurantName": "おっこん",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "おっこん"
+        ],
+        "evidence": [
+          {
+            "provider": "official_web",
+            "sourceUrl": "http://okkon.yokochou.com",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Catalog identity name: おっこん; source-native name: おっこん; canonical address: 文京区後楽1丁目1-15; canonical phone: +81338144432; exact reviewed source URL retained for audit; dish acceptance remains no_evidence."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "http://okkon.yokochou.com"
+      ],
+      "blocker": null,
+      "notes": "Reviewed exact official source family; no concrete current branch dish was paired with explicit recommendation/signature/popular/specialty semantics. No dish proposal made."
+    },
+    {
+      "googlePlaceId": "ChIJ51IcBBWMGGARbOYE-W7z7Lg",
+      "restaurantName": "JB's BAR",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "JB's BAR"
+        ],
+        "evidence": [
+          {
+            "provider": "official_web",
+            "sourceUrl": "http://jbsbar.yamanoya.work/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Source-native name: JB's BAR; address: 東京都千代田区西神田2-4-3 髙岡ビルB1F; phone: 03-3239-3885; exact branch identity confirmed from the reviewed official page."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "JB'sカレー",
+          "nameZhCandidate": null,
+          "evidenceClass": "official_menu_item",
+          "recommendationSemantics": null,
+          "provider": "official_web",
+          "sourceUrl": "http://jbsbar.yamanoya.work/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "フード JB'sカレーが復活しました。パーティーフード Fish & Chips 唐揚げ JB's気まぐれパスタ 生ハムとチーズのセット",
+          "confidence": "high",
+          "notes": "Concrete current branch dish quoted from the exact official page; no explicit recommendation semantics asserted, therefore F only."
+        }
+      ],
+      "attemptedSources": [
+        "http://jbsbar.yamanoya.work/"
+      ],
+      "blocker": null,
+      "notes": "Strict current branch-level F evidence accepted from the reviewed official page; no explicit recommendation semantics was asserted."
+    },
+    {
+      "googlePlaceId": "ChIJ53NJO5-NGGAR_IlB-9Tnz70",
+      "restaurantName": "屋台DELi x TAKEBASHI",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "屋台DELi x TAKEBASHI"
+        ],
+        "evidence": [
+          {
+            "provider": "official_web",
+            "sourceUrl": "https://www.mai-b.co.jp/shop/b1/post-21.html",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Catalog identity name: 屋台DELi x TAKEBASHI; source-native name: 屋台DELi x TAKEBASHI; canonical address: 東京都千代田区一ツ橋1-1-1; canonical phone: 03-5414-5085; exact reviewed source URL retained for audit; dish acceptance remains no_evidence."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://www.mai-b.co.jp/shop/b1/post-21.html"
+      ],
+      "blocker": null,
+      "notes": "Reviewed exact official source family; no concrete current branch dish was paired with explicit recommendation/signature/popular/specialty semantics. No dish proposal made."
+    },
+    {
+      "googlePlaceId": "ChIJ6yIkdqmNGGARnQbZMLDoNX8",
+      "restaurantName": "東依（とうい） / 都市の茶室",
+      "status": "blocked",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "東依（とうい） / 都市の茶室"
+        ],
+        "evidence": [
+          {
+            "provider": "official_web",
+            "sourceUrl": "https://www.toui.tokyo/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Catalog identity name: 東依（とうい） / 都市の茶室; source-native name: 東依（とうい） / 都市の茶室; canonical address: 千代田区2 Chome-1-10 Sotokanda; canonical phone: not stated on the current runtime source record; exact reviewed source URL retained for audit; dish acceptance remains blocked."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://www.toui.tokyo/"
+      ],
+      "blocker": {
+        "type": "official_source_access_restricted",
+        "detail": "The reviewed official site returned HTTP 403; no restriction bypass attempted."
+      },
+      "notes": "The reviewed official site returned HTTP 403; no restriction bypass attempted. No bypass, paid search, or cross-branch inference used."
+    },
+    {
+      "googlePlaceId": "ChIJge_Vi4qNGGARUSVRmK8P39M",
+      "restaurantName": "Hub Tokyo Dome City LaQua",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "Hub Tokyo Dome City LaQua"
+        ],
+        "evidence": [
+          {
+            "provider": "official_web",
+            "sourceUrl": "https://www.pub-hub.com/index.php/shop/detail/40",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Catalog identity name: Hub Tokyo Dome City LaQua; source-native name: Hub Tokyo Dome City LaQua; canonical address: 文京区Kasuga, 1 Chome−1−1 ラクーア １Ｆ; canonical phone: not stated on the current runtime source record; exact reviewed source URL retained for audit; dish acceptance remains no_evidence."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://www.pub-hub.com/index.php/shop/detail/40"
+      ],
+      "blocker": null,
+      "notes": "Reviewed exact official source family; no concrete current branch dish was paired with explicit recommendation/signature/popular/specialty semantics. No dish proposal made."
+    },
+    {
+      "googlePlaceId": "ChIJKQd-go2NGGAR3P4QE_MC5ow",
+      "restaurantName": "グリルやまだ 大手町店",
+      "status": "blocked",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "グリルやまだ 大手町店"
+        ],
+        "evidence": [
+          {
+            "provider": "official_web",
+            "sourceUrl": "http://grillyamada-otemachi.com/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Catalog identity name: グリルやまだ 大手町店; source-native name: グリルやまだ 大手町店; canonical address: 千代田区Ōtemachi, 1 Chome−2−1 OTEMACHI ONE AVENUE B1F B114; canonical phone: +81368100161; exact reviewed source URL retained for audit; dish acceptance remains blocked."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "http://grillyamada-otemachi.com/"
+      ],
+      "blocker": {
+        "type": "dns_resolution_failed",
+        "detail": "The reviewed official website could not be resolved."
+      },
+      "notes": "The reviewed official website could not be resolved. No bypass, paid search, or cross-branch inference used."
+    },
+    {
+      "googlePlaceId": "ChIJM2-wmAaMGGARo_zjI90Qlb4",
+      "restaurantName": "焼肉 ぴゅあ 神田店",
+      "status": "blocked",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "焼肉 ぴゅあ 神田店"
+        ],
+        "evidence": [
+          {
+            "provider": "official_web",
+            "sourceUrl": "https://pure-kanda.com",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Catalog identity name: 焼肉 ぴゅあ 神田店; source-native name: 焼肉 ぴゅあ 神田店; canonical address: 千代田区内神田1丁目7-8; canonical phone: +81332944129; exact reviewed source URL retained for audit; dish acceptance remains blocked."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://pure-kanda.com"
+      ],
+      "blocker": {
+        "type": "official_source_empty",
+        "detail": "The reviewed official site returned a short response without usable current branch/menu content."
+      },
+      "notes": "The reviewed official site returned a short response without usable current branch/menu content. No bypass, paid search, or cross-branch inference used."
+    },
+    {
+      "googlePlaceId": "ChIJmU96Ev-NGGARnL6IKFECaKM",
+      "restaurantName": "Cafe Cruise",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "Cafe Cruise"
+        ],
+        "evidence": [
+          {
+            "provider": "official_web",
+            "sourceUrl": "https://www.jsf.or.jp/exhibit/restaurant",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Catalog identity name: Cafe Cruise; source-native name: Cafe Cruise; canonical address: 東京都千代田区北の丸公園2-1; canonical phone: not stated on the current runtime source record; exact reviewed source URL retained for audit; dish acceptance remains no_evidence."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://www.jsf.or.jp/exhibit/restaurant"
+      ],
+      "blocker": null,
+      "notes": "Reviewed exact official source family; no concrete current branch dish was paired with explicit recommendation/signature/popular/specialty semantics. No dish proposal made."
+    },
+    {
+      "googlePlaceId": "ChIJN_idkH-NGGARJHR6WDhPbnM",
+      "restaurantName": "すぽっとらいと 秋葉原 コンカフェ",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "すぽっとらいと 秋葉原 コンカフェ"
+        ],
+        "evidence": [
+          {
+            "provider": "official_web",
+            "sourceUrl": "https://spotlight-akiba.com/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Catalog identity name: すぽっとらいと 秋葉原 コンカフェ; source-native name: すぽっとらいと 秋葉原 コンカフェ; canonical address: 千代田区Sotokanda, 1 Chome−6−3 アキバあそび館ビル 7F; canonical phone: +819038070007; exact reviewed source URL retained for audit; dish acceptance remains no_evidence."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://spotlight-akiba.com/"
+      ],
+      "blocker": null,
+      "notes": "Reviewed exact official source family; no concrete current branch dish was paired with explicit recommendation/signature/popular/specialty semantics. No dish proposal made."
+    },
+    {
+      "googlePlaceId": "ChIJqVA2DTiMGGAROKkt-YJgYfk",
+      "restaurantName": "Hub Tokyo Dome City LaQua",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "Hub Tokyo Dome City LaQua"
+        ],
+        "evidence": [
+          {
+            "provider": "official_web",
+            "sourceUrl": "https://www.pub-hub.com/index.php/shop/detail/40",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Catalog identity name: Hub Tokyo Dome City LaQua; source-native name: Hub Tokyo Dome City LaQua; canonical address: 文京区Kasuga, 1 Chome−1−1 ラクーア １Ｆ; canonical phone: not stated on the current runtime source record; exact reviewed source URL retained for audit; dish acceptance remains no_evidence."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://www.pub-hub.com/index.php/shop/detail/40"
+      ],
+      "blocker": null,
+      "notes": "Reviewed exact official source family; no concrete current branch dish was paired with explicit recommendation/signature/popular/specialty semantics. No dish proposal made."
+    },
+    {
+      "googlePlaceId": "ChIJtcBGVwaMGGARS0tqKOmzCfE",
+      "restaurantName": "Bonne quela",
+      "status": "blocked",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "Bonne quela"
+        ],
+        "evidence": [
+          {
+            "provider": "official_web",
+            "sourceUrl": "http://bonnequela.tumblr.com/bonnequela",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Catalog identity name: Bonne quela; source-native name: Bonne quela; canonical address: 千代田区Ōtemachi, 1 Chome−9−2 大手町フィナンシャルシティ グランキューブ 1F; canonical phone: +81362252730; exact reviewed source URL retained for audit; dish acceptance remains blocked."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "http://bonnequela.tumblr.com/bonnequela"
+      ],
+      "blocker": {
+        "type": "official_source_not_found",
+        "detail": "The reviewed official page returned HTTP 404."
+      },
+      "notes": "The reviewed official page returned HTTP 404. No bypass, paid search, or cross-branch inference used."
+    },
+    {
+      "googlePlaceId": "ChIJFQ415jyMGGAROEvV2vfbg_g",
+      "restaurantName": "Tail's Ale House",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "Tail's Ale House"
+        ],
+        "evidence": [
+          {
+            "provider": "official_web",
+            "sourceUrl": "http://www.tails1998.com/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Catalog identity name: Tail's Ale House; source-native name: Tail's Ale House; canonical address: 文京区Hongo, 3 Chome−16−5 スカイコート本郷東大前３ 1階; canonical phone: +81356848008; exact reviewed source URL retained for audit; dish acceptance remains no_evidence."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "http://www.tails1998.com/"
+      ],
+      "blocker": null,
+      "notes": "Reviewed exact official source family; no concrete current branch dish was paired with explicit recommendation/signature/popular/specialty semantics. No dish proposal made."
+    }
+  ]
+}

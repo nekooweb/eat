@@ -1,0 +1,1274 @@
+{
+  "schemaVersion": 2,
+  "proposalOnly": false,
+  "marker": "DISH-R-RETAINED",
+  "shard": "S0",
+  "agentRunId": "FINAL-V2-DISH-R-RETAINED:S0:20260915",
+  "sourceQueue": "data/dish_batch_plan.json",
+  "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+  "generatedAt": "2026-09-15T23:00:00+09:00",
+  "reviewedAt": "2026-09-15",
+  "reviewedBy": "final-dish-integration v2 incremental fail-closed review",
+  "summary": {
+    "assignedRows": 46,
+    "reviewedRows": 46,
+    "acceptedEvidenceRows": 2,
+    "candidateRows": 30,
+    "noEvidenceRows": 14,
+    "blockedRows": 0,
+    "skippedAlreadyCompleteRows": 0
+  },
+  "records": [
+    {
+      "googlePlaceId": "ChIJTXiCRgCNGGARvWgJGZvFcME",
+      "restaurantName": "ちゃちゃ屋",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://www.hotpepper.jp/strJ004576187/",
+        "https://tabelog.com/tokyo/A1310/A131002/13306794/"
+      ],
+      "blocker": null,
+      "notes": "no_strict_dish_r",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json",
+        "data/agent_reviews/DISH-R-RETAINED/S0.json",
+        "data/agent_proposals/DISH-R-RETAINED/S0-main-20260914.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJ0_2CIRGMGGARZxuMcOPWxwk",
+      "restaurantName": "俺の創作らぁめん 極や 神田 神保町店",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131003/13132295/"
+      ],
+      "blocker": null,
+      "notes": "review_only_popularity_excluded",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json",
+        "data/agent_reviews/DISH-R-RETAINED/S0.json",
+        "data/agent_proposals/DISH-R-RETAINED/S0-main-20260914.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJ4V3UcxSMGGAR6WFCu53DN_k",
+      "restaurantName": "鶴八",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131003/13000419/"
+      ],
+      "blocker": null,
+      "notes": "review_only_dishes_excluded",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json",
+        "data/agent_reviews/DISH-R-RETAINED/S0.json",
+        "data/agent_proposals/DISH-R-RETAINED/S0-main-20260914.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJ95nhlhaMGGARIziH3PEAOqY",
+      "restaurantName": "焼鳥 酉たけ",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131003/13169956/"
+      ],
+      "blocker": null,
+      "notes": "no_strict_dish_r",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json",
+        "data/agent_reviews/DISH-R-RETAINED/S0.json",
+        "data/agent_proposals/DISH-R-RETAINED/S0-main-20260914.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJBfClgBCMGGAR2sN5CvGoDrU",
+      "restaurantName": "ジャズ オリンパス！",
+      "status": "candidate",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": [
+          {
+            "provider": "tabelog",
+            "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13315798/dtlmenu/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "exact_retained_branch_binding",
+            "note": "Exact frozen Place-ID retained-source binding from the worker proposal."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131002/13315798/dtlmenu/"
+      ],
+      "blocker": null,
+      "notes": "Structured retained menu marks both concrete items as おすすめ.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json",
+        "data/agent_reviews/DISH-R-RETAINED/S0.json",
+        "data/agent_proposals/DISH-R-RETAINED/S0-main-20260914.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJbS0GS2uMGGARE_vV-2kWt08",
+      "restaurantName": "寿司政",
+      "status": "candidate",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": [
+          {
+            "provider": "tabelog",
+            "sourceUrl": "https://tabelog.com/tokyo/A1309/A130906/13000407/dtlmenu/lunch/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "exact_retained_branch_binding",
+            "note": "Exact frozen Place-ID retained-source binding from the worker proposal."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1309/A130906/13000407/dtlmenu/lunch/"
+      ],
+      "blocker": null,
+      "notes": "Current structured lunch menu supports F only. The recommended omakase course was not transferred to component dishes.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json",
+        "data/agent_reviews/DISH-R-RETAINED/S0.json",
+        "data/agent_proposals/DISH-R-RETAINED/S0-main-20260914.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJcduc-w2MGGARbhku_r53Png",
+      "restaurantName": "Mamma Mia!",
+      "status": "candidate",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1302/A130201/13010997/"
+      ],
+      "blocker": null,
+      "notes": "no_structured_dish_menu",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json",
+        "data/agent_reviews/DISH-R-RETAINED/S0.json",
+        "data/agent_proposals/DISH-R-RETAINED/S0-main-20260914.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJd9-v6RqMGGAR3IJy6wiM0aI",
+      "restaurantName": "とんかつ かつ屋",
+      "status": "candidate",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131002/13077854/"
+      ],
+      "blocker": null,
+      "notes": "menu_photos_or_reviews_only",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json",
+        "data/agent_reviews/DISH-R-RETAINED/S0.json",
+        "data/agent_proposals/DISH-R-RETAINED/S0-main-20260914.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJFecIYxaMGGAR9L6nuctXV38",
+      "restaurantName": "冨多葉",
+      "status": "candidate",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131003/13068810/"
+      ],
+      "blocker": null,
+      "notes": "Usable dish list is historical takeout-era material; current validity and strict recommendation semantics are not established.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json",
+        "data/agent_reviews/DISH-R-RETAINED/S0.json",
+        "data/agent_proposals/DISH-R-RETAINED/S0-main-20260914.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJg98k8D-MGGARi_SjDVTZlGs",
+      "restaurantName": "横浜家系ラーメン田中",
+      "status": "candidate",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131003/13019056/"
+      ],
+      "blocker": null,
+      "notes": "review_only_dishes_excluded",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json",
+        "data/agent_reviews/DISH-R-RETAINED/S0.json",
+        "data/agent_proposals/DISH-R-RETAINED/S0-main-20260914.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJHR3eZRyMGGARIuKl5cgd_vs",
+      "restaurantName": "萬楽飯店",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131003/13139541/"
+      ],
+      "blocker": null,
+      "notes": "no_structured_dish_menu",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json",
+        "data/agent_reviews/DISH-R-RETAINED/S0.json",
+        "data/agent_proposals/DISH-R-RETAINED/S0-main-20260914.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJJdyitLiNGGARk0wEjxFkuKM",
+      "restaurantName": "鰹が昇るまで",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131003/13290110/"
+      ],
+      "blocker": null,
+      "notes": "review_only_dishes_excluded",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json",
+        "data/agent_reviews/DISH-R-RETAINED/S0.json",
+        "data/agent_proposals/DISH-R-RETAINED/S0-main-20260914.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJJQtsNtCNGGARXHMI26d4tG4",
+      "restaurantName": "力也商店",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131003/13235012/"
+      ],
+      "blocker": null,
+      "notes": "changing_lunch_info_not_stable_r",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json",
+        "data/agent_reviews/DISH-R-RETAINED/S0.json",
+        "data/agent_proposals/DISH-R-RETAINED/S0-main-20260914.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJK-zPABCMGGARXZAJ9C8lHCY",
+      "restaurantName": "青新軒",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131002/13037282/"
+      ],
+      "blocker": null,
+      "notes": "review_only_recommendation_excluded",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json",
+        "data/agent_reviews/DISH-R-RETAINED/S0.json",
+        "data/agent_proposals/DISH-R-RETAINED/S0-main-20260914.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJMYM_ELeNGGAR4_Rjpux4b9k",
+      "restaurantName": "Cafe Lish",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131003/13287276/"
+      ],
+      "blocker": null,
+      "notes": "no_strict_dish_r",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json",
+        "data/agent_reviews/DISH-R-RETAINED/S0.json",
+        "data/agent_proposals/DISH-R-RETAINED/S0-main-20260914.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJNeiJsjqNGGARUwCL2ZS0u34",
+      "restaurantName": "日本式カレー 弐番亭",
+      "status": "candidate",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131003/13309507/"
+      ],
+      "blocker": null,
+      "notes": "Retained Tabelog restaurant ID differs from the currently discoverable page; automatic rebinding is prohibited.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json",
+        "data/agent_reviews/DISH-R-RETAINED/S0.json",
+        "data/agent_proposals/DISH-R-RETAINED/S0-main-20260914.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJQ0pBHBCMGGARFmZBTA87HQA",
+      "restaurantName": "神田錦町 更科",
+      "status": "candidate",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131002/13040724/"
+      ],
+      "blocker": null,
+      "notes": "no_strict_dish_r",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json",
+        "data/agent_reviews/DISH-R-RETAINED/S0.json",
+        "data/agent_proposals/DISH-R-RETAINED/S0-main-20260914.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJQypjX7ONGGARijJegx9USMg",
+      "restaurantName": "祭",
+      "status": "candidate",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131002/13021575/"
+      ],
+      "blocker": null,
+      "notes": "review_recommendation_excluded",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json",
+        "data/agent_reviews/DISH-R-RETAINED/S0.json",
+        "data/agent_proposals/DISH-R-RETAINED/S0-main-20260914.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJqzUQMNeNGGARKaFqd4nH7c4",
+      "restaurantName": "肉盛ホルモン",
+      "status": "candidate",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": [
+          {
+            "provider": "tabelog",
+            "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13273257/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "exact_retained_branch_binding",
+            "note": "Exact frozen Place-ID retained-source binding from the worker proposal."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131003/13273257/"
+      ],
+      "blocker": null,
+      "notes": "Restaurant-operated page explicitly identifies these as popular items and dishes to try.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json",
+        "data/agent_reviews/DISH-R-RETAINED/S0.json",
+        "data/agent_proposals/DISH-R-RETAINED/S0-main-20260914.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJSQlU7RCMGGARZBwoPe_ciQw",
+      "restaurantName": "レストラン カロリー",
+      "status": "candidate",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131003/13000602/"
+      ],
+      "blocker": null,
+      "notes": "review_recommendation_excluded",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json",
+        "data/agent_reviews/DISH-R-RETAINED/S0.json",
+        "data/agent_proposals/DISH-R-RETAINED/S0-main-20260914.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJTTQAOBGMGGARqZjri8Wchto",
+      "restaurantName": "豚大学 神保町校舎",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131003/13160504/"
+      ],
+      "blocker": null,
+      "notes": "no_strict_dish_r",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json",
+        "data/agent_reviews/DISH-R-RETAINED/S0.json",
+        "data/agent_proposals/DISH-R-RETAINED/S0-main-20260914.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJWTLuiBaMGGARYTzFFpLy_f8",
+      "restaurantName": "仙臺",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131003/13186446/"
+      ],
+      "blocker": null,
+      "notes": "no_structured_dish_r",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json",
+        "data/agent_reviews/DISH-R-RETAINED/S0.json",
+        "data/agent_proposals/DISH-R-RETAINED/S0-main-20260914.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJy-K2ixaMGGAR_j1VN4FzFj8",
+      "restaurantName": "肥後一文字や",
+      "status": "candidate",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131003/13126581/"
+      ],
+      "blocker": null,
+      "notes": "review_only_dishes_excluded",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json",
+        "data/agent_reviews/DISH-R-RETAINED/S0.json",
+        "data/agent_proposals/DISH-R-RETAINED/S0-main-20260914.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJzQVI5xqMGGAR88irvCKhTyk",
+      "restaurantName": "鳥益",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131002/13064380/"
+      ],
+      "blocker": null,
+      "notes": "no_strict_dish_r",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json",
+        "data/agent_reviews/DISH-R-RETAINED/S0.json",
+        "data/agent_proposals/DISH-R-RETAINED/S0-main-20260914.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJ2336NQCNGGARMhx9jwZ4BI4",
+      "restaurantName": "ワイルドレッドパスタ神保町店",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131003/13308781/",
+        "https://www.hotpepper.jp/strJ004049442/"
+      ],
+      "blocker": null,
+      "notes": "no_structured_dish_menu",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json",
+        "data/agent_reviews/DISH-R-RETAINED/S0.json",
+        "data/agent_proposals/DISH-R-RETAINED/S0-main-20260914.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJ52UnSsmNGGARPg_XbR0VpS4",
+      "restaurantName": "上海味道 水道橋",
+      "status": "no_evidence",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://www.hotpepper.jp/strJ001262977/"
+      ],
+      "blocker": null,
+      "notes": "no_strict_dish_r_in_retained_source",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json",
+        "data/agent_reviews/DISH-R-RETAINED/S0.json",
+        "data/agent_proposals/DISH-R-RETAINED/S0-main-20260914.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJbTOaERGMGGAR0Me4b7PxZ7o",
+      "restaurantName": "キッチン南海 神保町店",
+      "status": "candidate",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131003/13249021/dtlmenu/"
+      ],
+      "blocker": null,
+      "notes": "structured_menu_but_no_strict_r",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json",
+        "data/agent_reviews/DISH-R-RETAINED/S0.json",
+        "data/agent_proposals/DISH-R-RETAINED/S0-main-20260914.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJi5rmZBeMGGAR6KMwBn12uqk",
+      "restaurantName": "Ochanomizu Terrace SUPER DRY",
+      "status": "candidate",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131002/13293541/"
+      ],
+      "blocker": null,
+      "notes": "Possible rename/successor; frozen Place ID continuity is not yet proven.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json",
+        "data/agent_reviews/DISH-R-RETAINED/S0.json",
+        "data/agent_proposals/DISH-R-RETAINED/S0-main-20260914.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJjxCnlD-MGGARerygZLVT-m4",
+      "restaurantName": "とりちゅう 水道橋店",
+      "status": "candidate",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": [
+          {
+            "provider": "tabelog",
+            "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13217314/dtlmenu/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "exact_retained_branch_binding",
+            "note": "Exact frozen Place-ID retained-source binding from the worker proposal."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131003/13217314/dtlmenu/",
+        "https://www.hotpepper.jp/strJ004492384/"
+      ],
+      "blocker": null,
+      "notes": "Retained structured menu contains explicit popularity and specialty semantics.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json",
+        "data/agent_reviews/DISH-R-RETAINED/S0.json",
+        "data/agent_proposals/DISH-R-RETAINED/S0-main-20260914.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJkX3sF0GMGGARR-L4Og4cNBU",
+      "restaurantName": "日本料理 平川 ホテルメトロポリタン エドモント",
+      "status": "candidate",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": [
+          {
+            "provider": "official",
+            "sourceUrl": "https://jrdc204.nihonhotel.com/restaurant/list/hirakawa/hirakawa/fair_recommend.html",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "exact_retained_branch_binding",
+            "note": "Exact frozen Place-ID retained-source binding from the worker proposal."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://jrdc204.nihonhotel.com/restaurant/list/hirakawa/hirakawa/fair_recommend.html",
+        "https://www.hotpepper.jp/strJ000034074/"
+      ],
+      "blocker": null,
+      "notes": "Targeted exact-branch check found an official seasonal chef-recommendation page.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json",
+        "data/agent_reviews/DISH-R-RETAINED/S0.json",
+        "data/agent_proposals/DISH-R-RETAINED/S0-main-20260914.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJp3be1AeMGGARgyQQWnBT42s",
+      "restaurantName": "大手町ワインバル 八十郎商店",
+      "status": "candidate",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1302/A130201/13205852/dtlmenu/"
+      ],
+      "blocker": null,
+      "notes": "Recommendation wording may attach to the components selected by the chef rather than the assortment item itself.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json",
+        "data/agent_reviews/DISH-R-RETAINED/S0.json",
+        "data/agent_proposals/DISH-R-RETAINED/S0-main-20260914.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJRxygEQCNGGARapvEL04ggA4",
+      "restaurantName": "中華風創作ダイニングGokuh",
+      "status": "candidate",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": [
+          {
+            "provider": "tabelog",
+            "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13304648/dtlmenu/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "exact_retained_branch_binding",
+            "note": "Exact frozen Place-ID retained-source binding from the worker proposal."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131002/13304648/dtlmenu/",
+        "https://www.hotpepper.jp/strJ003984169/"
+      ],
+      "blocker": null,
+      "notes": "Operator-published retained menu explicitly marks all six concrete items おすすめ.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json",
+        "data/agent_reviews/DISH-R-RETAINED/S0.json",
+        "data/agent_proposals/DISH-R-RETAINED/S0-main-20260914.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJu2DH_ASMGGARm2aRtwA0sms",
+      "restaurantName": "ミトシロバル",
+      "status": "candidate",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131002/13122107/"
+      ],
+      "blocker": null,
+      "notes": "Retained listing is 掲載保留 / operational status uncertain; recommendation evidence is course-level or stale.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json",
+        "data/agent_reviews/DISH-R-RETAINED/S0.json",
+        "data/agent_proposals/DISH-R-RETAINED/S0-main-20260914.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJvX_t7eONGGARXncKVb9I85E",
+      "restaurantName": "Gracia",
+      "status": "candidate",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": [
+          {
+            "provider": "tabelog",
+            "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13155300/dtlmenu/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "exact_retained_branch_binding",
+            "note": "Exact frozen Place-ID retained-source binding from the worker proposal."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131003/13155300/dtlmenu/"
+      ],
+      "blocker": null,
+      "notes": "Current operator-published menu contains explicit recommendation or strongest-seller semantics.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json",
+        "data/agent_reviews/DISH-R-RETAINED/S0.json",
+        "data/agent_proposals/DISH-R-RETAINED/S0-main-20260914.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJ17dALKONGGARwpbTKxQ1_Mw",
+      "restaurantName": "餃子酒場・吉",
+      "status": "candidate",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131003/13272984/"
+      ],
+      "blocker": null,
+      "notes": "existing_f_no_strict_r",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json",
+        "data/agent_reviews/DISH-R-RETAINED/S0.json",
+        "data/agent_proposals/DISH-R-RETAINED/S0-main-20260914.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJQ7aufj-MGGARdknUqae7iTo",
+      "restaurantName": "台北",
+      "status": "candidate",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131003/13011063/"
+      ],
+      "blocker": null,
+      "notes": "existing_f_no_strict_r",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json",
+        "data/agent_reviews/DISH-R-RETAINED/S0.json",
+        "data/agent_proposals/DISH-R-RETAINED/S0-main-20260914.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJr3knVhCMGGARzV5mJJqG8_c",
+      "restaurantName": "はちまき",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": [
+          {
+            "provider": "tabelog",
+            "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13022740/dtlmenu/lunch/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "exact_retained_branch_binding",
+            "note": "Exact frozen Place-ID retained-source binding from the worker proposal."
+          },
+          {
+            "provider": "Tabelog",
+            "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13022740/",
+            "checkedAt": "2026-09-05",
+            "evidenceType": "exact_branch_identity_from_rows_proposal",
+            "note": "Exact Place-ID retained Tabelog source row names はちまき and its sourceRef explicitly claims dishes:['天丼','穴子海老天丼']."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "recommendedDishes",
+          "classification": "R",
+          "nameOriginal": "野菜天丼",
+          "nameZhCandidate": null,
+          "evidenceClass": "retained_structured_recommendation",
+          "recommendationSemantics": "大人気",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13022740/dtlmenu/lunch/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "野菜天丼 大人気",
+          "confidence": "medium",
+          "notes": "Structured retained menu provides explicit popularity/specialty/push semantics."
+        },
+        {
+          "targetField": "recommendedDishes",
+          "classification": "R",
+          "nameOriginal": "名物穴子海老天丼",
+          "nameZhCandidate": null,
+          "evidenceClass": "retained_structured_recommendation",
+          "recommendationSemantics": "名物",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13022740/dtlmenu/lunch/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "名物穴子海老天丼 名物",
+          "confidence": "medium",
+          "notes": "Structured retained menu provides explicit popularity/specialty/push semantics."
+        },
+        {
+          "targetField": "recommendedDishes",
+          "classification": "R",
+          "nameOriginal": "松天麩羅重",
+          "nameZhCandidate": null,
+          "evidenceClass": "retained_structured_recommendation",
+          "recommendationSemantics": "一押し",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13022740/dtlmenu/lunch/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "松天麩羅重 一押し",
+          "confidence": "medium",
+          "notes": "Structured retained menu provides explicit popularity/specialty/push semantics."
+        },
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "天丼",
+          "nameZhCandidate": null,
+          "evidenceClass": "retained_source_menu_item",
+          "recommendationSemantics": null,
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13022740/",
+          "checkedAt": "2026-09-05",
+          "sourceScope": "branch",
+          "evidenceText": "天丼",
+          "confidence": "medium",
+          "notes": "No strict recommendation semantics is retained. Batch plan reports featuredDishesKnown=3, while two source-native items are directly recoverable; the missing third item was not reconstructed."
+        },
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "穴子海老天丼",
+          "nameZhCandidate": null,
+          "evidenceClass": "retained_source_menu_item",
+          "recommendationSemantics": null,
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13022740/",
+          "checkedAt": "2026-09-05",
+          "sourceScope": "branch",
+          "evidenceText": "穴子海老天丼",
+          "confidence": "medium",
+          "notes": "No strict recommendation semantics is retained. Batch plan reports featuredDishesKnown=3, while two source-native items are directly recoverable; the missing third item was not reconstructed."
+        }
+      ],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131003/13022740/dtlmenu/lunch/",
+        "https://tabelog.com/tokyo/A1310/A131003/13022740/"
+      ],
+      "blocker": null,
+      "notes": "Structured retained menu provides explicit popularity/specialty/push semantics.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json",
+        "data/agent_reviews/DISH-R-RETAINED/S0.json",
+        "data/agent_proposals/DISH-R-RETAINED/S0-main-20260914.json"
+      ],
+      "reviewReasoning": "Final v2 consensus: all unrepresented independent reviewed inputs accepted; safe evidence unioned fail-closed."
+    },
+    {
+      "googlePlaceId": "ChIJufenb1iNGGARHcVIujzaKDw",
+      "restaurantName": "座135 神保町店",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": [
+          {
+            "provider": "tabelog",
+            "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13255328/dtlmenu/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "exact_retained_branch_binding",
+            "note": "Exact frozen Place-ID retained-source binding from the worker proposal."
+          },
+          {
+            "provider": "Tabelog",
+            "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13255328/",
+            "checkedAt": "2026-09-05",
+            "evidenceType": "exact_branch_identity_from_rows_proposal",
+            "note": "Exact Place-ID retained Tabelog source row names 座135 神保町店, preserves its exact address, and its sourceRef explicitly claims dishes."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "recommendedDishes",
+          "classification": "R",
+          "nameOriginal": "海鮮の麻辣湯",
+          "nameZhCandidate": null,
+          "evidenceClass": "retained_structured_recommendation",
+          "recommendationSemantics": "おすすめ",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13255328/dtlmenu/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "海鮮の麻辣湯 おすすめ",
+          "confidence": "medium",
+          "notes": "Current operator-published menu explicitly marks the dish おすすめ."
+        },
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "焼き餃子",
+          "nameZhCandidate": null,
+          "evidenceClass": "retained_source_menu_item",
+          "recommendationSemantics": null,
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13255328/",
+          "checkedAt": "2026-09-05",
+          "sourceScope": "branch",
+          "evidenceText": "焼き餃子",
+          "confidence": "medium",
+          "notes": "焼き餃子 is a concrete menu item but has no retained recommendation/signature/popular semantics, so it remains F."
+        }
+      ],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131003/13255328/dtlmenu/",
+        "https://tabelog.com/tokyo/A1310/A131003/13255328/"
+      ],
+      "blocker": null,
+      "notes": "Current operator-published menu explicitly marks the dish おすすめ.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json",
+        "data/agent_reviews/DISH-R-RETAINED/S0.json",
+        "data/agent_proposals/DISH-R-RETAINED/S0-main-20260914.json"
+      ],
+      "reviewReasoning": "Final v2 consensus: all unrepresented independent reviewed inputs accepted; safe evidence unioned fail-closed."
+    },
+    {
+      "googlePlaceId": "ChIJ_5AELhqMGGARmyQyTWPFbJg",
+      "restaurantName": "大衆IZAKAYAエイト 御茶ノ水店",
+      "status": "candidate",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": [
+          {
+            "provider": "tabelog",
+            "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13033304/dtlmenu/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "exact_retained_branch_binding",
+            "note": "Exact frozen Place-ID retained-source binding from the worker proposal."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131002/13033304/dtlmenu/",
+        "https://www.hotpepper.jp/strJ003649300/"
+      ],
+      "blocker": null,
+      "notes": "All six are under the explicit エイトの名物 menu section.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json",
+        "data/agent_reviews/DISH-R-RETAINED/S0.json",
+        "data/agent_proposals/DISH-R-RETAINED/S0-main-20260914.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJ24WeeD-MGGARwdUwZC9A19E",
+      "restaurantName": "大衆IZAKAYAエイト 水道橋店",
+      "status": "candidate",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": [
+          {
+            "provider": "tabelog",
+            "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13029544/dtlmenu/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "exact_retained_branch_binding",
+            "note": "Exact frozen Place-ID retained-source binding from the worker proposal."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131003/13029544/dtlmenu/",
+        "https://www.hotpepper.jp/strJ004072757/"
+      ],
+      "blocker": null,
+      "notes": "All six are under the explicit エイトの名物 menu section.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json",
+        "data/agent_reviews/DISH-R-RETAINED/S0.json",
+        "data/agent_proposals/DISH-R-RETAINED/S0-main-20260914.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJ5xbNmR6NGGARxdGxYV8ulBo",
+      "restaurantName": "誉 ほまれ 水道橋駅前店",
+      "status": "candidate",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": [
+          {
+            "provider": "hotpepper",
+            "sourceUrl": "https://www.hotpepper.jp/strJ004537277/food/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "exact_retained_branch_binding",
+            "note": "Exact frozen Place-ID retained-source binding from the worker proposal."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://www.hotpepper.jp/strJ004537277/food/",
+        "https://www.hotpepper.jp/strJ003715516/"
+      ],
+      "blocker": null,
+      "notes": "Food page explicitly recommends starting with this concrete assortment menu entry.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json",
+        "data/agent_reviews/DISH-R-RETAINED/S0.json",
+        "data/agent_proposals/DISH-R-RETAINED/S0-main-20260914.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJd7U9HSKNGGARCU6Piavo7VY",
+      "restaurantName": "Osteria FELME",
+      "status": "candidate",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://www.hotpepper.jp/strJ004544845/",
+        "https://www.hotpepper.jp/strJ001186714/"
+      ],
+      "blocker": null,
+      "notes": "course_or_general_recommendation_only",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json",
+        "data/agent_reviews/DISH-R-RETAINED/S0.json",
+        "data/agent_proposals/DISH-R-RETAINED/S0-main-20260914.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJdSv8aRGNGGAR45ZkkRbeOMY",
+      "restaurantName": "新中華 李記",
+      "status": "candidate",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1309/A130906/13276273/",
+        "https://www.hotpepper.jp/strJ004626728/"
+      ],
+      "blocker": null,
+      "notes": "structured_menu_but_no_strict_r",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json",
+        "data/agent_reviews/DISH-R-RETAINED/S0.json",
+        "data/agent_proposals/DISH-R-RETAINED/S0-main-20260914.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJIxVise2NGGARKlUSF6LV2y4",
+      "restaurantName": "ごまいち 飯田橋店",
+      "status": "candidate",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1309/A130905/13276064/",
+        "https://www.hotpepper.jp/strJ003340845/"
+      ],
+      "blocker": null,
+      "notes": "structured_menu_but_no_strict_r",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json",
+        "data/agent_reviews/DISH-R-RETAINED/S0.json",
+        "data/agent_proposals/DISH-R-RETAINED/S0-main-20260914.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJkUInPFWNGGARv72wfB8qGgM",
+      "restaurantName": "マロリーポークステーキ　大手町ホトリア店",
+      "status": "candidate",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1302/A130201/13269735/",
+        "https://www.hotpepper.jp/strJ001291467/"
+      ],
+      "blocker": null,
+      "notes": "side_set_course_or_review_semantics_only",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json",
+        "data/agent_reviews/DISH-R-RETAINED/S0.json",
+        "data/agent_proposals/DISH-R-RETAINED/S0-main-20260914.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJN9mduz-MGGAR53bCFr3JZro",
+      "restaurantName": "SAPANA サパナ 水道橋駅西口店",
+      "status": "candidate",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://www.hotpepper.jp/strJ001126936/"
+      ],
+      "blocker": null,
+      "notes": "course_or_general_recommendation_only",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S0.json",
+        "data/agent_reviews/DISH-R-RETAINED/S0.json",
+        "data/agent_proposals/DISH-R-RETAINED/S0-main-20260914.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    }
+  ],
+  "policyAttestation": {
+    "paidGoogleDataApiCalls": 0,
+    "canonicalMasterEditedDirectly": false,
+    "proximityOnlyIdentityBindingUsed": false,
+    "recommendationWithoutExplicitSemanticsAdded": false,
+    "accessRestrictionBypassUsed": false,
+    "unrepresentedIndependentInputsRequireConsensus": true
+  }
+}

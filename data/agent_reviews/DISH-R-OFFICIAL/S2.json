@@ -1,0 +1,980 @@
+{
+  "schemaVersion": 2,
+  "proposalOnly": false,
+  "marker": "DISH-R-OFFICIAL",
+  "shard": "S2",
+  "agentRunId": "FINAL-V2-DISH-R-OFFICIAL:S2:20260915",
+  "sourceQueue": "data/dish_batch_plan.json",
+  "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+  "generatedAt": "2026-09-15T23:00:00+09:00",
+  "reviewedAt": "2026-09-15",
+  "reviewedBy": "final-dish-integration v2 incremental fail-closed review",
+  "summary": {
+    "assignedRows": 29,
+    "reviewedRows": 29,
+    "acceptedEvidenceRows": 0,
+    "candidateRows": 11,
+    "noEvidenceRows": 11,
+    "blockedRows": 7,
+    "skippedAlreadyCompleteRows": 0
+  },
+  "records": [
+    {
+      "googlePlaceId": "ChIJcduc-w2MGGAR8yEbOf1jp7g",
+      "restaurantName": "パブサントリアン",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "パブサントリアン"
+        ],
+        "evidence": [
+          {
+            "provider": "パレスサイドビル",
+            "sourceUrl": "https://www.mai-b.co.jp/restrant/b1/post-8.html",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Official Palaceside Building B1 tenant page names パブサントリアン and identifies the exact Palace Side Building B1F location."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://www.mai-b.co.jp/restrant/b1/",
+        "https://www.mai-b.co.jp/restrant/b1/post-8.html"
+      ],
+      "blocker": null,
+      "notes": "Official branch page was accessible but contained no concrete dish name paired with recommendation/signature/popular/specialty semantics.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S2.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S2.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJgaPNVhCMGGARILh-OhDkTn8",
+      "restaurantName": "Pharos Coffee",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "Pharos Coffee"
+        ],
+        "evidence": [
+          {
+            "provider": "Pharos Coffee",
+            "sourceUrl": "https://pharoscoffee.com/zh/policies/legal-notice",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "official_legal_page",
+            "note": "Official legal page identifies the business at 東京都千代田区神田神保町1丁目25−4 1階."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://pharoscoffee.com/",
+        "https://pharoscoffee.com/zh/policies/legal-notice"
+      ],
+      "blocker": null,
+      "notes": "Official site exposes coffee products but no source-native concrete restaurant dish/product paired with strict recommendation semantics suitable for R.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S2.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S2.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJkdtBSO2NGGARcKZeaO9Gf40",
+      "restaurantName": "チャイナメイドカフェ 龍龍-ロンロン-",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "チャイナメイドカフェ 龍龍-ロンロン-",
+          "龍龍-ロンロン-"
+        ],
+        "evidence": [
+          {
+            "provider": "龍龍-ロンロン-",
+            "sourceUrl": "https://www.akiba-maidcafe.co.jp/ronron/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Official branch page identifies the exact shop at 東京都千代田区外神田1-3-5 第二中村ビル2階."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://www.akiba-maidcafe.co.jp/ronron/"
+      ],
+      "blocker": null,
+      "notes": "Menu content is primarily image-based and the checked official text did not expose a concrete source-native dish with explicit recommendation semantics.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S2.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S2.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJZQZwfxWMGGARoD8aXy_2l3Q",
+      "restaurantName": "カフェ・ベローチェ",
+      "status": "candidate",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "カフェ・ベローチェ 三崎町店"
+        ],
+        "evidence": [
+          {
+            "provider": "C-United株式会社",
+            "sourceUrl": "https://c-united.co.jp/store/detail/000245/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Official store page identifies カフェ・ベローチェ 三崎町店, 神田三崎町2-2-2 加藤ビル1F, phone 03-3263-3301."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://c-united.co.jp/store/detail/000245/",
+        "https://c-united.co.jp/veloce/"
+      ],
+      "blocker": null,
+      "notes": "Strict R accepted from the current official chain recommendation section after exact branch verification.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S2.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S2.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJyb94PwOMGGARtDDndNvDe9Y",
+      "restaurantName": "カフェ・ベローチェ",
+      "status": "candidate",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "カフェ・ベローチェ 淡路町駅前店"
+        ],
+        "evidence": [
+          {
+            "provider": "C-United株式会社",
+            "sourceUrl": "https://c-united.co.jp/store/detail/000370/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Official store page identifies カフェ・ベローチェ 淡路町駅前店, 神田須田町1-10 神田オーエヌビル1F, phone 03-5209-6781."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://c-united.co.jp/store/detail/000370/",
+        "https://c-united.co.jp/veloce/"
+      ],
+      "blocker": null,
+      "notes": "Strict R accepted from the current official chain recommendation section after exact branch verification. Existing featured dishes were not reclassified.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S2.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S2.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJ0ZuaPACJGGARD2WOsCllQdk",
+      "restaurantName": "Gluten-free Izakaya SHION",
+      "status": "blocked",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "Gluten-free Izakaya SHION"
+        ],
+        "evidence": [
+          {
+            "provider": "SHION owner blog",
+            "sourceUrl": "https://ameblo.jp/ssshion5945/entry-12956245689.html",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "official_owner_status_notice",
+            "note": "Owner notice states the restaurant at the current location temporarily closed after 2026-02-15 and was seeking a new space."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://ameblo.jp/ssshion5945/entry-12956245689.html"
+      ],
+      "blocker": "current_assignment_location_not_operating",
+      "notes": "Official/owner status evidence makes the current branch/location stale as of the check date; no dish proposal made.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S2.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S2.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJ1YYWBweMGGARIY5pvEdxPto",
+      "restaurantName": "Brussels",
+      "status": "candidate",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "ブラッセルズ大手町",
+          "BRUSSELS"
+        ],
+        "evidence": [
+          {
+            "provider": "BRUSSELS",
+            "sourceUrl": "https://www.brussels.co.jp/restaurant_03.html",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Official BRUSSELS branch page identifies the Otemachi branch and phone 03-6225-2696."
+          },
+          {
+            "provider": "OTEMACHI FINANCIAL CITY",
+            "sourceUrl": "https://www.otemachi-financialcity.jp/en/shop/brussels/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "official_venue_branch_page",
+            "note": "Official venue page independently identifies BRUSSELS at Otemachi Financial City with the same phone."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://www.brussels.co.jp/restaurant_03.html",
+        "https://www.otemachi-financialcity.jp/en/shop/brussels/"
+      ],
+      "blocker": null,
+      "notes": "Exact branch identity and explicit Recommended Menu semantics independently align.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S2.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S2.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJ64ECQAOMGGAR8ReouzVqbGA",
+      "restaurantName": "味覚永",
+      "status": "blocked",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "味覚永"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": "no_accessible_official_source_for_exact_branch",
+      "notes": "Repository has a reviewed Overture native-contact binding (phone 03-5256-1673), but no accessible exact official page/domain could be safely recovered; third-party listings were not used as official evidence.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S2.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S2.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJa8C-Cj-MGGARcz8KabQrSu0",
+      "restaurantName": "ワイン処　Ｏａｓｉ",
+      "status": "candidate",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "Oasi",
+          "ワイン処 Oasi"
+        ],
+        "evidence": [
+          {
+            "provider": "OasiCafe / オアジ工房",
+            "sourceUrl": "https://www.oasicafe.jp/info",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "official_legal_page",
+            "note": "Official shop information identifies Oasi at 東京都千代田区神田三崎町2-21-9 田島ビル201, phone 03-6272-4155."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://www.oasicafe.jp/info",
+        "https://www.oasicafe.jp/product/2"
+      ],
+      "blocker": null,
+      "notes": "Accepted because the official product page explicitly ties the item to the restaurant and calls it the most popular specialty.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S2.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S2.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJAQARIwSMGGARuyCsJqgLx6k",
+      "restaurantName": "Trattoria Macco",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "Trattoria Macco",
+          "トラットリア マッコ"
+        ],
+        "evidence": [
+          {
+            "provider": "Selecao Co., Ltd.",
+            "sourceUrl": "https://selecao.co.jp/ourshops/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "official_group_branch_page",
+            "note": "Official group page lists Trattoria Macco at 千代田区内神田1-16-12 青木ビル1階 with phone 050-3184-1912."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://selecao.co.jp/ourshops/"
+      ],
+      "blocker": null,
+      "notes": "Exact official branch verified, but no accessible concrete dish paired with explicit recommendation/signature/popular/specialty semantics was found.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S2.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S2.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJdaECyAaMGGARYmKXwzoXVmg",
+      "restaurantName": "跳人 大手町店",
+      "status": "candidate",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "居酒屋 跳人 大手町店"
+        ],
+        "evidence": [
+          {
+            "provider": "Hot Pepper Gourmet",
+            "sourceUrl": "https://www.hotpepper.jp/strJ001043721/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "exact_branch_third_party_page",
+            "note": "Exact branch page matches the restaurant name and branch; used only as a candidate lead, not as official-lane accepted evidence."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://www.hotpepper.jp/strJ001043721/",
+        "https://www.hotpepper.jp/strJ001043721/food/"
+      ],
+      "blocker": null,
+      "notes": "Strong exact-branch leads exist, but this assignment is the official lane and an official source could not be established; nothing promoted to R.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S2.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S2.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJDfEBrGyNGGARncFWHjEsoEE",
+      "restaurantName": "Social Good Roasters",
+      "status": "candidate",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "ソーシャルグッドロースターズ 千代田本店焙煎所",
+          "Social Good Roasters"
+        ],
+        "evidence": [
+          {
+            "provider": "Social Good Roasters ONLINE STORE",
+            "sourceUrl": "https://sgroasters.stores.jp/about",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "official_store_about_page",
+            "note": "Official store page identifies the physical 千代田本店焙煎所 at 神田錦町1-14-13 LANDPOOL KANDA TERRACE 2F, phone 03-6811-0895."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://sgroasters.stores.jp/",
+        "https://sgroasters.stores.jp/about",
+        "https://sgroasters.stores.jp/?category_id=66d31a7e9793942076566171"
+      ],
+      "blocker": null,
+      "notes": "Official recommendation semantics are real, but only for retail bean products; retained as C rather than treating retail products as restaurant dishes.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S2.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S2.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJJTkIWwSMGGARWr05a-lkXu8",
+      "restaurantName": "Ferment",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "Ferment"
+        ],
+        "evidence": [
+          {
+            "provider": "Ferment",
+            "sourceUrl": "https://www.ferment.tokyo/map",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "official_access_page",
+            "note": "Official site identifies the restaurant at 内神田1-15-12 and phone 03-3219-1741."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://www.ferment.tokyo/",
+        "https://www.ferment.tokyo/map",
+        "https://www.ferment.tokyo/ディナーメニュー"
+      ],
+      "blocker": null,
+      "notes": "Official menu is image-heavy and no accessible source-native concrete item with strict recommendation semantics was found.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S2.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S2.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJL3TN6RqMGGARGRHSqE57R2I",
+      "restaurantName": "渡部商店",
+      "status": "blocked",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "渡部商店"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": "no_accessible_official_source_for_exact_branch",
+      "notes": "Repository has a reviewed Overture native-contact binding (phone 03-3293-0733), but no accessible exact official page/domain could be safely established; third-party listings were not promoted.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S2.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S2.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJn5seJBqMGGARehd1SbbY-UE",
+      "restaurantName": "ダイニング うさぎ",
+      "status": "blocked",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "ダイニング うさぎ"
+        ],
+        "evidence": [
+          {
+            "provider": "reviewed native website binding",
+            "sourceUrl": "http://xn--p8jqu82a4b0epd9p.jp/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "reviewed_official_url_binding",
+            "note": "Repository-reviewed native website binding corresponds to phone 090-3694-3130; page content could not be retrieved during this run."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "http://xn--p8jqu82a4b0epd9p.jp/"
+      ],
+      "blocker": "official_source_inaccessible",
+      "notes": "Did not bypass access limitations or substitute third-party menu claims.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S2.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S2.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJtb-P3T6MGGARyN1JNNv5m4k",
+      "restaurantName": "La Cucina Vivace",
+      "status": "candidate",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "La Cucina Vivace"
+        ],
+        "evidence": [
+          {
+            "provider": "reviewed official source binding",
+            "sourceUrl": "https://lacucinavivace.owst.jp",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "reviewed_official_url_binding",
+            "note": "Repository-reviewed official source is tied to the exact branch and phone 090-3286-3741; direct source text was not available in this run."
+          },
+          {
+            "provider": "TableCheck",
+            "sourceUrl": "https://www.tablecheck.com/ja/la-cucina-vivace",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "exact_branch_external_profile",
+            "note": "Exact branch profile provides a reproducible recommendation lead but is not the reviewed official domain."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://lacucinavivace.owst.jp",
+        "https://www.tablecheck.com/ja/la-cucina-vivace"
+      ],
+      "blocker": null,
+      "notes": "Exact-branch recommendation lead is strong but was not promoted because the official source text was inaccessible.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S2.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S2.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJTTWTbcGNGGARD5RtNU4xBfo",
+      "restaurantName": "Baskin-Robbins",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "サーティワンアイスクリーム",
+          "Baskin-Robbins"
+        ],
+        "evidence": [
+          {
+            "provider": "B-R サーティワン アイスクリーム",
+            "sourceUrl": "https://store.31ice.co.jp/31ice/spot/detail?code=0000000927",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Official store locator page for store code 0000000927 is tied to phone 080-1382-6316."
+          },
+          {
+            "provider": "TOKYO DOME CITY",
+            "sourceUrl": "https://www.tokyo-dome.co.jp/en/shops/g-31ice.html",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "official_venue_branch_page",
+            "note": "Official venue page independently confirms the Baskin-Robbins shop."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://store.31ice.co.jp/31ice/spot/detail?code=0000000927",
+        "https://www.tokyo-dome.co.jp/en/shops/g-31ice.html"
+      ],
+      "blocker": null,
+      "notes": "Exact branch verified; no current source-backed branch-available flavor/item with explicit recommendation semantics was established.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S2.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S2.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJU-rnYReMGGARhPvk_b5RELU",
+      "restaurantName": "Saizeriya",
+      "status": "candidate",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "サイゼリヤ お茶の水駅前店"
+        ],
+        "evidence": [
+          {
+            "provider": "サイゼリヤ",
+            "sourceUrl": "https://shop.saizeriya.co.jp/sz_restaurant/spot/detail?code=1065",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Official branch page identifies サイゼリヤ お茶の水駅前店, 神田駿河台2-1-19, phone 03-5282-3218."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://shop.saizeriya.co.jp/sz_restaurant/spot/detail?code=1065",
+        "https://www.saizeriya.co.jp/menu-popular/",
+        "https://www.saizeriya.co.jp/how-to-use-saizeriya-meal/"
+      ],
+      "blocker": null,
+      "notes": "Official chain recommendation semantics are explicit, but branch-level availability is not proven; retained as candidates under strict branch evidence policy.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S2.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S2.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJxaCKXgCNGGARmML1G_OsP5E",
+      "restaurantName": "Kanda Square",
+      "status": "blocked",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "KANDA SQUARE"
+        ],
+        "evidence": [
+          {
+            "provider": "KANDA SQUARE",
+            "sourceUrl": "https://kanda-square.com/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "official_facility_page",
+            "note": "Official site identifies KANDA SQUARE as a multi-use facility."
+          },
+          {
+            "provider": "KANDA SQUARE",
+            "sourceUrl": "https://kanda-square.com/shop/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "official_facility_shop_directory",
+            "note": "Official shop directory lists multiple separate restaurants and shops rather than a restaurant named Kanda Square."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://kanda-square.com/",
+        "https://kanda-square.com/shop/"
+      ],
+      "blocker": "catalog_entity_is_facility_not_restaurant",
+      "notes": "No canonical identity change was made. The exact catalog entity resolves to a facility containing multiple restaurants, so assigning a facility-wide dish would violate identity rules.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S2.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S2.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJY0YY_hSMGGARn8jebiB_KKM",
+      "restaurantName": "Kanda Coffee",
+      "status": "candidate",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "Kanda Coffee 本店",
+          "Kanda Coffee"
+        ],
+        "evidence": [
+          {
+            "provider": "Kanda Coffee ONLINE STORE",
+            "sourceUrl": "https://kanda-coffee.stores.jp/about",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "official_store_about_page",
+            "note": "Official store page identifies Kanda Coffee 本店 at 神田神保町2-38-10."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://kanda-coffee.stores.jp/about",
+        "https://kanda-coffee.stores.jp/items/60a26a260e24032923e52219",
+        "https://kanda-coffee.stores.jp/items/6036dcca6728be5d0ad49f89"
+      ],
+      "blocker": null,
+      "notes": "Official product recommendations are preserved as candidates only because they are retail coffee-bean products rather than confirmed restaurant menu dishes.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S2.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S2.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJze_wuziMGGAR6MRiJbQ-LV4",
+      "restaurantName": "BAR 2000",
+      "status": "candidate",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "BAR 2000"
+        ],
+        "evidence": [
+          {
+            "provider": "東京ドームホテル",
+            "sourceUrl": "https://www.tokyodome-hotels.co.jp/restaurants/list/bar2000/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Official Tokyo Dome Hotel page identifies BAR 2000 on 6F, phone 03-5805-2299."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://www.tokyodome-hotels.co.jp/restaurants/list/bar2000/"
+      ],
+      "blocker": null,
+      "notes": "Only the directly recommended drink was accepted; generic plans/fairs were not treated as dishes.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S2.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S2.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJZf1oDwCNGGARJGh85UBDwOw",
+      "restaurantName": "菜香苑神田小川町店",
+      "status": "blocked",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "菜香苑神田小川町店"
+        ],
+        "evidence": [
+          {
+            "provider": "reviewed official source binding",
+            "sourceUrl": "https://saikoen.owst.jp",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "reviewed_official_url_binding",
+            "note": "Repository-reviewed source binding corresponds to phone 03-6913-6518; current official content was not retrievable."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://saikoen.owst.jp"
+      ],
+      "blocker": "official_source_inaccessible_and_current_operation_uncertain",
+      "notes": "Current third-party results indicate uncertain listing status. No access-limit bypass or stale-menu promotion was attempted.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S2.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S2.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJzR0A2S6NGGARHgCFuvyl4Ag",
+      "restaurantName": "囲炉家 村さ来 お茶の水店",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "〖囲炉家 村さ来〗お茶の水店"
+        ],
+        "evidence": [
+          {
+            "provider": "焼肉坂井ホールディングス / 村さ来",
+            "sourceUrl": "https://ys-holdings.co.jp/murasaki/shop/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "official_store_list",
+            "note": "Official current store list identifies お茶の水店 at 神田駿河台2-4-4 第二御茶ノ水ビルB1F, phone 03-3295-0909."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://ys-holdings.co.jp/murasaki/",
+        "https://ys-holdings.co.jp/murasaki/shop/",
+        "https://ys-holdings.co.jp/murasaki/menu/"
+      ],
+      "blocker": null,
+      "notes": "Exact branch verified. Checked official chain/menu sources did not establish a concrete branch-available dish with explicit strict recommendation semantics.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S2.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S2.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJBduY0RaMGGAR3fbXTTSTyHg",
+      "restaurantName": "つけそば 神田 勝本",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "つけそば 神田 勝本"
+        ],
+        "evidence": [
+          {
+            "provider": "勝本",
+            "sourceUrl": "https://katsumoto-japan.com/ja/kanda_katsumoto.html",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Official exact branch page identifies 神田勝本 at 神田猿楽町1丁目2-4 猿楽町ビル1階."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://katsumoto-japan.com/ja/kanda_katsumoto.html",
+        "https://katsumoto-japan.com/ja/archives/547"
+      ],
+      "blocker": null,
+      "notes": "Official menu contains concrete items but no explicit recommendation/signature/popular/specialty semantics; existing featured dishes were not promoted.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S2.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S2.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJVTDQnxaMGGAR2dkRFZBb7bY",
+      "restaurantName": "八-HACHI-東京",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "八-HACHI-東京"
+        ],
+        "evidence": [
+          {
+            "provider": "八-HACHI-東京",
+            "sourceUrl": "https://beer-hachi.tokyo/Shop",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Official page identifies the exact shop at 神田神保町1-42-3 コンフォリア神田神保町1F."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://beer-hachi.tokyo/Shop"
+      ],
+      "blocker": null,
+      "notes": "Official page supports ordinary menu items already known as featured dishes, but no source-native strict recommendation semantics were established.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S2.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S2.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJ35HKZ2-NGGARsPtMaaZBf9s",
+      "restaurantName": "ゆで太郎淡路町店",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "ゆで太郎淡路町店"
+        ],
+        "evidence": [
+          {
+            "provider": "ゆで太郎",
+            "sourceUrl": "http://www.yudetarou.com",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "reviewed_official_url_binding",
+            "note": "Repository-reviewed native source is tied to phone 03-3258-1301; official site was intermittently unavailable during review."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "http://www.yudetarou.com",
+        "https://www.yudetarou.com/"
+      ],
+      "blocker": null,
+      "notes": "Current official source was checked where accessible, but no branch-safe concrete item with explicit recommendation semantics was established. Existing featured dishes were not promoted.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S2.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S2.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJ59v_9NyNGGAR22VKBERmYDM",
+      "restaurantName": "Craft Beer Market",
+      "status": "blocked",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "クラフトビアマーケット 淡路町店",
+          "Craft Beer Market"
+        ],
+        "evidence": [
+          {
+            "provider": "CRAFT BEER MARKET",
+            "sourceUrl": "https://www.craftbeermarket.jp/awajicho/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "official_branch_closure_page",
+            "note": "Official branch page states 淡路町店 closed on 2020-11-30."
+          },
+          {
+            "provider": "CRAFT BEER MARKET",
+            "sourceUrl": "https://www.craftbeermarket.jp/craft-beer-market-%E6%B7%A1%E8%B7%AF%E7%94%BA%E5%BA%97-%E9%96%89%E5%BA%97%E3%81%AE%E3%81%8A%E7%9F%A5%E3%82%89%E3%81%9B/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "official_closure_notice",
+            "note": "Official closure notice corroborates the branch closure."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://www.craftbeermarket.jp/awajicho/",
+        "https://www.craftbeermarket.jp/craft-beer-market-%E6%B7%A1%E8%B7%AF%E7%94%BA%E5%BA%97-%E9%96%89%E5%BA%97%E3%81%AE%E3%81%8A%E7%9F%A5%E3%82%89%E3%81%9B/"
+      ],
+      "blocker": "official_branch_closed_2020-11-30",
+      "notes": "No dish proposal made for a closed branch; canonical identity was not edited.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S2.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S2.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJ9XAxGQOMGGARFuWMs0nm1SA",
+      "restaurantName": "フレッシュネスバーガー 神田須田町店",
+      "status": "candidate",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "フレッシュネスバーガー 神田須田町店"
+        ],
+        "evidence": [
+          {
+            "provider": "フレッシュネスバーガー",
+            "sourceUrl": "https://search.freshnessburger.co.jp/detail/3033064/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Official branch page identifies 神田須田町店, 神田須田町1-14 栄華ビル1・2階, phone 03-5297-0030."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://search.freshnessburger.co.jp/detail/3033064/",
+        "https://www.freshnessburger.co.jp/menu/hamburger/freshness_burger",
+        "https://www.freshnessburger.co.jp/menu/hamburger/classic_cheese_burger"
+      ],
+      "blocker": null,
+      "notes": "Strict branch policy prevents promoting chain-level signature/popularity claims to R without item availability confirmation for this branch.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S2.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S2.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJXUb7fQ2MGGARgbctV56leJ0",
+      "restaurantName": "L'art et Mikuni",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "L'art et Mikuni",
+          "ラー・エ・ミクニ"
+        ],
+        "evidence": [
+          {
+            "provider": "L'art et Mikuni",
+            "sourceUrl": "https://lart-et-mikuni.jp/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Official current site identifies the restaurant at 北の丸公園3-1 東京国立近代美術館内, phone 03-3213-0392."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://lart-et-mikuni.jp/",
+        "https://lart-et-mikuni.jp/dinner/"
+      ],
+      "blocker": null,
+      "notes": "Current official dinner material contains menu/course content but no current explicit recommendation/signature/popular/specialty semantics. Old archived recommendation materials were rejected as stale.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S2.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S2.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    }
+  ],
+  "policyAttestation": {
+    "paidGoogleDataApiCalls": 0,
+    "canonicalMasterEditedDirectly": false,
+    "proximityOnlyIdentityBindingUsed": false,
+    "recommendationWithoutExplicitSemanticsAdded": false,
+    "accessRestrictionBypassUsed": false,
+    "unrepresentedIndependentInputsRequireConsensus": true
+  }
+}

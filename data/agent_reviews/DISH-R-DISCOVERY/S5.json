@@ -1,0 +1,973 @@
+{
+  "schemaVersion": 1,
+  "proposalOnly": false,
+  "marker": "DISH-R-DISCOVERY",
+  "shard": "S5",
+  "agentRunId": "DISH-R-DISCOVERY:S5:20260914-e2e-self-review",
+  "sourceQueue": "data/dish_batch_plan.json",
+  "sourceQueueCommit": "91a85bb3cf4c49a8e64181eeeafdbecd96e14e50",
+  "generatedAt": "2026-09-14T22:35:00+09:00",
+  "summary": {
+    "assignedRows": 27,
+    "reviewedRows": 27,
+    "acceptedEvidenceRows": 6,
+    "candidateRows": 4,
+    "noEvidenceRows": 17,
+    "blockedRows": 0,
+    "skippedAlreadyCompleteRows": 0
+  },
+  "records": [
+    {
+      "googlePlaceId": "ChIJa1cTbBWMGGAR_Qfil3p9uCQ",
+      "restaurantName": "とんかつ かつ村",
+      "status": "no_evidence",
+      "identity": {
+        "state": "partial",
+        "sourceAliases": [
+          "とんかつ かつ村"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "web search: とんかつ かつ村 神田 メニュー"
+      ],
+      "blocker": null,
+      "notes": "No safe current exact-branch merchant menu source was reproduced.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-R-DISCOVERY/S5.json",
+          "recordIndex": 0,
+          "sourceStatus": "no_evidence"
+        }
+      ],
+      "reviewReasoning": "Independent second pass confirmed no safe current source-native branch dish evidence remained after rejecting stale, user-submitted, review-derived, generic, or cross-branch material."
+    },
+    {
+      "googlePlaceId": "ChIJBwDlswOMGGARxQIW_ErPOkY",
+      "restaurantName": "もつ焼 元希",
+      "status": "no_evidence",
+      "identity": {
+        "state": "partial",
+        "sourceAliases": [
+          "もつ焼 元希"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "web search: もつ焼 元希 神田 メニュー 公式"
+      ],
+      "blocker": null,
+      "notes": "Current business identity could be found, but no reproducible source-native concrete menu page suitable for canonical evidence was available.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-R-DISCOVERY/S5.json",
+          "recordIndex": 1,
+          "sourceStatus": "no_evidence"
+        }
+      ],
+      "reviewReasoning": "Independent second pass confirmed no safe current source-native branch dish evidence remained after rejecting stale, user-submitted, review-derived, generic, or cross-branch material."
+    },
+    {
+      "googlePlaceId": "ChIJCYsHpwSMGGARALGv-xP5qyQ",
+      "restaurantName": "中国菜館興安楼",
+      "status": "no_evidence",
+      "identity": {
+        "state": "partial",
+        "sourceAliases": [
+          "中国菜館興安楼"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "web search: 中国菜館興安楼 神田 メニュー"
+      ],
+      "blocker": null,
+      "notes": "No stable current exact-branch merchant menu source was reproduced.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-R-DISCOVERY/S5.json",
+          "recordIndex": 2,
+          "sourceStatus": "no_evidence"
+        }
+      ],
+      "reviewReasoning": "Independent second pass confirmed no safe current source-native branch dish evidence remained after rejecting stale, user-submitted, review-derived, generic, or cross-branch material."
+    },
+    {
+      "googlePlaceId": "ChIJd8Cn8nONGGARfEd-8dsiXdc",
+      "restaurantName": "目利きの銀次",
+      "status": "candidate",
+      "identity": {
+        "state": "partial",
+        "sourceAliases": [
+          "目利きの銀次 大手町店"
+        ],
+        "evidence": [
+          {
+            "provider": "sourceWebsite",
+            "sourceUrl": "https://tabelog.com/tokyo/A1302/A130201/13220092/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "exact_branch_identity",
+            "note": "Exact 大手町2-5-9 branch is identifiable, but the provider marks the listing 掲載保留 because current operation cannot be confirmed."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1302/A130201/13220092/",
+        "web search: 目利きの銀次 大手町店 current status official"
+      ],
+      "blocker": null,
+      "notes": "Current operation is unresolved; brand menu was not propagated to the branch.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-R-DISCOVERY/S5.json",
+          "recordIndex": 3,
+          "sourceStatus": "candidate"
+        }
+      ],
+      "reviewReasoning": "Independent second pass retained this only as candidate because currentness, branch availability, or safe branch-level menu binding is insufficient for canonical integration."
+    },
+    {
+      "googlePlaceId": "ChIJeUnkM6iOGGARC-e2DoGOpDM",
+      "restaurantName": "カレーノトリコ",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "カレーノトリコ currynotrico"
+        ],
+        "evidence": [
+          {
+            "provider": "sourceWebsite",
+            "sourceUrl": "https://www.ubereats.com/jp/store/%E3%82%AB%E3%83%AC%E3%83%BC%E3%83%8E%E3%83%88%E3%83%AA%E3%82%B3-currynotrico/JhV1PQZ9XQymeefRAZ91AA",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "exact_branch_identity",
+            "note": "Exact merchant menu identifies 神田鍛冶町3-5 一八ビル1F and the restaurant name."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "recommendedDishes",
+          "classification": "R",
+          "nameOriginal": "あいがけチキンカレー",
+          "nameZhCandidate": null,
+          "evidenceClass": "merchant_hosted_branch_recommendation",
+          "recommendationSemantics": "代名詞",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.ubereats.com/jp/store/%E3%82%AB%E3%83%AC%E3%83%BC%E3%83%8E%E3%83%88%E3%83%AA%E3%82%B3-currynotrico/JhV1PQZ9XQymeefRAZ91AA",
+          "sourceTitle": "カレーノトリコ currynotrico のメニュー",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "あいがけチキンカレー カレーノトリコの代名詞！ドライカレーとたっぷりチキンのインド風カレーをお楽しみ下さい！",
+          "confidence": "high",
+          "notes": "Concrete dish and explicit signature-equivalent wording on the exact branch menu."
+        }
+      ],
+      "attemptedSources": [
+        "https://www.ubereats.com/jp/store/%E3%82%AB%E3%83%AC%E3%83%BC%E3%83%8E%E3%83%88%E3%83%AA%E3%82%B3-currynotrico/JhV1PQZ9XQymeefRAZ91AA"
+      ],
+      "blocker": null,
+      "notes": "Exact branch delivery menu provides a concrete dish and explicit signature-equivalent wording 代名詞.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-R-DISCOVERY/S5.json",
+          "recordIndex": 4,
+          "sourceStatus": "accepted_evidence"
+        }
+      ],
+      "reviewReasoning": "Independent second pass confirmed current assignment membership, frozen identity, exact branch binding, concrete source-native dish text, correct R/F semantics, freshness, reproducible URL, and no review-prose or cross-branch contamination."
+    },
+    {
+      "googlePlaceId": "ChIJkehDYQOMGGARr6-b5zwYmWY",
+      "restaurantName": "Grilled Aging Beef Delicatessen",
+      "status": "no_evidence",
+      "identity": {
+        "state": "partial",
+        "sourceAliases": [
+          "Grilled Aging Beef Delicatessen"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "web search: Grilled Aging Beef Delicatessen 神田 メニュー"
+      ],
+      "blocker": null,
+      "notes": "Search results were brand/review oriented; no exact current branch merchant menu was reproduced without cross-branch inference.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-R-DISCOVERY/S5.json",
+          "recordIndex": 5,
+          "sourceStatus": "no_evidence"
+        }
+      ],
+      "reviewReasoning": "Independent second pass confirmed no safe current source-native branch dish evidence remained after rejecting stale, user-submitted, review-derived, generic, or cross-branch material."
+    },
+    {
+      "googlePlaceId": "ChIJkyKS_RyMGGARsIZYG9gpMNc",
+      "restaurantName": "妹メイドカフェ ソラミカ",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "ソラミカ"
+        ],
+        "evidence": [
+          {
+            "provider": "sourceWebsite",
+            "sourceUrl": "https://concafechan.com/shop/soramica/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "exact_branch_identity",
+            "note": "Exact current branch listing: 外神田1-9-11 神タワービル4F, phone 03-3255-7828, with current hours and menu system."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "お絵描きオムライス",
+          "nameZhCandidate": null,
+          "evidenceClass": "merchant_hosted_branch_menu",
+          "recommendationSemantics": "",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://concafechan.com/shop/soramica/",
+          "sourceTitle": "ソラミカ｜秋葉原/コンカフェ",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "ソラミカごはんセット 2,200円 お絵描きオムライスorアミューズメントドリンク＋チェキorライブ",
+          "confidence": "high",
+          "notes": "Ordinary concrete menu item only; no recommendation semantics claimed."
+        }
+      ],
+      "attemptedSources": [
+        "https://concafechan.com/shop/soramica/"
+      ],
+      "blocker": null,
+      "notes": "Current exact branch provider lists concrete food-set choices; this is F only.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-R-DISCOVERY/S5.json",
+          "recordIndex": 6,
+          "sourceStatus": "accepted_evidence"
+        }
+      ],
+      "reviewReasoning": "Independent second pass confirmed current assignment membership, frozen identity, exact branch binding, concrete source-native dish text, correct R/F semantics, freshness, reproducible URL, and no review-prose or cross-branch contamination."
+    },
+    {
+      "googlePlaceId": "ChIJO01bjBiMGGARNK2ujVSRnp0",
+      "restaurantName": "麺屋睡蓮",
+      "status": "no_evidence",
+      "identity": {
+        "state": "partial",
+        "sourceAliases": [
+          "麺屋睡蓮"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "web search: 麺屋睡蓮 御茶ノ水 メニュー 公式"
+      ],
+      "blocker": null,
+      "notes": "No current exact-branch source-native menu evidence was reproducibly available.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-R-DISCOVERY/S5.json",
+          "recordIndex": 7,
+          "sourceStatus": "no_evidence"
+        }
+      ],
+      "reviewReasoning": "Independent second pass confirmed no safe current source-native branch dish evidence remained after rejecting stale, user-submitted, review-derived, generic, or cross-branch material."
+    },
+    {
+      "googlePlaceId": "ChIJq6oGNQOMGGARNxd9fsBRhLQ",
+      "restaurantName": "トプカ",
+      "status": "candidate",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "カリー専門店 トプカ"
+        ],
+        "evidence": [
+          {
+            "provider": "official_web",
+            "sourceUrl": "https://www.topca.co.jp/news.html",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "exact_branch_identity",
+            "note": "Official source gives 神田須田町1-11 and phone 03-3255-0707 for the exact branch."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "recommendedDishes",
+          "classification": "C",
+          "nameOriginal": "インド風ポークカリー",
+          "nameZhCandidate": null,
+          "evidenceClass": "official_branch_recommendation",
+          "recommendationSemantics": "看板商品",
+          "provider": "official_web",
+          "sourceUrl": "https://www.topca.co.jp/news.html",
+          "sourceTitle": "お知らせ - カリー専門店 トプカ",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "トプカの看板商品「インド風ポークカリー」",
+          "confidence": "high",
+          "notes": "Current recommendation freshness cannot be proven; kept as candidate only."
+        },
+        {
+          "targetField": "recommendedDishes",
+          "classification": "C",
+          "nameOriginal": "盛り合わせカリー（インドポーク＆牛すじ）",
+          "nameZhCandidate": null,
+          "evidenceClass": "official_branch_recommendation",
+          "recommendationSemantics": "今月のおすすめ",
+          "provider": "official_web",
+          "sourceUrl": "https://www.topca.co.jp/news.html",
+          "sourceTitle": "お知らせ - カリー専門店 トプカ",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "今月のおすすめ「盛り合わせカリー」インドポーク&牛すじ ☆盛り合わせカリー（インドポーク＆牛すじ）",
+          "confidence": "high",
+          "notes": "Current recommendation freshness cannot be proven; kept as candidate only."
+        }
+      ],
+      "attemptedSources": [
+        "https://www.topca.co.jp/news.html",
+        "https://www.topca.co.jp/menu.html"
+      ],
+      "blocker": null,
+      "notes": "Official branch identity and concrete dishes are strong, but the recommendation page is undated and visible context is older; current 2026 recommendation freshness cannot be proven.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-R-DISCOVERY/S5.json",
+          "recordIndex": 8,
+          "sourceStatus": "candidate"
+        }
+      ],
+      "reviewReasoning": "Independent second pass retained this only as candidate because currentness, branch availability, or safe branch-level menu binding is insufficient for canonical integration."
+    },
+    {
+      "googlePlaceId": "ChIJSUtVU-mNGGAR7Q_BobNqLS8",
+      "restaurantName": "Bánh Mì Sandwich Tokyo",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "Bánh Mì Sandwich TOKYO"
+        ],
+        "evidence": [
+          {
+            "provider": "sourceWebsite",
+            "sourceUrl": "https://hanako.tokyo/shop/48420/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "exact_branch_identity",
+            "note": "Exact independent branch listing: 神田三崎町1-4-9 1F; only generic menu categories are stated."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://hanako.tokyo/shop/48420/"
+      ],
+      "blocker": null,
+      "notes": "Exact current independent listing states generic categories but not concrete source-native product names suitable for canonical dish evidence.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-R-DISCOVERY/S5.json",
+          "recordIndex": 9,
+          "sourceStatus": "no_evidence"
+        }
+      ],
+      "reviewReasoning": "Independent second pass confirmed no safe current source-native branch dish evidence remained after rejecting stale, user-submitted, review-derived, generic, or cross-branch material."
+    },
+    {
+      "googlePlaceId": "ChIJu03GFHWNGGARkg7Gk_F2yP0",
+      "restaurantName": "御旦狐",
+      "status": "no_evidence",
+      "identity": {
+        "state": "partial",
+        "sourceAliases": [
+          "御旦狐"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "web search: 御旦狐 神田 メニュー 公式"
+      ],
+      "blocker": null,
+      "notes": "No current exact-branch source-native concrete dish evidence was reproduced.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-R-DISCOVERY/S5.json",
+          "recordIndex": 10,
+          "sourceStatus": "no_evidence"
+        }
+      ],
+      "reviewReasoning": "Independent second pass confirmed no safe current source-native branch dish evidence remained after rejecting stale, user-submitted, review-derived, generic, or cross-branch material."
+    },
+    {
+      "googlePlaceId": "ChIJU4sI4gaMGGARPBBnRO9pbpw",
+      "restaurantName": "GREEN BROTHERS 大手町店",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "GREEN BROTHERS 大手町店"
+        ],
+        "evidence": [
+          {
+            "provider": "sourceWebsite",
+            "sourceUrl": "https://greenbrothers.favy.jp/menus",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "exact_branch_identity",
+            "note": "Exact merchant-hosted branch page gives 大手町1-9-5 大手町フィナンシャルシティ ノースタワー1F and phone 0362252570."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "KALE CAESAR",
+          "nameZhCandidate": null,
+          "evidenceClass": "merchant_hosted_branch_menu",
+          "recommendationSemantics": "",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://greenbrothers.favy.jp/menus",
+          "sourceTitle": "定番サラダ｜GREEN BROTHERS 大手町店",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "KALE CAESAR ケールシーザー ¥1,400",
+          "confidence": "high",
+          "notes": "Concrete ordinary menu item; no strict recommendation semantics claimed."
+        }
+      ],
+      "attemptedSources": [
+        "https://greenbrothers.favy.jp/menus"
+      ],
+      "blocker": null,
+      "notes": "Current exact branch merchant-hosted menu provides a concrete ordinary menu item.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-R-DISCOVERY/S5.json",
+          "recordIndex": 11,
+          "sourceStatus": "accepted_evidence"
+        }
+      ],
+      "reviewReasoning": "Independent second pass confirmed current assignment membership, frozen identity, exact branch binding, concrete source-native dish text, correct R/F semantics, freshness, reproducible URL, and no review-prose or cross-branch contamination."
+    },
+    {
+      "googlePlaceId": "ChIJzVT5HgCNGGARTzXoP_ac9Ds",
+      "restaurantName": "葉菜海家",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "飲み食いどころ 葉菜海家"
+        ],
+        "evidence": [
+          {
+            "provider": "sourceWebsite",
+            "sourceUrl": "https://map.yahoo.co.jp/v3/place/GhYpDf3tVUs",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "exact_branch_identity",
+            "note": "Current exact branch identity: 内神田1-9-2 TYDビル1F, phone 080-9150-8738; menu content is not source-native merchant evidence."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://map.yahoo.co.jp/v3/place/GhYpDf3tVUs",
+        "https://tabelog.com/tokyo/A1302/A130201/13042880/dtlmenu/"
+      ],
+      "blocker": null,
+      "notes": "Current menu evidence is user-submitted; the structured Tabelog menu is an old pre-move record and was rejected as stale/wrong-location.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-R-DISCOVERY/S5.json",
+          "recordIndex": 12,
+          "sourceStatus": "no_evidence"
+        }
+      ],
+      "reviewReasoning": "Independent second pass confirmed no safe current source-native branch dish evidence remained after rejecting stale, user-submitted, review-derived, generic, or cross-branch material."
+    },
+    {
+      "googlePlaceId": "ChIJ7-v8GQWMGGARXxBZ1RH2DWY",
+      "restaurantName": "ゆかり酉",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "焼きとり 旬菜 ゆかり酉（YUKARI DORI）"
+        ],
+        "evidence": [
+          {
+            "provider": "official_web",
+            "sourceUrl": "https://kanda-yukaridori.com/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "exact_branch_identity",
+            "note": "Official exact branch page gives 神田錦町2-2-11 田口ビル1F and phone 03-5577-4230."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "蘭王の親子丼",
+          "nameZhCandidate": null,
+          "evidenceClass": "official_branch_menu",
+          "recommendationSemantics": "",
+          "provider": "official_web",
+          "sourceUrl": "https://kanda-yukaridori.com/",
+          "sourceTitle": "神田 焼きとり 旬菜 ゆかり酉",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "ランチ メニュー Lunch Menu 蘭王の親子丼 ￥1100(税込)",
+          "confidence": "high",
+          "notes": "Broad ingredient 自慢 wording was not propagated to the dish."
+        }
+      ],
+      "attemptedSources": [
+        "https://kanda-yukaridori.com/"
+      ],
+      "blocker": null,
+      "notes": "Official exact branch lunch menu provides a concrete ordinary item; no recommendation inflation.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-R-DISCOVERY/S5.json",
+          "recordIndex": 13,
+          "sourceStatus": "accepted_evidence"
+        }
+      ],
+      "reviewReasoning": "Independent second pass confirmed current assignment membership, frozen identity, exact branch binding, concrete source-native dish text, correct R/F semantics, freshness, reproducible URL, and no review-prose or cross-branch contamination."
+    },
+    {
+      "googlePlaceId": "ChIJ841SxRaMGGARQgxtIxReU-U",
+      "restaurantName": "Muusa",
+      "status": "candidate",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "Muusa"
+        ],
+        "evidence": [
+          {
+            "provider": "sourceWebsite",
+            "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13157186/dtlmenu/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "exact_branch_identity",
+            "note": "Exact Muusa branch page; menu update date is 2017-02-08, so freshness fails."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131003/13157186/dtlmenu/"
+      ],
+      "blocker": null,
+      "notes": "Concrete branch menu exists but is too stale to integrate as current truth.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-R-DISCOVERY/S5.json",
+          "recordIndex": 14,
+          "sourceStatus": "candidate"
+        }
+      ],
+      "reviewReasoning": "Independent second pass retained this only as candidate because currentness, branch availability, or safe branch-level menu binding is insufficient for canonical integration."
+    },
+    {
+      "googlePlaceId": "ChIJJdzV7-2NGGARYEIaoA62FM0",
+      "restaurantName": "大衆酒場 ぎゃざ屋",
+      "status": "no_evidence",
+      "identity": {
+        "state": "partial",
+        "sourceAliases": [
+          "大衆酒場 ぎゃざ屋"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "web search: 大衆酒場 ぎゃざ屋 神田 メニュー"
+      ],
+      "blocker": null,
+      "notes": "Available dish details were review/user-derived rather than source-native merchant menu evidence.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-R-DISCOVERY/S5.json",
+          "recordIndex": 15,
+          "sourceStatus": "no_evidence"
+        }
+      ],
+      "reviewReasoning": "Independent second pass confirmed no safe current source-native branch dish evidence remained after rejecting stale, user-submitted, review-derived, generic, or cross-branch material."
+    },
+    {
+      "googlePlaceId": "ChIJldzLuj-MGGARpKZPoZrUZXM",
+      "restaurantName": "中国料理太湖飯店",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "中国料理太湖飯店"
+        ],
+        "evidence": [
+          {
+            "provider": "sourceWebsite",
+            "sourceUrl": "https://www.ekiten.jp/shop_31976/menu/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "exact_branch_identity",
+            "note": "Exact current branch menu at 神田三崎町2-10-12 太湖ビル, phone 03-3261-5831; menu items show current 販売中 status."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "recommendedDishes",
+          "classification": "R",
+          "nameOriginal": "五目やきそば",
+          "nameZhCandidate": null,
+          "evidenceClass": "merchant_hosted_branch_recommendation",
+          "recommendationSemantics": "一番人気・当店名物",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.ekiten.jp/shop_31976/menu/",
+          "sourceTitle": "中国料理太湖飯店（千代田区）のメニュー",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "4000円 エビチリ 一番人気五目やきそば等々を含むコース／当店名物五目焼きそば",
+          "confidence": "high",
+          "notes": "Concrete dish with explicit popularity and signature semantics."
+        }
+      ],
+      "attemptedSources": [
+        "https://www.ekiten.jp/shop_31976/menu/"
+      ],
+      "blocker": null,
+      "notes": "Current exact branch menu explicitly marks the dish 一番人気 and 当店名物.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-R-DISCOVERY/S5.json",
+          "recordIndex": 16,
+          "sourceStatus": "accepted_evidence"
+        }
+      ],
+      "reviewReasoning": "Independent second pass confirmed current assignment membership, frozen identity, exact branch binding, concrete source-native dish text, correct R/F semantics, freshness, reproducible URL, and no review-prose or cross-branch contamination."
+    },
+    {
+      "googlePlaceId": "ChIJmaM47BmMGGAR5K0M7CSHBjM",
+      "restaurantName": "太陽",
+      "status": "no_evidence",
+      "identity": {
+        "state": "partial",
+        "sourceAliases": [
+          "太陽"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "web search: 太陽 神田 restaurant メニュー"
+      ],
+      "blocker": null,
+      "notes": "Same-name/noisy results did not establish a safe exact-branch menu source.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-R-DISCOVERY/S5.json",
+          "recordIndex": 17,
+          "sourceStatus": "no_evidence"
+        }
+      ],
+      "reviewReasoning": "Independent second pass confirmed no safe current source-native branch dish evidence remained after rejecting stale, user-submitted, review-derived, generic, or cross-branch material."
+    },
+    {
+      "googlePlaceId": "ChIJnX7aDxSMGGAR1Yw--uP41Uk",
+      "restaurantName": "明治屋",
+      "status": "no_evidence",
+      "identity": {
+        "state": "partial",
+        "sourceAliases": [
+          "明治屋"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "web search: 明治屋 神田 飲食 メニュー"
+      ],
+      "blocker": null,
+      "notes": "No safe exact-branch current menu source was reproduced.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-R-DISCOVERY/S5.json",
+          "recordIndex": 18,
+          "sourceStatus": "no_evidence"
+        }
+      ],
+      "reviewReasoning": "Independent second pass confirmed no safe current source-native branch dish evidence remained after rejecting stale, user-submitted, review-derived, generic, or cross-branch material."
+    },
+    {
+      "googlePlaceId": "ChIJq6rpRASMGGARPOf6gGZWeQY",
+      "restaurantName": "十割蕎麦 韃靼 穂のか",
+      "status": "candidate",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "十割蕎麦 韃靼 穂のか"
+        ],
+        "evidence": [
+          {
+            "provider": "sourceWebsite",
+            "sourceUrl": "https://soba-machichuka-1010.com/soba/soba-chiyoda/honoka/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "exact_branch_identity",
+            "note": "Independent exact-name branch article documents the menu but is dated 2024-05-20; freshness insufficient."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://soba-machichuka-1010.com/soba/soba-chiyoda/honoka/",
+        "https://map.yahoo.co.jp/v3/place/ddvYQJScFNI/menu"
+      ],
+      "blocker": null,
+      "notes": "Independent concrete menu article is stale and the current Yahoo menu is explicitly user-submitted; retained as candidate only.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-R-DISCOVERY/S5.json",
+          "recordIndex": 19,
+          "sourceStatus": "candidate"
+        }
+      ],
+      "reviewReasoning": "Independent second pass retained this only as candidate because currentness, branch availability, or safe branch-level menu binding is insufficient for canonical integration."
+    },
+    {
+      "googlePlaceId": "ChIJQdBaNzmMGGAR0om2n72Um9c",
+      "restaurantName": "New民家バー",
+      "status": "no_evidence",
+      "identity": {
+        "state": "partial",
+        "sourceAliases": [
+          "New民家バー"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "web search: New民家バー 神田 メニュー"
+      ],
+      "blocker": null,
+      "notes": "Current operator/location evidence did not provide concrete source-native dish names.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-R-DISCOVERY/S5.json",
+          "recordIndex": 20,
+          "sourceStatus": "no_evidence"
+        }
+      ],
+      "reviewReasoning": "Independent second pass confirmed no safe current source-native branch dish evidence remained after rejecting stale, user-submitted, review-derived, generic, or cross-branch material."
+    },
+    {
+      "googlePlaceId": "ChIJRRhIEACNGGAR7NkNKtshqOg",
+      "restaurantName": "YON Cafe & Bar",
+      "status": "no_evidence",
+      "identity": {
+        "state": "partial",
+        "sourceAliases": [
+          "YON Cafe & Bar"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "web search: YON Cafe & Bar 神田 メニュー"
+      ],
+      "blocker": null,
+      "notes": "No exact current branch menu source with source-native dish labels was reproduced.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-R-DISCOVERY/S5.json",
+          "recordIndex": 21,
+          "sourceStatus": "no_evidence"
+        }
+      ],
+      "reviewReasoning": "Independent second pass confirmed no safe current source-native branch dish evidence remained after rejecting stale, user-submitted, review-derived, generic, or cross-branch material."
+    },
+    {
+      "googlePlaceId": "ChIJryNhokOMGGARuKNXJ4wc2ow",
+      "restaurantName": "中華そば 三光園",
+      "status": "no_evidence",
+      "identity": {
+        "state": "partial",
+        "sourceAliases": [
+          "中華そば 三光園"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "web search: 中華そば 三光園 神田 メニュー"
+      ],
+      "blocker": null,
+      "notes": "No current exact-branch source-native menu evidence was reproduced.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-R-DISCOVERY/S5.json",
+          "recordIndex": 22,
+          "sourceStatus": "no_evidence"
+        }
+      ],
+      "reviewReasoning": "Independent second pass confirmed no safe current source-native branch dish evidence remained after rejecting stale, user-submitted, review-derived, generic, or cross-branch material."
+    },
+    {
+      "googlePlaceId": "ChIJUaCxRRSMGGARAwLf4n-Ce4c",
+      "restaurantName": "Osteria Appunto",
+      "status": "no_evidence",
+      "identity": {
+        "state": "partial",
+        "sourceAliases": [
+          "Osteria Appunto"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "web search: Osteria Appunto 神保町 メニュー"
+      ],
+      "blocker": null,
+      "notes": "Concrete dish claims found in customer-review prose were rejected under the no-review rule.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-R-DISCOVERY/S5.json",
+          "recordIndex": 23,
+          "sourceStatus": "no_evidence"
+        }
+      ],
+      "reviewReasoning": "Independent second pass confirmed no safe current source-native branch dish evidence remained after rejecting stale, user-submitted, review-derived, generic, or cross-branch material."
+    },
+    {
+      "googlePlaceId": "ChIJURkhF42NGGARVCZ4YVYgBc0",
+      "restaurantName": "明神下 蕎麦 おしん",
+      "status": "no_evidence",
+      "identity": {
+        "state": "partial",
+        "sourceAliases": [
+          "明神下 蕎麦 おしん"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "web search: 明神下 蕎麦 おしん メニュー"
+      ],
+      "blocker": null,
+      "notes": "Available concrete menu was user-submitted; no current merchant/source-native menu evidence was reproduced.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-R-DISCOVERY/S5.json",
+          "recordIndex": 24,
+          "sourceStatus": "no_evidence"
+        }
+      ],
+      "reviewReasoning": "Independent second pass confirmed no safe current source-native branch dish evidence remained after rejecting stale, user-submitted, review-derived, generic, or cross-branch material."
+    },
+    {
+      "googlePlaceId": "ChIJVcpNJx2MGGAR6YJ9fgeqVMY",
+      "restaurantName": "Final Fantasy Eorzea Cafe",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "ファイナルファンタジー エオルゼアカフェ in Akihabara TOKYO"
+        ],
+        "evidence": [
+          {
+            "provider": "official_web",
+            "sourceUrl": "https://www.pasela.co.jp/paselabo_shop/ff_eorzea/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "exact_branch_identity",
+            "note": "Official page identifies the 秋葉原店 at 外神田1-1-10, Pasela Resorts AKIBA 2F, phone 0120-192-759."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://www.pasela.co.jp/paselabo_shop/ff_eorzea/"
+      ],
+      "blocker": null,
+      "notes": "Official page verifies the exact branch but concrete source-native dish labels were not reproduced in current text; no image/OCR inference used.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-R-DISCOVERY/S5.json",
+          "recordIndex": 25,
+          "sourceStatus": "no_evidence"
+        }
+      ],
+      "reviewReasoning": "Independent second pass confirmed no safe current source-native branch dish evidence remained after rejecting stale, user-submitted, review-derived, generic, or cross-branch material."
+    },
+    {
+      "googlePlaceId": "ChIJQ3MESwOMGGARX99d47o0V6k",
+      "restaurantName": "神田まつや",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "神田まつや"
+        ],
+        "evidence": [
+          {
+            "provider": "sourceWebsite",
+            "sourceUrl": "https://www.kikumasamune.co.jp/ajinamise/detail.html?id=68",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "exact_branch_identity",
+            "note": "Exact branch listing: 神田須田町1-13, phone 03-3251-1556, current hours."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "recommendedDishes",
+          "classification": "R",
+          "nameOriginal": "ごまそば",
+          "nameZhCandidate": null,
+          "evidenceClass": "independent_branch_recommendation",
+          "recommendationSemantics": "おすすめメニュー",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://www.kikumasamune.co.jp/ajinamise/detail.html?id=68",
+          "sourceTitle": "神田まつや｜味な店",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "おすすめメニュー ごまそば 700円",
+          "confidence": "high",
+          "notes": "Concrete dish is directly under おすすめメニュー."
+        }
+      ],
+      "attemptedSources": [
+        "https://www.kikumasamune.co.jp/ajinamise/detail.html?id=68"
+      ],
+      "blocker": null,
+      "notes": "Exact current branch provider places the concrete dish under おすすめメニュー.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-R-DISCOVERY/S5.json",
+          "recordIndex": 26,
+          "sourceStatus": "accepted_evidence"
+        }
+      ],
+      "reviewReasoning": "Independent second pass confirmed current assignment membership, frozen identity, exact branch binding, concrete source-native dish text, correct R/F semantics, freshness, reproducible URL, and no review-prose or cross-branch contamination."
+    }
+  ],
+  "policyAttestation": {
+    "paidGoogleDataApiCalls": 0,
+    "canonicalMasterEditedDirectly": false,
+    "proximityOnlyIdentityBindingUsed": false,
+    "recommendationWithoutExplicitSemanticsAdded": false,
+    "accessRestrictionBypassUsed": false
+  }
+}

@@ -1,0 +1,1802 @@
+{
+  "schemaVersion": 2,
+  "proposalOnly": false,
+  "marker": "DISH-R-RETAINED",
+  "shard": "S7",
+  "agentRunId": "FINAL-V2-DISH-R-RETAINED:S7:20260915",
+  "sourceQueue": "data/dish_batch_plan.json",
+  "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+  "generatedAt": "2026-09-15T23:00:00+09:00",
+  "reviewedAt": "2026-09-15",
+  "reviewedBy": "final-dish-integration v2 incremental fail-closed review",
+  "summary": {
+    "assignedRows": 43,
+    "reviewedRows": 43,
+    "acceptedEvidenceRows": 10,
+    "candidateRows": 0,
+    "noEvidenceRows": 33,
+    "blockedRows": 0,
+    "skippedAlreadyCompleteRows": 0
+  },
+  "records": [
+    {
+      "googlePlaceId": "ChIJ-ZwOThGMGGARjup-1Xwamsk",
+      "restaurantName": "亀澤堂",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "亀澤堂"
+        ],
+        "evidence": [
+          {
+            "provider": "Tabelog",
+            "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13021812/",
+            "checkedAt": "2026-09-05",
+            "evidenceType": "retained_provider_binding",
+            "note": "Repository-retained source row is keyed to this frozen Google Place ID; source fields: budget, closure, cuisine, hours, hyakumeiten, name. Source-native name: 亀澤堂. Retained provenance does not expose an independent branch address, so address was not asserted. Retained provenance does not expose an independent branch phone, so phone was not asserted.",
+            "sourceNativeRestaurantName": "亀澤堂"
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        {
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13021812/",
+          "checkedAt": "2026-09-05",
+          "result": "Retained source/provider binding inspected; no accepted dish field."
+        }
+      ],
+      "blocker": null,
+      "notes": "Repository-retained source facts/provenance, Hot Pepper bindings/rich metadata, and detail evidence were inspected; no provenance-backed concrete branch menu item was recovered.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S7.json",
+        "data/agent_reviews/DISH-R-RETAINED/S7.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJ1delkxOMGGARiM8Ggy7fYXA",
+      "restaurantName": "成光",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "成光"
+        ],
+        "evidence": [
+          {
+            "provider": "Tabelog",
+            "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13011355/",
+            "checkedAt": "2026-09-05",
+            "evidenceType": "retained_provider_binding",
+            "note": "Repository-retained source row is keyed to this frozen Google Place ID; source fields: budget, closure, cuisine, hours, name. Source-native name: 成光. Retained provenance does not expose an independent branch address, so address was not asserted. Retained provenance does not expose an independent branch phone, so phone was not asserted.",
+            "sourceNativeRestaurantName": "成光"
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        {
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13011355/",
+          "checkedAt": "2026-09-05",
+          "result": "Retained source/provider binding inspected; no accepted dish field."
+        }
+      ],
+      "blocker": null,
+      "notes": "Repository-retained source facts/provenance, Hot Pepper bindings/rich metadata, and detail evidence were inspected; no provenance-backed concrete branch menu item was recovered.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S7.json",
+        "data/agent_reviews/DISH-R-RETAINED/S7.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJ62feckGMGGARv9xYxwMWrnU",
+      "restaurantName": "ファリーヌ キムラヤ",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "ファリーヌ キムラヤ"
+        ],
+        "evidence": [
+          {
+            "provider": "Tabelog",
+            "sourceUrl": "https://tabelog.com/tokyo/A1309/A130905/13033057/",
+            "checkedAt": "2026-09-06",
+            "evidenceType": "retained_provider_binding",
+            "note": "Repository-retained source row is keyed to this frozen Google Place ID; source fields: address, budget, closure, cuisine, hours, name. Source-native name: ファリーヌ キムラヤ. Retained provenance does not expose an independent branch phone, so phone was not asserted.",
+            "sourceNativeRestaurantName": "ファリーヌ キムラヤ"
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        {
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1309/A130905/13033057/",
+          "checkedAt": "2026-09-06",
+          "result": "Retained source/provider binding inspected; no accepted dish field."
+        }
+      ],
+      "blocker": null,
+      "notes": "Repository-retained source facts/provenance, Hot Pepper bindings/rich metadata, and detail evidence were inspected; no provenance-backed concrete branch menu item was recovered.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S7.json",
+        "data/agent_reviews/DISH-R-RETAINED/S7.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJAQBF7RCMGGARe0q6822XnJ8",
+      "restaurantName": "古瀬戸珈琲店",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "古瀬戸珈琲店"
+        ],
+        "evidence": [
+          {
+            "provider": "Tabelog",
+            "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13006272/",
+            "checkedAt": "2026-09-05",
+            "evidenceType": "retained_provider_binding",
+            "note": "Repository-retained source row is keyed to this frozen Google Place ID; source fields: name. Source-native name: 古瀬戸珈琲店. Retained provenance does not expose an independent branch address, so address was not asserted. Retained provenance does not expose an independent branch phone, so phone was not asserted.",
+            "sourceNativeRestaurantName": "古瀬戸珈琲店"
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        {
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13006272/",
+          "checkedAt": "2026-09-05",
+          "result": "Retained source/provider binding inspected; no accepted dish field."
+        }
+      ],
+      "blocker": null,
+      "notes": "Repository-retained source facts/provenance, Hot Pepper bindings/rich metadata, and detail evidence were inspected; no provenance-backed concrete branch menu item was recovered.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S7.json",
+        "data/agent_reviews/DISH-R-RETAINED/S7.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJD3fzDhSMGGAR-AJRIU0bV-s",
+      "restaurantName": "用心棒",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "用心棒"
+        ],
+        "evidence": [
+          {
+            "provider": "Tabelog",
+            "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13085246/",
+            "checkedAt": "2026-09-05",
+            "evidenceType": "retained_provider_binding",
+            "note": "Repository-retained source row is keyed to this frozen Google Place ID; source fields: closure, cuisine, hours, name. Source-native name: 用心棒. Retained provenance does not expose an independent branch address, so address was not asserted. Retained provenance does not expose an independent branch phone, so phone was not asserted.",
+            "sourceNativeRestaurantName": "用心棒"
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        {
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13085246/",
+          "checkedAt": "2026-09-05",
+          "result": "Retained source/provider binding inspected; no accepted dish field."
+        }
+      ],
+      "blocker": null,
+      "notes": "Repository-retained source facts/provenance, Hot Pepper bindings/rich metadata, and detail evidence were inspected; no provenance-backed concrete branch menu item was recovered.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S7.json",
+        "data/agent_reviews/DISH-R-RETAINED/S7.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJd8apsBaMGGARzv3OY4yTguI",
+      "restaurantName": "やまじょう",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "やまじょう"
+        ],
+        "evidence": [
+          {
+            "provider": "Tabelog",
+            "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13078215/",
+            "checkedAt": "2026-09-05",
+            "evidenceType": "retained_provider_binding",
+            "note": "Repository-retained source row is keyed to this frozen Google Place ID; source fields: address, budget, cuisine, name. Source-native name: やまじょう. Retained provenance does not expose an independent branch phone, so phone was not asserted.",
+            "sourceNativeRestaurantName": "やまじょう"
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        {
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13078215/",
+          "checkedAt": "2026-09-05",
+          "result": "Retained source/provider binding inspected; no accepted dish field."
+        }
+      ],
+      "blocker": null,
+      "notes": "Repository-retained source facts/provenance, Hot Pepper bindings/rich metadata, and detail evidence were inspected; no provenance-backed concrete branch menu item was recovered.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S7.json",
+        "data/agent_reviews/DISH-R-RETAINED/S7.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJeSgEJxqMGGARBM-k-mrX7xs",
+      "restaurantName": "古ぢどり屋",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "古ぢどり屋"
+        ],
+        "evidence": [
+          {
+            "provider": "Tabelog",
+            "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13166031/",
+            "checkedAt": "2026-09-05",
+            "evidenceType": "retained_provider_binding",
+            "note": "Repository-retained source row is keyed to this frozen Google Place ID; source fields: name. Source-native name: 古ぢどり屋. Retained provenance does not expose an independent branch address, so address was not asserted. Retained provenance does not expose an independent branch phone, so phone was not asserted.",
+            "sourceNativeRestaurantName": "古ぢどり屋"
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        {
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13166031/",
+          "checkedAt": "2026-09-05",
+          "result": "Retained source/provider binding inspected; no accepted dish field."
+        }
+      ],
+      "blocker": null,
+      "notes": "Repository-retained source facts/provenance, Hot Pepper bindings/rich metadata, and detail evidence were inspected; no provenance-backed concrete branch menu item was recovered.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S7.json",
+        "data/agent_reviews/DISH-R-RETAINED/S7.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJfSpPjASMGGARUu9xPUFK1Rk",
+      "restaurantName": "イタリアンバル ポルテラ",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "イタリアンバル ポルテラ"
+        ],
+        "evidence": [
+          {
+            "provider": "Tabelog",
+            "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13198681/",
+            "checkedAt": "2026-09-05",
+            "evidenceType": "retained_provider_binding",
+            "note": "Repository-retained source row is keyed to this frozen Google Place ID; source fields: address, budget, closure, cuisine, hours, name. Source-native name: イタリアンバル ポルテラ. Retained provenance does not expose an independent branch phone, so phone was not asserted.",
+            "sourceNativeRestaurantName": "イタリアンバル ポルテラ"
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        {
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13198681/",
+          "checkedAt": "2026-09-05",
+          "result": "Retained source/provider binding inspected; no accepted dish field."
+        }
+      ],
+      "blocker": null,
+      "notes": "Repository-retained source facts/provenance, Hot Pepper bindings/rich metadata, and detail evidence were inspected; no provenance-backed concrete branch menu item was recovered.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S7.json",
+        "data/agent_reviews/DISH-R-RETAINED/S7.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJKZqeBRGMGGARKItTirr1QhE",
+      "restaurantName": "から好し 神田神保町店",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "から好し 神田神保町店"
+        ],
+        "evidence": [
+          {
+            "provider": "Tabelog",
+            "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13244181/",
+            "checkedAt": "2026-09-05",
+            "evidenceType": "retained_provider_binding",
+            "note": "Repository-retained source row is keyed to this frozen Google Place ID; source fields: budget, closure, cuisine, hours, name. Source-native name: から好し 神田神保町店. Retained provenance does not expose an independent branch address, so address was not asserted. Retained provenance does not expose an independent branch phone, so phone was not asserted.",
+            "sourceNativeRestaurantName": "から好し 神田神保町店"
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        {
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13244181/",
+          "checkedAt": "2026-09-05",
+          "result": "Retained source/provider binding inspected; no accepted dish field."
+        }
+      ],
+      "blocker": null,
+      "notes": "Repository-retained source facts/provenance, Hot Pepper bindings/rich metadata, and detail evidence were inspected; no provenance-backed concrete branch menu item was recovered.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S7.json",
+        "data/agent_reviews/DISH-R-RETAINED/S7.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJl_NG_yeNGGARWVRjUkuOH8U",
+      "restaurantName": "パウえる",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "パウえる"
+        ],
+        "evidence": [
+          {
+            "provider": "Tabelog",
+            "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13256122/",
+            "checkedAt": "2026-09-05",
+            "evidenceType": "retained_provider_binding",
+            "note": "Repository-retained source row is keyed to this frozen Google Place ID; source fields: name. Source-native name: パウえる. Retained provenance does not expose an independent branch address, so address was not asserted. Retained provenance does not expose an independent branch phone, so phone was not asserted.",
+            "sourceNativeRestaurantName": "パウえる"
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        {
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13256122/",
+          "checkedAt": "2026-09-05",
+          "result": "Retained source/provider binding inspected; no accepted dish field."
+        }
+      ],
+      "blocker": null,
+      "notes": "Repository-retained source facts/provenance, Hot Pepper bindings/rich metadata, and detail evidence were inspected; no provenance-backed concrete branch menu item was recovered.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S7.json",
+        "data/agent_reviews/DISH-R-RETAINED/S7.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJmQ23FBGMGGARixDUK2b6vlE",
+      "restaurantName": "アルカサール 神保町店",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "アルカサール 神保町店"
+        ],
+        "evidence": [
+          {
+            "provider": "Tabelog",
+            "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13029964/",
+            "checkedAt": "2026-09-05",
+            "evidenceType": "retained_provider_binding",
+            "note": "Repository-retained source row is keyed to this frozen Google Place ID; source fields: budget, cuisine, hours, name. Source-native name: アルカサール 神保町店. Retained provenance does not expose an independent branch address, so address was not asserted. Retained provenance does not expose an independent branch phone, so phone was not asserted.",
+            "sourceNativeRestaurantName": "アルカサール 神保町店"
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        {
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13029964/",
+          "checkedAt": "2026-09-05",
+          "result": "Retained source/provider binding inspected; no accepted dish field."
+        }
+      ],
+      "blocker": null,
+      "notes": "Repository-retained source facts/provenance, Hot Pepper bindings/rich metadata, and detail evidence were inspected; no provenance-backed concrete branch menu item was recovered.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S7.json",
+        "data/agent_reviews/DISH-R-RETAINED/S7.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJpSBgsBaMGGARRUpLmaFtDFc",
+      "restaurantName": "魚玉",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "魚玉"
+        ],
+        "evidence": [
+          {
+            "provider": "Tabelog",
+            "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13006524/",
+            "checkedAt": "2026-09-05",
+            "evidenceType": "retained_provider_binding",
+            "note": "Repository-retained source row is keyed to this frozen Google Place ID; source fields: closure, cuisine, hours, name. Source-native name: 魚玉. Retained provenance does not expose an independent branch address, so address was not asserted. Retained provenance does not expose an independent branch phone, so phone was not asserted.",
+            "sourceNativeRestaurantName": "魚玉"
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        {
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13006524/",
+          "checkedAt": "2026-09-05",
+          "result": "Retained source/provider binding inspected; no accepted dish field."
+        }
+      ],
+      "blocker": null,
+      "notes": "Repository-retained source facts/provenance, Hot Pepper bindings/rich metadata, and detail evidence were inspected; no provenance-backed concrete branch menu item was recovered.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S7.json",
+        "data/agent_reviews/DISH-R-RETAINED/S7.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJT9EwYBWMGGARYzUZzsZaZk8",
+      "restaurantName": "Boulangerie Marble",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "Boulangerie Marble"
+        ],
+        "evidence": [
+          {
+            "provider": "Tabelog",
+            "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13194383/",
+            "checkedAt": "2026-09-05",
+            "evidenceType": "retained_provider_binding",
+            "note": "Repository-retained source row is keyed to this frozen Google Place ID; source fields: name. Source-native name: Boulangerie Marble. Retained provenance does not expose an independent branch address, so address was not asserted. Retained provenance does not expose an independent branch phone, so phone was not asserted.",
+            "sourceNativeRestaurantName": "Boulangerie Marble"
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        {
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13194383/",
+          "checkedAt": "2026-09-05",
+          "result": "Retained source/provider binding inspected; no accepted dish field."
+        }
+      ],
+      "blocker": null,
+      "notes": "Repository-retained source facts/provenance, Hot Pepper bindings/rich metadata, and detail evidence were inspected; no provenance-backed concrete branch menu item was recovered.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S7.json",
+        "data/agent_reviews/DISH-R-RETAINED/S7.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJtSRayRWMGGARUty8oeFifZk",
+      "restaurantName": "めんめん かめぞう",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "めんめん かめぞう"
+        ],
+        "evidence": [
+          {
+            "provider": "Tabelog",
+            "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13049895/",
+            "checkedAt": "2026-09-05",
+            "evidenceType": "retained_provider_binding",
+            "note": "Repository-retained source row is keyed to this frozen Google Place ID; source fields: budget, closure, cuisine, name. Source-native name: めんめん かめぞう. Retained provenance does not expose an independent branch address, so address was not asserted. Retained provenance does not expose an independent branch phone, so phone was not asserted.",
+            "sourceNativeRestaurantName": "めんめん かめぞう"
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        {
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13049895/",
+          "checkedAt": "2026-09-05",
+          "result": "Retained source/provider binding inspected; no accepted dish field."
+        }
+      ],
+      "blocker": null,
+      "notes": "Repository-retained source facts/provenance, Hot Pepper bindings/rich metadata, and detail evidence were inspected; no provenance-backed concrete branch menu item was recovered.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S7.json",
+        "data/agent_reviews/DISH-R-RETAINED/S7.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJvXBmsxWMGGARUOTkEM1RFlk",
+      "restaurantName": "ベーカリーアベ",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "ベーカリーアベ"
+        ],
+        "evidence": [
+          {
+            "provider": "Tabelog",
+            "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13030933/",
+            "checkedAt": "2026-09-05",
+            "evidenceType": "retained_provider_binding",
+            "note": "Repository-retained source row is keyed to this frozen Google Place ID; source fields: budget, cuisine, name. Source-native name: ベーカリーアベ. Retained provenance does not expose an independent branch address, so address was not asserted. Retained provenance does not expose an independent branch phone, so phone was not asserted.",
+            "sourceNativeRestaurantName": "ベーカリーアベ"
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        {
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13030933/",
+          "checkedAt": "2026-09-05",
+          "result": "Retained source/provider binding inspected; no accepted dish field."
+        }
+      ],
+      "blocker": null,
+      "notes": "Repository-retained source facts/provenance, Hot Pepper bindings/rich metadata, and detail evidence were inspected; no provenance-backed concrete branch menu item was recovered.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S7.json",
+        "data/agent_reviews/DISH-R-RETAINED/S7.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJ___7bBGMGGARjNjDRPbORIk",
+      "restaurantName": "神保町魚金 弐 すずらん通り店",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "神保町魚金 弐 すずらん通り店"
+        ],
+        "evidence": [
+          {
+            "provider": "Tabelog",
+            "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13221122/",
+            "checkedAt": "2026-09-05",
+            "evidenceType": "retained_provider_binding",
+            "note": "Repository-retained source row is keyed to this frozen Google Place ID; source fields: budget, closure, cuisine, hours, name. Source-native name: 神保町魚金 弐 すずらん通り店. Retained provenance does not expose an independent branch address, so address was not asserted. Retained provenance does not expose an independent branch phone, so phone was not asserted.",
+            "sourceNativeRestaurantName": "神保町魚金 弐 すずらん通り店"
+          },
+          {
+            "provider": "Tabelog",
+            "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13221122/dtlmenu/",
+            "checkedAt": "2026-09-05",
+            "evidenceType": "exact_place_id_retained_menu_source",
+            "note": "Repository-retained source row is keyed to this frozen Google Place ID; source fields: dishes. Source-native name: 神保町魚金 弐 すずらん通り店. Retained provenance does not expose an independent branch address, so address was not asserted. Retained provenance does not expose an independent branch phone, so phone was not asserted.",
+            "sourceNativeRestaurantName": "神保町魚金 弐 すずらん通り店"
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "刺身盛り合わせ",
+          "nameZhCandidate": null,
+          "evidenceClass": "retained_source_menu_item",
+          "recommendationSemantics": "",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13221122/dtlmenu/",
+          "checkedAt": "2026-09-05",
+          "sourceScope": "branch",
+          "evidenceText": "刺身盛り合わせ",
+          "confidence": "high",
+          "notes": "Concrete source-native retained menu field; no recommendation semantics were assumed."
+        }
+      ],
+      "attemptedSources": [
+        {
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13221122/",
+          "checkedAt": "2026-09-05",
+          "result": "Retained source/provider binding inspected; no accepted dish field."
+        },
+        {
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13221122/dtlmenu/",
+          "checkedAt": "2026-09-05",
+          "result": "Retained dishes field/source item inspected."
+        }
+      ],
+      "blocker": null,
+      "notes": "Repository-retained source facts/provenance or exact itemized Hot Pepper evidence supplied concrete F items; no recommendation semantics were inferred.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S7.json",
+        "data/agent_reviews/DISH-R-RETAINED/S7.json"
+      ],
+      "reviewReasoning": "Final v2 consensus: all unrepresented independent reviewed inputs accepted; safe evidence unioned fail-closed."
+    },
+    {
+      "googlePlaceId": "ChIJ62NdtwONGGARr6UMKTVqhLo",
+      "restaurantName": "パスタ屋 小島",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "data/source_facts.js",
+        "data/source_provenance.js",
+        "data/google_inventory_detail_evidence.json"
+      ],
+      "blocker": null,
+      "notes": "Repository-retained source facts/provenance, Hot Pepper bindings/rich metadata, and detail evidence were inspected; no provenance-backed concrete branch menu item was recovered.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S7.json",
+        "data/agent_reviews/DISH-R-RETAINED/S7.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJaa_eYNCNGGARWk-6TuJpNnE",
+      "restaurantName": "御茶ノ水シーシャWARP",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "data/source_facts.js",
+        "data/source_provenance.js",
+        "data/google_inventory_detail_evidence.json"
+      ],
+      "blocker": null,
+      "notes": "Repository-retained source facts/provenance, Hot Pepper bindings/rich metadata, and detail evidence were inspected; no provenance-backed concrete branch menu item was recovered.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S7.json",
+        "data/agent_reviews/DISH-R-RETAINED/S7.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJbd9KBr-NGGARxB1s5E_gg6s",
+      "restaurantName": "LEAP BAR リープバー",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "data/source_facts.js",
+        "data/source_provenance.js",
+        "data/google_inventory_detail_evidence.json"
+      ],
+      "blocker": null,
+      "notes": "Repository-retained source facts/provenance, Hot Pepper bindings/rich metadata, and detail evidence were inspected; no provenance-backed concrete branch menu item was recovered.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S7.json",
+        "data/agent_reviews/DISH-R-RETAINED/S7.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJd6qKC_aNGGARdgLVr4ciIR0",
+      "restaurantName": "焼肉ほるもん 晴真栄 御茶ノ水",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "data/source_facts.js",
+        "data/source_provenance.js",
+        "data/google_inventory_detail_evidence.json"
+      ],
+      "blocker": null,
+      "notes": "Repository-retained source facts/provenance, Hot Pepper bindings/rich metadata, and detail evidence were inspected; no provenance-backed concrete branch menu item was recovered.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S7.json",
+        "data/agent_reviews/DISH-R-RETAINED/S7.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJgZW4KjmMGGARmslOh4XoAVo",
+      "restaurantName": "日高屋 後楽園白山通店",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "data/source_facts.js",
+        "data/source_provenance.js",
+        "data/google_inventory_detail_evidence.json"
+      ],
+      "blocker": null,
+      "notes": "Repository-retained source facts/provenance, Hot Pepper bindings/rich metadata, and detail evidence were inspected; no provenance-backed concrete branch menu item was recovered.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S7.json",
+        "data/agent_reviews/DISH-R-RETAINED/S7.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJL_jA9QGNGGAR2D2A1e8uMFc",
+      "restaurantName": "カラオケbar LALA",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "data/source_facts.js",
+        "data/source_provenance.js",
+        "data/google_inventory_detail_evidence.json"
+      ],
+      "blocker": null,
+      "notes": "Repository-retained source facts/provenance, Hot Pepper bindings/rich metadata, and detail evidence were inspected; no provenance-backed concrete branch menu item was recovered.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S7.json",
+        "data/agent_reviews/DISH-R-RETAINED/S7.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJm_N_DRuMGGARaUf1LlEM5yE",
+      "restaurantName": "Gourmands",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "data/source_facts.js",
+        "data/source_provenance.js",
+        "data/google_inventory_detail_evidence.json"
+      ],
+      "blocker": null,
+      "notes": "Repository-retained source facts/provenance, Hot Pepper bindings/rich metadata, and detail evidence were inspected; no provenance-backed concrete branch menu item was recovered.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S7.json",
+        "data/agent_reviews/DISH-R-RETAINED/S7.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJMVXN3kOMGGARPxQkNXNeVdg",
+      "restaurantName": "レストラン イコブ",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "data/source_facts.js",
+        "data/source_provenance.js",
+        "data/google_inventory_detail_evidence.json"
+      ],
+      "blocker": null,
+      "notes": "Repository-retained source facts/provenance, Hot Pepper bindings/rich metadata, and detail evidence were inspected; no provenance-backed concrete branch menu item was recovered.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S7.json",
+        "data/agent_reviews/DISH-R-RETAINED/S7.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJr-OhfeiNGGARrNNvqzLyh8Q",
+      "restaurantName": "神保町 ホロホロシーシャ",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "data/source_facts.js",
+        "data/source_provenance.js",
+        "data/google_inventory_detail_evidence.json"
+      ],
+      "blocker": null,
+      "notes": "Repository-retained source facts/provenance, Hot Pepper bindings/rich metadata, and detail evidence were inspected; no provenance-backed concrete branch menu item was recovered.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S7.json",
+        "data/agent_reviews/DISH-R-RETAINED/S7.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJt-Lhz3GNGGARbwbcBV35nsw",
+      "restaurantName": "御茶ノ水シーシャ カフェ&バー Fog - フォグ",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "data/source_facts.js",
+        "data/source_provenance.js",
+        "data/google_inventory_detail_evidence.json"
+      ],
+      "blocker": null,
+      "notes": "Repository-retained source facts/provenance, Hot Pepper bindings/rich metadata, and detail evidence were inspected; no provenance-backed concrete branch menu item was recovered.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S7.json",
+        "data/agent_reviews/DISH-R-RETAINED/S7.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJU3K0aY6NGGARPiV2TRTmLcs",
+      "restaurantName": "柏宴",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "data/source_facts.js",
+        "data/source_provenance.js",
+        "data/google_inventory_detail_evidence.json"
+      ],
+      "blocker": null,
+      "notes": "Repository-retained source facts/provenance, Hot Pepper bindings/rich metadata, and detail evidence were inspected; no provenance-backed concrete branch menu item was recovered.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S7.json",
+        "data/agent_reviews/DISH-R-RETAINED/S7.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJxQkqlb-NGGAR_85yYOPDRp0",
+      "restaurantName": "長崎県五島列島 小値賀町 神田小川町店",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "data/source_facts.js",
+        "data/source_provenance.js",
+        "data/google_inventory_detail_evidence.json"
+      ],
+      "blocker": null,
+      "notes": "Repository-retained source facts/provenance, Hot Pepper bindings/rich metadata, and detail evidence were inspected; no provenance-backed concrete branch menu item was recovered.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S7.json",
+        "data/agent_reviews/DISH-R-RETAINED/S7.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJyZhNeZONGGARfhWZyUDUSVM",
+      "restaurantName": "9INETY4OUR Sports and Music Bar",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "data/source_facts.js",
+        "data/source_provenance.js",
+        "data/google_inventory_detail_evidence.json"
+      ],
+      "blocker": null,
+      "notes": "Repository-retained source facts/provenance, Hot Pepper bindings/rich metadata, and detail evidence were inspected; no provenance-backed concrete branch menu item was recovered.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S7.json",
+        "data/agent_reviews/DISH-R-RETAINED/S7.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJ34CgHASMGGARG5poMVhiB1w",
+      "restaurantName": "塩生姜らー麺専門店 MANNISH 淡路町本店",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "塩生姜らー麺専門店 MANNISH 淡路町本店"
+        ],
+        "evidence": [
+          {
+            "provider": "Tabelog",
+            "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13231004/",
+            "checkedAt": "2026-09-06",
+            "evidenceType": "retained_provider_binding",
+            "note": "Repository-retained source row is keyed to this frozen Google Place ID; source fields: address, budget, closure, cuisine, hours, name. Source-native name: 塩生姜らー麺専門店 MANNISH 淡路町本店. Retained provenance does not expose an independent branch phone, so phone was not asserted.",
+            "sourceNativeRestaurantName": "塩生姜らー麺専門店 MANNISH 淡路町本店"
+          },
+          {
+            "provider": "sourceWebsite",
+            "sourceUrl": "https://tokyoramenoftheyear.com/ja/shop/shop-00300",
+            "checkedAt": "2026-09-06",
+            "evidenceType": "exact_place_id_retained_menu_source",
+            "note": "Repository-retained source row is keyed to this frozen Google Place ID; source fields: dishes. Frozen catalog name: 塩生姜らー麺専門店 MANNISH 淡路町本店. Retained provenance does not expose an independent branch address, so address was not asserted. Retained provenance does not expose an independent branch phone, so phone was not asserted."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "塩生姜らー麺",
+          "nameZhCandidate": null,
+          "evidenceClass": "retained_source_menu_item",
+          "recommendationSemantics": "",
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://tokyoramenoftheyear.com/ja/shop/shop-00300",
+          "checkedAt": "2026-09-06",
+          "sourceScope": "branch",
+          "evidenceText": "塩生姜らー麺",
+          "confidence": "high",
+          "notes": "Concrete source-native retained menu field; no recommendation semantics were assumed.",
+          "sourceProviderNative": "sourceWebsite"
+        }
+      ],
+      "attemptedSources": [
+        {
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13231004/",
+          "checkedAt": "2026-09-06",
+          "result": "Retained source/provider binding inspected; no accepted dish field."
+        },
+        {
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://tokyoramenoftheyear.com/ja/shop/shop-00300",
+          "checkedAt": "2026-09-06",
+          "result": "Retained dishes field/source item inspected."
+        }
+      ],
+      "blocker": null,
+      "notes": "Repository-retained source facts/provenance or exact itemized Hot Pepper evidence supplied concrete F items; no recommendation semantics were inferred.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S7.json",
+        "data/agent_reviews/DISH-R-RETAINED/S7.json"
+      ],
+      "reviewReasoning": "Final v2 consensus: all unrepresented independent reviewed inputs accepted; safe evidence unioned fail-closed."
+    },
+    {
+      "googlePlaceId": "ChIJ8e-ZpD-MGGARlhssPvB1eI0",
+      "restaurantName": "やきとん三吉 水道橋店",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "やきとん三吉 水道橋店"
+        ],
+        "evidence": [
+          {
+            "provider": "Tabelog",
+            "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13240031/",
+            "checkedAt": "2026-09-05",
+            "evidenceType": "exact_place_id_retained_menu_source",
+            "note": "Repository-retained source row is keyed to this frozen Google Place ID; source fields: address, budget, closure, cuisine, dishes, hours, name. Source-native name: やきとん三吉 水道橋店. Retained provenance does not expose an independent branch phone, so phone was not asserted.",
+            "sourceNativeRestaurantName": "やきとん三吉 水道橋店"
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "和豚やきとん",
+          "nameZhCandidate": null,
+          "evidenceClass": "retained_source_menu_item",
+          "recommendationSemantics": "",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13240031/",
+          "checkedAt": "2026-09-05",
+          "sourceScope": "branch",
+          "evidenceText": "和豚やきとん",
+          "confidence": "high",
+          "notes": "Concrete source-native retained menu field; no recommendation semantics were assumed."
+        },
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "やきとり",
+          "nameZhCandidate": null,
+          "evidenceClass": "retained_source_menu_item",
+          "recommendationSemantics": "",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13240031/",
+          "checkedAt": "2026-09-05",
+          "sourceScope": "branch",
+          "evidenceText": "やきとり",
+          "confidence": "high",
+          "notes": "Concrete source-native retained menu field; no recommendation semantics were assumed."
+        },
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "バカ盛りポテトフライ",
+          "nameZhCandidate": null,
+          "evidenceClass": "retained_source_menu_item",
+          "recommendationSemantics": "",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13240031/",
+          "checkedAt": "2026-09-05",
+          "sourceScope": "branch",
+          "evidenceText": "バカ盛りポテトフライ",
+          "confidence": "high",
+          "notes": "Concrete source-native retained menu field; no recommendation semantics were assumed."
+        }
+      ],
+      "attemptedSources": [
+        {
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13240031/",
+          "checkedAt": "2026-09-05",
+          "result": "Retained dishes field/source item inspected."
+        }
+      ],
+      "blocker": null,
+      "notes": "Repository-retained source facts/provenance or exact itemized Hot Pepper evidence supplied concrete F items; no recommendation semantics were inferred.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S7.json",
+        "data/agent_reviews/DISH-R-RETAINED/S7.json"
+      ],
+      "reviewReasoning": "Final v2 consensus: all unrepresented independent reviewed inputs accepted; safe evidence unioned fail-closed."
+    },
+    {
+      "googlePlaceId": "ChIJCx3eSUCMGGAR3rd2s4J8pyw",
+      "restaurantName": "純中国伝統料理四川料理 芊品香",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "純中国伝統料理四川料理 芊品香"
+        ],
+        "evidence": [
+          {
+            "provider": "Tabelog",
+            "sourceUrl": "https://tabelog.com/tokyo/A1309/A130906/13189568/",
+            "checkedAt": "2026-09-05",
+            "evidenceType": "exact_place_id_retained_menu_source",
+            "note": "Repository-retained source row is keyed to this frozen Google Place ID; source fields: address, budget, cuisine, dishes, name. Source-native name: 純中国伝統料理四川料理 芊品香. Retained provenance does not expose an independent branch phone, so phone was not asserted.",
+            "sourceNativeRestaurantName": "純中国伝統料理四川料理 芊品香"
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "刀削麺",
+          "nameZhCandidate": null,
+          "evidenceClass": "retained_source_menu_item",
+          "recommendationSemantics": "",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1309/A130906/13189568/",
+          "checkedAt": "2026-09-05",
+          "sourceScope": "branch",
+          "evidenceText": "刀削麺",
+          "confidence": "high",
+          "notes": "Concrete source-native retained menu field; no recommendation semantics were assumed."
+        }
+      ],
+      "attemptedSources": [
+        {
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1309/A130906/13189568/",
+          "checkedAt": "2026-09-05",
+          "result": "Retained dishes field/source item inspected."
+        }
+      ],
+      "blocker": null,
+      "notes": "Repository-retained source facts/provenance or exact itemized Hot Pepper evidence supplied concrete F items; no recommendation semantics were inferred.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S7.json",
+        "data/agent_reviews/DISH-R-RETAINED/S7.json"
+      ],
+      "reviewReasoning": "Final v2 consensus: all unrepresented independent reviewed inputs accepted; safe evidence unioned fail-closed."
+    },
+    {
+      "googlePlaceId": "ChIJIeIjchSMGGARssRDzwpDNuM",
+      "restaurantName": "ボーイズカレー",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "ボーイズカレー"
+        ],
+        "evidence": [
+          {
+            "provider": "Tabelog",
+            "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13042687/",
+            "checkedAt": "2026-09-05",
+            "evidenceType": "exact_place_id_retained_menu_source",
+            "note": "Repository-retained source row is keyed to this frozen Google Place ID; source fields: budget, closure, cuisine, dishes, hours, name. Source-native name: ボーイズカレー. Retained provenance does not expose an independent branch address, so address was not asserted. Retained provenance does not expose an independent branch phone, so phone was not asserted.",
+            "sourceNativeRestaurantName": "ボーイズカレー"
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "カレー付き生姜焼き",
+          "nameZhCandidate": null,
+          "evidenceClass": "retained_source_menu_item",
+          "recommendationSemantics": "",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13042687/",
+          "checkedAt": "2026-09-05",
+          "sourceScope": "branch",
+          "evidenceText": "カレー付き生姜焼き",
+          "confidence": "high",
+          "notes": "Concrete source-native retained menu field; no recommendation semantics were assumed."
+        }
+      ],
+      "attemptedSources": [
+        {
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13042687/",
+          "checkedAt": "2026-09-05",
+          "result": "Retained dishes field/source item inspected."
+        }
+      ],
+      "blocker": null,
+      "notes": "Repository-retained source facts/provenance or exact itemized Hot Pepper evidence supplied concrete F items; no recommendation semantics were inferred.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S7.json",
+        "data/agent_reviews/DISH-R-RETAINED/S7.json"
+      ],
+      "reviewReasoning": "Final v2 consensus: all unrepresented independent reviewed inputs accepted; safe evidence unioned fail-closed."
+    },
+    {
+      "googlePlaceId": "ChIJP7NLORyMGGAR3ZPrUs4IHNg",
+      "restaurantName": "炭の魂",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "炭の魂"
+        ],
+        "evidence": [
+          {
+            "provider": "Hot Pepper",
+            "sourceUrl": "https://www.hotpepper.jp/strJ001043637/?vos=nhppalsa000016",
+            "checkedAt": "2026-09-06",
+            "evidenceType": "retained_provider_binding",
+            "note": "Repository-retained source row is keyed to this frozen Google Place ID; source fields: address, closure, dinnerBudget, hours. Source-native name: 炭の魂. Retained Hot Pepper catalog address: 東京都千代田区外神田３-1-3. Retained provenance does not expose an independent branch phone, so phone was not asserted.",
+            "sourceNativeRestaurantName": "炭の魂"
+          },
+          {
+            "provider": "Hot Pepper",
+            "sourceUrl": "https://www.hotpepper.jp/strJ001043637/food/",
+            "checkedAt": "2026-09-09",
+            "evidenceType": "exact_itemized_retained_menu_source",
+            "note": "Repository-retained itemized Hot Pepper /food/ source is keyed to this frozen Google Place ID; concrete native menu text was inspected. Frozen catalog name: 炭の魂. Retained Hot Pepper catalog address: 東京都千代田区外神田３-1-3. Retained provenance does not expose an independent branch phone, so phone was not asserted."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "唐揚げ",
+          "nameZhCandidate": null,
+          "evidenceClass": "hotpepper_menu_text",
+          "recommendationSemantics": "",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001043637/food/",
+          "checkedAt": "2026-09-09",
+          "sourceScope": "branch",
+          "evidenceText": "タコ唐揚げ 658円 (税込)",
+          "confidence": "high",
+          "notes": "Concrete itemized retained Hot Pepper /food/ evidence; the source-native family label is preserved and no recommendation semantics were inferred."
+        },
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "油淋鶏",
+          "nameZhCandidate": null,
+          "evidenceClass": "hotpepper_menu_text",
+          "recommendationSemantics": "",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001043637/food/",
+          "checkedAt": "2026-09-09",
+          "sourceScope": "branch",
+          "evidenceText": "油淋鶏 858円 (税込)",
+          "confidence": "high",
+          "notes": "Concrete itemized retained Hot Pepper /food/ evidence; the source-native family label is preserved and no recommendation semantics were inferred."
+        },
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "焼きそば",
+          "nameZhCandidate": null,
+          "evidenceClass": "hotpepper_menu_text",
+          "recommendationSemantics": "",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001043637/food/",
+          "checkedAt": "2026-09-09",
+          "sourceScope": "branch",
+          "evidenceText": "焼きそば 1098円 (税込)",
+          "confidence": "high",
+          "notes": "Concrete itemized retained Hot Pepper /food/ evidence; the source-native family label is preserved and no recommendation semantics were inferred."
+        },
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "牛もつ煮込み",
+          "nameZhCandidate": null,
+          "evidenceClass": "hotpepper_menu_text",
+          "recommendationSemantics": "",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001043637/food/",
+          "checkedAt": "2026-09-09",
+          "sourceScope": "branch",
+          "evidenceText": "牛もつ煮込み 698円 (税込)",
+          "confidence": "high",
+          "notes": "Concrete itemized retained Hot Pepper /food/ evidence; the source-native family label is preserved and no recommendation semantics were inferred."
+        },
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "カキフライ",
+          "nameZhCandidate": null,
+          "evidenceClass": "hotpepper_menu_text",
+          "recommendationSemantics": "",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001043637/food/",
+          "checkedAt": "2026-09-09",
+          "sourceScope": "branch",
+          "evidenceText": "カキフライ 858円 (税込) 「料理」の先頭へ戻る ◆逸品売れ筋！！◆",
+          "confidence": "high",
+          "notes": "Concrete itemized retained Hot Pepper /food/ evidence; the source-native family label is preserved and no recommendation semantics were inferred."
+        }
+      ],
+      "attemptedSources": [
+        {
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001043637/?vos=nhppalsa000016",
+          "checkedAt": "2026-09-06",
+          "result": "Retained source/provider binding inspected; no accepted dish field."
+        },
+        {
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001043637/food/",
+          "checkedAt": "2026-09-09",
+          "result": "Retained itemized /food/ evidence inspected."
+        }
+      ],
+      "blocker": null,
+      "notes": "Repository-retained source facts/provenance or exact itemized Hot Pepper evidence supplied concrete F items; no recommendation semantics were inferred.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S7.json",
+        "data/agent_reviews/DISH-R-RETAINED/S7.json"
+      ],
+      "reviewReasoning": "Final v2 consensus: all unrepresented independent reviewed inputs accepted; safe evidence unioned fail-closed."
+    },
+    {
+      "googlePlaceId": "ChIJX_rO9EONGGARNRk8x0A8Atg",
+      "restaurantName": "おでん やきとり 伊勢路 水道橋店",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "おでん やきとり 伊勢路 水道橋店"
+        ],
+        "evidence": [
+          {
+            "provider": "Tabelog",
+            "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13260927/",
+            "checkedAt": "2026-09-05",
+            "evidenceType": "exact_place_id_retained_menu_source",
+            "note": "Repository-retained source row is keyed to this frozen Google Place ID; source fields: address, budget, cuisine, dishes, name. Source-native name: おでん やきとり 伊勢路 水道橋店. Retained provenance does not expose an independent branch phone, so phone was not asserted.",
+            "sourceNativeRestaurantName": "おでん やきとり 伊勢路 水道橋店"
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "おでん",
+          "nameZhCandidate": null,
+          "evidenceClass": "retained_source_menu_item",
+          "recommendationSemantics": "",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13260927/",
+          "checkedAt": "2026-09-05",
+          "sourceScope": "branch",
+          "evidenceText": "おでん",
+          "confidence": "high",
+          "notes": "Concrete source-native retained menu field; no recommendation semantics were assumed."
+        },
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "やきとり",
+          "nameZhCandidate": null,
+          "evidenceClass": "retained_source_menu_item",
+          "recommendationSemantics": "",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13260927/",
+          "checkedAt": "2026-09-05",
+          "sourceScope": "branch",
+          "evidenceText": "やきとり",
+          "confidence": "high",
+          "notes": "Concrete source-native retained menu field; no recommendation semantics were assumed."
+        }
+      ],
+      "attemptedSources": [
+        {
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13260927/",
+          "checkedAt": "2026-09-05",
+          "result": "Retained dishes field/source item inspected."
+        }
+      ],
+      "blocker": null,
+      "notes": "Repository-retained source facts/provenance or exact itemized Hot Pepper evidence supplied concrete F items; no recommendation semantics were inferred.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S7.json",
+        "data/agent_reviews/DISH-R-RETAINED/S7.json"
+      ],
+      "reviewReasoning": "Final v2 consensus: all unrepresented independent reviewed inputs accepted; safe evidence unioned fail-closed."
+    },
+    {
+      "googlePlaceId": "ChIJ9aZJUwCNGGAR6K5DTl-3xQk",
+      "restaurantName": "ハワイアンダイニング Diamond Head",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": [
+          {
+            "provider": "Hot Pepper",
+            "sourceUrl": "https://www.hotpepper.jp/strJ003784641/food/",
+            "checkedAt": "2026-09-09",
+            "evidenceType": "exact_itemized_retained_menu_source",
+            "note": "Repository-retained itemized Hot Pepper /food/ source is keyed to this frozen Google Place ID; concrete native menu text was inspected. Frozen catalog name: ハワイアンダイニング Diamond Head. Retained Hot Pepper catalog address: 東京都千代田区神田小川町１-６-７ 竹田ビル. Retained provenance does not expose an independent branch phone, so phone was not asserted."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "パスタ",
+          "nameZhCandidate": null,
+          "evidenceClass": "hotpepper_menu_text",
+          "recommendationSemantics": "",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ003784641/food/",
+          "checkedAt": "2026-09-09",
+          "sourceScope": "branch",
+          "evidenceText": "カリカリパスタ 360円（税込）",
+          "confidence": "high",
+          "notes": "Concrete itemized retained Hot Pepper /food/ evidence; the source-native family label is preserved and no recommendation semantics were inferred."
+        },
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "リゾット",
+          "nameZhCandidate": null,
+          "evidenceClass": "hotpepper_menu_text",
+          "recommendationSemantics": "",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ003784641/food/",
+          "checkedAt": "2026-09-09",
+          "sourceScope": "branch",
+          "evidenceText": "チーズリゾット 1,100円（税込）",
+          "confidence": "high",
+          "notes": "Concrete itemized retained Hot Pepper /food/ evidence; the source-native family label is preserved and no recommendation semantics were inferred."
+        },
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "パンケーキ",
+          "nameZhCandidate": null,
+          "evidenceClass": "hotpepper_menu_text",
+          "recommendationSemantics": "",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ003784641/food/",
+          "checkedAt": "2026-09-09",
+          "sourceScope": "branch",
+          "evidenceText": "カルボナーラパンケーキ 1,600円（税込） 「料理」の先頭へ戻る デザート <di",
+          "confidence": "high",
+          "notes": "Concrete itemized retained Hot Pepper /food/ evidence; the source-native family label is preserved and no recommendation semantics were inferred."
+        },
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "バーガー",
+          "nameZhCandidate": null,
+          "evidenceClass": "hotpepper_menu_text",
+          "recommendationSemantics": "",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ003784641/food/",
+          "checkedAt": "2026-09-09",
+          "sourceScope": "branch",
+          "evidenceText": "DHバーガー 1,100円（税込）",
+          "confidence": "high",
+          "notes": "Concrete itemized retained Hot Pepper /food/ evidence; the source-native family label is preserved and no recommendation semantics were inferred."
+        },
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "ステーキ",
+          "nameZhCandidate": null,
+          "evidenceClass": "hotpepper_menu_text",
+          "recommendationSemantics": "",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ003784641/food/",
+          "checkedAt": "2026-09-09",
+          "sourceScope": "branch",
+          "evidenceText": "Dai amond Head ステーキ 3,200円（税込）",
+          "confidence": "high",
+          "notes": "Concrete itemized retained Hot Pepper /food/ evidence; the source-native family label is preserved and no recommendation semantics were inferred."
+        }
+      ],
+      "attemptedSources": [
+        {
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ003784641/food/",
+          "checkedAt": "2026-09-09",
+          "result": "Retained itemized /food/ evidence inspected."
+        }
+      ],
+      "blocker": null,
+      "notes": "Repository-retained source facts/provenance or exact itemized Hot Pepper evidence supplied concrete F items; no recommendation semantics were inferred.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S7.json",
+        "data/agent_reviews/DISH-R-RETAINED/S7.json"
+      ],
+      "reviewReasoning": "Final v2 consensus: all unrepresented independent reviewed inputs accepted; safe evidence unioned fail-closed."
+    },
+    {
+      "googlePlaceId": "ChIJAU-c4bKNGGARvtlaEf-co0M",
+      "restaurantName": "海南鶏飯本舗",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "data/source_facts.js",
+        "data/source_provenance.js",
+        "data/google_inventory_detail_evidence.json"
+      ],
+      "blocker": null,
+      "notes": "Repository-retained source facts/provenance, Hot Pepper bindings/rich metadata, and detail evidence were inspected; no provenance-backed concrete branch menu item was recovered.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S7.json",
+        "data/agent_reviews/DISH-R-RETAINED/S7.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJAyFF7RCMGGARrkucMH3Xc1o",
+      "restaurantName": "油そば 春日亭 神保町店",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "data/source_facts.js",
+        "data/source_provenance.js",
+        "data/google_inventory_detail_evidence.json"
+      ],
+      "blocker": null,
+      "notes": "Repository-retained source facts/provenance, Hot Pepper bindings/rich metadata, and detail evidence were inspected; no provenance-backed concrete branch menu item was recovered.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S7.json",
+        "data/agent_reviews/DISH-R-RETAINED/S7.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJBUlY0bWNGGART0Zwi7Y0nH8",
+      "restaurantName": "鉄板もんじゃ居酒屋 三代目土信田商店",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "data/source_facts.js",
+        "data/source_provenance.js",
+        "data/google_inventory_detail_evidence.json"
+      ],
+      "blocker": null,
+      "notes": "Repository-retained source facts/provenance, Hot Pepper bindings/rich metadata, and detail evidence were inspected; no provenance-backed concrete branch menu item was recovered.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S7.json",
+        "data/agent_reviews/DISH-R-RETAINED/S7.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJiWRXWjCNGGARjiCknfPwxXY",
+      "restaurantName": "Darts Bar A's 水道橋店",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": [
+          {
+            "provider": "Hot Pepper",
+            "sourceUrl": "https://www.hotpepper.jp/strJ001277594/food/",
+            "checkedAt": "2026-09-09",
+            "evidenceType": "exact_itemized_retained_menu_source",
+            "note": "Repository-retained itemized Hot Pepper /food/ source is keyed to this frozen Google Place ID; concrete native menu text was inspected. Frozen catalog name: Darts Bar A's 水道橋店. Retained Hot Pepper catalog address: 東京都千代田区神田三崎町２-22-18 新水道橋ビル４F. Retained provenance does not expose an independent branch phone, so phone was not asserted."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "カルボナーラ",
+          "nameZhCandidate": null,
+          "evidenceClass": "hotpepper_menu_text",
+          "recommendationSemantics": "",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001277594/food/",
+          "checkedAt": "2026-09-09",
+          "sourceScope": "branch",
+          "evidenceText": "パスタ（カルボナーラ、カニトマトクリーム、ジェノベーゼ） 1,320円（税込）",
+          "confidence": "high",
+          "notes": "Concrete itemized retained Hot Pepper /food/ evidence; the source-native family label is preserved and no recommendation semantics were inferred."
+        },
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "パスタ",
+          "nameZhCandidate": null,
+          "evidenceClass": "hotpepper_menu_text",
+          "recommendationSemantics": "",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001277594/food/",
+          "checkedAt": "2026-09-09",
+          "sourceScope": "branch",
+          "evidenceText": "カリカリパスタ 840円（税込） 「料理」の先頭へ戻る SIDE DISH <img src=\"https://imgfp.hotp.jp/IMGH/30/92/P04709309",
+          "confidence": "high",
+          "notes": "Concrete itemized retained Hot Pepper /food/ evidence; the source-native family label is preserved and no recommendation semantics were inferred."
+        },
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "ピザ",
+          "nameZhCandidate": null,
+          "evidenceClass": "hotpepper_menu_text",
+          "recommendationSemantics": "",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001277594/food/",
+          "checkedAt": "2026-09-09",
+          "sourceScope": "branch",
+          "evidenceText": "ピザ( ジェノベーゼ、明太子) 1,320円（税込） 「料理」の先頭へ戻る ※更新日が2021/3/31以前の情報は、当時の価格及び税率に基づく情報となります。価格につきましては直",
+          "confidence": "high",
+          "notes": "Concrete itemized retained Hot Pepper /food/ evidence; the source-native family label is preserved and no recommendation semantics were inferred."
+        },
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "唐揚げ",
+          "nameZhCandidate": null,
+          "evidenceClass": "hotpepper_menu_text",
+          "recommendationSemantics": "",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001277594/food/",
+          "checkedAt": "2026-09-09",
+          "sourceScope": "branch",
+          "evidenceText": "唐揚げ5個 960円（税込）",
+          "confidence": "high",
+          "notes": "Concrete itemized retained Hot Pepper /food/ evidence; the source-native family label is preserved and no recommendation semantics were inferred."
+        },
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "たこ焼き",
+          "nameZhCandidate": null,
+          "evidenceClass": "hotpepper_menu_text",
+          "recommendationSemantics": "",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001277594/food/",
+          "checkedAt": "2026-09-09",
+          "sourceScope": "branch",
+          "evidenceText": "たこ焼き6個 960円（税込）",
+          "confidence": "high",
+          "notes": "Concrete itemized retained Hot Pepper /food/ evidence; the source-native family label is preserved and no recommendation semantics were inferred."
+        }
+      ],
+      "attemptedSources": [
+        {
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001277594/food/",
+          "checkedAt": "2026-09-09",
+          "result": "Retained itemized /food/ evidence inspected."
+        }
+      ],
+      "blocker": null,
+      "notes": "Repository-retained source facts/provenance or exact itemized Hot Pepper evidence supplied concrete F items; no recommendation semantics were inferred.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S7.json",
+        "data/agent_reviews/DISH-R-RETAINED/S7.json"
+      ],
+      "reviewReasoning": "Final v2 consensus: all unrepresented independent reviewed inputs accepted; safe evidence unioned fail-closed."
+    },
+    {
+      "googlePlaceId": "ChIJlQKSd12NGGARZtxfIAFusrI",
+      "restaurantName": "神保町 薬酒bar志膳",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": [
+          {
+            "provider": "Hot Pepper",
+            "sourceUrl": "https://www.hotpepper.jp/strJ001209837/food/",
+            "checkedAt": "2026-09-09",
+            "evidenceType": "exact_itemized_retained_menu_source",
+            "note": "Repository-retained itemized Hot Pepper /food/ source is keyed to this frozen Google Place ID; concrete native menu text was inspected. Frozen catalog name: 神保町 薬酒bar志膳. Retained Hot Pepper catalog address: 東京都千代田区神田神保町１-20-5. Retained provenance does not expose an independent branch phone, so phone was not asserted."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "カレー",
+          "nameZhCandidate": null,
+          "evidenceClass": "hotpepper_menu_text",
+          "recommendationSemantics": "",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001209837/food/",
+          "checkedAt": "2026-09-09",
+          "sourceScope": "branch",
+          "evidenceText": "チキンチーズカレー バケット付き 1000円 「料理」の先頭へ戻る ※更新日が2021/3/31以前の情報は、当時の価格及び税率に基づく情報となります。価格につきましては直接店舗へ",
+          "confidence": "high",
+          "notes": "Concrete itemized retained Hot Pepper /food/ evidence; the source-native family label is preserved and no recommendation semantics were inferred."
+        },
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "ピザ",
+          "nameZhCandidate": null,
+          "evidenceClass": "hotpepper_menu_text",
+          "recommendationSemantics": "",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001209837/food/",
+          "checkedAt": "2026-09-09",
+          "sourceScope": "branch",
+          "evidenceText": "じゃがピザ チーズ ＋100円 700円",
+          "confidence": "high",
+          "notes": "Concrete itemized retained Hot Pepper /food/ evidence; the source-native family label is preserved and no recommendation semantics were inferred."
+        }
+      ],
+      "attemptedSources": [
+        {
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001209837/food/",
+          "checkedAt": "2026-09-09",
+          "result": "Retained itemized /food/ evidence inspected."
+        }
+      ],
+      "blocker": null,
+      "notes": "Repository-retained source facts/provenance or exact itemized Hot Pepper evidence supplied concrete F items; no recommendation semantics were inferred.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S7.json",
+        "data/agent_reviews/DISH-R-RETAINED/S7.json"
+      ],
+      "reviewReasoning": "Final v2 consensus: all unrepresented independent reviewed inputs accepted; safe evidence unioned fail-closed."
+    },
+    {
+      "googlePlaceId": "ChIJRfZ2XQCNGGARkNsR4Qre_sw",
+      "restaurantName": "皇亭ペンギン",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "data/source_facts.js",
+        "data/source_provenance.js",
+        "data/google_inventory_detail_evidence.json"
+      ],
+      "blocker": null,
+      "notes": "Repository-retained source facts/provenance, Hot Pepper bindings/rich metadata, and detail evidence were inspected; no provenance-backed concrete branch menu item was recovered.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S7.json",
+        "data/agent_reviews/DISH-R-RETAINED/S7.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJxegySViNGGAR53GJLYt_ot4",
+      "restaurantName": "ゴーゴーカレー小川町店",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "data/source_facts.js",
+        "data/source_provenance.js",
+        "data/google_inventory_detail_evidence.json"
+      ],
+      "blocker": null,
+      "notes": "Repository-retained source facts/provenance, Hot Pepper bindings/rich metadata, and detail evidence were inspected; no provenance-backed concrete branch menu item was recovered.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-RETAINED/S7.json",
+        "data/agent_reviews/DISH-R-RETAINED/S7.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    }
+  ],
+  "policyAttestation": {
+    "paidGoogleDataApiCalls": 0,
+    "canonicalMasterEditedDirectly": false,
+    "proximityOnlyIdentityBindingUsed": false,
+    "recommendationWithoutExplicitSemanticsAdded": false,
+    "accessRestrictionBypassUsed": false,
+    "unrepresentedIndependentInputsRequireConsensus": true
+  }
+}

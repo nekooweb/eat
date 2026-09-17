@@ -1,6 +1,87 @@
 # Eat 开发状态与后续计划
 
-更新日期：2026-09-10。
+更新日期：2026-09-14。
+
+## 2026-09-14 20:06 JST：Official / Retained 逐步完成检查点
+
+工作分支为 `codex/official-retained-completion-20260914`，基于 `agent-data-library-2026-09-14` 的 `5179bad`。本节随已验证的阶段更新；下方 19:24 检查点保留为历史状态。
+
+当前阶段：基线已重建、审查适配器与回归已验证，菜品证据仍在审查。[草稿 PR #67](https://github.com/nekooweb/eat/pull/67) 已开启，用于提前运行 CI；尚未完成全量中央审查或导入新菜品证据，不可标为完成或合并。
+
+草稿首个 head `83cfc1f` 的 PR Review、Pages 预览构建和 policy 检查已通过，部署跳过。具体 run 链接见[本轮日志](logs/2026-09-14-official-retained-completion.md)；CI 通过不替代逐行证据审查。
+
+| 已核实事项 | 当前结果 |
+| --- | --- |
+| 实际重建后范围 | Official 219、Retained 318，合计 537 个唯一 assignment |
+| 旧队列差异 | Minatoya 的已隔离错误官网被移除；Official S6 → Discovery S6，本任务不继续处理该行 |
+| 外部分支复用 | PR #66 的 Retained S0 原始 46 行已 cherry-pick 到完成分支，仍待内容审查 |
+| 重复提交 | Official S3 两份 21 行；Retained S1 中央版与独立分支版 37 行，均需按 Place ID 协调 |
+| 公开基线 | 冻结目录 2,804、命名 runtime 1,422；R 595 家、F 675 家、任一展示菜 740 家，推荐缺口 827 家 |
+| SQLite 审计副本基线 | R 559 家、F 657 家；单独通过维护入口构建，未替换用户主库 |
+| 工程门禁 | 离线审查适配器、逐证据增量审计、完整来源快照保留回归通过；公开与 10 项主库校验基线通过 |
+| 付费 Google Data API | 0 次 |
+
+20:11 JST 补充验证：维护入口重复导入审计 SQLite 后，8 张核心表计数完全不变（目录 2,804、来源及绑定各 9,969、观察 57,540、决议 37,252、任务及详情各 2,308）。这验证了本次基线的重复导入幂等性，不代表未完成的菜品审查已通过。
+
+逐行审查补充：Luna 已保存 ARBOL 跨分店引用、Sta. Kanda 失效页面、Sombreuil 过期菜单、文銭堂非当季草莓大福、らくごカフェ历史菜单等降为候选的修正。べっぴん舎仅有「特別／他にはない」描述，保持候选；Keidanren 的「伝統」不单独构成推荐，R 降为 F。最终 shard 数量仍以正在执行的审查验证为准。
+
+Official 缺失 S0/S5/S6 已完成提案和 worker 自检：81/81 行，其中接受 3、候选 7、无证据 37、受限 34、跳过 0；接受项全部为 F，没有 R。全体 Official 219 行的成员、去重和 summary 检查通过，内容仍须独立中央复核后才可批准导入。
+
+全范围结构审计现已通过：Official 219/219、Retained 318/318，合计 537/537 个唯一 assignment，全部有且仅有一项终态。当前草稿统计为接受 105、候选 48、无证据 319、受限 65、跳过 0；该统计尚未通过完整独立内容复核，不代表最终接受量或生产增量。
+
+Retained worker 已完成 318 行及适配器自检：接受 70、候选 6、无证据 240、受限 2；43 条 R、229 条 F，其中 107 条暂缺精确中文规范化。独立交叉审查仍在核对 PR #66 的原文可追溯性，并补齐 Official 9 条受限记录的尝试来源说明。该阶段不批准原文不足的证据，也不为提高覆盖率强制翻译。
+
+批量读取、来源挖掘和逐行审查由 Luna worker 执行。主进程负责关键争议复核、审查批准、维护管线集成、验证和文档。每完成一个 shard 或一次验证，就将结果补充到[本轮日志](logs/2026-09-14-official-retained-completion.md)。草稿、已审查、已导入、已重建和 CI 通过分别记录；不以 proposal 数量替代实际覆盖增量。
+
+## 2026-09-14：并行 Agent 数据补全层
+
+当前在 `agent-data-library-2026-09-14` / PR #65 上新增了并行数据补全层。该层只负责分配任务、保存来源证据和 proposal，不直接修改 canonical runtime、`data/production_area1.js` 或 SQLite master。
+
+本轮公开 dish-work 基线来自 2026-09-14 snapshot：冻结目录 2,804、公开 runtime 1,422、推荐菜已知 595、特色菜已知 675、任一展示菜已知 740、recommendation gap 827、可执行 dish-work 共 892 行。892 行按已有 `data/dish_batch_plan.json` 划分为 4 个互斥 lane：
+
+| Marker | 工作类型 | 总行数 |
+| --- | --- | ---: |
+| `DISH-R-OFFICIAL` | 已知官方来源上的严格推荐菜证据 | 220 |
+| `DISH-R-RETAINED` | 仓库已保留来源中的菜品证据挖掘 | 318 |
+| `DISH-R-DISCOVERY` | 为缺少可用菜品来源的记录寻找独立来源 | 289 |
+| `DISH-F-SOURCE` | 官方/保留来源上的普通菜单项（F） | 65 |
+| **合计** |  | **892** |
+
+每个 lane 使用现有 deterministic S0-S7 shard；worker 在开始前重读当前 row，已完成的 row 必须跳过。Place ID 是冻结 identity key，来源别名只作为 identity evidence，不允许替换 catalog/tool identity name。
+
+### 当前 proposal 进度（2026-09-14 19:24 JST 检查点）
+
+进度按“唯一 assignment row 已经形成可审查 proposal”计数，不按文件数或 Agent 次数计数；同一 shard 的独立复核不能重复计算。
+
+| Lane | 已形成 proposal | 总行数 | 进度 | 已完成 shard |
+| --- | ---: | ---: | ---: | --- |
+| `DISH-R-OFFICIAL` | 138 | 220 | 62.7% | S1, S2, S3, S4, S7 |
+| `DISH-R-RETAINED` | 172 | 318 | 54.1% | S0, S1, S2, S4 |
+| `DISH-R-DISCOVERY` | 36 | 289 | 12.5% | S7 |
+| `DISH-F-SOURCE` | 0 | 65 | 0.0% | - |
+| **合计** | **346** | **892** | **38.8%** |  |
+
+其中 central branch 已经落盘 300 行：Official S1/S2/S3/S4/S7、Retained S1/S2/S4、Discovery S7。Retained S0 的 46 行已经在 PR #66 完成并提交，因此计入“全局已提交 346”，但尚未进入 central branch；central branch 本身的可见进度是 300/892（33.6%）。剩余尚未形成 proposal 的唯一 row 为 546。
+
+Official S3 当前有两份独立 Agent 结果。两份都覆盖同一 21 个 assignment row，所以进度只计 21 行；其 accepted/candidate/no-evidence/blocked 分类存在少量差异，必须在 central review 中逐 Place ID reconciliation，不能任选一份直接作为 canonical truth。
+
+当前尚未形成 proposal 的 shard：Official S0/S5/S6；Retained S3/S5/S6/S7；Discovery S0-S6；F-source S0-S7。
+
+### 并行开发逻辑
+
+1. **Assignment/index**：`data/agent_library/manifest.json` 记录 marker、lane、总量和 shard 分布；`data/dish_batch_plan.json` 继续是 dish row source of truth，不复制另一套任务表。
+2. **Worker scope**：Agent 只能处理指定 `MARKER:Sx`，开始前重新检查当前 row，不能扩展到其他 shard/餐厅。
+3. **Evidence-first**：保留 provider、精确 URL、checked date、source-native dish text、evidence class 和 branch/identity evidence。禁止付费 Google data API、登录/CAPTCHA 绕过、访问限制规避和 proximity-only identity binding。
+4. **R/F/C 语义**：R 必须同时有具体菜名和明确的おすすめ/名物/看板/人気/signature/specialty 等语义；普通菜单项只能是 F；身份或语义不确定时保持 C/candidate、blocked 或 no_evidence。
+5. **Proposal-only handoff**：结果写入 `data/agent_proposals/<marker>/<shard-or-batch>.json`。worker 不直接修改 canonical runtime、production data 或 SQLite master。
+6. **Central review**：按 frozen Place ID 检查 shard membership、branch identity、R/F/C 分类、source provenance、重复 evidence、跨分店传播、course-level semantics 误传播及 policy attestation。独立重复结果用于 reconciliation，不增加完成量。
+7. **Canonical merge/rebuild**：只有 central review 通过的 evidence 才能进入现有 canonical merge；随后通过正常 pipeline 重建 runtime/queue、运行 regression/audit，再决定是否发布。proposal 文件存在本身不代表 production 已改变。
+
+状态口径固定为：`unassigned/working -> proposal submitted -> central reviewed -> canonical merged/rebuilt`。对外报告必须同时说明处在哪一层，禁止把 proposal completion 当成 canonical coverage 增长。
+
+当前 PR #65 最新 proposal checkpoint 的 PR Review 与 Pages preview 均通过；CI 通过只证明现有代码/数据约束未被 proposal 文件破坏，不代表 proposal 内容已经完成 central semantic review。
+
+详细 assignment contract 见 [`data/agent_library/README.md`](data/agent_library/README.md)，proposal schema 见 [`data/agent_library/proposal-template.json`](data/agent_library/proposal-template.json)，本轮过程与逐 shard 检查点见 [`logs/2026-09-14-parallel-agent-data-completion.md`](logs/2026-09-14-parallel-agent-data-completion.md)。
 
 ## 2026-09-10：页面精简与问题清单
 
@@ -98,3 +179,14 @@ python3 scripts/reload_data.py --outdir _audit/data-reload --database _local/eat
 身份长尾和菜品缺口仍需新证据。SQLite shadow → 唯一公开数据源的切换需要单独比较准入、字段来源和浏览器行为，不能把统一入口描述成已经完成该切换。
 
 详细过程见 [重置日志](logs/2026-09-08-data-loading-reset.md) 与 [2026-09-09 identity-name 修复日志](logs/2026-09-09-tool-identity-name-contract.md)，实际流程见 [DATA_PIPELINE](DATA_PIPELINE.md)。旧日期型日志为历史检查点，不作为当前统计来源。
+
+
+## 2026-09-15：菜品数据最终统一整合
+
+892 条 dish-work 已全部形成 terminal decision；Official/Retained 537 行与 Discovery/F-source 355 行均完成最终覆盖。S0–S7 的独立 E2E 结果先按共同 PR #67 基线提取 canonical delta，再与 Official/Retained 的 fail-closed 中央复核结果做单调 union。
+
+最终维护管线验证通过：review digest approval → evidence union → maintained merge → specificity correction → evidence audit → public rebuild → integration audit → disposable SQLite full rebuild/validators → logical replay。全程付费 Google Data API 调用为 0。
+
+最终公开 runtime：R 619 家、F 707 家、任一展示菜 774 家、recommendation gap 803 家；相对原始基线 R +24、F +32、展示 +34、推荐缺口 -24。canonical evidence item 为 R 1036、F 2722。第二次 replay 新增 R/F evidence 均为 0，所有 count delta 均为 0。
+
+详细结果与中央降级、translation-pending 数量、各 shard delta 见 [`data/final_dish_integration_metrics.json`](data/final_dish_integration_metrics.json) 与 [`logs/2026-09-15-final-dish-integration.md`](logs/2026-09-15-final-dish-integration.md)。在 final integration PR 合入前，`main` 不视为已发布这些结果。

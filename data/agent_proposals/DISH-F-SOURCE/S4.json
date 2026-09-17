@@ -1,0 +1,238 @@
+{
+  "schemaVersion": 1,
+  "proposalOnly": true,
+  "marker": "DISH-F-SOURCE",
+  "shard": "S4",
+  "agentRunId": "E2E-DISH:S4:f-source:20260915",
+  "sourceQueue": "data/dish_batch_plan.json",
+  "sourceQueueCommit": "e41ff3435bb4bcf5a6574df95424512280ec86d4",
+  "generatedAt": "2026-09-15T14:45:00+09:00",
+  "summary": {
+    "assignedRows": 7,
+    "reviewedRows": 7,
+    "acceptedEvidenceRows": 5,
+    "candidateRows": 0,
+    "noEvidenceRows": 2,
+    "blockedRows": 0,
+    "skippedAlreadyCompleteRows": 0
+  },
+  "records": [
+    {
+      "googlePlaceId": "ChIJ44VsmjyMGGARJVL9gwj7Afc",
+      "restaurantName": "上海厨房",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": ["随苑 上海厨房", "上海厨房"],
+        "evidence": [{
+          "provider": "official_web",
+          "sourceUrl": "https://zuienshanghichubo.gorp.jp/",
+          "checkedAt": "2026-09-15",
+          "evidenceType": "reviewed_official_branch_page",
+          "note": "Repository already binds this frozen Place ID to the reviewed official page. The page identifies 随苑 上海厨房 at 東京都文京区本郷3-32-7 with telephone 03-6801-8166."
+        }]
+      },
+      "dishProposals": [{
+        "targetField": "featuredDishes",
+        "classification": "F",
+        "nameOriginal": "アツアツ海鮮土鍋",
+        "nameZhCandidate": "热腾腾海鲜砂锅",
+        "evidenceClass": "official_branch_menu_item",
+        "recommendationSemantics": "",
+        "provider": "official_web",
+        "sourceUrl": "https://zuienshanghichubo.gorp.jp/",
+        "checkedAt": "2026-09-15",
+        "sourceScope": "branch",
+        "evidenceText": "アツアツ海鮮土鍋 新鮮な海鮮がたくさん入ってます！！2480円！！ホタテ、大正エビ、牡蠣、アサリ、イカ全部付いてます！！",
+        "confidence": "high",
+        "notes": "Concrete current ordinary menu item on the exact reviewed official branch page; not promoted to R."
+      }],
+      "attemptedSources": ["https://zuienshanghichubo.gorp.jp/"],
+      "blocker": null,
+      "notes": "Accepted as ordinary source-backed menu coverage."
+    },
+    {
+      "googlePlaceId": "ChIJGeptBQCNGGAR6v7wQRav3Ns",
+      "restaurantName": "虎子担々 淡路町ワテラス店",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": ["虎子担々 淡路町ワテラス店"],
+        "evidence": [{
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ004678468/food/",
+          "checkedAt": "2026-09-15",
+          "evidenceType": "existing_high_confidence_hotpepper_binding",
+          "note": "Repository hotpepper_bindings.json binds this frozen Place ID to J004678468 with high confidence and autoEligible=true; the current page names the exact ワテラス branch."
+        }]
+      },
+      "dishProposals": [{
+        "targetField": "recommendedDishes",
+        "classification": "R",
+        "nameOriginal": "石鍋焼き麻婆豆腐",
+        "nameZhCandidate": "石锅麻婆豆腐",
+        "evidenceClass": "hotpepper_branch_recommendation",
+        "recommendationSemantics": "当店看板メニュー・当店自慢・必食の逸品",
+        "provider": "Hot Pepper",
+        "sourceUrl": "https://www.hotpepper.jp/strJ004678468/food/",
+        "checkedAt": "2026-09-15",
+        "sourceScope": "branch",
+        "evidenceText": "〖当店看板メニュー〗四川山椒のしびれと香りが食欲をそそる「石鍋焼き麻婆豆腐」 当店自慢の「石鍋焼き麻婆豆腐」。",
+        "confidence": "high",
+        "notes": "The same current branch source explicitly satisfies strict R semantics; it must not be downgraded to F merely because this row originated in F-source."
+      }],
+      "attemptedSources": ["https://www.hotpepper.jp/strJ004678468/food/"],
+      "blocker": null,
+      "notes": "Page is current (料理 2026/09/02 更新)."
+    },
+    {
+      "googlePlaceId": "ChIJgf3tagGMGGARep3Pd52OyHU",
+      "restaurantName": "Himalaya Table",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": ["Himalaya Table", "ヒマラヤテーブル"],
+        "evidence": [{
+          "provider": "official_web",
+          "sourceUrl": "https://himalaya-table.info/",
+          "checkedAt": "2026-09-15",
+          "evidenceType": "reviewed_official_branch_page",
+          "note": "Repository reviewed official source binds this Place ID to himalaya-table.info. The live page gives 東京都千代田区内神田3-5-5 大同ビル2F and 03-3525-4110."
+        }]
+      },
+      "dishProposals": [{
+        "targetField": "featuredDishes",
+        "classification": "F",
+        "nameOriginal": "パ二プリ（８P）",
+        "nameZhCandidate": "帕尼普里（8个）",
+        "evidenceClass": "official_branch_menu_item",
+        "recommendationSemantics": "",
+        "provider": "official_web",
+        "sourceUrl": "https://himalaya-table.info/",
+        "checkedAt": "2026-09-15",
+        "sourceScope": "branch",
+        "evidenceText": "パ二プリ（８P） 一口サイズの揚げ玉に、ポテトの具と酸味の効いたソースを入れて。",
+        "confidence": "high",
+        "notes": "Concrete ordinary menu item on the exact official branch site; no recommendation marker is attached to this item."
+      }],
+      "attemptedSources": ["https://himalaya-table.info/"],
+      "blocker": null,
+      "notes": "Accepted as ordinary F evidence."
+    },
+    {
+      "googlePlaceId": "ChIJN9mduz-MGGARWs6kNg-Hmq0",
+      "restaurantName": "Ebrietas",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": ["EBRIETAS", "エブリエターズ"],
+        "evidence": [{
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13163949/",
+          "checkedAt": "2026-09-15",
+          "evidenceType": "exact_branch_identity",
+          "note": "Exact current branch page shows 神田三崎町2-11-12 and telephone 03-6268-9797, matching the repository-bound contact record."
+        }]
+      },
+      "dishProposals": [],
+      "attemptedSources": ["https://tabelog.com/tokyo/A1310/A131003/13163949/", "web search: EBRIETAS 水道橋 メニュー 公式"],
+      "blocker": null,
+      "notes": "Exact identity is reproducible, but the current page has no operator/menu entries and available dish mentions are customer-review prose; no current source-native menu item is safe to integrate."
+    },
+    {
+      "googlePlaceId": "ChIJowZz-xSMGGARZFKAEIubQm0",
+      "restaurantName": "全家福 新館",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": ["全家福 新館", "全家福　新館"],
+        "evidence": [{
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001011894/food/",
+          "checkedAt": "2026-09-15",
+          "evidenceType": "existing_high_confidence_hotpepper_binding",
+          "note": "Repository hotpepper_bindings.json binds this frozen Place ID to J001011894 with high confidence and autoEligible=true; the current page is the exact 新館 branch."
+        }]
+      },
+      "dishProposals": [{
+        "targetField": "recommendedDishes",
+        "classification": "R",
+        "nameOriginal": "北海道産大粒生帆立の上海蟹味噌ソース炒め(2個)",
+        "nameZhCandidate": "北海道大粒鲜扇贝炒上海蟹黄酱（2个）",
+        "evidenceClass": "hotpepper_branch_recommendation",
+        "recommendationSemantics": "おすすめ料理・当店おすすめメニューの１つ",
+        "provider": "Hot Pepper",
+        "sourceUrl": "https://www.hotpepper.jp/strJ001011894/food/",
+        "checkedAt": "2026-09-15",
+        "sourceScope": "branch",
+        "evidenceText": "全家福 新館 おすすめ料理 全家福特製〖北海道産大粒生帆立の上海蟹味噌ソース炒め(2個)〗 当店おすすめメニューの１つである〖北海道産大粒生帆立の上海蟹味噌ソース炒め〗",
+        "confidence": "high",
+        "notes": "Strict item-level recommendation semantics are explicit on the exact bound branch page."
+      }],
+      "attemptedSources": ["https://www.hotpepper.jp/strJ001011894/food/"],
+      "blocker": null,
+      "notes": "The page menu is older (2024/09/30) but the branch is still current and the same Hot Pepper branch remains live; recommendation retained as current-enough branch menu evidence after freshness review."
+    },
+    {
+      "googlePlaceId": "ChIJs1M2cgCNGGARriJT0eDqUkg",
+      "restaurantName": "宮越屋珈琲",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": ["宮越屋珈琲", "宮越屋珈琲 神田明神下店"],
+        "evidence": [{
+          "provider": "official_web",
+          "sourceUrl": "https://www.miyakoshiya-coffee.co.jp/",
+          "checkedAt": "2026-09-15",
+          "evidenceType": "reviewed_official_brand_store_listing",
+          "note": "Current official site still lists 宮越屋珈琲 神田明神下店, but the inspected official pages do not expose a concrete branch menu item suitable for this F-source row."
+        }]
+      },
+      "dishProposals": [],
+      "attemptedSources": ["https://www.miyakoshiya-coffee.co.jp/", "web search: 宮越屋珈琲 神田明神下店 メニュー"],
+      "blocker": null,
+      "notes": "No current branch-specific source-native food/menu item reproduced; brand-wide coffee products were not propagated automatically to this branch."
+    },
+    {
+      "googlePlaceId": "ChIJy06huh6MGGARMUq5_yEeC-E",
+      "restaurantName": "Hakkou Cafe 章太亭",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": ["Hakkou Cafe 章太亭"],
+        "evidence": [{
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ000115713/food/",
+          "checkedAt": "2026-09-15",
+          "evidenceType": "existing_high_confidence_hotpepper_binding",
+          "note": "Repository hotpepper_bindings.json binds this frozen Place ID to J000115713 with high confidence and autoEligible=true; current September availability is shown on the exact branch page."
+        }]
+      },
+      "dishProposals": [{
+        "targetField": "recommendedDishes",
+        "classification": "R",
+        "nameOriginal": "発酵 旬菜膳",
+        "nameZhCandidate": "发酵时令菜膳",
+        "evidenceClass": "hotpepper_branch_recommendation",
+        "recommendationSemantics": "おすすめ料理",
+        "provider": "Hot Pepper",
+        "sourceUrl": "https://www.hotpepper.jp/strJ000115713/food/",
+        "checkedAt": "2026-09-15",
+        "sourceScope": "branch",
+        "evidenceText": "Hakkou Cafe 章太亭 おすすめ料理 発酵 旬菜膳 旬の食材を使った御膳をご用意しています。９月は厚切り銀だらの西京焼きをメインに、フルーツ甘酒、小鉢３種、香の物、味噌汁、発酵玄米ご飯の豪華なお膳になります。",
+        "confidence": "high",
+        "notes": "The current page explicitly places the concrete item in おすすめ料理 and describes the September composition."
+      }],
+      "attemptedSources": ["https://www.hotpepper.jp/strJ000115713/food/"],
+      "blocker": null,
+      "notes": "Current September menu wording reviewed; classified R rather than inflating F semantics."
+    }
+  ],
+  "policyAttestation": {
+    "paidGoogleDataApiCalls": 0,
+    "canonicalMasterEditedDirectly": false,
+    "proximityOnlyIdentityBindingUsed": false,
+    "recommendationWithoutExplicitSemanticsAdded": false,
+    "accessRestrictionBypassUsed": false
+  }
+}

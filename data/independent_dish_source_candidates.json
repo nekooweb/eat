@@ -1,6 +1,6 @@
 {
   "schemaVersion": 3,
-  "generatedAt": "2026-09-10T06:43:53.864Z",
+  "generatedAt": "2026-09-16T13:11:34.076Z",
   "policy": {
     "proposalOnly": true,
     "identityBindingChanges": 0,
@@ -60,22 +60,22 @@
     "schemaVersion": 3,
     "catalogTotal": 2804,
     "publicRuntimeTotal": 1422,
-    "currentIndependentDishSourceGap": 289,
+    "currentIndependentDishSourceGap": 266,
     "officialCandidateIndexRecords": 194,
     "overtureSnapshotRows": 3908,
     "overtureRowsWithIndependentUrls": 2383,
-    "proposalRows": 29,
+    "proposalRows": 27,
     "retainedIndexProposalRows": 0,
-    "overtureProposalRows": 29,
-    "highConfidenceOvertureProposalRows": 18,
+    "overtureProposalRows": 27,
+    "highConfidenceOvertureProposalRows": 17,
     "proposalRowsWithExplicitMenuUrls": 0,
-    "proposalRowsPageOnly": 29,
-    "proposalCoverageOfIndependentGapPct": 10,
+    "proposalRowsPageOnly": 27,
+    "proposalCoverageOfIndependentGapPct": 10.2,
     "explicitMenuCoverageOfIndependentGapPct": 0,
     "overtureTargetsWithoutCoordinates": 0,
-    "overtureTargetsWithNearbyCandidates": 289,
-    "overtureRejectedName": 248,
-    "overtureRejectedWeak": 12,
+    "overtureTargetsWithNearbyCandidates": 266,
+    "overtureRejectedName": 228,
+    "overtureRejectedWeak": 11,
     "overtureRejectedAmbiguous": 0,
     "excludedAggregatorUrls": 356,
     "nameMismatch": 0,
@@ -98,9 +98,9 @@
       },
       {
         "shard": 2,
-        "total": 6,
+        "total": 5,
         "withMenuUrl": 0,
-        "overture": 6
+        "overture": 5
       },
       {
         "shard": 3,
@@ -116,25 +116,60 @@
       },
       {
         "shard": 5,
-        "total": 3,
-        "withMenuUrl": 0,
-        "overture": 3
-      },
-      {
-        "shard": 6,
         "total": 2,
         "withMenuUrl": 0,
         "overture": 2
       },
       {
-        "shard": 7,
+        "shard": 6,
         "total": 3,
         "withMenuUrl": 0,
         "overture": 3
+      },
+      {
+        "shard": 7,
+        "total": 2,
+        "withMenuUrl": 0,
+        "overture": 2
       }
     ]
   },
   "rows": [
+    {
+      "googlePlaceId": "ChIJ73iZqQeMGGAR1UPN4hA0-bA",
+      "name": "Minatoya",
+      "distanceMeters": 1147,
+      "currentAction": "find_independent_dish_source",
+      "currentSourceUrlCount": 0,
+      "pageUrl": "http://www.yumeji-minatoya.co.jp/",
+      "menuUrls": [],
+      "candidateHosts": [
+        "yumeji-minatoya.co.jp"
+      ],
+      "checkedAt": "2026-08-19.0",
+      "candidateName": "Minatoya",
+      "candidateProvider": "Overture Maps",
+      "candidateProviderId": "afc0e565-78bf-42da-be0e-33898c9ddd8c",
+      "candidateDistanceMeters": 0,
+      "nameSimilarity": 1,
+      "candidateMargin": 0.8232,
+      "proposalScore": 1,
+      "overtureConfidence": 0.9944591522216797,
+      "proposalState": "review_high_confidence_overture_website_candidate",
+      "confidenceSignals": [
+        "current_public_identity_has_independent_name_and_coordinates",
+        "retained_overture_candidate_with_independent_http_url",
+        "normalized_name_similarity_above_proposal_threshold",
+        "candidate_within_bounded_coordinate_distance",
+        "best_candidate_margin_above_ambiguity_threshold"
+      ],
+      "candidateUrls": [
+        "http://www.yumeji-minatoya.co.jp/"
+      ],
+      "shard": 6,
+      "reviewRequiredBeforeBinding": true,
+      "mayWriteDishEvidenceBeforeIdentityReview": false
+    },
     {
       "googlePlaceId": "ChIJswfCsA-MGGARIz1Zn1TprVs",
       "name": "Tully's Coffee",
@@ -346,41 +381,6 @@
       "mayWriteDishEvidenceBeforeIdentityReview": false
     },
     {
-      "googlePlaceId": "ChIJKSq4ewOMGGARvdJFWODrifw",
-      "name": "巴里の介",
-      "distanceMeters": 1004,
-      "currentAction": "find_independent_dish_source",
-      "currentSourceUrlCount": 0,
-      "pageUrl": "https://www.parinosuke.com/",
-      "menuUrls": [],
-      "candidateHosts": [
-        "parinosuke.com"
-      ],
-      "checkedAt": "2026-08-19.0",
-      "candidateName": "巴里の介",
-      "candidateProvider": "Overture Maps",
-      "candidateProviderId": "8531ff96-c89a-4681-9230-8749a3c80ca4",
-      "candidateDistanceMeters": 3.6,
-      "nameSimilarity": 1,
-      "candidateMargin": 0.8086,
-      "proposalScore": 0.9933,
-      "overtureConfidence": 0.9981440526247024,
-      "proposalState": "review_high_confidence_overture_website_candidate",
-      "confidenceSignals": [
-        "current_public_identity_has_independent_name_and_coordinates",
-        "retained_overture_candidate_with_independent_http_url",
-        "normalized_name_similarity_above_proposal_threshold",
-        "candidate_within_bounded_coordinate_distance",
-        "best_candidate_margin_above_ambiguity_threshold"
-      ],
-      "candidateUrls": [
-        "https://www.parinosuke.com/"
-      ],
-      "shard": 7,
-      "reviewRequiredBeforeBinding": true,
-      "mayWriteDishEvidenceBeforeIdentityReview": false
-    },
-    {
       "googlePlaceId": "ChIJ3dbqYxyMGGARb2P34SniXRw",
       "name": "まぐろ亭",
       "distanceMeters": 1046,
@@ -552,41 +552,6 @@
         "http://www.nakatomi-co.com/"
       ],
       "shard": 0,
-      "reviewRequiredBeforeBinding": true,
-      "mayWriteDishEvidenceBeforeIdentityReview": false
-    },
-    {
-      "googlePlaceId": "ChIJQ3MESwOMGGARX99d47o0V6k",
-      "name": "神田まつや",
-      "distanceMeters": 1010,
-      "currentAction": "find_independent_dish_source",
-      "currentSourceUrlCount": 1,
-      "pageUrl": "http://kanda-matsuya.jp/",
-      "menuUrls": [],
-      "candidateHosts": [
-        "kanda-matsuya.jp"
-      ],
-      "checkedAt": "2026-08-19.0",
-      "candidateName": "神田まつや",
-      "candidateProvider": "Overture Maps",
-      "candidateProviderId": "39a9febe-4157-4d66-aaf9-9e4220798061",
-      "candidateDistanceMeters": 6.3,
-      "nameSimilarity": 1,
-      "candidateMargin": 0.6557,
-      "proposalScore": 0.9885,
-      "overtureConfidence": 0.9978013944625854,
-      "proposalState": "review_high_confidence_overture_website_candidate",
-      "confidenceSignals": [
-        "current_public_identity_has_independent_name_and_coordinates",
-        "retained_overture_candidate_with_independent_http_url",
-        "normalized_name_similarity_above_proposal_threshold",
-        "candidate_within_bounded_coordinate_distance",
-        "best_candidate_margin_above_ambiguity_threshold"
-      ],
-      "candidateUrls": [
-        "http://kanda-matsuya.jp/"
-      ],
-      "shard": 5,
       "reviewRequiredBeforeBinding": true,
       "mayWriteDishEvidenceBeforeIdentityReview": false
     },
@@ -972,41 +937,6 @@
         "http://www.juraku.com/"
       ],
       "shard": 4,
-      "reviewRequiredBeforeBinding": true,
-      "mayWriteDishEvidenceBeforeIdentityReview": false
-    },
-    {
-      "googlePlaceId": "ChIJb4EjHQSMGGAROEMMNBy38mM",
-      "name": "Bosco",
-      "distanceMeters": 1025,
-      "currentAction": "find_independent_dish_source",
-      "currentSourceUrlCount": 0,
-      "pageUrl": "https://nikubar-bosco.com/",
-      "menuUrls": [],
-      "candidateHosts": [
-        "nikubar-bosco.com"
-      ],
-      "checkedAt": "2026-08-19.0",
-      "candidateName": "Niku Bar Bosco",
-      "candidateProvider": "Overture Maps",
-      "candidateProviderId": "e6e55be9-4673-442a-8b77-eccdc64f6134",
-      "candidateDistanceMeters": 7.1,
-      "nameSimilarity": 0.84,
-      "candidateMargin": 0.6492,
-      "proposalScore": 0.8622,
-      "overtureConfidence": 0.9889106750488281,
-      "proposalState": "review_overture_website_candidate",
-      "confidenceSignals": [
-        "current_public_identity_has_independent_name_and_coordinates",
-        "retained_overture_candidate_with_independent_http_url",
-        "normalized_name_similarity_above_proposal_threshold",
-        "candidate_within_bounded_coordinate_distance",
-        "best_candidate_margin_above_ambiguity_threshold"
-      ],
-      "candidateUrls": [
-        "https://nikubar-bosco.com/"
-      ],
-      "shard": 2,
       "reviewRequiredBeforeBinding": true,
       "mayWriteDishEvidenceBeforeIdentityReview": false
     },

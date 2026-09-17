@@ -1,0 +1,16 @@
+name: Final reviewed dish integration v3 (archived)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  archived:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Archived validation record
+        run: |
+          echo "Final v3 production-candidate validation completed successfully in run 35100292469."
+          echo "This workflow is retained only as an audit marker and does not mutate repository data."

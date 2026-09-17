@@ -1,0 +1,980 @@
+{
+  "schemaVersion": 1,
+  "proposalOnly": true,
+  "marker": "DISH-R-DISCOVERY",
+  "shard": "S6",
+  "agentRunId": "DISH-R-DISCOVERY:S6:20260914-E2E",
+  "sourceQueue": "data/dish_batch_plan.json",
+  "sourceQueueCommit": "e59794d58423e11d39d6c22d53c893a619274826",
+  "generatedAt": "2026-09-14T21:08:00+09:00",
+  "summary": {
+    "assignedRows": 30,
+    "reviewedRows": 30,
+    "acceptedEvidenceRows": 4,
+    "candidateRows": 4,
+    "noEvidenceRows": 21,
+    "blockedRows": 1,
+    "skippedAlreadyCompleteRows": 0
+  },
+  "policyAttestation": {
+    "paidGoogleDataApiCalls": 0,
+    "canonicalMasterEditedDirectly": false,
+    "proximityOnlyIdentityBindingUsed": false,
+    "recommendationWithoutExplicitSemanticsAdded": false,
+    "accessRestrictionBypassUsed": false
+  },
+  "records": [
+    {
+      "googlePlaceId": "ChIJ-3hjRgGMGGARUm7ETP8WqDY",
+      "restaurantName": "ANDY",
+      "status": "no_evidence",
+      "assignmentState": {
+        "recommendedDishesKnown": 0,
+        "featuredDishesKnown": 0,
+        "retainedThirdPartyUrlCount": 0,
+        "sourceUrlCount": 0,
+        "nextAction": "find_independent_dish_source"
+      },
+      "identity": {
+        "state": "partial",
+        "sourceAliases": [
+          "ANDY"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://barandy.gorp.jp/",
+        "current exact venue page has beverage service but no concrete ordinary food dish suitable for dish completion"
+      ],
+      "blocker": null,
+      "notes": "No permitted, reproducible current branch-specific concrete dish evidence survived the second-pass identity/freshness/provenance review."
+    },
+    {
+      "googlePlaceId": "ChIJ-4BioUuLGGARFmh7Hi-jkkA",
+      "restaurantName": "Banh Xeo Saigon Ebisu",
+      "status": "candidate",
+      "assignmentState": {
+        "recommendedDishesKnown": 0,
+        "featuredDishesKnown": 0,
+        "retainedThirdPartyUrlCount": 0,
+        "sourceUrlCount": 0,
+        "nextAction": "find_independent_dish_source"
+      },
+      "identity": {
+        "state": "conflict",
+        "sourceAliases": [
+          "Banh Xeo Saigon Yatai Ebisu",
+          "バインセオサイゴン 屋台 恵比寿"
+        ],
+        "evidence": [
+          {
+            "provider": "Tabelog",
+            "sourceUrl": "https://tabelog.com/tokyo/A1303/A130302/13253656/",
+            "sourceTitle": "移転 Banh Xeo Saigon Yatai Ebisu",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "exact_branch_identity",
+            "note": "Corporate Tabelog page explicitly says this is information from before relocation; current branch identity must not be inferred from the old branch."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1303/A130302/13253656/"
+      ],
+      "blocker": null,
+      "notes": "Relocation conflict makes otherwise concrete historical menu evidence unsafe for current canonical integration."
+    },
+    {
+      "googlePlaceId": "ChIJ0aDTMWuMGGARh6ta_oeDieo",
+      "restaurantName": "ターリー屋",
+      "status": "no_evidence",
+      "assignmentState": {
+        "recommendedDishesKnown": 0,
+        "featuredDishesKnown": 0,
+        "retainedThirdPartyUrlCount": 0,
+        "sourceUrlCount": 0,
+        "nextAction": "find_independent_dish_source"
+      },
+      "identity": {
+        "state": "partial",
+        "sourceAliases": [
+          "ターリー屋"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "exact-name branch search; chain-level ターリー屋 recommendations rejected because exact assigned branch was not established"
+      ],
+      "blocker": null,
+      "notes": "No permitted, reproducible current branch-specific concrete dish evidence survived the second-pass identity/freshness/provenance review."
+    },
+    {
+      "googlePlaceId": "ChIJ234igBiMGGAR5THgWps4ED8",
+      "restaurantName": "江戸富士",
+      "status": "no_evidence",
+      "assignmentState": {
+        "recommendedDishesKnown": 0,
+        "featuredDishesKnown": 0,
+        "retainedThirdPartyUrlCount": 0,
+        "sourceUrlCount": 0,
+        "nextAction": "find_independent_dish_source"
+      },
+      "identity": {
+        "state": "partial",
+        "sourceAliases": [
+          "江戸富士"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "exact-name source search; user-submitted menu/image evidence rejected"
+      ],
+      "blocker": null,
+      "notes": "No permitted, reproducible current branch-specific concrete dish evidence survived the second-pass identity/freshness/provenance review."
+    },
+    {
+      "googlePlaceId": "ChIJ3V0Foz-MGGAR1z_vpZkS6QU",
+      "restaurantName": "水道橋酒場",
+      "status": "candidate",
+      "assignmentState": {
+        "recommendedDishesKnown": 0,
+        "featuredDishesKnown": 0,
+        "retainedThirdPartyUrlCount": 0,
+        "sourceUrlCount": 0,
+        "nextAction": "find_independent_dish_source"
+      },
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "水道橋酒場 多喜乃や"
+        ],
+        "evidence": [
+          {
+            "provider": "Tabelog",
+            "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13189266/",
+            "sourceTitle": "水道橋酒場 多喜乃や",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "exact_branch_identity",
+            "note": "Exact current branch identity/address and current hours are reproducible."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "recommendedDishes",
+          "classification": "C",
+          "nameOriginal": "一番鶏",
+          "nameZhCandidate": null,
+          "evidenceClass": "candidate_only",
+          "recommendationSemantics": "名物",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13189266/dtlmenu/",
+          "sourceTitle": "料理メニュー : 水道橋酒場 多喜乃や",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "名物 一番鶏 100円",
+          "freshness": "stale menu update 2016-03-06 and explicitly user-registered",
+          "seasonality": "not_expired_or_explicitly_seasonal",
+          "confidence": "low",
+          "notes": "Unsafe candidate only: source explicitly states the menu was registered by users and may be outdated."
+        }
+      ],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131003/13189266/",
+        "https://tabelog.com/tokyo/A1310/A131003/13189266/dtlmenu/"
+      ],
+      "blocker": null,
+      "notes": "Kept as C only. User-registered stale menu cannot become current canonical truth."
+    },
+    {
+      "googlePlaceId": "ChIJ5-vLPkKNGGARQA0BDgfPFi4",
+      "restaurantName": "夢いち輪",
+      "status": "candidate",
+      "assignmentState": {
+        "recommendedDishesKnown": 0,
+        "featuredDishesKnown": 0,
+        "retainedThirdPartyUrlCount": 0,
+        "sourceUrlCount": 0,
+        "nextAction": "find_independent_dish_source"
+      },
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "夢いち輪"
+        ],
+        "evidence": [
+          {
+            "provider": "Tabelog",
+            "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13288959/",
+            "sourceTitle": "夢いち輪",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "exact_branch_identity",
+            "note": "Exact branch name, 東京都千代田区内神田3-10-10 SNビル1F and 050-5594-4784; active current branch page with 2026 availability signals."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "recommendedDishes",
+          "classification": "C",
+          "nameOriginal": "海老真丈のサクサク揚げ",
+          "nameZhCandidate": null,
+          "evidenceClass": "candidate_only",
+          "recommendationSemantics": "おすすめ",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13288959/dtlmenu/",
+          "sourceTitle": "料理メニュー : 夢いち輪",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "揚げもの オリジナルの海老真丈です。 おすすめ 海老真丈のサクサク揚げ",
+          "freshness": "conflicting current-status evidence: Tabelog says temporarily closed for relocation from June 2026 while other reservation listings still show hours",
+          "seasonality": "not_expired_or_explicitly_seasonal",
+          "confidence": "low",
+          "notes": "Avoided explicitly seasonal items; menu notes that offerings can change with procurement, so confidence is medium."
+        }
+      ],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131002/13288959/",
+        "https://tabelog.com/tokyo/A1310/A131002/13288959/dtlmenu/"
+      ],
+      "blocker": null,
+      "notes": "Candidate only: dish-level recommendation semantics are explicit, but conflicting 2026 relocation/temporary-closure status prevents treating the old branch menu as current canonical truth."
+    },
+    {
+      "googlePlaceId": "ChIJ73iZqQeMGGAR1UPN4hA0-bA",
+      "restaurantName": "Minatoya",
+      "status": "blocked",
+      "assignmentState": {
+        "recommendedDishesKnown": 0,
+        "featuredDishesKnown": 0,
+        "retainedThirdPartyUrlCount": 0,
+        "sourceUrlCount": 0,
+        "nextAction": "find_independent_dish_source"
+      },
+      "identity": {
+        "state": "conflict",
+        "sourceAliases": [
+          "Minatoya"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "repository source-field quarantine removed a wrong website binding",
+        "independent search found multiple unrelated Minatoya entities and no exact frozen-branch source"
+      ],
+      "blocker": "identity_source_conflict_after_quarantine",
+      "notes": "Maintained rebuild moved this row from Official S6 into Discovery S6 after a wrong website was quarantined. No replacement exact-branch source was safe to bind."
+    },
+    {
+      "googlePlaceId": "ChIJ7UdXoEOMGGARtvLt39mMWRk",
+      "restaurantName": "たまりば飯田橋店",
+      "status": "no_evidence",
+      "assignmentState": {
+        "recommendedDishesKnown": 0,
+        "featuredDishesKnown": 0,
+        "retainedThirdPartyUrlCount": 0,
+        "sourceUrlCount": 0,
+        "nextAction": "find_independent_dish_source"
+      },
+      "identity": {
+        "state": "partial",
+        "sourceAliases": [
+          "たまりば飯田橋店"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "exact branch page checked; no reproducible concrete food menu item accepted"
+      ],
+      "blocker": null,
+      "notes": "No permitted, reproducible current branch-specific concrete dish evidence survived the second-pass identity/freshness/provenance review."
+    },
+    {
+      "googlePlaceId": "ChIJ7wRQ4xyMGGARRUnRCcvcYR8",
+      "restaurantName": "Chakra Izakaya",
+      "status": "no_evidence",
+      "assignmentState": {
+        "recommendedDishesKnown": 0,
+        "featuredDishesKnown": 0,
+        "retainedThirdPartyUrlCount": 0,
+        "sourceUrlCount": 0,
+        "nextAction": "find_independent_dish_source"
+      },
+      "identity": {
+        "state": "partial",
+        "sourceAliases": [
+          "Chakra Izakaya"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "exact-name/source search; no current concrete branch menu reproduced"
+      ],
+      "blocker": null,
+      "notes": "No permitted, reproducible current branch-specific concrete dish evidence survived the second-pass identity/freshness/provenance review."
+    },
+    {
+      "googlePlaceId": "ChIJ9_4CKwCNGGAReojOE2R0Ydc",
+      "restaurantName": "三代目 天ぷらすずき",
+      "status": "no_evidence",
+      "assignmentState": {
+        "recommendedDishesKnown": 0,
+        "featuredDishesKnown": 0,
+        "retainedThirdPartyUrlCount": 0,
+        "sourceUrlCount": 0,
+        "nextAction": "find_independent_dish_source"
+      },
+      "identity": {
+        "state": "partial",
+        "sourceAliases": [
+          "三代目 天ぷらすずき"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "exact current Tabelog branch checked; food menu unavailable/0 items"
+      ],
+      "blocker": null,
+      "notes": "No permitted, reproducible current branch-specific concrete dish evidence survived the second-pass identity/freshness/provenance review."
+    },
+    {
+      "googlePlaceId": "ChIJb89ZGkSMGGARSBXfZs4_uhY",
+      "restaurantName": "雅楽",
+      "status": "no_evidence",
+      "assignmentState": {
+        "recommendedDishesKnown": 0,
+        "featuredDishesKnown": 0,
+        "retainedThirdPartyUrlCount": 0,
+        "sourceUrlCount": 0,
+        "nextAction": "find_independent_dish_source"
+      },
+      "identity": {
+        "state": "partial",
+        "sourceAliases": [
+          "雅楽"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/ exact branch identity checked; only stale user-registered menu evidence found"
+      ],
+      "blocker": null,
+      "notes": "No permitted, reproducible current branch-specific concrete dish evidence survived the second-pass identity/freshness/provenance review."
+    },
+    {
+      "googlePlaceId": "ChIJE1B9072NGGARAc2c1yso4FE",
+      "restaurantName": "TOKYO SUNFLOWER",
+      "status": "no_evidence",
+      "assignmentState": {
+        "recommendedDishesKnown": 0,
+        "featuredDishesKnown": 0,
+        "retainedThirdPartyUrlCount": 0,
+        "sourceUrlCount": 0,
+        "nextAction": "find_independent_dish_source"
+      },
+      "identity": {
+        "state": "partial",
+        "sourceAliases": [
+          "TOKYO SUNFLOWER"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "exact-name current branch search; menu-photo/user content not promoted"
+      ],
+      "blocker": null,
+      "notes": "No permitted, reproducible current branch-specific concrete dish evidence survived the second-pass identity/freshness/provenance review."
+    },
+    {
+      "googlePlaceId": "ChIJEdkVMgSMGGARsTT85lCQ7xk",
+      "restaurantName": "Bondy",
+      "status": "accepted_evidence",
+      "assignmentState": {
+        "recommendedDishesKnown": 0,
+        "featuredDishesKnown": 0,
+        "retainedThirdPartyUrlCount": 0,
+        "sourceUrlCount": 0,
+        "nextAction": "find_independent_dish_source"
+      },
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "欧風カレー ボンディ 神保町本店",
+          "Bondy"
+        ],
+        "evidence": [
+          {
+            "provider": "Tabelog",
+            "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13000439/",
+            "sourceTitle": "欧風カレー ボンディ 神保町本店",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "exact_branch_identity",
+            "note": "Exact current branch is restaurant-published on Tabelog; address 東京都千代田区神田神保町2-3 神田古書センター2F and phone 03-3234-2080."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "recommendedDishes",
+          "classification": "R",
+          "nameOriginal": "ビーフカレー",
+          "nameZhCandidate": null,
+          "evidenceClass": "branch_recommendation_text",
+          "recommendationSemantics": "おすすめ",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13000439/dtlmenu/",
+          "sourceTitle": "料理メニュー : 欧風カレー ボンディ 神保町本店",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "おすすめ ビーフカレー 1,800円",
+          "freshness": "menu update 2026-05-11; crawled 2026-09-13",
+          "seasonality": "not_expired_or_explicitly_seasonal",
+          "confidence": "high",
+          "notes": "Corporate/official Tabelog menu, exact branch, explicit item-level recommendation."
+        }
+      ],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131003/13000439/",
+        "https://tabelog.com/tokyo/A1310/A131003/13000439/dtlmenu/"
+      ],
+      "blocker": null,
+      "notes": "Current restaurant-published exact-branch menu; no customer review text used."
+    },
+    {
+      "googlePlaceId": "ChIJGTlbRhuMGGARIAZmv0AYzss",
+      "restaurantName": "Baruru",
+      "status": "no_evidence",
+      "assignmentState": {
+        "recommendedDishesKnown": 0,
+        "featuredDishesKnown": 0,
+        "retainedThirdPartyUrlCount": 0,
+        "sourceUrlCount": 0,
+        "nextAction": "find_independent_dish_source"
+      },
+      "identity": {
+        "state": "partial",
+        "sourceAliases": [
+          "Baruru"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "exact-name branch search; no current concrete dish source"
+      ],
+      "blocker": null,
+      "notes": "No permitted, reproducible current branch-specific concrete dish evidence survived the second-pass identity/freshness/provenance review."
+    },
+    {
+      "googlePlaceId": "ChIJHR3eZRyMGGARgb3K60lZKb4",
+      "restaurantName": "味の萬楽",
+      "status": "no_evidence",
+      "assignmentState": {
+        "recommendedDishesKnown": 0,
+        "featuredDishesKnown": 0,
+        "retainedThirdPartyUrlCount": 0,
+        "sourceUrlCount": 0,
+        "nextAction": "find_independent_dish_source"
+      },
+      "identity": {
+        "state": "partial",
+        "sourceAliases": [
+          "味の萬楽"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131002/13021383/dtlmenu/",
+        "menu explicitly user-registered and stale (2015), rejected"
+      ],
+      "blocker": null,
+      "notes": "No permitted, reproducible current branch-specific concrete dish evidence survived the second-pass identity/freshness/provenance review."
+    },
+    {
+      "googlePlaceId": "ChIJIWNpEjyMGGARR4Ix9v8c32Y",
+      "restaurantName": "すず木",
+      "status": "no_evidence",
+      "assignmentState": {
+        "recommendedDishesKnown": 0,
+        "featuredDishesKnown": 0,
+        "retainedThirdPartyUrlCount": 0,
+        "sourceUrlCount": 0,
+        "nextAction": "find_independent_dish_source"
+      },
+      "identity": {
+        "state": "partial",
+        "sourceAliases": [
+          "すず木"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "same-name noise excluded; no exact branch-specific current source reproduced"
+      ],
+      "blocker": null,
+      "notes": "No permitted, reproducible current branch-specific concrete dish evidence survived the second-pass identity/freshness/provenance review."
+    },
+    {
+      "googlePlaceId": "ChIJkZ5mMwCNGGAR71KbjY19Juo",
+      "restaurantName": "Spice Kitchen 3",
+      "status": "no_evidence",
+      "assignmentState": {
+        "recommendedDishesKnown": 0,
+        "featuredDishesKnown": 0,
+        "retainedThirdPartyUrlCount": 0,
+        "sourceUrlCount": 0,
+        "nextAction": "find_independent_dish_source"
+      },
+      "identity": {
+        "state": "partial",
+        "sourceAliases": [
+          "Spice Kitchen 3"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "current exact identity verified, but no safe merchant/provider menu text reproduced; user review prose rejected"
+      ],
+      "blocker": null,
+      "notes": "No permitted, reproducible current branch-specific concrete dish evidence survived the second-pass identity/freshness/provenance review."
+    },
+    {
+      "googlePlaceId": "ChIJl6DVeQSMGGAR8HCf_UX93LA",
+      "restaurantName": "食鳥肉専門",
+      "status": "no_evidence",
+      "assignmentState": {
+        "recommendedDishesKnown": 0,
+        "featuredDishesKnown": 0,
+        "retainedThirdPartyUrlCount": 0,
+        "sourceUrlCount": 0,
+        "nextAction": "find_independent_dish_source"
+      },
+      "identity": {
+        "state": "partial",
+        "sourceAliases": [
+          "食鳥肉専門"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "exact-name source search did not establish a current branch-specific menu"
+      ],
+      "blocker": null,
+      "notes": "No permitted, reproducible current branch-specific concrete dish evidence survived the second-pass identity/freshness/provenance review."
+    },
+    {
+      "googlePlaceId": "ChIJm_L1ZwaMGGARItmByJT3IxE",
+      "restaurantName": "焼鳥・炙り炭火焼き をどり 大手町店",
+      "status": "accepted_evidence",
+      "assignmentState": {
+        "recommendedDishesKnown": 0,
+        "featuredDishesKnown": 0,
+        "retainedThirdPartyUrlCount": 0,
+        "sourceUrlCount": 0,
+        "nextAction": "find_independent_dish_source"
+      },
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "焼き鳥・炙り炭焼き をどり 大手町店"
+        ],
+        "evidence": [
+          {
+            "provider": "Tabelog",
+            "sourceUrl": "https://tabelog.com/tokyo/A1302/A130201/13195411/",
+            "sourceTitle": "焼き鳥・炙り炭焼き をどり 大手町店",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "exact_branch_identity",
+            "note": "Exact branch name, 〒100-0004 東京都千代田区大手町1-9-2 大手町フィナンシャルシティ・グランキューブ B1F and 050-5593-6129; current hours are published."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "recommendedDishes",
+          "classification": "R",
+          "nameOriginal": "九条ねぎの塩親子丼",
+          "nameZhCandidate": null,
+          "evidenceClass": "branch_recommendation_text",
+          "recommendationSemantics": "おすすめ",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1302/A130201/13195411/dtlmenu/lunch/",
+          "sourceTitle": "ランチメニュー : 焼き鳥・炙り炭焼き をどり 大手町店",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "九条ねぎの塩親子丼 980円 おすすめ",
+          "freshness": "branch current in 2026; branch-specific lunch menu remains published",
+          "seasonality": "not_expired_or_explicitly_seasonal",
+          "confidence": "medium",
+          "notes": "Recommendation marker is attached directly to the concrete lunch item; no review prose used."
+        }
+      ],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1302/A130201/13195411/",
+        "https://tabelog.com/tokyo/A1302/A130201/13195411/dtlmenu/lunch/"
+      ],
+      "blocker": null,
+      "notes": "Second-pass semantic review confirmed exact branch identity and direct item-level おすすめ semantics."
+    },
+    {
+      "googlePlaceId": "ChIJO6XWuwSMGGARNf_eMObW97I",
+      "restaurantName": "酒処まなゆめ",
+      "status": "no_evidence",
+      "assignmentState": {
+        "recommendedDishesKnown": 0,
+        "featuredDishesKnown": 0,
+        "retainedThirdPartyUrlCount": 0,
+        "sourceUrlCount": 0,
+        "nextAction": "find_independent_dish_source"
+      },
+      "identity": {
+        "state": "partial",
+        "sourceAliases": [
+          "酒処まなゆめ"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "current exact restaurant listing checked; no current concrete branch menu source reproduced"
+      ],
+      "blocker": null,
+      "notes": "No permitted, reproducible current branch-specific concrete dish evidence survived the second-pass identity/freshness/provenance review."
+    },
+    {
+      "googlePlaceId": "ChIJOezUv0OMGGARzSEqpv56al0",
+      "restaurantName": "やむちゃん",
+      "status": "no_evidence",
+      "assignmentState": {
+        "recommendedDishesKnown": 0,
+        "featuredDishesKnown": 0,
+        "retainedThirdPartyUrlCount": 0,
+        "sourceUrlCount": 0,
+        "nextAction": "find_independent_dish_source"
+      },
+      "identity": {
+        "state": "partial",
+        "sourceAliases": [
+          "やむちゃん"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "exact-name source search; no safe current branch menu evidence reproduced"
+      ],
+      "blocker": null,
+      "notes": "No permitted, reproducible current branch-specific concrete dish evidence survived the second-pass identity/freshness/provenance review."
+    },
+    {
+      "googlePlaceId": "ChIJqXc6Cg6MGGARw_jjf4DmshU",
+      "restaurantName": "サパナ",
+      "status": "candidate",
+      "assignmentState": {
+        "recommendedDishesKnown": 0,
+        "featuredDishesKnown": 0,
+        "retainedThirdPartyUrlCount": 0,
+        "sourceUrlCount": 0,
+        "nextAction": "find_independent_dish_source"
+      },
+      "identity": {
+        "state": "conflict",
+        "sourceAliases": [
+          "サパナ 水道橋店",
+          "SAPANA"
+        ],
+        "evidence": [
+          {
+            "provider": "Tabelog",
+            "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13185735/",
+            "sourceTitle": "移転 サパナ 水道橋店",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "exact_branch_identity",
+            "note": "Source explicitly marks this as pre-relocation information and points to a successor/current location; frozen Place-ID branch cannot be silently rebound."
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131003/13185735/",
+        "http://www.sapana-group.com/"
+      ],
+      "blocker": null,
+      "notes": "Candidate only because the exact catalog Place ID must not be propagated across the relocation without branch-specific frozen identity proof."
+    },
+    {
+      "googlePlaceId": "ChIJRcu6ggOMGGAR62_THvo-ho4",
+      "restaurantName": "KAMAYOSHI",
+      "status": "accepted_evidence",
+      "assignmentState": {
+        "recommendedDishesKnown": 0,
+        "featuredDishesKnown": 0,
+        "retainedThirdPartyUrlCount": 0,
+        "sourceUrlCount": 0,
+        "nextAction": "find_independent_dish_source"
+      },
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "麺匠 釜善",
+          "KAMAYOSHI"
+        ],
+        "evidence": [
+          {
+            "provider": "Tabelog",
+            "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13201863/",
+            "sourceTitle": "麺匠 釜善（KAMAYOSHI）",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "exact_branch_identity",
+            "note": "Exact branch name, 東京都千代田区神田司町2-14-15 高梨ビル1F and 050-5872-3360; current listing crawled in September 2026."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "recommendedDishes",
+          "classification": "R",
+          "nameOriginal": "（温）とりちくわ天うどん",
+          "nameZhCandidate": null,
+          "evidenceClass": "branch_recommendation_text",
+          "recommendationSemantics": "おすすめ",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13201863/dtlmenu/",
+          "sourceTitle": "料理メニュー : 麺匠 釜善（KAMAYOSHI）",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "おすすめ （温）とりちくわ天うどん 1,050円",
+          "freshness": "menu published/updated in 2026 and crawled last week",
+          "seasonality": "not_expired_or_explicitly_seasonal",
+          "confidence": "high",
+          "notes": "Current exact-branch menu; explicit recommendation marker immediately precedes the item."
+        }
+      ],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131002/13201863/",
+        "https://tabelog.com/tokyo/A1310/A131002/13201863/dtlmenu/"
+      ],
+      "blocker": null,
+      "notes": "Second-pass review rejected review-prose popularity claims and retained only the current menu recommendation."
+    },
+    {
+      "googlePlaceId": "ChIJuVk_oBqMGGARYlDpY7-RPqA",
+      "restaurantName": "Doce Espiga",
+      "status": "no_evidence",
+      "assignmentState": {
+        "recommendedDishesKnown": 0,
+        "featuredDishesKnown": 0,
+        "retainedThirdPartyUrlCount": 0,
+        "sourceUrlCount": 0,
+        "nextAction": "find_independent_dish_source"
+      },
+      "identity": {
+        "state": "partial",
+        "sourceAliases": [
+          "Doce Espiga"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "current exact restaurant listing checked; no text food menu available"
+      ],
+      "blocker": null,
+      "notes": "No permitted, reproducible current branch-specific concrete dish evidence survived the second-pass identity/freshness/provenance review."
+    },
+    {
+      "googlePlaceId": "ChIJV2fZvB6MGGARTxGjO7HmQuA",
+      "restaurantName": "Sasaya",
+      "status": "no_evidence",
+      "assignmentState": {
+        "recommendedDishesKnown": 0,
+        "featuredDishesKnown": 0,
+        "retainedThirdPartyUrlCount": 0,
+        "sourceUrlCount": 0,
+        "nextAction": "find_independent_dish_source"
+      },
+      "identity": {
+        "state": "partial",
+        "sourceAliases": [
+          "Sasaya"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "same-name/brand-family results were other branches; cross-branch propagation rejected"
+      ],
+      "blocker": null,
+      "notes": "No permitted, reproducible current branch-specific concrete dish evidence survived the second-pass identity/freshness/provenance review."
+    },
+    {
+      "googlePlaceId": "ChIJVVUk7xCMGGARMyh51ujPs50",
+      "restaurantName": "SHOT BAR Lucy",
+      "status": "no_evidence",
+      "assignmentState": {
+        "recommendedDishesKnown": 0,
+        "featuredDishesKnown": 0,
+        "retainedThirdPartyUrlCount": 0,
+        "sourceUrlCount": 0,
+        "nextAction": "find_independent_dish_source"
+      },
+      "identity": {
+        "state": "partial",
+        "sourceAliases": [
+          "SHOT BAR Lucy"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "exact-name bar/source search; no concrete current food dish evidence"
+      ],
+      "blocker": null,
+      "notes": "No permitted, reproducible current branch-specific concrete dish evidence survived the second-pass identity/freshness/provenance review."
+    },
+    {
+      "googlePlaceId": "ChIJvWKURAOMGGARrI228Ht1cNo",
+      "restaurantName": "とんかつ やまいち",
+      "status": "no_evidence",
+      "assignmentState": {
+        "recommendedDishesKnown": 0,
+        "featuredDishesKnown": 0,
+        "retainedThirdPartyUrlCount": 0,
+        "sourceUrlCount": 0,
+        "nextAction": "find_independent_dish_source"
+      },
+      "identity": {
+        "state": "partial",
+        "sourceAliases": [
+          "とんかつ やまいち"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131002/13042246/dtlmenu/",
+        "menu explicitly user-registered; customer/user menu truth rejected"
+      ],
+      "blocker": null,
+      "notes": "No permitted, reproducible current branch-specific concrete dish evidence survived the second-pass identity/freshness/provenance review."
+    },
+    {
+      "googlePlaceId": "ChIJx1ZBDuONGGARg9L-4ZdIwUY",
+      "restaurantName": "ブラックシンデレラ",
+      "status": "no_evidence",
+      "assignmentState": {
+        "recommendedDishesKnown": 0,
+        "featuredDishesKnown": 0,
+        "retainedThirdPartyUrlCount": 0,
+        "sourceUrlCount": 0,
+        "nextAction": "find_independent_dish_source"
+      },
+      "identity": {
+        "state": "partial",
+        "sourceAliases": [
+          "ブラックシンデレラ"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "exact-name venue search; no reproducible branch-current menu source"
+      ],
+      "blocker": null,
+      "notes": "No permitted, reproducible current branch-specific concrete dish evidence survived the second-pass identity/freshness/provenance review."
+    },
+    {
+      "googlePlaceId": "ChIJY_gYhRqMGGARAfTrky4HnZo",
+      "restaurantName": "たんぽぽ",
+      "status": "no_evidence",
+      "assignmentState": {
+        "recommendedDishesKnown": 0,
+        "featuredDishesKnown": 0,
+        "retainedThirdPartyUrlCount": 0,
+        "sourceUrlCount": 0,
+        "nextAction": "find_independent_dish_source"
+      },
+      "identity": {
+        "state": "partial",
+        "sourceAliases": [
+          "たんぽぽ"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "same-name restaurants outside the frozen branch excluded; no exact current menu source"
+      ],
+      "blocker": null,
+      "notes": "No permitted, reproducible current branch-specific concrete dish evidence survived the second-pass identity/freshness/provenance review."
+    },
+    {
+      "googlePlaceId": "ChIJZYTCzBWMGGARIpip-V_r6ks",
+      "restaurantName": "Osacanajack",
+      "status": "accepted_evidence",
+      "assignmentState": {
+        "recommendedDishesKnown": 0,
+        "featuredDishesKnown": 0,
+        "retainedThirdPartyUrlCount": 0,
+        "sourceUrlCount": 0,
+        "nextAction": "find_independent_dish_source"
+      },
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "オサカナジャック",
+          "OSACANA JACK"
+        ],
+        "evidence": [
+          {
+            "provider": "Tabelog",
+            "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13209155/dtlmenu/lunch/",
+            "sourceTitle": "ランチメニュー : オサカナジャック",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "exact_branch_identity",
+            "note": "Exact branch menu identifies オサカナジャック at 東京都千代田区神田神保町2-48, phone 03-6272-6634; lunch menu updated 2026-05-09."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "オサカナランチ",
+          "nameZhCandidate": null,
+          "evidenceClass": "branch_menu_text",
+          "recommendationSemantics": "",
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13209155/dtlmenu/lunch/",
+          "sourceTitle": "ランチメニュー : オサカナジャック",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "オサカナランチ 1,100円 オサカナジャックが色々楽しめるプレートランチ★",
+          "freshness": "menu update 2026-05-09",
+          "seasonality": "not_expired_or_explicitly_seasonal",
+          "confidence": "high",
+          "notes": "Concrete current ordinary menu item. No strict recommendation marker is attached, so it remains F."
+        }
+      ],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131003/13209155/dtlmenu/lunch/",
+        "https://tabelog.com/tokyo/A1310/A131003/13209155/dtlmenu/"
+      ],
+      "blocker": null,
+      "notes": "Second pass upgraded this row from candidate to F after finding the 2026-05-09 exact-branch lunch menu; older dinner recommendations were deliberately not used."
+    }
+  ]
+}

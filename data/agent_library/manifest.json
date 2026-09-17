@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 1,
+  "snapshotDate": "2026-09-14",
+  "snapshotCommit": "820b11aa5384d5aa548463b9f730df68d94000b0",
+  "catalog": {
+    "totalPlaceIds": 2804,
+    "publicRuntimeTotal": 1422,
+    "unpublishedPlaceIdOnly": 1382
+  },
+  "dishState": {
+    "recommendedDishesKnown": 595,
+    "featuredDishesKnown": 675,
+    "displayDishKnown": 740,
+    "noDishGap": 682,
+    "recommendationGap": 827,
+    "dishWorkRows": 892,
+    "dishCompleteRows": 530
+  },
+  "dishMarkers": [
+    {
+      "marker": "DISH-R-OFFICIAL",
+      "selector": {"file": "data/dish_batch_plan.json", "lane": "official_crawl", "nextAction": "collect_strict_recommended_dishes"},
+      "rows": 220,
+      "shards": {"S0": 28, "S1": 27, "S2": 29, "S3": 21, "S4": 32, "S5": 33, "S6": 21, "S7": 29}
+    },
+    {
+      "marker": "DISH-R-RETAINED",
+      "selector": {"file": "data/dish_batch_plan.json", "lane": "retained_source_mining", "nextAction": "extract_retained_dish_source"},
+      "rows": 318,
+      "shards": {"S0": 46, "S1": 37, "S2": 47, "S3": 39, "S4": 42, "S5": 33, "S6": 31, "S7": 43}
+    },
+    {
+      "marker": "DISH-R-DISCOVERY",
+      "selector": {"file": "data/dish_batch_plan.json", "lane": "independent_source_discovery", "nextAction": "find_independent_dish_source"},
+      "rows": 289,
+      "shards": {"S0": 41, "S1": 39, "S2": 41, "S3": 40, "S4": 36, "S5": 27, "S6": 29, "S7": 36}
+    },
+    {
+      "marker": "DISH-F-SOURCE",
+      "selector": {"file": "data/dish_batch_plan.json", "lane": "official_or_retained_featured", "nextAction": "collect_source_backed_featured_dishes"},
+      "rows": 65,
+      "shards": {"S0": 5, "S1": 13, "S2": 8, "S3": 9, "S4": 7, "S5": 7, "S6": 6, "S7": 10}
+    }
+  ],
+  "identityMarkers": [
+    {
+      "marker": "ID-RECOVERY",
+      "documentedActiveTasks": 1381,
+      "agentType": "identity-public-recovery",
+      "source": "current SQLite master via scripts/database/build_agent_workplan.py",
+      "assignmentRule": "regenerate before assignment; use generated shardId"
+    },
+    {
+      "marker": "ID-CONFLICT",
+      "documentedActiveTasks": 20,
+      "documentedConflictEntities": 15,
+      "agentType": "identity-conflict-review",
+      "source": "current SQLite master via scripts/database/build_agent_workplan.py",
+      "assignmentRule": "regenerate before assignment; use generated shardId"
+    }
+  ],
+  "holds": [
+    {
+      "marker": "HOLD-TRANSLATION",
+      "rows": 2,
+      "items": ["えびず焼き", "ソルベージュ®エスプレッソ"],
+      "assignmentRule": "do not assign as routine fill work"
+    }
+  ],
+  "globalPolicy": {
+    "paidGoogleDataApiCalls": 0,
+    "workersWriteCanonicalTruth": false,
+    "proximityOnlyIdentityBindingAllowed": false,
+    "recommendationRequiresExplicitSemantics": true,
+    "ordinaryMenuItemDefaultsToFeatured": true,
+    "ambiguousEvidenceMustRemainCandidate": true
+  }
+}

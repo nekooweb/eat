@@ -1,0 +1,1174 @@
+{
+  "schemaVersion": 2,
+  "proposalOnly": false,
+  "marker": "DISH-R-OFFICIAL",
+  "shard": "S4",
+  "agentRunId": "FINAL-V2-DISH-R-OFFICIAL:S4:20260915",
+  "sourceQueue": "data/dish_batch_plan.json",
+  "sourceQueueCommit": "0b5d2209491e57c32cc56e7fd31afb5bd8c33934",
+  "generatedAt": "2026-09-15T23:00:00+09:00",
+  "reviewedAt": "2026-09-15",
+  "reviewedBy": "final-dish-integration v2 incremental fail-closed review",
+  "summary": {
+    "assignedRows": 32,
+    "reviewedRows": 32,
+    "acceptedEvidenceRows": 8,
+    "candidateRows": 5,
+    "noEvidenceRows": 11,
+    "blockedRows": 8,
+    "skippedAlreadyCompleteRows": 0
+  },
+  "records": [
+    {
+      "googlePlaceId": "ChIJA3uXWgOMGGARW_LZHuzxH7o",
+      "restaurantName": "ゆで太郎",
+      "status": "blocked",
+      "identity": {
+        "state": "ambiguous",
+        "sourceAliases": [
+          "ゆで太郎"
+        ],
+        "evidence": [
+          {
+            "provider": "official",
+            "sourceUrl": "https://yudetaro.jp/area/tokyo/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "brand_locator",
+            "note": "identity not exact"
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        {
+          "provider": "official",
+          "sourceUrl": "https://yudetaro.jp/area/tokyo/",
+          "checkedAt": "2026-09-14",
+          "result": "checked; blocked"
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "https://yudetaro.jp/menu/",
+          "checkedAt": "2026-09-14",
+          "result": "checked; blocked"
+        }
+      ],
+      "blocker": {
+        "type": "identity_ambiguous",
+        "detail": "exact branch not safely established"
+      },
+      "notes": "",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S4.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJcduc-w2MGGARu6xCERyohvY",
+      "restaurantName": "一番どり",
+      "status": "candidate",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "一番どり竹橋パレスサイドビル店"
+        ],
+        "evidence": [
+          {
+            "provider": "official",
+            "sourceUrl": "https://www.del-sole.co.jp/brand/restaurant/ichibandori/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "exact branch/source identity"
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "Central semantic pass retained a non-accepted terminal outcome.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S4.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJcf2INWuMGGARteCaKYtQc1E",
+      "restaurantName": "カフェ・ド・クリエ",
+      "status": "candidate",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "カフェ・ド・クリエ 九段下店"
+        ],
+        "evidence": [
+          {
+            "provider": "official",
+            "sourceUrl": "https://c-united.co.jp/store/detail/001597/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "exact branch/source identity"
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "Central semantic pass retained a non-accepted terminal outcome.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S4.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJf3qh_BOMGGARX-8IW1kbae4",
+      "restaurantName": "らくごカフェ",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "らくごカフェ"
+        ],
+        "evidence": [
+          {
+            "provider": "official",
+            "sourceUrl": "https://rakugocafe.exblog.jp/9190079/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "exact branch/source identity"
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "コンソメスープ",
+          "nameZhCandidate": null,
+          "evidenceClass": "source_menu_text",
+          "recommendationSemantics": "",
+          "provider": "official_web",
+          "sourceUrl": "https://rakugocafe.exblog.jp/9190079/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "落語会時のドリンクメニュー：コンソメスープ",
+          "confidence": "high",
+          "notes": ""
+        }
+      ],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S4.json"
+      ],
+      "reviewReasoning": "Final v2 consensus: all unrepresented independent reviewed inputs accepted; safe evidence unioned fail-closed."
+    },
+    {
+      "googlePlaceId": "ChIJIQy99i2NGGAR4Udb7j8D-pg",
+      "restaurantName": "ovgo Baker Cookie Factory Shop",
+      "status": "candidate",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "ovgo Baker Cookie Factory Shop"
+        ],
+        "evidence": [
+          {
+            "provider": "official",
+            "sourceUrl": "https://ovgobaker.com/pages/location",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "exact branch/source identity"
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "Central semantic pass retained a non-accepted terminal outcome.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S4.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJ0_vaEhGMGGAR8zPLZw2iAas",
+      "restaurantName": "橘昌 文銭堂",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "橘昌 文銭堂"
+        ],
+        "evidence": [
+          {
+            "provider": "official",
+            "sourceUrl": "https://kanda-bunsendo.com/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "exact branch/source identity"
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "recommendedDishes",
+          "classification": "R",
+          "nameOriginal": "いちご大福",
+          "nameZhCandidate": null,
+          "evidenceClass": "official_popularity_text",
+          "recommendationSemantics": "ご好評",
+          "provider": "official_web",
+          "sourceUrl": "https://kanda-bunsendo.com/seasonal/ichigo-daifuku",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "文銭堂のいちご大福は…ご好評をいただいております。",
+          "confidence": "high",
+          "notes": ""
+        }
+      ],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S4.json"
+      ],
+      "reviewReasoning": "Final v2 consensus: all unrepresented independent reviewed inputs accepted; safe evidence unioned fail-closed."
+    },
+    {
+      "googlePlaceId": "ChIJ19DRGwCNGGARSzxyJzr4DA8",
+      "restaurantName": "大衆酒場 ひろちゃん",
+      "status": "blocked",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": {
+        "type": "official_source_not_safely_recoverable",
+        "detail": "reviewed official source not safely recoverable"
+      },
+      "notes": "",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S4.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJ4zvjCBGMGGARdy17CYTooAY",
+      "restaurantName": "俵屋 神保町店",
+      "status": "blocked",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": {
+        "type": "official_source_not_safely_recoverable",
+        "detail": "reviewed official source not safely recoverable"
+      },
+      "notes": "",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S4.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJ7498GwCNGGARftKEPuSMetY",
+      "restaurantName": "THEキャラCAFE STAND 東京ドーム",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "THEキャラCAFE STAND"
+        ],
+        "evidence": [
+          {
+            "provider": "official",
+            "sourceUrl": "https://www.tokyo-dome.co.jp/ko/specialoffer/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "facility_official_page",
+            "note": "exact branch/source identity"
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        {
+          "provider": "official",
+          "sourceUrl": "https://www.tokyo-dome.co.jp/ko/specialoffer/",
+          "checkedAt": "2026-09-14",
+          "result": "checked; no qualifying evidence"
+        }
+      ],
+      "blocker": null,
+      "notes": "Central semantic pass retained a non-accepted terminal outcome.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S4.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJa17dKRSMGGARFzEaGcCEI2c",
+      "restaurantName": "ChatGatto",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "ChatGatto"
+        ],
+        "evidence": [
+          {
+            "provider": "official",
+            "sourceUrl": "https://chat-gatto.com/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "exact branch/source identity"
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        {
+          "provider": "official",
+          "sourceUrl": "https://chat-gatto.com/",
+          "checkedAt": "2026-09-14",
+          "result": "checked; no qualifying evidence"
+        }
+      ],
+      "blocker": null,
+      "notes": "Central semantic pass retained a non-accepted terminal outcome.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S4.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJB8DnBUqNGGARruVGsQV6YXU",
+      "restaurantName": "かっちゃん",
+      "status": "blocked",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": {
+        "type": "identity_ambiguous",
+        "detail": "exact branch not safely established"
+      },
+      "notes": "",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S4.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJBaT2SQCNGGAR4ZzBT_sJ884",
+      "restaurantName": "SPAGHETTI 晴れるや",
+      "status": "blocked",
+      "identity": {
+        "state": "blocked",
+        "sourceAliases": [
+          "SPAGHETTI 晴れるや"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        {
+          "provider": "official",
+          "sourceUrl": "https://www.instagram.com/spaghettihallelujah?igsh=MTdmdncwOWxkazdzcw==",
+          "checkedAt": "2026-09-14",
+          "result": "checked; blocked"
+        }
+      ],
+      "blocker": {
+        "type": "source_inaccessible",
+        "detail": "official source inaccessible without restricted access"
+      },
+      "notes": "",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S4.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJbXx_jUOMGGARfuhXOLEymhw",
+      "restaurantName": "和庵",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "飯田橋 和庵"
+        ],
+        "evidence": [
+          {
+            "provider": "official",
+            "sourceUrl": "https://www.eonet.ne.jp/~nagomiun/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "exact branch/source identity"
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        {
+          "provider": "official",
+          "sourceUrl": "https://www.eonet.ne.jp/~nagomiun/",
+          "checkedAt": "2026-09-14",
+          "result": "checked; no qualifying evidence"
+        }
+      ],
+      "blocker": null,
+      "notes": "Central semantic pass retained a non-accepted terminal outcome.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S4.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJcduc-w2MGGARhklCQJgRB7g",
+      "restaurantName": "くいものやじゃぽん竹橋パレスサイドビル店",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "くいものやじゃぽん本店"
+        ],
+        "evidence": [
+          {
+            "provider": "official",
+            "sourceUrl": "https://www.mai-b.co.jp/restrant/b1/post-7.html",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "facility_official_branch_page",
+            "note": "exact branch/source identity"
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        {
+          "provider": "official",
+          "sourceUrl": "https://www.mai-b.co.jp/restrant/b1/post-7.html",
+          "checkedAt": "2026-09-14",
+          "result": "checked; no qualifying evidence"
+        }
+      ],
+      "blocker": null,
+      "notes": "Central semantic pass retained a non-accepted terminal outcome.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S4.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJDZ6p10OMGGARcMcgBtx2btM",
+      "restaurantName": "Cucina Italiana Sincero クチーナイタリアーナシンチェーロ",
+      "status": "blocked",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": {
+        "type": "official_source_not_found",
+        "detail": "no verified operator official source"
+      },
+      "notes": "",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S4.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJGVRApwmNGGAR_KPo9VG0ioQ",
+      "restaurantName": "SAPANA",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "Asian Dining ＆Bar SAPANA bistro パレスサイド店"
+        ],
+        "evidence": [
+          {
+            "provider": "official",
+            "sourceUrl": "https://www.sapana-group.com/パレスサイド店",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "exact branch/source identity"
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        {
+          "provider": "official",
+          "sourceUrl": "https://www.sapana-group.com/パレスサイド店",
+          "checkedAt": "2026-09-14",
+          "result": "checked; no qualifying evidence"
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "https://www.sapana-group.com/takeout",
+          "checkedAt": "2026-09-14",
+          "result": "checked; no qualifying evidence"
+        }
+      ],
+      "blocker": null,
+      "notes": "Central semantic pass retained a non-accepted terminal outcome.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S4.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJK1ruKxqMGGARm4L7gV0A67E",
+      "restaurantName": "Excelsior Caffe",
+      "status": "candidate",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "エクセルシオール カフェ 新お茶の水店"
+        ],
+        "evidence": [
+          {
+            "provider": "official",
+            "sourceUrl": "https://shop.doutor.co.jp/doutor/spot/detail?code=5000137",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "exact branch/source identity"
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "Central semantic pass retained a non-accepted terminal outcome.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S4.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJK2sBQwOMGGARbf-B0GQabeY",
+      "restaurantName": "和味和酒 KOKORI",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "和味和酒 KOKORI"
+        ],
+        "evidence": [
+          {
+            "provider": "official",
+            "sourceUrl": "https://kokori.foodsolutions.jp/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "exact branch/source identity"
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "recommendedDishes",
+          "classification": "R",
+          "nameOriginal": "湯葉ピザ",
+          "nameZhCandidate": null,
+          "evidenceClass": "official_recommendation_text",
+          "recommendationSemantics": "おすすめ",
+          "provider": "official_web",
+          "sourceUrl": "https://kokori.foodsolutions.jp/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "おすすめは、湯葉を生地にした『湯葉ピザ』",
+          "confidence": "high",
+          "notes": ""
+        },
+        {
+          "targetField": "recommendedDishes",
+          "classification": "R",
+          "nameOriginal": "鯛茶漬け",
+          "nameZhCandidate": null,
+          "evidenceClass": "official_signature_text",
+          "recommendationSemantics": "名物",
+          "provider": "official_web",
+          "sourceUrl": "https://kokori.foodsolutions.jp/jp/concept/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "KOKORI名物鯛茶漬け",
+          "confidence": "high",
+          "notes": ""
+        }
+      ],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S4.json"
+      ],
+      "reviewReasoning": "Final v2 consensus: all unrepresented independent reviewed inputs accepted; safe evidence unioned fail-closed."
+    },
+    {
+      "googlePlaceId": "ChIJm3c0QBWMGGARTOQZXD59tIs",
+      "restaurantName": "Bon Facile",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "Bon Facile"
+        ],
+        "evidence": [
+          {
+            "provider": "official",
+            "sourceUrl": "https://bonfacile.online/about/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "exact branch/source identity"
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        {
+          "provider": "official",
+          "sourceUrl": "https://bonfacile.online/about/",
+          "checkedAt": "2026-09-14",
+          "result": "checked; no qualifying evidence"
+        }
+      ],
+      "blocker": null,
+      "notes": "Central semantic pass retained a non-accepted terminal outcome.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S4.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJoyWfw7CNGGARybNRT83dfoU",
+      "restaurantName": "Chinese Dining 結彩",
+      "status": "blocked",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": {
+        "type": "official_source_not_found",
+        "detail": "no verified operator official source"
+      },
+      "notes": "",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S4.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJSwFOIhSMGGARCThJS2Gz3r8",
+      "restaurantName": "Bar 247",
+      "status": "candidate",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "Bar Twenty four Seven",
+          "Bar247"
+        ],
+        "evidence": [
+          {
+            "provider": "official",
+            "sourceUrl": "https://www.247bar.jp/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "exact branch/source identity"
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "Central semantic pass retained a non-accepted terminal outcome.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S4.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJT0lK9DSNGGARIoc0dYDKbYU",
+      "restaurantName": "CYCLE",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "CYCLE"
+        ],
+        "evidence": [
+          {
+            "provider": "official",
+            "sourceUrl": "https://cyclerestaurant.com/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "exact branch/source identity"
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        {
+          "provider": "official",
+          "sourceUrl": "https://cyclerestaurant.com/",
+          "checkedAt": "2026-09-14",
+          "result": "checked; no qualifying evidence"
+        }
+      ],
+      "blocker": null,
+      "notes": "Central semantic pass retained a non-accepted terminal outcome.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S4.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJu42VMQWMGGARLAOhVUJsOmU",
+      "restaurantName": "路地裏バルO's",
+      "status": "blocked",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [],
+      "blocker": {
+        "type": "official_source_not_found",
+        "detail": "no verified operator official source"
+      },
+      "notes": "",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S4.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJVVVBYkGMGGARlVxD3qwkHKI",
+      "restaurantName": "Game Bar Gluck",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "Game Bar Gluck"
+        ],
+        "evidence": [
+          {
+            "provider": "official",
+            "sourceUrl": "https://barglueck.com/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "exact branch/source identity"
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        {
+          "provider": "official",
+          "sourceUrl": "https://barglueck.com/",
+          "checkedAt": "2026-09-14",
+          "result": "checked; no qualifying evidence"
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "https://barglueck.com/free/system5690015235",
+          "checkedAt": "2026-09-14",
+          "result": "checked; no qualifying evidence"
+        }
+      ],
+      "blocker": null,
+      "notes": "Central semantic pass retained a non-accepted terminal outcome.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S4.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJw5s7iUaNGGARHJfkHc2Vb6c",
+      "restaurantName": "Alter Ego",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "ALTER EGO"
+        ],
+        "evidence": [
+          {
+            "provider": "official",
+            "sourceUrl": "https://alterego.tokyo/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "exact branch/source identity"
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        {
+          "provider": "official",
+          "sourceUrl": "https://alterego.tokyo/",
+          "checkedAt": "2026-09-14",
+          "result": "checked; no qualifying evidence"
+        }
+      ],
+      "blocker": null,
+      "notes": "Central semantic pass retained a non-accepted terminal outcome.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S4.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJw9hYKgCNGGARlAd2hLdCZAA",
+      "restaurantName": "月花舎",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "月花舎"
+        ],
+        "evidence": [
+          {
+            "provider": "official",
+            "sourceUrl": "https://gekkasha-jinbocho.modalbeats.com/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "exact branch/source identity"
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "実山椒とチョコレートのビスコッティ",
+          "nameZhCandidate": null,
+          "evidenceClass": "source_menu_text",
+          "recommendationSemantics": "",
+          "provider": "official_web",
+          "sourceUrl": "https://gekkasha-jinbocho.modalbeats.com/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "実山椒とチョコレートのビスコッティ 300yen",
+          "confidence": "high",
+          "notes": ""
+        }
+      ],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S4.json"
+      ],
+      "reviewReasoning": "Final v2 consensus: all unrepresented independent reviewed inputs accepted; safe evidence unioned fail-closed."
+    },
+    {
+      "googlePlaceId": "ChIJAe9OMzWNGGARJmv6abBeXzE",
+      "restaurantName": "千代田区役所 食堂",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "千代田区役所 食堂"
+        ],
+        "evidence": [
+          {
+            "provider": "official",
+            "sourceUrl": "https://www.city.chiyoda.lg.jp/koho/kuse/gaiyo/annaizu/floor10.html",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "government_facility_page",
+            "note": "exact branch/source identity"
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        {
+          "provider": "official",
+          "sourceUrl": "https://www.city.chiyoda.lg.jp/koho/kuse/gaiyo/annaizu/floor10.html",
+          "checkedAt": "2026-09-14",
+          "result": "checked; no qualifying evidence"
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "https://www.city.chiyoda.lg.jp/koho/kuse/koho/pressrelease/r6/r601/20240116.html",
+          "checkedAt": "2026-09-14",
+          "result": "checked; no qualifying evidence"
+        }
+      ],
+      "blocker": null,
+      "notes": "Central semantic pass retained a non-accepted terminal outcome.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S4.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJI1W-PkKMGGARSpB6s8XZQKU",
+      "restaurantName": "la cantina cancemi",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "la cantina cancemi"
+        ],
+        "evidence": [
+          {
+            "provider": "official",
+            "sourceUrl": "https://www.cancemi.jp/cantina/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "exact branch/source identity"
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "カプリ風サラダ",
+          "nameZhCandidate": null,
+          "evidenceClass": "source_menu_text",
+          "recommendationSemantics": "",
+          "provider": "official_web",
+          "sourceUrl": "https://www.cancemi.jp/cantina/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "本日のカルパッチョ、カプリ風サラダ、プリモピアット",
+          "confidence": "high",
+          "notes": ""
+        }
+      ],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S4.json"
+      ],
+      "reviewReasoning": "Final v2 consensus: all unrepresented independent reviewed inputs accepted; safe evidence unioned fail-closed."
+    },
+    {
+      "googlePlaceId": "ChIJ____7xmMGGAR7CPTAtdKCGY",
+      "restaurantName": "レキシズルバー",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "レキシズルバー"
+        ],
+        "evidence": [
+          {
+            "provider": "official",
+            "sourceUrl": "https://www.rekisizzle.com/about_bar.php",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "exact branch/source identity"
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "キーマカレー",
+          "nameZhCandidate": null,
+          "evidenceClass": "source_menu_text",
+          "recommendationSemantics": "",
+          "provider": "official_web",
+          "sourceUrl": "https://www.rekisizzle.com/about_bar.php",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "フードはキーマカレーや日替わりの肴や乾きものなど",
+          "confidence": "high",
+          "notes": ""
+        }
+      ],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S4.json"
+      ],
+      "reviewReasoning": "Final v2 consensus: all unrepresented independent reviewed inputs accepted; safe evidence unioned fail-closed."
+    },
+    {
+      "googlePlaceId": "ChIJVTolURyMGGARM7UFohexOMQ",
+      "restaurantName": "Jeanne D'Arc 秋葉原",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "コンセプトカフェJEANNE D'ARC秋葉原"
+        ],
+        "evidence": [
+          {
+            "provider": "official",
+            "sourceUrl": "https://jeannedarc.moe/index.html",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "exact branch/source identity"
+          }
+        ]
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        {
+          "provider": "official",
+          "sourceUrl": "https://jeannedarc.moe/index.html",
+          "checkedAt": "2026-09-14",
+          "result": "checked; no qualifying evidence"
+        }
+      ],
+      "blocker": null,
+      "notes": "Central semantic pass retained a non-accepted terminal outcome.",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S4.json"
+      ],
+      "reviewReasoning": "Final v2 consensus downgraded or retained non-accepted terminal state because independent reviewed inputs did not unanimously accept."
+    },
+    {
+      "googlePlaceId": "ChIJvwu5WJeNGGARy4zgM9UMhg0",
+      "restaurantName": "薬膳酒＆心のケア　Barこころゆ",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "Barこころゆ"
+        ],
+        "evidence": [
+          {
+            "provider": "official",
+            "sourceUrl": "https://yakuzenkokoroyu.com/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "exact branch/source identity"
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "ミックスナッツ",
+          "nameZhCandidate": null,
+          "evidenceClass": "source_menu_text",
+          "recommendationSemantics": "",
+          "provider": "official_web",
+          "sourceUrl": "https://yakuzenkokoroyu.com/menu/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "おつまみ ミックスナッツ、トルティーヤ、ドライフルーツ、チーズ等",
+          "confidence": "high",
+          "notes": ""
+        }
+      ],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S4.json"
+      ],
+      "reviewReasoning": "Final v2 consensus: all unrepresented independent reviewed inputs accepted; safe evidence unioned fail-closed."
+    },
+    {
+      "googlePlaceId": "ChIJW8xzJS6NGGARm3yQ-Ds1PDY",
+      "restaurantName": "私立輝羅星学院アイドル部",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "私立輝羅星学院アイドル部"
+        ],
+        "evidence": [
+          {
+            "provider": "official",
+            "sourceUrl": "https://kiraboshi.wixsite.com/kiraboshigakuin/menu",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "exact branch/source identity"
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "オムライス",
+          "nameZhCandidate": null,
+          "evidenceClass": "source_menu_text",
+          "recommendationSemantics": "",
+          "provider": "official_web",
+          "sourceUrl": "https://kiraboshi.wixsite.com/kiraboshigakuin/menu",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "FOOD：オムライス",
+          "confidence": "high",
+          "notes": ""
+        }
+      ],
+      "attemptedSources": [],
+      "blocker": null,
+      "notes": "",
+      "sourceProposalRefs": [
+        "data/agent_proposals/DISH-R-OFFICIAL/S4-gpt56sol-20260914.json",
+        "data/agent_reviews/DISH-R-OFFICIAL/S4.json"
+      ],
+      "reviewReasoning": "Final v2 consensus: all unrepresented independent reviewed inputs accepted; safe evidence unioned fail-closed."
+    }
+  ],
+  "policyAttestation": {
+    "paidGoogleDataApiCalls": 0,
+    "canonicalMasterEditedDirectly": false,
+    "proximityOnlyIdentityBindingUsed": false,
+    "recommendationWithoutExplicitSemanticsAdded": false,
+    "accessRestrictionBypassUsed": false,
+    "unrepresentedIndependentInputsRequireConsensus": true
+  }
+}

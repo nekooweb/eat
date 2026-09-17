@@ -1,0 +1,383 @@
+{
+  "schemaVersion": 1,
+  "proposalOnly": true,
+  "marker": "DISH-F-SOURCE",
+  "shard": "S2",
+  "agentRunId": "e2e-dish-s2-dish-f-source-review-20260914",
+  "sourceQueue": "data/dish_batch_plan.json",
+  "sourceQueueCommit": "666a3aac429c03410552270625834512e0a25eda",
+  "generatedAt": "2026-09-14T21:03:00+09:00",
+  "summary": {
+    "assignedRows": 8,
+    "reviewedRows": 8,
+    "acceptedEvidenceRows": 6,
+    "candidateRows": 2,
+    "noEvidenceRows": 0,
+    "blockedRows": 0,
+    "skippedAlreadyCompleteRows": 0
+  },
+  "records": [
+    {
+      "googlePlaceId": "ChIJ0VWstxyMGGARsq0cm5Y6970",
+      "restaurantName": "中よし",
+      "status": "candidate",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "中よし"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://www.hotpepper.jp/strJ000681988/food/"
+      ],
+      "blocker": null,
+      "notes": "The exact Hot Pepper menu lead is stale enough that it should not become current canonical F truth without a fresher branch source.",
+      "reviewReasoning": "Independent freshness/availability review downgraded the research-pass acceptance.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-F-SOURCE/S2.json",
+          "recordIndex": 0,
+          "sourceStatus": "accepted_evidence"
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJbR57HVCNGGARzVRZXQjjbGM",
+      "restaurantName": "Plus1 coffee",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "Plus1 coffee"
+        ],
+        "evidence": [
+          {
+            "provider": "official_web",
+            "sourceUrl": "https://plus1coffee.hp.peraichi.com/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Current official Plus1 coffee page gives phone 03-3868-0979 and exact 本郷2-19-10 address."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "スコーンサンドあんバター",
+          "nameZhCandidate": null,
+          "evidenceClass": "official_menu_item",
+          "recommendationSemantics": null,
+          "provider": "official_web",
+          "sourceUrl": "https://plus1coffee.hp.peraichi.com/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "スコーンサンドあんバター 甘さおさえめのスコーンサンド",
+          "confidence": "high",
+          "notes": "Concrete current food item; no strict recommendation semantics."
+        }
+      ],
+      "attemptedSources": [
+        "https://plus1coffee.hp.peraichi.com/"
+      ],
+      "blocker": null,
+      "notes": "Research pass found exact branch-bound source evidence.",
+      "reviewReasoning": "Second-pass review reconfirmed current assignment membership, exact branch identity, source-native concrete dish, R/F semantics, freshness and provenance.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-F-SOURCE/S2.json",
+          "recordIndex": 1,
+          "sourceStatus": "accepted_evidence"
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJbwAATwCNGGARQwDbKm46DFQ",
+      "restaurantName": "メナムのほとり",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "メナムのほとり"
+        ],
+        "evidence": [
+          {
+            "provider": "Tabelog",
+            "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13319539/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Current exact branch page for relocated メナムのほとり 神保町本店; branch identity is explicit."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "トムヤムクン",
+          "nameZhCandidate": null,
+          "evidenceClass": "tabelog_menu_text",
+          "recommendationSemantics": null,
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13319539/dtlmenu/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "Soup トムヤムクン 1,650円（2,3名様分）",
+          "confidence": "high",
+          "notes": "Current menu item on the exact branch page; this occurrence has no direct recommendation wording."
+        }
+      ],
+      "attemptedSources": [
+        "https://tabelog.com/tokyo/A1310/A131003/13319539/",
+        "https://tabelog.com/tokyo/A1310/A131003/13319539/dtlmenu/"
+      ],
+      "blocker": null,
+      "notes": "Research pass found exact branch-bound source evidence.",
+      "reviewReasoning": "Second-pass review reconfirmed current assignment membership, exact branch identity, source-native concrete dish, R/F semantics, freshness and provenance.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-F-SOURCE/S2.json",
+          "recordIndex": 2,
+          "sourceStatus": "accepted_evidence"
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJd34FSnuNGGARgax6PuL4j_E",
+      "restaurantName": "REC COFFEE 水道橋店",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "REC COFFEE 水道橋店"
+        ],
+        "evidence": [
+          {
+            "provider": "official_web",
+            "sourceUrl": "https://rec-coffee.com/pages/coffee-shop-suidobashi",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Current official branch page states 水道橋店, address 神田三崎町3-10-1 and phone 03-6910-0977, and directly links the branch menu PDF."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "ツナアボカドサンドイッチ",
+          "nameZhCandidate": null,
+          "evidenceClass": "official_menu_item",
+          "recommendationSemantics": null,
+          "provider": "official_web",
+          "sourceUrl": "https://cdn.shopify.com/s/files/1/0297/5193/5024/files/25.10_449104fc-cf2c-43d4-97be-11ea946656d4.pdf?v=1761025103",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "TUNA & AVOCADO SANDWICH ツナアボカドサンドイッチ",
+          "confidence": "high",
+          "notes": "Current PDF linked directly from the exact 水道橋店 page; ordinary menu item, F only."
+        }
+      ],
+      "attemptedSources": [
+        "https://rec-coffee.com/pages/coffee-shop-suidobashi",
+        "https://cdn.shopify.com/s/files/1/0297/5193/5024/files/25.10_449104fc-cf2c-43d4-97be-11ea946656d4.pdf?v=1761025103"
+      ],
+      "blocker": null,
+      "notes": "Research pass found exact branch-bound source evidence.",
+      "reviewReasoning": "Second-pass review reconfirmed current assignment membership, exact branch identity, source-native concrete dish, R/F semantics, freshness and provenance.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-F-SOURCE/S2.json",
+          "recordIndex": 3,
+          "sourceStatus": "accepted_evidence"
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJi8oOa_-NGGARI5gh6aSXNxs",
+      "restaurantName": "タチエイト",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "タチエイト"
+        ],
+        "evidence": [
+          {
+            "provider": "Hot Pepper",
+            "sourceUrl": "https://www.hotpepper.jp/strJ004445138/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Exact current Hot Pepper branch page names タチエイト and address 神田小川町1-10-1 AUSPICE 1F."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "SABA＆青ネギ",
+          "nameZhCandidate": null,
+          "evidenceClass": "hotpepper_menu_text",
+          "recommendationSemantics": null,
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ004445138/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "SABA＆青ネギ 500円（税込）",
+          "confidence": "high",
+          "notes": "Concrete branch menu item, updated 2025-09-25; no strict recommendation semantics."
+        }
+      ],
+      "attemptedSources": [
+        "https://www.hotpepper.jp/strJ004445138/"
+      ],
+      "blocker": null,
+      "notes": "Research pass found exact branch-bound source evidence.",
+      "reviewReasoning": "Second-pass review reconfirmed current assignment membership, exact branch identity, source-native concrete dish, R/F semantics, freshness and provenance.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-F-SOURCE/S2.json",
+          "recordIndex": 4,
+          "sourceStatus": "accepted_evidence"
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJoUfFe9KNGGARFzs_SomCDXE",
+      "restaurantName": "Indian Street Food & Bar GOND",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "Indian Street Food & Bar GOND"
+        ],
+        "evidence": [
+          {
+            "provider": "official_web",
+            "sourceUrl": "https://gondtokyo.com/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Official GOND site gives exact address 神田駿河台3-5-15 荒井ビル1F and phone 03-3259-2800."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "パニプーリ（２PC）",
+          "nameZhCandidate": null,
+          "evidenceClass": "official_menu_item",
+          "recommendationSemantics": null,
+          "provider": "official_web",
+          "sourceUrl": "https://gondtokyo.com/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "Street Food & Starter パニプーリ（２PC） ¥360",
+          "confidence": "high",
+          "notes": "Concrete ordinary menu item outside the separate Recommended Menu section, therefore F."
+        }
+      ],
+      "attemptedSources": [
+        "https://gondtokyo.com/"
+      ],
+      "blocker": null,
+      "notes": "Research pass found exact branch-bound source evidence.",
+      "reviewReasoning": "Second-pass review reconfirmed current assignment membership, exact branch identity, source-native concrete dish, R/F semantics, freshness and provenance.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-F-SOURCE/S2.json",
+          "recordIndex": 5,
+          "sourceStatus": "accepted_evidence"
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJpfBVfQCNGGARX3UP4wURDQI",
+      "restaurantName": "焼き鳥 軒 Ken",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "焼き鳥 軒 Ken"
+        ],
+        "evidence": [
+          {
+            "provider": "sourceWebsite",
+            "sourceUrl": "https://r.gnavi.co.jp/947t5ggz0000/",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "branch_page",
+            "note": "Stable branch provider page names 神田炭火居酒屋 焼鳥 軒 －KEN－ and is the exact restaurant source used for current menu evidence."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "焼き鳥軒サラダ",
+          "nameZhCandidate": null,
+          "evidenceClass": "source_menu_text",
+          "recommendationSemantics": null,
+          "provider": "sourceWebsite",
+          "sourceUrl": "https://r.gnavi.co.jp/947t5ggz0000/menu6/",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "焼き鳥軒サラダ 新鮮野菜をたっぷり使用した特製サラダ",
+          "confidence": "high",
+          "notes": "Concrete current branch course/menu component. 特製 is not strict recommendation semantics; course recommendation is not propagated."
+        }
+      ],
+      "attemptedSources": [
+        "https://r.gnavi.co.jp/947t5ggz0000/",
+        "https://r.gnavi.co.jp/947t5ggz0000/menu6/"
+      ],
+      "blocker": null,
+      "notes": "Research pass found exact branch-bound source evidence.",
+      "reviewReasoning": "Second-pass review reconfirmed current assignment membership, exact branch identity, source-native concrete dish, R/F semantics, freshness and provenance.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-F-SOURCE/S2.json",
+          "recordIndex": 6,
+          "sourceStatus": "accepted_evidence"
+        }
+      ]
+    },
+    {
+      "googlePlaceId": "ChIJRdoFq06NGGARF_6Kq3TaI_o",
+      "restaurantName": "atacu-cafe アタクカフェ",
+      "status": "candidate",
+      "identity": {
+        "state": "unverified",
+        "sourceAliases": [
+          "atacu-cafe アタクカフェ"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "https://www.hotpepper.jp/strJ003599266/food/"
+      ],
+      "blocker": null,
+      "notes": "The exact branch source says the highlighted burger is daily-changing and cake examples are seasonal/illustrative; stable current ordinary-menu truth is not strong enough to integrate.",
+      "reviewReasoning": "Independent freshness/availability review downgraded the research-pass acceptance.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-F-SOURCE/S2.json",
+          "recordIndex": 7,
+          "sourceStatus": "accepted_evidence"
+        }
+      ]
+    }
+  ],
+  "policyAttestation": {
+    "paidGoogleDataApiCalls": 0,
+    "canonicalMasterEditedDirectly": false,
+    "proximityOnlyIdentityBindingUsed": false,
+    "recommendationWithoutExplicitSemanticsAdded": false,
+    "accessRestrictionBypassUsed": false
+  }
+}

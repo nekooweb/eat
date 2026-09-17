@@ -1,682 +1,281 @@
 {
   "schemaVersion": 1,
-  "assignmentMarker": "DISH-R-RETAINED:S0",
-  "lane": "retained_source_mining",
-  "shard": 0,
-  "checkedAt": "2026-09-14T19:03:00+09:00",
-  "sourcePlan": {
-    "path": "data/dish_batch_plan.json",
-    "sha": "0cc8a87325499f3e6d575681c53e65fc9b5b8ea6",
-    "generatedAt": "2026-09-10T06:43:53.606Z"
-  },
-  "contractNote": "data/agent_library/README.md, data/agent_library/manifest.json, and data/agent_library/proposal-template.json are absent from current main (404). This proposal follows the conservative compatible structure already used by data/agent_proposals/DISH-R-RETAINED/S6.json and does not modify canonical runtime or SQLite data.",
-  "policy": {
-    "paidGoogleDataApiCalls": 0,
-    "broadWebCrawlPerformed": false,
-    "repositoryEvidenceMiningOnly": true,
-    "canonicalIdentityMutation": false,
-    "runtimeMutation": false,
-    "sqliteMutation": false,
-    "reviewTextAcceptedAsMenuEvidence": false,
-    "recommendationRequiresExplicitSemantics": true,
-    "ordinaryMenuItemsRemainF": true
-  },
+  "proposalOnly": true,
+  "marker": "DISH-R-RETAINED",
+  "shard": "S0",
+  "recordEncoding": "compact-v1",
+  "expansionContract": "data/agent_library/proposal-template.json",
+  "agentRunId": "chatgpt-retained-s0-20260914",
+  "sourceQueue": "data/dish_batch_plan.json",
+  "sourceQueueCommit": "820b11aa5384d5aa548463b9f730df68d94000b0",
+  "generatedAt": "2026-09-14T18:36:57+09:00",
   "summary": {
-    "assigned": 46,
-    "rFound": 0,
-    "fFound": 5,
-    "candidates": 0,
-    "noEvidence": 21,
-    "blocked": 20,
-    "skipped": 0
+    "assignedRows": 46,
+    "reviewedRows": 46,
+    "acceptedEvidenceRows": 12,
+    "candidateRows": 5,
+    "noEvidenceRows": 29,
+    "blockedRows": 0,
+    "skippedAlreadyCompleteRows": 0,
+    "recommendedDishProposalsR": 43,
+    "featuredDishProposalsF": 6,
+    "candidateDishProposalsC": 2
   },
-  "rows": [
-    {
-      "googlePlaceId": "ChIJTXiCRgCNGGARvWgJGZvFcME",
-      "name": "ちゃちゃ屋",
-      "provider": "Tabelog",
-      "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13306794/",
-      "checkedAt": "2026-09-05",
-      "classification": "no_evidence",
-      "evidenceClass": "retained_provider_fact_no_dish_field",
-      "dishes": [],
-      "identityEvidence": "Exact Place-ID retained Tabelog source row names ちゃちゃ屋 and preserves branch facts for this catalog identity.",
-      "notes": "The retained row has no sourceRef claiming dishes and no concrete retained dish item."
-    },
-    {
-      "googlePlaceId": "ChIJ0_2CIRGMGGARZxuMcOPWxwk",
-      "name": "俺の創作らぁめん 極や 神田 神保町店",
-      "provider": "Tabelog",
-      "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13132295/",
-      "checkedAt": "2026-09-05",
-      "classification": "no_evidence",
-      "evidenceClass": "retained_provider_fact_no_dish_field",
-      "dishes": [],
-      "identityEvidence": "Exact Place-ID retained Tabelog source row names 俺の創作らぁめん 極や 神田 神保町店.",
-      "notes": "Retained sourceRef claims name/cuisine/budget/hours/closure, not dishes. Ramen/category terms were not treated as dish evidence."
-    },
-    {
-      "googlePlaceId": "ChIJ4V3UcxSMGGAR6WFCu53DN_k",
-      "name": "鶴八",
-      "provider": "Tabelog",
-      "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13000419/",
-      "checkedAt": "2026-09-05",
-      "classification": "no_evidence",
-      "evidenceClass": "retained_provider_fact_no_dish_field",
-      "dishes": [],
-      "identityEvidence": "Exact Place-ID retained Tabelog source row names 鶴八 and retains exact branch metadata.",
-      "notes": "The row carries an empty dishes array and its sourceRef does not claim dishes."
-    },
-    {
-      "googlePlaceId": "ChIJ95nhlhaMGGARIziH3PEAOqY",
-      "name": "焼鳥 酉たけ",
-      "provider": "Tabelog",
-      "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13169956/",
-      "checkedAt": "2026-09-05",
-      "classification": "no_evidence",
-      "evidenceClass": "retained_provider_fact_no_dish_field",
-      "dishes": [],
-      "identityEvidence": "Exact Place-ID retained Tabelog source row names 焼鳥 酉たけ and preserves address and branch metadata.",
-      "notes": "The retained row has dishes:[] and no dish-bearing sourceRef; the restaurant name/category was not converted into a dish."
-    },
+  "acceptedRecords": [
     {
       "googlePlaceId": "ChIJBfClgBCMGGAR2sN5CvGoDrU",
-      "name": "ジャズ オリンパス！",
-      "provider": "retained_source_unresolved",
-      "sourceUrl": null,
-      "checkedAt": "2026-09-14",
-      "classification": "blocked",
-      "evidenceClass": "retained_source_record_not_safely_recovered",
-      "dishes": [],
-      "identityEvidence": "The current batch plan assigns this exact Place ID to retained_source_mining and reports retained third-party source coverage.",
-      "notes": "No exact dish-bearing retained source row was safely recoverable from the current indexed repository artifacts; no dish was inferred from the restaurant name or cuisine."
+      "restaurantName": "JAZZ OLYMPUS!",
+      "provider": "tabelog",
+      "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13315798/dtlmenu/",
+      "dishes": [
+        {"class":"R","nameOriginal":"一関スモーク生ハム","semantics":"おすすめ"},
+        {"class":"R","nameOriginal":"ブルーチーズとドライフルーツ","semantics":"おすすめ"}
+      ],
+      "note": "Structured retained menu marks both concrete items as おすすめ."
     },
     {
       "googlePlaceId": "ChIJbS0GS2uMGGARE_vV-2kWt08",
-      "name": "寿司政",
-      "provider": "retained_source_unresolved",
-      "sourceUrl": null,
-      "checkedAt": "2026-09-14",
-      "classification": "blocked",
-      "evidenceClass": "retained_source_record_not_safely_recovered",
-      "dishes": [],
-      "identityEvidence": "The current batch plan assigns this exact Place ID to retained_source_mining with retained third-party source coverage.",
-      "notes": "The exact retained source artifact could not be safely resolved through the current repository index. Sushi/category knowledge was not used as dish evidence."
-    },
-    {
-      "googlePlaceId": "ChIJcduc-w2MGGARbhku_r53Png",
-      "name": "Mamma Mia!",
-      "provider": "retained_source_unresolved",
-      "sourceUrl": null,
-      "checkedAt": "2026-09-14",
-      "classification": "blocked",
-      "evidenceClass": "retained_source_record_not_safely_recovered",
-      "dishes": [],
-      "identityEvidence": "The batch plan preserves this exact Place ID as a retained-source work row.",
-      "notes": "No safely attributable retained menu artifact was recovered; no cuisine-based inference was made."
-    },
-    {
-      "googlePlaceId": "ChIJd9-v6RqMGGAR3IJy6wiM0aI",
-      "name": "とんかつ かつ屋",
-      "provider": "retained_source_unresolved",
-      "sourceUrl": null,
-      "checkedAt": "2026-09-14",
-      "classification": "blocked",
-      "evidenceClass": "retained_source_record_not_safely_recovered",
-      "dishes": [],
-      "identityEvidence": "The current batch plan preserves this exact Place ID in the retained-source lane.",
-      "notes": "The restaurant name was not interpreted as proof of a concrete menu item; no exact dish-bearing retained source row was safely recovered."
-    },
-    {
-      "googlePlaceId": "ChIJFecIYxaMGGAR9L6nuctXV38",
-      "name": "冨多葉",
-      "provider": "retained_source_unresolved",
-      "sourceUrl": null,
-      "checkedAt": "2026-09-14",
-      "classification": "blocked",
-      "evidenceClass": "retained_source_record_not_safely_recovered",
-      "dishes": [],
-      "identityEvidence": "The batch plan assigns the exact Place ID to retained_source_mining.",
-      "notes": "No exact retained dish record was safely recoverable from the currently indexed repository artifacts."
-    },
-    {
-      "googlePlaceId": "ChIJg98k8D-MGGARi_SjDVTZlGs",
-      "name": "横浜家系ラーメン田中",
-      "provider": "retained_source_unresolved",
-      "sourceUrl": null,
-      "checkedAt": "2026-09-14",
-      "classification": "blocked",
-      "evidenceClass": "retained_source_record_not_safely_recovered",
-      "dishes": [],
-      "identityEvidence": "The current batch plan preserves this exact Place ID in retained_source_mining.",
-      "notes": "No concrete dish was inferred from 家系ラーメン in the name; a safely attributable retained menu record was not recovered."
-    },
-    {
-      "googlePlaceId": "ChIJHR3eZRyMGGARIuKl5cgd_vs",
-      "name": "萬楽飯店",
-      "provider": "OpenStreetMap",
-      "sourceUrl": null,
-      "checkedAt": "2026-09-06",
-      "classification": "no_evidence",
-      "evidenceClass": "identity_only_retained_provider_record",
-      "dishes": [],
-      "identityEvidence": "Reviewed retained OpenStreetMap binding exists for this exact Place ID.",
-      "notes": "The inspected retained provider material is identity/contact evidence only and contains no usable dish field."
-    },
-    {
-      "googlePlaceId": "ChIJJdyitLiNGGARk0wEjxFkuKM",
-      "name": "鰹が昇るまで",
-      "provider": "Tabelog",
-      "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13290110/",
-      "checkedAt": "2026-09-05",
-      "classification": "no_evidence",
-      "evidenceClass": "retained_provider_fact_no_dish_field",
-      "dishes": [],
-      "identityEvidence": "Exact Place-ID retained Tabelog source row names 鰹が昇るまで.",
-      "notes": "The sourceRef claims name/cuisine/budget/hours/closure but not dishes."
-    },
-    {
-      "googlePlaceId": "ChIJJQtsNtCNGGARXHMI26d4tG4",
-      "name": "力也商店",
-      "provider": "Tabelog",
-      "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13235012/",
-      "checkedAt": "2026-09-05",
-      "classification": "no_evidence",
-      "evidenceClass": "retained_provider_fact_no_dish_field",
-      "dishes": [],
-      "identityEvidence": "Exact Place-ID retained Tabelog source row names 力也商店.",
-      "notes": "The retained sourceRef contains only identity/category/budget/hours/closure fields; no dish evidence."
-    },
-    {
-      "googlePlaceId": "ChIJK-zPABCMGGARXZAJ9C8lHCY",
-      "name": "青新軒",
-      "provider": "OpenStreetMap",
-      "sourceUrl": null,
-      "checkedAt": "2026-09-06",
-      "classification": "no_evidence",
-      "evidenceClass": "identity_only_retained_provider_record",
-      "dishes": [],
-      "identityEvidence": "Reviewed retained OpenStreetMap binding exists for this exact Place ID.",
-      "notes": "No retained menu/dish field was present in the inspected provider record."
-    },
-    {
-      "googlePlaceId": "ChIJMYM_ELeNGGAR4_Rjpux4b9k",
-      "name": "Cafe Lish",
-      "provider": "Tabelog",
-      "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13287276/",
-      "checkedAt": "2026-09-05",
-      "classification": "no_evidence",
-      "evidenceClass": "retained_provider_fact_no_dish_field",
-      "dishes": [],
-      "identityEvidence": "Exact Place-ID retained Tabelog source row names Cafe Lish.",
-      "notes": "The sourceRef claims only name/cuisine and contains no dish field."
-    },
-    {
-      "googlePlaceId": "ChIJNeiJsjqNGGARUwCL2ZS0u34",
-      "name": "日本式カレー 弐番亭",
-      "provider": "Tabelog",
-      "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13309507/",
-      "checkedAt": "2026-09-05",
-      "classification": "no_evidence",
-      "evidenceClass": "retained_provider_fact_no_dish_field",
-      "dishes": [],
-      "identityEvidence": "Exact Place-ID retained Tabelog source row names 日本式カレー 弐番亭.",
-      "notes": "The sourceRef claims name/cuisine/budget/closure only. The word カレー in the restaurant name/category was not treated as a concrete dish."
-    },
-    {
-      "googlePlaceId": "ChIJQ0pBHBCMGGARFmZBTA87HQA",
-      "name": "神田錦町 更科",
-      "provider": "retained_source_unresolved",
-      "sourceUrl": null,
-      "checkedAt": "2026-09-14",
-      "classification": "blocked",
-      "evidenceClass": "retained_source_record_not_safely_recovered",
-      "dishes": [],
-      "identityEvidence": "The batch plan assigns the exact Place ID to retained_source_mining with retained source coverage.",
-      "notes": "No safely attributable source-native dish record was recovered from the current repository index."
-    },
-    {
-      "googlePlaceId": "ChIJQypjX7ONGGARijJegx9USMg",
-      "name": "祭",
-      "provider": "retained_source_unresolved",
-      "sourceUrl": null,
-      "checkedAt": "2026-09-14",
-      "classification": "blocked",
-      "evidenceClass": "retained_source_record_not_safely_recovered",
-      "dishes": [],
-      "identityEvidence": "The current batch plan preserves this exact Place ID as a retained-source work row.",
-      "notes": "Generic restaurant name and nearby/source-similar businesses were not used to infer dishes."
+      "restaurantName": "寿司政",
+      "provider": "tabelog",
+      "sourceUrl": "https://tabelog.com/tokyo/A1309/A130906/13000407/dtlmenu/lunch/",
+      "dishes": [
+        {"class":"F","nameOriginal":"梅にぎり","semantics":""},
+        {"class":"F","nameOriginal":"竹にぎり","semantics":""},
+        {"class":"F","nameOriginal":"松にぎり","semantics":""},
+        {"class":"F","nameOriginal":"おまかせにぎり","semantics":""},
+        {"class":"F","nameOriginal":"梅ちらし","semantics":""},
+        {"class":"F","nameOriginal":"松ちらし","semantics":""}
+      ],
+      "note": "Current structured lunch menu supports F only. The recommended omakase course was not transferred to component dishes."
     },
     {
       "googlePlaceId": "ChIJqzUQMNeNGGARKaFqd4nH7c4",
-      "name": "肉盛ホルモン",
-      "provider": "retained_source_unresolved",
-      "sourceUrl": null,
-      "checkedAt": "2026-09-14",
-      "classification": "blocked",
-      "evidenceClass": "retained_source_record_not_safely_recovered",
-      "dishes": [],
-      "identityEvidence": "The batch plan assigns this exact Place ID to retained_source_mining.",
-      "notes": "The restaurant name/cuisine was not treated as menu evidence; no exact dish-bearing retained row was safely recovered."
-    },
-    {
-      "googlePlaceId": "ChIJSQlU7RCMGGARZBwoPe_ciQw",
-      "name": "レストラン カロリー",
-      "provider": "retained_source_unresolved",
-      "sourceUrl": null,
-      "checkedAt": "2026-09-14",
-      "classification": "blocked",
-      "evidenceClass": "retained_source_record_not_safely_recovered",
-      "dishes": [],
-      "identityEvidence": "The current batch plan preserves this exact Place ID with retained-source coverage.",
-      "notes": "No source-native dish-bearing retained record was safely recovered from the current indexed artifacts."
-    },
-    {
-      "googlePlaceId": "ChIJTTQAOBGMGGARqZjri8Wchto",
-      "name": "豚大学 神保町校舎",
-      "provider": "Tabelog",
-      "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13160504/",
-      "checkedAt": "2026-09-05",
-      "classification": "no_evidence",
-      "evidenceClass": "retained_provider_fact_no_dish_field",
-      "dishes": [],
-      "identityEvidence": "Exact Place-ID retained Tabelog source row names 豚大学 神保町校舎.",
-      "notes": "The sourceRef claims name/cuisine/hours/closure, not dishes. 豚丼 category context was not converted into a dish."
-    },
-    {
-      "googlePlaceId": "ChIJWTLuiBaMGGARYTzFFpLy_f8",
-      "name": "仙臺",
-      "provider": "Overture Maps",
-      "sourceUrl": null,
-      "checkedAt": "2026-09-06",
-      "classification": "no_evidence",
-      "evidenceClass": "identity_only_retained_provider_record",
-      "dishes": [],
-      "identityEvidence": "Reviewed retained Overture binding exists for this exact Place ID.",
-      "notes": "The inspected retained provider evidence is identity/contact material only; no dish-bearing field was found."
-    },
-    {
-      "googlePlaceId": "ChIJy-K2ixaMGGAR_j1VN4FzFj8",
-      "name": "肥後一文字や",
-      "provider": "retained_source_unresolved",
-      "sourceUrl": null,
-      "checkedAt": "2026-09-14",
-      "classification": "blocked",
-      "evidenceClass": "retained_source_record_not_safely_recovered",
-      "dishes": [],
-      "identityEvidence": "The current batch plan assigns the exact Place ID to retained_source_mining.",
-      "notes": "No safely interpretable retained menu artifact was recovered; no cuisine/name inference was made."
-    },
-    {
-      "googlePlaceId": "ChIJzQVI5xqMGGAR88irvCKhTyk",
-      "name": "鳥益",
-      "provider": "Tabelog",
-      "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13064380/",
-      "checkedAt": "2026-09-05",
-      "classification": "no_evidence",
-      "evidenceClass": "retained_provider_fact_no_dish_field",
-      "dishes": [],
-      "identityEvidence": "Exact Place-ID retained Tabelog source row names 鳥益 and preserves its exact address.",
-      "notes": "The retained row has dishes:[] and the sourceRef does not claim dishes."
-    },
-    {
-      "googlePlaceId": "ChIJ2336NQCNGGARMhx9jwZ4BI4",
-      "name": "ワイルドレッドパスタ神保町店",
-      "provider": "Hot Pepper",
-      "providerId": "J004049442",
-      "sourceUrl": "https://www.hotpepper.jp/strJ004049442/",
-      "checkedAt": "2026-09-06",
-      "classification": "no_evidence",
-      "evidenceClass": "bound_provider_record_no_retained_dish_text",
-      "dishes": [],
-      "identityEvidence": "Repository retains an exact high-confidence Hot Pepper binding J004049442 for this Place ID.",
-      "notes": "No retained allowed dish-bearing field or source-native menu item was found in the inspected repository artifacts."
-    },
-    {
-      "googlePlaceId": "ChIJ52UnSsmNGGARPg_XbR0VpS4",
-      "name": "上海味道 水道橋",
-      "provider": "Hot Pepper",
-      "providerId": "J001262977",
-      "sourceUrl": "https://www.hotpepper.jp/strJ001262977/",
-      "checkedAt": "2026-09-06",
-      "classification": "no_evidence",
-      "evidenceClass": "bound_provider_record_no_retained_dish_text",
-      "dishes": [],
-      "identityEvidence": "Repository retains an exact high-confidence Hot Pepper binding J001262977 for this Place ID.",
-      "notes": "The retained provider binding does not itself prove a concrete dish and no retained dish-bearing artifact was recovered."
-    },
-    {
-      "googlePlaceId": "ChIJbTOaERGMGGAR0Me4b7PxZ7o",
-      "name": "キッチン南海 神保町店",
-      "provider": "Tabelog",
-      "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13249021/dtlmenu/",
-      "checkedAt": "2026-09-05",
-      "classification": "F",
-      "evidenceClass": "retained_source_menu_item",
+      "restaurantName": "肉盛ホルモン",
+      "provider": "tabelog",
+      "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13273257/",
       "dishes": [
-        {
-          "nameNative": "カツカレー",
-          "classification": "F",
-          "evidenceClass": "retained_source_menu_item",
-          "evidenceTextNative": "カツカレー",
-          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13249021/dtlmenu/"
-        },
-        {
-          "nameNative": "しょうが焼き",
-          "classification": "F",
-          "evidenceClass": "retained_source_menu_item",
-          "evidenceTextNative": "しょうが焼き",
-          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13249021/dtlmenu/"
-        }
+        {"class":"R","nameOriginal":"網レバー","semantics":"人気・自慢"},
+        {"class":"R","nameOriginal":"和牛ハツ","semantics":"人気・自慢"},
+        {"class":"R","nameOriginal":"低温調理レバー","semantics":"人気・自慢"}
       ],
-      "identityEvidence": "Exact Place-ID retained Tabelog source row names キッチン南海 神保町店; the menu sourceRef explicitly claims dishes.",
-      "notes": "Both concrete source-native menu items are retained as F because no strict recommendation semantics is attached. Batch plan reports featuredDishesKnown=3, but only these two source-native items were directly recovered; no third item was guessed."
-    },
-    {
-      "googlePlaceId": "ChIJi5rmZBeMGGAR6KMwBn12uqk",
-      "name": "Ochanomizu Terrace SUPER DRY",
-      "provider": "Overture Maps",
-      "sourceUrl": null,
-      "checkedAt": "2026-09-06",
-      "classification": "no_evidence",
-      "evidenceClass": "identity_only_retained_provider_record",
-      "dishes": [],
-      "identityEvidence": "Reviewed retained Overture binding exists for this exact Place ID.",
-      "notes": "No retained dish-bearing field was found in the inspected identity/contact material."
+      "note": "Restaurant-operated page explicitly identifies these as popular items and dishes to try."
     },
     {
       "googlePlaceId": "ChIJjxCnlD-MGGARerygZLVT-m4",
-      "name": "とりちゅう 水道橋店",
-      "provider": "Hot Pepper",
-      "providerId": "J004492384",
-      "sourceUrl": "https://www.hotpepper.jp/strJ004492384/",
-      "checkedAt": "2026-09-06",
-      "classification": "no_evidence",
-      "evidenceClass": "bound_provider_record_no_retained_dish_text",
-      "dishes": [],
-      "identityEvidence": "Repository retains an exact high-confidence Hot Pepper binding J004492384 for this Place ID.",
-      "notes": "No retained dish-bearing evidence class or source-native menu item was found."
+      "restaurantName": "とりちゅう 水道橋店",
+      "provider": "tabelog",
+      "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13217314/dtlmenu/",
+      "dishes": [
+        {"class":"R","nameOriginal":"2種黒焼き（並）","semantics":"大人気"},
+        {"class":"R","nameOriginal":"せせり黒焼き","semantics":"人気"},
+        {"class":"R","nameOriginal":"骨なし手羽黒焼き","semantics":"人気"},
+        {"class":"R","nameOriginal":"皮西京味噌漬け","semantics":"スタッフ人気No.1"},
+        {"class":"R","nameOriginal":"若鶏漬け南蛮","semantics":"名物"},
+        {"class":"R","nameOriginal":"鶏出汁香る鶏飯","semantics":"名物"}
+      ],
+      "note": "Retained structured menu contains explicit popularity and specialty semantics."
     },
     {
       "googlePlaceId": "ChIJkX3sF0GMGGARR-L4Og4cNBU",
-      "name": "日本料理 平川 ホテルメトロポリタン エドモント",
-      "provider": "Hot Pepper",
-      "providerId": "J000034074",
-      "sourceUrl": "https://www.hotpepper.jp/strJ000034074/",
-      "checkedAt": "2026-09-06",
-      "classification": "no_evidence",
-      "evidenceClass": "bound_provider_record_no_retained_dish_text",
-      "dishes": [],
-      "identityEvidence": "Repository retains an exact high-confidence Hot Pepper binding J000034074 for this Place ID.",
-      "notes": "The provider binding establishes branch identity but no allowed retained dish text was recovered."
-    },
-    {
-      "googlePlaceId": "ChIJp3be1AeMGGARgyQQWnBT42s",
-      "name": "大手町ワインバル 八十郎商店",
-      "provider": "Overture Maps",
-      "sourceUrl": null,
-      "checkedAt": "2026-09-06",
-      "classification": "no_evidence",
-      "evidenceClass": "identity_only_retained_provider_record",
-      "dishes": [],
-      "identityEvidence": "Reviewed retained Overture binding exists for this exact Place ID.",
-      "notes": "The retained provider material contains no usable dish-bearing field."
+      "restaurantName": "日本料理 平川 ホテルメトポリタン エドモント",
+      "provider": "official",
+      "sourceUrl": "https://jrdc204.nihonhotel.com/restaurant/list/hirakawa/hirakawa/fair_recommend.html",
+      "dishes": [
+        {"class":"R","nameOriginal":"黒毛和牛きのこ鍋","semantics":"料理長おすすめの逸品"},
+        {"class":"R","nameOriginal":"きのこ土瓶蒸し","semantics":"料理長おすすめの逸品"},
+        {"class":"R","nameOriginal":"そばがき揚げ出汁　粒そばあん掛け","semantics":"料理長おすすめの逸品"}
+      ],
+      "note": "Targeted exact-branch check found an official seasonal chef-recommendation page."
     },
     {
       "googlePlaceId": "ChIJRxygEQCNGGARapvEL04ggA4",
-      "name": "中華風創作ダイニングGokuh",
-      "provider": "Hot Pepper",
-      "providerId": "J003984169",
-      "sourceUrl": "https://www.hotpepper.jp/strJ003984169/",
-      "checkedAt": "2026-09-06",
-      "classification": "blocked",
-      "evidenceClass": "retained_dish_coverage_provenance_unresolved",
-      "dishes": [],
-      "identityEvidence": "Repository retains a high-confidence exact Place-ID Hot Pepper binding J003984169.",
-      "notes": "Current batch plan reports featuredDishesKnown=4, but the currently inspectable retained provider/source artifacts expose no recoverable concrete source-native dish names. Current data/google_inventory_detail_evidence.json is empty, so the four items cannot be safely reconstructed."
-    },
-    {
-      "googlePlaceId": "ChIJu2DH_ASMGGARm2aRtwA0sms",
-      "name": "ミトシロバル",
-      "provider": "Overture Maps",
-      "sourceUrl": null,
-      "checkedAt": "2026-09-06",
-      "classification": "no_evidence",
-      "evidenceClass": "identity_only_retained_provider_record",
-      "dishes": [],
-      "identityEvidence": "Reviewed retained Overture binding exists for this exact Place ID.",
-      "notes": "No retained menu/dish artifact was found in the inspected provider material."
+      "restaurantName": "中華風創作ダイニングGokuh",
+      "provider": "tabelog",
+      "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13304648/dtlmenu/",
+      "dishes": [
+        {"class":"R","nameOriginal":"ネギワンタン","semantics":"おすすめ"},
+        {"class":"R","nameOriginal":"中華サラダ","semantics":"おすすめ"},
+        {"class":"R","nameOriginal":"挽肉納豆炒め","semantics":"おすすめ"},
+        {"class":"R","nameOriginal":"カボチャのニンニク炒め","semantics":"おすすめ"},
+        {"class":"R","nameOriginal":"ナスのニンニク炒め","semantics":"おすすめ"},
+        {"class":"R","nameOriginal":"エビと玉子炒め","semantics":"おすすめ"}
+      ],
+      "note": "Operator-published retained menu explicitly marks all six concrete items おすすめ."
     },
     {
       "googlePlaceId": "ChIJvX_t7eONGGARXncKVb9I85E",
-      "name": "Gracia",
-      "provider": "Overture Maps",
-      "sourceUrl": null,
-      "checkedAt": "2026-09-06",
-      "classification": "no_evidence",
-      "evidenceClass": "identity_only_retained_provider_record",
-      "dishes": [],
-      "identityEvidence": "Reviewed retained Overture binding exists for this exact Place ID.",
-      "notes": "The inspected retained record is identity/contact evidence only."
-    },
-    {
-      "googlePlaceId": "ChIJ17dALKONGGARwpbTKxQ1_Mw",
-      "name": "餃子酒場・吉",
-      "provider": "Tabelog",
-      "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13272984/",
-      "checkedAt": "2026-09-05",
-      "classification": "F",
-      "evidenceClass": "retained_source_menu_item",
+      "restaurantName": "Gracia",
+      "provider": "tabelog",
+      "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13155300/dtlmenu/",
       "dishes": [
-        {
-          "nameNative": "手作り餃子",
-          "classification": "F",
-          "evidenceClass": "retained_source_menu_item",
-          "evidenceTextNative": "手作り餃子",
-          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13272984/"
-        }
+        {"class":"R","nameOriginal":"タパスの盛り合わせ","semantics":"おすすめ・大人気"},
+        {"class":"R","nameOriginal":"薪焼バックリブ","semantics":"おすすめ"},
+        {"class":"R","nameOriginal":"焼野菜のサラダ（薪焼仕上げ）","semantics":"おすすめ"},
+        {"class":"R","nameOriginal":"ラムチョップのグリル","semantics":"当店1番の売り商品"},
+        {"class":"R","nameOriginal":"「ラムラックのロースト」","semantics":"おすすめ"},
+        {"class":"R","nameOriginal":"揚げたてチュロス","semantics":"おすすめ"}
       ],
-      "identityEvidence": "Exact Place-ID retained Tabelog source row names 餃子酒場・吉, gives its exact branch address, and retains dishes:[手作り餃子].",
-      "notes": "No explicit recommendation semantics is retained, so 手作り餃子 remains F. Batch plan reports featuredDishesKnown=2; only this source-native item is directly recoverable, so no second item was guessed."
-    },
-    {
-      "googlePlaceId": "ChIJQ7aufj-MGGARdknUqae7iTo",
-      "name": "台北",
-      "provider": "Tabelog",
-      "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13011063/",
-      "checkedAt": "2026-09-05",
-      "classification": "F",
-      "evidenceClass": "retained_source_menu_item",
-      "dishes": [
-        {
-          "nameNative": "水餃子",
-          "classification": "F",
-          "evidenceClass": "retained_source_menu_item",
-          "evidenceTextNative": "水餃子",
-          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13011063/"
-        }
-      ],
-      "identityEvidence": "Exact Place-ID retained Tabelog source row names 台北, preserves the exact 水道橋 branch address, and its sourceRef explicitly claims dishes.",
-      "notes": "水餃子 is a concrete retained menu item with no strict recommendation semantics, so it remains F."
+      "note": "Current operator-published menu contains explicit recommendation or strongest-seller semantics."
     },
     {
       "googlePlaceId": "ChIJr3knVhCMGGARzV5mJJqG8_c",
-      "name": "はちまき",
-      "provider": "Tabelog",
-      "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13022740/",
-      "checkedAt": "2026-09-05",
-      "classification": "F",
-      "evidenceClass": "retained_source_menu_item",
+      "restaurantName": "はちまき",
+      "provider": "tabelog",
+      "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13022740/dtlmenu/lunch/",
       "dishes": [
-        {
-          "nameNative": "天丼",
-          "classification": "F",
-          "evidenceClass": "retained_source_menu_item",
-          "evidenceTextNative": "天丼",
-          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13022740/"
-        },
-        {
-          "nameNative": "穴子海老天丼",
-          "classification": "F",
-          "evidenceClass": "retained_source_menu_item",
-          "evidenceTextNative": "穴子海老天丼",
-          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13022740/"
-        }
+        {"class":"R","nameOriginal":"野菜天丼","semantics":"大人気"},
+        {"class":"R","nameOriginal":"名物穴子海老天丼","semantics":"名物"},
+        {"class":"R","nameOriginal":"松天麩羅重","semantics":"一押し"}
       ],
-      "identityEvidence": "Exact Place-ID retained Tabelog source row names はちまき and its sourceRef explicitly claims dishes:['天丼','穴子海老天丼'].",
-      "notes": "No strict recommendation semantics is retained. Batch plan reports featuredDishesKnown=3, while two source-native items are directly recoverable; the missing third item was not reconstructed."
+      "note": "Structured retained menu provides explicit popularity/specialty/push semantics."
     },
     {
       "googlePlaceId": "ChIJufenb1iNGGARHcVIujzaKDw",
-      "name": "座135 神保町店",
-      "provider": "Tabelog",
-      "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13255328/",
-      "checkedAt": "2026-09-05",
-      "classification": "F",
-      "evidenceClass": "retained_source_menu_item",
+      "restaurantName": "座135 神保町店",
+      "provider": "tabelog",
+      "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13255328/dtlmenu/",
       "dishes": [
-        {
-          "nameNative": "焼き餃子",
-          "classification": "F",
-          "evidenceClass": "retained_source_menu_item",
-          "evidenceTextNative": "焼き餃子",
-          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13255328/"
-        }
+        {"class":"R","nameOriginal":"海鮮の麻辣湯","semantics":"おすすめ"}
       ],
-      "identityEvidence": "Exact Place-ID retained Tabelog source row names 座135 神保町店, preserves its exact address, and its sourceRef explicitly claims dishes.",
-      "notes": "焼き餃子 is a concrete menu item but has no retained recommendation/signature/popular semantics, so it remains F."
+      "note": "Current operator-published menu explicitly marks the dish おすすめ."
     },
     {
       "googlePlaceId": "ChIJ_5AELhqMGGARmyQyTWPFbJg",
-      "name": "大衆IZAKAYAエイト 御茶ノ水店",
-      "provider": "Hot Pepper",
-      "providerId": "J003649300",
-      "sourceUrl": "https://www.hotpepper.jp/strJ003649300/",
-      "checkedAt": "2026-09-06",
-      "classification": "blocked",
-      "evidenceClass": "retained_dish_coverage_provenance_unresolved",
-      "dishes": [],
-      "identityEvidence": "Repository retains a high-confidence exact Place-ID Hot Pepper binding J003649300.",
-      "notes": "Batch plan reports featuredDishesKnown=6, but no concrete source-native dish names with retained provenance are recoverable from the current inspected artifacts. The generated inventory-detail evidence file is currently empty; no names were guessed."
+      "restaurantName": "大衆IZAKAYAエイト 御茶ノ水店",
+      "provider": "tabelog",
+      "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13033304/dtlmenu/",
+      "dishes": [
+        {"class":"R","nameOriginal":"エイトの海賊蒸し","semantics":"名物"},
+        {"class":"R","nameOriginal":"本鮪入り　刺身盛り合わせ","semantics":"名物"},
+        {"class":"R","nameOriginal":"大盛り！もやし炒め","semantics":"名物"},
+        {"class":"R","nameOriginal":"エイトのオリジナル餃子","semantics":"名物"},
+        {"class":"R","nameOriginal":"青唐辛子入り麻婆豆腐","semantics":"名物"},
+        {"class":"R","nameOriginal":"牛肉コロッケぽてさら","semantics":"名物"}
+      ],
+      "note": "All six are under the explicit エイトの名物 menu section."
     },
     {
       "googlePlaceId": "ChIJ24WeeD-MGGARwdUwZC9A19E",
-      "name": "大衆IZAKAYAエイト 水道橋店",
-      "provider": "Hot Pepper",
-      "providerId": "J004072757",
-      "sourceUrl": "https://www.hotpepper.jp/strJ004072757/",
-      "checkedAt": "2026-09-06",
-      "classification": "blocked",
-      "evidenceClass": "retained_dish_coverage_provenance_unresolved",
-      "dishes": [],
-      "identityEvidence": "Repository retains a high-confidence exact Place-ID Hot Pepper binding J004072757.",
-      "notes": "Batch plan reports featuredDishesKnown=6, but current retained artifacts do not expose the six concrete source-native names/provenance. No reconstruction from cuisine or sister branch was attempted."
+      "restaurantName": "大衆IZAKAYAエイト 水道橋店",
+      "provider": "tabelog",
+      "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13029544/dtlmenu/",
+      "dishes": [
+        {"class":"R","nameOriginal":"エイトの海賊蒸し","semantics":"名物"},
+        {"class":"R","nameOriginal":"本鮪入り　刺身盛り合わせ","semantics":"名物"},
+        {"class":"R","nameOriginal":"大盛り！もやし炒め","semantics":"名物"},
+        {"class":"R","nameOriginal":"エイトのオリジナル餃子","semantics":"名物"},
+        {"class":"R","nameOriginal":"青唐辛子入り麻婆豆腐","semantics":"名物"},
+        {"class":"R","nameOriginal":"牛肉コロッケぽてさら","semantics":"名物"}
+      ],
+      "note": "All six are under the explicit エイトの名物 menu section."
     },
     {
       "googlePlaceId": "ChIJ5xbNmR6NGGARxdGxYV8ulBo",
-      "name": "誉 ほまれ 水道橋駅前店",
-      "provider": "Hot Pepper",
-      "providerId": "J003715516",
-      "sourceUrl": "https://www.hotpepper.jp/strJ003715516/",
-      "checkedAt": "2026-09-06",
-      "classification": "blocked",
-      "evidenceClass": "retained_dish_coverage_provenance_unresolved",
-      "dishes": [],
-      "identityEvidence": "Repository retains a high-confidence exact Place-ID Hot Pepper binding J003715516.",
-      "notes": "Batch plan reports featuredDishesKnown=6, but the current retained evidence layer does not expose source-native names with safely attributable provenance."
-    },
-    {
-      "googlePlaceId": "ChIJd7U9HSKNGGARCU6Piavo7VY",
-      "name": "Osteria FELME",
-      "provider": "Hot Pepper",
-      "providerId": "J001186714",
-      "sourceUrl": "https://www.hotpepper.jp/strJ001186714/",
-      "checkedAt": "2026-09-06",
-      "classification": "blocked",
-      "evidenceClass": "retained_dish_coverage_provenance_unresolved",
-      "dishes": [],
-      "identityEvidence": "Repository retains a high-confidence exact Place-ID Hot Pepper binding J001186714.",
-      "notes": "Batch plan reports featuredDishesKnown=5, while current inspectable retained provider artifacts expose no recoverable concrete dish names."
-    },
-    {
-      "googlePlaceId": "ChIJdSv8aRGNGGAR45ZkkRbeOMY",
-      "name": "新中華 李記",
-      "provider": "Hot Pepper",
-      "providerId": "J004626728",
-      "sourceUrl": "https://www.hotpepper.jp/strJ004626728/",
-      "checkedAt": "2026-09-06",
-      "classification": "blocked",
-      "evidenceClass": "retained_dish_coverage_provenance_unresolved",
-      "dishes": [],
-      "identityEvidence": "Repository retains a high-confidence exact Place-ID Hot Pepper binding J004626728.",
-      "notes": "Batch plan reports featuredDishesKnown=6, but current retained artifacts do not expose source-native dish names with recoverable provenance."
-    },
-    {
-      "googlePlaceId": "ChIJIxVise2NGGARKlUSF6LV2y4",
-      "name": "ごまいち 飯田橋店",
-      "provider": "Hot Pepper",
-      "providerId": "J003340845",
-      "sourceUrl": "https://www.hotpepper.jp/strJ003340845/",
-      "checkedAt": "2026-09-06",
-      "classification": "blocked",
-      "evidenceClass": "retained_dish_coverage_provenance_unresolved",
-      "dishes": [],
-      "identityEvidence": "Repository retains a high-confidence exact Place-ID Hot Pepper binding J003340845.",
-      "notes": "Batch plan reports featuredDishesKnown=1, but the current retained evidence artifacts do not expose the concrete source-native item. It was not inferred from the restaurant name."
-    },
-    {
-      "googlePlaceId": "ChIJkUInPFWNGGARv72wfB8qGgM",
-      "name": "マロリーポークステーキ　大手町ホトリア店",
-      "provider": "Hot Pepper",
-      "providerId": "J001291467",
-      "sourceUrl": "https://www.hotpepper.jp/strJ001291467/",
-      "checkedAt": "2026-09-06",
-      "classification": "blocked",
-      "evidenceClass": "retained_dish_coverage_provenance_unresolved",
-      "dishes": [],
-      "identityEvidence": "Repository retains a high-confidence exact Place-ID Hot Pepper binding J001291467.",
-      "notes": "Batch plan reports featuredDishesKnown=1, but no concrete source-native dish with retained provenance is recoverable from the current inspected artifacts. The restaurant name was not used as dish evidence."
-    },
-    {
-      "googlePlaceId": "ChIJN9mduz-MGGAR53bCFr3JZro",
-      "name": "SAPANA サパナ 水道橋駅西口店",
-      "provider": "Hot Pepper",
-      "providerId": "J001126936",
-      "sourceUrl": "https://www.hotpepper.jp/strJ001126936/",
-      "checkedAt": "2026-09-06",
-      "classification": "blocked",
-      "evidenceClass": "retained_dish_coverage_provenance_unresolved",
-      "dishes": [],
-      "identityEvidence": "Exact Place-ID source-enrichment row binds Hot Pepper J001126936 to SAPANA 水道橋西口店 at 神田三崎町2-20-8; an official SAPANA store source also supports branch identity.",
-      "notes": "Batch plan reports featuredDishesKnown=6, but the current retained sourceRefs claim identity/address/budget/hours/currentness and expose no concrete dish field. Current generated inventory-detail evidence is empty, so the six names cannot be safely reconstructed."
+      "restaurantName": "誉 ほまれ 水道橋駅前店",
+      "provider": "hotpepper",
+      "sourceUrl": "https://www.hotpepper.jp/strJ004537277/food/",
+      "dishes": [
+        {"class":"R","nameOriginal":"串カツ盛り合わせ3種/串カツ盛り合わせ5種/串カツ盛り合わせ7種/串カツ盛り合わせ10種","semantics":"お勧め"}
+      ],
+      "note": "Food page explicitly recommends starting with this concrete assortment menu entry."
     }
   ],
-  "retainedProvidersInspected": [
-    "Tabelog",
-    "Hot Pepper",
-    "OpenStreetMap",
-    "Overture Maps",
-    "retained official/source-enrichment records"
+  "candidateRecords": [
+    {
+      "googlePlaceId":"ChIJFecIYxaMGGAR9L6nuctXV38",
+      "restaurantName":"冨多葉",
+      "provider":"tabelog",
+      "sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13068810/",
+      "blocker":"Usable dish list is historical takeout-era material; current validity and strict recommendation semantics are not established.",
+      "dishes":[]
+    },
+    {
+      "googlePlaceId":"ChIJNeiJsjqNGGARUwCL2ZS0u34",
+      "restaurantName":"日本式カレー 弐番亭",
+      "provider":"tabelog",
+      "sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13309507/",
+      "blocker":"Retained Tabelog restaurant ID differs from the currently discoverable page; automatic rebinding is prohibited.",
+      "alternateUrl":"https://tabelog.com/tokyo/A1310/A131003/13296863/",
+      "dishes":[]
+    },
+    {
+      "googlePlaceId":"ChIJi5rmZBeMGGAR6KMwBn12uqk",
+      "restaurantName":"Ochanomizu Terrace SUPER DRY",
+      "provider":"tabelog",
+      "sourceUrl":"https://tabelog.com/tokyo/A1310/A131002/13293541/",
+      "sourceAlias":"KEEL'S BAR",
+      "blocker":"Possible rename/successor; frozen Place ID continuity is not yet proven.",
+      "dishes":[{"class":"C","nameOriginal":"チキンバスケットランチ","semantics":"人気・おすすめ"}]
+    },
+    {
+      "googlePlaceId":"ChIJp3be1AeMGGARgyQQWnBT42s",
+      "restaurantName":"大手町ワインバル 八十郎商店",
+      "provider":"tabelog",
+      "sourceUrl":"https://tabelog.com/tokyo/A1302/A130201/13205852/dtlmenu/",
+      "blocker":"Recommendation wording may attach to the components selected by the chef rather than the assortment item itself.",
+      "dishes":[{"class":"C","nameOriginal":"本日の前菜盛り合わせ ３種","semantics":"chef-selected recommendations"}]
+    },
+    {
+      "googlePlaceId":"ChIJu2DH_ASMGGARm2aRtwA0sms",
+      "restaurantName":"ミトシロバル",
+      "provider":"tabelog",
+      "sourceUrl":"https://tabelog.com/tokyo/A1310/A131002/13122107/",
+      "blocker":"Retained listing is 掲載保留 / operational status uncertain; recommendation evidence is course-level or stale.",
+      "dishes":[]
+    }
   ],
-  "repositoryArtifactsInspected": [
-    "RECOMMENDED_DISH_PIPELINE.md",
-    "DATA_PIPELINE.md",
-    "data/dish_batch_plan.json",
-    "scripts/build_retained_dish_evidence.mjs",
-    "data/source_enrichment*.js",
-    "data/featured_dishes.js",
-    "data/hotpepper_bindings.json",
-    "data/hotpepper_rich_metadata.js",
-    "data/google_inventory_detail_evidence.json",
-    "data/dish_translation_pending.json",
-    "logs/2026-09-08-hotpepper-web-structured-menu-enrichment.md",
-    "data/agent_proposals/DISH-R-RETAINED/S6.json"
+  "noEvidenceRecords": [
+    {"googlePlaceId":"ChIJTXiCRgCNGGARvWgJGZvFcME","restaurantName":"ちゃちゃ屋","provider":"hotpepper","sourceUrl":"https://www.hotpepper.jp/strJ004576187/","reason":"no_strict_dish_r"},
+    {"googlePlaceId":"ChIJ0_2CIRGMGGARZxuMcOPWxwk","restaurantName":"俺の創作らぁめん 極や 神田 神保町店","provider":"tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13132295/","reason":"review_only_popularity_excluded"},
+    {"googlePlaceId":"ChIJ4V3UcxSMGGAR6WFCu53DN_k","restaurantName":"鶴八","provider":"tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13000419/","reason":"review_only_dishes_excluded"},
+    {"googlePlaceId":"ChIJ95nhlhaMGGARIziH3PEAOqY","restaurantName":"焼鳥 酉たけ","provider":"tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13169956/","reason":"no_strict_dish_r"},
+    {"googlePlaceId":"ChIJcduc-w2MGGARbhku_r53Png","restaurantName":"Mamma Mia!","provider":"tabelog","sourceUrl":"https://tabelog.com/tokyo/A1302/A130201/13010997/","reason":"no_structured_dish_menu"},
+    {"googlePlaceId":"ChIJd9-v6RqMGGAR3IJy6wiM0aI","restaurantName":"とんかつ かつ屋","provider":"tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131002/13077854/","reason":"menu_photos_or_reviews_only"},
+    {"googlePlaceId":"ChIJg98k8D-MGGARi_SjDVTZlGs","restaurantName":"横浜家系ラーメン田中","provider":"tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13019056/","reason":"review_only_dishes_excluded"},
+    {"googlePlaceId":"ChIJHR3eZRyMGGARIuKl5cgd_vs","restaurantName":"萬楽飯店","provider":"tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13139541/","reason":"no_structured_dish_menu"},
+    {"googlePlaceId":"ChIJJdyitLiNGGARk0wEjxFkuKM","restaurantName":"鰹が昇るまで","provider":"tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13290110/","reason":"review_only_dishes_excluded"},
+    {"googlePlaceId":"ChIJJQtsNtCNGGARXHMI26d4tG4","restaurantName":"力也商店","provider":"tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13235012/","reason":"changing_lunch_info_not_stable_r"},
+    {"googlePlaceId":"ChIJK-zPABCMGGARXZAJ9C8lHCY","restaurantName":"青新軒","provider":"tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131002/13037282/","reason":"review_only_recommendation_excluded"},
+    {"googlePlaceId":"ChIJMYM_ELeNGGAR4_Rjpux4b9k","restaurantName":"Cafe Lish","provider":"tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13287276/","reason":"no_strict_dish_r"},
+    {"googlePlaceId":"ChIJQ0pBHBCMGGARFmZBTA87HQA","restaurantName":"神田錦町 更科","provider":"tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131002/13040724/","reason":"no_strict_dish_r"},
+    {"googlePlaceId":"ChIJQypjX7ONGGARijJegx9USMg","restaurantName":"祭","provider":"tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131002/13021575/","reason":"review_recommendation_excluded"},
+    {"googlePlaceId":"ChIJSQlU7RCMGGARZBwoPe_ciQw","restaurantName":"レストラン カロリー","provider":"tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13000602/","reason":"review_recommendation_excluded"},
+    {"googlePlaceId":"ChIJTTQAOBGMGGARqZjri8Wchto","restaurantName":"豚大学 神保町校舎","provider":"tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13160504/","reason":"no_strict_dish_r"},
+    {"googlePlaceId":"ChIJWTLuiBaMGGARYTzFFpLy_f8","restaurantName":"仙臺","provider":"tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13186446/","reason":"no_structured_dish_r"},
+    {"googlePlaceId":"ChIJy-K2ixaMGGAR_j1VN4FzFj8","restaurantName":"肥後一文字や","provider":"tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13126581/","reason":"review_only_dishes_excluded"},
+    {"googlePlaceId":"ChIJzQVI5xqMGGAR88irvCKhTyk","restaurantName":"鳥益","provider":"tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131002/13064380/","reason":"no_strict_dish_r"},
+    {"googlePlaceId":"ChIJ2336NQCNGGARMhx9jwZ4BI4","restaurantName":"ワイルドレッドパスタ神保町店","provider":"tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13308781/","reason":"no_structured_dish_menu"},
+    {"googlePlaceId":"ChIJ52UnSsmNGGARPg_XbR0VpS4","restaurantName":"上海味道 水道橋","provider":"hotpepper","sourceUrl":"https://www.hotpepper.jp/strJ001262977/","reason":"no_strict_dish_r_in_retained_source"},
+    {"googlePlaceId":"ChIJbTOaERGMGGAR0Me4b7PxZ7o","restaurantName":"キッチン南海 神保町店","provider":"tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13249021/dtlmenu/","reason":"structured_menu_but_no_strict_r"},
+    {"googlePlaceId":"ChIJ17dALKONGGARwpbTKxQ1_Mw","restaurantName":"餃子酒場・吉","provider":"tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13272984/","reason":"existing_f_no_strict_r"},
+    {"googlePlaceId":"ChIJQ7aufj-MGGARdknUqae7iTo","restaurantName":"台北","provider":"tabelog","sourceUrl":"https://tabelog.com/tokyo/A1310/A131003/13011063/","reason":"existing_f_no_strict_r"},
+    {"googlePlaceId":"ChIJd7U9HSKNGGARCU6Piavo7VY","restaurantName":"Osteria FELME","provider":"hotpepper","sourceUrl":"https://www.hotpepper.jp/strJ004544845/","reason":"course_or_general_recommendation_only"},
+    {"googlePlaceId":"ChIJdSv8aRGNGGAR45ZkkRbeOMY","restaurantName":"新中華 李記","provider":"tabelog","sourceUrl":"https://tabelog.com/tokyo/A1309/A130906/13276273/","reason":"structured_menu_but_no_strict_r"},
+    {"googlePlaceId":"ChIJIxVise2NGGARKlUSF6LV2y4","restaurantName":"ごまいち 飯田橋店","provider":"tabelog","sourceUrl":"https://tabelog.com/tokyo/A1309/A130905/13276064/","reason":"structured_menu_but_no_strict_r"},
+    {"googlePlaceId":"ChIJkUInPFWNGGARv72wfB8qGgM","restaurantName":"マロリーポークステーキ 大手町ホトリア店","provider":"tabelog","sourceUrl":"https://tabelog.com/tokyo/A1302/A130201/13269735/","reason":"side_set_course_or_review_semantics_only"},
+    {"googlePlaceId":"ChIJN9mduz-MGGAR53bCFr3JZro","restaurantName":"SAPANA サパナ 水道橋駅西口店","provider":"hotpepper","sourceUrl":"https://www.hotpepper.jp/strJ001126936/","reason":"course_or_general_recommendation_only"}
   ],
-  "systematicExtractionGaps": [
-    "The requested data/agent_library/README.md, manifest.json, and proposal-template.json files are absent from current main (404), so the existing S6 retained proposal structure was used as the compatibility contract.",
-    "Current data/google_inventory_detail_evidence.json is empty even though the current batch plan reports featuredDishesKnown for several shard-0 rows. For those rows, derived coverage counts cannot substitute for source-native names/provenance, so they are blocked rather than reconstructed.",
-    "Several exact retained Tabelog rows contain identity/cuisine/budget/hours data and even an empty dishes array, but their sourceRefs do not claim dishes. Under build_retained_dish_evidence.mjs these are correctly no_evidence, not F.",
-    "Some batch-plan rows report retained third-party source coverage but the exact source-enrichment record is not safely recoverable through the current repository code index. Those rows remain blocked rather than using cuisine, name, reviews, or nearby restaurants.",
-    "Current representative featured-dish patches are not strict recommendation evidence by themselves. All directly recovered ordinary menu items remain F unless explicit recommendation/signature/popular semantics is retained."
-  ]
+  "reasonCodes": {
+    "no_strict_dish_r":"No explicit recommendation/popularity/signature semantics tied to a concrete dish.",
+    "no_structured_dish_menu":"Retained branch source exposes no stable structured dish menu.",
+    "review_only_popularity_excluded":"Popularity exists only in user review prose and is excluded.",
+    "review_only_dishes_excluded":"Dish claims exist only in user review prose and are excluded.",
+    "review_recommendation_excluded":"Recommendation exists only in user review prose and is excluded.",
+    "review_only_recommendation_excluded":"Recommendation exists only in user review prose and is excluded.",
+    "menu_photos_or_reviews_only":"Only menu photos/reviews are available; no structured retained evidence.",
+    "changing_lunch_info_not_stable_r":"Changing lunch information is not a stable strict recommendation source.",
+    "no_structured_dish_r":"No structured retained dish-level recommendation evidence.",
+    "no_strict_dish_r_in_retained_source":"Exact retained source has no strict dish-level R evidence.",
+    "structured_menu_but_no_strict_r":"Concrete menu exists but no strict recommendation semantics; do not promote F to R.",
+    "existing_f_no_strict_r":"Existing featured/menu evidence remains F; no strict R semantics.",
+    "course_or_general_recommendation_only":"Recommendation language applies to a course or general dining context, not a concrete dish.",
+    "side_set_course_or_review_semantics_only":"Only side-set/course/review recommendation language was found; not promoted to R."
+  },
+  "policyAttestation": {
+    "paidGoogleDataApiCalls": 0,
+    "canonicalMasterEditedDirectly": false,
+    "proximityOnlyIdentityBindingUsed": false,
+    "recommendationWithoutExplicitSemanticsAdded": false,
+    "accessRestrictionBypassUsed": false
+  }
 }

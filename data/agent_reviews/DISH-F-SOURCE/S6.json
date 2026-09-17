@@ -1,0 +1,346 @@
+{
+  "schemaVersion": 1,
+  "proposalOnly": true,
+  "marker": "DISH-F-SOURCE",
+  "shard": "S6",
+  "agentRunId": "DISH-F-SOURCE:S6:20260914-E2E-SELF-REVIEW",
+  "sourceQueue": "data/dish_batch_plan.json",
+  "sourceQueueCommit": "e59794d58423e11d39d6c22d53c893a619274826",
+  "generatedAt": "2026-09-14T21:08:00+09:00",
+  "summary": {
+    "assignedRows": 6,
+    "reviewedRows": 6,
+    "acceptedEvidenceRows": 3,
+    "candidateRows": 1,
+    "noEvidenceRows": 2,
+    "blockedRows": 0,
+    "skippedAlreadyCompleteRows": 0
+  },
+  "policyAttestation": {
+    "paidGoogleDataApiCalls": 0,
+    "canonicalMasterEditedDirectly": false,
+    "proximityOnlyIdentityBindingUsed": false,
+    "recommendationWithoutExplicitSemanticsAdded": false,
+    "accessRestrictionBypassUsed": false
+  },
+  "records": [
+    {
+      "googlePlaceId": "ChIJKV27XcWNGGARUMPjYkQlDlQ",
+      "restaurantName": "Think Coffee",
+      "status": "accepted_evidence",
+      "assignmentState": {
+        "recommendedDishesKnown": 3,
+        "featuredDishesKnown": 0,
+        "retainedThirdPartyUrlCount": 0,
+        "sourceUrlCount": 1,
+        "nextAction": "collect_source_backed_featured_dishes"
+      },
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "think coffee",
+          "Think Coffee"
+        ],
+        "evidence": [
+          {
+            "provider": "official_web",
+            "sourceUrl": "https://thinkcoffee.jp/cafe/",
+            "sourceTitle": "Think Coffee Japan 店舗情報",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "exact_branch_identity",
+            "note": "Official branch page gives 〒101-0054 東京都千代田区神田錦町2-9-15 1F-2F and current 8:00-19:00 hours."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "recommendedDishes",
+          "classification": "R",
+          "nameOriginal": "NYCベーグルサンド",
+          "nameZhCandidate": null,
+          "evidenceClass": "branch_recommendation_text",
+          "recommendationSemantics": "シグネチャー",
+          "provider": "official_web",
+          "sourceUrl": "https://thinkcoffee.jp/nyc_bagel_sandwich/",
+          "sourceTitle": "NYCベーグルサンド - Think Coffee Japan",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "thinkcoffeeのNYCベーグルサンド。thinkcoffeeのシグネチャー・サンドイッチです。ぜひ一度ご賞味ください。",
+          "freshness": "official page remains live and official site is current in 2026",
+          "seasonality": "not_expired_or_explicitly_seasonal",
+          "confidence": "high",
+          "notes": "Exact branch official site and explicit signature semantics; no brand-to-branch propagation because the Japan site publishes a single Kanda address on the same page family."
+        }
+      ],
+      "attemptedSources": [
+        "https://thinkcoffee.jp/cafe/",
+        "https://thinkcoffee.jp/nyc_bagel_sandwich/",
+        "https://thinkcoffee.jp/menu_detail/food/"
+      ],
+      "blocker": null,
+      "notes": "Strict R is required here because the same source calls the concrete sandwich the signature sandwich.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-F-SOURCE/S6.json",
+          "recordIndex": 0,
+          "sourceStatus": "accepted_evidence"
+        }
+      ],
+      "reviewReasoning": "Independent second pass re-checked current assignment membership, frozen identity, exact branch scope, concrete source-native item, R/F semantics, freshness, reproducibility, customer-review exclusion, and cross-branch safeguards."
+    },
+    {
+      "googlePlaceId": "ChIJN43AC9KNGGARqhKvBwkG2qM",
+      "restaurantName": "酒処 魚肴",
+      "status": "candidate",
+      "assignmentState": {
+        "recommendedDishesKnown": 1,
+        "featuredDishesKnown": 0,
+        "retainedThirdPartyUrlCount": 0,
+        "sourceUrlCount": 1,
+        "nextAction": "collect_source_backed_featured_dishes"
+      },
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "酒処 魚肴"
+        ],
+        "evidence": [
+          {
+            "provider": "Hot Pepper",
+            "sourceUrl": "https://www.hotpepper.jp/strJ003559689/",
+            "sourceTitle": "酒処 魚肴",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "exact_branch_identity",
+            "note": "Current exact branch listing: 東京都千代田区神田須田町1-8-4 玉井ビル2階, current hours/reservations in 2026."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "recommendedDishes",
+          "classification": "C",
+          "nameOriginal": "鶏天",
+          "nameZhCandidate": null,
+          "evidenceClass": "candidate_only",
+          "recommendationSemantics": "",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ003559689/food/",
+          "sourceTitle": "酒処 魚肴 料理メニュー",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "逸品 鶏天 650円（税込）",
+          "freshness": "food page last updated 2023-11-06 although branch is current in 2026",
+          "seasonality": "not_expired_or_explicitly_seasonal",
+          "confidence": "low",
+          "notes": "Concrete item exists, but the item page is too stale to promote as current F without stronger freshness evidence."
+        }
+      ],
+      "attemptedSources": [
+        "https://www.hotpepper.jp/strJ003559689/",
+        "https://www.hotpepper.jp/strJ003559689/food/"
+      ],
+      "blocker": null,
+      "notes": "Current identity is solid; ordinary menu evidence is preserved as C because freshness is insufficient.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-F-SOURCE/S6.json",
+          "recordIndex": 1,
+          "sourceStatus": "candidate"
+        }
+      ],
+      "reviewReasoning": "Independent second pass re-checked identity/source/freshness constraints and confirmed this terminal outcome should not enter canonical evidence."
+    },
+    {
+      "googlePlaceId": "ChIJnYWupOGNGGARbJXrXzGrfL4",
+      "restaurantName": "STORIARE",
+      "status": "no_evidence",
+      "assignmentState": {
+        "recommendedDishesKnown": 3,
+        "featuredDishesKnown": 0,
+        "retainedThirdPartyUrlCount": 0,
+        "sourceUrlCount": 2,
+        "nextAction": "collect_source_backed_featured_dishes"
+      },
+      "identity": {
+        "state": "partial",
+        "sourceAliases": [
+          "STORIARE"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "current official STORIARE source checked; menu is image/category oriented and no source-native concrete dish text was safely reproducible"
+      ],
+      "blocker": null,
+      "notes": "No permitted, reproducible current branch-specific concrete dish evidence survived the second-pass identity/freshness/provenance review.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-F-SOURCE/S6.json",
+          "recordIndex": 2,
+          "sourceStatus": "no_evidence"
+        }
+      ],
+      "reviewReasoning": "Independent second pass re-checked identity/source/freshness constraints and confirmed this terminal outcome should not enter canonical evidence."
+    },
+    {
+      "googlePlaceId": "ChIJU3-_NwWMGGARoBcetg2Ko8Y",
+      "restaurantName": "鶏ラーメンTOKU",
+      "status": "accepted_evidence",
+      "assignmentState": {
+        "recommendedDishesKnown": 3,
+        "featuredDishesKnown": 0,
+        "retainedThirdPartyUrlCount": 2,
+        "sourceUrlCount": 2,
+        "nextAction": "collect_source_backed_featured_dishes"
+      },
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "鶏ラーメン TOKU",
+          "鶏ラーメン TOKU トク"
+        ],
+        "evidence": [
+          {
+            "provider": "Hot Pepper",
+            "sourceUrl": "https://www.hotpepper.jp/strJ001125561/",
+            "sourceTitle": "鶏ラーメン TOKU トク",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "exact_branch_identity",
+            "note": "Current exact branch listing, current hours and exact store identity; retained binding exists for this Place ID."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "featuredDishes",
+          "classification": "F",
+          "nameOriginal": "鶏白湯ラーメン味玉入り　（醤油）",
+          "nameZhCandidate": null,
+          "evidenceClass": "branch_menu_text",
+          "recommendationSemantics": "",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ001125561/",
+          "sourceTitle": "鶏ラーメン TOKU トク",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "アラカルト料理 鶏白湯ラーメン味玉入り　（醤油） 850円",
+          "freshness": "current main branch page crawled 2026-09-09",
+          "seasonality": "not_expired_or_explicitly_seasonal",
+          "confidence": "high",
+          "notes": "Selected the soy-sauce item from the ordinary アラカルト section, not the separate recommended salt item; therefore F is intentional."
+        }
+      ],
+      "attemptedSources": [
+        "https://www.hotpepper.jp/strJ001125561/",
+        "https://www.hotpepper.jp/strJ001125561/food/"
+      ],
+      "blocker": null,
+      "notes": "Current branch main page reproduces the ordinary item even though the dedicated food page has an old edit timestamp.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-F-SOURCE/S6.json",
+          "recordIndex": 3,
+          "sourceStatus": "accepted_evidence"
+        }
+      ],
+      "reviewReasoning": "Independent second pass re-checked current assignment membership, frozen identity, exact branch scope, concrete source-native item, R/F semantics, freshness, reproducibility, customer-review exclusion, and cross-branch safeguards."
+    },
+    {
+      "googlePlaceId": "ChIJyxn98FCNGGARKcL6RborViU",
+      "restaurantName": "RECORD BAR JBC レコードバー ジェイビーシー",
+      "status": "accepted_evidence",
+      "assignmentState": {
+        "recommendedDishesKnown": 1,
+        "featuredDishesKnown": 0,
+        "retainedThirdPartyUrlCount": 1,
+        "sourceUrlCount": 1,
+        "nextAction": "collect_source_backed_featured_dishes"
+      },
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "RECORD BAR JBC",
+          "RECORD BAR JBC レコードバー ジェイビーシー"
+        ],
+        "evidence": [
+          {
+            "provider": "Hot Pepper",
+            "sourceUrl": "https://www.hotpepper.jp/strJ003516624/map/",
+            "sourceTitle": "RECORD BAR JBC 地図",
+            "checkedAt": "2026-09-14",
+            "evidenceType": "exact_branch_identity",
+            "note": "Exact current branch address 東京都千代田区神田神保町1-12-6 B1F and current opening information; repository Hot Pepper binding is high-confidence/auto-eligible."
+          }
+        ]
+      },
+      "dishProposals": [
+        {
+          "targetField": "recommendedDishes",
+          "classification": "R",
+          "nameOriginal": "ナポリタン",
+          "nameZhCandidate": null,
+          "evidenceClass": "branch_recommendation_text",
+          "recommendationSemantics": "店長のおすすめ料理 / おすすめ",
+          "provider": "Hot Pepper",
+          "sourceUrl": "https://www.hotpepper.jp/strJ003516624/",
+          "sourceTitle": "RECORD BAR JBC レコードバー ジェイビーシー",
+          "checkedAt": "2026-09-14",
+          "sourceScope": "branch",
+          "evidenceText": "店長のおすすめ料理 ナポリタン フードメニューも豊富にご用意しております。ソーセージたっぷりのナポリタンがおすすめです。",
+          "freshness": "current branch page crawled in September 2026",
+          "seasonality": "not_expired_or_explicitly_seasonal",
+          "confidence": "high",
+          "notes": "Direct concrete item-level recommendation on current exact branch page."
+        }
+      ],
+      "attemptedSources": [
+        "https://www.hotpepper.jp/strJ003516624/",
+        "https://www.hotpepper.jp/strJ003516624/map/"
+      ],
+      "blocker": null,
+      "notes": "Current main page carries the recommendation; no customer-review content used.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-F-SOURCE/S6.json",
+          "recordIndex": 4,
+          "sourceStatus": "accepted_evidence"
+        }
+      ],
+      "reviewReasoning": "Independent second pass re-checked current assignment membership, frozen identity, exact branch scope, concrete source-native item, R/F semantics, freshness, reproducibility, customer-review exclusion, and cross-branch safeguards."
+    },
+    {
+      "googlePlaceId": "ChIJzbh-BgCNGGARYOcIF_C_Og8",
+      "restaurantName": "Livevillageアポロ",
+      "status": "no_evidence",
+      "assignmentState": {
+        "recommendedDishesKnown": 1,
+        "featuredDishesKnown": 0,
+        "retainedThirdPartyUrlCount": 0,
+        "sourceUrlCount": 1,
+        "nextAction": "collect_source_backed_featured_dishes"
+      },
+      "identity": {
+        "state": "partial",
+        "sourceAliases": [
+          "Livevillageアポロ"
+        ],
+        "evidence": []
+      },
+      "dishProposals": [],
+      "attemptedSources": [
+        "current official Livevillageアポロ venue source checked; event plate/drink bundles did not provide a stable ordinary concrete dish for canonical F"
+      ],
+      "blocker": null,
+      "notes": "No permitted, reproducible current branch-specific concrete dish evidence survived the second-pass identity/freshness/provenance review.",
+      "sourceProposalRefs": [
+        {
+          "path": "data/agent_proposals/DISH-F-SOURCE/S6.json",
+          "recordIndex": 5,
+          "sourceStatus": "no_evidence"
+        }
+      ],
+      "reviewReasoning": "Independent second pass re-checked identity/source/freshness constraints and confirmed this terminal outcome should not enter canonical evidence."
+    }
+  ]
+}
