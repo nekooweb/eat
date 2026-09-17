@@ -19,8 +19,10 @@ jobs:
       - name: Build and audit when canonical builder is present
         run: |
           node --check app.js
+          node scripts/test_v1_quality_fixes.mjs
           if [ -f scripts/build_production_dataset.mjs ]; then
             node scripts/test_opening_hours.mjs
+            node scripts/test_dish_review_cooldown.mjs
             python3 scripts/reload_data.py --public-only --outdir _audit/pr-reload
             node scripts/test_dish_translation_gap_regression.mjs
             node scripts/test_detail_evidence_retention.mjs

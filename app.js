@@ -2,10 +2,6 @@
   const $ = (selector) => document.querySelector(selector);
   const $$ = (selector) => [...document.querySelectorAll(selector)];
   const MAX_DISTANCE = 1200;
-  const NII_REFERENCE = Object.freeze({
-    lat: 35.6924611,
-    lng: 139.7581028
-  });
   const canonical = Array.isArray(window.PRODUCTION_RESTAURANTS)
     ? window.PRODUCTION_RESTAURANTS
     : [];
@@ -167,7 +163,7 @@
   function budgetOK(restaurant) {
     if (budget === 'all') return true;
     const prices = [restaurant.lunch, restaurant.dinner];
-    if (budget === 'under1000') return prices.some((price) => validPrice(price) && price[1] <= 999);
+    if (budget === 'under1000') return prices.some((price) => priceMatches(price, 0, 999));
     if (budget === '1000') return prices.some((price) => priceMatches(price, 1000, 1999));
     if (budget === '2000') return prices.some((price) => priceMatches(price, 2000, 3999));
     if (budget === '4000') return prices.some((price) => priceMatches(price, 4000));
@@ -366,7 +362,7 @@
     if (overviewNode && mappable.length) {
       const overview = L.map(overviewNode, { scrollWheelZoom: false });
       addTiles(overview);
-      const bounds = [[NII_REFERENCE.lat, NII_REFERENCE.lng]];
+      const bounds = [];
       mappable.forEach(({ restaurant, index }) => {
         const point = [restaurant.lat, restaurant.lng];
         bounds.push(point);
@@ -375,16 +371,6 @@
           .addTo(overview)
           .bindPopup(popup);
       });
-
-      L.circleMarker([NII_REFERENCE.lat, NII_REFERENCE.lng], {
-        radius: 8,
-        color: '#a61b1b',
-        weight: 2,
-        fillColor: '#e53935',
-        fillOpacity: 0.95,
-        interactive: false,
-        bubblingMouseEvents: false
-      }).addTo(overview);
 
       overview.fitBounds(bounds, { padding: [34, 34], maxZoom: 16 });
       activeMaps.push(overview);
