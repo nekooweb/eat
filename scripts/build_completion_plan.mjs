@@ -50,6 +50,12 @@ function isGenericClassificationValue(taxonomy, value) {
   return GENERIC_CLASSIFICATION_VALUES.has(taxonomy.normalizeSourceValue(value));
 }
 
+function hasUnmappedClassificationValue(taxonomy, row) {
+  return sourceValues(row)
+    .filter((value) => !isGenericClassificationValue(taxonomy, value))
+    .some((value) => !taxonomy.resolveConceptToken(value));
+}
+
 function directConcepts(taxonomy, row) {
   const result = taxonomy.classifyRestaurant(row || {});
   return new Set(result.directIds || []);
@@ -57,6 +63,38 @@ function directConcepts(taxonomy, row) {
 
 function sourceFactsByPlaceId(sourceFactRows) {
   return new Map((sourceFactRows || []).map((row) => [row.googlePlaceId, row.sourceFacts || []]));
+}
+
+function loadMaintainedInputs(root) {
+  const windowObject = {};
+  const publicRuntimePath = path.join(root, 'data/google_inventory_runtime.js');
+  let runtimeSource = 'data/production_area1.js';
+
+  if (fs.existsSync(publicRuntimePath) && fs.statSync(publicRuntimePath).size > 0) {
+    loadWindowScript(root, 'data/google_inventory_runtime.js', windowObject);
+    if (Array.isArray(windowObject.GOOGLE_INVENTORY_RESTAURANTS)
+      && windowObject.GOOGLE_INVENTORY_RESTAURANTS.length) {
+      runtimeSource = 'data/google_inventory_runtime.js';
+    }
+  }
+
+  if (runtimeSource !== 'data/google_inventory_runtime.js') {
+    loadWindowScript(root, 'data/production_area1.js', windowObject);
+  }
+
+  loadWindowScript(root, 'classification.js', windowObject);
+  loadWindowScript(root, 'data/source_facts.js', windowObject);
+
+  const rows = runtimeSource === 'data/google_inventory_runtime.js'
+    ? windowObject.GOOGLE_INVENTORY_RESTAURANTS
+    : windowObject.PRODUCTION_RESTAURANTS;
+
+  return {
+    rows: Array.isArray(rows) ? rows : [],
+    taxonomy: windowObject.EAT_CLASSIFICATION || null,
+    sourceFactRows: Array.isArray(windowObject.SOURCE_FACTS?.rows) ? windowObject.SOURCE_FACTS.rows : [],
+    runtimeSource
+  };
 }
 
 function buildTokenInventory({ rows, factsById, taxonomy }) {
@@ -121,9 +159,8 @@ function buildTokenInventory({ rows, factsById, taxonomy }) {
     || a.normalizedToken.localeCompare(b.normalizedToken, 'ja'));
 }
 
-function buildClassificationEntityTasks({ rows, factsById, taxonomy, taxonomyTasks }) {
+function buildClassificationEntityTasks({ rows, factsById, taxonomy }) {
   const conceptById = new Map(taxonomy.concepts.map((concept) => [concept.id, concept]));
-  const tokenAffectedIds = new Set(taxonomyTasks.flatMap((task) => task.samplePlaceIds));
   const retainedRecoveries = [];
   const unresolved = [];
 
@@ -132,19 +169,19 @@ function buildClassificationEntityTasks({ rows, factsById, taxonomy, taxonomyTas
     const facts = factsById.get(row.googlePlaceId) || [];
     const evidence = [];
     const conceptIds = new Set();
+    const hasUnmappedRuntimeToken = hasUnmappedClassificationValue(taxonomy, row);
     let hasUnmappedClassificationFact = false;
 
     for (const fact of facts) {
       const direct = directConcepts(taxonomy, fact);
       for (const id of direct) conceptIds.add(id);
-      const values = sourceValues(fact).filter((value) => !isGenericClassificationValue(taxonomy, value));
-      if (values.some((value) => !taxonomy.resolveConceptToken(value))) hasUnmappedClassificationFact = true;
+      if (hasUnmappedClassificationValue(taxonomy, fact)) hasUnmappedClassificationFact = true;
       if (direct.size) {
         evidence.push({
           provider: fact.provider || 'unknown',
           checkedAt: fact.checkedAt || null,
           conceptIds: [...direct].sort(),
-          sourceValues: uniqueSorted(values)
+          sourceValues: uniqueSorted(sourceValues(fact).filter((value) => !isGenericClassificationValue(taxonomy, value)))
         });
       }
     }
@@ -175,8 +212,9 @@ function buildClassificationEntityTasks({ rows, factsById, taxonomy, taxonomyTas
       name: row.name,
       distanceMeters: row.distanceMeters,
       retainedSourceFactCount: facts.length,
+      hasUnmappedRuntimeToken,
       hasUnmappedClassificationFact,
-      taxonomyTokenMayResolve: tokenAffectedIds.has(row.googlePlaceId) || hasUnmappedClassificationFact,
+      taxonomyTokenMayResolve: hasUnmappedRuntimeToken || hasUnmappedClassificationFact,
       networkRequired: facts.length === 0,
       sourceFingerprint: fingerprint((facts || []).map((fact) => ({
         provider: fact.provider || 'unknown',
@@ -215,7 +253,6 @@ function buildHoursTasks({ rows, factsById }) {
           provider: fact.provider || 'unknown',
           checkedAt: fact.checkedAt || null,
           validNormalizedSchedule: validateOpeningHours(schedule),
-          normalizedSchedule: validateOpeningHours(schedule) ? schedule : null,
           openingHoursRaw: String(fact.openingHoursRaw).normalize('NFKC').trim(),
           closedDays: Array.isArray(fact.closedDays) ? [...fact.closedDays] : []
         };
@@ -293,12 +330,13 @@ function buildBudgetTasks({ rows, factsById, meal }) {
     };
 
     if (candidates.length) {
+      const distinctRanges = uniqueSorted(candidates.map((candidate) => JSON.stringify(candidate.value)));
       recoverable.push({
         taskType: `recover_retained_${meal}_budget`,
         ...common,
         candidateProviders: uniqueSorted(candidates.map((candidate) => candidate.provider)),
-        candidateRanges: uniqueSorted(candidates.map((candidate) => JSON.stringify(candidate.value))).map((value) => JSON.parse(value)),
-        conflictingRetainedRanges: uniqueSorted(candidates.map((candidate) => JSON.stringify(candidate.value))).length > 1,
+        candidateRanges: distinctRanges.map((value) => JSON.parse(value)),
+        conflictingRetainedRanges: distinctRanges.length > 1,
         networkRequired: false
       });
     } else {
@@ -329,21 +367,14 @@ export function buildCompletionPlan(options = {}) {
   const now = options.now instanceof Date ? options.now : new Date(options.now || process.env.COMPLETION_PLAN_NOW || Date.now());
   if (!Number.isFinite(now.getTime())) throw new Error('Invalid completion-plan time');
 
-  const windowObject = {};
-  loadWindowScript(root, 'data/production_area1.js', windowObject);
-  loadWindowScript(root, 'classification.js', windowObject);
-  loadWindowScript(root, 'data/source_facts.js', windowObject);
-
-  const rows = Array.isArray(windowObject.PRODUCTION_RESTAURANTS) ? windowObject.PRODUCTION_RESTAURANTS : [];
-  const taxonomy = windowObject.EAT_CLASSIFICATION;
-  const sourceFactRows = Array.isArray(windowObject.SOURCE_FACTS?.rows) ? windowObject.SOURCE_FACTS.rows : [];
-  if (!rows.length) throw new Error('Missing production runtime rows');
+  const { rows, taxonomy, sourceFactRows, runtimeSource } = loadMaintainedInputs(root);
+  if (!rows.length) throw new Error('Missing public runtime rows');
   if (!taxonomy) throw new Error('Missing EAT_CLASSIFICATION');
 
   const factsById = sourceFactsByPlaceId(sourceFactRows);
   const acceptedRows = rows.filter((row) => directConcepts(taxonomy, row).size > 0).length;
   const taxonomyTasks = buildTokenInventory({ rows, factsById, taxonomy });
-  const classificationEntities = buildClassificationEntityTasks({ rows, factsById, taxonomy, taxonomyTasks });
+  const classificationEntities = buildClassificationEntityTasks({ rows, factsById, taxonomy });
   const hours = buildHoursTasks({ rows, factsById });
   const lunch = buildBudgetTasks({ rows, factsById, meal: 'lunch' });
   const dinner = buildBudgetTasks({ rows, factsById, meal: 'dinner' });
@@ -358,10 +389,11 @@ export function buildCompletionPlan(options = {}) {
   assertUniqueIds(dinner.recoverable, 'dinner recoverable');
   assertUniqueIds(dinner.discovery, 'dinner discovery');
 
-  const report = {
+  return {
     schemaVersion: 1,
     generatedAt: now.toISOString(),
     mode: 'report-only',
+    runtimeSource,
     policy: {
       frozenIdentityKey: 'googlePlaceId',
       canonicalWrites: false,
@@ -369,7 +401,8 @@ export function buildCompletionPlan(options = {}) {
       paidGoogleDataApiCalls: 0,
       candidateCountsAsAccepted: false,
       rawCuisineTagsMutationAllowed: false,
-      sourceFactsFirst: true
+      sourceFactsFirst: true,
+      maintainedPublicRuntimePreferred: true
     },
     summary: {
       runtimeRows: rows.length,
@@ -409,8 +442,6 @@ export function buildCompletionPlan(options = {}) {
     hours,
     budget: { lunch, dinner }
   };
-
-  return report;
 }
 
 const isCli = process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
