@@ -7,7 +7,7 @@
   <title>Eat — 今天吃什么？</title>
   <meta name="description" content="在附近餐厅里随机给出三个不同方向，减少选择困难。">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-  <link rel="stylesheet" href="./styles.css?v=20260910-concise-ui">
+  <link rel="stylesheet" href="./styles.css?v=20260917-classification1">
   <link rel="stylesheet" href="./effects.css?v=20260906-mascot2">
 </head>
 <body>
@@ -26,8 +26,9 @@
 
     <section class="panel filter-module" data-filter-module="food">
       <h2>今天不想吃什么？</h2>
-      <div class="chips" id="rejects"></div>
-      <p class="note">点选要排除的菜系。</p>
+      <div id="rejects"></div>
+      <button type="button" class="filter-clear" id="clear-rejects" hidden>清除分类排除</button>
+      <p class="note">可按菜系风格、主营食物或店铺类型排除。未分类店铺仍可能出现在结果中。</p>
     </section>
 
     <section class="panel filter-module" data-filter-module="budget">
@@ -77,7 +78,8 @@
   <script src="./data/source_provenance.js?v=20260907-strictgoogle1"></script>
   <script src="./data/source_facts.js?v=20260907-strictgoogle1"></script>
   <script src="./data/hotpepper_rich_metadata.js?v=20260907-strictgoogle1"></script>
-  <script src="./app.js?v=20260917-quality1"></script>
+  <script src="./classification.js?v=20260917-classification1"></script>
+  <script src="./app.js?v=20260917-classification1"></script>
   <script src="./effects.js?v=20260906-voice3"></script>
 </body>
 </html>
