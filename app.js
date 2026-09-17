@@ -2,6 +2,7 @@
   const $ = (selector) => document.querySelector(selector);
   const $$ = (selector) => [...document.querySelectorAll(selector)];
   const MAX_DISTANCE = 1200;
+  const classification = window.EAT_CLASSIFICATION || null;
   const canonical = Array.isArray(window.PRODUCTION_RESTAURANTS)
     ? window.PRODUCTION_RESTAURANTS
     : [];
@@ -12,6 +13,7 @@
 
   let budget = 'all';
   let distanceLimit = MAX_DISTANCE;
+  let hasGenerated = false;
   const rejected = new Set();
   const activeMaps = [];
 
@@ -32,7 +34,7 @@
     .replaceAll('"', '&quot;')
     .replaceAll("'", '&#39;');
 
-  // Display/filter aliases only. Keep all source restaurant objects unchanged.
+  // Legacy display aliases remain as a fail-safe when classification.js is unavailable.
   const CUISINE_ALIASES = Object.freeze({
     '中華': '中华', '中華料理': '中华',
     '韓国料理': '韩国菜', '台湾料理': '台湾菜',
@@ -50,20 +52,36 @@
     '創作料理': '创意料理', 'カラオケ・パーティ': '聚会餐饮'
   });
   const GENERIC_CUISINES = new Set(['', '餐厅', 'restaurant', 'その他グルメ']);
-  function displayCuisine(restaurant) {
+
+  function legacyDisplayCuisine(restaurant) {
     const raw = String(restaurant.cuisine || '').normalize('NFKC').trim();
     if (GENERIC_CUISINES.has(raw.toLowerCase())) return '';
     return CUISINE_ALIASES[raw] || raw;
   }
-  const cuisineCounts = new Map();
-  production.forEach((restaurant) => {
-    const label = displayCuisine(restaurant);
-    if (label) cuisineCounts.set(label, (cuisineCounts.get(label) || 0) + 1);
-  });
-  const cuisineLabels = [...cuisineCounts.keys()].sort((a, b) =>
-    cuisineCounts.get(b) - cuisineCounts.get(a) || a.localeCompare(b, 'zh-CN'));
+
+  function displayCuisine(restaurant) {
+    if (classification) return classification.primaryDisplayLabel(restaurant) || legacyDisplayCuisine(restaurant);
+    return legacyDisplayCuisine(restaurant);
+  }
+
+  function classificationLabels(restaurant) {
+    if (!classification) return [displayCuisine(restaurant)].filter(Boolean);
+    const labels = classification.directLabels(restaurant);
+    return labels.length ? labels : [displayCuisine(restaurant)].filter(Boolean);
+  }
+
+  const legacyCuisineCounts = new Map();
+  if (!classification) {
+    production.forEach((restaurant) => {
+      const label = displayCuisine(restaurant);
+      if (label) legacyCuisineCounts.set(label, (legacyCuisineCounts.get(label) || 0) + 1);
+    });
+  }
+  const cuisineLabels = [...legacyCuisineCounts.keys()].sort((a, b) =>
+    legacyCuisineCounts.get(b) - legacyCuisineCounts.get(a) || a.localeCompare(b, 'zh-CN'));
   const PRIMARY_CUISINE_COUNT = 12;
   const secondaryCuisines = cuisineLabels.slice(PRIMARY_CUISINE_COUNT);
+  const classificationCounts = classification ? classification.conceptCounts(production) : null;
 
   function rand01() {
     const bytes = new Uint32Array(1);
@@ -144,7 +162,7 @@
   function priceText(price) {
     if (!validPrice(price)) return null;
     if (price[0] === 0) return `¥${price[1].toLocaleString()}以下`;
-    return `¥${price[0].toLocaleString()}–${price[1].toLocaleString()}`;
+    return `¥${price[0].toLocaleString()}–¥${price[1].toLocaleString()}`;
   }
 
   function budgetText(restaurant) {
@@ -240,7 +258,7 @@
     const price = budgetText(restaurant);
     const schedule = scheduleText(restaurant);
     const map = renderStoreMap(restaurant, index);
-    const cuisine = displayCuisine(restaurant);
+    const categories = classificationLabels(restaurant).slice(0, 2);
     return `<article class="card result-card">
       <div class="card-main">
         <div class="result-heading">
@@ -249,7 +267,7 @@
         </div>
         <div class="meta">
           ${awardBadge(restaurant)}
-          ${cuisine ? `<span class="pill">${escapeHtml(cuisine)}</span>` : ''}
+          ${categories.map((label) => `<span class="pill">${escapeHtml(label)}</span>`).join('')}
           <span class="pill">${escapeHtml(distanceText(restaurant))}</span>
         </div>
         ${price ? `<p class="budget"><b>预算：</b>${escapeHtml(price)}</p>` : ''}
@@ -265,9 +283,13 @@
     return value ? escapeHtml(value) : fallback;
   }
 
+  function categoryText(restaurant) {
+    return classificationLabels(restaurant).join(' · ');
+  }
+
   function renderComparison(restaurants) {
     const rows = [
-      ['菜系', ...restaurants.map(displayCuisine)],
+      ['分类', ...restaurants.map(categoryText)],
       ['距离', ...restaurants.map(distanceText)],
       ['预算', ...restaurants.map(budgetText)],
       ['推荐/特色菜', ...restaurants.map(recommendationText)],
@@ -306,6 +328,15 @@
     </section>`;
   }
 
+  function classificationRejected(restaurant) {
+    if (!rejected.size) return false;
+    if (!classification) return rejected.has(displayCuisine(restaurant));
+    for (const conceptId of rejected) {
+      if (classification.hasEffectiveConcept(restaurant, conceptId)) return true;
+    }
+    return false;
+  }
+
   function eligible(restaurant) {
     if (!hasGooglePlaceId(restaurant)) return false;
     const frozenInventory = restaurant.inventoryWithinRadius === true;
@@ -319,7 +350,7 @@
       if (!frozenInventory || distanceLimit !== MAX_DISTANCE) return false;
     }
     if (!validCoords(restaurant) && !frozenInventory) return false;
-    if (rejected.has(displayCuisine(restaurant))) return false;
+    if (classificationRejected(restaurant)) return false;
     return budgetOK(restaurant);
   }
 
@@ -366,7 +397,7 @@
       mappable.forEach(({ restaurant, index }) => {
         const point = [restaurant.lat, restaurant.lng];
         bounds.push(point);
-        const popup = `<b>${escapeHtml(restaurant.name)}</b><br>${escapeHtml([displayCuisine(restaurant), distanceText(restaurant)].filter(Boolean).join(' · '))}<br><a href="${escapeHtml(mapsUrl(restaurant))}" target="_blank" rel="noopener">在 Google Maps 查看 ↗</a>`;
+        const popup = `<b>${escapeHtml(restaurant.name)}</b><br>${escapeHtml([categoryText(restaurant), distanceText(restaurant)].filter(Boolean).join(' · '))}<br><a href="${escapeHtml(mapsUrl(restaurant))}" target="_blank" rel="noopener">在 Google Maps 查看 ↗</a>`;
         L.marker(point, { icon: numberIcon(index + 1) })
           .addTo(overview)
           .bindPopup(popup);
@@ -396,35 +427,93 @@
     requestAnimationFrame(() => activeMaps.forEach((map) => map.invalidateSize(false)));
   }
 
+  function filterButton(concept) {
+    return `<button type="button" class="chip" data-class-id="${escapeHtml(concept.id)}" aria-pressed="false">${escapeHtml(concept.label)}</button>`;
+  }
+
+  function renderClassificationFilters(box) {
+    const groups = classification.dimensions.map((dimension) => {
+      const concepts = classification.conceptsForDimension(dimension.id, classificationCounts);
+      if (!concepts.length) return '';
+      const common = concepts.slice(0, 8);
+      const more = concepts.slice(8);
+      return `<section class="filter-group" data-class-dimension="${escapeHtml(dimension.id)}">
+        <h3 class="filter-group-title">${escapeHtml(dimension.label)}</h3>
+        <div class="chips">${common.map(filterButton).join('')}</div>
+        ${more.length ? `<details class="more-cuisines"><summary>更多${escapeHtml(dimension.label)}（${more.length}）</summary><div class="chips secondary-cuisines">${more.map(filterButton).join('')}</div></details>` : ''}
+      </section>`;
+    }).join('');
+    box.innerHTML = groups;
+  }
+
+  function refreshClassificationControls() {
+    if (classification) {
+      $$('[data-class-id]').forEach((button) => {
+        const selected = rejected.has(button.dataset.classId);
+        button.classList.toggle('active', selected);
+        button.setAttribute('aria-pressed', String(selected));
+      });
+    }
+    const clear = $('#clear-rejects');
+    if (clear) clear.hidden = rejected.size === 0;
+  }
+
   function renderCuisineFilters() {
     const box = $('#rejects');
-    const buttonFor = (label) => `<button type="button" class="chip" data-tag="${escapeHtml(label)}" aria-pressed="false">${escapeHtml(label)}</button>`;
-    const common = cuisineLabels.slice(0, PRIMARY_CUISINE_COUNT).map(buttonFor).join('');
-    const more = secondaryCuisines.length
-      ? `<details class="more-cuisines"><summary id="more-cuisines-summary">更多菜系（${secondaryCuisines.length}）</summary><div class="chips secondary-cuisines">${secondaryCuisines.map(buttonFor).join('')}</div></details>`
-      : '';
-    box.innerHTML = common + more;
-    if (!cuisineLabels.length) {
+    if (!box) return;
+
+    if (classification) {
+      renderClassificationFilters(box);
+    } else {
+      const buttonFor = (label) => `<button type="button" class="chip" data-tag="${escapeHtml(label)}" aria-pressed="false">${escapeHtml(label)}</button>`;
+      const common = cuisineLabels.slice(0, PRIMARY_CUISINE_COUNT).map(buttonFor).join('');
+      const more = secondaryCuisines.length
+        ? `<details class="more-cuisines"><summary id="more-cuisines-summary">更多菜系（${secondaryCuisines.length}）</summary><div class="chips secondary-cuisines">${secondaryCuisines.map(buttonFor).join('')}</div></details>`
+        : '';
+      box.innerHTML = common + more;
+    }
+
+    if (!box.querySelector?.('[data-class-id], [data-tag]') && !box.innerHTML.includes('data-class-id') && !box.innerHTML.includes('data-tag')) {
       const module = $('[data-filter-module="food"]');
       if (module) module.hidden = true;
+      return;
     }
+
     box.addEventListener('click', (event) => {
-      const button = event.target.closest('[data-tag]');
+      const button = event.target.closest('[data-class-id], [data-tag]');
       if (!button) return;
-      const cuisine = button.dataset.tag;
-      if (rejected.has(cuisine)) rejected.delete(cuisine);
-      else rejected.add(cuisine);
-      const selected = rejected.has(cuisine);
-      button.classList.toggle('active', selected);
-      button.setAttribute('aria-pressed', String(selected));
-      if (secondaryCuisines.length) {
-        const count = secondaryCuisines.filter((label) => rejected.has(label)).length;
-        const summary = $('#more-cuisines-summary');
-        if (summary) summary.textContent = count
-          ? `更多菜系（已排除 ${count} 项）`
-          : `更多菜系（${secondaryCuisines.length}）`;
+      const token = button.dataset.classId || button.dataset.tag;
+      const conceptId = classification ? classification.resolveConceptToken(token) : token;
+      if (!conceptId) return;
+      if (rejected.has(conceptId)) rejected.delete(conceptId);
+      else rejected.add(conceptId);
+      if (classification) {
+        refreshClassificationControls();
+      } else {
+        const selected = rejected.has(conceptId);
+        button.classList.toggle('active', selected);
+        button.setAttribute('aria-pressed', String(selected));
+        if (secondaryCuisines.length) {
+          const count = secondaryCuisines.filter((label) => rejected.has(label)).length;
+          const summary = $('#more-cuisines-summary');
+          if (summary) summary.textContent = count
+            ? `更多菜系（已排除 ${count} 项）`
+            : `更多菜系（${secondaryCuisines.length}）`;
+        }
       }
+      filtersChanged();
     });
+
+    const clear = $('#clear-rejects');
+    if (clear) {
+      clear.onclick = () => {
+        if (!rejected.size) return;
+        rejected.clear();
+        refreshClassificationControls();
+        filtersChanged();
+      };
+    }
+    refreshClassificationControls();
   }
 
   function configureBudgetFilter() {
@@ -438,7 +527,9 @@
 
   function renderStats() {
     const node = $('#stats');
-    if (node) node.textContent = `当前可选 ${production.length.toLocaleString()} 家餐厅`;
+    if (!node) return;
+    const available = production.filter(eligible).length;
+    node.textContent = `当前条件可选 ${available.toLocaleString()} / ${production.length.toLocaleString()} 家餐厅`;
   }
 
   function showMessage(message) {
@@ -446,9 +537,17 @@
     $('#results').innerHTML = `<div class="panel empty">${escapeHtml(message)}</div>`;
   }
 
+  function filtersChanged() {
+    renderStats();
+    if (!hasGenerated) return;
+    hasGenerated = false;
+    showMessage('条件已变化，请重新生成。');
+  }
+
   function generate() {
     const pool = production.filter(eligible);
     if (pool.length < 3) {
+      hasGenerated = false;
       showMessage(`当前条件下只有 ${pool.length} 家可选；请放宽筛选条件。`);
       return;
     }
@@ -462,21 +561,28 @@
       ${renderComparison(result)}
     `;
     initResultMaps(result);
+    hasGenerated = true;
   }
 
   $$('[data-budget]').forEach((button) => {
     button.onclick = () => {
+      const next = button.dataset.budget;
+      if (next === budget) return;
       $$('[data-budget]').forEach((item) => item.classList.remove('active'));
       button.classList.add('active');
-      budget = button.dataset.budget;
+      budget = next;
+      filtersChanged();
     };
   });
 
   $$('[data-distance]').forEach((button) => {
     button.onclick = () => {
+      const next = Number(button.dataset.distance);
+      if (next === distanceLimit) return;
       $$('[data-distance]').forEach((item) => item.classList.remove('active'));
       button.classList.add('active');
-      distanceLimit = Number(button.dataset.distance);
+      distanceLimit = next;
+      filtersChanged();
     };
   });
 
