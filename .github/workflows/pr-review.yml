@@ -28,6 +28,7 @@ jobs:
             node scripts/test_dish_review_cooldown.mjs
             python3 scripts/reload_data.py --public-only --outdir _audit/pr-reload
             node scripts/classification_coverage_report.mjs
+            node scripts/test_completion_plan.mjs
             node scripts/test_dish_translation_gap_regression.mjs
             node scripts/test_detail_evidence_retention.mjs
             node scripts/test_reviewed_agent_dish_evidence.mjs
