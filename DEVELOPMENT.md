@@ -1,6 +1,47 @@
 # Eat 开发状态与后续计划
 
-更新日期：2026-09-14。
+更新日期：2026-09-18。
+
+## 2026-09-18：当前生产状态与下一阶段补全
+
+2026-09-17 已完成两批当前主线修复并正式生产发布。
+
+PR #80（merge `868d3fc1808ea533c73691af35e2a954c5adc1bf`）完成：
+
+- 公开前端移除 Area1 private reference anchor / reference circle；
+- `¥999以下` 与其他预算档统一为区间重叠语义；
+- dish planner 接入中央 terminal review + lane-specific cooldown；
+- cooldown 默认：accepted evidence 30 天、candidate 30 天、no evidence 60 天、blocked 30 天；
+- deferred row 保留 review provenance、lastReviewedAt 与 retryAfter；
+- PR #77 的分类方案迁移到当前主线设计文档，不直接合并旧分支。
+
+PR #81（merge `aa0a2b4a6a03a1984f98e1e22ae82d022e09e96d`）完成三维分类第一阶段：
+
+- `cuisineStyle` / `foodType` / `venueType` 三个独立维度；
+- 固定 concept ID、exact alias、同维度父子关系；
+- 禁止跨维度自动推断，复合类别保持 unsplit，generic 分类保持 unknown；
+- 页面启用三维分组排除、父子排除、清除分类排除和条件变化后旧结果失效；
+- 卡片、比较表和筛选使用同一份 normalized accepted classification；
+- 第一阶段只消费现有 `cuisine/tags`，不从店名、菜单或推荐菜推断 accepted 分类。
+
+当前分类覆盖报告：公开 runtime 1,422 家，其中 1,198 家至少有一个 accepted classification，覆盖率 84.25%；cuisine style 476、food type 225、venue type 576，70 家同时命中多个维度。
+
+生产验证：
+
+- Pages production run #1332 / `35237626516`：success；
+- no-paid-data-API run #1033 / `35237626737`：success。
+
+因此分类第一阶段已属于生产功能。详细过程见 [`logs/2026-09-18-classification-release-and-completion-design.md`](logs/2026-09-18-classification-release-and-completion-design.md)，分类语义见 [`CUISINE_FILTER_PLAN.md`](CUISINE_FILTER_PLAN.md)。
+
+下一阶段不恢复“字段为空就重新全量搜索”的旧模式。新的 [`DATA_COMPLETION_PLAN.md`](DATA_COMPLETION_PLAN.md) 将补全拆为：
+
+1. taxonomy token 级分类补全：先聚合尚未映射的非泛化 `cuisine/tags` source token，一次审核可覆盖多家店；
+2. entity classification candidate：只有全局 token 无法解决时才按 frozen Place ID 核对，店名关键词只能产生 candidate；
+3. retained hours/budget recovery：先从已有 source facts、official structured data、source enrichment 和 HotPepper additive candidate 恢复；
+4. source-change invalidation：terminal review 增加 source fingerprint，只有来源实质变化或 cooldown 到期才重新激活；
+5. independent discovery 最后执行，且继续禁止付费 Google Data API。
+
+第一实施步只生成 gap inventory / completion plan，不网络采集、不写 canonical。当前 committed `data/dish_batch_plan.json` 生成于 2026-09-16，仍是 cooldown 上线前的 870-row 历史 snapshot；当前 active work 数必须以同一 checkout 上重新生成的 maintained plan 为准，不能继续引用旧 committed summary。
 
 ## 2026-09-14 20:06 JST：Official / Retained 逐步完成检查点
 
@@ -189,4 +230,4 @@ python3 scripts/reload_data.py --outdir _audit/data-reload --database _local/eat
 
 最终公开 runtime：R 619 家、F 707 家、任一展示菜 774 家、recommendation gap 803 家；相对原始基线 R +24、F +32、展示 +34、推荐缺口 -24。canonical evidence item 为 R 1036、F 2722。第二次 replay 新增 R/F evidence 均为 0，所有 count delta 均为 0。
 
-详细结果与中央降级、translation-pending 数量、各 shard delta 见 [`data/final_dish_integration_metrics.json`](data/final_dish_integration_metrics.json) 与 [`logs/2026-09-15-final-dish-integration.md`](logs/2026-09-15-final-dish-integration.md)。在 final integration PR 合入前，`main` 不视为已发布这些结果。
+详细结果与中央降级、translation-pending 数量、各 shard delta 见 [`data/final_dish_integration_metrics.json`](data/final_dish_integration_metrics.json) 与 [`logs/2026-09-15-final-dish-integration.md`](logs/2026-09-15-final-dish-integration.md)。最终整合已经合入 `main` 并完成生产发布；当前正式 checkpoint 见 [`RELEASE.md`](RELEASE.md)。
