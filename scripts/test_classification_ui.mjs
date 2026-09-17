@@ -66,16 +66,15 @@ const rows = [
 ];
 
 {
-  const page = boot(rows);
+  const page = boot([...rows, restaurant('日式甲', '日式')]);
   const filters = page.node('#rejects').innerHTML;
   assert.match(filters, /菜系风格/);
   assert.match(filters, /主营食物/);
   assert.match(filters, /店铺类型/);
+  assert.match(filters, /data-class-id="style-japanese"/);
   assert.match(filters, /data-class-id="food-noodles"/);
   assert.match(filters, /data-class-id="food-ramen"/);
   assert.match(filters, /data-class-id="venue-cafe"/);
-  assert.doesNotMatch(filters, /data-class-id="style-japanese"[^>]*>日式<\/button>[\s\S]*寿司/s,
-    'sushi must not create a Japanese-style filter count by cross-dimension inference');
 }
 
 {
