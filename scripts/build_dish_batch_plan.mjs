@@ -1,17 +1,24 @@
 #!/usr/bin/env node
 import fs from 'node:fs';
 import path from 'node:path';
+import vm from 'node:vm';
 import { fileURLToPath } from 'node:url';
 import {
   DEFAULT_COOLDOWN_DAYS,
   findDishReviewCooldown,
-  loadDishReviewCooldowns
+  findDishReviewSourceChange,
+  loadDishReviewLifecycle
 } from './dish_review_cooldown.mjs';
+import {
+  DISH_SOURCE_FINGERPRINT_VERSION,
+  buildDishSourceFingerprint
+} from './dish_source_fingerprint.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, '..');
 const DATA = path.join(ROOT, 'data');
 const INPUT = path.join(DATA, 'google_inventory_detail_queue.json');
+const SOURCE_PROVENANCE = path.join(DATA, 'source_provenance.js');
 const OUTPUT = process.argv[2] || path.join(DATA, 'dish_batch_plan.json');
 const REVIEW_ROOT = path.join(DATA, 'agent_reviews');
 const requestedShards = Number(process.argv[3] || process.env.DISH_BATCH_SHARDS || 8);
@@ -40,11 +47,37 @@ function laneFor(action) {
   return null;
 }
 
+function loadSourceProvenanceRows() {
+  if (!fs.existsSync(SOURCE_PROVENANCE)) return [];
+  const sandbox = { window: {} };
+  vm.createContext(sandbox);
+  vm.runInContext(fs.readFileSync(SOURCE_PROVENANCE, 'utf8'), sandbox, { filename: SOURCE_PROVENANCE });
+  return Array.isArray(sandbox.window.SOURCE_PROVENANCE?.rows) ? sandbox.window.SOURCE_PROVENANCE.rows : [];
+}
+
+const sourceLinksById = new Map(loadSourceProvenanceRows().map((row) => [
+  row.googlePlaceId,
+  Array.isArray(row.sourceLinks) ? row.sourceLinks : []
+]));
+const queueRowById = new Map((queue.rows || []).map((row) => [row.googlePlaceId, row]));
+
+function currentSourceFingerprintFor(googlePlaceId, lane) {
+  const row = queueRowById.get(googlePlaceId);
+  if (!row || laneFor(row.nextAction) !== lane) return null;
+  return buildDishSourceFingerprint({
+    row,
+    lane,
+    sourceLinks: sourceLinksById.get(googlePlaceId) || []
+  });
+}
+
 const reviewNow = process.env.DISH_REVIEW_NOW ? new Date(process.env.DISH_REVIEW_NOW) : new Date();
 if (!Number.isFinite(reviewNow.getTime())) throw new Error('Invalid DISH_REVIEW_NOW');
-const reviewCooldowns = fs.existsSync(REVIEW_ROOT)
-  ? loadDishReviewCooldowns(REVIEW_ROOT, { now: reviewNow })
-  : new Map();
+const reviewLifecycle = fs.existsSync(REVIEW_ROOT)
+  ? loadDishReviewLifecycle(REVIEW_ROOT, { now: reviewNow, currentSourceFingerprintFor })
+  : { cooldowns: new Map(), sourceChanged: new Map() };
+const reviewCooldowns = reviewLifecycle.cooldowns;
+const sourceChangedReviews = reviewLifecycle.sourceChanged;
 
 const rows = [];
 const deferredReviewCooldownRows = [];
@@ -52,6 +85,7 @@ for (const row of queue.rows || []) {
   const lane = laneFor(row.nextAction);
   if (!lane) continue;
 
+  const sourceFingerprint = currentSourceFingerprintFor(row.googlePlaceId, lane);
   const cooldown = findDishReviewCooldown(reviewCooldowns, row.googlePlaceId, lane);
   if (cooldown) {
     deferredReviewCooldownRows.push({
@@ -62,11 +96,15 @@ for (const row of queue.rows || []) {
       terminalStatus: cooldown.terminalStatus,
       lastReviewedAt: cooldown.lastReviewedAt,
       retryAfter: cooldown.retryAfter,
-      reviewFile: cooldown.reviewFile
+      reviewFile: cooldown.reviewFile,
+      fingerprintVersion: cooldown.fingerprintVersion,
+      reviewSourceFingerprint: cooldown.reviewSourceFingerprint,
+      currentSourceFingerprint: cooldown.currentSourceFingerprint || sourceFingerprint
     });
     continue;
   }
 
+  const sourceChanged = findDishReviewSourceChange(sourceChangedReviews, row.googlePlaceId, lane);
   rows.push({
     googlePlaceId: row.googlePlaceId,
     name: row.name,
@@ -79,7 +117,12 @@ for (const row of queue.rows || []) {
     retainedThirdPartyUrlCount: Number(row.retainedThirdPartyUrlCount || 0),
     sourceUrlCount: Number(row.sourceUrlCount || 0),
     recommendedDishesKnown: Number(row.recommendedDishesKnown || 0),
-    featuredDishesKnown: Number(row.featuredDishesKnown || 0)
+    featuredDishesKnown: Number(row.featuredDishesKnown || 0),
+    fingerprintVersion: DISH_SOURCE_FINGERPRINT_VERSION,
+    sourceFingerprint,
+    activationReason: sourceChanged?.activationReason || null,
+    previousReviewSourceFingerprint: sourceChanged?.reviewSourceFingerprint || null,
+    previousReviewFile: sourceChanged?.reviewFile || null
   });
 }
 
@@ -103,8 +146,14 @@ for (const row of deferredReviewCooldownRows) {
   deferredByLane[row.lane] = (deferredByLane[row.lane] || 0) + 1;
 }
 
+const sourceChangedRows = rows.filter((row) => row.activationReason === 'source_changed');
+const sourceChangedByLane = {};
+for (const row of sourceChangedRows) {
+  sourceChangedByLane[row.lane] = (sourceChangedByLane[row.lane] || 0) + 1;
+}
+
 const payload = {
-  schemaVersion: 1,
+  schemaVersion: 2,
   generatedAt: new Date().toISOString(),
   policy: {
     catalogIdentityKey: 'frozen Place ID only',
@@ -124,7 +173,9 @@ const payload = {
       noEvidenceDays: DEFAULT_COOLDOWN_DAYS.no_evidence,
       blockedDays: DEFAULT_COOLDOWN_DAYS.blocked,
       acceptedEvidenceDeferred: true,
-      sourceChangeInvalidation: 'not yet automatic; rerun may be forced by changing review date/status or after retryAfter'
+      fingerprintVersion: DISH_SOURCE_FINGERPRINT_VERSION,
+      sourceChangeInvalidation: 'enabled only for review records carrying a valid sourceFingerprint; legacy reviews remain date-cooldown-only',
+      sourceFingerprintInputs: 'Place ID + lane + nextAction + stable source bindings/claimed fields + source-count signals; checkedAt/UI/cuisine/distance/priority excluded'
     }
   },
   summary: {
@@ -133,6 +184,8 @@ const payload = {
     rawDishWorkRows: rows.length + deferredReviewCooldownRows.length,
     dishWorkRows: rows.length,
     deferredRecentlyReviewedRows: deferredReviewCooldownRows.length,
+    sourceChangedReactivatedRows: sourceChangedRows.length,
+    sourceChangedByLane,
     deferredByStatus,
     deferredByLane,
     shards: SHARDS,
