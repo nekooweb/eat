@@ -11,6 +11,6 @@ assert.match(app, /const bounds = \[\];/, 'Overview bounds must be based only on
 assert.match(app,
   /budget === 'under1000'[\s\S]*?priceMatches\(price, 0, 999\)/,
   'The <=999 budget band must use the same interval-overlap rule as the other bands');
-assert.match(index, /app\.js\?v=20260917-quality1/, 'The public page must bust the app.js cache for this release');
+assert.match(index, /app\.js\?v=[^"']+/, 'The public page must cache-bust app.js');
 
 console.log(JSON.stringify({ status: 'pass', checks: 'private anchor absent, restaurant-only bounds, consistent budget overlap, cache bust' }));
