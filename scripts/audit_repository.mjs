@@ -30,6 +30,7 @@ const voiceFiles = fs.existsSync(VOICE)
 
 const index = read('index.html');
 const app = read('app.js');
+const classification = read('classification.js');
 const effects = read('effects.js');
 const productionSource = read('data/production_area1.js');
 
@@ -48,6 +49,8 @@ if (/area1_google(?:_places)?\.(?:js|json)/i.test(index)) fail('legacy Google di
 if (/google_entities(?:\.generated)?\.js/i.test(index)) fail('maintenance overlays are public runtime dependencies');
 if (!/data\/production_area1\.js/.test(index)) fail('canonical production dataset is not loaded');
 if (!/data\/google_inventory_runtime\.js/.test(index)) fail('exact Google inventory runtime is not loaded');
+if (!/classification\.js/.test(index)) fail('classification runtime is not loaded');
+if (!/EAT_CLASSIFICATION/.test(classification)) fail('classification runtime does not expose the public taxonomy contract');
 if (/data\/public_pool_area1\.js/.test(index)) fail('public open restaurant pool must not be loaded');
 
 const requiredEffectAssets = ['effects.js', 'effects.css'];
@@ -83,6 +86,7 @@ const expectedRuntimePaths = [
   './data/source_provenance.js',
   './data/source_facts.js',
   './data/hotpepper_rich_metadata.js',
+  './classification.js',
   './app.js',
   './effects.js'
 ];
