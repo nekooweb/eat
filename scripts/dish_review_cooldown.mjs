@@ -28,6 +28,11 @@ function addDays(date, days) {
   return copy;
 }
 
+function normalizedFingerprint(value) {
+  const fingerprint = String(value || '').trim();
+  return /^sha256:[0-9a-f]{64}$/u.test(fingerprint) ? fingerprint : null;
+}
+
 export function cooldownDaysForStatus(status, overrides = {}) {
   const merged = { ...DEFAULT_COOLDOWN_DAYS, ...overrides };
   const days = Number(merged[status]);
@@ -48,6 +53,53 @@ export function reviewCooldownDecision({ status, reviewedAt, now = new Date(), c
   };
 }
 
+export function reviewLifecycleDecision({
+  status,
+  reviewedAt,
+  sourceFingerprint,
+  currentSourceFingerprint,
+  now = new Date(),
+  cooldownDays = {}
+}) {
+  const reviewedFingerprint = normalizedFingerprint(sourceFingerprint);
+  const currentFingerprint = normalizedFingerprint(currentSourceFingerprint);
+  const cooldown = reviewCooldownDecision({ status, reviewedAt, now, cooldownDays });
+
+  if (reviewedFingerprint && currentFingerprint && reviewedFingerprint !== currentFingerprint) {
+    return {
+      deferred: false,
+      activationReason: 'source_changed',
+      terminalStatus: status,
+      lastReviewedAt: dateOnly(reviewedAt)?.toISOString().slice(0, 10) || null,
+      retryAfter: cooldown?.retryAfter || null,
+      cooldownDays: cooldownDaysForStatus(status, cooldownDays),
+      reviewSourceFingerprint: reviewedFingerprint,
+      currentSourceFingerprint: currentFingerprint
+    };
+  }
+
+  if (cooldown) {
+    return {
+      deferred: true,
+      activationReason: null,
+      ...cooldown,
+      reviewSourceFingerprint: reviewedFingerprint,
+      currentSourceFingerprint: currentFingerprint
+    };
+  }
+
+  return {
+    deferred: false,
+    activationReason: 'cooldown_expired',
+    terminalStatus: status,
+    lastReviewedAt: dateOnly(reviewedAt)?.toISOString().slice(0, 10) || null,
+    retryAfter: null,
+    cooldownDays: cooldownDaysForStatus(status, cooldownDays),
+    reviewSourceFingerprint: reviewedFingerprint,
+    currentSourceFingerprint: currentFingerprint
+  };
+}
+
 function reviewFiles(reviewRoot) {
   const files = [];
   for (const marker of Object.keys(MARKER_TO_LANE)) {
@@ -64,42 +116,81 @@ function keyOf(googlePlaceId, lane) {
   return `${lane}\u0000${googlePlaceId}`;
 }
 
-export function loadDishReviewCooldowns(reviewRoot, options = {}) {
+export function loadDishReviewLifecycle(reviewRoot, options = {}) {
   const now = options.now instanceof Date ? options.now : new Date(options.now || Date.now());
   const cooldownDays = options.cooldownDays || {};
-  const active = new Map();
+  const currentSourceFingerprintFor = typeof options.currentSourceFingerprintFor === 'function'
+    ? options.currentSourceFingerprintFor
+    : () => null;
+  const latest = new Map();
 
   for (const file of reviewFiles(reviewRoot)) {
     const document = JSON.parse(fs.readFileSync(file, 'utf8'));
     const lane = MARKER_TO_LANE[document.marker];
     if (!lane || !Array.isArray(document.records)) continue;
-    const reviewedAt = document.reviewedAt || document.generatedAt || null;
 
     for (const record of document.records) {
       const googlePlaceId = String(record.googlePlaceId || '').trim();
       if (!googlePlaceId) continue;
-      const decision = reviewCooldownDecision({
-        status: record.status,
-        reviewedAt,
-        now,
-        cooldownDays
-      });
-      if (!decision) continue;
-
+      const reviewedAt = record.reviewedAt || document.reviewedAt || document.generatedAt || null;
+      const reviewedDate = dateOnly(reviewedAt);
       const key = keyOf(googlePlaceId, lane);
       const candidate = {
         googlePlaceId,
         lane,
-        ...decision,
+        status: record.status,
+        reviewedAt,
+        reviewedTime: reviewedDate?.getTime() ?? Number.NEGATIVE_INFINITY,
+        sourceFingerprint: record.sourceFingerprint || null,
+        fingerprintVersion: Number(record.fingerprintVersion || 0) || null,
         reviewFile: path.relative(path.dirname(reviewRoot), file).split(path.sep).join('/')
       };
-      const previous = active.get(key);
-      if (!previous || candidate.lastReviewedAt > previous.lastReviewedAt) active.set(key, candidate);
+      const previous = latest.get(key);
+      if (!previous || candidate.reviewedTime > previous.reviewedTime) latest.set(key, candidate);
     }
   }
-  return active;
+
+  const cooldowns = new Map();
+  const sourceChanged = new Map();
+  for (const [key, review] of latest.entries()) {
+    const currentSourceFingerprint = currentSourceFingerprintFor(review.googlePlaceId, review.lane) || null;
+    const decision = reviewLifecycleDecision({
+      status: review.status,
+      reviewedAt: review.reviewedAt,
+      sourceFingerprint: review.sourceFingerprint,
+      currentSourceFingerprint,
+      now,
+      cooldownDays
+    });
+    const entry = {
+      googlePlaceId: review.googlePlaceId,
+      lane: review.lane,
+      terminalStatus: decision.terminalStatus,
+      lastReviewedAt: decision.lastReviewedAt,
+      retryAfter: decision.retryAfter,
+      cooldownDays: decision.cooldownDays,
+      reviewFile: review.reviewFile,
+      fingerprintVersion: review.fingerprintVersion,
+      reviewSourceFingerprint: decision.reviewSourceFingerprint,
+      currentSourceFingerprint: decision.currentSourceFingerprint
+    };
+    if (decision.deferred) cooldowns.set(key, entry);
+    else if (decision.activationReason === 'source_changed') {
+      sourceChanged.set(key, { ...entry, activationReason: 'source_changed' });
+    }
+  }
+
+  return { cooldowns, sourceChanged };
+}
+
+export function loadDishReviewCooldowns(reviewRoot, options = {}) {
+  return loadDishReviewLifecycle(reviewRoot, options).cooldowns;
 }
 
 export function findDishReviewCooldown(cooldowns, googlePlaceId, lane) {
   return cooldowns.get(keyOf(googlePlaceId, lane)) || null;
+}
+
+export function findDishReviewSourceChange(sourceChanged, googlePlaceId, lane) {
+  return sourceChanged.get(keyOf(googlePlaceId, lane)) || null;
 }
