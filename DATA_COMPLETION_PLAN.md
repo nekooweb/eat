@@ -74,7 +74,7 @@ accepted public/canonical value
 - 依赖具体店铺上下文的 token 不做 global alias，转 entity review；
 - token mapping 不修改原始 `cuisine/tags`。
 
-当前实测 unmapped non-generic token = 113。224 个 unknown 中，63 家优先由 taxonomy token review 处理。
+taxonomy central review batch 1/2 已把 taxonomy-first unknown 清零。当前 maintained runtime 为 1,261 accepted / 161 unknown；仍有 93 个 unmapped non-generic token，但这些 token 只出现在已经至少有一个 accepted classification 的记录中，不再阻塞 unknown entity。
 
 ### 4.3 Entity classification review
 
@@ -84,15 +84,16 @@ accepted public/canonical value
 2. 当前 Place ID 已绑定的官方/Tabelog/HotPepper/其他 retained source；
 3. 最后才生成高精度店名关键词 candidate。
 
-当前 224 unknown 实测分层：
+当前 161 unknown maintained 分层：
 
 | 下一步 | Rows |
 | --- | ---: |
-| taxonomy token first | 63 |
-| review already-bound source | 102 |
-| name candidate first | 59 |
+| retained exact entity recovery | 0 |
+| taxonomy token first | **0** |
+| review already-bound source | **100** |
+| name candidate first | **61** |
 
-当前 retained exact entity recovery = 0，因此不应编造“可直接恢复”的分类。
+这里的“already-bound source”现在只计算**可显式恢复的非 Google HTTP(S) 来源**。`maps.app.goo.gl`、Google 导航 URL、Google-hosted ref 或无效 URL 都不能把一条记录挡在 bound-source 桶里。PR #86 修正前的 102 / 59 中有 2 家实际上没有可用证据 URL；修正后它们回到 name-candidate-first。
 
 店名关键词**只能生成 `candidate`**。不能因为店名含 `寿司 / カレー / 焼鳥 / 蕎麦 / うどん / burger` 就直接公开分类。
 
@@ -141,10 +142,10 @@ public materializer 已经消费 retained raw hours。因此：**某行有 `open
 782 个 hours gap 当前分为：
 
 1. `review_retained_hours_gap`：55 行。已有 retained raw，但 public materializer 没有接受；只做 review，不新增来源；
-2. `review_bound_hours_source`：462 行。没有可直接接受的 retained raw，但已经有绑定 source URL；优先复查现有来源；
-3. `discover_hours_source`：265 行。没有可先消费的 retained raw，也没有当前已绑定 source URL，才寻找新来源。
+2. `review_bound_hours_source`：**459** 行。没有可直接接受的 retained raw，但至少有一个可复查的非 Google 绑定 source URL；
+3. `discover_hours_source`：**268** 行。没有可先消费的 retained raw，也没有可复查的当前绑定 source URL，才寻找新来源。
 
-因此真正的新-source hours discovery 是 265，不是 782。
+因此真正的新-source hours discovery 是 268，不是 782。PR #86 的 source eligibility 修正把 3 条仅由导航/无效 URL 支撑的记录从 bound-source 正确移回 discovery。
 
 ### 5.3 Hours 不允许的推断
 
@@ -162,16 +163,18 @@ public materializer 已经消费 retained raw hours。因此：**某行有 `open
 
 | Field | Known | Gap | retained exact range | bound-source review | new-source discovery |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| lunch | 172 | 1,250 | 0 | 974 | 276 |
-| dinner | 621 | 801 | 0 | 525 | 276 |
+| lunch | 172 | 1,250 | 0 | **971** | **279** |
+| dinner | 621 | 801 | 0 | **522** | **279** |
 
 当前 source facts 中没有新的 valid range 可以直接无审查补入，因此 planner 不伪造 retained recovery。
 
 顺序固定为：
 
 1. retained valid lunch/dinner range（如果以后出现）；
-2. 已绑定来源复查；
-3. 只有仍无来源时才新 source discovery。
+2. 已绑定且**可显式复查的非 Google 来源**；
+3. 只有仍无可复查来源时才新 source discovery。
+
+“有 URL 计数”不再等价于“有可审查来源”。Google Maps/navigation 链接只允许导航，不作为 classification/hours/budget evidence source。
 
 以下内容不能直接成为预算 range：
 
