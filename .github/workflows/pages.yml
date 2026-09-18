@@ -62,6 +62,8 @@ jobs:
           node --check app.js
           node --check classification.js
           node --check effects.js
+          node --check data/classification_entity_overlay.js
+          node --check scripts/build_classification_entity_overlay.mjs
           node --check data/google_inventory_runtime.js
           node --check data/hotpepper_rich_metadata.js
           node --check data/source_enrichment_hotpepper-richcore.js
@@ -85,6 +87,8 @@ jobs:
           node scripts/test_v1_quality_fixes.mjs
           node scripts/test_classification_filters.mjs
           node scripts/test_classification_ui.mjs
+          node scripts/build_classification_entity_overlay.mjs --check
+          node scripts/test_classification_entity_overlay.mjs
           node scripts/classification_coverage_report.mjs
           python3 -m py_compile \
             scripts/recover_google_inventory_basic.py \
@@ -105,6 +109,7 @@ jobs:
           test -s data/hotpepper_rich_metadata.js
           test -s data/source_provenance.js
           test -s data/source_facts.js
+          test -s data/classification_entity_overlay.js
           test -s classification.js
           test -s classification.css
 
@@ -165,7 +170,7 @@ jobs:
           set -euo pipefail
           mkdir -p _site/data _site/voice _site/image
           cp index.html styles.css classification.css effects.css app.js classification.js effects.js privacy.html terms.html _site/
-          cp data/production_area1.js data/google_inventory_runtime.js data/source_provenance.js data/source_facts.js data/hotpepper_rich_metadata.js _site/data/
+          cp data/production_area1.js data/google_inventory_runtime.js data/source_provenance.js data/source_facts.js data/hotpepper_rich_metadata.js data/classification_entity_overlay.js _site/data/
           cp voice/*.mp3 _site/voice/
           cp image/*.webp _site/image/
           python3 - <<'PY'
@@ -186,6 +191,7 @@ jobs:
           fi
           grep -q 'leaflet@1.9.4' _site/index.html
           grep -q 'OpenStreetMap' _site/index.html
+          grep -q 'classification_entity_overlay.js?v=' _site/index.html
           grep -q 'classification.js?v=' _site/index.html
           grep -q '"dishRuntimeMaterialized":true' _site/data/google_inventory_runtime.js
           if grep -Eq '招牌主菜|时令小菜' _site/data/google_inventory_runtime.js; then
