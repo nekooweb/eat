@@ -240,7 +240,23 @@ report-only planner 的 224 个 classification unknown 中有 63 条应先由 ta
 
 这 15 个 token 只允许 exact source-token mapping，不允许店名/菜单/推荐菜推断。复合或跨语义 token 使用独立 unsplit concept；例如 `面包・烘焙` 进入 food-type unsplit concept 而不推断 bakery venue，`印度咖喱` 只作为 food-curry 子类而不跨维度推断 Indian cuisine。
 
-新增 `test_classification_taxonomy_reviews.mjs` 将 central review artifact 与 `classification.js` 逐项对齐，并锁住 generic unknown、同维度父子和跨维度禁止推断规则。实际 accepted coverage 增量必须以 maintained rebuild 的分类报告为准；63 是 batch 前 unique taxonomy-first row，不是 token-hit 求和。
+新增 `test_classification_taxonomy_reviews.mjs` 将 central review artifact 与 `classification.js` 逐项对齐，并锁住 generic unknown、同维度父子和跨维度禁止推断规则。63 是 batch 前 unique taxonomy-first row，不是 token-hit 求和。
+
+PR #84 maintained preview 的实际分类报告：
+
+| Metric | Batch 1 前 | Batch 1 preview | Delta |
+| --- | ---: | ---: | ---: |
+| accepted classification rows | 1,198 | **1,257** | **+59** |
+| unknown rows | 224 | **165** | **-59** |
+| coverage | 84.25% | **88.40%** | +4.15 pp |
+| cuisineStyle rows | 476 | **516** | +40 |
+| foodType rows | 225 | **257** | +32 |
+| venueType rows | 576 | **585** | +9 |
+| multi-dimension rows | 70 | **90** | +20 |
+| unmapped taxonomy tokens | 113 | **98** | -15 |
+| taxonomy-token-first unique rows | 63 | **4** | -59 |
+
+remaining taxonomy-first unknown token hit 为：`御好烧` 1、`スープ` 1、`摩洛哥菜` 1、`汤品` 1、`烧烤` 1；5 个 token hit 落在 4 个 unique restaurant row。bound-source review 仍为 102、name-candidate-first 仍为 59，因此本批只解决了 global taxonomy 能安全解决的部分，没有改变 entity-review 边界。
 
 ## 下一实施顺序
 
