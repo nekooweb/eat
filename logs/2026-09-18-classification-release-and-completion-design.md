@@ -104,7 +104,7 @@ retained evidence review
 
 ## 同一 checkout 的真实维护式结果
 
-以下数字来自 PR #82 最新维护式 rebuild + blocking regression，不使用仓库中旧的 committed snapshot。
+以下数字是 **PR #82 时点的历史 maintained baseline**，用于记录 planner 刚上线时的分层；PR #86 后 Google/navigation source eligibility 已收紧，当前数字见后文 PR #86 检查点。
 
 ### Dish queue
 
@@ -283,17 +283,46 @@ PR #85 maintained preview：
 | unmapped taxonomy tokens | 98 | **93** | -5 |
 | taxonomy-token-first unique rows | 4 | **0** | **-4** |
 
-剩余 93 个 unmapped token 当前全部位于已经至少有一个 accepted classification 的记录中，因此不再阻塞 unknown restaurant。unknown 的下一层严格剩余 **102 bound-source review + 59 name-candidate-first**。
+剩余 93 个 unmapped token 当前全部位于已经至少有一个 accepted classification 的记录中，因此不再阻塞 unknown restaurant。batch 2 当时 planner 显示 102 bound-source review + 59 name-candidate-first；PR #86 随后发现其中两条所谓 bound source 只是不可用于证据的导航/当前无公开绑定证据，因此进一步修正。
+
+## PR #86：可复查 bound source 资格修正与 entity review plan
+
+PR #86 首轮 planner 恢复出 102 个 bound-source target，其中 100 个可显式恢复 120 个非 Google URL，2 个只有 aggregate source count：
+
+- `ChIJ0U7bhxaMGGARuqkd6TFfQcc` / Bon Vivant：旧 review 的所谓 official source 是 `maps.app.goo.gl` 导航链接；不能作为分类证据源；
+- `ChIJ0ZuaPACJGGARD2WOsCllQdk` / Gluten-free Izakaya SHION：现有菜品 review 记录 owner notice 指向当前地址已停业/迁址寻找中，而当前公开 runtime/provenance 没有可复查的分类绑定 URL。
+
+因此 upstream `build_completion_plan.mjs` 不再把 Google Maps/navigation、Google-hosted ref 或无效 URL 计入 `sourceUrlCount`。保留 `aggregateSourceUrlCount` 与 `excludedNavigationOrInvalidSourceCount` 用于审计，但 bound-source task 必须暴露至少一个明确非 Google HTTP(S) `sourceLinks`。
+
+修正后的 maintained 分层：
+
+| Field | retained | bound-source review | new-source / candidate |
+| --- | ---: | ---: | ---: |
+| classification unknown | 0 exact / 0 taxonomy-first | **100** | **61 name-candidate** |
+| hours gap | 55 | **459** | **268 discovery** |
+| lunch budget gap | 0 | **971** | **279 discovery** |
+| dinner budget gap | 0 | **522** | **279 discovery** |
+
+classification bound-source plan 的实测：
+
+- total rows：**100**；
+- review-ready：**100**；
+- source-reference repair：**0**；
+- explicit links：**120**；
+- source provider row counts：Overture Maps 75、Tabelog 14、runtime-bound 11、official 3、Hot Pepper 2（同一 row 可含多个 provider）；
+- provenance 已直接声明 `cuisine` 的 link：**0**。
+
+因此这 100 家不能根据已有字段自动 accepted；下一步只能对已绑定 URL 做 branch/category evidence review。新增 `scripts/build_classification_bound_source_plan.mjs`、`data/classification_entity_bound_proposal_template.json` 与 blocking regression；worker 只产 proposal，禁止新 source discovery、店名 accepted inference、菜单菜品 accepted inference 与 canonical write。
 
 ## 下一实施顺序
 
 ### A. Bound-source entity classification review
 
-taxonomy-first 已清零。下一步先为 102 家已有绑定来源的 unknown entity 生成 deterministic review queue；proposal 必须引用 frozen Place ID、当前 catalog name、已绑定 source URL/provider、source fingerprint 和 source-native category evidence。worker 只产 proposal，central review 才能批准 accepted entity classification overlay。
+taxonomy-first 已清零，navigation-only source 也已从 bound-source 资格中排除。下一步为 **100 家**已有可复查绑定来源的 unknown entity 使用 deterministic 8-shard review queue；proposal 必须引用 frozen Place ID、当前 catalog name、assigned bound URL/provider、source fingerprint 和 source-native category evidence。worker 只产 proposal，central review 才能批准 accepted entity classification overlay。
 
 ### B. Name-candidate entity review
 
-剩余 59 家没有可先复查的绑定来源；店名关键词只能形成 candidate，不得直接写 accepted overlay。只有后续找到并核实独立来源后才能升级。
+剩余 **61 家**没有可先复查的非 Google 绑定来源；店名关键词只能形成 candidate，不得直接写 accepted overlay。只有后续找到并核实独立来源后才能升级。
 
 对通过已绑定来源核实的实体分类，使用 frozen Place-ID keyed accepted overlay；不覆写原始 `cuisine/tags`。店名关键词只产生 candidate。
 
