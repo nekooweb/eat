@@ -44,10 +44,12 @@ for (const row of review.records) {
   unknownHits += Number(row.unknownRestaurantCount || 0);
 }
 
-assert.equal(affected, review.summary.affectedRestaurantsAtReview);
-assert.equal(unknownHits, review.summary.unknownRestaurantTokenHitsAtReview);
-assert.equal(affected, 95);
-assert.equal(unknownHits, 63);
+assert.equal(affected, review.summary.summedAffectedRestaurantTokenHitsAtReview);
+assert.equal(unknownHits, review.summary.summedUnknownRestaurantTokenHitsAtReview);
+assert.equal(affected, 94);
+assert.equal(unknownHits, 65);
+assert.equal(review.summary.baselineUniqueTaxonomyTokenFirstRows, 63,
+  'unique taxonomy-first rows are a separate planner metric because token hits can overlap');
 
 const indianCurry = taxonomy.classifyRestaurant({ cuisine: '印度咖喱', tags: [] });
 assert.deepEqual([...indianCurry.directIds], ['food-indian-curry']);
@@ -75,7 +77,8 @@ for (const row of review.records) {
 console.log(JSON.stringify({
   status: 'pass',
   reviewedTokens: review.records.length,
-  affectedRestaurantsAtReview: affected,
-  unknownRestaurantTokenHitsAtReview: unknownHits,
+  summedAffectedRestaurantTokenHitsAtReview: affected,
+  summedUnknownRestaurantTokenHitsAtReview: unknownHits,
+  baselineUniqueTaxonomyTokenFirstRows: review.summary.baselineUniqueTaxonomyTokenFirstRows,
   checks: 'review artifact alignment, exact aliases, generic preservation, same-dimension ancestry, no cross-dimension inference'
 }));
