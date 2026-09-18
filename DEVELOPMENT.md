@@ -75,7 +75,7 @@ PR #86（merge `083bf2c78b7b1e4d9219ec26273bd19f2fde636c`）已完成 entity bou
 
 ### Phase A：100 家已有来源的 classification entity review
 
-输入：PR #86 生成的 `CLASSIFICATION-ENTITY-BOUND` 队列，100 家 / 120 个明确非 Google URL，8 个 deterministic shard。
+输入：PR #86 生成的 `CLASSIFICATION-ENTITY-BOUND` 队列，100 家 / 120 个明确非 Google URL，8 个 deterministic shard。当前已新增 assignment materializer：maintained rebuild 后自动生成 `_audit/classification-bound/plan.json`、`manifest.json` 与 `S0..S7.json`，只作为 review artifact，不写 canonical。
 
 执行规则：
 
@@ -92,7 +92,7 @@ PR #86（merge `083bf2c78b7b1e4d9219ec26273bd19f2fde636c`）已完成 entity bou
 
 Phase A 完成后，由中央审查统一决定哪些 proposal 可以进入公开分类。
 
-计划新增：
+PR #88 已完成这一基础设施：
 
 - Place-ID keyed reviewed entity-classification artifact；
 - fail-closed materializer，只消费 `accepted_evidence`；
