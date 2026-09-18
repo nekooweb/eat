@@ -28,7 +28,7 @@ PR #80 已合并，merge commit：
 - 新增 `test_v1_quality_fixes.mjs` 与 `test_dish_review_cooldown.mjs` 并进入 PR gate；
 - 将 PR #77 的分类设计迁移为当前主线文档 `CUISINE_FILTER_PLAN.md`。
 
-当前 cooldown 仍只按日期判断；source-change invalidation 尚未实现，已转入下一阶段设计。
+PR #80 合入时 cooldown 仍只按日期判断；该缺口随后已由 PR #83 的 source fingerprint lifecycle 完成。
 
 ### PR #81：三维分类第一阶段
 
@@ -209,24 +209,50 @@ planner 没有发现能从当前 `source_facts` 直接无审查恢复的新 lunc
 2. **hours 使用 `hoursReference` 契约**：640 家已完成；retained raw 但 public materializer 未接受的行进入 review，不重复自动解析覆盖。
 3. **预算优先已有绑定来源**：当前没有新的 retained exact range 可直接恢复；974/525 条先复查已绑定来源，真正新-source discovery 各 276。
 4. **网络工作必须分两类**：`networkRequired` 不等于 `newSourceDiscoveryRequired`；重新查看已绑定 source 和寻找新 source 必须分开统计。
-5. **source fingerprint 下一步实现**：当前 planner 已生成任务级 fingerprint；下一 PR 才把 fingerprint 写入 terminal review 并接入 cooldown invalidation。
-6. **旧 review 兼容**：历史 review 没 fingerprint 时继续走 date cooldown，不能因升级一次性重新激活 847 条 deferred work。
+5. **source fingerprint 已实现**：PR #83 已把 assignment-time fingerprint 写入新任务契约，并接入 terminal review / cooldown invalidation；只有 task-relevant source change 才能提前重激活。
+6. **旧 review 兼容已验证**：历史 review 没 fingerprint 时继续走 date cooldown；maintained CI 实测仍为 870 raw / 23 active / 847 deferred / 0 source-changed reactivation。
+
+## PR #82 / #83 完成检查点
+
+PR #82 已合并到 `main`，merge commit `d5273417a4531ed16c611ca11f6b241087ad3f3d`。其最终 PR Review #151（`35240651494`）、Pages preview #1338（`35240651473`）和 no-paid #1046（`35240651485`）全部 success。report-only completion planner 因此已经成为主线维护工具，而不是设计草案。
+
+PR #83 已合并到 `main`，merge commit `12640c030f4e1a5bc5788bf34413f7c4e7c84ba9`。实现细节：
+
+- 新增稳定 dish-task SHA-256 source fingerprint；
+- fingerprint 只吸收 frozen Place ID、lane/action、稳定 source binding、dish-relevant claimed fields 和 lane-relevant source count；
+- checkedAt、UI/cuisine/distance/priority、source 顺序、URL fragment/UTM、hours/phone 等 unrelated field 不触发；
+- schema-v2 active assignment 携带 fingerprint，worker 原样回传，central review fail-closed 校验；
+- legacy review 没 fingerprint 时继续 date-only cooldown；
+- 新 fingerprint review 与当前 fingerprint 不一致时，才以 `activationReason=source_changed` 提前重激活。
+
+PR #83 maintained rebuild 的验收结果为：
+
+- raw dish work：870；
+- active：23；
+- deferred：847；
+- source-changed reactivated：**0**。
+
+PR Review #159（`35296657432`）、Pages preview #1347（`35296657418`）、no-paid #1064（`35296657412`）均 success；合入主线后 Pages production #1348（`35296719894`）与 no-paid #1065（`35296719888`）也均 success。
+
+## 当前实施：taxonomy token central review batch 1
+
+report-only planner 的 224 个 classification unknown 中有 63 条应先由 taxonomy token 解决。当前 batch 1 新增中央 review artifact `data/classification_taxonomy_review_20260918_batch1.json`，第一批只处理 15 个 source token，其 review-time unknown hit 合计正好为 63。
+
+这 15 个 token 只允许 exact source-token mapping，不允许店名/菜单/推荐菜推断。复合或跨语义 token 使用独立 unsplit concept；例如 `面包・烘焙` 进入 food-type unsplit concept 而不推断 bakery venue，`印度咖喱` 只作为 food-curry 子类而不跨维度推断 Indian cuisine。
+
+新增 `test_classification_taxonomy_reviews.mjs` 将 central review artifact 与 `classification.js` 逐项对齐，并锁住 generic unknown、同维度父子和跨维度禁止推断规则。实际 accepted coverage 增量必须以 maintained rebuild 的分类报告为准，不按 63 行简单预估。
 
 ## 下一实施顺序
 
-### A. Source fingerprint / cooldown invalidation
+### A. Taxonomy token central review
 
-新 terminal review 保存 `fingerprintVersion` + `sourceFingerprint`。只有当前任务相关输入发生实质变化时，才能在 cooldown 到期前重新激活；URL 顺序、UI label 和 unrelated 字段变化不得触发。
+batch 1 先验证 15 个已中央接受的高收益 source token；maintained rebuild 后重新生成 completion plan，确认 taxonomy-first unknown 是否清零或还有新的 token 层任务。只有稳定单一语义才加 alias/concept；复合、模糊、上下文依赖 token 保持 unresolved 或转 entity review。
 
-### B. Taxonomy token central review
-
-先审高收益 source token。能确定为稳定单一概念的才加 alias / concept；复合、模糊、上下文依赖 token 保持 unresolved 或转 entity review。
-
-### C. Entity classification overlay
+### B. Entity classification overlay
 
 对通过已绑定来源核实的实体分类，使用 frozen Place-ID keyed accepted overlay；不覆写原始 `cuisine/tags`。店名关键词只产生 candidate。
 
-### D. Hours / budget proposals
+### C. Hours / budget proposals
 
 按 retained review → bound-source review → new-source discovery 顺序执行。worker/proposal 不直接写 canonical；继续 central review、validator、rebuild、replay。
 
