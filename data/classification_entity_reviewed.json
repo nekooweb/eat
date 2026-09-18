@@ -11,12 +11,12 @@
     "paidGoogleDataApiCalls": 0
   },
   "summary": {
-    "reviewFiles": 1,
-    "reviewedRows": 8,
-    "acceptedRows": 4,
-    "candidateRows": 1,
-    "noEvidenceRows": 0,
-    "blockedRows": 3
+    "reviewFiles": 2,
+    "reviewedRows": 16,
+    "acceptedRows": 7,
+    "candidateRows": 2,
+    "noEvidenceRows": 1,
+    "blockedRows": 6
   },
   "records": [
     {
@@ -73,6 +73,47 @@
         "proposalFile": "data/classification_entity_bound_proposals/S5.json",
         "proposalStatus": "candidate",
         "decisionReason": "The exact branch page is burger-focused, but the wording remains menu/brand description rather than an explicit business-category statement."
+      }
+    },
+    {
+      "googlePlaceId": "ChIJ-8rouoCNGGAR2cmXC3P6yck",
+      "restaurantName": "Good View Dining",
+      "sourceFingerprint": "sha256:e0cef0f02fb1b3cbbf7a3c7a54e5d9b0872ba56970a168ab4387d7f57b82c8dd",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "Good View Dining"
+        ],
+        "evidence": [
+          {
+            "provider": "Overture Maps",
+            "sourceUrl": "https://goodview-dining.jp/surugadai/",
+            "checkedAt": "2026-09-18",
+            "evidenceType": "exact_branch_name_and_address",
+            "note": "The assigned page lists Good View Dining at 中央大学駿河台キャンパス19階."
+          }
+        ]
+      },
+      "attemptedSources": [
+        {
+          "provider": "Overture Maps",
+          "sourceUrl": "https://goodview-dining.jp/surugadai/",
+          "checkedAt": "2026-09-18",
+          "result": "reviewed"
+        }
+      ],
+      "categoryEvidence": [],
+      "proposedConceptIds": [],
+      "blocker": null,
+      "reason": "The exact page calls the venue a ホテルライクなオールデイダイニング. The current taxonomy has no equivalent all-day-dining concept, and references to cafe/bar are menu availability rather than business-category statements.",
+      "notes": "No inference to venue-dining-bar, venue-cafe, or venue-bar.",
+      "reviewedAt": "2026-09-18",
+      "centralReview": {
+        "reviewFile": "data/classification_entity_bound_reviews/S6.json",
+        "proposalFile": "data/classification_entity_bound_proposals/S6.json",
+        "proposalStatus": "no_evidence",
+        "decisionReason": "The branch is verified, but オールデイダイニング has no equivalent current concept and cafe/bar references are menu-level rather than venue classification."
       }
     },
     {
@@ -225,6 +266,186 @@
       }
     },
     {
+      "googlePlaceId": "ChIJ6yIkdqmNGGARnQbZMLDoNX8",
+      "restaurantName": "東依（とうい） / 都市の茶室",
+      "sourceFingerprint": "sha256:9fc79f2e1a9e9060f395e35d4c908655e3b7ee2d7d81a1540118b85dea28a444",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "東依",
+          "東依（とうい） / 喫茶・ギャラリー・サロン"
+        ],
+        "evidence": [
+          {
+            "provider": "Overture Maps",
+            "sourceUrl": "https://www.toui.tokyo/",
+            "checkedAt": "2026-09-18",
+            "evidenceType": "exact_branch_name_and_address",
+            "note": "The assigned site identifies 東依 at 外神田2丁目1-10."
+          }
+        ]
+      },
+      "attemptedSources": [
+        {
+          "provider": "Overture Maps",
+          "sourceUrl": "https://www.toui.tokyo/",
+          "checkedAt": "2026-09-18",
+          "result": "reviewed"
+        }
+      ],
+      "categoryEvidence": [
+        {
+          "provider": "Overture Maps",
+          "sourceUrl": "https://www.toui.tokyo/",
+          "checkedAt": "2026-09-18",
+          "sourceText": "喫茶 / ギャラリー / サロン / 一人のための静かな喫茶室",
+          "proposedConceptIds": [
+            "venue-cafe"
+          ],
+          "evidenceScope": "exact_branch",
+          "confidence": "high"
+        }
+      ],
+      "proposedConceptIds": [
+        "venue-cafe"
+      ],
+      "blocker": null,
+      "reason": "The exact venue repeatedly identifies its food-service space as 喫茶/喫茶室, which maps directly to the cafe/coffee-shop venue concept.",
+      "notes": null,
+      "reviewedAt": "2026-09-18",
+      "centralReview": {
+        "reviewFile": "data/classification_entity_bound_reviews/S6.json",
+        "proposalFile": "data/classification_entity_bound_proposals/S6.json",
+        "proposalStatus": "accepted_evidence",
+        "decisionReason": "The exact site repeatedly identifies the venue as 喫茶/喫茶室 and provides the current address, directly supporting the cafe/coffee-shop venue concept."
+      }
+    },
+    {
+      "googlePlaceId": "ChIJAR7nSz-MGGARJYw4ZhU5ACM",
+      "restaurantName": "Sizzler",
+      "sourceFingerprint": "sha256:730e62bfdce543800f53386fb1724b77f5081a4f471ea4a2c818c9e92cea4c65",
+      "status": "candidate",
+      "identity": {
+        "state": "candidate",
+        "sourceAliases": [
+          "シズラー"
+        ],
+        "evidence": [
+          {
+            "provider": "Overture Maps",
+            "sourceUrl": "http://www.sizzler.jp/",
+            "checkedAt": "2026-09-18",
+            "evidenceType": "brand_site_with_multiple_store_list",
+            "note": "The assigned brand root lists multiple stores including 東京ドームホテル店, but the assigned URL is not an exact branch page."
+          }
+        ]
+      },
+      "attemptedSources": [
+        {
+          "provider": "Overture Maps",
+          "sourceUrl": "http://www.sizzler.jp/",
+          "checkedAt": "2026-09-18",
+          "result": "reviewed"
+        }
+      ],
+      "categoryEvidence": [],
+      "proposedConceptIds": [],
+      "blocker": null,
+      "reason": "The brand root describes Sizzler as a サラダバー&グリルレストラン, but it does not bind that statement to the current branch and no existing taxonomy concept exactly represents that business type.",
+      "notes": "Kept candidate; no branch propagation and no grill-to-barbecue inference.",
+      "reviewedAt": "2026-09-18",
+      "centralReview": {
+        "reviewFile": "data/classification_entity_bound_reviews/S6.json",
+        "proposalFile": "data/classification_entity_bound_proposals/S6.json",
+        "proposalStatus": "candidate",
+        "decisionReason": "The assigned page is a multi-store brand root, so the category statement is not accepted for the current branch; grill is also not inferred to barbecue."
+      }
+    },
+    {
+      "googlePlaceId": "ChIJD4tLmA-MGGARqHJvbMa-yNs",
+      "restaurantName": "鹿屋アスリート食堂",
+      "sourceFingerprint": "sha256:6d1a65ccaed41fc298581d479e997d7d714f8bcc940481a5663985c4bc5abc14",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "東京アスリート食堂 神田錦町本店",
+          "鹿屋アスリート食堂"
+        ],
+        "evidence": [
+          {
+            "provider": "Tabelog",
+            "sourceUrl": "https://tabelog.com/tokyo/A1302/A130201/13168963/",
+            "checkedAt": "2026-09-18",
+            "evidenceType": "exact_branch_name_old_name_and_address",
+            "note": "The exact branch page identifies 東京アスリート食堂 神田錦町本店, explicitly preserves 鹿屋アスリート食堂 as the former name, and lists 神田錦町3-21 10 OVER 9 1F."
+          },
+          {
+            "provider": "runtime-bound",
+            "sourceUrl": "https://asushoku.com/shoplist/kanda/menu.php",
+            "checkedAt": "2026-09-18",
+            "evidenceType": "exact_branch_address",
+            "note": "The assigned Kanda page lists the same 神田錦町3-21 10 OVER 9 1F branch."
+          }
+        ]
+      },
+      "attemptedSources": [
+        {
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1302/A130201/13168963/",
+          "checkedAt": "2026-09-18",
+          "result": "reviewed"
+        },
+        {
+          "provider": "runtime-bound",
+          "sourceUrl": "https://asushoku.com/shoplist/kanda/menu.php",
+          "checkedAt": "2026-09-18",
+          "result": "reviewed"
+        }
+      ],
+      "categoryEvidence": [
+        {
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1302/A130201/13168963/",
+          "checkedAt": "2026-09-18",
+          "sourceText": "ジャンル：食堂、居酒屋、鍋",
+          "proposedConceptIds": [
+            "venue-shokudo",
+            "venue-izakaya"
+          ],
+          "evidenceScope": "exact_branch",
+          "confidence": "high"
+        },
+        {
+          "provider": "runtime-bound",
+          "sourceUrl": "https://asushoku.com/shoplist/kanda/menu.php",
+          "checkedAt": "2026-09-18",
+          "sourceText": "昼はバランス食堂、夜は大衆酒場「アスショク」",
+          "proposedConceptIds": [
+            "venue-shokudo",
+            "venue-izakaya"
+          ],
+          "evidenceScope": "exact_branch",
+          "confidence": "high"
+        }
+      ],
+      "proposedConceptIds": [
+        "venue-shokudo",
+        "venue-izakaya"
+      ],
+      "blocker": null,
+      "reason": "The exact branch is verified by both assigned sources and is explicitly described as a 食堂 and 居酒屋/大衆酒場.",
+      "notes": "鍋 is preserved as source-native evidence but is not mapped because the current taxonomy has no matching hot-pot concept.",
+      "reviewedAt": "2026-09-18",
+      "centralReview": {
+        "reviewFile": "data/classification_entity_bound_reviews/S6.json",
+        "proposalFile": "data/classification_entity_bound_proposals/S6.json",
+        "proposalStatus": "accepted_evidence",
+        "decisionReason": "Exact branch identity is confirmed by the assigned Tabelog and Kanda pages; both explicitly describe the current branch as a 食堂 and an evening 居酒屋/大衆酒場."
+      }
+    },
+    {
       "googlePlaceId": "ChIJF3IItgOMGGAR_1EfWn8cjb0",
       "restaurantName": "Al Mina",
       "sourceFingerprint": "sha256:03b83fc3f0ec51f0c11f3848d312bbdc8ffa304be152c09cd423b79b8abcc291",
@@ -253,6 +474,156 @@
         "proposalFile": "data/classification_entity_bound_proposals/S5.json",
         "proposalStatus": "blocked",
         "decisionReason": "The assigned access page timed out; unassigned pages on the same domain are not substituted."
+      }
+    },
+    {
+      "googlePlaceId": "ChIJkbshpxyMGGAR8ZbEJnuVf5o",
+      "restaurantName": "Orchard Knight",
+      "sourceFingerprint": "sha256:4f048e4b05248f20d7e0552c26a6020a2406dad38d0060d488b0cf8012697ae9",
+      "status": "blocked",
+      "identity": {
+        "state": "candidate",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "attemptedSources": [
+        {
+          "provider": "Overture Maps",
+          "sourceUrl": "http://r.gnavi.co.jp/ga7a800/",
+          "checkedAt": "2026-09-18",
+          "result": "blocked"
+        }
+      ],
+      "categoryEvidence": [],
+      "proposedConceptIds": [],
+      "blocker": "assigned_source_internal_error",
+      "reason": "The assigned Gurunavi URL could not be retrieved reliably during review; no replacement source was used.",
+      "notes": null,
+      "reviewedAt": "2026-09-18",
+      "centralReview": {
+        "reviewFile": "data/classification_entity_bound_reviews/S6.json",
+        "proposalFile": "data/classification_entity_bound_proposals/S6.json",
+        "proposalStatus": "blocked",
+        "decisionReason": "The assigned Gurunavi URL remained unavailable; no replacement source is permitted."
+      }
+    },
+    {
+      "googlePlaceId": "ChIJKQd-go2NGGAR3P4QE_MC5ow",
+      "restaurantName": "グリルやまだ 大手町店",
+      "sourceFingerprint": "sha256:e77d32e240d819fbdd0b31c6233f57d91124a11d30d7989e960088a23c453a90",
+      "status": "blocked",
+      "identity": {
+        "state": "candidate",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "attemptedSources": [
+        {
+          "provider": "Overture Maps",
+          "sourceUrl": "http://grillyamada-otemachi.com/",
+          "checkedAt": "2026-09-18",
+          "result": "blocked"
+        }
+      ],
+      "categoryEvidence": [],
+      "proposedConceptIds": [],
+      "blocker": "assigned_source_internal_error",
+      "reason": "The assigned branch URL could not be retrieved reliably during review; no replacement source was used.",
+      "notes": null,
+      "reviewedAt": "2026-09-18",
+      "centralReview": {
+        "reviewFile": "data/classification_entity_bound_reviews/S6.json",
+        "proposalFile": "data/classification_entity_bound_proposals/S6.json",
+        "proposalStatus": "blocked",
+        "decisionReason": "The assigned branch URL remained unavailable; no replacement source is permitted."
+      }
+    },
+    {
+      "googlePlaceId": "ChIJmU96Ev-NGGARnL6IKFECaKM",
+      "restaurantName": "Cafe Cruise",
+      "sourceFingerprint": "sha256:9b1846eb4d7ff7d9fd33cee738fc38fe2eb38e00112799d00a57812fa8473819",
+      "status": "blocked",
+      "identity": {
+        "state": "candidate",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "attemptedSources": [
+        {
+          "provider": "Overture Maps",
+          "sourceUrl": "https://www.jsf.or.jp/exhibit/restaurant",
+          "checkedAt": "2026-09-18",
+          "result": "blocked"
+        }
+      ],
+      "categoryEvidence": [],
+      "proposedConceptIds": [],
+      "blocker": "assigned_source_internal_error",
+      "reason": "The assigned Japan Science Foundation restaurant page could not be retrieved reliably during review; no replacement source was used.",
+      "notes": null,
+      "reviewedAt": "2026-09-18",
+      "centralReview": {
+        "reviewFile": "data/classification_entity_bound_reviews/S6.json",
+        "proposalFile": "data/classification_entity_bound_proposals/S6.json",
+        "proposalStatus": "blocked",
+        "decisionReason": "The only assigned page remained unavailable; no replacement source is permitted in this review."
+      }
+    },
+    {
+      "googlePlaceId": "ChIJN43AC9KNGGARqhKvBwkG2qM",
+      "restaurantName": "酒処 魚肴",
+      "sourceFingerprint": "sha256:2750f1acf30c91dce01d4e164c5b2b4523ac48e762dba16602aed5aa063faaff",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "酒処 魚肴"
+        ],
+        "evidence": [
+          {
+            "provider": "Overture Maps",
+            "sourceUrl": "https://gj47600.gorp.jp/",
+            "checkedAt": "2026-09-18",
+            "evidenceType": "exact_branch_name_address_and_phone",
+            "note": "The assigned page identifies 酒処 魚肴 at 神田須田町1-8-4 玉井ビル2F."
+          }
+        ]
+      },
+      "attemptedSources": [
+        {
+          "provider": "Overture Maps",
+          "sourceUrl": "https://gj47600.gorp.jp/",
+          "checkedAt": "2026-09-18",
+          "result": "reviewed"
+        }
+      ],
+      "categoryEvidence": [
+        {
+          "provider": "Overture Maps",
+          "sourceUrl": "https://gj47600.gorp.jp/",
+          "checkedAt": "2026-09-18",
+          "sourceText": "魚料理と日本酒の居酒屋 / 日本酒居酒屋 / 旬の魚介と食材を使った料理",
+          "proposedConceptIds": [
+            "venue-izakaya",
+            "food-seafood"
+          ],
+          "evidenceScope": "exact_branch",
+          "confidence": "high"
+        }
+      ],
+      "proposedConceptIds": [
+        "venue-izakaya",
+        "food-seafood"
+      ],
+      "blocker": null,
+      "reason": "The exact branch page explicitly identifies the venue as a Japanese-sake izakaya centered on fish/seafood dishes.",
+      "notes": null,
+      "reviewedAt": "2026-09-18",
+      "centralReview": {
+        "reviewFile": "data/classification_entity_bound_reviews/S6.json",
+        "proposalFile": "data/classification_entity_bound_proposals/S6.json",
+        "proposalStatus": "accepted_evidence",
+        "decisionReason": "The exact branch page explicitly identifies the venue as 日本酒居酒屋 and describes the business around 魚料理/旬の魚介, supporting both izakaya and seafood food-type concepts."
       }
     },
     {
