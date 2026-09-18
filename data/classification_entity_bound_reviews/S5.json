@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 1,
+  "centralReview": true,
+  "completeShardReview": true,
+  "marker": "CLASSIFICATION-ENTITY-BOUND-REVIEW",
+  "shard": "S5",
+  "proposalFile": "data/classification_entity_bound_proposals/S5.json",
+  "reviewedAt": "2026-09-18",
+  "policy": {
+    "acceptedRequiresProposalAcceptedEvidence": true,
+    "acceptedRequiresVerifiedIdentity": true,
+    "acceptedRequiresExactBranchEvidence": true,
+    "candidateCountsAsAccepted": false,
+    "blockedCountsAsAccepted": false,
+    "newSourceDiscoveryPerformed": false,
+    "paidGoogleDataApiCalls": 0
+  },
+  "summary": {
+    "reviewedRows": 8,
+    "acceptedRows": 4,
+    "candidateRows": 1,
+    "noEvidenceRows": 0,
+    "blockedRows": 3
+  },
+  "records": [
+    {
+      "googlePlaceId": "ChIJR5q-rHaNGGAR-KzLmTo2LQ4",
+      "sourceFingerprint": "sha256:0b57862e49cf36da366efd34a7fc907494b3df881e41455355a71d1beb673f29",
+      "proposalStatus": "blocked",
+      "decision": "blocked",
+      "acceptedConceptIds": [],
+      "reason": "Assigned source remained unreadable; fail closed and retain the blocker."
+    },
+    {
+      "googlePlaceId": "ChIJ4Rl_oxqMGGARrfMHk00Q43A",
+      "sourceFingerprint": "sha256:99f8f9cebc2ac9519707916059efad8e9988737aab5f29a704065ac19435ed27",
+      "proposalStatus": "accepted_evidence",
+      "decision": "accepted_evidence",
+      "acceptedConceptIds": ["venue-shokudo", "food-ramen"],
+      "reason": "Exact branch identity is verified and the source explicitly states 食堂、ラーメン as the branch genres."
+    },
+    {
+      "googlePlaceId": "ChIJ3_t2kgSMGGARJCwOCZuHIFs",
+      "sourceFingerprint": "sha256:597fd644c46cc296c9f0fff27603c8aa97c383018583e2195679b8c77681df4d",
+      "proposalStatus": "blocked",
+      "decision": "blocked",
+      "acceptedConceptIds": [],
+      "reason": "Assigned source remained unreadable; no replacement source is allowed in this shard review."
+    },
+    {
+      "googlePlaceId": "ChIJOYjSZgOMGGARgpKN-7Nxyog",
+      "sourceFingerprint": "sha256:8424f74bddb34192c8515f07a58942c892a45c4fc3f6d96e1ea2ba16b96b8773",
+      "proposalStatus": "accepted_evidence",
+      "decision": "accepted_evidence",
+      "acceptedConceptIds": ["food-curry", "venue-bar"],
+      "reason": "The exact branch site explicitly defines the lunch business as a curry shop and the evening business as a bar."
+    },
+    {
+      "googlePlaceId": "ChIJ2beQAhmMGGARZcWdx1PBwuo",
+      "sourceFingerprint": "sha256:23363a0bfd8d21833af515dab02aa7145144c176d953a248d0f90ed169fb06a5",
+      "proposalStatus": "accepted_evidence",
+      "decision": "accepted_evidence",
+      "acceptedConceptIds": ["venue-cafe"],
+      "reason": "The exact branch site explicitly identifies the first floor as a cafe; no dessert/main-food inference is added."
+    },
+    {
+      "googlePlaceId": "ChIJTSMMw0eMGGARUh1lFCWlDbg",
+      "sourceFingerprint": "sha256:5513e7ffab386cfec2519c7eb88b1ff5bd91874da7a5b06d842c8b69dbf9eb5e",
+      "proposalStatus": "accepted_evidence",
+      "decision": "accepted_evidence",
+      "acceptedConceptIds": ["style-american", "venue-bar"],
+      "reason": "The exact Tokyo Dome City store page explicitly identifies the business as an American restaurant and bar."
+    },
+    {
+      "googlePlaceId": "ChIJF3IItgOMGGAR_1EfWn8cjb0",
+      "sourceFingerprint": "sha256:03b83fc3f0ec51f0c11f3848d312bbdc8ffa304be152c09cd423b79b8abcc291",
+      "proposalStatus": "blocked",
+      "decision": "blocked",
+      "acceptedConceptIds": [],
+      "reason": "The assigned access page timed out; unassigned pages on the same domain are not substituted."
+    },
+    {
+      "googlePlaceId": "ChIJ_dlidcCNGGARaps03scrCg0",
+      "sourceFingerprint": "sha256:90121d9f4a3d41702039cb9fc83ecfbc4b69a2f9ec4238ed9e80f179748a9126",
+      "proposalStatus": "candidate",
+      "decision": "candidate",
+      "acceptedConceptIds": [],
+      "retainedCandidateConceptIds": ["food-hamburger"],
+      "reason": "The exact branch page is burger-focused, but the wording remains menu/brand description rather than an explicit business-category statement."
+    }
+  ]
+}

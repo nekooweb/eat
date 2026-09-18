@@ -5,6 +5,7 @@ import path from 'node:path';
 import vm from 'node:vm';
 import { fileURLToPath } from 'node:url';
 import { isPriceRange } from './price_resolver.mjs';
+import { reviewLifecycleDecision } from './dish_review_cooldown.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const DEFAULT_ROOT = path.resolve(HERE, '..');
@@ -13,6 +14,14 @@ const PROVIDER_PRIORITY = new Map([
   ['official', 400],
   ['Tabelog', 300],
   ['Hot Pepper', 200]
+]);
+const CLASSIFICATION_BOUND_PROVIDER_PRIORITY = new Map([
+  ['official', 500],
+  ['Reviewed independent', 450],
+  ['Hot Pepper', 400],
+  ['Tabelog', 350],
+  ['sourceWebsite', 300],
+  ['runtime-bound', 200]
 ]);
 
 function read(root, relative) {
@@ -110,6 +119,7 @@ function loadMaintainedInputs(root) {
     sourceFactRows: Array.isArray(windowObject.SOURCE_FACTS?.rows) ? windowObject.SOURCE_FACTS.rows : [],
     provenanceRows: Array.isArray(windowObject.SOURCE_PROVENANCE?.rows) ? windowObject.SOURCE_PROVENANCE.rows : [],
     detailRows: Array.isArray(detailQueue.rows) ? detailQueue.rows : [],
+    classificationReviewedRecords: readJson(root, 'data/classification_entity_reviewed.json', { records: [] }).records || [],
     runtimeSource
   };
 }
@@ -187,6 +197,46 @@ function sourceContext(row, detailById, provenanceById) {
   };
 }
 
+
+function classificationBoundSourceKind(provider, urlValue) {
+  const providerText = String(provider || '').normalize('NFKC').trim().toLowerCase();
+  let host = '';
+  try {
+    host = new URL(urlValue).hostname.toLowerCase().replace(/^www\./u, '');
+  } catch {
+    return 'bound_runtime_source';
+  }
+  if (providerText === 'official' || providerText === 'reviewed independent') return 'official_or_reviewed_independent';
+  if (/hot\s*pepper/u.test(providerText) || /hotpepper\.jp$/u.test(host)) return 'retained_third_party';
+  if (/tabelog/u.test(providerText) || /tabelog\.com$/u.test(host)) return 'retained_third_party';
+  return 'bound_runtime_source';
+}
+
+function classificationBoundProviderRank(provider) {
+  return CLASSIFICATION_BOUND_PROVIDER_PRIORITY.get(String(provider || '').normalize('NFKC').trim()) ?? 100;
+}
+
+function classificationBoundSourceFingerprint(googlePlaceId, context) {
+  const stableLinks = [...(context.sourceLinks || [])]
+    .sort((a, b) =>
+      Number((b.fields || []).includes('cuisine')) - Number((a.fields || []).includes('cuisine'))
+      || classificationBoundProviderRank(b.provider) - classificationBoundProviderRank(a.provider)
+      || a.url.localeCompare(b.url, 'en'))
+    .map((link) => ({
+      provider: link.provider,
+      url: link.url,
+      fields: link.fields,
+      sourceKind: classificationBoundSourceKind(link.provider, link.url)
+    }));
+  return fingerprint({
+    fingerprintVersion: 1,
+    taskType: 'classification_entity_bound_source_review',
+    googlePlaceId,
+    stableLinks,
+    aggregateSourceUrlCount: Number(context.sourceUrlCount || 0)
+  });
+}
+
 function buildTokenInventory({ rows, factsById, taxonomy }) {
   const runtimeAccepted = new Map(rows.map((row) => [row.googlePlaceId, directConcepts(taxonomy, row).size > 0]));
   const groups = new Map();
@@ -250,10 +300,11 @@ function buildTokenInventory({ rows, factsById, taxonomy }) {
     || a.normalizedToken.localeCompare(b.normalizedToken, 'ja'));
 }
 
-function buildClassificationEntityTasks({ rows, factsById, taxonomy, detailById, provenanceById }) {
+function buildClassificationEntityTasks({ rows, factsById, taxonomy, detailById, provenanceById, reviewedById, now }) {
   const conceptById = new Map(taxonomy.concepts.map((concept) => [concept.id, concept]));
   const retainedRecoveries = [];
   const unresolved = [];
+  const deferred = [];
 
   for (const row of rows) {
     if (directConcepts(taxonomy, row).size) continue;
@@ -306,7 +357,7 @@ function buildClassificationEntityTasks({ rows, factsById, taxonomy, detailById,
         ? 'review_bound_classification_source'
         : 'generate_name_keyword_candidate';
 
-    unresolved.push({
+    const task = {
       taskType: 'classification_entity_review',
       googlePlaceId: row.googlePlaceId,
       name: row.name,
@@ -328,17 +379,57 @@ function buildClassificationEntityTasks({ rows, factsById, taxonomy, detailById,
         })).sort((a, b) => a.provider.localeCompare(b.provider)),
         context
       })
-    });
+    };
+
+    const reviewed = reviewedById.get(row.googlePlaceId) || null;
+    if (reviewed && nextStage === 'review_bound_classification_source'
+      && ['candidate', 'no_evidence', 'blocked'].includes(reviewed.status)) {
+      const currentReviewFingerprint = classificationBoundSourceFingerprint(row.googlePlaceId, context);
+      const lifecycle = reviewLifecycleDecision({
+        status: reviewed.status,
+        reviewedAt: reviewed.reviewedAt,
+        sourceFingerprint: reviewed.sourceFingerprint,
+        currentSourceFingerprint: currentReviewFingerprint,
+        now
+      });
+      if (lifecycle.deferred) {
+        deferred.push({
+          ...task,
+          reviewState: 'terminal_deferred',
+          terminalStatus: lifecycle.terminalStatus,
+          lastReviewedAt: lifecycle.lastReviewedAt,
+          retryAfter: lifecycle.retryAfter,
+          cooldownDays: lifecycle.cooldownDays,
+          reviewSourceFingerprint: lifecycle.reviewSourceFingerprint,
+          currentReviewSourceFingerprint: lifecycle.currentSourceFingerprint
+        });
+        continue;
+      }
+      if (lifecycle.activationReason === 'source_changed') {
+        task.reviewState = 'reactivated';
+        task.activationReason = 'source_changed';
+        task.lastReviewedAt = lifecycle.lastReviewedAt;
+        task.retryAfter = lifecycle.retryAfter;
+        task.reviewSourceFingerprint = lifecycle.reviewSourceFingerprint;
+        task.currentReviewSourceFingerprint = lifecycle.currentSourceFingerprint;
+      }
+    }
+
+    unresolved.push(task);
   }
 
   retainedRecoveries.sort((a, b) => a.distanceMeters - b.distanceMeters || a.googlePlaceId.localeCompare(b.googlePlaceId));
   unresolved.sort((a, b) =>
-    Number(b.taxonomyTokenMayResolve) - Number(a.taxonomyTokenMayResolve)
+    Number(b.activationReason === 'source_changed') - Number(a.activationReason === 'source_changed')
+    || Number(b.taxonomyTokenMayResolve) - Number(a.taxonomyTokenMayResolve)
     || Number(b.sourceUrlCount > 0) - Number(a.sourceUrlCount > 0)
     || a.distanceMeters - b.distanceMeters
     || a.googlePlaceId.localeCompare(b.googlePlaceId));
+  deferred.sort((a, b) =>
+    String(a.retryAfter || '').localeCompare(String(b.retryAfter || ''))
+    || a.googlePlaceId.localeCompare(b.googlePlaceId));
 
-  return { retainedRecoveries, unresolved };
+  return { retainedRecoveries, unresolved, deferred };
 }
 
 function buildHoursTasks({ rows, factsById, detailById, provenanceById }) {
@@ -494,6 +585,7 @@ export function buildCompletionPlan(options = {}) {
     sourceFactRows,
     provenanceRows,
     detailRows,
+    classificationReviewedRecords,
     runtimeSource
   } = loadMaintainedInputs(root);
   if (!rows.length) throw new Error('Missing public runtime rows');
@@ -502,9 +594,12 @@ export function buildCompletionPlan(options = {}) {
   const factsById = sourceFactsByPlaceId(sourceFactRows);
   const detailById = rowsByPlaceId(detailRows);
   const provenanceById = rowsByPlaceId(provenanceRows);
+  const reviewedById = rowsByPlaceId(classificationReviewedRecords);
   const acceptedRows = rows.filter((row) => directConcepts(taxonomy, row).size > 0).length;
   const taxonomyTasks = buildTokenInventory({ rows, factsById, taxonomy });
-  const classificationEntities = buildClassificationEntityTasks({ rows, factsById, taxonomy, detailById, provenanceById });
+  const classificationEntities = buildClassificationEntityTasks({
+    rows, factsById, taxonomy, detailById, provenanceById, reviewedById, now
+  });
   const hours = buildHoursTasks({ rows, factsById, detailById, provenanceById });
   const lunch = buildBudgetTasks({ rows, factsById, detailById, provenanceById, meal: 'lunch' });
   const dinner = buildBudgetTasks({ rows, factsById, detailById, provenanceById, meal: 'dinner' });
@@ -512,6 +607,7 @@ export function buildCompletionPlan(options = {}) {
   for (const [label, list] of [
     ['classification retained recoveries', classificationEntities.retainedRecoveries],
     ['classification unresolved', classificationEntities.unresolved],
+    ['classification deferred', classificationEntities.deferred],
     ['hours retained review', hours.retainedReview],
     ['hours bound-source review', hours.boundSourceReview],
     ['hours discovery', hours.discovery],
@@ -554,7 +650,9 @@ export function buildCompletionPlan(options = {}) {
         retainedExactEntityRecoveryRows: classificationEntities.retainedRecoveries.length,
         taxonomyTokenFirstRows: classificationEntities.unresolved.filter((row) => row.nextStage === 'classification_taxonomy_token_review').length,
         boundSourceReviewRows: classificationEntities.unresolved.filter((row) => row.nextStage === 'review_bound_classification_source').length,
-        nameCandidateFirstRows: classificationEntities.unresolved.filter((row) => row.nextStage === 'generate_name_keyword_candidate').length
+        nameCandidateFirstRows: classificationEntities.unresolved.filter((row) => row.nextStage === 'generate_name_keyword_candidate').length,
+        terminalDeferredRows: classificationEntities.deferred.length,
+        sourceChangedReactivationRows: classificationEntities.unresolved.filter((row) => row.activationReason === 'source_changed').length
       },
       hours: {
         knownRows: publicHoursKnown,
@@ -588,7 +686,8 @@ export function buildCompletionPlan(options = {}) {
     classification: {
       taxonomyTasks,
       retainedEntityRecoveries: classificationEntities.retainedRecoveries,
-      unresolvedEntityRows: classificationEntities.unresolved
+      unresolvedEntityRows: classificationEntities.unresolved,
+      deferredEntityRows: classificationEntities.deferred
     },
     hours,
     budget: { lunch, dinner }

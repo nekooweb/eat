@@ -35,10 +35,10 @@ assert.equal(first.policy.acceptedRequiresExplicitCategoryEvidence, true);
 assert.equal(first.policy.aggregateSourceCountWithoutUrlIsNotDiscovery, true);
 
 assert.equal(first.summary.publicRuntimeTotal, 1422);
-assert.equal(first.summary.acceptedClassificationRows, 1261);
-assert.equal(first.summary.unknownClassificationRows, 161);
-assert.equal(first.summary.totalRows, 100,
-  'navigation-only source references must not enter the maintained bound-source unknown partition');
+assert.equal(first.summary.acceptedClassificationRows + first.summary.unknownClassificationRows,
+  first.summary.publicRuntimeTotal);
+assert.ok(first.summary.totalRows >= 0 && first.summary.totalRows <= first.summary.unknownClassificationRows,
+  'active bound-source work must be a residual subset of current classification unknown rows');
 assert.equal(first.summary.sourceReferenceRepairRows, 0,
   'bound-source plan must contain only rows with an explicit reviewable source URL');
 assert.deepEqual(first.summary.sourceReferenceRepairPlaceIds, []);

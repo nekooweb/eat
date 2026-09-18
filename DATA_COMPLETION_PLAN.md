@@ -347,7 +347,7 @@ central review 负责：
 
 第六步：执行 100 家 bound-source classification review。maintained rebuild 后由 assignment materializer 输出 `_audit/classification-bound/plan.json`、`manifest.json` 与 `S0..S7.json`；worker 只访问 assigned bound URLs。若页面同时明确出现 hours/lunch/dinner，可保存 sidecar evidence candidate，但不能在 classification review 中跨字段自动接受。
 
-第七步：central review + overlay merge + maintained rebuild；报告真实 accepted delta，不设人为 coverage KPI。
+第七步：central review + overlay merge + maintained rebuild；报告真实 accepted delta，不设人为 coverage KPI。 central review 后的 candidate/no_evidence/blocked 进入 terminal cooldown；若当前 assignment-style source fingerprint 改变，则在 cooldown 到期前以 `source_changed` 重新激活。历史 proposal denominator 与当前 residual active assignment 必须分开统计。
 
 第八步：为 61 家 name-candidate lane 生成 candidate-only planner。店名规则只作为寻找来源的提示，不能成为 accepted classification。
 
