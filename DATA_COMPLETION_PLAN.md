@@ -196,7 +196,7 @@ PR #80 已把维护式 dish plan 从 raw 870 条降到当前 active 23 条，847
 - `accepted_evidence` 93；
 - `blocked` 74。
 
-下一步不能再次放开 847 条，而应给 terminal review 增加**任务相关来源指纹**。
+PR #83 已完成任务相关 source fingerprint 与 cooldown invalidation。当前 maintained 基线仍是 raw 870 / active 23 / deferred 847；历史 review 没 fingerprint 时继续 date-only cooldown，新 review 才使用 assignment-time fingerprint。
 
 ### 7.1 Review fingerprint
 
@@ -274,10 +274,11 @@ else:
 
 继续复用现有 proposal-only 模型，不让 worker 直接改 canonical truth。
 
-建议 marker：
+当前/建议 marker：
 
-- `CLASSIFICATION-TAXONOMY`；
-- `CLASSIFICATION-ENTITY`；
+- `CLASSIFICATION-TAXONOMY`：taxonomy token central review；
+- `CLASSIFICATION-ENTITY-BOUND`：已绑定来源 entity review（PR #86 已实现 plan + proposal contract）；
+- `CLASSIFICATION-ENTITY-NAME`：无可复查来源的 name-candidate lane（candidate only，尚未实现）；
 - `METADATA-HOURS`；
 - `METADATA-BUDGET`。
 
@@ -328,14 +329,16 @@ central review 负责：
 
 ## 12. 实施顺序
 
-第一步（已完成设计和 report-only 实现）：gap inventory + planner，不网络采集、不写 canonical。
+第一步（**已完成，PR #82**）：gap inventory + report-only planner，不网络采集、不写 canonical。
 
-第二步：source fingerprint + cooldown invalidation，兼容 legacy review。
+第二步（**已完成，PR #83**）：dish source fingerprint + cooldown invalidation，兼容 legacy review。
 
-第三步：taxonomy token central review；确认全局映射后再进入 entity review。
+第三步（**已完成，PR #84/#85**）：taxonomy token central review；taxonomy-first unknown 已清零。
 
-第四步：entity classification accepted overlay。
+第四步（**进行中，PR #86**）：100 家 `CLASSIFICATION-ENTITY-BOUND` proposal-only review plan；先逐绑定来源收集 source-native category evidence，再做 central review。61 家 name-candidate lane 不在本步自动接受。
 
-第五步：hours / budget proposal 按 retained review → bound source → new source 顺序执行。
+第五步：实现 Place-ID keyed accepted entity classification overlay，并用 central-reviewed proposal 驱动；candidate/no_evidence/blocked 不进入公开分类。
+
+第六步：hours / budget proposal 按 retained review → reviewable bound source → new source 顺序执行。
 
 最后才评估剩余 new-source discovery 的实际 worker/shard 数量，不提前启动大规模全量扫描。
