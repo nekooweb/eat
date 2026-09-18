@@ -10,6 +10,7 @@ const watchedFiles = [
   'data/source_provenance.js',
   'data/google_inventory_detail_queue.json',
   'data/classification_entity_overlay.js',
+  'data/classification_entity_reviewed.json',
   'classification.js'
 ];
 const before = new Map(watchedFiles.map((file) => [file, fs.readFileSync(file, 'utf8')]));
@@ -30,15 +31,28 @@ assert.equal(report.summary.runtimeRows, 1422, 'completion planner must use the 
 const cls = report.summary.classification;
 assert.equal(cls.acceptedRows + cls.unknownRows, report.summary.runtimeRows);
 assert.equal(
-  report.classification.retainedEntityRecoveries.length + report.classification.unresolvedEntityRows.length,
+  report.classification.retainedEntityRecoveries.length
+    + report.classification.unresolvedEntityRows.length
+    + report.classification.deferredEntityRows.length,
   cls.unknownRows,
-  'every currently unknown classification row must enter exactly one entity bucket'
+  'every currently unknown classification row must enter exactly one active or deferred entity bucket'
 );
 assert.equal(
   cls.taxonomyTokenFirstRows + cls.boundSourceReviewRows + cls.nameCandidateFirstRows,
   report.classification.unresolvedEntityRows.length,
-  'unresolved classification rows must have one deterministic next stage'
+  'active unresolved classification rows must have one deterministic next stage'
 );
+assert.equal(cls.terminalDeferredRows, report.classification.deferredEntityRows.length);
+assert.equal(cls.sourceChangedReactivationRows,
+  report.classification.unresolvedEntityRows.filter((row) => row.activationReason === 'source_changed').length);
+for (const row of report.classification.deferredEntityRows) {
+  assert.equal(row.reviewState, 'terminal_deferred');
+  assert.ok(['candidate', 'no_evidence', 'blocked'].includes(row.terminalStatus));
+  assert.match(row.reviewSourceFingerprint || '', /^sha256:[0-9a-f]{64}$/u);
+  assert.equal(row.reviewSourceFingerprint, row.currentReviewSourceFingerprint,
+    'unchanged reviewed source fingerprints should remain deferred during cooldown');
+  assert.match(row.retryAfter || '', /^\d{4}-\d{2}-\d{2}$/u);
+}
 
 const hours = report.summary.hours;
 assert.equal(hours.knownRows + hours.missingRows, report.summary.runtimeRows);
@@ -80,7 +94,10 @@ function disjoint(a, b, label) {
 
 uniqueIds(report.classification.retainedEntityRecoveries, 'classification retained');
 uniqueIds(report.classification.unresolvedEntityRows, 'classification unresolved');
-disjoint(report.classification.retainedEntityRecoveries, report.classification.unresolvedEntityRows, 'classification');
+uniqueIds(report.classification.deferredEntityRows, 'classification deferred');
+disjoint(report.classification.retainedEntityRecoveries, report.classification.unresolvedEntityRows, 'classification retained/active');
+disjoint(report.classification.retainedEntityRecoveries, report.classification.deferredEntityRows, 'classification retained/deferred');
+disjoint(report.classification.unresolvedEntityRows, report.classification.deferredEntityRows, 'classification active/deferred');
 
 uniqueIds(report.hours.retainedReview, 'hours retained review');
 uniqueIds(report.hours.boundSourceReview, 'hours bound-source review');
@@ -102,6 +119,7 @@ const allTasks = [
   ...report.classification.taxonomyTasks,
   ...report.classification.retainedEntityRecoveries,
   ...report.classification.unresolvedEntityRows,
+  ...report.classification.deferredEntityRows,
   ...report.hours.retainedReview,
   ...report.hours.boundSourceReview,
   ...report.hours.discovery,
