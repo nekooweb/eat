@@ -256,15 +256,44 @@ PR #84 maintained preview 的实际分类报告：
 | unmapped taxonomy tokens | 113 | **98** | -15 |
 | taxonomy-token-first unique rows | 63 | **4** | -59 |
 
-remaining taxonomy-first unknown token hit 为：`御好烧` 1、`スープ` 1、`摩洛哥菜` 1、`汤品` 1、`烧烤` 1；5 个 token hit 落在 4 个 unique restaurant row。bound-source review 仍为 102、name-candidate-first 仍为 59，因此本批只解决了 global taxonomy 能安全解决的部分，没有改变 entity-review 边界。
+remaining taxonomy-first unknown token hit 为：`御好烧` 1、`スープ` 1、`摩洛哥菜` 1、`汤品` 1、`烧烤` 1；5 个 token hit 落在 4 个 unique restaurant row。bound-source review 仍为 102、name-candidate-first 仍为 59，因此 batch 1 只解决了 global taxonomy 能安全解决的部分，没有改变 entity-review 边界。
+
+## Taxonomy batch 2：taxonomy-first 清零
+
+PR #85 单独审查上述 5 个剩余 token，不把它们混进 entity review：
+
+- `御好烧` → 独立 `food-okonomiyaki`，不并入已有 `お好み焼き・もんじゃ` 复合概念；
+- `スープ` / `汤品` → `food-soup`；
+- `摩洛哥菜` → `style-moroccan`；
+- `烧烤` → `food-barbecue`，不推断 `food-yakiniku` 或任何 cuisine style。
+
+central review regression 现在同时扫描 batch 1 + batch 2，禁止跨批次重复 token，并继续检查 zero-network、zero-paid-API、generic unknown 与 same-dimension ancestry。
+
+PR #85 maintained preview：
+
+| Metric | Batch 1 后 | Batch 2 preview | Delta |
+| --- | ---: | ---: | ---: |
+| accepted classification rows | 1,257 | **1,261** | **+4** |
+| unknown rows | 165 | **161** | **-4** |
+| coverage | 88.40% | **88.68%** | +0.28 pp |
+| cuisineStyle rows | 516 | **517** | +1 |
+| foodType rows | 257 | **261** | +4 |
+| venueType rows | 585 | **585** | 0 |
+| multi-dimension rows | 90 | **91** | +1 |
+| unmapped taxonomy tokens | 98 | **93** | -5 |
+| taxonomy-token-first unique rows | 4 | **0** | **-4** |
+
+剩余 93 个 unmapped token 当前全部位于已经至少有一个 accepted classification 的记录中，因此不再阻塞 unknown restaurant。unknown 的下一层严格剩余 **102 bound-source review + 59 name-candidate-first**。
 
 ## 下一实施顺序
 
-### A. Taxonomy token central review
+### A. Bound-source entity classification review
 
-batch 1 先验证 15 个已中央接受的高收益 source token；maintained rebuild 后重新生成 completion plan，确认 taxonomy-first unknown 是否清零或还有新的 token 层任务。只有稳定单一语义才加 alias/concept；复合、模糊、上下文依赖 token 保持 unresolved 或转 entity review。
+taxonomy-first 已清零。下一步先为 102 家已有绑定来源的 unknown entity 生成 deterministic review queue；proposal 必须引用 frozen Place ID、当前 catalog name、已绑定 source URL/provider、source fingerprint 和 source-native category evidence。worker 只产 proposal，central review 才能批准 accepted entity classification overlay。
 
-### B. Entity classification overlay
+### B. Name-candidate entity review
+
+剩余 59 家没有可先复查的绑定来源；店名关键词只能形成 candidate，不得直接写 accepted overlay。只有后续找到并核实独立来源后才能升级。
 
 对通过已绑定来源核实的实体分类，使用 frozen Place-ID keyed accepted overlay；不覆写原始 `cuisine/tags`。店名关键词只产生 candidate。
 
