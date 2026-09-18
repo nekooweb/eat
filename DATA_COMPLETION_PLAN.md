@@ -335,10 +335,136 @@ central review 负责：
 
 第三步（**已完成，PR #84/#85**）：taxonomy token central review；taxonomy-first unknown 已清零。
 
-第四步（**进行中，PR #86**）：100 家 `CLASSIFICATION-ENTITY-BOUND` proposal-only review plan；先逐绑定来源收集 source-native category evidence，再做 central review。61 家 name-candidate lane 不在本步自动接受。
+第四步（**已完成，PR #86**）：建立 100 家 `CLASSIFICATION-ENTITY-BOUND` proposal-only review plan，并修正 bound-source eligibility；Google Maps/navigation 不再算 evidence source。当前 classification unknown 为 100 bound-source + 61 name-candidate。
 
-第五步：实现 Place-ID keyed accepted entity classification overlay，并用 central-reviewed proposal 驱动；candidate/no_evidence/blocked 不进入公开分类。
+第五步（**下一代码实施**）：实现 Place-ID keyed accepted entity classification overlay contract + fail-closed materializer。只有 central-reviewed `accepted_evidence` 可以进入公开分类；candidate/no_evidence/blocked 不进入 overlay，且原始 `cuisine/tags` 不被覆写。
 
-第六步：hours / budget proposal 按 retained review → reviewable bound source → new source 顺序执行。
+第六步：执行 100 家 bound-source classification review。使用 deterministic shard；worker 只访问 assigned bound URLs。若页面同时明确出现 hours/lunch/dinner，可保存 sidecar evidence candidate，但不能在 classification review 中跨字段自动接受。
 
-最后才评估剩余 new-source discovery 的实际 worker/shard 数量，不提前启动大规模全量扫描。
+第七步：central review + overlay merge + maintained rebuild；报告真实 accepted delta，不设人为 coverage KPI。
+
+第八步：为 61 家 name-candidate lane 生成 candidate-only planner。店名规则只作为寻找来源的提示，不能成为 accepted classification。
+
+第九步：metadata 改为 source-centric review。先审 55 条 retained hours，再对 reviewable bound URLs 按 `(Place ID, normalized URL)` 去重，一次检查保存 hours/lunch/dinner 多字段 evidence candidate；字段 central review 仍分别执行。
+
+第十步：仅对每轮 merge/rebuild 后仍无可用来源的 residual gap 做 new-source discovery。当前基线是 hours 268、lunch 279、dinner 279，但这些数字必须每轮重算，不能冻结成长期任务量。
+
+最后才评估剩余 discovery 的 worker/shard 数量，不提前启动大规模全量扫描。
+
+## 13. Source-centric metadata review 设计
+
+### 13.1 为什么从 field-centric 改成 source-centric
+
+当前同一个 Place ID 可能同时缺 hours、lunch budget 和 dinner budget。如果三个 planner 各自访问相同网页，会产生重复网络工作、重复 checkedAt 和重复 identity 验证。
+
+新的执行单位：
+
+```text
+(googlePlaceId, normalizedSourceUrl)
+  -> inspect once
+  -> emit fieldEvidence.hours?
+  -> emit fieldEvidence.lunchBudget?
+  -> emit fieldEvidence.dinnerBudget?
+  -> emit fieldEvidence.classification?
+```
+
+source inspection 只负责保存**来源原文证据**，不决定 canonical truth。
+
+### 13.2 Source review record
+
+建议 source-centric proposal 最少保存：
+
+```json
+{
+  "googlePlaceId": "...",
+  "restaurantName": "...",
+  "provider": "official|Tabelog|Hot Pepper|...",
+  "sourceUrl": "https://...",
+  "checkedAt": "2026-09-18",
+  "sourceFingerprint": "sha256:...",
+  "identity": {
+    "state": "verified|candidate|conflict",
+    "evidence": []
+  },
+  "fieldEvidence": {
+    "classification": [],
+    "hours": [],
+    "lunchBudget": [],
+    "dinnerBudget": []
+  },
+  "status": "reviewed|blocked|no_relevant_fields"
+}
+```
+
+每个 field evidence 仍保存 source-native text/value，不允许 worker 直接把原文转换成未经 central review 的 canonical 值。
+
+### 13.3 Field-specific acceptance
+
+**Classification**
+- 必须能绑定当前分店；
+- 必须是明确业务类型/菜系/主营食物描述；
+- 店名、单道菜、品牌常识不够。
+
+**Hours**
+- 必须是餐厅营业时间；
+- last order、预约时段、设施时间不能替代；
+- 多来源冲突继续 fail closed；
+- 最终仍 materialize 成 `hoursReference`。
+
+**Lunch/Dinner budget**
+- 必须有明确 meal context；
+- 必须能形成 production validator 接受的 range；
+- 单菜价格、course 起价、无 meal context 的平均价不够。
+
+同一次 source inspection 可以产出多个 field evidence，但每个字段独立 central review、独立 accepted/candidate/blocked 状态。
+
+### 13.4 去重与重试
+
+Source task key：
+
+```text
+googlePlaceId + normalizedSourceUrl + sourceFingerprint
+```
+
+同一 sourceFingerprint 已 terminal reviewed 时不重复检查；只有：
+
+- source fingerprint 改变；
+- cooldown 到期；
+- target field policy 升级并明确要求重新审查；
+
+才重新激活。
+
+### 13.5 优先级
+
+1. classification 当前 100 bound-source；
+2. 55 retained hours review；
+3. 已绑定 URL 中同时覆盖多个 metadata gap 的 source；
+4. 单字段 bound-source；
+5. residual discovery；
+6. 1,382 Place-ID-only 长尾保持低优先级。
+
+优先级按“单次 source inspection 可减少的独立 gap 数”排序，比单纯按字段数量或距离更高效。
+
+## 14. 生产验收与停止条件
+
+每个补全批次必须输出：
+
+- assignment / proposal / central-reviewed / accepted / candidate / no_evidence / blocked 数量；
+- accepted classification delta；
+- hours known delta；
+- lunch/dinner known delta；
+- bound-source / discovery 剩余量；
+- network requests 与 paid Google Data API calls；
+- replay delta；
+- source-changed reactivation 数；
+- Pages / policy / field validators 状态。
+
+停止继续补全的条件：
+
+1. 高价值 retained/bound-source work 已基本完成；
+2. residual discovery 的 accepted yield 明显下降；
+3. 剩余来源主要 blocked / stale / identity-ambiguous；
+4. 继续提高 coverage 需要降低 evidence threshold；
+5. 产品侧已没有明显信息缺失收益。
+
+因此目标是**可验证的质量最大化**，不是把任何单一字段强行做到 100%。
