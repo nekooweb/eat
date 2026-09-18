@@ -63,9 +63,9 @@ classification taxonomy 补全已拆成两批中央 review。PR #84（merge `5f5
 
 PR #85（merge `87d24556d87decc64eb23ba8b1479da427a75b2e`）完成剩余 batch 2：只审 `御好烧`、`スープ`、`摩洛哥菜`、`汤品`、`烧烤` 5 个 exact token hit，并保持 `御好烧` 与“御好烧·文字烧”复合概念分离、`烧烤` 不推断为日式烧肉。实测 accepted classification **1,257 → 1,261（+4）**，unknown **165 → 161（-4）**，coverage **88.40% → 88.68%**；cuisineStyle 517、foodType 261、venueType 585，多维命中 91。taxonomy-token-first unique rows **4 → 0**；unmapped taxonomy token 仍有 93，但它们当前只出现在已经有 accepted classification 的记录中，不再阻塞 unknown entity。合入后 Pages production #1359（`35297349908`）与 no-paid #1083（`35297349821`）均 success。
 
-PR #86 开始 entity bound-source 阶段，并同时修正 completion planner 的 source eligibility：Google Maps/navigation、Google-hosted ref 与无效 URL 不再计作“已有可复查来源”。这项修正把 classification unknown 从旧的 102 bound / 59 name-candidate 调整为 **100 bound / 61 name-candidate**；100 家全部可恢复精确非 Google URL，共 120 个 link，source-reference repair = 0。来源分布为 Overture Maps 75、Tabelog 14、runtime-bound 11、official 3、Hot Pepper 2（按 row/provider 计数可重叠）；当前没有任何 link 已在 provenance 中直接声明 `cuisine`，因此不能自动接受，必须逐来源复核。
+PR #86（merge `083bf2c78b7b1e4d9219ec26273bd19f2fde636c`）已完成 entity bound-source plan，并同时修正 completion planner 的 source eligibility：Google Maps/navigation、Google-hosted ref 与无效 URL 不再计作“已有可复查来源”。这项修正把 classification unknown 从旧的 102 bound / 59 name-candidate 调整为 **100 bound / 61 name-candidate**；100 家全部可恢复精确非 Google URL，共 120 个 link，source-reference repair = 0。来源分布为 Overture Maps 75、Tabelog 14、runtime-bound 11、official 3、Hot Pepper 2（按 row/provider 计数可重叠）；当前没有任何 link 已在 provenance 中直接声明 `cuisine`，因此不能自动接受，必须逐来源复核。
 
-同一修正也纠正 metadata 分桶：hours 55 retained + **459 bound + 268 discovery**；lunch **971 bound + 279 discovery**；dinner **522 bound + 279 discovery**。下一实施片是 100 家 bound-source proposal/review；61 家店名线索仍只允许 candidate，不能提前进入 accepted overlay。
+同一修正也纠正 metadata 分桶：hours 55 retained + **459 bound + 268 discovery**；lunch **971 bound + 279 discovery**；dinner **522 bound + 279 discovery**。合入后 Pages production #1370（`35298033984`）与 no-paid #1103（`35298033957`）均 success。下一实施片是 accepted entity overlay contract/materializer + 100 家 bound-source proposal/review；61 家店名线索仍只允许 candidate，不能提前进入 accepted overlay。
 
 当前 committed `data/dish_batch_plan.json` 仍可作为历史 snapshot 留存，但当前 active work 数必须以同一 checkout 上重新生成的 maintained plan 为准。
 
