@@ -9,10 +9,17 @@ import {
 } from './build_classification_entity_overlay.mjs';
 
 const committed = materializeClassificationEntityOverlay();
+const committedReviewed = JSON.parse(fs.readFileSync('data/classification_entity_reviewed.json', 'utf8'));
 assert.equal(committed.schemaVersion, 1);
 assert.equal(committed.marker, 'CLASSIFICATION-ENTITY-OVERLAY');
 assert.equal(committed.generatedFrom, 'data/classification_entity_reviewed.json');
-assert.deepEqual(committed.rows, [], 'initial reviewed artifact must be a zero-impact overlay');
+assert.equal(committed.rows.length, committedReviewed.summary?.acceptedRows ?? 0,
+  'public overlay must contain exactly the central-reviewed accepted rows');
+const committedOverlayIds = new Set(committed.rows.map((row) => row.googlePlaceId));
+for (const row of committedReviewed.records || []) {
+  assert.equal(committedOverlayIds.has(row.googlePlaceId), row.status === 'accepted_evidence',
+    'candidate/no_evidence/blocked rows must never materialize into the public overlay');
+}
 
 const root = fs.mkdtempSync(path.join(os.tmpdir(), 'eat-classification-overlay-'));
 fs.mkdirSync(path.join(root, 'data'), { recursive: true });
