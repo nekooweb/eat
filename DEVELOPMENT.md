@@ -185,7 +185,7 @@ Phase A 完成后，由中央审查统一决定哪些 proposal 可以进入公�
 - 不让店名/菜名推断直接进入 accepted classification；
 - 不为了覆盖率强制填值。
 
-下一代码实施顺序：**classification accepted entity overlay contract/materializer -> 100 家 bound-source review -> 61 家 name-candidate planner -> source-centric metadata planner -> retained/bound metadata review -> residual discovery**。
+下一代码实施顺序：**100 家 bound-source review -> central review / accepted overlay merge -> 61 家 name-candidate planner -> source-centric metadata planner -> retained/bound metadata review -> residual discovery**。accepted entity overlay contract/materializer 已完成。
 
 ## 2026-09-14 20:06 JST：Official / Retained 逐步完成检查点
 
