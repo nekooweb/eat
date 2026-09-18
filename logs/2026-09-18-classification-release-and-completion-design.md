@@ -236,11 +236,11 @@ PR Review #159（`35296657432`）、Pages preview #1347（`35296657418`）、no-
 
 ## 当前实施：taxonomy token central review batch 1
 
-report-only planner 的 224 个 classification unknown 中有 63 条应先由 taxonomy token 解决。当前 batch 1 新增中央 review artifact `data/classification_taxonomy_review_20260918_batch1.json`，第一批只处理 15 个 source token，其 review-time unknown hit 合计正好为 63。
+report-only planner 的 224 个 classification unknown 中有 63 条应先由 taxonomy token 解决。当前 batch 1 新增中央 review artifact `data/classification_taxonomy_review_20260918_batch1.json`，第一批只处理 15 个 source token。逐 token 统计的 affected/unknown token hit 求和分别为 94/65；原 maintained planner 的 taxonomy-token-first 是 63 个唯一 restaurant row，因此 token hit 存在重叠，不能把两个口径混为一谈。
 
 这 15 个 token 只允许 exact source-token mapping，不允许店名/菜单/推荐菜推断。复合或跨语义 token 使用独立 unsplit concept；例如 `面包・烘焙` 进入 food-type unsplit concept 而不推断 bakery venue，`印度咖喱` 只作为 food-curry 子类而不跨维度推断 Indian cuisine。
 
-新增 `test_classification_taxonomy_reviews.mjs` 将 central review artifact 与 `classification.js` 逐项对齐，并锁住 generic unknown、同维度父子和跨维度禁止推断规则。实际 accepted coverage 增量必须以 maintained rebuild 的分类报告为准，不按 63 行简单预估。
+新增 `test_classification_taxonomy_reviews.mjs` 将 central review artifact 与 `classification.js` 逐项对齐，并锁住 generic unknown、同维度父子和跨维度禁止推断规则。实际 accepted coverage 增量必须以 maintained rebuild 的分类报告为准；63 是 batch 前 unique taxonomy-first row，不是 token-hit 求和。
 
 ## 下一实施顺序
 
