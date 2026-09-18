@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 1,
+  "centralReview": true,
+  "completeShardReview": true,
+  "marker": "CLASSIFICATION-ENTITY-BOUND-REVIEW",
+  "shard": "S6",
+  "proposalFile": "data/classification_entity_bound_proposals/S6.json",
+  "reviewedAt": "2026-09-18",
+  "policy": {
+    "acceptedRequiresProposalAcceptedEvidence": true,
+    "acceptedRequiresVerifiedIdentity": true,
+    "acceptedRequiresExactBranchEvidence": true,
+    "candidateCountsAsAccepted": false,
+    "blockedCountsAsAccepted": false,
+    "newSourceDiscoveryPerformed": false,
+    "paidGoogleDataApiCalls": 0
+  },
+  "summary": {
+    "reviewedRows": 8,
+    "acceptedRows": 3,
+    "candidateRows": 1,
+    "noEvidenceRows": 1,
+    "blockedRows": 3
+  },
+  "records": [
+    {
+      "googlePlaceId": "ChIJD4tLmA-MGGARqHJvbMa-yNs",
+      "sourceFingerprint": "sha256:6d1a65ccaed41fc298581d479e997d7d714f8bcc940481a5663985c4bc5abc14",
+      "proposalStatus": "accepted_evidence",
+      "decision": "accepted_evidence",
+      "acceptedConceptIds": ["venue-shokudo", "venue-izakaya"],
+      "reason": "Exact branch identity is confirmed by the assigned Tabelog and Kanda pages; both explicitly describe the current branch as a 食堂 and an evening 居酒屋/大衆酒場."
+    },
+    {
+      "googlePlaceId": "ChIJmU96Ev-NGGARnL6IKFECaKM",
+      "sourceFingerprint": "sha256:9b1846eb4d7ff7d9fd33cee738fc38fe2eb38e00112799d00a57812fa8473819",
+      "proposalStatus": "blocked",
+      "decision": "blocked",
+      "acceptedConceptIds": [],
+      "reason": "The only assigned page remained unavailable; no replacement source is permitted in this review."
+    },
+    {
+      "googlePlaceId": "ChIJ-8rouoCNGGAR2cmXC3P6yck",
+      "sourceFingerprint": "sha256:e0cef0f02fb1b3cbbf7a3c7a54e5d9b0872ba56970a168ab4387d7f57b82c8dd",
+      "proposalStatus": "no_evidence",
+      "decision": "no_evidence",
+      "acceptedConceptIds": [],
+      "reason": "The branch is verified, but オールデイダイニング has no equivalent current concept and cafe/bar references are menu-level rather than venue classification."
+    },
+    {
+      "googlePlaceId": "ChIJAR7nSz-MGGARJYw4ZhU5ACM",
+      "sourceFingerprint": "sha256:730e62bfdce543800f53386fb1724b77f5081a4f471ea4a2c818c9e92cea4c65",
+      "proposalStatus": "candidate",
+      "decision": "candidate",
+      "acceptedConceptIds": [],
+      "retainedCandidateConceptIds": [],
+      "reason": "The assigned page is a multi-store brand root, so the category statement is not accepted for the current branch; grill is also not inferred to barbecue."
+    },
+    {
+      "googlePlaceId": "ChIJkbshpxyMGGAR8ZbEJnuVf5o",
+      "sourceFingerprint": "sha256:4f048e4b05248f20d7e0552c26a6020a2406dad38d0060d488b0cf8012697ae9",
+      "proposalStatus": "blocked",
+      "decision": "blocked",
+      "acceptedConceptIds": [],
+      "reason": "The assigned Gurunavi URL remained unavailable; no replacement source is permitted."
+    },
+    {
+      "googlePlaceId": "ChIJN43AC9KNGGARqhKvBwkG2qM",
+      "sourceFingerprint": "sha256:2750f1acf30c91dce01d4e164c5b2b4523ac48e762dba16602aed5aa063faaff",
+      "proposalStatus": "accepted_evidence",
+      "decision": "accepted_evidence",
+      "acceptedConceptIds": ["venue-izakaya", "food-seafood"],
+      "reason": "The exact branch page explicitly identifies the venue as 日本酒居酒屋 and describes the business around 魚料理/旬の魚介, supporting both izakaya and seafood food-type concepts."
+    },
+    {
+      "googlePlaceId": "ChIJ6yIkdqmNGGARnQbZMLDoNX8",
+      "sourceFingerprint": "sha256:9fc79f2e1a9e9060f395e35d4c908655e3b7ee2d7d81a1540118b85dea28a444",
+      "proposalStatus": "accepted_evidence",
+      "decision": "accepted_evidence",
+      "acceptedConceptIds": ["venue-cafe"],
+      "reason": "The exact site repeatedly identifies the venue as 喫茶/喫茶室 and provides the current address, directly supporting the cafe/coffee-shop venue concept."
+    },
+    {
+      "googlePlaceId": "ChIJKQd-go2NGGAR3P4QE_MC5ow",
+      "sourceFingerprint": "sha256:e77d32e240d819fbdd0b31c6233f57d91124a11d30d7989e960088a23c453a90",
+      "proposalStatus": "blocked",
+      "decision": "blocked",
+      "acceptedConceptIds": [],
+      "reason": "The assigned branch URL remained unavailable; no replacement source is permitted."
+    }
+  ]
+}
