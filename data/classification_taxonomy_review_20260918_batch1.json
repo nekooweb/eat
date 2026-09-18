@@ -1,0 +1,192 @@
+{
+  "schemaVersion": 1,
+  "reviewedAt": "2026-09-18",
+  "batch": "taxonomy-token-batch-1",
+  "sourceReport": "scripts/build_completion_plan.mjs",
+  "policy": {
+    "taskType": "classification_taxonomy_token",
+    "networkRequests": 0,
+    "paidGoogleDataApiCalls": 0,
+    "exactSourceTokenOnly": true,
+    "restaurantNameInferenceAllowed": false,
+    "menuDishInferenceAllowed": false,
+    "crossDimensionInferenceAllowed": false,
+    "compositeSourceCategoryMayStayUnsplit": true,
+    "genericSourceValuePromotionAllowed": false
+  },
+  "summary": {
+    "reviewedTokens": 15,
+    "acceptedTokens": 15,
+    "summedAffectedRestaurantTokenHitsAtReview": 94,
+    "summedUnknownRestaurantTokenHitsAtReview": 65,
+    "baselineUniqueTaxonomyTokenFirstRows": 63,
+    "note": "Token-level counts overlap across restaurants; baselineUniqueTaxonomyTokenFirstRows is the maintained planner's unique-row count before this batch."
+  },
+  "records": [
+    {
+      "normalizedToken": "印度菜",
+      "rawVariants": [
+        "印度菜"
+      ],
+      "affectedRestaurantCount": 25,
+      "unknownRestaurantCount": 22,
+      "status": "accepted",
+      "conceptId": "style-indian",
+      "reason": "Exact cuisine-style token equivalent to the existing Indian cuisine concept."
+    },
+    {
+      "normalizedToken": "面包・烘焙",
+      "rawVariants": [
+        "面包・烘焙"
+      ],
+      "affectedRestaurantCount": 19,
+      "unknownRestaurantCount": 16,
+      "status": "accepted",
+      "conceptId": "food-bread-bakery-unsplit",
+      "reason": "Exact source category describes bread/baking; preserved as an unsplit food category rather than inferring bakery venue type."
+    },
+    {
+      "normalizedToken": "創作料理",
+      "rawVariants": [
+        "創作料理"
+      ],
+      "affectedRestaurantCount": 7,
+      "unknownRestaurantCount": 6,
+      "status": "accepted",
+      "conceptId": "style-creative",
+      "reason": "Stable source cuisine-style category for creative cuisine; no specific regional cuisine is inferred."
+    },
+    {
+      "normalizedToken": "食堂",
+      "rawVariants": [
+        "食堂"
+      ],
+      "affectedRestaurantCount": 8,
+      "unknownRestaurantCount": 2,
+      "status": "accepted",
+      "conceptId": "venue-shokudo",
+      "reason": "Exact venue-type term for a shokudo/eatery; kept distinct from generic restaurant."
+    },
+    {
+      "normalizedToken": "披萨",
+      "rawVariants": [
+        "披萨"
+      ],
+      "affectedRestaurantCount": 5,
+      "unknownRestaurantCount": 2,
+      "status": "accepted",
+      "conceptId": "food-pizza",
+      "reason": "Exact main-food token for pizza."
+    },
+    {
+      "normalizedToken": "天妇罗",
+      "rawVariants": [
+        "天妇罗"
+      ],
+      "affectedRestaurantCount": 4,
+      "unknownRestaurantCount": 2,
+      "status": "accepted",
+      "conceptId": "food-tempura",
+      "reason": "Exact main-food token for tempura."
+    },
+    {
+      "normalizedToken": "印度咖喱",
+      "rawVariants": [
+        "印度咖喱"
+      ],
+      "affectedRestaurantCount": 3,
+      "unknownRestaurantCount": 2,
+      "status": "accepted",
+      "conceptId": "food-indian-curry",
+      "reason": "Exact food subtype; attached under curry only and does not infer Indian cuisine across dimensions."
+    },
+    {
+      "normalizedToken": "ビリヤニ",
+      "rawVariants": [
+        "ビリヤニ"
+      ],
+      "affectedRestaurantCount": 2,
+      "unknownRestaurantCount": 2,
+      "status": "accepted",
+      "conceptId": "food-biryani",
+      "reason": "Exact main-food token for biryani."
+    },
+    {
+      "normalizedToken": "越南菜",
+      "rawVariants": [
+        "越南菜"
+      ],
+      "affectedRestaurantCount": 2,
+      "unknownRestaurantCount": 2,
+      "status": "accepted",
+      "conceptId": "style-vietnamese",
+      "reason": "Exact cuisine-style token for Vietnamese cuisine."
+    },
+    {
+      "normalizedToken": "各国料理",
+      "rawVariants": [
+        "各国料理"
+      ],
+      "affectedRestaurantCount": 2,
+      "unknownRestaurantCount": 2,
+      "status": "accepted",
+      "conceptId": "style-international-unsplit",
+      "reason": "Broad but non-generic cuisine category; preserved as unsplit international cuisine without inferring a country."
+    },
+    {
+      "normalizedToken": "西班牙菜",
+      "rawVariants": [
+        "西班牙菜"
+      ],
+      "affectedRestaurantCount": 2,
+      "unknownRestaurantCount": 2,
+      "status": "accepted",
+      "conceptId": "style-spanish",
+      "reason": "Exact cuisine-style token for Spanish cuisine."
+    },
+    {
+      "normalizedToken": "美式",
+      "rawVariants": [
+        "美式"
+      ],
+      "affectedRestaurantCount": 2,
+      "unknownRestaurantCount": 2,
+      "status": "accepted",
+      "conceptId": "style-american",
+      "reason": "Exact cuisine-style token for American-style cuisine."
+    },
+    {
+      "normalizedToken": "ダイニングバー",
+      "rawVariants": [
+        "ダイニングバー"
+      ],
+      "affectedRestaurantCount": 8,
+      "unknownRestaurantCount": 1,
+      "status": "accepted",
+      "conceptId": "venue-dining-bar",
+      "reason": "Exact Japanese alias of the existing dining-bar venue concept."
+    },
+    {
+      "normalizedToken": "炸猪排",
+      "rawVariants": [
+        "炸猪排"
+      ],
+      "affectedRestaurantCount": 3,
+      "unknownRestaurantCount": 1,
+      "status": "accepted",
+      "conceptId": "food-tonkatsu",
+      "reason": "Exact main-food token for tonkatsu/pork cutlet."
+    },
+    {
+      "normalizedToken": "サンドイッチ",
+      "rawVariants": [
+        "サンドイッチ"
+      ],
+      "affectedRestaurantCount": 2,
+      "unknownRestaurantCount": 1,
+      "status": "accepted",
+      "conceptId": "food-sandwich",
+      "reason": "Exact main-food token for sandwiches."
+    }
+  ]
+}

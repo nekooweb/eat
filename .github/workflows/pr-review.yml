@@ -23,6 +23,7 @@ jobs:
           node scripts/test_v1_quality_fixes.mjs
           node scripts/test_classification_filters.mjs
           node scripts/test_classification_ui.mjs
+          node scripts/test_classification_taxonomy_reviews.mjs
           if [ -f scripts/build_production_dataset.mjs ]; then
             node scripts/test_opening_hours.mjs
             node scripts/test_dish_review_cooldown.mjs

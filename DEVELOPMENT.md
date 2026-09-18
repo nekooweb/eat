@@ -41,7 +41,29 @@ PR #81（merge `aa0a2b4a6a03a1984f98e1e22ae82d022e09e96d`）完成三维分类�
 4. source-change invalidation：terminal review 增加 source fingerprint，只有来源实质变化或 cooldown 到期才重新激活；
 5. independent discovery 最后执行，且继续禁止付费 Google Data API。
 
-第一实施步只生成 gap inventory / completion plan，不网络采集、不写 canonical。当前 committed `data/dish_batch_plan.json` 生成于 2026-09-16，仍是 cooldown 上线前的 870-row 历史 snapshot；当前 active work 数必须以同一 checkout 上重新生成的 maintained plan 为准，不能继续引用旧 committed summary。
+第一实施步已经由 PR #82（merge `d5273417a4531ed16c611ca11f6b241087ad3f3d`）完成：新增 report-only `build_completion_plan.mjs` 与阻塞回归，不网络采集、不写 canonical。maintained rebuild 的真实分层为：
+
+- classification：1,198 accepted / 224 unknown；113 个 unmapped taxonomy token；unknown 中 63 条先走 taxonomy token、102 条先复查已绑定来源、59 条仅进入 name candidate；
+- hours：640 已知；782 gap = 55 retained review + 462 bound-source review + 265 new-source discovery；
+- lunch budget：172 已知；1,250 gap = 974 bound-source review + 276 discovery；
+- dinner budget：621 已知；801 gap = 525 bound-source review + 276 discovery；
+- dish：870 raw work 中只有 23 active，847 条近期 terminal review 被 cooldown defer。
+
+PR #83（merge `12640c030f4e1a5bc5788bf34413f7c4e7c84ba9`）随后完成 source fingerprint / cooldown invalidation：
+
+- active dish assignment 带 `fingerprintVersion/sourceFingerprint`；
+- worker 必须原样回传 assignment-time fingerprint，central review 校验一致性；
+- 只有与当前 dish lane 相关的来源绑定/菜品字段发生实质变化才可在 cooldown 到期前以 `source_changed` 重激活；
+- checkedAt、UI/cuisine、距离/priority、URL fragment/UTM、hours/phone 等无关字段不会打破 dish cooldown；
+- 历史 review 没有 fingerprint 时继续 date-only cooldown，不做批量重激活。
+
+PR #83 maintained CI 实测保持 **870 raw / 23 active / 847 deferred / 0 source-changed reactivation**。PR Review #159（`35296657432`）、Pages preview #1347（`35296657418`）、no-paid #1064（`35296657412`）均通过；合入 main 后 Pages production #1348（`35296719894`）与 no-paid #1065（`35296719888`）也均 success。
+
+当前下一实施片是 **classification taxonomy central review batch 1**：仅消费 report-only planner 已列出的 source token，逐 token central review 后才写入 exact alias/concept；不从店名、菜单或推荐菜推断 accepted 分类。
+
+PR #84 maintained preview 已给出 batch 1 的真实效果：accepted classification **1,198 → 1,257（+59）**，unknown **224 → 165（-59）**，coverage **84.25% → 88.40%**；cuisineStyle 516、foodType 257、venueType 585，多维命中 90。unmapped taxonomy token **113 → 98**，taxonomy-token-first unique rows **63 → 4**；仍有 4 家需要先处理 token，当前 unknown token hit 为 `御好烧`、`スープ`、`摩洛哥菜`、`汤品`、`烧烤` 共 5 hit。其余 entity 分区仍为 bound-source review 102、name-candidate-first 59，说明 batch 1 没有把逐店证据问题误吞进 global taxonomy。
+
+当前 committed `data/dish_batch_plan.json` 仍可作为历史 snapshot 留存，但当前 active work 数必须以同一 checkout 上重新生成的 maintained plan 为准。
 
 ## 2026-09-14 20:06 JST：Official / Retained 逐步完成检查点
 
