@@ -175,7 +175,7 @@ const payload = {
       acceptedEvidenceDeferred: true,
       fingerprintVersion: DISH_SOURCE_FINGERPRINT_VERSION,
       sourceChangeInvalidation: 'enabled only for review records carrying a valid sourceFingerprint; legacy reviews remain date-cooldown-only',
-      sourceFingerprintInputs: 'Place ID + lane + nextAction + stable source bindings/claimed fields + source-count signals; checkedAt/UI/cuisine/distance/priority excluded'
+      sourceFingerprintInputs: 'Place ID + lane + nextAction + stable source bindings + dish-relevant claimed fields + lane-relevant source-count signals; checkedAt/UI/cuisine/distance/priority/unrelated field changes excluded'
     }
   },
   summary: {
