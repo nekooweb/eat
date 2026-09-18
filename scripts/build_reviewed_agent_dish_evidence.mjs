@@ -28,6 +28,7 @@ const PROVIDERS = new Map([
 // Explicit equivalents in the assignment contract supplement the shared extractor.
 const EQUIVALENT_SEMANTICS = /定番|ご好評|自信作|自信の一品|一番の売り商品|一押し|お勧め|お薦め|おススメ|一番のおすすめ|代名詞|必ず.{0,16}オーダー|オーダーしたい逸品/i;
 const HOLD_NAMES = new Set(['えびず焼き', 'ソルベージュ®エスプレッソ']);
+const SOURCE_FINGERPRINT = /^sha256:[0-9a-f]{64}$/u;
 
 function required(value, label) {
   if (typeof value !== 'string' || !value.trim() || /^(?:none|null|undefined)$/i.test(value.trim())) {
@@ -97,6 +98,16 @@ export function auditReviewCoverage(assignments, documents, { sourceQueueCommit 
       if (!STATUS_FIELDS[record.status]) throw new Error(`Invalid terminal status: ${record.status}`);
       required(record.restaurantName, 'catalog identity name');
       if (record.restaurantName !== assignment.name) throw new Error(`Catalog identity name changed: ${record.googlePlaceId}`);
+      const assignmentFingerprint = String(assignment.sourceFingerprint || '').trim();
+      if (assignmentFingerprint) {
+        if (Number(assignment.fingerprintVersion) !== 1 || !SOURCE_FINGERPRINT.test(assignmentFingerprint)) {
+          throw new Error(`Invalid assignment source fingerprint: ${record.googlePlaceId}`);
+        }
+        if (Number(record.fingerprintVersion) !== Number(assignment.fingerprintVersion)
+            || record.sourceFingerprint !== assignmentFingerprint) {
+          throw new Error(`Review source fingerprint differs from assignment: ${record.googlePlaceId}`);
+        }
+      }
       counts[record.status]++;
       local[STATUS_FIELDS[record.status]]++;
       byMarker[doc.marker].reviewedRows++;
@@ -182,8 +193,14 @@ export function buildReviewedEvidence({ documents, assignments, catalogNames, tr
       const logicalDish = JSON.stringify([record.googlePlaceId, normalizePlainText(native).normalize('NFKC')]);
       if (dish.classification === 'R') { acceptedRItems++; restaurantsR.add(record.googlePlaceId); distinctR.add(logicalDish); }
       else { acceptedFItems++; restaurantsF.add(record.googlePlaceId); distinctF.add(logicalDish); }
-      const provenance = { proposalPath, marker: doc.marker, shard: doc.shard,
-        sourceQueueCommit: doc.sourceQueueCommit, identity: record.identity, dishProposal: dish };
+      const provenance = {
+        proposalPath, marker: doc.marker, shard: doc.shard,
+        sourceQueueCommit: doc.sourceQueueCommit, identity: record.identity, dishProposal: dish,
+        ...(record.sourceFingerprint ? {
+          fingerprintVersion: Number(record.fingerprintVersion),
+          sourceFingerprint: record.sourceFingerprint
+        } : {})
+      };
       const translated = translateExactDish(native, translations);
       if (!translated) {
         pending.push({ googlePlaceId: record.googlePlaceId, restaurantName: record.restaurantName,
