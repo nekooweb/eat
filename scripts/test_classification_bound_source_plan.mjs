@@ -37,8 +37,11 @@ assert.equal(first.policy.aggregateSourceCountWithoutUrlIsNotDiscovery, true);
 assert.equal(first.summary.publicRuntimeTotal, 1422);
 assert.equal(first.summary.acceptedClassificationRows, 1261);
 assert.equal(first.summary.unknownClassificationRows, 161);
-assert.equal(first.summary.totalRows, 102,
-  'current taxonomy-first completion must leave exactly the maintained bound-source unknown partition');
+assert.equal(first.summary.totalRows, 100,
+  'navigation-only source references must not enter the maintained bound-source unknown partition');
+assert.equal(first.summary.sourceReferenceRepairRows, 0,
+  'bound-source plan must contain only rows with an explicit reviewable source URL');
+assert.deepEqual(first.summary.sourceReferenceRepairPlaceIds, []);
 assert.equal(first.summary.reviewReadyRows + first.summary.sourceReferenceRepairRows, first.summary.totalRows);
 assert.equal(first.summary.shards, 8);
 assert.equal(first.summary.shardCounts.reduce((sum, bucket) => sum + bucket.total, 0), first.summary.totalRows);
@@ -117,5 +120,5 @@ console.log(JSON.stringify({
   rowsWithThirdPartyOnly: first.summary.rowsWithThirdPartyOnly,
   totalExplicitLinks: first.summary.totalExplicitLinks,
   providerCounts: first.summary.providerCounts,
-  checks: '102-row partition, deterministic sharding, explicit bound URLs, reference-gap fail-closed, proposal-only policy, zero input mutation'
+  checks: 'reviewable bound-source partition, deterministic sharding, explicit non-Google URLs, proposal-only policy, zero input mutation'
 }));
