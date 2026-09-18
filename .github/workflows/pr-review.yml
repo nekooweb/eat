@@ -34,6 +34,8 @@ jobs:
             node scripts/classification_coverage_report.mjs
             node scripts/test_completion_plan.mjs
             node scripts/test_classification_bound_source_plan.mjs
+            node --check scripts/materialize_classification_bound_assignments.mjs
+            node scripts/test_classification_bound_assignments.mjs
             node scripts/test_dish_translation_gap_regression.mjs
             node scripts/test_detail_evidence_retention.mjs
             node scripts/test_reviewed_agent_dish_evidence.mjs

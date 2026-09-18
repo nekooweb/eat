@@ -78,6 +78,7 @@ jobs:
           node --check scripts/build_hotpepper_rich_core_fallback.mjs
           node --check scripts/build_production_dataset.mjs
           node --check scripts/build_enrichment_queue.mjs
+          node --check scripts/materialize_classification_bound_assignments.mjs
           node --check scripts/price_resolver.mjs
           node --check scripts/audit_price_resolution.mjs
           node --check scripts/build_source_provenance.mjs
@@ -90,6 +91,8 @@ jobs:
           node scripts/build_classification_entity_overlay.mjs --check
           node scripts/test_classification_entity_overlay.mjs
           node scripts/classification_coverage_report.mjs
+          node scripts/test_classification_bound_assignments.mjs
+          node scripts/materialize_classification_bound_assignments.mjs _audit/classification-bound
           python3 -m py_compile \
             scripts/recover_google_inventory_basic.py \
             scripts/verify_google_places.py \
