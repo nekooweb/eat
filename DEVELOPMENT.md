@@ -59,9 +59,11 @@ PR #83（merge `12640c030f4e1a5bc5788bf34413f7c4e7c84ba9`）随后完成 source 
 
 PR #83 maintained CI 实测保持 **870 raw / 23 active / 847 deferred / 0 source-changed reactivation**。PR Review #159（`35296657432`）、Pages preview #1347（`35296657418`）、no-paid #1064（`35296657412`）均通过；合入 main 后 Pages production #1348（`35296719894`）与 no-paid #1065（`35296719888`）也均 success。
 
-当前下一实施片是 **classification taxonomy central review batch 1**：仅消费 report-only planner 已列出的 source token，逐 token central review 后才写入 exact alias/concept；不从店名、菜单或推荐菜推断 accepted 分类。
+classification taxonomy 补全已拆成两批中央 review。PR #84（merge `5f57aeae63919edea314a052a2528f78ed26a70f`）完成 batch 1：accepted classification **1,198 → 1,257（+59）**，unknown **224 → 165（-59）**，coverage **84.25% → 88.40%**，taxonomy-token-first unique rows **63 → 4**。
 
-PR #84 maintained preview 已给出 batch 1 的真实效果：accepted classification **1,198 → 1,257（+59）**，unknown **224 → 165（-59）**，coverage **84.25% → 88.40%**；cuisineStyle 516、foodType 257、venueType 585，多维命中 90。unmapped taxonomy token **113 → 98**，taxonomy-token-first unique rows **63 → 4**；仍有 4 家需要先处理 token，当前 unknown token hit 为 `御好烧`、`スープ`、`摩洛哥菜`、`汤品`、`烧烤` 共 5 hit。其余 entity 分区仍为 bound-source review 102、name-candidate-first 59，说明 batch 1 没有把逐店证据问题误吞进 global taxonomy。
+PR #85 的 maintained preview 已完成剩余 batch 2：只审 `御好烧`、`スープ`、`摩洛哥菜`、`汤品`、`烧烤` 5 个 exact token hit，并保持 `御好烧` 与“御好烧·文字烧”复合概念分离、`烧烤` 不推断为日式烧肉。实测 accepted classification **1,257 → 1,261（+4）**，unknown **165 → 161（-4）**，coverage **88.40% → 88.68%**；cuisineStyle 517、foodType 261、venueType 585，多维命中 91。taxonomy-token-first unique rows **4 → 0**；unmapped taxonomy token 仍有 93，但它们当前只出现在已经有 accepted classification 的记录中，不再阻塞 unknown entity。
+
+因此 classification unknown 的下一层已经固定为：**102 家 review-bound-source + 59 家 name-candidate-first**。下一实施片先构建 102 家已绑定来源复核队列及 proposal/central-review contract；59 家店名线索仍只允许 candidate，不能提前进入 accepted overlay。
 
 当前 committed `data/dish_batch_plan.json` 仍可作为历史 snapshot 留存，但当前 active work 数必须以同一 checkout 上重新生成的 maintained plan 为准。
 
