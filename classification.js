@@ -68,6 +68,24 @@
 
   const GENERIC_SOURCE_VALUES = new Set(['', '餐厅', 'restaurant', 'その他グルメ']);
   const conceptById = new Map(CONCEPTS.map((concept) => [concept.id, concept]));
+  const entityOverlayRows = Array.isArray(window.EAT_CLASSIFICATION_ENTITY_OVERLAY?.rows)
+    ? window.EAT_CLASSIFICATION_ENTITY_OVERLAY.rows
+    : [];
+  const entityOverlayByPlaceId = new Map();
+  for (const row of entityOverlayRows) {
+    const googlePlaceId = String(row?.googlePlaceId || '').trim();
+    if (!googlePlaceId) throw new Error('Classification entity overlay row missing googlePlaceId');
+    if (entityOverlayByPlaceId.has(googlePlaceId)) {
+      throw new Error(`Duplicate classification entity overlay Place ID: ${googlePlaceId}`);
+    }
+    const conceptIds = [...new Set(Array.isArray(row?.conceptIds) ? row.conceptIds : [])];
+    for (const conceptId of conceptIds) {
+      if (!conceptById.has(conceptId)) {
+        throw new Error(`Unknown classification entity overlay concept: ${conceptId}`);
+      }
+    }
+    entityOverlayByPlaceId.set(googlePlaceId, Object.freeze(conceptIds));
+  }
 
   function normalizeSourceValue(value) {
     return String(value ?? '')
@@ -125,12 +143,21 @@
     return effective;
   }
 
+  function entityConceptIds(restaurant) {
+    const googlePlaceId = String(restaurant?.googlePlaceId || '').trim();
+    return new Set(googlePlaceId ? entityOverlayByPlaceId.get(googlePlaceId) || [] : []);
+  }
+
   function classifyRestaurant(restaurant) {
-    const directIds = directConceptIds(restaurant);
+    const taxonomyDirectIds = directConceptIds(restaurant);
+    const entityDirectIds = entityConceptIds(restaurant);
+    const directIds = new Set([...taxonomyDirectIds, ...entityDirectIds]);
     const effectiveIds = addAncestors(directIds);
     return Object.freeze({
       directIds: Object.freeze([...directIds]),
-      effectiveIds: Object.freeze([...effectiveIds])
+      effectiveIds: Object.freeze([...effectiveIds]),
+      taxonomyDirectIds: Object.freeze([...taxonomyDirectIds]),
+      entityDirectIds: Object.freeze([...entityDirectIds])
     });
   }
 
@@ -172,10 +199,11 @@
   }
 
   window.EAT_CLASSIFICATION = Object.freeze({
-    version: 'classification-v3-20260918',
+    version: 'classification-v4-20260918',
     dimensions: DIMENSIONS,
     concepts: CONCEPTS,
     normalizeSourceValue,
+    entityOverlayVersion: window.EAT_CLASSIFICATION_ENTITY_OVERLAY?.schemaVersion || null,
     classifyRestaurant,
     hasEffectiveConcept,
     directLabels,
