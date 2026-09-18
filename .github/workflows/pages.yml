@@ -92,6 +92,7 @@ jobs:
           node scripts/test_classification_entity_overlay.mjs
           node scripts/classification_coverage_report.mjs
           node scripts/test_classification_bound_assignments.mjs
+          node scripts/test_classification_bound_proposals.mjs
           node scripts/materialize_classification_bound_assignments.mjs _audit/classification-bound
           python3 -m py_compile \
             scripts/recover_google_inventory_basic.py \
