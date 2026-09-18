@@ -144,31 +144,17 @@ export function materializeClassificationEntityOverlay(options = {}) {
   };
 }
 
-export function serializeClassificationEntityOverlay(overlay) {
-  const json = JSON.stringify(overlay, null, 2)
-    .replace(/"([^"]+)":/gu, '$1:')
-    .replaceAll('"', "'");
-  return `window.EAT_CLASSIFICATION_ENTITY_OVERLAY = Object.freeze(${json.replace(
-    /rows: \[(.*?)\]\n}/su,
-    (match, body) => `rows: Object.freeze([${body}])\n}`
-  )});\n`;
-}
-
 function stableSerialize(overlay) {
-  const rows = overlay.rows.map((row) =>
-    `  Object.freeze(${JSON.stringify(row)})`
-  ).join(',\n');
-  return [
+  const lines = [
     'window.EAT_CLASSIFICATION_ENTITY_OVERLAY = Object.freeze({',
     `  schemaVersion: ${overlay.schemaVersion},`,
     `  marker: ${JSON.stringify(overlay.marker)},`,
     `  generatedFrom: ${JSON.stringify(overlay.generatedFrom)},`,
-    '  rows: Object.freeze([',
-    rows,
-    '  ])',
-    '});',
-    ''
-  ].join('\n');
+    '  rows: Object.freeze(['
+  ];
+  for (const row of overlay.rows) lines.push(`    Object.freeze(${JSON.stringify(row)}),`);
+  lines.push('  ])', '});', '');
+  return lines.join('\\n');
 }
 
 const isCli = process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
