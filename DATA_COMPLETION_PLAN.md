@@ -345,7 +345,7 @@ central review 负责：
 
 第五步（**下一代码实施**）：实现 Place-ID keyed accepted entity classification overlay contract + fail-closed materializer。只有 central-reviewed `accepted_evidence` 可以进入公开分类；candidate/no_evidence/blocked 不进入 overlay，且原始 `cuisine/tags` 不被覆写。
 
-第六步：执行 100 家 bound-source classification review。使用 deterministic shard；worker 只访问 assigned bound URLs。若页面同时明确出现 hours/lunch/dinner，可保存 sidecar evidence candidate，但不能在 classification review 中跨字段自动接受。
+第六步：执行 100 家 bound-source classification review。maintained rebuild 后由 assignment materializer 输出 `_audit/classification-bound/plan.json`、`manifest.json` 与 `S0..S7.json`；worker 只访问 assigned bound URLs。若页面同时明确出现 hours/lunch/dinner，可保存 sidecar evidence candidate，但不能在 classification review 中跨字段自动接受。
 
 第七步：central review + overlay merge + maintained rebuild；报告真实 accepted delta，不设人为 coverage KPI。
 
