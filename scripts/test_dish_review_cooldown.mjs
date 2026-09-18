@@ -42,7 +42,7 @@ const baseRow = {
   priorityScore: 999
 };
 const linksA = [
-  { provider: 'official', url: 'https://example.com/menu#today', fields: ['name', 'dishes'], checkedAt: '2026-09-01' },
+  { provider: 'official', url: 'https://example.com/menu?utm_source=old#today', fields: ['name', 'dishes'], checkedAt: '2026-09-01' },
   { provider: 'Tabelog', url: 'https://tabelog.com/example/', fields: ['dishes', 'hours'], checkedAt: '2026-09-02' }
 ];
 const fingerprintA = buildDishSourceFingerprint({ row: baseRow, lane: 'official_crawl', sourceLinks: linksA });
@@ -52,15 +52,23 @@ const fingerprintEquivalent = buildDishSourceFingerprint({
   row: { ...baseRow, cuisine: '中餐', distanceMeters: 800, priorityScore: 1 },
   lane: 'official_crawl',
   sourceLinks: [
-    { provider: 'Tabelog', url: 'https://tabelog.com/example/', fields: ['hours', 'dishes'], checkedAt: '2026-09-16' },
-    { provider: 'official', url: 'https://example.com/menu', fields: ['dishes', 'name'], checkedAt: '2026-09-17' }
+    { provider: 'Tabelog', url: 'https://tabelog.com/example/', fields: ['telephone', 'hours', 'dishes'], checkedAt: '2026-09-16' },
+    { provider: 'official', url: 'https://example.com/menu?utm_source=new', fields: ['dishes', 'name', 'phone'], checkedAt: '2026-09-17' }
   ]
 });
 assert.equal(fingerprintEquivalent, fingerprintA,
-  'source URL order, field order, checkedAt, cuisine, distance and priority must not change the fingerprint');
+  'source order, tracking params, unrelated claimed fields, checkedAt, cuisine, distance and priority must not change the fingerprint');
+
+const fingerprintUnrelatedCounts = buildDishSourceFingerprint({
+  row: { ...baseRow, sourceUrlCount: 99, retainedThirdPartyUrlCount: 88 },
+  lane: 'official_crawl',
+  sourceLinks: linksA
+});
+assert.equal(fingerprintUnrelatedCounts, fingerprintA,
+  'non-official source count changes must not invalidate an official-crawl review');
 
 const fingerprintChanged = buildDishSourceFingerprint({
-  row: { ...baseRow, sourceUrlCount: 3 },
+  row: { ...baseRow, crawlableOfficialUrlCount: 2 },
   lane: 'official_crawl',
   sourceLinks: [...linksA, { provider: 'official', url: 'https://example.com/new-menu', fields: ['dishes'] }]
 });
