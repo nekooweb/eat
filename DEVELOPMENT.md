@@ -86,7 +86,7 @@ PR #86（merge `083bf2c78b7b1e4d9219ec26273bd19f2fde636c`）已完成 entity bou
 5. worker 只提交 `accepted_evidence / candidate / no_evidence / blocked` proposal，不写 canonical；
 6. proposal 必须带 assignment-time source fingerprint、source URL/provider、checked date、source-native text 与 proposed concept IDs。
 
-为了避免后续重复访问网页，Phase A 允许在同一次页面检查中**旁路记录**明确出现的 hours / lunch budget / dinner budget 原始 evidence candidate；这些 sidecar evidence 只保存证据，不在分类 review 中自动写入对应字段。后续 metadata central review 可以复用它们。
+为了避免后续重复访问网页，Phase A 允许在同一次页面检查中**旁路记录**明确出现的 hours / lunch budget / dinner budget 原始 evidence candidate；这些 sidecar evidence 只保存证据，不在分类 review 中自动写入对应字段。后续 metadata central review 可以复用它们。\n\nS5 已完成第一批 worker review：8/8 rows，4 条 `accepted_evidence` proposal、1 条 candidate、3 条 blocked，paid Google Data API = 0。所有结果仍为 proposal-only，尚未进入 accepted entity overlay。
 
 ### Phase B：central review + Place-ID keyed accepted entity overlay
 

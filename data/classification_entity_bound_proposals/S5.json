@@ -1,0 +1,318 @@
+{
+  "schemaVersion": 1,
+  "proposalOnly": true,
+  "completeShardReview": true,
+  "marker": "CLASSIFICATION-ENTITY-BOUND",
+  "shard": "S5",
+  "sourcePlan": "_audit/classification-bound/S5.json",
+  "generatedAt": "2026-09-18T03:23:06.361Z",
+  "checkedAt": "2026-09-18",
+  "policyAttestation": {
+    "frozenPlaceIdIdentityUsed": true,
+    "catalogNamePreserved": true,
+    "onlyAssignedBoundSourcesReviewed": true,
+    "newSourceDiscoveryPerformed": false,
+    "restaurantNameInferenceUsedForAcceptedClassification": false,
+    "menuDishInferenceUsedForAcceptedClassification": false,
+    "paidGoogleDataApiCalls": 0,
+    "canonicalWritesPerformed": false
+  },
+  "summary": {
+    "assignedRows": 8,
+    "reviewedRows": 8,
+    "acceptedEvidenceProposals": 4,
+    "candidateRows": 1,
+    "noEvidenceRows": 0,
+    "blockedRows": 3
+  },
+  "records": [
+    {
+      "googlePlaceId": "ChIJR5q-rHaNGGAR-KzLmTo2LQ4",
+      "restaurantName": "Spain Bar ALBA",
+      "sourceFingerprint": "sha256:0b57862e49cf36da366efd34a7fc907494b3df881e41455355a71d1beb673f29",
+      "status": "blocked",
+      "identity": {
+        "state": "candidate",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "attemptedSources": [
+        {
+          "provider": "Overture Maps",
+          "sourceUrl": "https://alba-otemachi.com/",
+          "checkedAt": "2026-09-18",
+          "result": "blocked"
+        }
+      ],
+      "categoryEvidence": [],
+      "proposedConceptIds": [],
+      "blocker": "assigned_source_unreachable",
+      "reason": "The assigned bound URL could not be fetched reliably during this review. No second source was searched.",
+      "notes": "Restaurant-name wording was not used as classification evidence."
+    },
+    {
+      "googlePlaceId": "ChIJ4Rl_oxqMGGARrfMHk00Q43A",
+      "restaurantName": "味のふたば",
+      "sourceFingerprint": "sha256:99f8f9cebc2ac9519707916059efad8e9988737aab5f29a704065ac19435ed27",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": ["味のふたば"],
+        "evidence": [
+          {
+            "provider": "Tabelog",
+            "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13082784/",
+            "checkedAt": "2026-09-18",
+            "evidenceType": "exact_branch_name_and_address",
+            "note": "The assigned page identifies 味のふたば at 神田小川町3-2-6."
+          }
+        ]
+      },
+      "attemptedSources": [
+        {
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13082784/",
+          "checkedAt": "2026-09-18",
+          "result": "reviewed"
+        }
+      ],
+      "categoryEvidence": [
+        {
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13082784/",
+          "checkedAt": "2026-09-18",
+          "sourceText": "ジャンル：食堂、ラーメン",
+          "proposedConceptIds": ["venue-shokudo", "food-ramen"],
+          "evidenceScope": "exact_branch",
+          "confidence": "high"
+        }
+      ],
+      "proposedConceptIds": ["venue-shokudo", "food-ramen"],
+      "blocker": null,
+      "reason": "The exact branch page explicitly classifies the business as 食堂 and ラーメン.",
+      "notes": "The same page also contains hours and budget, but no metadata field was accepted in this classification review."
+    },
+    {
+      "googlePlaceId": "ChIJ3_t2kgSMGGARJCwOCZuHIFs",
+      "restaurantName": "大樹",
+      "sourceFingerprint": "sha256:597fd644c46cc296c9f0fff27603c8aa97c383018583e2195679b8c77681df4d",
+      "status": "blocked",
+      "identity": {
+        "state": "candidate",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "attemptedSources": [
+        {
+          "provider": "Overture Maps",
+          "sourceUrl": "http://www.hoso-foods.co.jp/",
+          "checkedAt": "2026-09-18",
+          "result": "blocked"
+        }
+      ],
+      "categoryEvidence": [],
+      "proposedConceptIds": [],
+      "blocker": "assigned_source_unreachable",
+      "reason": "The assigned bound URL could not be fetched reliably during this review. No second source was searched.",
+      "notes": null
+    },
+    {
+      "googlePlaceId": "ChIJOYjSZgOMGGARgpKN-7Nxyog",
+      "restaurantName": "AKL Curry and Bar",
+      "sourceFingerprint": "sha256:8424f74bddb34192c8515f07a58942c892a45c4fc3f6d96e1ea2ba16b96b8773",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": ["AKL あから 〜カレーなる酒場〜", "AKL Currybowl & Drink"],
+        "evidence": [
+          {
+            "provider": "Overture Maps",
+            "sourceUrl": "https://aklcurry.jp/",
+            "checkedAt": "2026-09-18",
+            "evidenceType": "exact_branch_name_and_location",
+            "note": "The assigned page identifies AKL in 神田司町 and provides the branch address."
+          }
+        ]
+      },
+      "attemptedSources": [
+        {
+          "provider": "Overture Maps",
+          "sourceUrl": "https://aklcurry.jp/",
+          "checkedAt": "2026-09-18",
+          "result": "reviewed"
+        }
+      ],
+      "categoryEvidence": [
+        {
+          "provider": "Overture Maps",
+          "sourceUrl": "https://aklcurry.jp/",
+          "checkedAt": "2026-09-18",
+          "sourceText": "ランチは、カレー屋さん／夜は、カレーをつまみに立ち飲みを",
+          "proposedConceptIds": ["food-curry", "venue-bar"],
+          "evidenceScope": "exact_branch",
+          "confidence": "high"
+        }
+      ],
+      "proposedConceptIds": ["food-curry", "venue-bar"],
+      "blocker": null,
+      "reason": "The branch site explicitly describes the daytime business as a curry shop and the evening business as a standing bar.",
+      "notes": null
+    },
+    {
+      "googlePlaceId": "ChIJ2beQAhmMGGARZcWdx1PBwuo",
+      "restaurantName": "小川軒",
+      "sourceFingerprint": "sha256:23363a0bfd8d21833af515dab02aa7145144c176d953a248d0f90ed169fb06a5",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": ["御茶ノ水 小川軒"],
+        "evidence": [
+          {
+            "provider": "runtime-bound",
+            "sourceUrl": "https://ogawaken.com/",
+            "checkedAt": "2026-09-18",
+            "evidenceType": "exact_branch_name_and_address",
+            "note": "The assigned site identifies 御茶ノ水 小川軒 at 文京区湯島1-9-3."
+          }
+        ]
+      },
+      "attemptedSources": [
+        {
+          "provider": "runtime-bound",
+          "sourceUrl": "https://ogawaken.com/",
+          "checkedAt": "2026-09-18",
+          "result": "reviewed"
+        },
+        {
+          "provider": "runtime-bound",
+          "sourceUrl": "https://ogawaken.com/menu.html",
+          "checkedAt": "2026-09-18",
+          "result": "blocked"
+        }
+      ],
+      "categoryEvidence": [
+        {
+          "provider": "runtime-bound",
+          "sourceUrl": "https://ogawaken.com/",
+          "checkedAt": "2026-09-18",
+          "sourceText": "1F カフェ　営業時間",
+          "proposedConceptIds": ["venue-cafe"],
+          "evidenceScope": "exact_branch",
+          "confidence": "high"
+        }
+      ],
+      "proposedConceptIds": ["venue-cafe"],
+      "blocker": null,
+      "reason": "The exact branch site explicitly labels the first floor as a cafe.",
+      "notes": "The same page mentions 洋菓子販売, but this review does not promote that product section to a main-food classification."
+    },
+    {
+      "googlePlaceId": "ChIJTSMMw0eMGGARUh1lFCWlDbg",
+      "restaurantName": "TGI Fridays Tokyo Dome City",
+      "sourceFingerprint": "sha256:5513e7ffab386cfec2519c7eb88b1ff5bd91874da7a5b06d842c8b69dbf9eb5e",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": ["Tokyo Dome City東京ドームシティ店"],
+        "evidence": [
+          {
+            "provider": "Overture Maps",
+            "sourceUrl": "http://www.tgifridays.co.jp/find-us/tokyodome",
+            "checkedAt": "2026-09-18",
+            "evidenceType": "exact_branch_page",
+            "note": "The assigned branch URL resolves to the Tokyo Dome City store page and lists the Tokyo Dome City address."
+          }
+        ]
+      },
+      "attemptedSources": [
+        {
+          "provider": "Overture Maps",
+          "sourceUrl": "http://www.tgifridays.co.jp/find-us/tokyodome",
+          "checkedAt": "2026-09-18",
+          "result": "reviewed"
+        }
+      ],
+      "categoryEvidence": [
+        {
+          "provider": "Overture Maps",
+          "sourceUrl": "http://www.tgifridays.co.jp/find-us/tokyodome",
+          "checkedAt": "2026-09-18",
+          "sourceText": "アメリカンレストラン＆バー",
+          "proposedConceptIds": ["style-american", "venue-bar"],
+          "evidenceScope": "exact_branch",
+          "confidence": "high"
+        }
+      ],
+      "proposedConceptIds": ["style-american", "venue-bar"],
+      "blocker": null,
+      "reason": "The exact store page explicitly presents the business as an American restaurant and bar.",
+      "notes": null
+    },
+    {
+      "googlePlaceId": "ChIJF3IItgOMGGAR_1EfWn8cjb0",
+      "restaurantName": "Al Mina",
+      "sourceFingerprint": "sha256:03b83fc3f0ec51f0c11f3848d312bbdc8ffa304be152c09cd423b79b8abcc291",
+      "status": "blocked",
+      "identity": {
+        "state": "candidate",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "attemptedSources": [
+        {
+          "provider": "runtime-bound",
+          "sourceUrl": "https://www.almina-restaurant.com/access.html",
+          "checkedAt": "2026-09-18",
+          "result": "blocked"
+        }
+      ],
+      "categoryEvidence": [],
+      "proposedConceptIds": [],
+      "blocker": "assigned_source_fetch_timeout",
+      "reason": "The assigned access page timed out during review. Other pages on the same domain were not substituted because they were not assigned.",
+      "notes": "Fail-closed despite category information being discoverable elsewhere on the domain."
+    },
+    {
+      "googlePlaceId": "ChIJ_dlidcCNGGARaps03scrCg0",
+      "restaurantName": "Tokyo, Tokyo Dome",
+      "sourceFingerprint": "sha256:90121d9f4a3d41702039cb9fc83ecfbc4b69a2f9ec4238ed9e80f179748a9126",
+      "status": "candidate",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": ["Tokyo, Tokyo Dome", "Shake Shack Tokyo, Tokyo Dome"],
+        "evidence": [
+          {
+            "provider": "Overture Maps",
+            "sourceUrl": "https://shakeshack.com/location/tokyo-japan-tokyo-dome",
+            "checkedAt": "2026-09-18",
+            "evidenceType": "exact_branch_name_and_address",
+            "note": "The assigned page is the Tokyo Dome branch and lists Gate 22, 1-3-61 Kouraku."
+          }
+        ]
+      },
+      "attemptedSources": [
+        {
+          "provider": "Overture Maps",
+          "sourceUrl": "https://shakeshack.com/location/tokyo-japan-tokyo-dome",
+          "checkedAt": "2026-09-18",
+          "result": "reviewed"
+        }
+      ],
+      "categoryEvidence": [
+        {
+          "provider": "Overture Maps",
+          "sourceUrl": "https://shakeshack.com/location/tokyo-japan-tokyo-dome",
+          "checkedAt": "2026-09-18",
+          "sourceText": "We’re known for delicious burgers, chicken, hot dogs, frozen custard, beer, wine, and more.",
+          "proposedConceptIds": ["food-hamburger"],
+          "evidenceScope": "exact_branch",
+          "confidence": "medium"
+        }
+      ],
+      "proposedConceptIds": ["food-hamburger"],
+      "blocker": null,
+      "reason": "The exact branch page strongly associates the location with burgers, but the wording is menu/brand description rather than an explicit business-category statement.",
+      "notes": "Kept candidate under the accepted-evidence threshold."
+    }
+  ]
+}
