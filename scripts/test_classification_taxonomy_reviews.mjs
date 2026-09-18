@@ -19,7 +19,7 @@ vm.runInContext(fs.readFileSync('classification.js', 'utf8'), context, { filenam
 const taxonomy = context.window.EAT_CLASSIFICATION;
 
 assert.ok(taxonomy, 'classification.js must expose EAT_CLASSIFICATION');
-assert.equal(taxonomy.version, 'classification-v3-20260918');
+assert.equal(taxonomy.version, 'classification-v4-20260918');
 
 const conceptById = new Map([...taxonomy.concepts].map((concept) => [concept.id, concept]));
 const seenTokens = new Set();
