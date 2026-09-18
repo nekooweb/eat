@@ -1,0 +1,380 @@
+{
+  "schemaVersion": 1,
+  "proposalOnly": true,
+  "completeShardReview": true,
+  "marker": "CLASSIFICATION-ENTITY-BOUND",
+  "shard": "S2",
+  "sourcePlan": "_audit/classification-bound/S2.json",
+  "generatedAt": "2026-09-18T03:46:43.709Z",
+  "checkedAt": "2026-09-18",
+  "policyAttestation": {
+    "frozenPlaceIdIdentityUsed": true,
+    "catalogNamePreserved": true,
+    "onlyAssignedBoundSourcesReviewed": true,
+    "newSourceDiscoveryPerformed": false,
+    "restaurantNameInferenceUsedForAcceptedClassification": false,
+    "menuDishInferenceUsedForAcceptedClassification": false,
+    "paidGoogleDataApiCalls": 0,
+    "canonicalWritesPerformed": false
+  },
+  "summary": {
+    "assignedRows": 11,
+    "reviewedRows": 11,
+    "acceptedEvidenceProposals": 3,
+    "candidateRows": 2,
+    "noEvidenceRows": 1,
+    "blockedRows": 5
+  },
+  "records": [
+    {
+      "googlePlaceId": "ChIJpZBYkxCMGGARrdO6BQ1yGPQ",
+      "restaurantName": "サラファン",
+      "sourceFingerprint": "sha256:a1e9050f9023096c0e6d96b96859cb849f31ce143ba1d69e4337f70a1c4eb020",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": ["サラファン", "CAPAFAH"],
+        "evidence": [
+          {
+            "provider": "Tabelog",
+            "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13000613/",
+            "checkedAt": "2026-09-18",
+            "evidenceType": "exact_branch_name_and_address",
+            "note": "The assigned page identifies サラファン at 神田小川町3-10-3 振天堂ビル B1F."
+          }
+        ]
+      },
+      "attemptedSources": [
+        {
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13000613/",
+          "checkedAt": "2026-09-18",
+          "result": "reviewed"
+        }
+      ],
+      "categoryEvidence": [
+        {
+          "provider": "Tabelog",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131003/13000613/",
+          "checkedAt": "2026-09-18",
+          "sourceText": "ジャンル：ロシア料理、洋食",
+          "proposedConceptIds": ["style-western"],
+          "evidenceScope": "exact_branch",
+          "confidence": "high"
+        }
+      ],
+      "proposedConceptIds": ["style-western"],
+      "blocker": null,
+      "reason": "The exact branch genre contains 洋食, which maps directly to the existing western-style cuisine concept. Russian cuisine is preserved as source text but has no current taxonomy concept.",
+      "notes": null
+    },
+    {
+      "googlePlaceId": "ChIJxaCKXgCNGGARmML1G_OsP5E",
+      "restaurantName": "Kanda Square",
+      "sourceFingerprint": "sha256:c4d82b9290f53c5fff5d2a5994af3bb50ab358dfa9bc1721aa1f88240fa3ba97",
+      "status": "blocked",
+      "identity": {
+        "state": "conflict",
+        "sourceAliases": ["KANDA SQUARE"],
+        "evidence": [
+          {
+            "provider": "Overture Maps",
+            "sourceUrl": "https://kanda-square.com/",
+            "checkedAt": "2026-09-18",
+            "evidenceType": "facility_identity_conflict",
+            "note": "The assigned site identifies KANDA SQUARE as a mixed-use facility containing offices, halls, conference rooms, restaurants and shops, not as one restaurant."
+          }
+        ]
+      },
+      "attemptedSources": [
+        {
+          "provider": "Overture Maps",
+          "sourceUrl": "https://kanda-square.com/",
+          "checkedAt": "2026-09-18",
+          "result": "reviewed"
+        }
+      ],
+      "categoryEvidence": [],
+      "proposedConceptIds": [],
+      "blocker": "catalog_entity_is_mixed_use_facility",
+      "reason": "The assigned source shows the catalog entity is a mixed-use complex rather than a restaurant entity. Classification is blocked and should be handled by identity cleanup instead of inventing a restaurant category.",
+      "notes": "Do not map the site's child restaurants or bakery to the KANDA SQUARE facility Place ID."
+    },
+    {
+      "googlePlaceId": "ChIJXUb7fQ2MGGARgbctV56leJ0",
+      "restaurantName": "L'art et Mikuni",
+      "sourceFingerprint": "sha256:dd7fed7227fdc960d0de2b4fd2ec2885ab6a7f393c335eca94859bb65e1534d7",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": ["ラー・エ・ミクニ"],
+        "evidence": [
+          {
+            "provider": "Overture Maps",
+            "sourceUrl": "https://lart-et-mikuni.jp/",
+            "checkedAt": "2026-09-18",
+            "evidenceType": "exact_branch_name_address_and_phone",
+            "note": "The assigned site identifies ラー・エ・ミクニ at 北の丸公園3-1 東京国立近代美術館内, phone 03-3213-0392."
+          }
+        ]
+      },
+      "attemptedSources": [
+        {
+          "provider": "Overture Maps",
+          "sourceUrl": "https://lart-et-mikuni.jp/",
+          "checkedAt": "2026-09-18",
+          "result": "reviewed"
+        }
+      ],
+      "categoryEvidence": [],
+      "proposedConceptIds": [],
+      "blocker": null,
+      "reason": "The exact assigned page verifies the branch but does not expose an explicit cuisine/business category in the reviewable text. No category is inferred from the name or chef association.",
+      "notes": null
+    },
+    {
+      "googlePlaceId": "ChIJa8C-Cj-MGGARcz8KabQrSu0",
+      "restaurantName": "ワイン処　Ｏａｓｉ",
+      "sourceFingerprint": "sha256:a845dd17ee668b0eda406455d304f284dd336ffc36285016d07c6ad813acb8b8",
+      "status": "blocked",
+      "identity": {
+        "state": "candidate",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "attemptedSources": [
+        {
+          "provider": "Overture Maps",
+          "sourceUrl": "https://s-tabelog-com.cdn.ampproject.org/v/s/s.tabelog.com/tokyo/A1310/A131003/13120033/",
+          "checkedAt": "2026-09-18",
+          "result": "blocked"
+        }
+      ],
+      "categoryEvidence": [],
+      "proposedConceptIds": [],
+      "blocker": "assigned_amp_source_internal_error",
+      "reason": "The assigned AMP/Tabelog URL could not be retrieved reliably. No canonical Tabelog URL or other replacement source was substituted.",
+      "notes": null
+    },
+    {
+      "googlePlaceId": "ChIJJ6tEexuMGGARDEcrWig0q68",
+      "restaurantName": "WIZ CRAFT BEER and FOOD",
+      "sourceFingerprint": "sha256:0c1f45e96af2d470787265880bf4ef9753e5c12868ed277e35bc806f8f429b82",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": ["WIZ CRAFT BEER and FOOD"],
+        "evidence": [
+          {
+            "provider": "Overture Maps",
+            "sourceUrl": "http://wiz-craft.com/",
+            "checkedAt": "2026-09-18",
+            "evidenceType": "exact_branch_name_and_address",
+            "note": "The assigned site identifies WIZ CRAFT BEER and FOOD at 神田淡路町2-105 ワテラスアネックス108."
+          }
+        ]
+      },
+      "attemptedSources": [
+        {
+          "provider": "Overture Maps",
+          "sourceUrl": "http://wiz-craft.com/",
+          "checkedAt": "2026-09-18",
+          "result": "reviewed"
+        }
+      ],
+      "categoryEvidence": [
+        {
+          "provider": "Overture Maps",
+          "sourceUrl": "http://wiz-craft.com/",
+          "checkedAt": "2026-09-18",
+          "sourceText": "イタリアン酒場・ビアレストラン",
+          "proposedConceptIds": ["style-italian"],
+          "evidenceScope": "exact_branch",
+          "confidence": "high"
+        }
+      ],
+      "proposedConceptIds": ["style-italian"],
+      "blocker": null,
+      "reason": "The exact branch site explicitly calls the restaurant イタリアン酒場; only the Italian cuisine-style concept is proposed. 酒場/ビアレストラン is not forced into an existing venue concept.",
+      "notes": null
+    },
+    {
+      "googlePlaceId": "ChIJ59v_9NyNGGAR22VKBERmYDM",
+      "restaurantName": "Craft Beer Market",
+      "sourceFingerprint": "sha256:4fab6c359ddc2b52ff196dfa4aa3d8c12e2a76c02e038e5e13cd34de12de50de",
+      "status": "blocked",
+      "identity": {
+        "state": "candidate",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "attemptedSources": [
+        {
+          "provider": "Overture Maps",
+          "sourceUrl": "https://www.craftbeermarket.jp/store_awajicho.html",
+          "checkedAt": "2026-09-18",
+          "result": "blocked"
+        }
+      ],
+      "categoryEvidence": [],
+      "proposedConceptIds": [],
+      "blocker": "assigned_source_internal_error",
+      "reason": "The assigned Awajicho store URL could not be retrieved reliably; no replacement page was used.",
+      "notes": null
+    },
+    {
+      "googlePlaceId": "ChIJtyF-UgCNGGARttipJb5Vc-k",
+      "restaurantName": "デニーズ 東京ドームシティ店",
+      "sourceFingerprint": "sha256:dcc78ade30790669411ae819ca14892329862fc5893d45dec1d95c4b7181753c",
+      "status": "candidate",
+      "identity": {
+        "state": "candidate",
+        "sourceAliases": ["デニーズ"],
+        "evidence": [
+          {
+            "provider": "Overture Maps",
+            "sourceUrl": "http://www.dennys.jp/",
+            "checkedAt": "2026-09-18",
+            "evidenceType": "brand_root_only",
+            "note": "The assigned URL is the Denny's brand root and does not bind the category information to the Tokyo Dome City branch."
+          }
+        ]
+      },
+      "attemptedSources": [
+        {
+          "provider": "Overture Maps",
+          "sourceUrl": "http://www.dennys.jp/",
+          "checkedAt": "2026-09-18",
+          "result": "reviewed"
+        }
+      ],
+      "categoryEvidence": [],
+      "proposedConceptIds": [],
+      "blocker": null,
+      "reason": "The assigned page is brand-level rather than exact-branch evidence, and the current taxonomy has no family-restaurant concept. Kept candidate for future branch-bound review.",
+      "notes": null
+    },
+    {
+      "googlePlaceId": "ChIJze_wuziMGGAR6MRiJbQ-LV4",
+      "restaurantName": "BAR 2000",
+      "sourceFingerprint": "sha256:9d510fa61f253c0a3531cdda2ce3c8aa4ab34fcabbfe2746c7fce0b560a68155",
+      "status": "blocked",
+      "identity": {
+        "state": "candidate",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "attemptedSources": [
+        {
+          "provider": "Overture Maps",
+          "sourceUrl": "http://www.tokyodome-hotels.co.jp/restaurants/bar2000/",
+          "checkedAt": "2026-09-18",
+          "result": "blocked"
+        }
+      ],
+      "categoryEvidence": [],
+      "proposedConceptIds": [],
+      "blocker": "assigned_source_not_accessible",
+      "reason": "The assigned Tokyo Dome Hotel BAR 2000 page was not accessible through the review path. The restaurant name was not used as substitute evidence.",
+      "notes": null
+    },
+    {
+      "googlePlaceId": "ChIJm_L1ZwaMGGAR5L_pZa15NDk",
+      "restaurantName": "Craft Beer Market",
+      "sourceFingerprint": "sha256:a6c0699e596c26f132b179df80afd5c36cb4a9a11f86cd5021274e6692018f9c",
+      "status": "blocked",
+      "identity": {
+        "state": "candidate",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "attemptedSources": [
+        {
+          "provider": "Overture Maps",
+          "sourceUrl": "http://www.craftbeermarket.jp/store_otemachi.html",
+          "checkedAt": "2026-09-18",
+          "result": "blocked"
+        }
+      ],
+      "categoryEvidence": [],
+      "proposedConceptIds": [],
+      "blocker": "assigned_source_not_accessible",
+      "reason": "The assigned Otemachi store URL could not be retrieved reliably; no replacement page was used.",
+      "notes": null
+    },
+    {
+      "googlePlaceId": "ChIJ1WlifwiMGGAR6JeSKWTwPnU",
+      "restaurantName": "さかなさま 大手町店",
+      "sourceFingerprint": "sha256:1ef95965be5f349ef9015680947f07bfd9ff060b90967d87a9ec3392c05690ec",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": ["さかなさま 大手町店"],
+        "evidence": [
+          {
+            "provider": "Overture Maps",
+            "sourceUrl": "https://sakanasama-otemachi.com/",
+            "checkedAt": "2026-09-18",
+            "evidenceType": "exact_branch_name_address_and_phone",
+            "note": "The assigned site identifies さかなさま 大手町店 at 大手町1-1-1 大手町パークビルディングB1."
+          }
+        ]
+      },
+      "attemptedSources": [
+        {
+          "provider": "Overture Maps",
+          "sourceUrl": "https://sakanasama-otemachi.com/",
+          "checkedAt": "2026-09-18",
+          "result": "reviewed"
+        }
+      ],
+      "categoryEvidence": [
+        {
+          "provider": "Overture Maps",
+          "sourceUrl": "https://sakanasama-otemachi.com/",
+          "checkedAt": "2026-09-18",
+          "sourceText": "新鮮な魚と日本酒 / こだわりの厳選鮮魚",
+          "proposedConceptIds": ["food-seafood"],
+          "evidenceScope": "exact_branch",
+          "confidence": "high"
+        }
+      ],
+      "proposedConceptIds": ["food-seafood"],
+      "blocker": null,
+      "reason": "The exact branch site consistently presents fresh fish/selected seafood as the venue's core food offering, directly supporting the seafood food-type concept.",
+      "notes": null
+    },
+    {
+      "googlePlaceId": "ChIJ1YYWBweMGGARIY5pvEdxPto",
+      "restaurantName": "Brussels",
+      "sourceFingerprint": "sha256:8e4c23bc1b1d0a105666c78216d0a4f088c8b88bba9b20c1e6a37b130bf83c15",
+      "status": "candidate",
+      "identity": {
+        "state": "candidate",
+        "sourceAliases": ["BRUSSELS", "ブラッセルズ"],
+        "evidence": [
+          {
+            "provider": "Overture Maps",
+            "sourceUrl": "http://www.brussels.co.jp/",
+            "checkedAt": "2026-09-18",
+            "evidenceType": "multi_store_brand_root",
+            "note": "The assigned root describes BRUSSELS as a Belgian/craft-beer specialist and lists several branches including 神田店, but is not an exact branch page."
+          }
+        ]
+      },
+      "attemptedSources": [
+        {
+          "provider": "Overture Maps",
+          "sourceUrl": "http://www.brussels.co.jp/",
+          "checkedAt": "2026-09-18",
+          "result": "reviewed"
+        }
+      ],
+      "categoryEvidence": [],
+      "proposedConceptIds": [],
+      "blocker": null,
+      "reason": "Brand-level evidence says BRUSSELS originated as a Belgian beer bar/craft-beer specialty operation, but the assigned root covers multiple branches. No brand-to-branch bar classification is accepted.",
+      "notes": null
+    }
+  ]
+}
