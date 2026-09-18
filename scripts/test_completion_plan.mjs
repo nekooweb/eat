@@ -23,6 +23,7 @@ assert.equal(report.policy.paidGoogleDataApiCalls, 0);
 assert.equal(report.policy.candidateCountsAsAccepted, false);
 assert.equal(report.policy.rawCuisineTagsMutationAllowed, false);
 assert.equal(report.policy.boundSourcesBeforeNewDiscovery, true);
+assert.equal(report.policy.googleNavigationCountsAsBoundSource, false);
 assert.equal(report.summary.runtimeRows, 1422, 'completion planner must use the frozen public runtime');
 
 const cls = report.summary.classification;
@@ -124,13 +125,25 @@ for (const task of [
   assert.equal(task.networkRequired, false, `${task.taskType} should consume retained inputs first`);
   assert.equal(task.newSourceDiscoveryRequired, false, `${task.taskType} must not create new-source discovery work`);
 }
-for (const task of [
+const boundSourceTasks = [
+  ...report.classification.unresolvedEntityRows.filter((task) => task.nextStage === 'review_bound_classification_source'),
   ...report.hours.boundSourceReview,
   ...report.budget.lunch.boundSourceReview,
   ...report.budget.dinner.boundSourceReview
-]) {
+];
+for (const task of boundSourceTasks) {
   assert.equal(task.networkRequired, true, `${task.taskType} requires revisiting an already-bound source`);
   assert.equal(task.newSourceDiscoveryRequired, false, `${task.taskType} must stay ahead of new-source discovery`);
+  assert.ok(task.sourceUrlCount > 0, `${task.taskType} must have at least one reviewable non-Google bound URL`);
+  assert.ok(Array.isArray(task.sourceLinks) && task.sourceLinks.length > 0,
+    `${task.taskType} must expose explicit bound source links`);
+  for (const link of task.sourceLinks) {
+    const url = new URL(link.url);
+    const host = url.hostname.toLowerCase().replace(/^www\./u, '');
+    assert.ok(!/(^|\.)google\./u.test(host), 'Google navigation links cannot qualify as bound review sources');
+    assert.ok(!/googleusercontent\.com$/u.test(host));
+    assert.ok(!/maps\.app\.goo\.gl$/u.test(host));
+  }
 }
 for (const task of [
   ...report.hours.discovery,
