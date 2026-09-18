@@ -258,6 +258,7 @@ export function buildClassificationBoundSourcePlan(options = {}) {
       totalRows: rows.length,
       reviewReadyRows: rows.filter((row) => row.reviewReady).length,
       sourceReferenceRepairRows: rows.filter((row) => row.sourceReferenceRepairRequired).length,
+      sourceReferenceRepairPlaceIds: rows.filter((row) => row.sourceReferenceRepairRequired).map((row) => row.googlePlaceId).sort((a, b) => a.localeCompare(b, 'en')),
       rowsWithCuisineClaimedLink: rows.filter((row) => row.sourceLinkHasCuisineClaim).length,
       rowsWithOfficialOrReviewedIndependent,
       rowsWithThirdPartyOnly,
