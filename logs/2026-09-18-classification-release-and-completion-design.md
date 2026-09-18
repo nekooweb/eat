@@ -339,3 +339,89 @@ taxonomy-first 已清零，navigation-only source 也已从 bound-source 资格�
 - candidate 不计入 accepted coverage；
 - 不为提高统计覆盖率降低 evidence threshold；
 - 所有 merge/rebuild 必须幂等，并继续经过 Pages / policy / field validators。
+
+
+## PR #86 合入后：下一阶段补全执行设计
+
+PR #86 已合并到 `main`，merge commit `083bf2c78b7b1e4d9219ec26273bd19f2fde636c`。合入后的 Pages production #1370（`35298033984`）与 no-paid #1103（`35298033957`）均 success。
+
+当前生产基线：
+
+- public runtime：1,422；
+- accepted classification：1,261（88.68%）；
+- classification unknown：161 = **100 bound-source + 61 name-candidate**；
+- taxonomy-token-first：0；
+- classification bound-source：100/100 review-ready，120 explicit non-Google URLs；
+- hours：640 known；55 retained-review + 459 bound-source + 268 discovery；
+- lunch budget：172 known；971 bound-source + 279 discovery；
+- dinner budget：621 known；522 bound-source + 279 discovery；
+- dish：619 R / 707 F / 774 display；维护式 active 23 / deferred 847。
+
+### 执行原则：先来源、后字段
+
+下一阶段不再分别为 classification / hours / lunch / dinner 重复访问相同网页。
+
+新的 source-centric 单位：
+
+```text
+(googlePlaceId, normalized source URL)
+  -> inspect once
+  -> save source-native field evidence
+  -> central review each field independently
+```
+
+一次已绑定来源复核允许同时保存：
+
+- classification category/business evidence；
+- hours raw evidence；
+- lunch budget evidence；
+- dinner budget evidence。
+
+但保存 sidecar evidence 不等于字段 accepted。classification、hours、lunch、dinner 仍分别执行语义验证与 central review。
+
+### 下一代码切片
+
+1. **Accepted entity overlay contract/materializer**
+   - 新增 Place-ID keyed reviewed classification artifact；
+   - 只消费 central-reviewed `accepted_evidence`；
+   - 不修改原始 `cuisine/tags`；
+   - candidate/no_evidence/blocked 永不进入 public overlay；
+   - provenance、reviewedAt、source fingerprint 必须保留。
+
+2. **100 家 bound-source classification review**
+   - deterministic 8-shard；
+   - worker 只访问 assigned URL；
+   - 店名、菜单菜品和品牌常识不得单独接受；
+   - 若页面同时含 hours/budget，只保存 sidecar evidence candidate。
+
+3. **Central review + maintained rebuild**
+   - 输出 accepted delta，而不是预设 coverage KPI；
+   - 运行 classification coverage / replay / Pages / policy gates。
+
+4. **61 家 name-candidate lane**
+   - 店名只产生 candidate；
+   - candidate 只作为 source-discovery hint；
+   - 必须找到 branch-bound independent evidence 后才允许进入 accepted review。
+
+5. **Metadata source-centric review**
+   - 先审 55 条 retained hours；
+   - 再对 reviewable bound URLs 去重检查；
+   - 一次 source inspection 产出多字段 evidence；
+   - central field review 分别接受/拒绝。
+
+6. **Residual discovery**
+   - 每轮 accepted merge/rebuild 后重新生成 gap；
+   - 只有仍无可复查来源的行才进入 discovery；
+   - 当前 discovery 268/279/279 是基线，不冻结为长期任务量。
+
+### 停止条件
+
+补全不追求 100%：
+
+- retained / high-value bound-source work 基本完成；
+- residual discovery accepted yield 明显下降；
+- 剩余主要为 blocked / stale / identity ambiguous；
+- 继续提高覆盖率必须降低 evidence threshold；
+- 产品层面的可见收益已经很小。
+
+达到这些条件后停止继续扫描，保留缺失比低质量填值更优。

@@ -63,11 +63,129 @@ classification taxonomy 补全已拆成两批中央 review。PR #84（merge `5f5
 
 PR #85（merge `87d24556d87decc64eb23ba8b1479da427a75b2e`）完成剩余 batch 2：只审 `御好烧`、`スープ`、`摩洛哥菜`、`汤品`、`烧烤` 5 个 exact token hit，并保持 `御好烧` 与“御好烧·文字烧”复合概念分离、`烧烤` 不推断为日式烧肉。实测 accepted classification **1,257 → 1,261（+4）**，unknown **165 → 161（-4）**，coverage **88.40% → 88.68%**；cuisineStyle 517、foodType 261、venueType 585，多维命中 91。taxonomy-token-first unique rows **4 → 0**；unmapped taxonomy token 仍有 93，但它们当前只出现在已经有 accepted classification 的记录中，不再阻塞 unknown entity。合入后 Pages production #1359（`35297349908`）与 no-paid #1083（`35297349821`）均 success。
 
-PR #86 开始 entity bound-source 阶段，并同时修正 completion planner 的 source eligibility：Google Maps/navigation、Google-hosted ref 与无效 URL 不再计作“已有可复查来源”。这项修正把 classification unknown 从旧的 102 bound / 59 name-candidate 调整为 **100 bound / 61 name-candidate**；100 家全部可恢复精确非 Google URL，共 120 个 link，source-reference repair = 0。来源分布为 Overture Maps 75、Tabelog 14、runtime-bound 11、official 3、Hot Pepper 2（按 row/provider 计数可重叠）；当前没有任何 link 已在 provenance 中直接声明 `cuisine`，因此不能自动接受，必须逐来源复核。
+PR #86（merge `083bf2c78b7b1e4d9219ec26273bd19f2fde636c`）已完成 entity bound-source plan，并同时修正 completion planner 的 source eligibility：Google Maps/navigation、Google-hosted ref 与无效 URL 不再计作“已有可复查来源”。这项修正把 classification unknown 从旧的 102 bound / 59 name-candidate 调整为 **100 bound / 61 name-candidate**；100 家全部可恢复精确非 Google URL，共 120 个 link，source-reference repair = 0。来源分布为 Overture Maps 75、Tabelog 14、runtime-bound 11、official 3、Hot Pepper 2（按 row/provider 计数可重叠）；当前没有任何 link 已在 provenance 中直接声明 `cuisine`，因此不能自动接受，必须逐来源复核。
 
-同一修正也纠正 metadata 分桶：hours 55 retained + **459 bound + 268 discovery**；lunch **971 bound + 279 discovery**；dinner **522 bound + 279 discovery**。下一实施片是 100 家 bound-source proposal/review；61 家店名线索仍只允许 candidate，不能提前进入 accepted overlay。
+同一修正也纠正 metadata 分桶：hours 55 retained + **459 bound + 268 discovery**；lunch **971 bound + 279 discovery**；dinner **522 bound + 279 discovery**。合入后 Pages production #1370（`35298033984`）与 no-paid #1103（`35298033957`）均 success。下一实施片是 accepted entity overlay contract/materializer + 100 家 bound-source proposal/review；61 家店名线索仍只允许 candidate，不能提前进入 accepted overlay。
 
 当前 committed `data/dish_batch_plan.json` 仍可作为历史 snapshot 留存，但当前 active work 数必须以同一 checkout 上重新生成的 maintained plan 为准。
+
+## 2026-09-18：下一阶段数据补全执行流程
+
+结论：**继续补，但不再扩餐厅数量，也不恢复全量扫描。** 当前 1,422 家公开 runtime 已足够支撑产品；下一阶段目标是提高现有记录的 accepted classification、hours 与 budget 完整度，并保持 evidence-first / proposal-only / central-review 边界。
+
+### Phase A：100 家已有来源的 classification entity review
+
+输入：PR #86 生成的 `CLASSIFICATION-ENTITY-BOUND` 队列，100 家 / 120 个明确非 Google URL，8 个 deterministic shard。
+
+执行规则：
+
+1. worker 只访问 assignment 中已经绑定的 URL，不自行寻找第二来源；
+2. frozen Place ID 与当前 catalog name 是身份基准，来源名称只作为 alias / identity evidence；
+3. accepted classification 必须有**当前分店或可明确绑定到该分店**的 category / business-type / cuisine-style 原文证据；
+4. 店名、菜单菜名、推荐菜、附近分店、品牌常识都不能单独构成 accepted classification；
+5. worker 只提交 `accepted_evidence / candidate / no_evidence / blocked` proposal，不写 canonical；
+6. proposal 必须带 assignment-time source fingerprint、source URL/provider、checked date、source-native text 与 proposed concept IDs。
+
+为了避免后续重复访问网页，Phase A 允许在同一次页面检查中**旁路记录**明确出现的 hours / lunch budget / dinner budget 原始 evidence candidate；这些 sidecar evidence 只保存证据，不在分类 review 中自动写入对应字段。后续 metadata central review 可以复用它们。
+
+### Phase B：central review + Place-ID keyed accepted entity overlay
+
+Phase A 完成后，由中央审查统一决定哪些 proposal 可以进入公开分类。
+
+计划新增：
+
+- Place-ID keyed reviewed entity-classification artifact；
+- fail-closed materializer，只消费 `accepted_evidence`；
+- provenance / source fingerprint / reviewedAt 保留；
+- candidate / no_evidence / blocked 永远不进入公开 overlay；
+- 不覆写原始 `cuisine/tags`，公开分类继续是：
+  `exact taxonomy + accepted entity overlay`。
+
+每次 merge 后运行 maintained `--public-only` rebuild、classification coverage report、replay/幂等检查和 Pages/policy gates。**不设“必须达到某个覆盖率”的人为目标**；只报告真实 accepted delta。
+
+### Phase C：61 家 name-candidate lane
+
+当前没有可先复查非 Google 来源的 unknown 为 61 家。
+
+这一 lane 只允许：
+
+1. 高精度店名规则生成 candidate；
+2. candidate 保存命中的词、规则、Place ID 和 reason；
+3. candidate 本身不进入 public classification；
+4. 只有后续找到独立、可绑定到当前分店的来源后，才转入与 Phase A 相同的 evidence review / central review。
+
+因此 name keyword 是**source discovery hint**，不是分类事实。
+
+### Phase D：metadata 补全改为 source-centric，而不是 field-centric
+
+当前 maintained gap：
+
+- hours：640 已知；55 retained-review + 459 bound-source + 268 discovery；
+- lunch budget：172 已知；971 bound-source + 279 discovery；
+- dinner budget：621 已知；522 bound-source + 279 discovery。
+
+后续不分别对 hours/lunch/dinner 重复访问相同网页。计划建立 source-centric bound-source review：
+
+`(Place ID, normalized source URL) -> one inspection -> multiple field-evidence candidates`
+
+一次页面检查可以同时保存：
+
+- opening-hours source-native text；
+- lunch budget range / source-native budget text；
+- dinner budget range / source-native budget text；
+- classification side evidence（若该记录仍需要）；
+- checked date、provider、branch identity 与 source fingerprint。
+
+但**字段验收仍分开**：
+
+- hours 继续通过 `hoursReference` 语义与 conflict/unparseable/semantic validator；
+- lunch/dinner 继续要求明确 meal context + valid `[min,max]` range；
+- 单道菜价格、course 最低价、无 meal context 的平均预算不能直接成为 budget；
+- 同一证据可被多个字段 review 引用，但一个字段通过不代表其他字段自动通过。
+
+执行顺序固定：
+
+1. 55 条 retained hours review；
+2. 已绑定 source 的 source-centric review；
+3. central field review + materialize；
+4. 仅对仍然无可用来源的行进入 discovery；
+5. discovery 当前上限基线为 hours 268、lunch 279、dinner 279，但应在每轮 accepted merge 后**重新生成**，不能把这些数字当成固定任务量。
+
+### Phase E：discovery 只处理真正剩余缺口
+
+新来源 discovery 永远最后执行，并遵循：
+
+- 先官方 store locator / official menu / official branch page；
+- 再明确 branch-bound 的 retained third-party；
+- 不使用付费 Google Data API；
+- Google Maps/navigation 只做导航，不作为 evidence source；
+- 禁止 proximity-only identity binding；
+- 来源受限、冲突或无法确定当前分店时保持 candidate / blocked / no_evidence。
+
+### Phase F：生命周期与停止条件
+
+所有新 classification / metadata review 都应逐步复用 dish 已验证的 lifecycle：
+
+`assignment snapshot -> sourceFingerprint -> proposal -> central review -> accepted/candidate/no_evidence/blocked -> cooldown/source-change invalidation`
+
+停止条件不是“所有字段 100%”，而是：
+
+- 当前高价值 bound-source work 已完成；
+- retained evidence 已审；
+- discovery 只剩低收益/无法验证来源；
+- 新一轮扫描的 accepted 增量明显下降；
+- 继续补全会要求降低 evidence threshold 时立即停止。
+
+### 当前不做
+
+- 不继续扩大 1,422 家公开餐厅数量；
+- 不优先处理 1,382 个 Place-ID-only 长尾；
+- 不开启 open-now 筛选，直到 hours coverage 与语义稳定度明显提高；
+- 不恢复 800+ dish 全量扫描；
+- 不让店名/菜名推断直接进入 accepted classification；
+- 不为了覆盖率强制填值。
+
+下一代码实施顺序：**classification accepted entity overlay contract/materializer -> 100 家 bound-source review -> 61 家 name-candidate planner -> source-centric metadata planner -> retained/bound metadata review -> residual discovery**。
 
 ## 2026-09-14 20:06 JST：Official / Retained 逐步完成检查点
 
