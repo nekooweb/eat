@@ -12,7 +12,8 @@ const stdinImport = spawnSync(process.execPath, ['--input-type=module', '-'], {
 });
 assert.equal(stdinImport.status, 0, `Adapter helpers must be importable from stdin: ${stdinImport.stderr}`);
 const date = '2026-09-14';
-const assignment = { googlePlaceId: 'test-place', name: 'Frozen catalog name', lane: 'official_crawl', shard: 0 };
+const assignment = { googlePlaceId: 'test-place', name: 'Frozen catalog name', lane: 'official_crawl', shard: 0,
+  fingerprintVersion: 1, sourceFingerprint: `sha256:${'1'.repeat(64)}` };
 const dish = {
   classification: 'R', targetField: 'recommendedDishes', nameOriginal: 'ビーフカレー',
   provider: 'official_web', sourceUrl: 'https://example.com/branch/menu', checkedAt: date,
@@ -20,6 +21,7 @@ const dish = {
 };
 const row = {
   googlePlaceId: assignment.googlePlaceId, restaurantName: assignment.name, status: 'accepted_evidence',
+  fingerprintVersion: assignment.fingerprintVersion, sourceFingerprint: assignment.sourceFingerprint,
   identity: { state: 'verified', sourceAliases: ['Source alias'], evidence: [
     { provider: 'official', sourceUrl: 'https://example.com/branch', checkedAt: date,
       evidenceType: 'branch_page', note: 'Exact branch name, address and telephone verified.' }
@@ -50,6 +52,8 @@ assert.equal(accepted.evidence.rows[0].featuredDishes.length, 0, 'R/F counts are
 assert.equal(accepted.evidence.rows[0].recommendedDishes[0].provider, 'sourceWebsite');
 assert.equal(accepted.evidence.policy.paidGoogleDataApiCalls, 0);
 assert.equal(accepted.coverage.reviewedRows, 1);
+assert.equal(accepted.evidence.rows[0].recommendedDishes[0].reviewedSourceEvidence[0].sourceFingerprint,
+  assignment.sourceFingerprint, 'accepted provenance must preserve the assignment-time source fingerprint');
 const confidenceDoc = changed(d => Object.assign(d.records[0].dishProposals[0], {
   recommendationSemantics: '自信の一品', evidenceText: 'ビーフカレー 自信の一品'
 }));
@@ -62,6 +66,7 @@ assert.throws(() => buildReviewedEvidence(options(changed(d => d.records[0].goog
 assert.throws(() => buildReviewedEvidence(options(changed(d => d.records[0].restaurantName = 'Source alias'))), /identity|catalog|name/i);
 assert.throws(() => buildReviewedEvidence(options(changed(d => d.shard = 'S1'))), /shard|assignment/i);
 assert.throws(() => buildReviewedEvidence(options(changed(d => d.sourceQueueCommit = 'b'.repeat(40)))), /queue.*commit|provenance/i);
+assert.throws(() => buildReviewedEvidence(options(changed(d => d.records[0].sourceFingerprint = `sha256:${'2'.repeat(64)}`))), /fingerprint/i);
 assert.throws(() => buildReviewedEvidence(options(changed(d => d.summary.reviewedRows = 2))), /summary/i);
 assert.throws(() => buildReviewedEvidence(options(changed(d => d.policyAttestation.paidGoogleDataApiCalls = 1))), /policy|paid/i);
 assert.throws(() => buildReviewedEvidence(options(changed(d => d.records[0].identity.evidence = []))), /identity/i);
@@ -74,6 +79,17 @@ assert.throws(() => buildReviewedEvidence(options(changed(d => d.records[0].dish
 assert.throws(() => buildReviewedEvidence(options(changed(d => d.records[0].dishProposals[0].targetField = 'featuredDishes'))), /classification|target/i);
 assert.throws(() => buildReviewedEvidence(options(changed(d => d.records[0].dishProposals[0].provider = 'unknown'))), /provider/i);
 assert.throws(() => buildReviewedEvidence(options(changed(d => d.records[0].dishProposals[0].checkedAt = '2026-02-30'))), /date/i);
+
+const legacyAssignment = structuredClone(assignment);
+delete legacyAssignment.fingerprintVersion;
+delete legacyAssignment.sourceFingerprint;
+const legacyDocument = changed(d => {
+  delete d.records[0].fingerprintVersion;
+  delete d.records[0].sourceFingerprint;
+});
+assert.equal(auditReviewCoverage([legacyAssignment], [{ path: 'legacy.json', document: legacyDocument }],
+  { sourceQueueCommit: 'a'.repeat(40) }).reviewedRows, 1,
+'legacy assignments without fingerprints must remain valid');
 
 const featuredDoc = changed(d => Object.assign(d.records[0].dishProposals[0], {
   classification: 'F', targetField: 'featuredDishes', recommendationSemantics: '', evidenceText: 'ビーフカレー'
