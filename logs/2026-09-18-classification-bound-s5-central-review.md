@@ -84,3 +84,22 @@ Blocking validation covers:
 - no paid Google Data API use.
 
 Actual post-merge coverage and residual assignment counts are reported by maintained CI rather than inferred in this log.
+
+## Maintained preview result
+
+PR validation measured the actual post-review state:
+
+- accepted classification: **1,261 -> 1,265 (+4)**
+- unknown classification: **161 -> 157 (-4)**
+- coverage: **88.68% -> 88.96%**
+- rows with multiple dimensions: **91 -> 94**
+- cuisineStyle rows: **517 -> 518**
+- foodType rows: **261 -> 263**
+- venueType rows: **585 -> 589**
+- terminal reviewed deferred: **4**
+- source-changed reactivations: **0**
+- active bound-source rows: **100 -> 92**
+- active explicit bound links: **120 -> 111**
+- S5 active assignment: **8 -> 0**
+
+The reduction from 100 to 92 consists of 4 newly accepted rows plus 4 non-accepted terminal rows deferred under review cooldown. The 61 name-candidate rows are unchanged.
