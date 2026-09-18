@@ -111,6 +111,7 @@ console.log(JSON.stringify({
   totalRows: first.summary.totalRows,
   reviewReadyRows: first.summary.reviewReadyRows,
   sourceReferenceRepairRows: first.summary.sourceReferenceRepairRows,
+  sourceReferenceRepairPlaceIds: first.summary.sourceReferenceRepairPlaceIds,
   rowsWithCuisineClaimedLink: first.summary.rowsWithCuisineClaimedLink,
   rowsWithOfficialOrReviewedIndependent: first.summary.rowsWithOfficialOrReviewedIndependent,
   rowsWithThirdPartyOnly: first.summary.rowsWithThirdPartyOnly,
