@@ -10,6 +10,7 @@ function loadWindowScript(file, windowObject = {}) {
 }
 
 const windowObject = loadWindowScript('data/google_inventory_runtime.js', {});
+loadWindowScript('data/classification_entity_overlay.js', windowObject);
 loadWindowScript('classification.js', windowObject);
 const rows = Array.isArray(windowObject.GOOGLE_INVENTORY_RESTAURANTS)
   ? windowObject.GOOGLE_INVENTORY_RESTAURANTS
@@ -54,7 +55,7 @@ const report = {
   rowsWithMultipleDimensions: multiDimension,
   rowsByDimension: byDimension,
   topConcepts,
-  inferencePolicy: 'exact existing cuisine/tags only; no restaurant-name keyword inference in phase 1'
+  inferencePolicy: 'exact existing cuisine/tags + central-reviewed accepted entity overlay; no restaurant-name or menu-dish inference'
 };
 
 console.log(JSON.stringify(report));
