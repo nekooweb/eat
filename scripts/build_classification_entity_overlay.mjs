@@ -154,7 +154,7 @@ function stableSerialize(overlay) {
   ];
   for (const row of overlay.rows) lines.push(`    Object.freeze(${JSON.stringify(row)}),`);
   lines.push('  ])', '});', '');
-  return lines.join('\\n');
+  return lines.join('\n');
 }
 
 const isCli = process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
