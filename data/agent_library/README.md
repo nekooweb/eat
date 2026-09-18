@@ -5,6 +5,13 @@ Snapshot commit: `820b11aa5384d5aa548463b9f730df68d94000b0`
 
 This directory is the assignment/index layer for parallel data-completion agents. It does **not** duplicate the canonical queues. Agents select work from the existing source-of-truth files by marker and shard, collect proposal/evidence, and leave canonical merge/resolution to the central pipeline.
 
+
+## 2026-09-18 review lifecycle amendment
+
+New dish assignments emitted by `dish_batch_plan.json` schema v2 carry `fingerprintVersion` and `sourceFingerprint`. For those rows, the worker must copy both values **exactly** into the proposal record, and the central reviewer must preserve them into the terminal review record. The fingerprint represents the assignment-time bound-source state; workers must not recompute it after browsing or substitute a fingerprint derived from newly discovered evidence.
+
+Legacy proposal/review records without a fingerprint remain valid and continue to use date-only cooldown. Fingerprint-aware early reactivation is therefore opt-in per reviewed record and cannot mass-reactivate the historical review library.
+
 ## Current completion-run checkpoint (2026-09-14 20:06 JST)
 
 The historical counts below are not refreshed assignment truth. The maintained baseline rebuild on `codex/official-retained-completion-20260914` yields **219 Official + 318 Retained = 537** assignments: existing source-field quarantine removes Minatoya's incorrect website and reroutes that S6 row to out-of-scope Discovery. Read the current regenerated queues before working.
@@ -85,6 +92,7 @@ Every agent must obey all of the following:
 8. If identity or semantics are ambiguous, return `candidate`, `blocked`, or `no_evidence`; do not manufacture completeness.
 9. One confirmed source visit may extract all supported factual fields, but the agent must not broaden its task into unrelated restaurants or another shard.
 10. Use `proposal-template.json` for handoff. A central reviewer/merge step owns canonical truth.
+11. For schema-v2 dish assignments, copy `fingerprintVersion` and `sourceFingerprint` exactly from the assigned row into the proposal/review record. Do not recompute the assignment fingerprint after collection.
 
 ## Marker-specific instructions
 
@@ -122,7 +130,7 @@ Each agent returns one proposal JSON based on `proposal-template.json`. Recommen
 
 `data/agent_proposals/<marker>/<shard-or-batch>.json`
 
-Do not have multiple agents edit the same proposal file. Central merge should validate current queue membership again, deduplicate evidence, run the relevant dish/identity regressions, regenerate public artifacts through the normal pipeline, and only then update canonical outputs.
+Do not have multiple agents edit the same proposal file. For fingerprint-bearing assignments, central review must reject a proposal/review whose fingerprint is missing or differs from the assignment snapshot. Central merge should validate current queue membership again, deduplicate evidence, run the relevant dish/identity regressions, regenerate public artifacts through the normal pipeline, and only then update canonical outputs.
 
 ## Engineering blockers are separate
 
