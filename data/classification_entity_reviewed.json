@@ -11,12 +11,12 @@
     "paidGoogleDataApiCalls": 0
   },
   "summary": {
-    "reviewFiles": 2,
-    "reviewedRows": 16,
-    "acceptedRows": 7,
+    "reviewFiles": 3,
+    "reviewedRows": 25,
+    "acceptedRows": 11,
     "candidateRows": 2,
-    "noEvidenceRows": 1,
-    "blockedRows": 6
+    "noEvidenceRows": 3,
+    "blockedRows": 9
   },
   "records": [
     {
@@ -114,6 +114,92 @@
         "proposalFile": "data/classification_entity_bound_proposals/S6.json",
         "proposalStatus": "no_evidence",
         "decisionReason": "The branch is verified, but オールデイダイニング has no equivalent current concept and cafe/bar references are menu-level rather than venue classification."
+      }
+    },
+    {
+      "googlePlaceId": "ChIJ-TwSLQCNGGARhVZRTHQcoO0",
+      "restaurantName": "炭火焼肉 さんこう苑",
+      "sourceFingerprint": "sha256:bd452eb8ff83b8bdee8b0e3835d1536c1c5322b8b66daad4144510f5bfebdb2b",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "炭火焼肉 さんこう苑"
+        ],
+        "evidence": [
+          {
+            "provider": "Overture Maps",
+            "sourceUrl": "https://sankouen.owst.jp/",
+            "checkedAt": "2026-09-18",
+            "evidenceType": "exact_branch_name_address_and_phone",
+            "note": "The assigned official page identifies 炭火焼肉 さんこう苑 at 神田須田町1-24-21 and phone 03-5207-2951."
+          }
+        ]
+      },
+      "attemptedSources": [
+        {
+          "provider": "Overture Maps",
+          "sourceUrl": "https://sankouen.owst.jp/",
+          "checkedAt": "2026-09-18",
+          "result": "reviewed"
+        }
+      ],
+      "categoryEvidence": [
+        {
+          "provider": "Overture Maps",
+          "sourceUrl": "https://sankouen.owst.jp/",
+          "checkedAt": "2026-09-18",
+          "sourceText": "炭火焼肉 さんこう苑",
+          "proposedConceptIds": [
+            "food-yakiniku"
+          ],
+          "evidenceScope": "exact_branch",
+          "confidence": "high"
+        }
+      ],
+      "proposedConceptIds": [
+        "food-yakiniku"
+      ],
+      "blocker": null,
+      "reason": "The exact official page explicitly identifies the business as 炭火焼肉, directly supporting the yakiniku food-type concept.",
+      "notes": null,
+      "reviewedAt": "2026-09-18",
+      "centralReview": {
+        "reviewFile": "data/classification_entity_bound_reviews/S7.json",
+        "proposalFile": "data/classification_entity_bound_proposals/S7.json",
+        "proposalStatus": "accepted_evidence",
+        "decisionReason": "The exact official page identifies the current branch as 炭火焼肉 さんこう苑, directly supporting the yakiniku food-type concept."
+      }
+    },
+    {
+      "googlePlaceId": "ChIJ0-GKX3qNGGARCuvbAbAU9B0",
+      "restaurantName": "THE LOUNGE",
+      "sourceFingerprint": "sha256:59ce93c1f4284bf2f1764dcee226e1052f2d5edc1cabcaf894e35f9bdd9c96be",
+      "status": "blocked",
+      "identity": {
+        "state": "candidate",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "attemptedSources": [
+        {
+          "provider": "Overture Maps",
+          "sourceUrl": "https://www.fourseasons.com/otemachi/dining/lounges/the-lounge/?seo=bing_local_ote6_apac",
+          "checkedAt": "2026-09-18",
+          "result": "blocked"
+        }
+      ],
+      "categoryEvidence": [],
+      "proposedConceptIds": [],
+      "blocker": "assigned_source_internal_error",
+      "reason": "The assigned Four Seasons page could not be retrieved reliably during review. No replacement page was used.",
+      "notes": null,
+      "reviewedAt": "2026-09-18",
+      "centralReview": {
+        "reviewFile": "data/classification_entity_bound_reviews/S7.json",
+        "proposalFile": "data/classification_entity_bound_proposals/S7.json",
+        "proposalStatus": "blocked",
+        "decisionReason": "The assigned Four Seasons URL remained unavailable; no replacement page is permitted."
       }
     },
     {
@@ -322,6 +408,37 @@
       }
     },
     {
+      "googlePlaceId": "ChIJ85oU5fyNGGARWJqF2dOGKxo",
+      "restaurantName": "Gravy",
+      "sourceFingerprint": "sha256:5a667ffe7ccd64b63b7b85159c386ccc5daa381112e2b8e8154bd3b011e6e16d",
+      "status": "blocked",
+      "identity": {
+        "state": "candidate",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "attemptedSources": [
+        {
+          "provider": "Overture Maps",
+          "sourceUrl": "https://gravytherestaurant.business.site/",
+          "checkedAt": "2026-09-18",
+          "result": "blocked"
+        }
+      ],
+      "categoryEvidence": [],
+      "proposedConceptIds": [],
+      "blocker": "assigned_source_not_accessible",
+      "reason": "The assigned business.site URL was not accessible through the review path. No unassigned source was substituted.",
+      "notes": null,
+      "reviewedAt": "2026-09-18",
+      "centralReview": {
+        "reviewFile": "data/classification_entity_bound_reviews/S7.json",
+        "proposalFile": "data/classification_entity_bound_proposals/S7.json",
+        "proposalStatus": "blocked",
+        "decisionReason": "The assigned business.site source remained inaccessible; no replacement source is permitted."
+      }
+    },
+    {
       "googlePlaceId": "ChIJAR7nSz-MGGARJYw4ZhU5ACM",
       "restaurantName": "Sizzler",
       "sourceFingerprint": "sha256:730e62bfdce543800f53386fb1724b77f5081a4f471ea4a2c818c9e92cea4c65",
@@ -477,6 +594,59 @@
       }
     },
     {
+      "googlePlaceId": "ChIJJ8_bnU6NGGARsXyvg0mnXI0",
+      "restaurantName": "つじ田",
+      "sourceFingerprint": "sha256:d251b6119494ce3d935fdf300787e42fdebe614a1bd44b59c31921c7e7060577",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "つじ田 秋葉原店"
+        ],
+        "evidence": [
+          {
+            "provider": "official",
+            "sourceUrl": "https://tsukemen-tsujita.com/shop/?id=0010019",
+            "checkedAt": "2026-09-18",
+            "evidenceType": "exact_branch_name_and_address",
+            "note": "The assigned store page identifies つじ田 秋葉原店 at 外神田1丁目9-5."
+          }
+        ]
+      },
+      "attemptedSources": [
+        {
+          "provider": "official",
+          "sourceUrl": "https://tsukemen-tsujita.com/menu/noukoutsukemen/",
+          "checkedAt": "2026-09-18",
+          "result": "reviewed"
+        },
+        {
+          "provider": "official",
+          "sourceUrl": "https://tsukemen-tsujita.com/shop/?id=0010019",
+          "checkedAt": "2026-09-18",
+          "result": "reviewed"
+        },
+        {
+          "provider": "runtime-bound",
+          "sourceUrl": "https://tsukemen-tsujita.com/menu/",
+          "checkedAt": "2026-09-18",
+          "result": "reviewed"
+        }
+      ],
+      "categoryEvidence": [],
+      "proposedConceptIds": [],
+      "blocker": null,
+      "reason": "The assigned exact branch page supplies identity/hours but no explicit business category. The other assigned pages are menu/product pages; menu items are not promoted into accepted classification.",
+      "notes": "No tsukemen-to-noodles or menu-ramen inference is used.",
+      "reviewedAt": "2026-09-18",
+      "centralReview": {
+        "reviewFile": "data/classification_entity_bound_reviews/S7.json",
+        "proposalFile": "data/classification_entity_bound_proposals/S7.json",
+        "proposalStatus": "no_evidence",
+        "decisionReason": "The exact branch page gives identity/hours but no explicit category; assigned menu/product pages remain menu evidence and cannot be promoted."
+      }
+    },
+    {
       "googlePlaceId": "ChIJkbshpxyMGGAR8ZbEJnuVf5o",
       "restaurantName": "Orchard Knight",
       "sourceFingerprint": "sha256:4f048e4b05248f20d7e0552c26a6020a2406dad38d0060d488b0cf8012697ae9",
@@ -536,6 +706,48 @@
         "proposalFile": "data/classification_entity_bound_proposals/S6.json",
         "proposalStatus": "blocked",
         "decisionReason": "The assigned branch URL remained unavailable; no replacement source is permitted."
+      }
+    },
+    {
+      "googlePlaceId": "ChIJm_N_DRuMGGARaUf1LlEM5yE",
+      "restaurantName": "Gourmands",
+      "sourceFingerprint": "sha256:f6ebf4965d98dd0c102327f6c42a88dc73e1b71a1b489a8b07085639629c56cb",
+      "status": "no_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "グルマンズ",
+          "GOURMANDS"
+        ],
+        "evidence": [
+          {
+            "provider": "Overture Maps",
+            "sourceUrl": "http://tabelog.com/tokyo/A1310/A131002/13190137/",
+            "checkedAt": "2026-09-18",
+            "evidenceType": "exact_branch_name_and_address",
+            "note": "The assigned Tabelog page identifies グルマンズ at 神田淡路町2-23."
+          }
+        ]
+      },
+      "attemptedSources": [
+        {
+          "provider": "Overture Maps",
+          "sourceUrl": "http://tabelog.com/tokyo/A1310/A131002/13190137/",
+          "checkedAt": "2026-09-18",
+          "result": "reviewed"
+        }
+      ],
+      "categoryEvidence": [],
+      "proposedConceptIds": [],
+      "blocker": null,
+      "reason": "The exact genres are ジビエ料理 and ビストロ. The current taxonomy has no exact game-meat or bistro concept, and no broader cuisine inference is accepted.",
+      "notes": "No bistro-to-French or bistro-to-dining-bar inference.",
+      "reviewedAt": "2026-09-18",
+      "centralReview": {
+        "reviewFile": "data/classification_entity_bound_reviews/S7.json",
+        "proposalFile": "data/classification_entity_bound_proposals/S7.json",
+        "proposalStatus": "no_evidence",
+        "decisionReason": "Exact genres are ジビエ料理 and ビストロ; neither has an exact current concept and no French/dining-bar inference is accepted."
       }
     },
     {
@@ -627,6 +839,62 @@
       }
     },
     {
+      "googlePlaceId": "ChIJoeT3YD-NGGAR3eHpfh3C_Jw",
+      "restaurantName": "GARB Cheers OTEMACHI",
+      "sourceFingerprint": "sha256:ce0be661c2d96409142bf147cf980a6135f054af4cd6f5ac2d8721d46ddcd6a4",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "GARB Cheers OTEMACHI",
+          "ガーブチアーズ 大手町"
+        ],
+        "evidence": [
+          {
+            "provider": "Overture Maps",
+            "sourceUrl": "https://cheers.garb.jp/",
+            "checkedAt": "2026-09-18",
+            "evidenceType": "exact_branch_name_and_address",
+            "note": "The assigned site identifies GARB Cheers OTEMACHI at 大手町1丁目9-7 South Tower 1F."
+          }
+        ]
+      },
+      "attemptedSources": [
+        {
+          "provider": "Overture Maps",
+          "sourceUrl": "https://cheers.garb.jp/",
+          "checkedAt": "2026-09-18",
+          "result": "reviewed"
+        }
+      ],
+      "categoryEvidence": [
+        {
+          "provider": "Overture Maps",
+          "sourceUrl": "https://cheers.garb.jp/",
+          "checkedAt": "2026-09-18",
+          "sourceText": "スポーツバー / CAFE & BAR",
+          "proposedConceptIds": [
+            "venue-bar"
+          ],
+          "evidenceScope": "exact_branch",
+          "confidence": "high"
+        }
+      ],
+      "proposedConceptIds": [
+        "venue-bar"
+      ],
+      "blocker": null,
+      "reason": "The exact branch site explicitly labels the venue as a sports bar and also uses CAFE & BAR for its service format; only the broad bar concept is proposed.",
+      "notes": "No cafe concept is proposed because the page primarily frames cafe as a service period rather than a separate venue classification.",
+      "reviewedAt": "2026-09-18",
+      "centralReview": {
+        "reviewFile": "data/classification_entity_bound_reviews/S7.json",
+        "proposalFile": "data/classification_entity_bound_proposals/S7.json",
+        "proposalStatus": "accepted_evidence",
+        "decisionReason": "The exact branch site explicitly labels GARB Cheers OTEMACHI as a sports bar and also uses CAFE & BAR; the central review accepts only the broad bar venue concept."
+      }
+    },
+    {
       "googlePlaceId": "ChIJOYjSZgOMGGARgpKN-7Nxyog",
       "restaurantName": "AKL Curry and Bar",
       "sourceFingerprint": "sha256:8424f74bddb34192c8515f07a58942c892a45c4fc3f6d96e1ea2ba16b96b8773",
@@ -685,6 +953,64 @@
       }
     },
     {
+      "googlePlaceId": "ChIJQfrauD6NGGARfDcOJANiPEY",
+      "restaurantName": "Hanoi Kanda",
+      "sourceFingerprint": "sha256:3351c677913640390d185a974f8281b1ed5c791f5dbf3a0dbfeff923fd234a8a",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "HANOI KANDA",
+          "ハノイ・神田"
+        ],
+        "evidence": [
+          {
+            "provider": "Overture Maps",
+            "sourceUrl": "https://hanoi-kanda.com/",
+            "checkedAt": "2026-09-18",
+            "evidenceType": "exact_branch_name_address_and_phone",
+            "note": "The assigned site identifies HANOI KANDA and gives the current 内神田 address and phone."
+          }
+        ]
+      },
+      "attemptedSources": [
+        {
+          "provider": "Overture Maps",
+          "sourceUrl": "https://hanoi-kanda.com/",
+          "checkedAt": "2026-09-18",
+          "result": "reviewed"
+        }
+      ],
+      "categoryEvidence": [
+        {
+          "provider": "Overture Maps",
+          "sourceUrl": "https://hanoi-kanda.com/",
+          "checkedAt": "2026-09-18",
+          "sourceText": "ジャンル：ベトナム料理・居酒屋",
+          "proposedConceptIds": [
+            "style-vietnamese",
+            "venue-izakaya"
+          ],
+          "evidenceScope": "exact_branch",
+          "confidence": "high"
+        }
+      ],
+      "proposedConceptIds": [
+        "style-vietnamese",
+        "venue-izakaya"
+      ],
+      "blocker": null,
+      "reason": "The exact branch site explicitly classifies the venue as Vietnamese cuisine and izakaya.",
+      "notes": null,
+      "reviewedAt": "2026-09-18",
+      "centralReview": {
+        "reviewFile": "data/classification_entity_bound_reviews/S7.json",
+        "proposalFile": "data/classification_entity_bound_proposals/S7.json",
+        "proposalStatus": "accepted_evidence",
+        "decisionReason": "The exact branch site explicitly lists the genre as ベトナム料理・居酒屋, supporting Vietnamese cuisine style and izakaya venue type."
+      }
+    },
+    {
       "googlePlaceId": "ChIJR5q-rHaNGGAR-KzLmTo2LQ4",
       "restaurantName": "Spain Bar ALBA",
       "sourceFingerprint": "sha256:0b57862e49cf36da366efd34a7fc907494b3df881e41455355a71d1beb673f29",
@@ -713,6 +1039,37 @@
         "proposalFile": "data/classification_entity_bound_proposals/S5.json",
         "proposalStatus": "blocked",
         "decisionReason": "Assigned source remained unreadable; fail closed and retain the blocker."
+      }
+    },
+    {
+      "googlePlaceId": "ChIJRRGtFQCNGGARsxmE_-rP-Aw",
+      "restaurantName": "日比谷 Bar 神保町 別邸",
+      "sourceFingerprint": "sha256:68e88730ad6bec81438824a61627b36f151ab06c68001d142dff5dd08fcdb20b",
+      "status": "blocked",
+      "identity": {
+        "state": "candidate",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "attemptedSources": [
+        {
+          "provider": "Overture Maps",
+          "sourceUrl": "http://www.hibiya-bar.com/",
+          "checkedAt": "2026-09-18",
+          "result": "blocked"
+        }
+      ],
+      "categoryEvidence": [],
+      "proposedConceptIds": [],
+      "blocker": "assigned_source_bad_gateway",
+      "reason": "The assigned Hibiya Bar root returned a gateway error during review. No replacement or branch search was used.",
+      "notes": "The restaurant name was not used as category evidence.",
+      "reviewedAt": "2026-09-18",
+      "centralReview": {
+        "reviewFile": "data/classification_entity_bound_reviews/S7.json",
+        "proposalFile": "data/classification_entity_bound_proposals/S7.json",
+        "proposalStatus": "blocked",
+        "decisionReason": "The assigned source remained unavailable; the restaurant name is not used as replacement category evidence."
       }
     },
     {
@@ -770,6 +1127,66 @@
         "proposalFile": "data/classification_entity_bound_proposals/S5.json",
         "proposalStatus": "accepted_evidence",
         "decisionReason": "The exact Tokyo Dome City store page explicitly identifies the business as an American restaurant and bar."
+      }
+    },
+    {
+      "googlePlaceId": "ChIJyZhNeZONGGARfhWZyUDUSVM",
+      "restaurantName": "9INETY4OUR Sports and Music Bar",
+      "sourceFingerprint": "sha256:3cedbe271ceea2d30b77a20e8dde81c1e071423c7aaffd6efcd91dcd22c8fac3",
+      "status": "accepted_evidence",
+      "identity": {
+        "state": "verified",
+        "sourceAliases": [
+          "9INETY4OUR Sports&Music Bar",
+          "ナインティーフォー スポーツアンドミュージックバー"
+        ],
+        "evidence": [
+          {
+            "provider": "Overture Maps",
+            "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13264876/",
+            "checkedAt": "2026-09-18",
+            "evidenceType": "exact_branch_name_and_address",
+            "note": "The assigned Tabelog page identifies the venue at 内神田3-22-3 RePlus 1F."
+          }
+        ]
+      },
+      "attemptedSources": [
+        {
+          "provider": "Overture Maps",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13264876/",
+          "checkedAt": "2026-09-18",
+          "result": "reviewed"
+        }
+      ],
+      "categoryEvidence": [
+        {
+          "provider": "Overture Maps",
+          "sourceUrl": "https://tabelog.com/tokyo/A1310/A131002/13264876/",
+          "checkedAt": "2026-09-18",
+          "sourceText": "ジャンル：スポーツバー、ダイニングバー、居酒屋",
+          "proposedConceptIds": [
+            "venue-bar",
+            "venue-dining-bar",
+            "venue-izakaya"
+          ],
+          "evidenceScope": "exact_branch",
+          "confidence": "high"
+        }
+      ],
+      "proposedConceptIds": [
+        "venue-bar",
+        "venue-dining-bar",
+        "venue-izakaya"
+      ],
+      "blocker": null,
+      "reason": "The exact branch genre explicitly includes sports bar, dining bar, and izakaya; these map within the venue dimension to bar, dining-bar, and izakaya concepts.",
+      "notes": null,
+      "reviewedAt": "2026-09-18",
+      "centralReview": {
+        "reviewFile": "data/classification_entity_bound_reviews/S7.json",
+        "proposalFile": "data/classification_entity_bound_proposals/S7.json",
+        "proposalStatus": "accepted_evidence",
+        "decisionReason": "The exact branch genres explicitly state スポーツバー、ダイニングバー、居酒屋; central review accepts the bar, dining-bar and izakaya venue concepts."
       }
     }
   ]

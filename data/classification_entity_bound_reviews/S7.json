@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "centralReview": true,
+  "completeShardReview": true,
+  "marker": "CLASSIFICATION-ENTITY-BOUND-REVIEW",
+  "shard": "S7",
+  "proposalFile": "data/classification_entity_bound_proposals/S7.json",
+  "reviewedAt": "2026-09-18",
+  "policy": {
+    "acceptedRequiresProposalAcceptedEvidence": true,
+    "acceptedRequiresVerifiedIdentity": true,
+    "acceptedRequiresExactBranchEvidence": true,
+    "candidateCountsAsAccepted": false,
+    "blockedCountsAsAccepted": false,
+    "newSourceDiscoveryPerformed": false,
+    "paidGoogleDataApiCalls": 0
+  },
+  "summary": {
+    "reviewedRows": 9,
+    "acceptedRows": 4,
+    "candidateRows": 0,
+    "noEvidenceRows": 2,
+    "blockedRows": 3
+  },
+  "records": [
+    {
+      "googlePlaceId": "ChIJRRGtFQCNGGARsxmE_-rP-Aw",
+      "sourceFingerprint": "sha256:68e88730ad6bec81438824a61627b36f151ab06c68001d142dff5dd08fcdb20b",
+      "proposalStatus": "blocked",
+      "decision": "blocked",
+      "acceptedConceptIds": [],
+      "reason": "The assigned source remained unavailable; the restaurant name is not used as replacement category evidence."
+    },
+    {
+      "googlePlaceId": "ChIJ85oU5fyNGGARWJqF2dOGKxo",
+      "sourceFingerprint": "sha256:5a667ffe7ccd64b63b7b85159c386ccc5daa381112e2b8e8154bd3b011e6e16d",
+      "proposalStatus": "blocked",
+      "decision": "blocked",
+      "acceptedConceptIds": [],
+      "reason": "The assigned business.site source remained inaccessible; no replacement source is permitted."
+    },
+    {
+      "googlePlaceId": "ChIJm_N_DRuMGGARaUf1LlEM5yE",
+      "sourceFingerprint": "sha256:f6ebf4965d98dd0c102327f6c42a88dc73e1b71a1b489a8b07085639629c56cb",
+      "proposalStatus": "no_evidence",
+      "decision": "no_evidence",
+      "acceptedConceptIds": [],
+      "reason": "Exact genres are ジビエ料理 and ビストロ; neither has an exact current concept and no French/dining-bar inference is accepted."
+    },
+    {
+      "googlePlaceId": "ChIJ0-GKX3qNGGARCuvbAbAU9B0",
+      "sourceFingerprint": "sha256:59ce93c1f4284bf2f1764dcee226e1052f2d5edc1cabcaf894e35f9bdd9c96be",
+      "proposalStatus": "blocked",
+      "decision": "blocked",
+      "acceptedConceptIds": [],
+      "reason": "The assigned Four Seasons URL remained unavailable; no replacement page is permitted."
+    },
+    {
+      "googlePlaceId": "ChIJoeT3YD-NGGAR3eHpfh3C_Jw",
+      "sourceFingerprint": "sha256:ce0be661c2d96409142bf147cf980a6135f054af4cd6f5ac2d8721d46ddcd6a4",
+      "proposalStatus": "accepted_evidence",
+      "decision": "accepted_evidence",
+      "acceptedConceptIds": ["venue-bar"],
+      "reason": "The exact branch site explicitly labels GARB Cheers OTEMACHI as a sports bar and also uses CAFE & BAR; the central review accepts only the broad bar venue concept."
+    },
+    {
+      "googlePlaceId": "ChIJJ8_bnU6NGGARsXyvg0mnXI0",
+      "sourceFingerprint": "sha256:d251b6119494ce3d935fdf300787e42fdebe614a1bd44b59c31921c7e7060577",
+      "proposalStatus": "no_evidence",
+      "decision": "no_evidence",
+      "acceptedConceptIds": [],
+      "reason": "The exact branch page gives identity/hours but no explicit category; assigned menu/product pages remain menu evidence and cannot be promoted."
+    },
+    {
+      "googlePlaceId": "ChIJQfrauD6NGGARfDcOJANiPEY",
+      "sourceFingerprint": "sha256:3351c677913640390d185a974f8281b1ed5c791f5dbf3a0dbfeff923fd234a8a",
+      "proposalStatus": "accepted_evidence",
+      "decision": "accepted_evidence",
+      "acceptedConceptIds": ["style-vietnamese", "venue-izakaya"],
+      "reason": "The exact branch site explicitly lists the genre as ベトナム料理・居酒屋, supporting Vietnamese cuisine style and izakaya venue type."
+    },
+    {
+      "googlePlaceId": "ChIJ-TwSLQCNGGARhVZRTHQcoO0",
+      "sourceFingerprint": "sha256:bd452eb8ff83b8bdee8b0e3835d1536c1c5322b8b66daad4144510f5bfebdb2b",
+      "proposalStatus": "accepted_evidence",
+      "decision": "accepted_evidence",
+      "acceptedConceptIds": ["food-yakiniku"],
+      "reason": "The exact official page identifies the current branch as 炭火焼肉 さんこう苑, directly supporting the yakiniku food-type concept."
+    },
+    {
+      "googlePlaceId": "ChIJyZhNeZONGGARfhWZyUDUSVM",
+      "sourceFingerprint": "sha256:3cedbe271ceea2d30b77a20e8dde81c1e071423c7aaffd6efcd91dcd22c8fac3",
+      "proposalStatus": "accepted_evidence",
+      "decision": "accepted_evidence",
+      "acceptedConceptIds": ["venue-bar", "venue-dining-bar", "venue-izakaya"],
+      "reason": "The exact branch genres explicitly state スポーツバー、ダイニングバー、居酒屋; central review accepts the bar, dining-bar and izakaya venue concepts."
+    }
+  ]
+}
