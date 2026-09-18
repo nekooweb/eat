@@ -25,6 +25,7 @@
     { id: 'style-international-unsplit', dimension: 'cuisineStyle', label: '各国料理（未细分）', aliases: ['各国料理'] },
     { id: 'style-spanish', dimension: 'cuisineStyle', label: '西班牙料理', aliases: ['西班牙菜'] },
     { id: 'style-american', dimension: 'cuisineStyle', label: '美式', aliases: ['美式'] },
+    { id: 'style-moroccan', dimension: 'cuisineStyle', label: '摩洛哥料理', aliases: ['摩洛哥菜'] },
 
     // Main food type. Parent/child relations exist only inside this dimension.
     { id: 'food-noodles', dimension: 'foodType', label: '面类', aliases: ['面食', '面类'] },
@@ -40,6 +41,7 @@
     { id: 'food-hamburger', dimension: 'foodType', label: '汉堡', aliases: ['汉堡', 'ハンバーガー'] },
     { id: 'food-hamburg-steak', dimension: 'foodType', label: '汉堡排', aliases: ['汉堡排', 'ハンバーグ'] },
     { id: 'food-okonomiyaki-monja', dimension: 'foodType', label: '御好烧·文字烧', aliases: ['お好み焼き・もんじゃ'] },
+    { id: 'food-okonomiyaki', dimension: 'foodType', label: '御好烧', aliases: ['御好烧'] },
     { id: 'food-seafood', dimension: 'foodType', label: '海鲜', aliases: ['海鲜', '海鮮'] },
     { id: 'food-dessert', dimension: 'foodType', label: '甜品', aliases: ['甜品', 'スイーツ'] },
     { id: 'food-steak', dimension: 'foodType', label: '牛排', aliases: ['牛排', 'ステーキ'] },
@@ -49,6 +51,8 @@
     { id: 'food-biryani', dimension: 'foodType', label: '比里亚尼', aliases: ['ビリヤニ'] },
     { id: 'food-tonkatsu', dimension: 'foodType', label: '炸猪排', aliases: ['炸猪排'] },
     { id: 'food-sandwich', dimension: 'foodType', label: '三明治', aliases: ['サンドイッチ'] },
+    { id: 'food-soup', dimension: 'foodType', label: '汤品', aliases: ['スープ', '汤品'] },
+    { id: 'food-barbecue', dimension: 'foodType', label: '烧烤', aliases: ['烧烤'] },
 
     // Venue type. Composite cafe/sweets remains unsplit and does not imply cafe + dessert.
     { id: 'venue-izakaya', dimension: 'venueType', label: '居酒屋', aliases: ['居酒屋'] },
@@ -168,7 +172,7 @@
   }
 
   window.EAT_CLASSIFICATION = Object.freeze({
-    version: 'classification-v2-20260918',
+    version: 'classification-v3-20260918',
     dimensions: DIMENSIONS,
     concepts: CONCEPTS,
     normalizeSourceValue,
