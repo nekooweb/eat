@@ -93,6 +93,7 @@ function loadMaintainedInputs(root) {
     loadWindowScript(root, 'data/production_area1.js', windowObject);
   }
 
+  loadWindowScript(root, 'data/classification_entity_overlay.js', windowObject);
   loadWindowScript(root, 'classification.js', windowObject);
   loadWindowScript(root, 'data/source_facts.js', windowObject);
   loadWindowScript(root, 'data/source_provenance.js', windowObject);

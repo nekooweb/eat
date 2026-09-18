@@ -76,6 +76,12 @@ accepted public/canonical value
 
 taxonomy central review batch 1/2 已把 taxonomy-first unknown 清零。当前 maintained runtime 为 1,261 accepted / 161 unknown；仍有 93 个 unmapped non-generic token，但这些 token 只出现在已经至少有一个 accepted classification 的记录中，不再阻塞 unknown entity。
 
+### 4.2.1 Accepted entity overlay（2026-09-18 已实现）
+
+已新增 Place-ID keyed reviewed artifact 与 fail-closed materializer。公开分类现在组合 `exact cuisine/tags taxonomy + central-reviewed accepted entity overlay`；`candidate/no_evidence/blocked` 不会进入 overlay，原始 `cuisine/tags` 不被修改。初始 overlay 为空，因此此基础设施部署本身不改变现有分类计数。
+
+下一执行阶段是 100 家 `CLASSIFICATION-ENTITY-BOUND` 逐来源 proposal review，随后 central review 才能写入 accepted overlay。
+
 ### 4.3 Entity classification review
 
 只有 taxonomy 不能解决时才进入实体层，顺序为：

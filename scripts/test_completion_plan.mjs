@@ -9,6 +9,7 @@ const watchedFiles = [
   'data/source_facts.js',
   'data/source_provenance.js',
   'data/google_inventory_detail_queue.json',
+  'data/classification_entity_overlay.js',
   'classification.js'
 ];
 const before = new Map(watchedFiles.map((file) => [file, fs.readFileSync(file, 'utf8')]));
