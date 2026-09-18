@@ -12,11 +12,12 @@ const manifestPath = path.join(outdir, 'manifest.json');
 assert.ok(fs.existsSync(manifestPath));
 assert.equal(first.plan.marker, 'CLASSIFICATION-ENTITY-BOUND');
 assert.equal(first.plan.summary.shards, 8);
-assert.equal(first.plan.summary.totalRows, 100);
-assert.equal(first.plan.summary.reviewReadyRows, 100);
+assert.equal(first.plan.summary.reviewReadyRows, first.plan.summary.totalRows,
+  'every current bound-source task must remain review-ready');
 assert.equal(first.manifest.assignments.length, 8);
-assert.equal(first.manifest.assignments.reduce((sum, row) => sum + row.rows, 0), 100);
-assert.equal(first.manifest.assignments.reduce((sum, row) => sum + row.reviewReadyRows, 0), 100);
+assert.equal(first.manifest.assignments.reduce((sum, row) => sum + row.rows, 0), first.plan.summary.totalRows);
+assert.equal(first.manifest.assignments.reduce((sum, row) => sum + row.reviewReadyRows, 0),
+  first.plan.summary.reviewReadyRows);
 
 const all = [];
 for (let shard = 0; shard < 8; shard += 1) {
@@ -40,8 +41,8 @@ for (let shard = 0; shard < 8; shard += 1) {
     all.push(row);
   }
 }
-assert.equal(all.length, 100);
-assert.equal(new Set(all.map((row) => row.googlePlaceId)).size, 100);
+assert.equal(all.length, first.plan.summary.totalRows);
+assert.equal(new Set(all.map((row) => row.googlePlaceId)).size, first.plan.summary.totalRows);
 
 const secondDir = fs.mkdtempSync(path.join(os.tmpdir(), 'eat-classification-bound-'));
 const second = materializeClassificationBoundAssignments({ outdir: secondDir, now, shards: 8 });
