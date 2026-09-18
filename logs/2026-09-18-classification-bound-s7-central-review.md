@@ -38,3 +38,22 @@ The deterministic reviewed truth now aggregates S5 + S6 + S7:
 - accepted overlay rows: 11
 
 Actual coverage and residual assignment deltas are recorded from maintained CI after validation.
+
+## Maintained preview result
+
+PR validation measured:
+
+- accepted classification: **1,268 -> 1,272 (+4)**
+- unknown classification: **154 -> 150 (-4)**
+- coverage: **89.17% -> 89.45%**
+- rows with multiple dimensions: **95 -> 96**
+- cuisineStyle rows: **518 -> 519**
+- foodType rows: **264 -> 265**
+- venueType rows: **592 -> 595**
+- terminal reviewed deferred: **9 -> 14**
+- source-changed reactivations: **0**
+- active bound-source rows: **84 -> 75**
+- active explicit bound links: **95 -> 84**
+- S7 active assignment: **9 -> 0**
+
+The full S7 shard is retired from immediate work: four rows became accepted classifications and five non-accepted terminal rows entered cooldown.
