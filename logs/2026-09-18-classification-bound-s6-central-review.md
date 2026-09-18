@@ -46,3 +46,22 @@ Before CI, the committed reviewed artifact contains:
 - accepted overlay rows: 7
 
 Actual coverage and residual assignment deltas are recorded from maintained CI after validation.
+
+## Maintained preview result
+
+PR validation measured:
+
+- accepted classification: **1,265 -> 1,268 (+3)**
+- unknown classification: **157 -> 154 (-3)**
+- coverage: **88.96% -> 89.17%**
+- rows with multiple dimensions: **94 -> 95**
+- cuisineStyle rows: **518 -> 518**
+- foodType rows: **263 -> 264**
+- venueType rows: **589 -> 592**
+- terminal reviewed deferred: **4 -> 9**
+- source-changed reactivations: **0**
+- active bound-source rows: **92 -> 84**
+- active explicit bound links: **111 -> 95**
+- S6 active assignment: **8 -> 0**
+
+The eight-row S6 active shard is fully retired from immediate work: three rows became accepted public classifications and five non-accepted terminal rows entered cooldown.
