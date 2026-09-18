@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 1,
+  "reviewedAt": "2026-09-18",
+  "batch": "taxonomy-token-batch-2",
+  "sourceReport": "scripts/build_completion_plan.mjs",
+  "policy": {
+    "taskType": "classification_taxonomy_token",
+    "networkRequests": 0,
+    "paidGoogleDataApiCalls": 0,
+    "exactSourceTokenOnly": true,
+    "restaurantNameInferenceAllowed": false,
+    "menuDishInferenceAllowed": false,
+    "crossDimensionInferenceAllowed": false,
+    "genericSourceValuePromotionAllowed": false
+  },
+  "summary": {
+    "reviewedTokens": 5,
+    "acceptedTokens": 5,
+    "summedAffectedRestaurantTokenHitsAtReview": 6,
+    "summedUnknownRestaurantTokenHitsAtReview": 5,
+    "baselineUniqueTaxonomyTokenFirstRows": 4,
+    "note": "Token-level counts overlap across restaurants; the maintained planner reported four unique taxonomy-first rows before batch 2."
+  },
+  "records": [
+    {
+      "normalizedToken": "御好烧",
+      "rawVariants": [
+        "御好烧"
+      ],
+      "affectedRestaurantCount": 2,
+      "unknownRestaurantCount": 1,
+      "status": "accepted",
+      "conceptId": "food-okonomiyaki",
+      "reason": "Exact main-food token for okonomiyaki; kept distinct from the existing okonomiyaki-monja composite concept."
+    },
+    {
+      "normalizedToken": "スープ",
+      "rawVariants": [
+        "スープ"
+      ],
+      "affectedRestaurantCount": 1,
+      "unknownRestaurantCount": 1,
+      "status": "accepted",
+      "conceptId": "food-soup",
+      "reason": "Exact main-food token for soup."
+    },
+    {
+      "normalizedToken": "摩洛哥菜",
+      "rawVariants": [
+        "摩洛哥菜"
+      ],
+      "affectedRestaurantCount": 1,
+      "unknownRestaurantCount": 1,
+      "status": "accepted",
+      "conceptId": "style-moroccan",
+      "reason": "Exact cuisine-style token for Moroccan cuisine."
+    },
+    {
+      "normalizedToken": "汤品",
+      "rawVariants": [
+        "汤品"
+      ],
+      "affectedRestaurantCount": 1,
+      "unknownRestaurantCount": 1,
+      "status": "accepted",
+      "conceptId": "food-soup",
+      "reason": "Exact Chinese main-food token for soup; maps to the same food concept as スープ."
+    },
+    {
+      "normalizedToken": "烧烤",
+      "rawVariants": [
+        "烧烤"
+      ],
+      "affectedRestaurantCount": 1,
+      "unknownRestaurantCount": 1,
+      "status": "accepted",
+      "conceptId": "food-barbecue",
+      "reason": "Exact broad main-food token for barbecue/grilled foods; does not imply yakiniku or a cuisine style."
+    }
+  ]
+}
