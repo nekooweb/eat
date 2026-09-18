@@ -24,6 +24,9 @@ jobs:
           node scripts/test_classification_filters.mjs
           node scripts/test_classification_ui.mjs
           node scripts/test_classification_taxonomy_reviews.mjs
+          node --check scripts/build_classification_entity_reviewed.mjs
+          node scripts/build_classification_entity_reviewed.mjs --check
+          node scripts/test_classification_entity_central_review.mjs
           node --check scripts/build_classification_entity_overlay.mjs
           node scripts/build_classification_entity_overlay.mjs --check
           node scripts/test_classification_entity_overlay.mjs
