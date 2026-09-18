@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+import vm from 'node:vm';
 import {
   materializeClassificationEntityOverlay
 } from './build_classification_entity_overlay.mjs';
@@ -50,6 +51,29 @@ const materialized = materializeClassificationEntityOverlay({ root });
 assert.equal(materialized.rows.length, 1);
 assert.equal(materialized.rows[0].googlePlaceId, 'place-accepted');
 assert.deepEqual(materialized.rows[0].conceptIds, ['food-sushi']);
+
+const runtimeContext = {
+  window: {
+    EAT_CLASSIFICATION_ENTITY_OVERLAY: materialized
+  }
+};
+vm.createContext(runtimeContext);
+vm.runInContext(fs.readFileSync('classification.js', 'utf8'), runtimeContext, { filename: 'classification.js' });
+const classification = runtimeContext.window.EAT_CLASSIFICATION;
+const merged = classification.classifyRestaurant({
+  googlePlaceId: 'place-accepted',
+  cuisine: '日式',
+  tags: []
+});
+assert.deepEqual([...merged.taxonomyDirectIds], ['style-japanese']);
+assert.deepEqual([...merged.entityDirectIds], ['food-sushi']);
+assert.ok(merged.directIds.includes('style-japanese'));
+assert.ok(merged.directIds.includes('food-sushi'));
+assert.equal(classification.classifyRestaurant({
+  googlePlaceId: 'place-candidate',
+  cuisine: '餐厅',
+  tags: []
+}).directIds.length, 0, 'candidate rows must never enter runtime classification');
 
 const invalid = structuredClone(accepted);
 invalid.records[0].identity.state = 'candidate';
