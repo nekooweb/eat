@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "proposalOnly": true,
+  "marker": "CLASSIFICATION-ENTITY-BOUND",
+  "shard": "S0",
+  "sourcePlan": "classification_bound_source_plan.json",
+  "generatedAt": "2026-09-18T00:00:00+09:00",
+  "checkedAt": "2026-09-18",
+  "policyAttestation": {
+    "frozenPlaceIdIdentityUsed": true,
+    "catalogNamePreserved": true,
+    "onlyAssignedBoundSourcesReviewed": true,
+    "newSourceDiscoveryPerformed": false,
+    "restaurantNameInferenceUsedForAcceptedClassification": false,
+    "menuDishInferenceUsedForAcceptedClassification": false,
+    "paidGoogleDataApiCalls": 0,
+    "canonicalWritesPerformed": false
+  },
+  "records": [
+    {
+      "googlePlaceId": "<copy from assigned row>",
+      "restaurantName": "<copy current catalog name exactly>",
+      "sourceFingerprint": "sha256:<copy exactly from assigned row>",
+      "status": "candidate",
+      "identity": {
+        "state": "verified|candidate|conflict",
+        "sourceAliases": [],
+        "evidence": []
+      },
+      "attemptedSources": [
+        {
+          "provider": "<assigned provider>",
+          "sourceUrl": "https://example.com/",
+          "checkedAt": "2026-09-18",
+          "result": "reviewed|blocked|not_category_bearing"
+        }
+      ],
+      "categoryEvidence": [
+        {
+          "provider": "<assigned provider>",
+          "sourceUrl": "https://example.com/",
+          "checkedAt": "2026-09-18",
+          "sourceText": "<short source-native explicit category/business description>",
+          "proposedConceptIds": [
+            "<existing classification concept id>"
+          ],
+          "evidenceScope": "exact_branch",
+          "confidence": "high|medium"
+        }
+      ],
+      "proposedConceptIds": [],
+      "blocker": null,
+      "reason": "<why accepted/candidate/no_evidence/blocked>",
+      "notes": null
+    }
+  ]
+}

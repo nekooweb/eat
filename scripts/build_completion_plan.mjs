@@ -113,19 +113,75 @@ function loadMaintainedInputs(root) {
   };
 }
 
-function sourceContext(googlePlaceId, detailById, provenanceById) {
+function reviewableBoundUrl(value) {
+  const raw = String(value || '').normalize('NFKC').trim();
+  if (!raw) return null;
+  try {
+    const url = new URL(raw);
+    if (!['http:', 'https:'].includes(url.protocol)) return null;
+    const host = url.hostname.toLowerCase().replace(/^www\./u, '');
+    if (/(^|\.)google\./u.test(host)
+      || /googleusercontent\.com$/u.test(host)
+      || /maps\.app\.goo\.gl$/u.test(host)) return null;
+    url.hash = '';
+    for (const key of [...url.searchParams.keys()]) {
+      if (/^(?:utm_.+|gclid|fbclid|mc_cid|mc_eid)$/iu.test(key)) url.searchParams.delete(key);
+    }
+    url.searchParams.sort();
+    return url.toString();
+  } catch {
+    return null;
+  }
+}
+
+function sourceContext(row, detailById, provenanceById) {
+  const googlePlaceId = row?.googlePlaceId;
   const detail = detailById.get(googlePlaceId) || {};
   const provenance = provenanceById.get(googlePlaceId) || {};
-  const sourceLinks = Array.isArray(provenance.sourceLinks) ? provenance.sourceLinks : [];
+  const byUrl = new Map();
+
+  for (const link of provenance.sourceLinks || []) {
+    const url = reviewableBoundUrl(link?.url);
+    if (!url) continue;
+    const fields = uniqueSorted(Array.isArray(link?.fields) ? link.fields : []);
+    byUrl.set(url, {
+      provider: String(link?.provider || 'runtime-bound').trim() || 'runtime-bound',
+      url,
+      fields
+    });
+  }
+
+  for (const raw of row?.sourceWebsites || []) {
+    const url = reviewableBoundUrl(raw);
+    if (!url) continue;
+    if (!byUrl.has(url)) {
+      byUrl.set(url, {
+        provider: String(row?.sourceProvider || 'runtime-bound').trim() || 'runtime-bound',
+        url,
+        fields: []
+      });
+    }
+  }
+
+  const sourceLinks = [...byUrl.values()].sort((a, b) =>
+    a.provider.localeCompare(b.provider, 'en') || a.url.localeCompare(b.url, 'en'));
   const providers = uniqueSorted(sourceLinks.map((link) => link.provider));
-  const claimedFields = uniqueSorted(sourceLinks.flatMap((link) => Array.isArray(link.fields) ? link.fields : []));
-  const sourceUrlCount = Math.max(Number(detail.sourceUrlCount || 0), sourceLinks.length);
+  const claimedFields = uniqueSorted(sourceLinks.flatMap((link) => link.fields));
+  const aggregateSourceUrlCount = Math.max(
+    Number(detail.sourceUrlCount || 0),
+    Array.isArray(provenance.sourceLinks) ? provenance.sourceLinks.length : 0,
+    Array.isArray(row?.sourceWebsites) ? row.sourceWebsites.length : 0
+  );
+  const sourceUrlCount = sourceLinks.length;
   return {
     sourceUrlCount,
+    aggregateSourceUrlCount,
+    excludedNavigationOrInvalidSourceCount: Math.max(0, aggregateSourceUrlCount - sourceUrlCount),
     crawlableOfficialUrlCount: Number(detail.crawlableOfficialUrlCount || 0),
     retainedThirdPartyUrlCount: Number(detail.retainedThirdPartyUrlCount || 0),
     providers,
     claimedFields,
+    sourceLinks,
     sourceLastCheckedAt: provenance.sourceLastCheckedAt || null
   };
 }
@@ -201,7 +257,7 @@ function buildClassificationEntityTasks({ rows, factsById, taxonomy, detailById,
   for (const row of rows) {
     if (directConcepts(taxonomy, row).size) continue;
     const facts = factsById.get(row.googlePlaceId) || [];
-    const context = sourceContext(row.googlePlaceId, detailById, provenanceById);
+    const context = sourceContext(row, detailById, provenanceById);
     const evidence = [];
     const conceptIds = new Set();
     const hasUnmappedRuntimeToken = hasUnmappedClassificationValue(taxonomy, row);
@@ -292,7 +348,7 @@ function buildHoursTasks({ rows, factsById, detailById, provenanceById }) {
   for (const row of rows) {
     if (typeof row.hoursReference === 'string' && row.hoursReference.trim()) continue;
     const facts = factsById.get(row.googlePlaceId) || [];
-    const context = sourceContext(row.googlePlaceId, detailById, provenanceById);
+    const context = sourceContext(row, detailById, provenanceById);
     const rawFacts = facts
       .filter((fact) => typeof fact?.openingHoursRaw === 'string' && fact.openingHoursRaw.trim())
       .map((fact) => ({
@@ -359,7 +415,7 @@ function buildBudgetTasks({ rows, factsById, detailById, provenanceById, meal })
   for (const row of rows) {
     if (isPriceRange(row[meal])) continue;
     const facts = factsById.get(row.googlePlaceId) || [];
-    const context = sourceContext(row.googlePlaceId, detailById, provenanceById);
+    const context = sourceContext(row, detailById, provenanceById);
     const candidates = facts
       .filter((fact) => isPriceRange(fact[meal]))
       .map((fact) => ({
@@ -482,7 +538,8 @@ export function buildCompletionPlan(options = {}) {
       rawCuisineTagsMutationAllowed: false,
       sourceFactsFirst: true,
       boundSourcesBeforeNewDiscovery: true,
-      maintainedPublicRuntimePreferred: true
+      maintainedPublicRuntimePreferred: true,
+      googleNavigationCountsAsBoundSource: false
     },
     summary: {
       runtimeRows: rows.length,
