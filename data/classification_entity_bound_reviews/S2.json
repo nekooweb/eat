@@ -1,0 +1,121 @@
+{
+  "schemaVersion": 1,
+  "centralReview": true,
+  "completeShardReview": true,
+  "marker": "CLASSIFICATION-ENTITY-BOUND-REVIEW",
+  "shard": "S2",
+  "proposalFile": "data/classification_entity_bound_proposals/S2.json",
+  "reviewedAt": "2026-09-19",
+  "policy": {
+    "acceptedRequiresProposalAcceptedEvidence": true,
+    "acceptedRequiresVerifiedIdentity": true,
+    "acceptedRequiresExactBranchEvidence": true,
+    "candidateCountsAsAccepted": false,
+    "blockedCountsAsAccepted": false,
+    "newSourceDiscoveryPerformed": false,
+    "paidGoogleDataApiCalls": 0
+  },
+  "summary": {
+    "reviewedRows": 11,
+    "acceptedRows": 3,
+    "candidateRows": 2,
+    "noEvidenceRows": 1,
+    "blockedRows": 5
+  },
+  "records": [
+    {
+      "googlePlaceId": "ChIJpZBYkxCMGGARrdO6BQ1yGPQ",
+      "sourceFingerprint": "sha256:a1e9050f9023096c0e6d96b96859cb849f31ce143ba1d69e4337f70a1c4eb020",
+      "proposalStatus": "accepted_evidence",
+      "decision": "accepted_evidence",
+      "acceptedConceptIds": [
+        "style-western"
+      ],
+      "reason": "The exact Tabelog branch page independently confirms the genre 洋食 alongside ロシア料理; central review accepts only the existing exact western-style concept and does not invent a Russian-cuisine concept."
+    },
+    {
+      "googlePlaceId": "ChIJxaCKXgCNGGARmML1G_OsP5E",
+      "sourceFingerprint": "sha256:c4d82b9290f53c5fff5d2a5994af3bb50ab358dfa9bc1721aa1f88240fa3ba97",
+      "proposalStatus": "blocked",
+      "decision": "blocked",
+      "acceptedConceptIds": [],
+      "reason": "The assigned KANDA SQUARE site identifies a mixed-use complex with offices, halls, conference rooms, restaurants and shops rather than one restaurant entity; classification remains blocked for identity cleanup."
+    },
+    {
+      "googlePlaceId": "ChIJXUb7fQ2MGGARgbctV56leJ0",
+      "sourceFingerprint": "sha256:dd7fed7227fdc960d0de2b4fd2ec2885ab6a7f393c335eca94859bb65e1534d7",
+      "proposalStatus": "no_evidence",
+      "decision": "no_evidence",
+      "acceptedConceptIds": [],
+      "reason": "The exact assigned branch evidence verifies identity but does not expose an explicit cuisine or business category in the reviewable evidence; no chef/name association is promoted."
+    },
+    {
+      "googlePlaceId": "ChIJa8C-Cj-MGGARcz8KabQrSu0",
+      "sourceFingerprint": "sha256:a845dd17ee668b0eda406455d304f284dd336ffc36285016d07c6ad813acb8b8",
+      "proposalStatus": "blocked",
+      "decision": "blocked",
+      "acceptedConceptIds": [],
+      "reason": "The assigned AMP/Tabelog URL remains unreliably retrievable in the review path; no canonical or alternate page is substituted."
+    },
+    {
+      "googlePlaceId": "ChIJJ6tEexuMGGARDEcrWig0q68",
+      "sourceFingerprint": "sha256:0c1f45e96af2d470787265880bf4ef9753e5c12868ed277e35bc806f8f429b82",
+      "proposalStatus": "accepted_evidence",
+      "decision": "accepted_evidence",
+      "acceptedConceptIds": [
+        "style-italian"
+      ],
+      "reason": "The exact WIZ branch site explicitly describes the venue as an イタリアン酒場・ビアレストラン; central review accepts the proposed Italian cuisine-style concept only."
+    },
+    {
+      "googlePlaceId": "ChIJ59v_9NyNGGAR22VKBERmYDM",
+      "sourceFingerprint": "sha256:4fab6c359ddc2b52ff196dfa4aa3d8c12e2a76c02e038e5e13cd34de12de50de",
+      "proposalStatus": "blocked",
+      "decision": "blocked",
+      "acceptedConceptIds": [],
+      "reason": "The assigned Craft Beer Market Awajicho store URL remains unreliably retrievable; no replacement source is permitted."
+    },
+    {
+      "googlePlaceId": "ChIJtyF-UgCNGGARttipJb5Vc-k",
+      "sourceFingerprint": "sha256:dcc78ade30790669411ae819ca14892329862fc5893d45dec1d95c4b7181753c",
+      "proposalStatus": "candidate",
+      "decision": "candidate",
+      "acceptedConceptIds": [],
+      "reason": "The assigned Denny's URL is brand-level rather than exact-branch evidence, and the current taxonomy has no exact family-restaurant concept; keep as candidate only."
+    },
+    {
+      "googlePlaceId": "ChIJze_wuziMGGAR6MRiJbQ-LV4",
+      "sourceFingerprint": "sha256:9d510fa61f253c0a3531cdda2ce3c8aa4ab34fcabbfe2746c7fce0b560a68155",
+      "proposalStatus": "blocked",
+      "decision": "blocked",
+      "acceptedConceptIds": [],
+      "reason": "The assigned Tokyo Dome Hotel BAR 2000 page remains inaccessible through the review path; the restaurant name is not used as substitute classification evidence."
+    },
+    {
+      "googlePlaceId": "ChIJm_L1ZwaMGGAR5L_pZa15NDk",
+      "sourceFingerprint": "sha256:a6c0699e596c26f132b179df80afd5c36cb4a9a11f86cd5021274e6692018f9c",
+      "proposalStatus": "blocked",
+      "decision": "blocked",
+      "acceptedConceptIds": [],
+      "reason": "The assigned Craft Beer Market Otemachi store URL remains inaccessible through the review path; no replacement source is permitted."
+    },
+    {
+      "googlePlaceId": "ChIJ1WlifwiMGGAR6JeSKWTwPnU",
+      "sourceFingerprint": "sha256:1ef95965be5f349ef9015680947f07bfd9ff060b90967d87a9ec3392c05690ec",
+      "proposalStatus": "accepted_evidence",
+      "decision": "accepted_evidence",
+      "acceptedConceptIds": [
+        "food-seafood"
+      ],
+      "reason": "The exact branch evidence identifies さかなさま 大手町店 and explicitly centers fresh/selected fish as the venue's food offering; central review accepts the proposed seafood food-type concept."
+    },
+    {
+      "googlePlaceId": "ChIJ1YYWBweMGGARIY5pvEdxPto",
+      "sourceFingerprint": "sha256:8e4c23bc1b1d0a105666c78216d0a4f088c8b88bba9b20c1e6a37b130bf83c15",
+      "proposalStatus": "candidate",
+      "decision": "candidate",
+      "acceptedConceptIds": [],
+      "reason": "The assigned BRUSSELS root is a multi-store brand page: it documents the Belgian/craft-beer business and lists the Kanda branch, but does not provide exact-branch category evidence suitable for accepted classification."
+    }
+  ]
+}
