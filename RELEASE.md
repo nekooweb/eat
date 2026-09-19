@@ -1,8 +1,8 @@
-# Eat Production Release — 2026-09-17
+# Eat Production Release — 2026-09-19
 
 ## Release status
 
-**Production released.** The reviewed dish-evidence integration is merged into `main`, and the corresponding GitHub Pages deployment for commit `c105b360f31ac7d521ebd78628e40da61827f42a` completed successfully in run `35201154882`.
+**Production released.** The current production checkpoint includes the reviewed dish-evidence integration plus the S2 bound-source entity-classification central review. The S2 release is merged into `main` at commit `e3a1ba012b88a5bfb96f0ab7fa876cf7a68e2f47`; GitHub Pages production run `35442523537` (#1396) completed successfully, and the matching no-paid-data-API production run `35442523581` (#1176) also completed successfully. The earlier dish-integration production checkpoint remains commit `c105b360f31ac7d521ebd78628e40da61827f42a` / Pages run `35201154882`.
 
 This document is the current release checkpoint. Older dated development sections remain useful as historical progress records, but their pre-merge warnings no longer describe production state after this release.
 
@@ -21,6 +21,24 @@ The generate button keeps the existing restaurant-selection behavior and additio
 - media playback/rendering failure does not block restaurant generation.
 
 The repository audit verifies that every committed MP3/WebP intended for this effect is represented by the runtime configuration and copied into the Pages artifact.
+
+## Classification completion update
+
+S2 bound-source classification has completed the full worker -> independent central review -> accepted-only overlay lifecycle.
+
+- S2 worker/central coverage: 11 / 11;
+- accepted evidence: 3;
+- candidate: 2;
+- no evidence: 1;
+- blocked: 5;
+- accepted reviewed truth across S2/S5/S6/S7: 14 rows;
+- accepted classification coverage: 1,275 / 1,422 public rows (**89.66%**);
+- unknown classification rows: 147;
+- remaining active bound-source work: 64 rows / 73 explicit links;
+- S2 active assignment after maintained rebuild: 0;
+- paid Google Data API calls: 0.
+
+The three S2 accepted additions are fail-closed, exact-evidence mappings: サラファン -> `style-western`, WIZ CRAFT BEER and FOOD -> `style-italian`, and さかなさま 大手町店 -> `food-seafood`. KANDA SQUARE remains blocked as a mixed-use-facility identity conflict; brand-level or inaccessible sources remain candidate/blocked/no-evidence and do not enter the public overlay.
 
 ## Included data release
 

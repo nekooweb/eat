@@ -64,3 +64,15 @@ PR validation measured:
 
 The full S2 shard is retired from immediate work. The maintained residual bound-source plan now contains 64 rows / 73 explicit links across S0, S1, S3 and S4.
 
+
+## Production deployment
+
+PR #97 was squash-merged to `main` as `e3a1ba012b88a5bfb96f0ab7fa876cf7a68e2f47`.
+
+Production verification:
+
+- GitHub Pages run #1396 / `35442523537`: success;
+- no-paid-data-API run #1176 / `35442523581`: success;
+- production build, maintained rebuild, static checks and Pages deploy all completed successfully.
+
+S2 central-reviewed classifications are therefore part of the production release.
