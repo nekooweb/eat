@@ -47,4 +47,20 @@ The deterministic reviewed truth now aggregates S2 + S5 + S6 + S7:
 - blocked rows: 14
 - accepted overlay rows: 14
 
-Actual coverage and residual-assignment deltas are recorded after maintained PR validation.
+## Maintained preview result
+
+PR validation measured:
+
+- accepted classification: **1,272 -> 1,275 (+3)**
+- unknown classification: **150 -> 147 (-3)**
+- coverage: **89.45% -> 89.66%**
+- cuisineStyle rows: **519 -> 521**
+- foodType rows: **265 -> 266**
+- venueType rows: **595 -> 595**
+- rows with multiple dimensions: **96 -> 96**
+- active bound-source rows: **75 -> 64**
+- active explicit bound links: **84 -> 73**
+- S2 active assignment: **11 -> 0**
+
+The full S2 shard is retired from immediate work. The maintained residual bound-source plan now contains 64 rows / 73 explicit links across S0, S1, S3 and S4.
+
